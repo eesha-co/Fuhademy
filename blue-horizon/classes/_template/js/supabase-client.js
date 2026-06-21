@@ -125,29 +125,32 @@
     }
   }
 
+  // Cookie-based session (custom auth via edge functions, not Supabase JWT)
+  function setSession(user) {
+    var payload = btoa(JSON.stringify({ user: user, ts: Date.now() }));
+    document.cookie = 'bh-session=' + payload + ';path=/;max-age=86400;SameSite=Lax';
+  }
+  function getSession() {
+    var m = document.cookie.match(/bh-session=([^;]+)/);
+    if (!m) return null;
+    try { return JSON.parse(atob(m[1])); } catch (e) { return null; }
+  }
+  function clearSession() {
+    document.cookie = 'bh-session=;path=/;max-age=0';
+  }
   function requireAuth() {
-    return getClient().then(function (client) {
-      return client.auth.getSession();
-    }).then(function (res) {
-      var session = res.data && res.data.session;
-      if (!session) {
-        redirectNow(LOGIN_PATH);
-        return null;
-      }
-      return session;
-    }).catch(function (err) {
-      console.error('[BH] requireAuth error:', err);
+    var session = getSession();
+    if (!session || !session.user) {
       redirectNow(LOGIN_PATH);
-      return null;
-    });
+      return Promise.resolve(null);
+    }
+    return Promise.resolve(session);
   }
 
   function requireRole(expectedRole) {
     return requireAuth().then(function (session) {
       if (!session) return null;
-      var role = (session.user && session.user.user_role) ||
-                 (session.user && session.user.app_metadata && session.user.app_metadata.role) ||
-                 (session.user && session.user.user_metadata && session.user.user_metadata.role);
+      var role = session.user && session.user.role;
       if (expectedRole && role && role !== expectedRole) {
         redirectNow(LOGIN_PATH);
         return null;
@@ -157,13 +160,8 @@
   }
 
   function signOut() {
-    return getClient().then(function (client) {
-      return client.auth.signOut();
-    }).then(function () {
-      redirectNow(LOGIN_PATH);
-    }).catch(function () {
-      redirectNow(LOGIN_PATH);
-    });
+    clearSession();
+    redirectNow(LOGIN_PATH);
   }
 
   // Expose
@@ -173,6 +171,9 @@
     LOGIN_PATH: LOGIN_PATH,
     getClient: getClient,
     edge: edge,
+    setSession: setSession,
+    getSession: getSession,
+    clearSession: clearSession,
     requireAuth: requireAuth,
     requireRole: requireRole,
     signOut: signOut

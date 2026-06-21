@@ -385,10 +385,8 @@
           .then(function (result) {
             setLoading(false);
             if (result.ok && result.data && result.data.success) {
-              var session = result.data.session || result.data;
+              var session = result.data;
               var redirect = result.data.redirect || dashboardUrlForRole(selectedRole);
-
-              // Persist the session via Supabase auth (if a JWT was issued)
               persistSessionAndRedirect(session, redirect, username);
             } else {
               // Show the standard error message
@@ -402,36 +400,19 @@
           });
       });
 
-      // Persist the issued session via the Supabase JS client (cookie storage),
-      // then redirect. Falls back to a plain redirect if Supabase JS is unavailable.
+      // Persist session via cookie (custom auth — no Supabase JWT needed)
       function persistSessionAndRedirect(session, redirect, username) {
-        // Try loading Supabase JS dynamically
-        var s = document.createElement('script');
-        s.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';
-        s.async = true;
-        s.onload = function () {
-          try {
-            var client = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
-              auth: { persistSession: true, storageKey: 'bh-auth-session' }
-            });
-            if (session && session.access_token && session.refresh_token) {
-              client.auth.setSession({
-                access_token: session.access_token,
-                refresh_token: session.refresh_token
-              }).then(function () {
-                showToast('Welcome back! Redirecting…', 'success');
-                setTimeout(function () { window.location.href = redirect; }, 600);
-              }).catch(function () {
-                // Even if setSession fails, redirect with the role in the URL
-                showToast('Welcome back! Redirecting…', 'success');
-                setTimeout(function () { window.location.href = redirect; }, 600);
-              });
-            } else {
-              // No JWT — just redirect. The dashboard will re-auth via edge fn.
-              showToast('Welcome back! Redirecting…', 'success');
-              setTimeout(function () { window.location.href = redirect; }, 600);
-            }
-          } catch (e) {
+        // session is the user object returned by auth-login edge function
+        var userData = session.user || session;
+        var payload = btoa(JSON.stringify({ user: userData, ts: Date.now() }));
+        document.cookie = 'bh-session=' + payload + ';path=/;max-age=86400;SameSite=Lax';
+        showToast('Welcome back! Redirecting…', 'success');
+        setTimeout(function () { window.location.href = redirect; }, 600);
+      }
+
+      function _old_persist_unused(session, redirect, username) {
+        // Unused — kept to close the original function block
+        try {
             showToast('Welcome back! Redirecting…', 'success');
             setTimeout(function () { window.location.href = redirect; }, 600);
           }
