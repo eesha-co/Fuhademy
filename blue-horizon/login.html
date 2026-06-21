@@ -410,40 +410,19 @@
         setTimeout(function () { window.location.href = redirect; }, 600);
       }
 
-      function _old_persist_unused(session, redirect, username) {
-        // Unused — kept to close the original function block
-        try {
-            showToast('Welcome back! Redirecting…', 'success');
-            setTimeout(function () { window.location.href = redirect; }, 600);
-          }
-        };
-        s.onerror = function () {
-          showToast('Welcome back! Redirecting…', 'success');
-          setTimeout(function () { window.location.href = redirect; }, 600);
-        };
-        document.head.appendChild(s);
-      }
 
-      // If user is already signed in, send them straight to their dashboard.
+
+      // If user is already signed in (cookie present), send them to their dashboard.
       (function checkExistingSession() {
-        var s = document.createElement('script');
-        s.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';
-        s.async = true;
-        s.onload = function () {
+        var m = document.cookie.match(/bh-session=([^;]+)/);
+        if (m) {
           try {
-            var client = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
-              auth: { persistSession: true, storageKey: 'bh-auth-session', autoRefreshToken: true }
-            });
-            client.auth.getSession().then(function (res) {
-              if (res.data && res.data.session) {
-                var meta = (res.data.session.user && res.data.session.user.user_metadata) || {};
-                var role = meta.role || 'student';
-                window.location.replace(dashboardUrlForRole(role));
-              }
-            });
-          } catch (e) { /* ignore */ }
-        };
-        document.head.appendChild(s);
+            var session = JSON.parse(atob(m[1]));
+            if (session && session.user && session.user.role) {
+              window.location.replace(dashboardUrlForRole(session.user.role));
+            }
+          } catch (e) { /* invalid cookie — ignore */ }
+        }
       })();
     </script>
   </body>
