@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Equilibrium of Forces | Physics Mechanics</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .content-card {
+            -webkit-backdrop-filter: blur(16px);
+            backdrop-filter: blur(16px);
+            background: rgba(255, 255, 255, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-6">
+    <div class="max-w-6xl mx-auto">
+        <nav class="mb-8">
+            <a href="./" class="text-blue-600 hover:text-blue-700">← Back to Mechanics</a>
+        </nav>
+
+        <div class="content-card rounded-xl p-8">
+            <header class="mb-12">
+                <h1 class="text-3xl font-bold text-gray-800 mb-4">Equilibrium of Forces</h1>
+                <p class="text-lg text-gray-600">Understanding static and dynamic equilibrium in physical systems</p>
+            </header>
+
+            <div class="grid gap-8">
+                <!-- Conditions for Equilibrium -->
+                <section>
+                    <h2 class="text-xl font-semibold text-gray-800 mb-4">Conditions for Equilibrium</h2>
+                    <div class="bg-white/50 rounded-lg p-6">
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <h3 class="font-medium text-gray-800 mb-3">Translational Equilibrium</h3>
+                                <ul class="space-y-2 text-sm text-gray-700">
+                                    <li>• ΣF = 0 (Net force is zero)</li>
+                                    <li>• ΣFx = 0 (x-direction)</li>
+                                    <li>• ΣFy = 0 (y-direction)</li>
+                                    <li>• No linear acceleration</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h3 class="font-medium text-gray-800 mb-3">Rotational Equilibrium</h3>
+                                <ul class="space-y-2 text-sm text-gray-700">
+                                    <li>• Στ = 0 (Net torque is zero)</li>
+                                    <li>• Choose convenient pivot point</li>
+                                    <li>• Consider all forces' moments</li>
+                                    <li>• No angular acceleration</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Types of Equilibrium -->
+                <section>
+                    <h2 class="text-xl font-semibold text-gray-800 mb-4">Types of Equilibrium</h2>
+                    <div class="grid md:grid-cols-3 gap-6">
+                        <div class="bg-white/50 rounded-lg p-6">
+                            <h3 class="font-medium text-gray-800 mb-3">Stable Equilibrium</h3>
+                            <ul class="space-y-2 text-sm text-gray-700">
+                                <li>• Returns to original position</li>
+                                <li>• Minimum potential energy</li>
+                                <li>• Example: Pendulum at rest</li>
+                                <li>• Self-correcting</li>
+                            </ul>
+                        </div>
+                        <div class="bg-white/50 rounded-lg p-6">
+                            <h3 class="font-medium text-gray-800 mb-3">Unstable Equilibrium</h3>
+                            <ul class="space-y-2 text-sm text-gray-700">
+                                <li>• Moves away from position</li>
+                                <li>• Maximum potential energy</li>
+                                <li>• Example: Pencil on point</li>
+                                <li>• Any disturbance critical</li>
+                            </ul>
+                        </div>
+                        <div class="bg-white/50 rounded-lg p-6">
+                            <h3 class="font-medium text-gray-800 mb-3">Neutral Equilibrium</h3>
+                            <ul class="space-y-2 text-sm text-gray-700">
+                                <li>• Stays in new position</li>
+                                <li>• Constant potential energy</li>
+                                <li>• Example: Ball on flat surface</li>
+                                <li>• No restoring force</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Free Body Diagrams -->
+                <section>
+                    <h2 class="text-xl font-semibold text-gray-800 mb-4">Free Body Diagrams</h2>
+                    <div class="bg-white/50 rounded-lg p-6">
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <h3 class="font-medium text-gray-800 mb-3">Key Components</h3>
+                                <ul class="space-y-2 text-sm text-gray-700">
+                                    <li>• Object as a point/extended body</li>
+                                    <li>• All external forces shown</li>
+                                    <li>• Force magnitude and direction</li>
+                                    <li>• Coordinate system</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h3 class="font-medium text-gray-800 mb-3">Common Forces</h3>
+                                <ul class="space-y-2 text-sm text-gray-700">
+                                    <li>• Weight (mg)</li>
+                                    <li>• Normal force (N)</li>
+                                    <li>• Tension (T)</li>
+                                    <li>• Friction (f)</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Problem-Solving Strategy -->
+                <section>
+                    <h2 class="text-xl font-semibold text-gray-800 mb-4">Problem-Solving Strategy</h2>
+                    <div class="bg-white/50 rounded-lg p-6">
+                        <ol class="list-decimal pl-6 space-y-3 text-gray-700">
+                            <li>
+                                <p class="font-medium mb-1">Draw Free Body Diagram</p>
+                                <p class="text-sm">Show all forces acting on the object</p>
+                            </li>
+                            <li>
+                                <p class="font-medium mb-1">Choose Coordinate System</p>
+                                <p class="text-sm">Select convenient axes for analysis</p>
+                            </li>
+                            <li>
+                                <p class="font-medium mb-1">Apply Equilibrium Conditions</p>
+                                <p class="text-sm">Write equations for forces and torques</p>
+                            </li>
+                            <li>
+                                <p class="font-medium mb-1">Solve Equations</p>
+                                <p class="text-sm">Use algebra to find unknowns</p>
+                            </li>
+                        </ol>
+                    </div>
+                </section>
+
+                <!-- Practice Problems -->
+                <section>
+                    <h2 class="text-xl font-semibold text-gray-800 mb-4">Practice Problems</h2>
+                    <div class="bg-white/50 rounded-lg p-6">
+                        <ol class="list-decimal pl-6 space-y-4 text-gray-700">
+                            <li>
+                                <p class="font-medium mb-2">Ladder Problem</p>
+                                <p>A ladder leans against a frictionless wall. Find the forces at both ends for equilibrium.</p>
+                            </li>
+                            <li>
+                                <p class="font-medium mb-2">Bridge Analysis</p>
+                                <p>A uniform bridge of weight W is supported at both ends. Find support forces when:</p>
+                                <ul class="list-disc pl-6 mt-2 space-y-1 text-sm">
+                                    <li>No load is present</li>
+                                    <li>A load P is placed at center</li>
+                                </ul>
+                            </li>
+                            <li>
+                                <p class="font-medium mb-2">Hanging Sign</p>
+                                <p>A sign of mass M is supported by two cables at angles θ₁ and θ₂. Find tensions in the cables.</p>
+                            </li>
+                        </ol>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+<!-- Topic Quiz System -->
+<script src="/js/topic-quiz-loader.js"></script>
+<script src="/js/topic-quiz-injector.js"></script>
+</body>
+</html>

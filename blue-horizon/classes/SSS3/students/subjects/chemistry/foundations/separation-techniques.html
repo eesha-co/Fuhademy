@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Separation Techniques | Chemistry Foundations</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .content-card {
+      -webkit-backdrop-filter: blur(12px);
+      backdrop-filter: blur(12px);
+      background: rgba(255, 255, 255, 0.95);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    .accordion-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease-out;
+    }
+    .accordion-content.open {
+      max-height: 2000px;
+    }
+    .step-card { transition: all 0.2s ease; }
+    .step-card:hover { transform: translateX(4px); }
+    #topic-complete-btn { transition: all 0.3s ease; }
+    #topic-complete-btn:not(:disabled):hover { transform: scale(1.02); }
+  </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-cyan-50 to-teal-100 p-4 md:p-6">
+  <div class="max-w-4xl mx-auto">
+    <!-- Navigation -->
+    <nav class="mb-4 flex items-center justify-between">
+      <a href="index.html" class="text-blue-600 hover:text-blue-800 transition flex items-center">
+        <i class="fas fa-arrow-left mr-2"></i>Back to Foundations
+      </a>
+      <div class="flex items-center gap-3">
+        <div class="text-sm text-gray-600">
+          <span id="topic-progress-text">0% Complete</span>
+        </div>
+        <div class="w-24 h-2 bg-gray-200 rounded-full overflow-hidden">
+          <div id="topic-progress-bar" class="h-full bg-gradient-to-r from-cyan-400 to-teal-500 transition-all duration-300" style="width: 0%"></div>
+        </div>
+      </div>
+    </nav>
+
+    <article class="content-card rounded-xl p-6 md:p-8 shadow-lg">
+      <!-- Header -->
+      <div class="border-b pb-4 mb-6">
+        <h1 class="text-2xl md:text-3xl font-bold text-gray-800 mb-2">
+          <i class="fas fa-filter text-cyan-500 mr-3"></i>Separation Techniques
+        </h1>
+        <p class="text-gray-600">Methods for separating mixtures and purifying substances in the laboratory.</p>
+      </div>
+
+      <!-- Learning Objectives -->
+      <div class="bg-cyan-50 border-l-4 border-cyan-500 p-4 rounded-r-lg mb-6">
+        <h3 class="font-semibold text-cyan-800 mb-2"><i class="fas fa-bullseye mr-2"></i>Learning Objectives</h3>
+        <ul class="text-cyan-700 text-sm space-y-1">
+          <li>• Identify appropriate separation methods for different mixtures</li>
+          <li>• Describe filtration, distillation, evaporation, and crystallization</li>
+          <li>• Explain chromatography and its applications</li>
+          <li>• Understand fractional distillation and separating funnels</li>
+          <li>• Apply separation techniques to solve practical problems</li>
+        </ul>
+      </div>
+
+      <!-- Section 1: Introduction -->
+      <section id="section-1" class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <span class="bg-cyan-100 text-cyan-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">1</span>
+          Why Separate Mixtures?
+        </h2>
+
+        <div class="bg-gray-50 p-5 rounded-lg mb-4">
+          <p class="text-gray-700 mb-4">Mixtures can be separated because the components have different <strong class="text-cyan-600">physical properties</strong> (size, boiling point, solubility, magnetism, etc.). The choice of method depends on the nature of the mixture.</p>
+
+          <div class="grid md:grid-cols-2 gap-4">
+            <div class="bg-white p-4 rounded-lg border border-gray-200">
+              <h4 class="font-semibold text-gray-800 mb-2">Solid-Solid Mixtures</h4>
+              <p class="text-gray-700 text-sm">Hand picking, sieving, magnetic separation, sublimation</p>
+            </div>
+            <div class="bg-white p-4 rounded-lg border border-gray-200">
+              <h4 class="font-semibold text-gray-800 mb-2">Solid-Liquid Mixtures</h4>
+              <p class="text-gray-700 text-sm">Filtration, evaporation, crystallization, centrifugation</p>
+            </div>
+            <div class="bg-white p-4 rounded-lg border border-gray-200">
+              <h4 class="font-semibold text-gray-800 mb-2">Liquid-Liquid Mixtures</h4>
+              <p class="text-gray-700 text-sm">Separating funnel, fractional distillation</p>
+            </div>
+            <div class="bg-white p-4 rounded-lg border border-gray-200">
+              <h4 class="font-semibold text-gray-800 mb-2">Gas-Gas Mixtures</h4>
+              <p class="text-gray-700 text-sm">Fractional distillation of liquid air</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 2: Filtration -->
+      <section id="section-2" class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <span class="bg-cyan-100 text-cyan-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">2</span>
+          Filtration
+        </h2>
+
+        <div class="bg-gray-50 p-5 rounded-lg mb-4">
+          <div class="bg-gradient-to-r from-cyan-100 to-teal-100 p-4 rounded-lg mb-4 border-l-4 border-cyan-500">
+            <p class="text-lg font-semibold text-cyan-800 mb-1">Principle</p>
+            <p class="text-gray-700">Separates an <strong class="text-cyan-600">insoluble solid</strong> from a liquid using a filter that allows only the liquid to pass through.</p>
+          </div>
+
+          <div class="grid md:grid-cols-2 gap-4 mb-4">
+            <div class="bg-white p-4 rounded-lg border border-gray-200">
+              <h4 class="font-semibold text-cyan-800 mb-2"><i class="fas fa-flask mr-2"></i>Apparatus</h4>
+              <ul class="text-gray-700 text-sm space-y-1">
+                <li>• Filter paper (folded into cone)</li>
+                <li>• Filter funnel</li>
+                <li>• Beaker/conical flask</li>
+                <li>• Glass rod (for pouring)</li>
+              </ul>
+            </div>
+            <div class="bg-white p-4 rounded-lg border border-gray-200">
+              <h4 class="font-semibold text-cyan-800 mb-2"><i class="fas fa-tag mr-2"></i>Terms</h4>
+              <ul class="text-gray-700 text-sm space-y-1">
+                <li>• <strong>Residue:</strong> Solid left on filter paper</li>
+                <li>• <strong>Filtrate:</strong> Liquid that passes through</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-r-lg">
+            <h4 class="font-semibold text-yellow-800 mb-2"><i class="fas fa-lightbulb mr-2"></i>Example</h4>
+            <p class="text-gray-700 text-sm">Separating sand from water: Sand (residue) stays on filter paper, water (filtrate) passes through.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 3: Distillation -->
+      <section id="section-3" class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <span class="bg-cyan-100 text-cyan-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">3</span>
+          Distillation
+        </h2>
+
+        <div class="bg-gray-50 p-5 rounded-lg mb-4">
+          <div class="bg-gradient-to-r from-blue-100 to-indigo-100 p-4 rounded-lg mb-4 border-l-4 border-blue-500">
+            <p class="text-lg font-semibold text-blue-800 mb-1">Principle</p>
+            <p class="text-gray-700">Separates a <strong class="text-blue-600">liquid from a solution</strong> by boiling, then condensing the vapor back to liquid.</p>
+          </div>
+
+          <div class="grid md:grid-cols-3 gap-4 mb-4">
+            <div class="bg-white p-4 rounded-lg border border-gray-200">
+              <h4 class="font-semibold text-blue-800 mb-2"><i class="fas fa-thermometer-half mr-2"></i>Simple Distillation</h4>
+              <p class="text-gray-700 text-sm">For separating a liquid from a dissolved solid (different boiling points).</p>
+              <p class="text-blue-600 text-sm mt-2"><strong>Example:</strong> Obtaining pure water from salt solution</p>
+            </div>
+            <div class="bg-white p-4 rounded-lg border border-gray-200">
+              <h4 class="font-semibold text-purple-800 mb-2"><i class="fas fa-layer-group mr-2"></i>Fractional Distillation</h4>
+              <p class="text-gray-700 text-sm">For separating miscible liquids with close boiling points.</p>
+              <p class="text-purple-600 text-sm mt-2"><strong>Example:</strong> Crude oil refining, liquid air separation</p>
+            </div>
+            <div class="bg-white p-4 rounded-lg border border-gray-200">
+              <h4 class="font-semibold text-green-800 mb-2"><i class="fas fa-vial mr-2"></i>Apparatus</h4>
+              <ul class="text-gray-700 text-sm space-y-1">
+                <li>• Round-bottom flask</li>
+                <li>• Fractionating column</li>
+                <li>• Condenser</li>
+                <li>• Receiver</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Worked Example -->
+        <div class="border border-gray-200 rounded-lg overflow-hidden">
+          <button class="accordion-btn w-full p-4 bg-blue-50 text-left font-semibold text-blue-800 flex justify-between items-center hover:bg-blue-100 transition">
+            <span><i class="fas fa-calculator mr-2 text-blue-500"></i>Worked Example: Separating Ethanol and Water</span>
+            <i class="fas fa-chevron-down transform transition-transform"></i>
+          </button>
+          <div class="accordion-content">
+            <div class="p-5">
+              <p class="font-medium text-gray-800 mb-3">Ethanol boils at 78°C, water at 100°C. How do you separate them?</p>
+
+              <div class="space-y-3">
+                <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-blue-500">
+                  <p class="text-sm text-gray-600"><strong>Step 1:</strong> Heat the mixture in a flask with a fractionating column</p>
+                </div>
+                <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-purple-500">
+                  <p class="text-sm text-gray-600"><strong>Step 2:</strong> Ethanol (lower boiling point) vaporizes first at 78°C</p>
+                </div>
+                <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-indigo-500">
+                  <p class="text-sm text-gray-600"><strong>Step 3:</strong> Vapor passes through condenser and collects as pure ethanol</p>
+                </div>
+                <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-green-500">
+                  <p class="text-sm text-gray-600"><strong>Step 4:</strong> Water remains in the flask (collected later)</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 4: Evaporation & Crystallization -->
+      <section id="section-4" class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <span class="bg-cyan-100 text-cyan-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">4</span>
+          Evaporation & Crystallization
+        </h2>
+
+        <div class="bg-gray-50 p-5 rounded-lg mb-4">
+          <div class="grid md:grid-cols-2 gap-4 mb-4">
+            <div class="bg-gradient-to-r from-orange-100 to-yellow-100 p-4 rounded-lg border-l-4 border-orange-500">
+              <h4 class="font-semibold text-orange-800 mb-2">Evaporation</h4>
+              <p class="text-gray-700 text-sm mb-2">Used to recover a <strong class="text-orange-600">dissolved solid</strong> from a solution by heating to evaporate the solvent.</p>
+              <p class="text-orange-600 text-sm"><strong>Example:</strong> Obtaining salt from salt solution</p>
+              <p class="text-xs text-gray-500 mt-2">Note: Best for solids that don't decompose on heating</p>
+            </div>
+            <div class="bg-gradient-to-r from-green-100 to-teal-100 p-4 rounded-lg border-l-4 border-green-500">
+              <h4 class="font-semibold text-green-800 mb-2">Crystallization</h4>
+              <p class="text-gray-700 text-sm mb-2">Used for solids that <strong class="text-green-600">decompose on heating</strong>. Solution is concentrated, then cooled slowly.</p>
+              <p class="text-green-600 text-sm"><strong>Example:</strong> Obtaining copper(II) sulfate crystals</p>
+              <p class="text-xs text-gray-500 mt-2">Slower cooling = larger, purer crystals</p>
+            </div>
+          </div>
+
+          <div class="bg-white p-4 rounded-lg border border-gray-200">
+            <h4 class="font-semibold text-gray-800 mb-2">Crystallization Steps:</h4>
+            <ol class="text-gray-700 text-sm space-y-1">
+              <li>1. Heat solution to concentrate (don't dry completely)</li>
+              <li>2. Allow to cool slowly</li>
+              <li>3. Crystals form as solubility decreases</li>
+              <li>4. Filter to collect crystals</li>
+              <li>5. Dry between filter papers</li>
+            </ol>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 5: Chromatography -->
+      <section id="section-5" class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <span class="bg-cyan-100 text-cyan-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">5</span>
+          Chromatography
+        </h2>
+
+        <div class="bg-gray-50 p-5 rounded-lg mb-4">
+          <div class="bg-gradient-to-r from-purple-100 to-pink-100 p-4 rounded-lg mb-4 border-l-4 border-purple-500">
+            <p class="text-lg font-semibold text-purple-800 mb-1">Principle</p>
+            <p class="text-gray-700">Separates substances based on their <strong class="text-purple-600">different solubilities</strong> in a solvent and their attraction to the paper/stationary phase.</p>
+          </div>
+
+          <div class="bg-white p-4 rounded-lg border border-gray-200 mb-4">
+            <h4 class="font-semibold text-gray-800 mb-2">Paper Chromatography Procedure:</h4>
+            <ol class="text-gray-700 text-sm space-y-2">
+              <li class="flex gap-2"><span class="bg-purple-100 text-purple-700 w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">1</span> Draw a pencil line near bottom of paper</li>
+              <li class="flex gap-2"><span class="bg-purple-100 text-purple-700 w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">2</span> Place spot of mixture on the line</li>
+              <li class="flex gap-2"><span class="bg-purple-100 text-purple-700 w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">3</span> Dip paper in solvent (below the spot)</li>
+              <li class="flex gap-2"><span class="bg-purple-100 text-purple-700 w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">4</span> Solvent rises, carrying components at different speeds</li>
+              <li class="flex gap-2"><span class="bg-purple-100 text-purple-700 w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">5</span> Different components separate as spots at different heights</li>
+            </ol>
+          </div>
+
+          <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-r-lg">
+            <h4 class="font-semibold text-yellow-800 mb-2"><i class="fas fa-calculator mr-2"></i>Rf Value</h4>
+            <div class="bg-white p-3 rounded font-mono text-center mb-2">
+              Rf = Distance traveled by substance / Distance traveled by solvent
+            </div>
+            <p class="text-gray-700 text-sm">Rf values identify substances (same compound = same Rf under same conditions)</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 6: Other Methods -->
+      <section id="section-6" class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <span class="bg-cyan-100 text-cyan-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">6</span>
+          Other Separation Methods
+        </h2>
+
+        <div class="grid md:grid-cols-2 gap-4">
+          <div class="bg-white p-4 rounded-lg border border-gray-200">
+            <h4 class="font-semibold text-red-800 mb-2"><i class="fas fa-magnet mr-2"></i>Magnetic Separation</h4>
+            <p class="text-gray-700 text-sm">Separates magnetic materials from non-magnetic.</p>
+            <p class="text-red-600 text-sm"><strong>Example:</strong> Iron from sulfur</p>
+          </div>
+          <div class="bg-white p-4 rounded-lg border border-gray-200">
+            <h4 class="font-semibold text-blue-800 mb-2"><i class="fas fa-tint mr-2"></i>Separating Funnel</h4>
+            <p class="text-gray-700 text-sm">Separates immiscible liquids (different densities).</p>
+            <p class="text-blue-600 text-sm"><strong>Example:</strong> Oil and water</p>
+          </div>
+          <div class="bg-white p-4 rounded-lg border border-gray-200">
+            <h4 class="font-semibold text-green-800 mb-2"><i class="fas fa-wind mr-2"></i>Sublimation</h4>
+            <p class="text-gray-700 text-sm">Separates substances that sublime from those that don't.</p>
+            <p class="text-green-600 text-sm"><strong>Example:</strong> Iodine, ammonium chloride</p>
+          </div>
+          <div class="bg-white p-4 rounded-lg border border-gray-200">
+            <h4 class="font-semibold text-purple-800 mb-2"><i class="fas fa-sync mr-2"></i>Centrifugation</h4>
+            <p class="text-gray-700 text-sm">Spins mixtures at high speed; denser particles settle.</p>
+            <p class="text-purple-600 text-sm"><strong>Example:</strong> Separating blood cells from plasma</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 7: Practice Problems -->
+      <section id="section-7" class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <i class="fas fa-pencil-alt text-cyan-600 mr-3"></i>
+          Practice Problems
+        </h2>
+
+        <div class="space-y-4">
+          <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+            <p class="font-medium text-gray-800 mb-2">1. How would you separate sand from salt?</p>
+            <details class="mt-2">
+              <summary class="text-sm text-blue-600 cursor-pointer hover:text-blue-800">Show Solution</summary>
+              <div class="mt-2 text-sm text-gray-700">
+                <ol class="list-decimal list-inside">
+                  <li>Add water to dissolve salt</li>
+                  <li>Filter to remove sand (residue)</li>
+                  <li>Evaporate filtrate to obtain salt</li>
+                </ol>
+              </div>
+            </details>
+          </div>
+
+          <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+            <p class="font-medium text-gray-800 mb-2">2. Which method separates: (a) Oil and water, (b) Ink colors, (c) Salt from seawater?</p>
+            <details class="mt-2">
+              <summary class="text-sm text-blue-600 cursor-pointer hover:text-blue-800">Show Solution</summary>
+              <div class="mt-2 text-sm text-gray-700">
+                <p>(a) <strong>Separating funnel</strong> - immiscible liquids</p>
+                <p>(b) <strong>Chromatography</strong> - separates dyes</p>
+                <p>(c) <strong>Distillation</strong> or <strong>Evaporation</strong></p>
+              </div>
+            </details>
+          </div>
+
+          <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+            <p class="font-medium text-gray-800 mb-2">3. Why is crystallization used instead of evaporation for copper(II) sulfate?</p>
+            <details class="mt-2">
+              <summary class="text-sm text-blue-600 cursor-pointer hover:text-blue-800">Show Solution</summary>
+              <div class="mt-2 text-sm text-gray-700">
+                <p>Copper(II) sulfate decomposes on strong heating. Crystallization allows recovery without decomposition, and produces pure crystals.</p>
+              </div>
+            </details>
+          </div>
+
+          <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+            <p class="font-medium text-gray-800 mb-2">4. A substance travels 4 cm while the solvent travels 10 cm. What is its Rf value?</p>
+            <details class="mt-2">
+              <summary class="text-sm text-blue-600 cursor-pointer hover:text-blue-800">Show Solution</summary>
+              <div class="mt-2 text-sm text-gray-700">
+                <p>Rf = 4/10 = <strong>0.4</strong></p>
+              </div>
+            </details>
+          </div>
+        </div>
+      </section>
+
+      <!-- Key Takeaways -->
+      <section id="section-8" class="mb-8">
+        <div class="bg-gradient-to-r from-cyan-50 to-teal-50 p-5 rounded-lg border border-cyan-200">
+          <h3 class="font-semibold text-cyan-800 mb-3"><i class="fas fa-star mr-2"></i>Key Takeaways for WAEC/JAMB/NECO</h3>
+          <ul class="text-cyan-700 text-sm space-y-2">
+            <li>• <strong>Filtration:</strong> Insoluble solid from liquid (residue + filtrate)</li>
+            <li>• <strong>Distillation:</strong> Liquid from solution (based on boiling points)</li>
+            <li>• <strong>Fractional distillation:</strong> Miscible liquids with different boiling points</li>
+            <li>• <strong>Evaporation:</strong> Recover dissolved solid (if heat-stable)</li>
+            <li>• <strong>Crystallization:</strong> For solids that decompose on heating</li>
+            <li>• <strong>Chromatography:</strong> Separates based on solubility (Rf values)</li>
+            <li>• <strong>Separating funnel:</strong> Immiscible liquids (different densities)</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Complete Topic Button -->
+      <div class="mt-8 pt-6 border-t border-gray-200">
+        <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div class="text-center sm:text-left">
+            <h3 class="font-semibold text-gray-800">Ready to Complete?</h3>
+            <p class="text-sm text-gray-600">View all sections, then take the quiz to mark this topic as complete.</p>
+          </div>
+          <button id="topic-complete-btn" disabled
+                  class="px-6 py-3 rounded-xl bg-gray-300 text-gray-500 cursor-not-allowed opacity-50 flex items-center gap-2 text-lg font-medium">
+            <i class="fas fa-lock mr-2"></i>
+            <span>Complete (0% viewed)</span>
+          </button>
+        </div>
+      </div>
+    </article>
+  </div>
+
+  <script>
+    document.querySelectorAll('.accordion-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const content = btn.nextElementSibling;
+        const icon = btn.querySelector('.fa-chevron-down');
+        content.classList.toggle('open');
+        icon?.classList.toggle('rotate-180');
+      });
+    });
+  </script>
+
+  <script type="module">
+    import { TopicTracker } from '/js/topic-tracker.js';
+    import { TopicQuiz } from '/js/topic-quiz.js';
+
+    const quizQuestions = [
+      {
+        question: "Which method separates an insoluble solid from a liquid?",
+        options: ["Distillation", "Filtration", "Chromatography", "Evaporation"],
+        correct: 1,
+        explanation: "Filtration separates insoluble solids (residue) from liquids (filtrate)."
+      },
+      {
+        question: "The liquid that passes through filter paper is called:",
+        options: ["Residue", "Filtrate", "Distillate", "Solute"],
+        correct: 1,
+        explanation: "Filtrate is the liquid that passes through; residue is the solid left behind."
+      },
+      {
+        question: "Which is used to separate miscible liquids with different boiling points?",
+        options: ["Filtration", "Simple distillation", "Fractional distillation", "Separating funnel"],
+        correct: 2,
+        explanation: "Fractional distillation separates miscible liquids using a fractionating column."
+      },
+      {
+        question: "Why is crystallization preferred over evaporation for some substances?",
+        options: ["It's faster", "The solid doesn't decompose", "It produces larger crystals", "It's cheaper"],
+        correct: 1,
+        explanation: "Crystallization is used for substances that decompose on heating."
+      },
+      {
+        question: "In chromatography, what does Rf value measure?",
+        options: ["Color intensity", "Distance ratio of substance to solvent", "Boiling point", "Solubility"],
+        correct: 1,
+        explanation: "Rf = distance traveled by substance ÷ distance traveled by solvent."
+      },
+      {
+        question: "Oil and water can be separated using:",
+        options: ["Filtration", "Distillation", "Separating funnel", "Chromatography"],
+        correct: 2,
+        explanation: "Oil and water are immiscible liquids - use separating funnel."
+      },
+      {
+        question: "Sublimation can separate:",
+        options: ["Salt from water", "Iron from sulfur", "Iodine from sand", "Oil from water"],
+        correct: 2,
+        explanation: "Iodine sublimes (solid → gas directly), so it can be separated from non-subliming solids."
+      },
+      {
+        question: "What is the solid left on filter paper called?",
+        options: ["Filtrate", "Residue", "Distillate", "Precipitate"],
+        correct: 1,
+        explanation: "Residue is the solid that remains on the filter paper after filtration."
+      }
+    ];
+
+    const tracker = new TopicTracker({
+      topicId: 'separation-techniques',
+      topicTitle: 'Separation Techniques',
+      subject: 'chemistry',
+      sections: ['section-1', 'section-2', 'section-3', 'section-4', 'section-5', 'section-6', 'section-7', 'section-8'],
+      quizRequired: true
+    });
+
+    const quiz = new TopicQuiz({
+      topicId: 'separation-techniques',
+      topicTitle: 'Separation Techniques',
+      subject: 'chemistry',
+      questions: quizQuestions,
+      passingScore: 60,
+      tracker: tracker
+    });
+
+    document.querySelectorAll('.accordion-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const section = btn.closest('section');
+        if (section && section.id) tracker.markSectionViewed(section.id);
+      });
+    });
+
+    document.querySelectorAll('details').forEach(details => {
+      details.addEventListener('toggle', () => {
+        if (details.open) tracker.markSectionViewed('section-7');
+      });
+    });
+  </script>
+</body>
+</html>

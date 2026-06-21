@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Video Library — JUANOVA CORTEX</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <style>
+    * { font-family: 'Plus Jakarta Sans', system-ui, sans-serif; }
+    
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: #f1f5f9; }
+    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    
+    /* Video Card Hover */
+    .video-card { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+    .video-card:hover { transform: translateY(-5px); box-shadow: 0 20px 40px -12px rgba(14, 165, 233, 0.25); }
+    .video-card:hover .video-thumbnail { transform: scale(1.02); }
+    .video-thumbnail { transition: transform 0.3s ease; }
+    
+    /* Category Pills */
+    .category-pill { transition: all 0.2s ease; }
+    .category-pill:hover { transform: scale(1.02); }
+    .category-pill.active { background: linear-gradient(135deg, #0ea5e9, #0284c7); color: white; border-color: transparent; }
+    
+    /* Gradient Text */
+    .gradient-text { background: linear-gradient(135deg, #0ea5e9, #0284c7); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    
+    /* Hero Pattern */
+    .hero-pattern {
+      background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 50%, #0369a1 100%);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .hero-pattern::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.08'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      animation: patternMove 20s linear infinite;
+    }
+    
+    @keyframes patternMove {
+      0% { background-position: 0 0; }
+      100% { background-position: 60px 60px; }
+    }
+    
+    /* Floating shapes */
+    .floating-shape {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.1);
+      animation: float 6s ease-in-out infinite;
+    }
+    
+    .floating-shape:nth-child(1) { width: 100px; height: 100px; top: 10%; right: 10%; animation-delay: 0s; }
+    .floating-shape:nth-child(2) { width: 60px; height: 60px; bottom: 20%; right: 30%; animation-delay: 2s; }
+    .floating-shape:nth-child(3) { width: 80px; height: 80px; top: 50%; right: 5%; animation-delay: 4s; }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-20px) rotate(10deg); }
+    }
+    
+    /* Sidebar */
+    #sidebar { transition: transform 0.3s ease-in-out; }
+    #sidebar.hide { transform: translateX(-100%); }
+    @media (min-width: 1024px) { #sidebar { transform: translateX(0) !important; } }
+    
+    /* Video Player Modal */
+    .video-modal { backdrop-filter: blur(8px); }
+    
+    /* Duration Badge */
+    .duration-badge { background: rgba(0,0,0,0.8); backdrop-filter: blur(4px); }
+    
+    /* Play Button Overlay */
+    .play-overlay { opacity: 0; transition: opacity 0.3s ease; }
+    .video-card:hover .play-overlay { opacity: 1; }
+    
+    /* Tab Active */
+    .tab-btn { position: relative; }
+    .tab-btn.active { color: #0ea5e9; }
+    .tab-btn.active::after { content: ''; position: absolute; bottom: -1px; left: 0; right: 0; height: 3px; background: #0ea5e9; border-radius: 2px 2px 0 0; }
+    
+    /* Search Focus */
+    .search-input:focus { box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.15); }
+    
+    /* Quick Action */
+    .quick-action {
+      transition: all 0.2s ease;
+    }
+    .quick-action:hover {
+      transform: translateY(-2px) scale(1.02);
+    }
+    
+    /* Stat Card Gradient */
+    .stat-card {
+      position: relative;
+      overflow: hidden;
+    }
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0; right: 0;
+      width: 100px; height: 100px;
+      border-radius: 50%;
+      transform: translate(30%, -30%);
+      opacity: 0.1;
+    }
+  </style>
+  
+  <script>
+    window.SUPABASE_URL = 'https://kruwfhzfqieuiuhqlutt.supabase.co';
+    window.SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtydXdmaHpmcWlldWl1aHFsdXR0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjIxOTk0OTAsImV4cCI6MjA3Nzc3NTQ5MH0.XD3-PDjDtKwCVsBILYgVrHF7Yc9tHkzpvpN2b7ojvB4';
+  </script>
+  <script src="../js/supabase-bootstrap.js"></script>
+  <script type="module" src="../js/personalize-page.js"></script>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen">
+  
+  <!-- Sidebar -->
+  <aside id="sidebar" class="w-64 md:w-72 lg:w-80 fixed left-0 top-0 h-full bg-white border-r border-slate-200 p-5 flex flex-col gap-6 overflow-auto z-40">
+    <div class="flex items-center gap-3">
+      <img src="/assets/images/logo.png" alt="logo" class="h-12 w-12 rounded-full shadow-sm">
+      <div>
+        <div class="text-lg font-bold text-sky-700">JUANOVA CORTEX</div>
+        <div class="text-xs text-slate-500">Video Learning</div>
+      </div>
+    </div>
+    
+    <nav class="flex-1 overflow-auto">
+      <ul class="space-y-1">
+        <li><a href="student-dashboard.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50 text-slate-600 hover:text-slate-800"><i class="fas fa-home text-sky-600 w-5"></i> Home</a></li>
+        <li><a href="news-feed-gemini.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50 text-slate-600 hover:text-slate-800"><i class="fas fa-newspaper text-pink-500 w-5"></i> News Feed</a></li>
+        <li><a href="smart-note.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50 text-slate-600 hover:text-slate-800"><i class="fas fa-note-sticky text-yellow-500 w-5"></i> Smart Notes</a></li>
+        <li><a href="textbooks.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50 text-slate-600 hover:text-slate-800"><i class="fas fa-book text-indigo-500 w-5"></i> Textbooks</a></li>
+        <li><a href="formula-bank.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50 text-slate-600 hover:text-slate-800"><i class="fas fa-square-root-alt text-teal-600 w-5"></i> Formula Bank</a></li>
+        <li><a href="study-plan.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50 text-slate-600 hover:text-slate-800"><i class="fas fa-calendar-check text-green-500 w-5"></i> Study Plan</a></li>
+        <li><a href="video-library.html" class="flex items-center gap-3 px-3 py-2 rounded-lg bg-sky-50 text-sky-700"><i class="fas fa-play-circle text-sky-600 w-5"></i> Video Library</a></li>
+        <li><a href="digital-library.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50 text-slate-600 hover:text-slate-800"><i class="fas fa-book-open text-indigo-500 w-5"></i> Digital Library</a></li>
+        <li><a href="mock-exams.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50 text-slate-600 hover:text-slate-800"><i class="fas fa-pencil-alt text-orange-500 w-5"></i> Mock Exams</a></li>
+        <li><a href="student-live-session.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50 text-slate-600 hover:text-slate-800"><i class="fas fa-chalkboard-teacher text-blue-400 w-5"></i> Live Sessions</a></li>
+      </ul>
+    </nav>
+    
+    <div class="text-sm text-slate-500 border-t border-slate-200 pt-4">
+      <div class="mb-2 text-slate-400">Account</div>
+      <div class="flex items-center gap-3">
+        <img id="avatar-sm" src="../assets/images/unnamed.jpg" alt="avatar" class="h-10 w-10 rounded-full border-2 border-sky-200">
+        <div>
+          <div id="userName" class="font-semibold text-slate-800">Student</div>
+          <div id="userLevel" class="text-xs text-slate-400">SS 3</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <div id="main-content" class="flex-1 flex flex-col lg:ml-72">
+    
+    <!-- Header -->
+    <header class="sticky top-0 z-30 bg-white/95 backdrop-blur border-b border-slate-200 px-6 py-4">
+      <div class="flex items-center justify-between gap-4">
+        <div class="flex items-center gap-4">
+          <button id="toggleSidebar" class="p-2 rounded-lg hover:bg-slate-100 lg:hidden">
+            <i class="fas fa-bars text-slate-400"></i>
+          </button>
+          
+          <!-- Search -->
+          <div class="relative flex-1 max-w-2xl">
+            <input id="searchInput" type="search" placeholder="Search educational videos, topics, channels..." 
+              class="search-input w-full pl-12 pr-4 py-2.5 rounded-full border border-slate-200 bg-slate-50 text-slate-800 placeholder-slate-400 focus:outline-none focus:border-sky-300 focus:bg-white transition-all">
+            <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
+            <kbd class="hidden sm:block absolute right-4 top-1/2 -translate-y-1/2 px-2 py-1 rounded bg-slate-100 text-xs text-slate-400 border border-slate-200">⌘K</kbd>
+          </div>
+        </div>
+        
+        <div class="flex items-center gap-4">
+          <!-- Stats -->
+          <div class="hidden md:flex items-center gap-6 text-sm">
+            <div class="text-center">
+              <div class="font-bold text-sky-600" id="totalVideos">0</div>
+              <div class="text-slate-400 text-xs">Videos</div>
+            </div>
+            <div class="text-center">
+              <div class="font-bold text-emerald-600" id="watchedCount">0</div>
+              <div class="text-slate-400 text-xs">Watched</div>
+            </div>
+            <div class="text-center">
+              <div class="font-bold text-amber-600" id="savedCount">0</div>
+              <div class="text-slate-400 text-xs">Saved</div>
+            </div>
+          </div>
+          
+          <!-- User -->
+          <div class="flex items-center gap-3">
+            <div class="text-right hidden sm:block">
+              <div id="topName" class="font-semibold text-slate-800">Student</div>
+              <div id="topLevel" class="text-xs text-slate-400">SS 3</div>
+            </div>
+            <img id="topAvatar" src="../assets/images/unnamed.jpg" alt="avatar" class="h-10 w-10 rounded-full border-2 border-sky-200">
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Body -->
+    <main class="p-6 space-y-6">
+      
+      <!-- Hero Section -->
+      <section class="hero-pattern rounded-3xl p-8 text-white relative overflow-hidden">
+        <div class="floating-shape"></div>
+        <div class="floating-shape"></div>
+        <div class="floating-shape"></div>
+        
+        <div class="relative z-10 flex flex-col lg:flex-row items-center gap-8">
+          <div class="flex-1">
+            <div class="inline-flex items-center gap-2 px-4 py-2 bg-white/20 rounded-full text-white text-sm font-medium mb-4">
+              <i class="fas fa-graduation-cap"></i>
+              <span>Learn Better with Videos</span>
+            </div>
+            <h1 class="text-3xl md:text-4xl font-bold mb-3">
+              Cortex Video Learning
+            </h1>
+            <p class="text-white/80 text-lg mb-6 max-w-xl">
+              Access curated educational videos from Excellence Academy. Master any subject with visual learning designed for WAEC, NECO & JAMB success.
+            </p>
+            <div class="flex flex-wrap gap-3">
+              <button onclick="scrollToContent()" class="quick-action px-5 py-2.5 bg-white text-sky-600 rounded-xl font-semibold hover:bg-sky-50 flex items-center gap-2 shadow-lg">
+                <i class="fas fa-play"></i> Start Watching
+              </button>
+            </div>
+          </div>
+          
+          <!-- Featured Video Preview -->
+          <div class="w-full lg:w-96">
+            <div class="video-card bg-white rounded-2xl overflow-hidden shadow-lg">
+              <div class="relative aspect-video cursor-pointer" onclick="playFeaturedVideo()">
+                <img src="https://img.youtube.com/vi/MeKprfzpwY4/maxresdefault.jpg" alt="Featured Video" class="w-full h-full object-cover">
+                <div class="play-overlay absolute inset-0 bg-black/40 flex items-center justify-center">
+                  <div class="w-16 h-16 bg-sky-500 rounded-full flex items-center justify-center shadow-lg">
+                    <i class="fas fa-play text-2xl text-white ml-1"></i>
+                  </div>
+                </div>
+                <div class="duration-badge absolute bottom-2 right-2 px-2 py-1 rounded text-xs font-medium text-white">15:28</div>
+                <div class="absolute top-2 left-2 px-2 py-1 bg-sky-500 rounded text-xs font-medium text-white">Featured</div>
+              </div>
+              <div class="p-4">
+                <h3 class="font-semibold mb-1 text-slate-800 line-clamp-2">Newton's Laws of Motion | JAMB & WAEC Physics</h3>
+                <p class="text-sm text-slate-500">Excellence Academy • 102K views</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Categories -->
+      <section id="categoriesSection" class="mt-6">
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="text-xl font-bold text-slate-800">Browse by Subject</h2>
+        </div>
+        
+        <div class="flex flex-wrap gap-2" id="categoryPills">
+          <button onclick="filterByCategory('all')" class="category-pill active px-4 py-2 rounded-full bg-white border border-slate-200 text-slate-600 font-medium flex items-center gap-2 text-sm">
+            <i class="fas fa-th-large"></i> All Subjects
+          </button>
+          <button onclick="filterByCategory('mathematics')" class="category-pill px-4 py-2 rounded-full bg-white border border-slate-200 text-slate-600 font-medium flex items-center gap-2 text-sm">
+            <i class="fas fa-calculator text-red-500"></i> Mathematics
+          </button>
+          <button onclick="filterByCategory('physics')" class="category-pill px-4 py-2 rounded-full bg-white border border-slate-200 text-slate-600 font-medium flex items-center gap-2 text-sm">
+            <i class="fas fa-atom text-amber-500"></i> Physics
+          </button>
+          <button onclick="filterByCategory('chemistry')" class="category-pill px-4 py-2 rounded-full bg-white border border-slate-200 text-slate-600 font-medium flex items-center gap-2 text-sm">
+            <i class="fas fa-flask text-pink-500"></i> Chemistry
+          </button>
+          <button onclick="filterByCategory('biology')" class="category-pill px-4 py-2 rounded-full bg-white border border-slate-200 text-slate-600 font-medium flex items-center gap-2 text-sm">
+            <i class="fas fa-dna text-green-500"></i> Biology
+          </button>
+        </div>
+      </section>
+
+      <!-- Video Grid -->
+      <section id="videoGridSection" class="mt-6">
+        <div id="videoGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+          <!-- Videos will be loaded dynamically -->
+        </div>
+        
+        <!-- Load More -->
+        <div class="text-center mt-8" id="loadMoreContainer">
+          <button onclick="loadMoreVideos()" class="px-8 py-3 bg-white border border-slate-200 hover:bg-slate-50 rounded-xl font-medium text-slate-600 transition-colors shadow-sm">
+            <i class="fas fa-plus mr-2"></i>Load More Videos
+          </button>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Video Player Modal -->
+  <div id="videoModal" class="video-modal hidden fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-6xl w-full max-h-[95vh] overflow-hidden shadow-2xl">
+      <!-- Video Header -->
+      <div class="flex items-center justify-between p-4 border-b border-slate-200">
+        <h3 id="modalTitle" class="font-semibold text-lg text-slate-800 truncate">Video Title</h3>
+        <button onclick="closeVideoModal()" class="w-10 h-10 rounded-full hover:bg-slate-100 flex items-center justify-center text-slate-400 hover:text-slate-600">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      
+      <!-- Video Player -->
+      <div class="relative aspect-video bg-black">
+        <iframe id="videoPlayer" class="absolute inset-0 w-full h-full" 
+          src="" 
+          frameborder="0" 
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+          allowfullscreen>
+        </iframe>
+      </div>
+      
+      <!-- Video Info -->
+      <div class="p-5 space-y-4 max-h-60 overflow-y-auto bg-slate-50">
+        <div class="flex items-start justify-between gap-4">
+          <div class="flex-1">
+            <p id="modalDescription" class="text-slate-600 text-sm mb-3">Video description will appear here...</p>
+            <div class="flex items-center gap-4 text-sm text-slate-500">
+              <span id="modalViews"><i class="fas fa-eye mr-1 text-slate-400"></i> 0 views</span>
+              <span id="modalDate"><i class="fas fa-calendar mr-1 text-slate-400"></i> Today</span>
+              <span id="modalSubject"><i class="fas fa-book mr-1 text-slate-400"></i> Subject</span>
+            </div>
+          </div>
+          <div class="flex gap-2">
+            <button onclick="saveVideo()" id="saveBtn" class="px-4 py-2 bg-white border border-slate-200 hover:bg-slate-100 rounded-lg text-sm flex items-center gap-2 text-slate-600">
+              <i class="fas fa-bookmark"></i> Save
+            </button>
+            <button onclick="shareVideo()" class="px-4 py-2 bg-white border border-slate-200 hover:bg-slate-100 rounded-lg text-sm flex items-center gap-2 text-slate-600">
+              <i class="fas fa-share"></i> Share
+            </button>
+          </div>
+        </div>
+        
+        <!-- Related Videos -->
+        <div>
+          <h4 class="font-medium mb-3 text-sm text-slate-500">Related Videos</h4>
+          <div class="flex gap-3 overflow-x-auto pb-2" id="relatedVideos">
+            <!-- Related videos will be loaded here -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="fixed bottom-6 right-6 bg-white border border-slate-200 rounded-xl px-5 py-3 shadow-2xl transform translate-y-20 opacity-0 transition-all duration-300 z-50">
+    <div class="flex items-center gap-3">
+      <i id="toastIcon" class="fas fa-check-circle text-emerald-500"></i>
+      <span id="toastMessage" class="text-sm text-slate-600">Action completed</span>
+    </div>
+  </div>
+
+  <script>
+    // ============================================
+    // EDUCATIONAL VIDEO DATABASE - Excellence Academy by Jonah Emmanuel
+    // All videos are from: https://www.youtube.com/@jonahemmanuelofficial
+    // ============================================
+    const VIDEO_DATABASE = {
+      mathematics: [
+        { id: 'math-001', title: 'ALL 7 LAWS OF INDICES Complete Tutorial', videoId: '55HG-Z063jw', duration: '25:00', views: '67K', channel: 'Excellence Academy', subject: 'Mathematics', topic: 'Indices', description: 'Complete tutorial on all 7 laws of indices with examples' },
+        { id: 'math-002', title: 'How to Apply Laws of Indices Examples', videoId: '8f85E-TM7t0', duration: '20:00', views: '45K', channel: 'Excellence Academy', subject: 'Mathematics', topic: 'Indices', description: 'Applying laws of indices in solving problems' },
+        { id: 'math-003', title: 'Logarithm Laws of Logarithm Explained', videoId: '92pZpFVdtD8', duration: '30:00', views: '52K', channel: 'Excellence Academy', subject: 'Mathematics', topic: 'Logarithm', description: 'Complete explanation of logarithm and the laws' },
+        { id: 'math-004', title: 'Differentiation by First Principle Method', videoId: '2IIfjY7Sjns', duration: '25:42', views: '45K', channel: 'Excellence Academy', subject: 'Mathematics', topic: 'Calculus Differentiation', description: 'Learn differentiation using first principle method' },
+        { id: 'math-005', title: 'Higher Derivatives Differentiation Calculus', videoId: 'F8KUbPiqwuM', duration: '18:30', views: '32K', channel: 'Excellence Academy', subject: 'Mathematics', topic: 'Calculus Differentiation', description: 'Understanding higher derivatives in calculus' },
+        { id: 'math-006', title: 'Chain Rule Shortcut Differentiation', videoId: 'co6ruIGmTdI', duration: '15:00', views: '28K', channel: 'Excellence Academy', subject: 'Mathematics', topic: 'Calculus Differentiation', description: 'Chain rule shortcut method for derivatives' },
+        { id: 'math-007', title: 'Integration by General Power Method', videoId: 'Vj2h31kceuY', duration: '22:15', views: '28K', channel: 'Excellence Academy', subject: 'Mathematics', topic: 'Calculus Integration', description: 'Integration using the general power method' },
+        { id: 'math-008', title: 'Meaning and Examples on Sigma Notation', videoId: 'b6FVn9SjkgE', duration: '18:00', views: '24K', channel: 'Excellence Academy', subject: 'Mathematics', topic: 'Sigma Notation', description: 'Understanding sigma notation with examples' },
+      ],
+      physics: [
+        { id: 'phys-001', title: 'Newton Laws of Motion JAMB WAEC Tutorial', videoId: 'MeKprfzpwY4', duration: '15:28', views: '102K', channel: 'Excellence Academy', subject: 'Physics', topic: 'Motion Newton Laws', description: 'Complete explanation of Newtons laws of motion' },
+        { id: 'phys-002', title: 'How to Solve Physics Questions on Motion', videoId: 'ZbMdSmZESJw', duration: '20:00', views: '35K', channel: 'Excellence Academy', subject: 'Physics', topic: 'Motion', description: 'Solving general physics exam questions on motion' },
+        { id: 'phys-003', title: 'Motion in Physics Solving Examples', videoId: '5z0c2Zdz8xI', duration: '25:00', views: '28K', channel: 'Excellence Academy', subject: 'Physics', topic: 'Motion', description: 'Series of examples on motion in physics' },
+        { id: 'phys-004', title: 'Projectile Motion JAMB PUTME Physics', videoId: 'ycHc_TNtrRU', duration: '30:00', views: '42K', channel: 'Excellence Academy', subject: 'Physics', topic: 'Projectile Motion', description: 'Projectile motion for JAMB and PUTME' },
+        { id: 'phys-005', title: 'General Physics Exam on Projectile Part 7B', videoId: 'AwleDGo7y-o', duration: '22:00', views: '25K', channel: 'Excellence Academy', subject: 'Physics', topic: 'Projectile Motion', description: 'General physics examination questions on projectile' },
+        { id: 'phys-006', title: 'How to Solve Vectors Physics Questions', videoId: 'GKE8eUYR69M', duration: '28:00', views: '38K', channel: 'Excellence Academy', subject: 'Physics', topic: 'Vectors', description: 'Solving general physics questions on vectors' },
+        { id: 'phys-007', title: 'Coefficient of Restitution JAMB WAEC', videoId: 'M18F81NYSc4', duration: '27:15', views: '12K', channel: 'Excellence Academy', subject: 'Physics', topic: 'Collision', description: 'Coefficient of restitution physics tutorial' },
+        { id: 'phys-008', title: 'Collision and Types of Collision Physics', videoId: 'Qmv4dY4W7KQ', duration: '25:40', views: '43K', channel: 'Excellence Academy', subject: 'Physics', topic: 'Collision', description: 'Types of collision in physics' },
+        { id: 'phys-009', title: 'Stress Strain Young Modulus Physics', videoId: 'YWtn0lDQVfQ', duration: '22:35', views: '35K', channel: 'Excellence Academy', subject: 'Physics', topic: 'Elasticity', description: 'Stress strain and Youngs modulus explained' },
+        { id: 'phys-010', title: 'Hooke Law Elasticity Well Explained', videoId: 'H_x_9__SDPk', duration: '18:00', views: '28K', channel: 'Excellence Academy', subject: 'Physics', topic: 'Elasticity', description: 'Hookes law and elasticity physics' },
+        { id: 'phys-011', title: 'Waves JAMB PUTME Physics Tutorial', videoId: 'RtHk4NHSYRE', duration: '35:20', views: '38K', channel: 'Excellence Academy', subject: 'Physics', topic: 'Waves', description: 'Waves physics tutorial for JAMB PUTME' },
+        { id: 'phys-012', title: 'AC Circuit Physics JAMB WAEC Questions', videoId: 'ENwaaPINbKM', duration: '24:18', views: '15K', channel: 'Excellence Academy', subject: 'Physics', topic: 'AC Circuits', description: 'AC circuit physics past questions' },
+        { id: 'phys-013', title: 'Work Energy Power 2024 JAMB Questions', videoId: 'sEAy8HdCLgk', duration: '32:45', views: '28K', channel: 'Excellence Academy', subject: 'Physics', topic: 'Work Energy Power', description: '2024 JAMB physics questions on work energy power' },
+        { id: 'phys-014', title: 'Electrostatics Coulombs Law Physics', videoId: '2AhnKDRnvLY', duration: '28:30', views: '45K', channel: 'Excellence Academy', subject: 'Physics', topic: 'Electrostatics', description: 'Electrostatics and Coulombs law' },
+        { id: 'phys-015', title: 'Thermal Expansivity 2024 JAMB Physics', videoId: 'l52SVnIK6iw', duration: '18:25', views: '22K', channel: 'Excellence Academy', subject: 'Physics', topic: 'Thermal Physics', description: 'Thermal expansivity physics questions' },
+        { id: 'phys-016', title: 'Equilibrium Moment 2025 Engineering Physics', videoId: 'HV4FyCOQ5hE', duration: '25:00', views: '18K', channel: 'Excellence Academy', subject: 'Physics', topic: 'Equilibrium', description: 'Equilibrium and moment physics' },
+        { id: 'phys-017', title: 'JAMB 2020 Physics Complete Past Questions', videoId: 'GRhkjag3JQ8', duration: '1:30:00', views: '85K', channel: 'Excellence Academy', subject: 'Physics', topic: 'JAMB Past Questions', description: 'Complete JAMB 2020 physics past questions and answers' },
+        { id: 'phys-018', title: 'JAMB 2021 Physics Complete Past Questions', videoId: 't6JDssQ-uaU', duration: '45:30', views: '67K', channel: 'Excellence Academy', subject: 'Physics', topic: 'JAMB Past Questions', description: 'Complete JAMB 2021 physics past questions revision' },
+      ],
+      chemistry: [
+        { id: 'chem-001', title: 'Organic Chemistry FULL Course Tutorial', videoId: 'HiuZw3baWCc', duration: '2:15:30', views: '156K', channel: 'Excellence Academy', subject: 'Chemistry', topic: 'Organic Chemistry', description: 'Complete organic chemistry full course tutorial' },
+        { id: 'chem-002', title: 'Kinetic Theory of Matter JAMB Chemistry', videoId: 'SiMJY-8YqZc', duration: '28:00', views: '45K', channel: 'Excellence Academy', subject: 'Chemistry', topic: 'Kinetic Theory', description: 'Kinetic theory of matter for JAMB chemistry' },
+        { id: 'chem-003', title: '2024 Chemistry JAMB Questions and Answers', videoId: 'RwN6RzeJysA', duration: '35:00', views: '52K', channel: 'Excellence Academy', subject: 'Chemistry', topic: 'JAMB Past Questions', description: '2024 JAMB chemistry questions and answers' },
+        { id: 'chem-004', title: 'Part 4 JAMB 2024 Chemistry Past Questions', videoId: 'DlgRKs7lBBs', duration: '32:45', views: '42K', channel: 'Excellence Academy', subject: 'Chemistry', topic: 'JAMB Past Questions', description: 'JAMB 2024 chemistry past questions part 4' },
+        { id: 'chem-005', title: 'JAMB 2021 Chemistry Complete Past Questions', videoId: 'FOjNiinsXMk', duration: '1:21:17', views: '89K', channel: 'Excellence Academy', subject: 'Chemistry', topic: 'JAMB Past Questions', description: 'Complete JAMB 2021 chemistry past questions' },
+      ],
+      biology: [
+        { id: 'bio-001', title: 'JAMB 2020 Biology Complete Past Questions', videoId: '_sUG273kju4', duration: '52:15', views: '112K', channel: 'Excellence Academy', subject: 'Biology', topic: 'JAMB Past Questions', description: 'Complete JAMB 2020 biology past questions' },
+        { id: 'bio-002', title: 'JAMB 2021 Biology Complete Past Questions', videoId: 'ZBT7C6S3wq0', duration: '45:30', views: '95K', channel: 'Excellence Academy', subject: 'Biology', topic: 'JAMB Past Questions', description: 'Complete JAMB 2021 biology past questions' },
+        { id: 'bio-003', title: 'Biology JAMB 2020 Tutorial Past Questions', videoId: '4RaDWuQ0Snw', duration: '48:00', views: '55K', channel: 'Excellence Academy', subject: 'Biology', topic: 'JAMB Past Questions', description: 'Biology JAMB 2020 tutorial with past questions' },
+      ],
+    };
+
+    // ============================================
+    // STATE MANAGEMENT
+    // ============================================
+    let currentCategory = 'all';
+    let displayedVideos = [];
+    let currentPage = 0;
+    const videosPerPage = 12;
+    let savedVideos = JSON.parse(localStorage.getItem('savedVideos') || '[]');
+    let currentVideo = null;
+
+    // ============================================
+    // INITIALIZATION
+    // ============================================
+    document.addEventListener('DOMContentLoaded', () => {
+      initializeApp();
+      loadVideos();
+    });
+
+    function initializeApp() {
+      // Sidebar toggle
+      const sidebar = document.getElementById('sidebar');
+      const mainContent = document.getElementById('main-content');
+      const toggleBtn = document.getElementById('toggleSidebar');
+      const marginClasses = ['ml-64', 'md:ml-72', 'lg:ml-80'];
+      
+      if (window.innerWidth < 1024) {
+        sidebar.classList.add('hide');
+        mainContent.classList.remove(...marginClasses);
+      }
+      
+      if (toggleBtn) {
+        toggleBtn.addEventListener('click', () => {
+          sidebar.classList.toggle('hide');
+          if (sidebar.classList.contains('hide')) {
+            mainContent.classList.remove(...marginClasses);
+          } else {
+            mainContent.classList.add(...marginClasses);
+          }
+        });
+      }
+      
+      // Search functionality
+      const searchInput = document.getElementById('searchInput');
+      searchInput.addEventListener('input', debounce((e) => {
+        const query = e.target.value.toLowerCase();
+        searchVideos(query);
+      }, 300));
+      
+      // Keyboard shortcuts
+      document.addEventListener('keydown', (e) => {
+        if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+          e.preventDefault();
+          searchInput.focus();
+        }
+        if (e.key === 'Escape') {
+          closeVideoModal();
+        }
+      });
+    }
+
+    // ============================================
+    // VIDEO LOADING
+    // ============================================
+    function getAllVideos() {
+      let videos = [];
+      Object.values(VIDEO_DATABASE).forEach(subjectVideos => {
+        videos = videos.concat(subjectVideos);
+      });
+      return videos;
+    }
+
+    function loadVideos(reset = true) {
+      if (reset) {
+        currentPage = 0;
+        displayedVideos = [];
+      }
+      
+      let videos = currentCategory === 'all' 
+        ? getAllVideos() 
+        : VIDEO_DATABASE[currentCategory] || [];
+      
+      // Sort by views (trending)
+      videos = videos.sort((a, b) => parseViews(b.views) - parseViews(a.views));
+      
+      displayedVideos = videos;
+      renderVideos();
+    }
+
+    function renderVideos() {
+      const grid = document.getElementById('videoGrid');
+      const start = 0;
+      const end = (currentPage + 1) * videosPerPage;
+      const videosToShow = displayedVideos.slice(start, end);
+      
+      grid.innerHTML = videosToShow.map(video => createVideoCard(video)).join('');
+      
+      // Update load more button
+      const loadMoreContainer = document.getElementById('loadMoreContainer');
+      if (end >= displayedVideos.length) {
+        loadMoreContainer.innerHTML = '<p class="text-slate-400 text-sm">You\'ve seen all videos</p>';
+      }
+      
+      // Update stats
+      document.getElementById('totalVideos').textContent = getAllVideos().length;
+      document.getElementById('watchedCount').textContent = savedVideos.length;
+      document.getElementById('savedCount').textContent = savedVideos.length;
+    }
+
+    function createVideoCard(video) {
+      const isSaved = savedVideos.includes(video.id);
+      const subjectColors = {
+        'Mathematics': { bg: 'bg-red-100', text: 'text-red-600' },
+        'Physics': { bg: 'bg-amber-100', text: 'text-amber-600' },
+        'Chemistry': { bg: 'bg-pink-100', text: 'text-pink-600' },
+        'Biology': { bg: 'bg-green-100', text: 'text-green-600' },
+        'English Language': { bg: 'bg-violet-100', text: 'text-violet-600' },
+        'Economics': { bg: 'bg-lime-100', text: 'text-lime-600' },
+        'Government': { bg: 'bg-rose-100', text: 'text-rose-600' },
+        'Commerce': { bg: 'bg-cyan-100', text: 'text-cyan-600' },
+        'Accounting': { bg: 'bg-teal-100', text: 'text-teal-600' },
+        'Literature in English': { bg: 'bg-indigo-100', text: 'text-indigo-600' },
+        'Geography': { bg: 'bg-sky-100', text: 'text-sky-600' },
+      };
+      const colors = subjectColors[video.subject] || { bg: 'bg-slate-100', text: 'text-slate-600' };
+      
+      return `
+        <div class="video-card bg-white rounded-2xl overflow-hidden border border-slate-200 shadow-sm group cursor-pointer" onclick="playVideo('${video.id}')">
+          <div class="relative aspect-video overflow-hidden">
+            <img src="https://img.youtube.com/vi/${video.videoId}/maxresdefault.jpg" 
+              alt="${video.title}" 
+              class="video-thumbnail w-full h-full object-cover"
+              onerror="this.src='https://img.youtube.com/vi/${video.videoId}/hqdefault.jpg'">
+            <div class="play-overlay absolute inset-0 bg-black/40 flex items-center justify-center">
+              <div class="w-14 h-14 bg-sky-500 rounded-full flex items-center justify-center transform scale-90 group-hover:scale-100 transition-transform shadow-lg">
+                <i class="fas fa-play text-xl text-white ml-1"></i>
+              </div>
+            </div>
+            <div class="duration-badge absolute bottom-2 right-2 px-2 py-1 rounded text-xs font-medium text-white">
+              ${video.duration}
+            </div>
+            ${isSaved ? '<div class="absolute top-2 left-2 px-2 py-1 bg-amber-500 rounded text-xs font-medium text-white"><i class="fas fa-bookmark mr-1"></i>Saved</div>' : ''}
+            <div class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
+              <button onclick="event.stopPropagation(); toggleSave('${video.id}')" class="w-8 h-8 bg-white/90 rounded-full flex items-center justify-center hover:bg-white shadow">
+                <i class="fas fa-bookmark ${isSaved ? 'text-amber-500' : 'text-slate-400'}"></i>
+              </button>
+            </div>
+          </div>
+          <div class="p-4">
+            <h3 class="font-semibold text-sm text-slate-800 line-clamp-2 mb-2 group-hover:text-sky-600 transition-colors">${video.title}</h3>
+            <div class="flex items-center gap-2 mb-2">
+              <div class="w-6 h-6 rounded-full ${colors.bg} flex items-center justify-center">
+                <i class="fas ${getChannelIcon(video.channel)} ${colors.text} text-xs"></i>
+              </div>
+              <span class="text-xs text-slate-500">${video.channel}</span>
+            </div>
+            <div class="flex items-center justify-between text-xs text-slate-400">
+              <span><i class="fas fa-eye mr-1"></i>${video.views}</span>
+              <span class="px-2 py-0.5 rounded-full ${colors.bg} ${colors.text}">${video.topic}</span>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function getChannelIcon(channel) {
+      return 'fa-play';
+    }
+
+    // ============================================
+    // FILTERS & SEARCH
+    // ============================================
+    function filterByCategory(category) {
+      currentCategory = category;
+      
+      // Update active pill
+      document.querySelectorAll('.category-pill').forEach(pill => {
+        pill.classList.remove('active');
+      });
+      event.target.closest('.category-pill').classList.add('active');
+      
+      loadVideos();
+    }
+
+    function loadMoreVideos() {
+      currentPage++;
+      renderVideos();
+    }
+
+    // ============================================
+    // VIDEO PLAYER
+    // ============================================
+    function playVideo(videoId) {
+      const allVideos = getAllVideos();
+      const video = allVideos.find(v => v.id === videoId);
+      if (!video) return;
+      
+      currentVideo = video;
+      
+      // Update modal
+      document.getElementById('modalTitle').textContent = video.title;
+      document.getElementById('modalDescription').textContent = `Learn ${video.topic} in ${video.subject}. This comprehensive lesson covers all key concepts for WAEC, NECO, and JAMB preparation.`;
+      document.getElementById('modalViews').innerHTML = `<i class="fas fa-eye mr-1 text-slate-400"></i> ${video.views} views`;
+      document.getElementById('modalSubject').innerHTML = `<i class="fas fa-book mr-1 text-slate-400"></i> ${video.subject}`;
+      document.getElementById('modalDate').innerHTML = `<i class="fas fa-calendar mr-1 text-slate-400"></i> 2024`;
+      
+      // Update save button
+      const saveBtn = document.getElementById('saveBtn');
+      const isSaved = savedVideos.includes(videoId);
+      saveBtn.innerHTML = `<i class="fas fa-bookmark"></i> ${isSaved ? 'Saved' : 'Save'}`;
+      saveBtn.className = `px-4 py-2 rounded-lg text-sm flex items-center gap-2 ${isSaved ? 'bg-amber-100 text-amber-600 border-amber-200' : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-100'}`;
+      
+      // Set video player
+      document.getElementById('videoPlayer').src = `https://www.youtube.com/embed/${video.videoId}?autoplay=1&rel=0`;
+      
+      // Load related videos
+      loadRelatedVideos(video);
+      
+      // Show modal
+      document.getElementById('videoModal').classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function loadRelatedVideos(currentVideo) {
+      const allVideos = getAllVideos();
+      const related = allVideos
+        .filter(v => v.id !== currentVideo.id && v.subject === currentVideo.subject)
+        .slice(0, 5);
+      
+      const container = document.getElementById('relatedVideos');
+      container.innerHTML = related.map(video => `
+        <div class="flex-shrink-0 w-48 cursor-pointer" onclick="playVideo('${video.id}')">
+          <div class="relative aspect-video rounded-lg overflow-hidden mb-2">
+            <img src="https://img.youtube.com/vi/${video.videoId}/mqdefault.jpg" alt="${video.title}" class="w-full h-full object-cover">
+            <div class="duration-badge absolute bottom-1 right-1 px-1.5 py-0.5 rounded text-xs text-white">${video.duration}</div>
+          </div>
+          <h4 class="text-xs font-medium text-slate-700 line-clamp-2">${video.title}</h4>
+        </div>
+      `).join('');
+    }
+
+    function closeVideoModal() {
+      document.getElementById('videoModal').classList.add('hidden');
+      document.getElementById('videoPlayer').src = '';
+      document.body.style.overflow = '';
+    }
+
+    function playFeaturedVideo() {
+      playVideo('phys-002');
+    }
+
+    // ============================================
+    // SAVE & SHARE
+    // ============================================
+    function toggleSave(videoId) {
+      const index = savedVideos.indexOf(videoId);
+      if (index > -1) {
+        savedVideos.splice(index, 1);
+        showToast('Video removed from saved', 'info');
+      } else {
+        savedVideos.push(videoId);
+        showToast('Video saved successfully', 'success');
+      }
+      localStorage.setItem('savedVideos', JSON.stringify(savedVideos));
+      renderVideos();
+    }
+
+    function saveVideo() {
+      if (currentVideo) {
+        toggleSave(currentVideo.id);
+        const isSaved = savedVideos.includes(currentVideo.id);
+        const saveBtn = document.getElementById('saveBtn');
+        saveBtn.innerHTML = `<i class="fas fa-bookmark"></i> ${isSaved ? 'Saved' : 'Save'}`;
+        saveBtn.className = `px-4 py-2 rounded-lg text-sm flex items-center gap-2 ${isSaved ? 'bg-amber-100 text-amber-600 border-amber-200' : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-100'}`;
+      }
+    }
+
+    function shareVideo() {
+      if (currentVideo) {
+        const url = `https://youtube.com/watch?v=${currentVideo.videoId}`;
+        if (navigator.share) {
+          navigator.share({
+            title: currentVideo.title,
+            url: url
+          });
+        } else {
+          navigator.clipboard.writeText(url);
+          showToast('Link copied to clipboard', 'success');
+        }
+      }
+    }
+
+    function showSavedVideos() {
+      const allVideos = getAllVideos();
+      displayedVideos = allVideos.filter(v => savedVideos.includes(v.id));
+      currentPage = 0;
+      renderVideos();
+      showToast(`Showing ${displayedVideos.length} saved videos`, 'info');
+    }
+
+    // ============================================
+    // UTILITY FUNCTIONS
+    // ============================================
+    function parseViews(viewsStr) {
+      const match = viewsStr.match(/(\d+\.?\d*)/);
+      if (!match) return 0;
+      const num = parseFloat(match[1]);
+      if (viewsStr.includes('K')) return num * 1000;
+      if (viewsStr.includes('M')) return num * 1000000;
+      return num;
+    }
+
+    function debounce(func, wait) {
+      let timeout;
+      return function executedFunction(...args) {
+        const later = () => {
+          clearTimeout(timeout);
+          func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+      };
+    }
+
+    function showToast(message, type = 'success') {
+      const toast = document.getElementById('toast');
+      const icon = document.getElementById('toastIcon');
+      const msg = document.getElementById('toastMessage');
+      
+      msg.textContent = message;
+      icon.className = type === 'success' ? 'fas fa-check-circle text-emerald-500' : 
+                       type === 'error' ? 'fas fa-exclamation-circle text-red-500' : 
+                       'fas fa-info-circle text-sky-500';
+      
+      toast.classList.remove('translate-y-20', 'opacity-0');
+      
+      setTimeout(() => {
+        toast.classList.add('translate-y-20', 'opacity-0');
+      }, 3000);
+    }
+
+    function scrollToContent() {
+      document.getElementById('videoGridSection').scrollIntoView({ behavior: 'smooth' });
+    }
+  </script>
+</body>
+</html>

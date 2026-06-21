@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Physics Topic - Step-by-Step Learning</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @keyframes fade-in-up {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in-up { animation: fade-in-up 0.6s ease-out forwards; }
+        .step-progress { transition: width 0.3s ease-in-out; }
+        .resource-card { transition: transform 0.2s; }
+        .resource-card:hover { transform: translateY(-4px); }
+        .step-button.active { background-color: #EFF6FF; color: #2563EB; }
+        .quiz-option.selected { border-color: #2563EB; background-color: #EFF6FF; }
+        .quiz-option.correct { border-color: #16A34A; background-color: #F0FDF4; }
+        .quiz-option.incorrect { background-color: #fff5f5; border-color: #e53e3e; }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Top Navigation -->
+    <nav class="bg-white shadow-sm fixed top-0 w-full z-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <a href="../index.html" class="text-gray-600 hover:text-gray-900 mr-4" aria-label="Back to topics">
+                        <i class="fas fa-arrow-left"></i>
+                    </a>
+                    <h1 id="topicTitle" class="text-xl font-semibold text-gray-900">Topic Title</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="text-sm text-gray-600">
+                        Progress: <span id="progressPercent">0%</span>
+                    </div>
+                    <div class="w-32 h-2 bg-gray-200 rounded-full">
+                        <div id="progressBar" class="step-progress h-2 bg-blue-500 rounded-full" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="pt-20 pb-24">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-12 gap-6">
+                <!-- Left Sidebar - Steps -->
+                <div class="md:col-span-3">
+                    <div class="bg-white rounded-lg shadow-sm p-4 sticky top-20">
+                        <h3 class="font-semibold mb-4">Learning Steps</h3>
+                        <ul id="stepsList" class="space-y-2">
+                            <!-- Steps will be dynamically populated -->
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Main Content Area -->
+                <div class="md:col-span-9">
+                    <div id="stepContainer" class="bg-white rounded-lg shadow-sm p-6 mb-6">
+                        <!-- Step content will be dynamically loaded -->
+                    </div>
+
+                    <div id="resourcesContainer" class="bg-white rounded-lg shadow-sm p-6">
+                        <h3 class="text-lg font-semibold mb-4">Resources</h3>
+                        <div id="resourcesGrid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                            <!-- Resource cards will be dynamically populated -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Bottom Navigation -->
+    <div class="fixed bottom-0 w-full bg-white border-t border-gray-200 z-40">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between py-4">
+                <button id="prevStepBtn" class="px-4 py-2 text-gray-600 hover:text-gray-900 disabled:opacity-50 disabled:cursor-not-allowed">
+                    <i class="fas fa-chevron-left mr-2"></i>
+                    Previous
+                </button>
+                <button id="nextStepBtn" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed">
+                    Next
+                    <i class="fas fa-chevron-right ml-2"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Resource Modal -->
+    <div id="resourceModal" class="hidden fixed inset-0 bg-gray-800 bg-opacity-75 overflow-y-auto h-full w-full z-50 flex items-center justify-center">
+        <div class="relative mx-auto p-5 border w-full max-w-4xl shadow-lg rounded-md bg-white">
+            <div class="flex justify-between items-center pb-3 border-b">
+                <h3 id="resourceModalTitle" class="text-xl font-semibold">Resource</h3>
+                <button id="closeResourceModal" class="text-gray-600 hover:text-gray-900 text-2xl font-bold">&times;</button>
+            </div>
+            <div id="resourceModalContent" class="mt-4">
+                <!-- Resource content will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Quiz Modal -->
+    <div id="quizModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
+        <div class="relative top-20 mx-auto p-5 border w-full max-w-2xl shadow-lg rounded-md bg-white">
+            <div id="quizContent" class="p-6">
+                <!-- Quiz content will be dynamically loaded -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize step navigation and content loading
+        let currentStep = 0;
+        
+        function updateProgress() {
+            const progress = Math.round((currentStep + 1) * 100 / topicData.steps.length);
+            document.getElementById('progressPercent').textContent = `${progress}%`;
+            document.getElementById('progressBar').style.width = `${progress}%`;
+        }
+
+        function updateStepsList() {
+            const stepsList = document.getElementById('stepsList');
+            stepsList.innerHTML = '';
+            topicData.steps.forEach((step, index) => {
+                const li = document.createElement('li');
+                li.innerHTML = `
+                    <button class="w-full px-4 py-2 text-left rounded-lg hover:bg-gray-50 ${index === currentStep ? 'active step-button' : ''}"
+                            onclick="goToStep(${index})">
+                        ${index + 1}. ${step.title}
+                    </button>
+                `;
+                stepsList.appendChild(li);
+            });
+        }
+
+        function updateContent() {
+            const step = topicData.steps[currentStep];
+            document.getElementById('topicTitle').textContent = topicData.title;
+            
+            // Update step content
+            const container = document.getElementById('stepContainer');
+            container.innerHTML = step.content.join('\n');
+
+            // Update resources
+            const resourcesGrid = document.getElementById('resourcesGrid');
+            resourcesGrid.innerHTML = '';
+            if (step.resources && step.resources.length > 0) {
+                step.resources.forEach(resource => {
+                    const card = document.createElement('div');
+                    card.className = 'resource-card bg-white p-4 rounded-lg border hover:shadow-md';
+                    card.innerHTML = `
+                        <h4 class="font-semibold mb-2">${resource.title}</h4>
+                        <p class="text-sm text-gray-600 mb-2">${resource.description}</p>
+                        <button onclick="openResource('${resource.url}')" 
+                                class="text-blue-600 hover:text-blue-700 text-sm">
+                            Open ${resource.type === 'video' ? 'Video' : 'Resource'}
+                            <i class="fas fa-external-link-alt ml-1"></i>
+                        </button>
+                    `;
+                    resourcesGrid.appendChild(card);
+                });
+            }
+
+            // Update navigation
+            document.getElementById('prevStepBtn').disabled = currentStep === 0;
+            document.getElementById('nextStepBtn').disabled = currentStep === topicData.steps.length - 1;
+
+            updateProgress();
+            updateStepsList();
+        }
+
+        function goToStep(index) {
+            if (index >= 0 && index < topicData.steps.length) {
+                currentStep = index;
+                updateContent();
+            }
+        }
+
+        function nextStep() {
+            if (currentStep < topicData.steps.length - 1) {
+                currentStep++;
+                updateContent();
+            }
+        }
+
+        function prevStep() {
+            if (currentStep > 0) {
+                currentStep--;
+                updateContent();
+            }
+        }
+
+        function openResource(url) {
+            const modal = document.getElementById('resourceModal');
+            const content = document.getElementById('resourceModalContent');
+            const title = document.getElementById('resourceModalTitle');
+            
+            if (url.includes('youtube.com')) {
+                content.innerHTML = `<iframe src="${url}" class="w-full aspect-video" allowfullscreen></iframe>`;
+                title.textContent = 'Video Resource';
+            } else if (url.includes('phet.colorado.edu')) {
+                content.innerHTML = `<iframe src="${url}" class="w-full h-[600px]" allowfullscreen></iframe>`;
+                title.textContent = 'Interactive Simulation';
+            } else {
+                content.innerHTML = `<iframe src="${url}" class="w-full h-[600px]"></iframe>`;
+                title.textContent = 'Resource';
+            }
+            
+            modal.classList.remove('hidden');
+        }
+
+        document.getElementById('closeResourceModal').onclick = () => {
+            document.getElementById('resourceModal').classList.add('hidden');
+        };
+
+        document.getElementById('nextStepBtn').onclick = nextStep;
+        document.getElementById('prevStepBtn').onclick = prevStep;
+
+        // Initial setup
+        updateContent();
+    </script>
+<!-- Topic Quiz System -->
+<script src="/js/topic-quiz-loader.js"></script>
+<script src="/js/topic-quiz-injector.js"></script>
+</body>
+</html>

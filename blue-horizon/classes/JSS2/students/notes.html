@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Study Notes - JUANOVA CORTEX</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Favicon -->
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <script type="module">
+    import '../js/personalize-page.js';
+  </script>
+</head>
+<body class="bg-slate-50">
+  <!-- Main content area -->
+  <div id="main-content" class="flex-1 flex flex-col ml-64 md:ml-72 lg:ml-80">
+    <!-- Topbar -->
+    <header class="flex items-center justify-between p-4 bg-white border-b border-slate-200">
+      <div class="flex items-center gap-3">
+        <button id="toggleSidebar" class="p-2 rounded-md hover:bg-slate-100 lg:hidden" title="Toggle sidebar">
+          <i class="fas fa-bars"></i>
+        </button>
+        <div class="relative">
+          <input id="globalSearch" type="search" placeholder="Search notes..." class="w-[520px] hidden md:inline-block pl-10 pr-4 py-2 rounded-full border border-slate-200 bg-white focus:outline-none focus:ring-2 focus:ring-sky-100">
+          <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-4">
+        <div class="relative">
+          <button id="notifBtn" class="p-2 rounded-full hover:bg-slate-50" aria-label="Notifications">
+            <i class="fas fa-bell text-sky-600"></i>
+          </button>
+          <span id="notifCount" class="absolute -top-1 -right-1 bg-pink-500 text-white rounded-full w-5 h-5 text-xs flex items-center justify-center">0</span>
+        </div>
+        <div class="flex items-center gap-3">
+          <div class="text-right mr-2">
+            <div id="topName" class="font-semibold">Student Name</div>
+            <div id="topLevel" class="text-xs text-slate-400">SS 3</div>
+          </div>
+          <img id="topAvatar" src="/assets/images/unnamed.jpg" alt="avatar" class="h-10 w-10 rounded-full border-2">
+        </div>
+      </div>
+    </header>
+
+    <!-- Page Content -->
+    <main class="p-6">
+      <!-- Page Header -->
+      <div class="mb-8">
+        <h1 class="text-3xl font-bold text-gray-800 mb-2">Study Notes</h1>
+        <p class="text-gray-600">Organize and access your study materials for better preparation.</p>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex gap-4 mb-6">
+        <button class="px-4 py-2 bg-sky-600 text-white font-medium rounded-md hover:bg-sky-700 transition-colors flex items-center gap-2">
+          <i class="fas fa-plus"></i>
+          New Note
+        </button>
+        <button class="px-4 py-2 bg-white text-slate-600 font-medium rounded-md hover:bg-slate-50 transition-colors flex items-center gap-2">
+          <i class="fas fa-folder-plus"></i>
+          New Folder
+        </button>
+      </div>
+
+      <!-- Quick Filters -->
+      <div class="flex gap-3 mb-6 overflow-x-auto pb-2">
+        <button class="px-4 py-2 rounded-full bg-sky-600 text-white font-medium text-sm">All Notes</button>
+        <button class="px-4 py-2 rounded-full bg-white text-slate-600 font-medium text-sm hover:bg-slate-50">Recent</button>
+        <button class="px-4 py-2 rounded-full bg-white text-slate-600 font-medium text-sm hover:bg-slate-50">Favorites</button>
+        <button class="px-4 py-2 rounded-full bg-white text-slate-600 font-medium text-sm hover:bg-slate-50">Shared</button>
+      </div>
+
+      <!-- Notes Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Subject Folders -->
+        <div class="bg-white rounded-xl shadow p-5 space-y-4">
+          <div class="flex items-center gap-3">
+            <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+              <i class="fas fa-calculator text-blue-600 text-xl"></i>
+            </div>
+            <div class="flex-1">
+              <h3 class="font-semibold text-gray-800">Mathematics</h3>
+              <p class="text-sm text-gray-500">12 notes</p>
+            </div>
+            <button class="text-gray-400 hover:text-gray-600">
+              <i class="fas fa-ellipsis-v"></i>
+            </button>
+          </div>
+          <div class="flex items-center justify-between text-sm">
+            <span class="text-gray-500">Last updated: 2 hours ago</span>
+            <button class="text-sky-600 hover:text-sky-700">Open</button>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-xl shadow p-5 space-y-4">
+          <div class="flex items-center gap-3">
+            <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+              <i class="fas fa-flask text-green-600 text-xl"></i>
+            </div>
+            <div class="flex-1">
+              <h3 class="font-semibold text-gray-800">Biology</h3>
+              <p class="text-sm text-gray-500">8 notes</p>
+            </div>
+            <button class="text-gray-400 hover:text-gray-600">
+              <i class="fas fa-ellipsis-v"></i>
+            </button>
+          </div>
+          <div class="flex items-center justify-between text-sm">
+            <span class="text-gray-500">Last updated: 1 day ago</span>
+            <button class="text-sky-600 hover:text-sky-700">Open</button>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-xl shadow p-5 space-y-4">
+          <div class="flex items-center gap-3">
+            <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center">
+              <i class="fas fa-atom text-purple-600 text-xl"></i>
+            </div>
+            <div class="flex-1">
+              <h3 class="font-semibold text-gray-800">Physics</h3>
+              <p class="text-sm text-gray-500">10 notes</p>
+            </div>
+            <button class="text-gray-400 hover:text-gray-600">
+              <i class="fas fa-ellipsis-v"></i>
+            </button>
+          </div>
+          <div class="flex items-center justify-between text-sm">
+            <span class="text-gray-500">Last updated: 3 days ago</span>
+            <button class="text-sky-600 hover:text-sky-700">Open</button>
+          </div>
+        </div>
+
+        <!-- Recent Notes -->
+        <div class="bg-white rounded-xl shadow p-5 space-y-4">
+          <div class="flex items-center gap-3">
+            <div class="w-12 h-12 bg-pink-100 rounded-full flex items-center justify-center">
+              <i class="fas fa-note-sticky text-pink-600 text-xl"></i>
+            </div>
+            <div class="flex-1">
+              <h3 class="font-semibold text-gray-800">Quadratic Equations</h3>
+              <p class="text-sm text-gray-500">Mathematics</p>
+            </div>
+            <button class="text-yellow-400 hover:text-yellow-500">
+              <i class="fas fa-star"></i>
+            </button>
+          </div>
+          <p class="text-gray-600 text-sm">Key concepts and formulas for solving quadratic equations...</p>
+          <div class="flex items-center justify-between text-sm">
+            <span class="text-gray-500">Modified 5 hours ago</span>
+            <button class="text-sky-600 hover:text-sky-700">View</button>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-xl shadow p-5 space-y-4">
+          <div class="flex items-center gap-3">
+            <div class="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center">
+              <i class="fas fa-note-sticky text-yellow-600 text-xl"></i>
+            </div>
+            <div class="flex-1">
+              <h3 class="font-semibold text-gray-800">Cell Structure</h3>
+              <p class="text-sm text-gray-500">Biology</p>
+            </div>
+            <button class="text-gray-400 hover:text-yellow-500">
+              <i class="far fa-star"></i>
+            </button>
+          </div>
+          <p class="text-gray-600 text-sm">Detailed notes on cell organelles and their functions...</p>
+          <div class="flex items-center justify-between text-sm">
+            <span class="text-gray-500">Modified 1 day ago</span>
+            <button class="text-sky-600 hover:text-sky-700">View</button>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-xl shadow p-5 space-y-4">
+          <div class="flex items-center gap-3">
+            <div class="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center">
+              <i class="fas fa-note-sticky text-indigo-600 text-xl"></i>
+            </div>
+            <div class="flex-1">
+              <h3 class="font-semibold text-gray-800">Newton's Laws</h3>
+              <p class="text-sm text-gray-500">Physics</p>
+            </div>
+            <button class="text-yellow-400 hover:text-yellow-500">
+              <i class="fas fa-star"></i>
+            </button>
+          </div>
+          <p class="text-gray-600 text-sm">Study notes on Newton's three laws of motion...</p>
+          <div class="flex items-center justify-between text-sm">
+            <span class="text-gray-500">Modified 2 days ago</span>
+            <button class="text-sky-600 hover:text-sky-700">View</button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Chatbot Widget -->
+  <div id="cortex-ai-chat-button" role="button" aria-label="Open Cortex AI chat">
+    <img src="../cortex-owl-brain.svg" alt="Cortex AI" class="cortex-icon" style="width:72px;height:72px;box-shadow:0 4px 16px rgba(0,0,0,0.20);border-radius:16px;transition:transform 0.18s cubic-bezier(.4,2,.6,1),box-shadow 0.18s;cursor:pointer;" onmouseover="this.style.transform='scale(1.12)';this.style.boxShadow='0 8px 32px rgba(0,0,0,0.28)';" onmouseout="this.style.transform='scale(1)';this.style.boxShadow='0 4px 16px rgba(0,0,0,0.20)';" onmousedown="this.style.transform='scale(0.96)';" onmouseup="this.style.transform='scale(1.12)';" />
+  </div>
+  <iframe id="cortex-ai-chat-popup" src="https://app.edcafe.ai/chatbots/68b96ebb2a5be310497b6a0b"></iframe>
+
+  <!-- Scripts -->
+  <script type="module">
+    import { config } from '../js/config.js';
+    import { initSupabase } from '../js/supabase-client.js';
+    
+    // Initialize Supabase client
+    const supabase = initSupabase(config.supabase.url, config.supabase.anonKey);
+
+    // Check authentication state and personalize UI
+    supabase.auth.onAuthStateChange(async (event, session) => {
+      function updateUserUI(user) {
+        if (!user) return;
+        const displayName = user.displayName || user.full_name || user.name || user.email?.split('@')[0] || 'Student';
+        const shortName = String(displayName).split(' ')[0] || displayName;
+        const level = user.profile?.level || user.level || user.level_name || '';
+        const avatar = user.photoURL || user.avatar_url || user.profile?.avatar_url || (`https://ui-avatars.com/api/?name=${encodeURIComponent(shortName)}&background=2563eb&color=fff&size=128`);
+
+        const userNameEl = document.getElementById('userName'); if (userNameEl) userNameEl.textContent = shortName;
+        const topNameEl = document.getElementById('topName'); if (topNameEl) topNameEl.textContent = displayName;
+        const userLevelEl = document.getElementById('userLevel'); if (userLevelEl && level) userLevelEl.textContent = level;
+        const topLevelEl = document.getElementById('topLevel'); if (topLevelEl && level) topLevelEl.textContent = level;
+        const avatarSm = document.getElementById('avatar-sm'); if (avatarSm) avatarSm.src = avatar;
+        const topAvatar = document.getElementById('topAvatar'); if (topAvatar) topAvatar.src = avatar;
+      }
+
+      function getUserData() {
+        if (window.preloadedUserData) return window.preloadedUserData;
+        try { const cached = localStorage.getItem('cachedUserData_current'); if (cached) { const parsed = JSON.parse(cached); if (parsed.data) return parsed.data; return parsed; } } catch {}
+        try { const cached2 = localStorage.getItem('userData'); if (cached2) return JSON.parse(cached2); } catch {}
+        try { const cached3 = localStorage.getItem('userProfile'); if (cached3) return JSON.parse(cached3); } catch {}
+        return null;
+      }
+
+      function tryUpdateUserUI(retries = 8) {
+        const user = getUserData();
+        if (user) updateUserUI(user);
+        else if (retries > 0) setTimeout(() => tryUpdateUserUI(retries - 1), 250);
+      }
+
+      // Try immediately and on update events
+      tryUpdateUserUI();
+      window.addEventListener('userDataUpdated', (e) => { tryUpdateUserUI(1); if (e?.detail) updateUserUI(e.detail); });
+
+      // Fallback to session/profile handling and auth checks
+      if (!session || !session.user) {
+        window.location.href = '../general/login.html';
+        return;
+      }
+      if (!session.user.email_confirmed_at) {
+        alert('Please verify your email first. Check your inbox for the verification link.');
+        await supabase.auth.signOut();
+        window.location.href = '../general/login.html';
+        return;
+      }
+
+      // Try load profile from Supabase to ensure UI updated when cache isn't available
+      try {
+        const { data: profile } = await supabase.from('profiles').select('*').eq('id', session.user.id).single();
+        if (profile) updateUserUI({ ...profile, email: session.user.email, photoURL: profile.avatar_url });
+      } catch (err) {
+        // ignore profile fetch errors; cached data will handle it
+        console.debug('Profile fetch failed', err);
+      }
+    });
+
+    // Chat widget logic
+    const button = document.getElementById("cortex-ai-chat-button");
+    const popup = document.getElementById("cortex-ai-chat-popup");
+    
+    if (button && popup) {
+      button.addEventListener("click", () => {
+        popup.style.display = popup.style.display === "none" || popup.style.display === "" ? "block" : "none";
+      });
+    }
+  </script>
+
+  <!-- Import shared student page components -->
+  <script type="module" src="./js/student-page-shared.js"></script>
+  <script type="module" src="./js/sidebar-fragment.js"></script>
+  <script src="../js/personalize-fallback.js"></script>
+
+  <style>
+    #cortex-ai-chat-button {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: transparent;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0;
+      border: none;
+      z-index: 1000;
+    }
+
+    #cortex-ai-chat-popup {
+      position: fixed;
+      bottom: 90px;
+      right: 20px;
+      width: 380px;
+      height: 500px;
+      border: none;
+      border-radius: 12px;
+      box-shadow: 0px 4px 16px rgba(0,0,0,0.4);
+      display: none;
+      z-index: 1000;
+    }
+  </style>
+</body>
+</html>

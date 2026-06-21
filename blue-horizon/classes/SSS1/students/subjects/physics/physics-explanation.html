@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Physics - Topic</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-100 font-inter">
+  <nav class="fixed inset-x-0 top-0 bg-white/60 backdrop-blur-sm border-b border-blue-100 z-50">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+      <a href="physics.html" class="text-sm text-blue-600 hover:underline flex items-center gap-2">
+        <i class="fas fa-arrow-left"></i>
+        <span>Back to Physics</span>
+      </a>
+      <img src="/assets/images/logo.png" alt="logo" class="h-10 w-auto" />
+    </div>
+  </nav>
+
+  <main class="max-w-6xl mx-auto px-4 pt-24 pb-12">
+    <header class="mb-8">
+      <h1 id="topicTitle" class="text-3xl font-extrabold text-blue-700 mb-2">Loading Topic...</h1>
+      <div class="flex items-center gap-6 text-sm text-gray-600">
+        <span id="duration" class="flex items-center gap-2">
+          <i class="fas fa-clock"></i>
+          <span>45 minutes</span>
+        </span>
+        <span id="difficulty" class="flex items-center gap-2">
+          <i class="fas fa-signal"></i>
+          <span>Intermediate</span>
+        </span>
+      </div>
+      <div class="mt-4 p-4 bg-white/60 backdrop-blur-sm rounded-lg">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-sm font-medium text-gray-600">Progress</span>
+          <span id="completedSections" class="text-sm font-medium text-blue-600">0/5</span>
+        </div>
+        <div class="h-2 bg-gray-200 rounded-full overflow-hidden">
+          <div id="progressBar" class="h-full bg-blue-500 rounded-full transition-all duration-500" style="width: 0%"></div>
+        </div>
+      </div>
+    </header>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <section class="lg:col-span-2 space-y-6">
+        <div id="topicContent" class="bg-white/60 backdrop-blur-sm rounded-xl p-6 shadow-sm prose prose-blue max-w-none">
+          <div id="explanation-text" class="text-gray-700">Loading content...</div>
+        </div>
+
+        <div class="bg-white/60 backdrop-blur-sm rounded-xl p-6 shadow-sm">
+          <h2 class="text-xl font-semibold text-blue-700 mb-4">Practice Quiz</h2>
+          <div id="quizContainer" class="space-y-4">
+            <!-- Quiz content will be dynamically populated -->
+          </div>
+          <button id="checkAnswers" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors">
+            Check Answers
+          </button>
+        </div>
+      </section>
+
+      <aside class="space-y-6">
+        <div class="bg-white/60 backdrop-blur-sm rounded-xl p-6 shadow-sm">
+          <h2 class="text-xl font-semibold text-blue-700 mb-4">Resources</h2>
+          <div id="resourcesContainer" class="grid grid-cols-1 gap-4">
+            <!-- Video section -->
+            <div class="p-4 rounded-lg border border-gray-200 hover:border-blue-300 transition-colors">
+              <h3 class="font-medium text-gray-900 mb-2 flex items-center gap-2">
+                <i class="fas fa-video text-blue-500"></i>
+                <span>Video Tutorial</span>
+              </h3>
+              <p id="video-text" class="text-sm text-gray-600">Loading video resource...</p>
+            </div>
+            
+            <!-- Simulator section -->
+            <div class="p-4 rounded-lg border border-gray-200 hover:border-blue-300 transition-colors">
+              <h3 class="font-medium text-gray-900 mb-2 flex items-center gap-2">
+                <i class="fas fa-calculator text-blue-500"></i>
+                <span>Interactive Simulator</span>
+              </h3>
+              <p id="simulator-text" class="text-sm text-gray-600">Loading simulator...</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white/60 backdrop-blur-sm rounded-xl p-6 shadow-sm">
+          <h2 class="text-xl font-semibold text-blue-700 mb-4">Related Topics</h2>
+          <div id="relatedTopics" class="space-y-2">
+            <!-- Related topics will be populated dynamically -->
+          </div>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <script>
+    const topicData = {
+      // Topic data structure will be populated based on the specific topic
+    };
+
+    let completedSubtopics = new Set();
+
+    function initializePage() {
+      const params = new URLSearchParams(window.location.search);
+      const topic = params.get('topic');
+      
+      if (topic) {
+        document.getElementById('topicTitle').textContent = `Physics - ${topic}`;
+        document.getElementById('explanation-text').innerHTML = `<p>Loading detailed explanation for ${topic}...</p>`;
+        document.getElementById('video-text').textContent = `Video tutorial for ${topic}`;
+        document.getElementById('simulator-text').textContent = `Interactive simulator for ${topic}`;
+        
+        // Initialize quiz section
+        const quizContainer = document.getElementById('quizContainer');
+        quizContainer.innerHTML = `
+          <div class="text-center text-gray-600">
+            <p>Quiz content for ${topic} will be loaded here</p>
+          </div>
+        `;
+        
+        // Initialize related topics
+        const relatedTopics = document.getElementById('relatedTopics');
+        relatedTopics.innerHTML = `
+          <p class="text-gray-600 text-sm">Related topics will be displayed here</p>
+        `;
+      }
+    }
+
+    function updateProgress() {
+      const totalSections = 5; // Update based on actual content sections
+      const completedCount = completedSubtopics.size;
+      const percentage = Math.round((completedCount / totalSections) * 100);
+      
+      document.getElementById('progressBar').style.width = `${percentage}%`;
+      document.getElementById('completedSections').textContent = `${completedCount}/${totalSections}`;
+    }
+
+    // Initialize the page when loaded
+    document.addEventListener('DOMContentLoaded', initializePage);
+  </script>
+<!-- Topic Quiz System -->
+<script src="/js/topic-quiz-loader.js"></script>
+<script src="/js/topic-quiz-injector.js"></script>
+</body>
+</html>
+

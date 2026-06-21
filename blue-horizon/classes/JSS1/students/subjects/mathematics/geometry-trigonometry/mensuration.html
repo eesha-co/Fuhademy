@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mensuration — Area & Volume</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    .card { background: white; border-radius: 12px; padding: 1rem; box-shadow: 0 8px 24px rgba(2,6,23,0.06); }
+    .muted { color: #6b7280 }
+  </style>
+</head>
+<body class="bg-amber-50 font-sans">
+  <header class="bg-amber-600 text-white py-4">
+    <div class="max-w-5xl mx-auto px-4 flex items-center justify-between">
+      <div class="font-semibold text-lg">Mensuration</div>
+      <a href="index.html" class="text-sm text-white/90">Back</a>
+    </div>
+  </header>
+
+  <main class="max-w-5xl mx-auto p-6 space-y-6">
+    <section class="card">
+      <h2 class="text-xl font-semibold">Key Formulas</h2>
+      <div class="mt-3 grid sm:grid-cols-2 gap-4 text-gray-700">
+        <div>
+          <div class="font-medium">Circle</div>
+          <div class="muted">Area = πr², Circumference = 2πr</div>
+        </div>
+        <div>
+          <div class="font-medium">Rectangle</div>
+          <div class="muted">Area = l × w</div>
+        </div>
+        <div>
+          <div class="font-medium">Triangle</div>
+          <div class="muted">Area = ½ × base × height</div>
+        </div>
+        <div>
+          <div class="font-medium">Cylinder</div>
+          <div class="muted">Volume = πr²h</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2 class="text-xl font-semibold">Worked Examples</h2>
+      <ol class="list-decimal list-inside mt-3 text-gray-700">
+        <li>Circle radius 7 cm → area = π×7² = 154 cm² (use π≈3.14)</li>
+        <li>Cylinder r=3 cm, h=10 cm → volume = π×9×10 ≈ 282.6 cm³</li>
+      </ol>
+    </section>
+
+    <section class="card">
+      <h2 class="text-xl font-semibold">Practice</h2>
+      <div class="grid md:grid-cols-2 gap-4 mt-4">
+        <div class="p-4 border rounded bg-gray-50">
+          <div class="font-semibold">1) Circle r = 5 cm. Area?</div>
+          <input id="m1" class="mt-3 p-2 border rounded w-full" placeholder="e.g., 78.5" />
+          <div class="mt-3 flex gap-2"><button id="mc1" class="px-3 py-1 bg-amber-600 text-white rounded">Check</button><button id="mh1" class="px-3 py-1 border rounded">Hint</button></div>
+          <div id="mfb1" class="mt-2 text-sm"></div>
+        </div>
+
+        <div class="p-4 border rounded bg-gray-50">
+          <div class="font-semibold">2) Cylinder r=4, h=8. Volume?</div>
+          <input id="m2" class="mt-3 p-2 border rounded w-full" placeholder="e.g., 402.12" />
+          <div class="mt-3 flex gap-2"><button id="mc2" class="px-3 py-1 bg-amber-600 text-white rounded">Check</button><button id="mh2" class="px-3 py-1 border rounded">Hint</button></div>
+          <div id="mfb2" class="mt-2 text-sm"></div>
+        </div>
+      </div>
+    </section>
+
+    <div class="text-right"><button id="msQuiz" class="bg-amber-600 text-white px-4 py-2 rounded">Open Quiz</button></div>
+  </main>
+
+  <div id="msModal" class="hidden fixed inset-0 bg-black/40 z-40 flex items-center justify-center">
+    <div class="bg-white rounded p-6 max-w-md w-full">
+      <div id="msContent"></div>
+      <div class="mt-4 text-right"><button id="msClose" class="px-3 py-1 border rounded">Close</button></div>
+    </div>
+  </div>
+
+  <script>
+    function norm(s){ return (s||'').toString().trim().replace(/[^0-9.-]/g,''); }
+    function approx(x){ return Math.round(x*100)/100; }
+
+    document.getElementById('mc1').addEventListener('click', ()=>{
+      const v=parseFloat(norm(document.getElementById('m1').value)); const fb=document.getElementById('mfb1'); const ans=approx(Math.PI*5*5);
+      if(Math.abs(v-ans)<0.1) fb.innerHTML=`<span style="color:#16a34a">Correct — ${ans.toFixed(2)} cm²</span>`; else fb.innerHTML=`<span style="color:#e11d48">Try again — expected ≈ ${ans.toFixed(2)}</span>`;
+    });
+    document.getElementById('mh1').addEventListener('click', ()=> alert('Hint: Area = πr². Use π≈3.1416'));
+
+    document.getElementById('mc2').addEventListener('click', ()=>{
+      const v=parseFloat(norm(document.getElementById('m2').value)); const fb=document.getElementById('mfb2'); const ans=approx(Math.PI*4*4*8);
+      if(Math.abs(v-ans)<0.5) fb.innerHTML=`<span style="color:#16a34a">Correct — ${ans.toFixed(2)} cm³</span>`; else fb.innerHTML=`<span style="color:#e11d48">Try again — expected ≈ ${ans.toFixed(2)}</span>`;
+    });
+    document.getElementById('mh2').addEventListener('click', ()=> alert('Hint: Volume cylinder = πr²h'));
+
+    const pool = [
+      {q:'Circle radius 3 — area?', a:[(Math.PI*3*3).toFixed(2)]},
+      {q:'Rect l=6 w=4 — area?', a:['24']}
+    ];
+    function showModal(){ let i=0,score=0; const modal=document.getElementById('msModal'); const content=document.getElementById('msContent'); modal.classList.remove('hidden'); function next(){ if(i>=pool.length){ content.innerHTML=`<div class="font-bold">Done</div><div>Score: ${score}/${pool.length}</div>`; return; } const cur=pool[i]; content.innerHTML=`<div class="font-semibold">${cur.q}</div><input id="ma" class="mt-3 p-2 border rounded w-full"><div class="mt-3 flex gap-2"><button id="msub" class="px-3 py-1 bg-amber-600 text-white rounded">Submit</button></div><div id="mqfb" class="mt-2"></div>`; document.getElementById('msub').onclick=()=>{ const a=norm(document.getElementById('ma').value); if(cur.a.includes(a)){ score++; document.getElementById('mqfb').innerHTML='<span style="color:#16a34a">Correct</span>'; } else document.getElementById('mqfb').innerHTML=`<span style="color:#e11d48">Wrong — ${cur.a[0]}</span>`; i++; setTimeout(next,800); }; }
+    document.getElementById('msQuiz').addEventListener('click', showModal);
+    document.getElementById('msClose').addEventListener('click', ()=> document.getElementById('msModal').classList.add('hidden'));
+  </script>
+<!-- Topic Quiz System -->
+<script src="/js/topic-quiz-loader.js"></script>
+<script src="/js/topic-quiz-injector.js"></script>
+</body>
+</html>
+      </ol>
+
+      <h3 class="mt-3 font-semibold">Brief solutions</h3>
+      <ol class="list-decimal list-inside text-gray-700">
+        <li>V = πr^2h = π·9·5 = 45π.</li>
+        <li>Area = 28.
+        </li>
+      </ol>
+    </article>
+  </div>
+<!-- Topic Quiz System -->
+<script src="/js/topic-quiz-loader.js"></script>
+<script src="/js/topic-quiz-injector.js"></script>
+</body>
+</html>

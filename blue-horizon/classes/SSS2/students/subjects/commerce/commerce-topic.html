@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="/assets/images/logo.png" />
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Commerce - Topics</title>
+  <link rel="stylesheet" href="../styles.css" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+  <style>
+    .main-content { max-width: 900px; margin: 40px auto 0 auto; background: #fff; border-radius: 16px; box-shadow: 0 2px 8px rgba(30,41,59,0.07); padding: 2.5rem 2rem 2rem 2rem; min-height: 80vh; display: flex; flex-direction: column; }
+    .back-btn { display: inline-flex; align-items: center; gap: 0.5rem; background: #f1f5f9; color: #1e293b; border: none; border-radius: 8px; padding: 0.5rem 1.2rem; font-size: 1rem; font-weight: 500; cursor: pointer; margin-bottom: 2rem; box-shadow: 0 1px 4px rgba(30,41,59,0.05); transition: background 0.2s, color 0.2s; text-decoration: none; }
+    .back-btn:hover { background: #e0e7ef; color: #1a73e8; }
+    h1 { font-size: 1.5rem; font-weight: 600; color: #1a73e8; margin-bottom: 1.5rem; }
+    .topic-list { display: flex; flex-direction: column; gap: 1.5rem; }
+    .topic-card { background: #f8fafc; border-radius: 12px; box-shadow: 0 2px 8px rgba(30,41,59,0.07); padding: 1.5rem 1rem; }
+    .topic-title { font-weight: 600; font-size: 1.1rem; color: #1a73e8; margin-bottom: 0.5rem; }
+    .topic-desc { color: #334155; margin-bottom: 0.7rem; }
+    .subtopic-list { margin-top: 0.5rem; }
+    .subtopic-item { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem; }
+    .start-btn { background: #1a73e8; color: #fff; border: none; border-radius: 6px; padding: 0.3rem 1rem; font-size: 0.98rem; cursor: pointer; transition: background 0.2s; }
+    .start-btn:hover { background: #174ea6; }
+    @media (max-width: 600px) { .main-content { padding: 1rem 0.5rem; } }
+    .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100vw; height: 100vh; overflow: auto; background: rgba(30,41,59,0.18); }
+    .modal-content { background: #fff; margin: 8% auto; padding: 2rem 1.5rem; border-radius: 12px; max-width: 420px; box-shadow: 0 4px 24px rgba(30,41,59,0.13); }
+    .modal-close { float: right; font-size: 1.3rem; color: #888; cursor: pointer; }
+    .modal-close:hover { color: #1a73e8; }
+  </style>
+</head>
+<body>
+  <main class="main-content">
+    <a href="commerce.html" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Units</a>
+    <h1 id="unit-title">Commerce Topics</h1>
+    <div class="topic-list" id="topic-list"></div>
+  </main>
+  <div id="subtopic-modal" class="modal">
+    <div class="modal-content">
+      <span class="modal-close" id="close-modal">&times;</span>
+      <h2 id="modal-topic-title">Sub-Topics</h2>
+      <div id="modal-subtopics"></div>
+    </div>
+  </div>
+  <script>
+    const syllabus = {
+      intro: {
+        title: "Introduction to Commerce",
+        desc: "Nature, scope, branches",
+        topics: [
+          { name: "Nature and Scope", subtopics: ["Definition of commerce", "Branches of commerce", "Functions of commerce"] },
+          { name: "Occupations", subtopics: ["Industrial", "Commercial", "Direct and indirect services"] }
+        ]
+      },
+      trade: {
+        title: "Trade",
+        desc: "Home and foreign trade, aids to trade",
+        topics: [
+          { name: "Home Trade", subtopics: ["Wholesale", "Retail", "Channels of distribution"] },
+          { name: "Foreign Trade", subtopics: ["Import", "Export", "Balance of trade and payments"] },
+          { name: "Aids to Trade", subtopics: ["Banking", "Insurance", "Transportation", "Communication"] }
+        ]
+      },
+      business: {
+        title: "Business Units",
+        desc: "Types, formation, financing",
+        topics: [
+          { name: "Types of Business Units", subtopics: ["Sole proprietorship", "Partnership", "Cooperative", "Limited liability companies"] },
+          { name: "Formation of Business Units", subtopics: ["Registration", "Legal requirements", "Sources of capital"] }
+        ]
+      },
+      finance: {
+        title: "Finance and Banking",
+        desc: "Money, banking, insurance",
+        topics: [
+          { name: "Money and Banking", subtopics: ["Functions of money", "Types of banks", "Functions of banks"] },
+          { name: "Insurance", subtopics: ["Principles of insurance", "Types of insurance", "Importance of insurance"] }
+        ]
+      },
+      transport: {
+        title: "Transportation and Communication",
+        desc: "Transport systems, communication, warehousing",
+        topics: [
+          { name: "Transportation", subtopics: ["Modes of transport", "Advantages and disadvantages", "Problems of transportation"] },
+          { name: "Communication and Warehousing", subtopics: ["Means of communication", "Importance of warehousing", "Types of warehouses"] }
+        ]
+      }
+    };
+    const params = new URLSearchParams(window.location.search);
+    const unit = params.get('unit');
+    const unitData = syllabus[unit];
+    if (!unitData) {
+      document.getElementById('unit-title').textContent = 'Unit not found';
+      document.getElementById('topic-list').innerHTML = '<div style="color:#e53e3e">Invalid or missing unit.</div>';
+    } else {
+      document.getElementById('unit-title').textContent = unitData.title;
+      const topicList = document.getElementById('topic-list');
+      unitData.topics.forEach((topic, idx) => {
+        const card = document.createElement('div');
+        card.className = 'topic-card';
+        card.setAttribute('data-topic-idx', idx);
+        card.innerHTML = `
+          <div class="topic-title">${topic.name}</div>
+          <div class="topic-desc">Click to view sub-topics</div>
+        `;
+        card.style.cursor = 'pointer';
+        topicList.appendChild(card);
+      });
+    }
+    const modal = document.getElementById('subtopic-modal');
+    const modalTitle = document.getElementById('modal-topic-title');
+    const modalSubtopics = document.getElementById('modal-subtopics');
+    document.getElementById('topic-list').addEventListener('click', function(e) {
+      let card = e.target.closest('.topic-card');
+      if (card) {
+        const idx = card.getAttribute('data-topic-idx');
+        const topic = unitData.topics[idx];
+        modalTitle.textContent = topic.name;
+        modalSubtopics.innerHTML = topic.subtopics.map(sub =>
+          `<div class="subtopic-item">
+            <span>${sub}</span>
+            <a href="commerce-explanation.html?unit=${unit}&topic=${encodeURIComponent(topic.name)}&subtopic=${encodeURIComponent(sub)}" class="start-btn">Start Learning</a>
+          </div>`
+        ).join('');
+        modal.style.display = 'block';
+      }
+    });
+    document.addEventListener('click', function(e) {
+      if (e.target.id === 'close-modal' || e.target.classList.contains('modal')) {
+        modal.style.display = 'none';
+      }
+    });
+    window.onclick = function(event) {
+      if (event.target == modal) {
+        modal.style.display = 'none';
+      }
+    }
+  </script>
+</body>
+</html>
+

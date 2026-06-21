@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gay-Lussac's Law of Combining Volumes | Chemistry Foundations</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .content-card {
+      -webkit-backdrop-filter: blur(12px);
+      backdrop-filter: blur(12px);
+      background: rgba(255, 255, 255, 0.95);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    .accordion-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease-out;
+    }
+    .accordion-content.open {
+      max-height: 2000px;
+    }
+    .step-card { transition: all 0.2s ease; }
+    .step-card:hover { transform: translateX(4px); }
+    #topic-complete-btn { transition: all 0.3s ease; }
+    #topic-complete-btn:not(:disabled):hover { transform: scale(1.02); }
+  </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-indigo-50 to-blue-100 p-4 md:p-6">
+  <div class="max-w-4xl mx-auto">
+    <!-- Navigation -->
+    <nav class="mb-4 flex items-center justify-between">
+      <a href="index.html" class="text-blue-600 hover:text-blue-800 transition flex items-center">
+        <i class="fas fa-arrow-left mr-2"></i>Back to Foundations
+      </a>
+      <div class="flex items-center gap-3">
+        <div class="text-sm text-gray-600">
+          <span id="topic-progress-text">0% Complete</span>
+        </div>
+        <div class="w-24 h-2 bg-gray-200 rounded-full overflow-hidden">
+          <div id="topic-progress-bar" class="h-full bg-gradient-to-r from-indigo-400 to-blue-500 transition-all duration-300" style="width: 0%"></div>
+        </div>
+      </div>
+    </nav>
+
+    <article class="content-card rounded-xl p-6 md:p-8 shadow-lg">
+      <!-- Header -->
+      <div class="border-b pb-4 mb-6">
+        <h1 class="text-2xl md:text-3xl font-bold text-gray-800 mb-2">
+          <i class="fas fa-wind text-indigo-500 mr-3"></i>Gay-Lussac's Law of Combining Volumes
+        </h1>
+        <p class="text-gray-600">Understanding how gases combine in simple whole-number ratios by volume at constant temperature and pressure.</p>
+      </div>
+
+      <!-- Learning Objectives -->
+      <div class="bg-indigo-50 border-l-4 border-indigo-500 p-4 rounded-r-lg mb-6">
+        <h3 class="font-semibold text-indigo-800 mb-2"><i class="fas fa-bullseye mr-2"></i>Learning Objectives</h3>
+        <ul class="text-indigo-700 text-sm space-y-1">
+          <li>• State Gay-Lussac's Law of Combining Volumes</li>
+          <li>• Explain the relationship between gas volumes in reactions</li>
+          <li>• Apply the law to calculate reacting gas volumes</li>
+          <li>• Understand the connection to Avogadro's Law</li>
+          <li>• Solve problems involving gas volume ratios</li>
+        </ul>
+      </div>
+
+      <!-- Section 1: The Law -->
+      <section id="section-1" class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <span class="bg-indigo-100 text-indigo-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">1</span>
+          The Law
+        </h2>
+
+        <div class="bg-gray-50 p-5 rounded-lg mb-4">
+          <div class="bg-gradient-to-r from-indigo-100 to-blue-100 p-5 rounded-lg mb-4 text-center border-l-4 border-indigo-500">
+            <p class="text-lg text-gray-800 mb-2 font-medium">Gay-Lussac's Law of Combining Volumes (1808)</p>
+            <p class="text-xl font-bold text-indigo-700">"When gases react, they do so in volumes which bear a simple whole number ratio to one another and to the volumes of the products (if gaseous), provided all measurements are made at the same temperature and pressure."</p>
+          </div>
+
+          <div class="grid md:grid-cols-2 gap-4">
+            <div class="bg-white p-4 rounded-lg border border-gray-200">
+              <h4 class="font-semibold text-indigo-800 mb-2"><i class="fas fa-user mr-2"></i>Joseph Louis Gay-Lussac</h4>
+              <p class="text-gray-700 text-sm">French chemist who discovered this law in 1808 through careful experiments on reacting gases.</p>
+            </div>
+            <div class="bg-white p-4 rounded-lg border border-gray-200">
+              <h4 class="font-semibold text-indigo-800 mb-2"><i class="fas fa-thermometer-half mr-2"></i>Conditions</h4>
+              <p class="text-gray-700 text-sm">The law applies only when all gas volumes are measured at the <strong>same temperature and pressure</strong>.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 2: Key Examples -->
+      <section id="section-2" class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <span class="bg-indigo-100 text-indigo-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">2</span>
+          Key Examples
+        </h2>
+
+        <div class="bg-gray-50 p-5 rounded-lg mb-4">
+          <!-- Example 1: Hydrogen and Oxygen -->
+          <div class="bg-white p-4 rounded-lg border border-gray-200 mb-4">
+            <h4 class="font-semibold text-gray-800 mb-3 flex items-center">
+              <span class="bg-indigo-100 text-indigo-700 px-2 py-1 rounded text-sm mr-2">1</span>
+              Hydrogen + Oxygen → Water Vapor
+            </h4>
+            <div class="flex items-center justify-center gap-2 text-lg font-mono mb-3 flex-wrap">
+              <span class="bg-blue-100 px-3 py-1 rounded text-blue-700">2H₂</span>
+              <span class="text-gray-500">+</span>
+              <span class="bg-green-100 px-3 py-1 rounded text-green-700">O₂</span>
+              <span class="text-gray-500">→</span>
+              <span class="bg-purple-100 px-3 py-1 rounded text-purple-700">2H₂O(g)</span>
+            </div>
+            <div class="text-center">
+              <p class="text-gray-700"><strong>Volume ratio:</strong></p>
+              <p class="text-2xl font-bold text-indigo-700">2 : 1 : 2</p>
+              <p class="text-sm text-gray-500 mt-1">(Simple whole number ratio!)</p>
+            </div>
+          </div>
+
+          <!-- Example 2: Nitrogen and Hydrogen -->
+          <div class="bg-white p-4 rounded-lg border border-gray-200 mb-4">
+            <h4 class="font-semibold text-gray-800 mb-3 flex items-center">
+              <span class="bg-indigo-100 text-indigo-700 px-2 py-1 rounded text-sm mr-2">2</span>
+              Nitrogen + Hydrogen → Ammonia
+            </h4>
+            <div class="flex items-center justify-center gap-2 text-lg font-mono mb-3 flex-wrap">
+              <span class="bg-blue-100 px-3 py-1 rounded text-blue-700">N₂</span>
+              <span class="text-gray-500">+</span>
+              <span class="bg-cyan-100 px-3 py-1 rounded text-cyan-700">3H₂</span>
+              <span class="text-gray-500">→</span>
+              <span class="bg-purple-100 px-3 py-1 rounded text-purple-700">2NH₃</span>
+            </div>
+            <div class="text-center">
+              <p class="text-gray-700"><strong>Volume ratio:</strong></p>
+              <p class="text-2xl font-bold text-indigo-700">1 : 3 : 2</p>
+              <p class="text-sm text-gray-500 mt-1">(Simple whole number ratio!)</p>
+            </div>
+          </div>
+
+          <!-- Example 3: Hydrogen and Chlorine -->
+          <div class="bg-white p-4 rounded-lg border border-gray-200">
+            <h4 class="font-semibold text-gray-800 mb-3 flex items-center">
+              <span class="bg-indigo-100 text-indigo-700 px-2 py-1 rounded text-sm mr-2">3</span>
+              Hydrogen + Chlorine → Hydrogen Chloride
+            </h4>
+            <div class="flex items-center justify-center gap-2 text-lg font-mono mb-3 flex-wrap">
+              <span class="bg-blue-100 px-3 py-1 rounded text-blue-700">H₂</span>
+              <span class="text-gray-500">+</span>
+              <span class="bg-green-100 px-3 py-1 rounded text-green-700">Cl₂</span>
+              <span class="text-gray-500">→</span>
+              <span class="bg-purple-100 px-3 py-1 rounded text-purple-700">2HCl</span>
+            </div>
+            <div class="text-center">
+              <p class="text-gray-700"><strong>Volume ratio:</strong></p>
+              <p class="text-2xl font-bold text-indigo-700">1 : 1 : 2</p>
+              <p class="text-sm text-gray-500 mt-1">(Simple whole number ratio!)</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 3: Connection to Avogadro's Law -->
+      <section id="section-3" class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <span class="bg-indigo-100 text-indigo-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">3</span>
+          Connection to Avogadro's Law
+        </h2>
+
+        <div class="bg-gray-50 p-5 rounded-lg mb-4">
+          <p class="text-gray-700 mb-4">Gay-Lussac's Law led Avogadro to propose his famous hypothesis in 1811:</p>
+
+          <div class="bg-gradient-to-r from-blue-100 to-indigo-100 p-4 rounded-lg mb-4 border-l-4 border-blue-500">
+            <p class="text-lg font-semibold text-blue-800 mb-1">Avogadro's Law</p>
+            <p class="text-gray-700">"Equal volumes of all gases, under the same conditions of temperature and pressure, contain the same number of molecules."</p>
+          </div>
+
+          <div class="bg-white p-4 rounded-lg border border-gray-200">
+            <h4 class="font-semibold text-gray-800 mb-3">How They Connect:</h4>
+            <ul class="text-gray-700 text-sm space-y-2">
+              <li class="flex items-start gap-2">
+                <i class="fas fa-arrow-right text-indigo-500 mt-1"></i>
+                <span>Volume ratio = Mole ratio (for gases)</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <i class="fas fa-arrow-right text-indigo-500 mt-1"></i>
+                <span>Equal volumes → Equal molecules → Equal moles</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <i class="fas fa-arrow-right text-indigo-500 mt-1"></i>
+                <span>The coefficients in balanced equations give the volume ratios for gases</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-r-lg">
+          <h4 class="font-semibold text-yellow-800 mb-2"><i class="fas fa-lightbulb mr-2"></i>Important Note</h4>
+          <p class="text-gray-700 text-sm">Gay-Lussac's Law only applies to <strong>gases</strong>. Solids and liquids do not follow this law because their volumes depend on intermolecular forces and packing.</p>
+        </div>
+      </section>
+
+      <!-- Section 4: Worked Examples -->
+      <section id="section-4" class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <span class="bg-indigo-100 text-indigo-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">4</span>
+          Worked Examples
+        </h2>
+
+        <div class="space-y-4">
+          <div class="border border-gray-200 rounded-lg overflow-hidden">
+            <button class="accordion-btn w-full p-4 bg-indigo-50 text-left font-semibold text-indigo-800 flex justify-between items-center hover:bg-indigo-100 transition">
+              <span><i class="fas fa-calculator mr-2 text-indigo-500"></i>Example 1: Hydrogen and Oxygen</span>
+              <i class="fas fa-chevron-down transform transition-transform"></i>
+            </button>
+            <div class="accordion-content">
+              <div class="p-5">
+                <p class="font-medium text-gray-800 mb-3">What volume of oxygen reacts with 40 cm³ of hydrogen? What volume of steam is produced?</p>
+
+                <div class="space-y-3">
+                  <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-indigo-500">
+                    <p class="text-sm text-gray-600"><strong>Equation:</strong> 2H₂ + O₂ → 2H₂O(g)</p>
+                  </div>
+                  <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-blue-500">
+                    <p class="text-sm text-gray-600"><strong>Volume ratio:</strong> 2H₂ : 1O₂ : 2H₂O = 2 : 1 : 2</p>
+                  </div>
+                  <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-green-500">
+                    <p class="text-sm text-gray-600"><strong>Given:</strong> H₂ = 40 cm³</p>
+                    <p class="text-green-700 mt-1">O₂ = (1/2) × 40 = <strong>20 cm³</strong></p>
+                  </div>
+                  <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-purple-500">
+                    <p class="text-sm text-gray-600"><strong>Steam produced:</strong></p>
+                    <p class="text-purple-700 mt-1">H₂O = (2/2) × 40 = <strong>40 cm³</strong></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="border border-gray-200 rounded-lg overflow-hidden">
+            <button class="accordion-btn w-full p-4 bg-green-50 text-left font-semibold text-green-800 flex justify-between items-center hover:bg-green-100 transition">
+              <span><i class="fas fa-calculator mr-2 text-green-500"></i>Example 2: Nitrogen and Hydrogen</span>
+              <i class="fas fa-chevron-down transform transition-transform"></i>
+            </button>
+            <div class="accordion-content">
+              <div class="p-5">
+                <p class="font-medium text-gray-800 mb-3">30 cm³ of nitrogen reacts with hydrogen. Calculate the volume of hydrogen needed and ammonia produced.</p>
+
+                <div class="space-y-3">
+                  <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-green-500">
+                    <p class="text-sm text-gray-600"><strong>Equation:</strong> N₂ + 3H₂ → 2NH₃</p>
+                  </div>
+                  <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-blue-500">
+                    <p class="text-sm text-gray-600"><strong>Volume ratio:</strong> 1N₂ : 3H₂ : 2NH₃</p>
+                  </div>
+                  <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-indigo-500">
+                    <p class="text-sm text-gray-600"><strong>Given:</strong> N₂ = 30 cm³</p>
+                    <p class="text-indigo-700 mt-1">H₂ = (3/1) × 30 = <strong>90 cm³</strong></p>
+                  </div>
+                  <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-purple-500">
+                    <p class="text-sm text-gray-600"><strong>Ammonia produced:</strong></p>
+                    <p class="text-purple-700 mt-1">NH₃ = (2/1) × 30 = <strong>60 cm³</strong></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="border border-gray-200 rounded-lg overflow-hidden">
+            <button class="accordion-btn w-full p-4 bg-purple-50 text-left font-semibold text-purple-800 flex justify-between items-center hover:bg-purple-100 transition">
+              <span><i class="fas fa-calculator mr-2 text-purple-500"></i>Example 3: Finding Initial Volume</span>
+              <i class="fas fa-chevron-down transform transition-transform"></i>
+            </button>
+            <div class="accordion-content">
+              <div class="p-5">
+                <p class="font-medium text-gray-800 mb-3">50 cm³ of HCl gas is formed from H₂ and Cl₂. What volumes of H₂ and Cl₂ were used?</p>
+
+                <div class="space-y-3">
+                  <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-purple-500">
+                    <p class="text-sm text-gray-600"><strong>Equation:</strong> H₂ + Cl₂ → 2HCl</p>
+                  </div>
+                  <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-blue-500">
+                    <p class="text-sm text-gray-600"><strong>Volume ratio:</strong> 1H₂ : 1Cl₂ : 2HCl</p>
+                  </div>
+                  <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-green-500">
+                    <p class="text-sm text-gray-600"><strong>Given:</strong> HCl = 50 cm³</p>
+                    <p class="text-green-700 mt-1">H₂ = (1/2) × 50 = <strong>25 cm³</strong></p>
+                    <p class="text-green-700">Cl₂ = (1/2) × 50 = <strong>25 cm³</strong></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 5: Practice Problems -->
+      <section id="section-5" class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <i class="fas fa-pencil-alt text-indigo-600 mr-3"></i>
+          Practice Problems
+        </h2>
+
+        <div class="space-y-4">
+          <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+            <p class="font-medium text-gray-800 mb-2">1. 100 cm³ of hydrogen reacts with oxygen. Calculate the volume of oxygen needed and steam produced.</p>
+            <details class="mt-2">
+              <summary class="text-sm text-blue-600 cursor-pointer hover:text-blue-800">Show Solution</summary>
+              <div class="mt-2 text-sm text-gray-700">
+                <p>Equation: 2H₂ + O₂ → 2H₂O</p>
+                <p>Ratio: 2 : 1 : 2</p>
+                <p>O₂ = (1/2) × 100 = <strong>50 cm³</strong></p>
+                <p>H₂O = (2/2) × 100 = <strong>100 cm³</strong></p>
+              </div>
+            </details>
+          </div>
+
+          <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+            <p class="font-medium text-gray-800 mb-2">2. 60 cm³ of ammonia decomposes: 2NH₃ → N₂ + 3H₂. What volumes of N₂ and H₂ are formed?</p>
+            <details class="mt-2">
+              <summary class="text-sm text-blue-600 cursor-pointer hover:text-blue-800">Show Solution</summary>
+              <div class="mt-2 text-sm text-gray-700">
+                <p>Equation: 2NH₃ → N₂ + 3H₂</p>
+                <p>Ratio: 2 : 1 : 3</p>
+                <p>N₂ = (1/2) × 60 = <strong>30 cm³</strong></p>
+                <p>H₂ = (3/2) × 60 = <strong>90 cm³</strong></p>
+              </div>
+            </details>
+          </div>
+
+          <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+            <p class="font-medium text-gray-800 mb-2">3. State Gay-Lussac's Law and give one example.</p>
+            <details class="mt-2">
+              <summary class="text-sm text-blue-600 cursor-pointer hover:text-blue-800">Show Solution</summary>
+              <div class="mt-2 text-sm text-gray-700">
+                <p><strong>Law:</strong> When gases react, they do so in volumes that bear a simple whole number ratio to each other and to the products (if gaseous), at constant temperature and pressure.</p>
+                <p class="mt-2"><strong>Example:</strong> 2H₂ + O₂ → 2H₂O (volume ratio 2:1:2)</p>
+              </div>
+            </details>
+          </div>
+
+          <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+            <p class="font-medium text-gray-800 mb-2">4. Why does Gay-Lussac's Law only apply to gases?</p>
+            <details class="mt-2">
+              <summary class="text-sm text-blue-600 cursor-pointer hover:text-blue-800">Show Solution</summary>
+              <div class="mt-2 text-sm text-gray-700">
+                <p>Because only gases have volumes that are directly proportional to the number of molecules (Avogadro's Law). Solids and liquids have volumes that depend on molecular packing and intermolecular forces, not just the number of particles.</p>
+              </div>
+            </details>
+          </div>
+        </div>
+      </section>
+
+      <!-- Key Takeaways -->
+      <section id="section-6" class="mb-8">
+        <div class="bg-gradient-to-r from-indigo-50 to-blue-50 p-5 rounded-lg border border-indigo-200">
+          <h3 class="font-semibold text-indigo-800 mb-3"><i class="fas fa-star mr-2"></i>Key Takeaways for WAEC/JAMB/NECO</h3>
+          <ul class="text-indigo-700 text-sm space-y-2">
+            <li>• <strong>Gay-Lussac's Law:</strong> Gases react in simple whole number volume ratios</li>
+            <li>• Volume ratios = Mole ratios (for gases only)</li>
+            <li>• Conditions: Same temperature and pressure</li>
+            <li>• Connected to Avogadro's Law (equal volumes = equal molecules)</li>
+            <li>• The coefficients in balanced equations give volume ratios</li>
+            <li>• Only applies to gases, not solids or liquids</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Complete Topic Button -->
+      <div class="mt-8 pt-6 border-t border-gray-200">
+        <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div class="text-center sm:text-left">
+            <h3 class="font-semibold text-gray-800">Ready to Complete?</h3>
+            <p class="text-sm text-gray-600">View all sections, then take the quiz to mark this topic as complete.</p>
+          </div>
+          <button id="topic-complete-btn" disabled
+                  class="px-6 py-3 rounded-xl bg-gray-300 text-gray-500 cursor-not-allowed opacity-50 flex items-center gap-2 text-lg font-medium">
+            <i class="fas fa-lock mr-2"></i>
+            <span>Complete (0% viewed)</span>
+          </button>
+        </div>
+      </div>
+    </article>
+  </div>
+
+  <script>
+    document.querySelectorAll('.accordion-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const content = btn.nextElementSibling;
+        const icon = btn.querySelector('.fa-chevron-down');
+        content.classList.toggle('open');
+        icon?.classList.toggle('rotate-180');
+      });
+    });
+  </script>
+
+  <script type="module">
+    import { TopicTracker } from '/js/topic-tracker.js';
+    import { TopicQuiz } from '/js/topic-quiz.js';
+
+    const quizQuestions = [
+      {
+        question: "Gay-Lussac's Law applies to:",
+        options: ["Solids only", "Liquids only", "Gases only", "All states of matter"],
+        correct: 2,
+        explanation: "Gay-Lussac's Law only applies to gases because their volumes are directly proportional to the number of molecules."
+      },
+      {
+        question: "In the reaction 2H₂ + O₂ → 2H₂O, the volume ratio is:",
+        options: ["1:1:1", "2:1:2", "1:2:1", "2:2:1"],
+        correct: 1,
+        explanation: "The coefficients show the volume ratio: 2 volumes H₂ : 1 volume O₂ : 2 volumes H₂O"
+      },
+      {
+        question: "50 cm³ of hydrogen requires how much oxygen for complete reaction?",
+        options: ["25 cm³", "50 cm³", "100 cm³", "12.5 cm³"],
+        correct: 0,
+        explanation: "2H₂ + O₂ → 2H₂O. Ratio is 2:1, so O₂ = (1/2) × 50 = 25 cm³"
+      },
+      {
+        question: "Who proposed that equal volumes of gases contain equal numbers of molecules?",
+        options: ["Gay-Lussac", "Avogadro", "Boyle", "Charles"],
+        correct: 1,
+        explanation: "Avogadro proposed this law in 1811, building on Gay-Lussac's observations."
+      },
+      {
+        question: "For N₂ + 3H₂ → 2NH₃, 30 cm³ N₂ produces how much NH₃?",
+        options: ["15 cm³", "30 cm³", "60 cm³", "90 cm³"],
+        correct: 2,
+        explanation: "Ratio 1N₂ : 2NH₃. So NH₃ = (2/1) × 30 = 60 cm³"
+      },
+      {
+        question: "Gay-Lussac's Law requires which conditions?",
+        options: ["Different temperatures", "Same temperature and pressure", "Different pressures", "Room temperature only"],
+        correct: 1,
+        explanation: "All volumes must be measured at the same temperature and pressure."
+      },
+      {
+        question: "In H₂ + Cl₂ → 2HCl, if 20 cm³ HCl is formed, how much H₂ was used?",
+        options: ["20 cm³", "40 cm³", "10 cm³", "5 cm³"],
+        correct: 2,
+        explanation: "Ratio 1H₂ : 2HCl. So H₂ = (1/2) × 20 = 10 cm³"
+      },
+      {
+        question: "Why don't solids follow Gay-Lussac's Law?",
+        options: ["They're too heavy", "Their volume depends on packing, not just molecule count", "They don't react", "They have fixed shapes"],
+        correct: 1,
+        explanation: "Solid volumes depend on molecular packing and intermolecular forces, not just the number of molecules."
+      }
+    ];
+
+    const tracker = new TopicTracker({
+      topicId: 'gay-lussac-combining-volumes',
+      topicTitle: "Gay-Lussac's Law of Combining Volumes",
+      subject: 'chemistry',
+      sections: ['section-1', 'section-2', 'section-3', 'section-4', 'section-5', 'section-6'],
+      quizRequired: true
+    });
+
+    const quiz = new TopicQuiz({
+      topicId: 'gay-lussac-combining-volumes',
+      topicTitle: "Gay-Lussac's Law of Combining Volumes",
+      subject: 'chemistry',
+      questions: quizQuestions,
+      passingScore: 60,
+      tracker: tracker
+    });
+
+    document.querySelectorAll('.accordion-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const section = btn.closest('section');
+        if (section && section.id) tracker.markSectionViewed(section.id);
+      });
+    });
+
+    document.querySelectorAll('details').forEach(details => {
+      details.addEventListener('toggle', () => {
+        if (details.open) tracker.markSectionViewed('section-5');
+      });
+    });
+  </script>
+</body>
+</html>

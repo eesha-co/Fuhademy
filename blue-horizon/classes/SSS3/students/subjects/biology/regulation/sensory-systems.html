@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sensory Systems - Biology</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @keyframes fade-in-up {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in-up { animation: fade-in-up 0.5s ease-out forwards; }
+        .section-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            border: 1px solid #e5e7eb;
+        }
+        .video-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 8px;
+            background: #f9fafb;
+        }
+        .video-container iframe {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Header -->
+    <nav class="bg-white shadow-sm fixed top-0 w-full z-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center">
+                    <a href="index.html" class="text-purple-600 hover:text-purple-800 mr-4">
+                        <i class="fas fa-arrow-left"></i>
+                    </a>
+                    <h1 class="text-xl font-semibold text-gray-900">Sensory Systems</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="text-sm text-gray-600 hidden sm:block">
+                        Progress: <span id="progressPercent">0%</span>
+                    </div>
+                    <div class="w-24 sm:w-32 h-2 bg-gray-200 rounded-full">
+                        <div id="progressBar" class="h-2 bg-purple-500 rounded-full transition-all duration-300" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="pt-20 pb-8 px-4 max-w-5xl mx-auto">
+        <!-- Learning Objectives -->
+        <div class="bg-purple-50 border-l-4 border-purple-500 p-4 rounded-r-lg mb-6 animate-fade-in-up">
+            <h3 class="font-semibold text-purple-800 mb-2"><i class="fas fa-bullseye mr-2"></i>Learning Objectives</h3>
+            <ul class="text-purple-700 text-sm space-y-1">
+                <li>• Describe the structure and function of the human eye</li>
+                <li>• Explain how the ear detects sound and maintains balance</li>
+                <li>• Identify different types of sensory receptors</li>
+                <li>• Understand the mechanism of vision and hearing</li>
+                <li>• Explain common eye and ear defects</li>
+            </ul>
+        </div>
+
+        <!-- Section 1: Introduction to Sensory Systems -->
+        <div class="section-card animate-fade-in-up">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <span class="bg-purple-100 text-purple-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">1</span>
+                Introduction to Sensory Systems
+            </h2>
+            
+            <p class="text-gray-700 mb-4"><strong>Sensory systems</strong> allow organisms to detect changes in their environment (stimuli) and respond appropriately. They are essential for survival.</p>
+            
+            <div class="bg-indigo-50 p-4 rounded-lg border-l-4 border-indigo-500 mb-4">
+                <h4 class="font-semibold text-indigo-700 mb-2"><i class="fas fa-sensor mr-2"></i>Types of Sensory Receptors</h4>
+                <div class="grid md:grid-cols-2 gap-4">
+                    <ul class="text-gray-600 text-sm space-y-1">
+                        <li><strong>Photoreceptors:</strong> Detect light (eyes)</li>
+                        <li><strong>Mechanoreceptors:</strong> Detect pressure, touch, sound (ears, skin)</li>
+                        <li><strong>Chemoreceptors:</strong> Detect chemicals (nose, tongue)</li>
+                    </ul>
+                    <ul class="text-gray-600 text-sm space-y-1">
+                        <li><strong>Thermoreceptors:</strong> Detect temperature changes (skin)</li>
+                        <li><strong>Proprioceptors:</strong> Detect body position (muscles, joints)</li>
+                        <li><strong>Nociceptors:</strong> Detect pain (throughout body)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 2: The Human Eye -->
+        <div class="section-card animate-fade-in-up">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <span class="bg-purple-100 text-purple-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">2</span>
+                The Human Eye
+            </h2>
+
+            <p class="text-gray-700 mb-4">The eye is the organ of sight. It detects light and converts it into electrical impulses that are sent to the brain.</p>
+
+            <div class="bg-blue-50 p-4 rounded-lg border border-blue-200 mb-4">
+                <h4 class="font-semibold text-blue-700 mb-3 text-center"><i class="fas fa-eye mr-2"></i>Structure of the Eye</h4>
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div>
+                        <h5 class="font-medium text-blue-600 mb-2">Outer Layer (Protective)</h5>
+                        <ul class="text-gray-600 text-sm space-y-1">
+                            <li>• <strong>Sclera:</strong> White outer coat, protects eye</li>
+                            <li>• <strong>Cornea:</strong> Transparent front, refracts light</li>
+                            <li>• <strong>Conjunctiva:</strong> Thin membrane covering sclera</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h5 class="font-medium text-blue-600 mb-2">Middle Layer (Vascular)</h5>
+                        <ul class="text-gray-600 text-sm space-y-1">
+                            <li>• <strong>Choroid:</strong> Contains blood vessels, dark pigment</li>
+                            <li>• <strong>Ciliary body:</strong> Controls lens shape</li>
+                            <li>• <strong>Iris:</strong> Colored part, controls pupil size</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-4 mb-4">
+                <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+                    <h4 class="font-semibold text-yellow-700 mb-2 text-center">Lens</h4>
+                    <ul class="text-gray-600 text-sm space-y-1">
+                        <li>• Transparent, biconvex structure</li>
+                        <li>• Focuses light on retina</li>
+                        <li>• Changes shape for accommodation</li>
+                        <li>• Held by suspensory ligaments</li>
+                    </ul>
+                </div>
+                <div class="bg-red-50 p-4 rounded-lg border border-red-200">
+                    <h4 class="font-semibold text-red-700 mb-2 text-center">Retina</h4>
+                    <ul class="text-gray-600 text-sm space-y-1">
+                        <li>• Inner light-sensitive layer</li>
+                        <li>• Contains photoreceptors</li>
+                        <li>• Rods: dim light, black/white</li>
+                        <li>• Cones: bright light, color vision</li>
+                    </ul>
+                </div>
+                <div class="bg-green-50 p-4 rounded-lg border border-green-200">
+                    <h4 class="font-semibold text-green-700 mb-2 text-center">Other Parts</h4>
+                    <ul class="text-gray-600 text-sm space-y-1">
+                        <li>• <strong>Pupil:</strong> Hole in iris, lets in light</li>
+                        <li>• <strong>Aqueous humor:</strong> Fluid in front</li>
+                        <li>• <strong>Vitreous humor:</strong> Jelly behind lens</li>
+                        <li>• <strong>Optic nerve:</strong> Sends signals to brain</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="bg-gray-50 p-4 rounded-lg">
+                <h4 class="font-semibold text-gray-700 mb-2"><i class="fas fa-route mr-2"></i>Pathway of Light Through Eye:</h4>
+                <p class="text-gray-600 text-sm">Light → Cornea → Aqueous humor → Pupil → Lens → Vitreous humor → Retina → Optic nerve → Brain</p>
+            </div>
+        </div>
+
+        <!-- Section 3: Vision Mechanism -->
+        <div class="section-card animate-fade-in-up">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <span class="bg-purple-100 text-purple-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">3</span>
+                How We See
+            </h2>
+
+            <div class="grid md:grid-cols-2 gap-4 mb-4">
+                <div class="bg-orange-50 p-4 rounded-lg border-l-4 border-orange-500">
+                    <h4 class="font-semibold text-orange-700 mb-2"><i class="fas fa-adjust mr-2"></i>Pupil Reflex</h4>
+                    <p class="text-gray-600 text-sm mb-2">The iris controls the size of the pupil to regulate light entry:</p>
+                    <ul class="text-gray-600 text-sm space-y-1">
+                        <li>• <strong>Bright light:</strong> Circular muscles contract → Pupil constricts → Less light enters</li>
+                        <li>• <strong>Dim light:</strong> Radial muscles contract → Pupil dilates → More light enters</li>
+                    </ul>
+                </div>
+                <div class="bg-teal-50 p-4 rounded-lg border-l-4 border-teal-500">
+                    <h4 class="font-semibold text-teal-700 mb-2"><i class="fas fa-focus mr-2"></i>Accommodation</h4>
+                    <p class="text-gray-600 text-sm mb-2">The lens changes shape to focus on objects at different distances:</p>
+                    <ul class="text-gray-600 text-sm space-y-1">
+                        <li>• <strong>Distant objects:</strong> Ciliary muscles relax → Lens becomes thinner → Less refraction</li>
+                        <li>• <strong>Near objects:</strong> Ciliary muscles contract → Lens becomes thicker → More refraction</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                <h4 class="font-semibold text-blue-700 mb-2"><i class="fas fa-brain mr-2"></i>Formation of Image</h4>
+                <ul class="text-gray-600 text-sm space-y-1">
+                    <li>• Light rays are refracted by cornea and lens</li>
+                    <li>• Image formed on retina is <strong>real, inverted, and smaller</strong> than the object</li>
+                    <li>• Photoreceptors convert light to electrical impulses</li>
+                    <li>• Optic nerve transmits impulses to visual cortex in brain</li>
+                    <li>• Brain interprets the image correctly (right side up)</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Section 4: Eye Defects -->
+        <div class="section-card animate-fade-in-up">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <span class="bg-purple-100 text-purple-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">4</span>
+                Eye Defects and Correction
+            </h2>
+
+            <div class="grid md:grid-cols-3 gap-4">
+                <div class="bg-red-50 p-4 rounded-lg border border-red-200">
+                    <h4 class="font-semibold text-red-700 mb-2 text-center"><i class="fas fa-glasses mr-2"></i>Short-sightedness (Myopia)</h4>
+                    <p class="text-gray-600 text-sm mb-2"><strong>Cause:</strong> Eyeball too long or lens too curved</p>
+                    <p class="text-gray-600 text-sm mb-2"><strong>Problem:</strong> Light focuses in front of retina</p>
+                    <p class="text-gray-600 text-sm mb-2"><strong>Can see:</strong> Near objects clearly</p>
+                    <p class="text-gray-600 text-sm mb-2"><strong>Cannot see:</strong> Distant objects clearly</p>
+                    <p class="text-gray-600 text-sm"><strong>Correction:</strong> <span class="text-red-600 font-medium">Concave lens (diverging)</span></p>
+                </div>
+                <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                    <h4 class="font-semibold text-blue-700 mb-2 text-center"><i class="fas fa-glasses mr-2"></i>Long-sightedness (Hyperopia)</h4>
+                    <p class="text-gray-600 text-sm mb-2"><strong>Cause:</strong> Eyeball too short or lens too flat</p>
+                    <p class="text-gray-600 text-sm mb-2"><strong>Problem:</strong> Light focuses behind retina</p>
+                    <p class="text-gray-600 text-sm mb-2"><strong>Can see:</strong> Distant objects clearly</p>
+                    <p class="text-gray-600 text-sm mb-2"><strong>Cannot see:</strong> Near objects clearly</p>
+                    <p class="text-gray-600 text-sm"><strong>Correction:</strong> <span class="text-blue-600 font-medium">Convex lens (converging)</span></p>
+                </div>
+                <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                    <h4 class="font-semibold text-gray-700 mb-2 text-center"><i class="fas fa-cloud mr-2"></i>Other Defects</h4>
+                    <ul class="text-gray-600 text-sm space-y-2">
+                        <li><strong>Astigmatism:</strong> Uneven cornea → blurred vision at all distances</li>
+                        <li><strong>Presbyopia:</strong> Loss of lens elasticity with age → difficulty reading</li>
+                        <li><strong>Cataract:</strong> Cloudy lens → leads to blindness</li>
+                        <li><strong>Glaucoma:</strong> Increased pressure in eye → damages optic nerve</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 5: The Human Ear -->
+        <div class="section-card animate-fade-in-up">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <span class="bg-purple-100 text-purple-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">5</span>
+                The Human Ear
+            </h2>
+
+            <p class="text-gray-700 mb-4">The ear has two main functions: <strong>hearing</strong> and <strong>balance</strong>. It detects sound waves and head position.</p>
+
+            <div class="grid md:grid-cols-3 gap-4 mb-4">
+                <div class="bg-amber-50 p-4 rounded-lg border-l-4 border-amber-500">
+                    <h4 class="font-semibold text-amber-700 mb-2"><i class="fas fa-ear-listen mr-2"></i>Outer Ear</h4>
+                    <ul class="text-gray-600 text-sm space-y-1">
+                        <li><strong>Pinna:</strong> Visible part, collects sound waves</li>
+                        <li><strong>Ear canal:</strong> Directs sound to eardrum</li>
+                        <li><strong>Earwax:</strong> Traps dust, protects ear</li>
+                        <li><strong>Eardrum (tympanum):</strong> Vibrates with sound</li>
+                    </ul>
+                </div>
+                <div class="bg-rose-50 p-4 rounded-lg border-l-4 border-rose-500">
+                    <h4 class="font-semibold text-rose-700 mb-2"><i class="fas fa-drum mr-2"></i>Middle Ear</h4>
+                    <ul class="text-gray-600 text-sm space-y-1">
+                        <li><strong>Ossicles:</strong> Three tiny bones</li>
+                        <li>- Malleus (hammer)</li>
+                        <li>- Incus (anvil)</li>
+                        <li>- Stapes (stirrup)</li>
+                        <li><strong>Eustachian tube:</strong> Equalizes pressure</li>
+                    </ul>
+                </div>
+                <div class="bg-cyan-50 p-4 rounded-lg border-l-4 border-cyan-500">
+                    <h4 class="font-semibold text-cyan-700 mb-2"><i class="fas fa-water mr-2"></i>Inner Ear</h4>
+                    <ul class="text-gray-600 text-sm space-y-1">
+                        <li><strong>Cochlea:</strong> Spiral organ for hearing</li>
+                        <li>- Contains hair cells</li>
+                        <li>- Converts vibrations to impulses</li>
+                        <li><strong>Semicircular canals:</strong> Balance</li>
+                        <li><strong>Vestibule:</strong> Static balance</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="bg-gray-50 p-4 rounded-lg">
+                <h4 class="font-semibold text-gray-700 mb-2"><i class="fas fa-route mr-2"></i>Pathway of Sound Through Ear:</h4>
+                <p class="text-gray-600 text-sm">Sound waves → Pinna → Ear canal → Eardrum → Ossicles → Oval window → Cochlea (fluid) → Hair cells → Auditory nerve → Brain</p>
+            </div>
+        </div>
+
+        <!-- Section 6: Hearing and Balance -->
+        <div class="section-card animate-fade-in-up">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <span class="bg-purple-100 text-purple-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">6</span>
+                Hearing and Balance Mechanisms
+            </h2>
+
+            <div class="grid md:grid-cols-2 gap-4">
+                <div class="bg-green-50 p-4 rounded-lg border border-green-200">
+                    <h4 class="font-semibold text-green-700 mb-3"><i class="fas fa-volume-up mr-2"></i>Hearing Mechanism</h4>
+                    <ol class="text-gray-600 text-sm space-y-2">
+                        <li><span class="bg-green-200 text-green-800 w-5 h-5 rounded-full inline-flex items-center justify-center text-xs mr-2">1</span>Sound waves are collected by pinna</li>
+                        <li><span class="bg-green-200 text-green-800 w-5 h-5 rounded-full inline-flex items-center justify-center text-xs mr-2">2</span>Waves travel through ear canal to eardrum</li>
+                        <li><span class="bg-green-200 text-green-800 w-5 h-5 rounded-full inline-flex items-center justify-center text-xs mr-2">3</span>Eardrum vibrates at same frequency as sound</li>
+                        <li><span class="bg-green-200 text-green-800 w-5 h-5 rounded-full inline-flex items-center justify-center text-xs mr-2">4</span>Vibrations amplified by ossicles (22×)</li>
+                        <li><span class="bg-green-200 text-green-800 w-5 h-5 rounded-full inline-flex items-center justify-center text-xs mr-2">5</span>Oval window transmits to cochlear fluid</li>
+                        <li><span class="bg-green-200 text-green-800 w-5 h-5 rounded-full inline-flex items-center justify-center text-xs mr-2">6</span>Hair cells in cochlea detect vibrations</li>
+                        <li><span class="bg-green-200 text-green-800 w-5 h-5 rounded-full inline-flex items-center justify-center text-xs mr-2">7</span>Impulses sent via auditory nerve to brain</li>
+                    </ol>
+                </div>
+                <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                    <h4 class="font-semibold text-blue-700 mb-3"><i class="fas fa-balance-scale mr-2"></i>Balance Mechanism</h4>
+                    <div class="space-y-3">
+                        <div>
+                            <p class="font-medium text-blue-600">Semicircular Canals (Dynamic Balance)</p>
+                            <p class="text-gray-600 text-sm">Three canals at right angles, filled with fluid and hair cells. Detect rotational movements of head.</p>
+                        </div>
+                        <div>
+                            <p class="font-medium text-blue-600">Vestibule (Static Balance)</p>
+                            <p class="text-gray-600 text-sm">Contains utricle and saccule with otoliths (calcium carbonate crystals). Detect head position relative to gravity.</p>
+                        </div>
+                        <div class="bg-white p-3 rounded-lg">
+                            <p class="text-sm text-gray-600"><strong>How it works:</strong> When head moves, fluid moves and bends hair cells. This sends impulses to the cerebellum, which coordinates muscle responses to maintain balance.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 7: Other Senses -->
+        <div class="section-card animate-fade-in-up">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <span class="bg-purple-100 text-purple-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">7</span>
+                Other Sensory Systems
+            </h2>
+
+            <div class="grid md:grid-cols-3 gap-4">
+                <div class="bg-pink-50 p-4 rounded-lg border border-pink-200">
+                    <h4 class="font-semibold text-pink-700 mb-2 text-center"><i class="fas fa-nose mr-2"></i>Smell (Olfaction)</h4>
+                    <ul class="text-gray-600 text-sm space-y-1">
+                        <li>• Chemoreceptors in nasal cavity</li>
+                        <li>• Detect airborne chemicals</li>
+                        <li>• Olfactory nerve to brain</li>
+                        <li>• Closely linked to taste</li>
+                        <li>• Can detect ~10,000 different smells</li>
+                    </ul>
+                </div>
+                <div class="bg-orange-50 p-4 rounded-lg border border-orange-200">
+                    <h4 class="font-semibold text-orange-700 mb-2 text-center"><i class="fas fa-tongue mr-2"></i>Taste (Gustation)</h4>
+                    <ul class="text-gray-600 text-sm space-y-1">
+                        <li>• Taste buds on tongue papillae</li>
+                        <li>• Chemoreceptors detect dissolved chemicals</li>
+                        <li>• 5 basic tastes: sweet, sour, salty, bitter, umami</li>
+                        <li>• Different parts of tongue detect different tastes</li>
+                    </ul>
+                </div>
+                <div class="bg-amber-50 p-4 rounded-lg border border-amber-200">
+                    <h4 class="font-semibold text-amber-700 mb-2 text-center"><i class="fas fa-hand-paper mr-2"></i>Touch (Skin)</h4>
+                    <ul class="text-gray-600 text-sm space-y-1">
+                        <li>• Various receptors in skin</li>
+                        <li>• Detect pressure, touch, temperature, pain</li>
+                        <li>• Different body parts have different sensitivity</li>
+                        <li>• Fingertips most sensitive</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 8: Video -->
+        <div class="section-card animate-fade-in-up">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <span class="bg-purple-100 text-purple-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">8</span>
+                Video: The Eye and Ear
+            </h2>
+            
+            <div class="bg-gray-50 p-4 rounded-lg border">
+                <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/0VO033bGewY" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 9: Practice Problems -->
+        <div class="section-card animate-fade-in-up">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-pencil-alt text-purple-600 mr-3"></i>
+                Practice Questions
+            </h2>
+
+            <div class="space-y-4">
+                <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+                    <p class="font-medium text-gray-800 mb-2">1. Explain the role of the ciliary muscles in accommodation.</p>
+                    <details class="mt-2">
+                        <summary class="text-sm text-blue-600 cursor-pointer hover:text-blue-800">Show Answer</summary>
+                        <div class="mt-2 text-sm text-gray-700">
+                            When viewing <strong>near objects</strong>: Ciliary muscles contract, reducing tension on suspensory ligaments, allowing the lens to become thicker (more convex) and increase refraction.<br><br>
+                            When viewing <strong>distant objects</strong>: Ciliary muscles relax, increasing tension on suspensory ligaments, pulling the lens thinner (less convex) and decreasing refraction.
+                        </div>
+                    </details>
+                </div>
+
+                <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+                    <p class="font-medium text-gray-800 mb-2">2. What type of lens is used to correct short-sightedness and why?</p>
+                    <details class="mt-2">
+                        <summary class="text-sm text-blue-600 cursor-pointer hover:text-blue-800">Show Answer</summary>
+                        <div class="mt-2 text-sm text-gray-700">
+                            A <strong>concave (diverging) lens</strong> is used to correct short-sightedness (myopia).<br><br>
+                            In myopia, light focuses in front of the retina because the eyeball is too long or the lens is too powerful. A concave lens diverges (spreads out) the light rays before they enter the eye, so they focus correctly on the retina instead of in front of it.
+                        </div>
+                    </details>
+                </div>
+
+                <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+                    <p class="font-medium text-gray-800 mb-2">3. Describe the role of the ossicles in hearing.</p>
+                    <details class="mt-2">
+                        <summary class="text-sm text-blue-600 cursor-pointer hover:text-blue-800">Show Answer</summary>
+                        <div class="mt-2 text-sm text-gray-700">
+                            The <strong>ossicles</strong> (malleus, incus, stapes) are three tiny bones in the middle ear that:
+                            <ul class="list-disc list-inside mt-1">
+                                <li><strong>Amplify</strong> vibrations from the eardrum by about 22 times</li>
+                                <li><strong>Transmit</strong> vibrations from the eardrum to the oval window</li>
+                                <li>Overcome the impedance mismatch between air and cochlear fluid</li>
+                                <li>Protect the inner ear from loud sounds (acoustic reflex)</li>
+                            </ul>
+                        </div>
+                    </details>
+                </div>
+
+                <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+                    <p class="font-medium text-gray-800 mb-2">4. How do the semicircular canals detect rotational movement?</p>
+                    <details class="mt-2">
+                        <summary class="text-sm text-blue-600 cursor-pointer hover:text-blue-800">Show Answer</summary>
+                        <div class="mt-2 text-sm text-gray-700">
+                            The three semicircular canals are positioned at right angles to each other. When the head rotates:
+                            <ol class="list-decimal list-inside mt-1 space-y-1">
+                                <li>The fluid (endolymph) inside the canals lags behind due to inertia</li>
+                                <li>This relative movement bends the hair cells in the ampulla</li>
+                                <li>Bent hair cells trigger nerve impulses</li>
+                                <li>Different canals detect rotation in different planes (horizontal, vertical, torsional)</li>
+                                <li>Information is sent to the cerebellum for balance coordination</li>
+                            </ol>
+                        </div>
+                    </details>
+                </div>
+            </div>
+        </div>
+
+        <!-- Key Takeaways -->
+        <div class="bg-gradient-to-r from-purple-50 to-pink-50 p-5 rounded-lg border border-purple-200 animate-fade-in-up">
+            <h3 class="font-semibold text-purple-800 mb-3"><i class="fas fa-star mr-2"></i>Key Takeaways</h3>
+            <ul class="text-purple-700 text-sm space-y-2">
+                <li>• Eye: Cornea and lens refract light; retina contains rods (dim light) and cones (color)</li>
+                <li>• Accommodation: Lens changes shape to focus on near/distant objects</li>
+                <li>• Myopia (short-sighted): Concave lens correction; Hyperopia (long-sighted): Convex lens</li>
+                <li>• Ear: Ossicles amplify sound; Cochlea detects sound; Semicircular canals detect balance</li>
+                <li>• All sensory systems convert stimuli to electrical impulses sent to the brain</li>
+            </ul>
+        </div>
+
+        <!-- Navigation -->
+        <div class="flex justify-between items-center mt-8">
+            <a href="nervous-coordination.html" class="px-4 py-2 text-gray-600 hover:text-gray-900">
+                <i class="fas fa-chevron-left mr-2"></i>Previous
+            </a>
+            <a href="hormonal-coordination.html" class="px-4 py-2 bg-purple-500 text-white rounded-lg hover:bg-purple-600">
+                Next: Hormonal Coordination<i class="fas fa-chevron-right ml-2"></i>
+            </a>
+        </div>
+    </main>
+
+    <script>
+        // Progress tracking
+        let progress = 0;
+        const totalSections = 9;
+        
+        function updateProgress() {
+            const percentage = Math.round((progress / totalSections) * 100);
+            document.getElementById('progressPercent').textContent = percentage + '%';
+            document.getElementById('progressBar').style.width = percentage + '%';
+        }
+
+        // Intersection Observer for progress
+        const sections = document.querySelectorAll('.section-card');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    progress = Array.from(sections).indexOf(entry.target) + 1;
+                    updateProgress();
+                }
+            });
+        }, { threshold: 0.5 });
+
+        sections.forEach(section => observer.observe(section));
+    </script>
+
+<!-- Topic Quiz System -->
+<script src="/js/topic-quiz-loader.js"></script>
+<script src="/js/topic-quiz-injector.js"></script>
+</body>
+</html>

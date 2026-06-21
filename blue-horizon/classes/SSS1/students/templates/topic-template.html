@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Topic - Template</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body{font-family:Inter, sans-serif;background:#f8fafc}
+    .card{backdrop-filter:blur(8px);background:rgba(255,255,255,0.85);border:1px solid rgba(0,0,0,0.04);}
+    .step-progress{transition:width .25s ease}
+    .hidden{display:none}
+  </style>
+</head>
+<body>
+  <header class="bg-white shadow-sm sticky top-0 z-40">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <a href="../index.html" class="text-gray-600 hover:text-gray-900"><i class="fas fa-arrow-left"></i></a>
+        <h1 id="topicTitle" class="text-lg font-semibold">Topic Title</h1>
+      </div>
+      <div class="flex items-center gap-4">
+        <div class="text-sm text-gray-600">Progress: <span id="progressPercent">0%</span></div>
+        <div class="w-40 h-2 bg-gray-200 rounded-full"><div id="progressBar" class="step-progress h-2 bg-blue-600 rounded-full" style="width:0%"></div></div>
+      </div>
+    </div>
+  </header>
+
+  <main class="pt-6 pb-16">
+    <div class="max-w-6xl mx-auto px-4 grid md:grid-cols-12 gap-6">
+      <aside class="md:col-span-3">
+        <div class="card p-4 rounded-lg sticky top-24">
+          <h3 class="font-semibold mb-3">Steps</h3>
+          <ul id="stepsList" class="space-y-2 text-sm text-gray-700">
+            <!-- JS populated -->
+          </ul>
+        </div>
+      </aside>
+
+      <section class="md:col-span-9 space-y-6">
+        <div class="card p-6 rounded-lg" id="stepContainer">
+          <!-- step content inserted here -->
+        </div>
+
+        <div class="card p-6 rounded-lg" id="resourcesContainer">
+          <h3 class="font-semibold mb-4">Resources</h3>
+          <div id="resourcesGrid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <div class="fixed bottom-0 left-0 right-0 bg-white border-t">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between">
+      <button id="prevStepBtn" class="text-gray-600 px-3 py-2 rounded disabled:opacity-50" disabled><i class="fas fa-chevron-left mr-1"></i>Previous</button>
+      <div class="flex gap-3">
+        <button id="startQuizBtn" class="px-3 py-2 bg-yellow-100 text-yellow-800 rounded">Take Quiz</button>
+        <button id="nextStepBtn" class="px-3 py-2 bg-blue-600 text-white rounded">Next <i class="fas fa-chevron-right ml-1"></i></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quiz Modal -->
+  <div id="quizModal" class="hidden fixed inset-0 z-50 bg-black bg-opacity-50 flex items-start justify-center p-6">
+    <div class="bg-white w-full max-w-2xl rounded-lg p-6">
+      <div class="flex justify-between items-center mb-4"><h3 class="font-semibold">Quick Quiz</h3><button id="closeQuiz" class="text-gray-600">&times;</button></div>
+      <div id="quizContent"></div>
+    </div>
+  </div>
+
+  <script>
+    // Simple client-side template runner. Replace topicData with page-specific object.
+    const topicData = window.topicData || { title: 'Sample Topic', steps: [], resources: [] };
+    document.getElementById('topicTitle').textContent = topicData.title || 'Topic';
+    const stepsList = document.getElementById('stepsList');
+    const stepContainer = document.getElementById('stepContainer');
+    const resourcesGrid = document.getElementById('resourcesGrid');
+    const progressBar = document.getElementById('progressBar');
+    const progressPercent = document.getElementById('progressPercent');
+    let currentIndex = 0;
+
+    function renderSteps(){
+      stepsList.innerHTML = '';
+      topicData.steps.forEach((s, i) => {
+        const li = document.createElement('li');
+        li.innerHTML = `<a href="#" data-index="${i}" class="block p-2 rounded hover:bg-gray-100 ${i===0? 'bg-blue-50 text-blue-600':''}">${s.title}</a>`;
+        stepsList.appendChild(li);
+      });
+    }
+
+    function showStep(i){
+      currentIndex = i;
+      const step = topicData.steps[i];
+      stepContainer.innerHTML = step ? step.content.join('\n') : '<p class="text-gray-700">No content.</p>';
+      const percent = topicData.steps.length>1 ? Math.round((i/(topicData.steps.length-1))*100) : 0;
+      progressBar.style.width = percent + '%';
+      progressPercent.textContent = percent + '%';
+      document.querySelectorAll('#stepsList a').forEach(a=> a.classList.remove('bg-blue-50','text-blue-600'));
+      const active = document.querySelector(`#stepsList a[data-index='${i}']`);
+      if(active) active.classList.add('bg-blue-50','text-blue-600');
+    }
+
+    function renderResources(){
+      resourcesGrid.innerHTML = '';
+      (topicData.resources||[]).forEach(r=>{
+        const card = document.createElement('div');
+        card.className = 'p-4 border rounded';
+        card.innerHTML = `<h4 class="font-semibold text-sm mb-2">${r.title}</h4><p class="text-xs text-gray-600 mb-2">${r.description||''}</p><div>${r.type==='video'? `<iframe src="${r.url}" class="w-full h-32" frameborder="0"></iframe>`: `<a href="${r.url}" target="_blank" class="text-blue-600">Open</a>`}</div>`;
+        resourcesGrid.appendChild(card);
+      });
+    }
+
+    document.addEventListener('click', (e)=>{
+      if(e.target.matches('#stepsList a')){e.preventDefault(); showStep(Number(e.target.dataset.index));}
+      if(e.target.id==='nextStepBtn'){ if(currentIndex < (topicData.steps.length-1)) showStep(currentIndex+1);} 
+      if(e.target.id==='prevStepBtn'){ if(currentIndex>0) showStep(currentIndex-1);} 
+      if(e.target.id==='startQuizBtn'){ document.getElementById('quizModal').classList.remove('hidden'); document.getElementById('quizContent').innerHTML = '<p class="text-gray-700">No quiz configured.</p>' }
+      if(e.target.id==='closeQuiz'){ document.getElementById('quizModal').classList.add('hidden'); }
+    });
+
+    renderSteps(); showStep(0); renderResources();
+  </script>
+</body>
+</html>

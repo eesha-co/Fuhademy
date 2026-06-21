@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thermodynamics - Interactive Learning</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <style>
+        .step-active { background-color: #2563eb; color: white; }
+        .step-inactive { background-color: #e5e7eb; color: #374151; }
+        #thermoCanvas { touch-action: none; }
+        .molecule {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background-color: #3b82f6;
+            border-radius: 50%;
+            transition: transform 0.05s linear;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen font-inter">
+    <nav class="bg-blue-700 p-4">
+        <div class="max-w-7xl mx-auto px-4 flex justify-between items-center">
+            <a href="../index.html" class="text-white hover:text-blue-100 flex items-center gap-2">
+                <i class="fas fa-arrow-left"></i>
+                <span>Back to Physics</span>
+            </a>
+            <h1 class="text-white text-xl font-bold">Thermodynamics</h1>
+        </div>
+    </nav>
+
+    <div class="flex">
+        <!-- Sidebar Steps -->
+        <aside class="w-64 bg-white shadow-md p-4 min-h-screen">
+            <h2 class="text-lg font-semibold mb-4">Learning Steps</h2>
+            <ul id="stepsList" class="space-y-2"></ul>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 p-8">
+            <div id="progressBar" class="mb-6 h-3 bg-gray-200 rounded-full overflow-hidden">
+                <div id="progress" class="h-full bg-blue-600 transition-all" style="width: 0%"></div>
+            </div>
+
+            <div id="stepContent" class="bg-white rounded-xl shadow-sm p-6 min-h-[300px]"></div>
+
+            <!-- Thermodynamics Simulation -->
+            <div id="simulationContainer" class="mt-6 bg-white rounded-xl shadow-sm p-6">
+                <div class="flex gap-4 mb-4">
+                    <button id="isothermBtn" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+                        Isothermal Process
+                    </button>
+                    <button id="isobaricBtn" class="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300">
+                        Isobaric Process
+                    </button>
+                    <button id="adiabaticBtn" class="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300">
+                        Adiabatic Process
+                    </button>
+                </div>
+
+                <div class="relative w-full h-[400px] border rounded-lg bg-gray-50">
+                    <canvas id="thermoCanvas" class="absolute top-0 left-0 w-full h-full"></canvas>
+                    <div id="containerBox" class="absolute border-2 border-gray-400 transition-all duration-500"></div>
+                    <div id="moleculeContainer"></div>
+                </div>
+
+                <div class="mt-4 grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Temperature</label>
+                        <input type="range" id="tempSlider" min="273" max="373" value="300" class="w-full">
+                        <span id="tempValue" class="text-sm text-gray-600">300 K</span>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Volume</label>
+                        <input type="range" id="volumeSlider" min="1" max="100" value="50" class="w-full">
+                        <span id="volumeValue" class="text-sm text-gray-600">50 L</span>
+                    </div>
+                </div>
+
+                <div class="mt-4 grid grid-cols-3 gap-4 text-center">
+                    <div class="p-4 bg-blue-50 rounded-lg">
+                        <p class="text-sm font-medium text-gray-700">Pressure</p>
+                        <p id="pressureDisplay" class="text-lg font-bold text-blue-600">1.0 atm</p>
+                    </div>
+                    <div class="p-4 bg-green-50 rounded-lg">
+                        <p class="text-sm font-medium text-gray-700">Internal Energy</p>
+                        <p id="energyDisplay" class="text-lg font-bold text-green-600">0 J</p>
+                    </div>
+                    <div class="p-4 bg-yellow-50 rounded-lg">
+                        <p class="text-sm font-medium text-gray-700">Work Done</p>
+                        <p id="workDisplay" class="text-lg font-bold text-yellow-600">0 J</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex justify-between mt-8">
+                <button id="prevBtn" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400" disabled>Previous</button>
+                <button id="nextBtn" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Next</button>
+            </div>
+        </main>
+    </div>
+
+    <!-- Quiz Modal -->
+    <div id="quizModal" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center hidden">
+        <div class="bg-white p-8 rounded-xl shadow-lg max-w-lg w-full">
+            <h3 class="text-xl font-bold mb-4">Check Your Understanding</h3>
+            <div id="quizContent"></div>
+            <div class="mt-6 flex justify-end gap-4">
+                <button id="closeQuiz" class="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300">Close</button>
+                <button id="submitQuiz" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Submit</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const topicData = {
+            title: "Thermodynamics",
+            steps: [
+                {
+                    title: "Basic Laws",
+                    content: `
+                        <div class="prose max-w-none">
+                            <h3 class="text-xl font-bold mb-4">Laws of Thermodynamics</h3>
+                            <div class="space-y-6">
+                                <div class="p-4 bg-blue-50 rounded-lg">
+                                    <h4 class="font-semibold">Zeroth Law</h4>
+                                    <p>If two systems are in thermal equilibrium with a third system, they are in thermal equilibrium with each other.</p>
+                                </div>
+                                <div class="p-4 bg-green-50 rounded-lg">
+                                    <h4 class="font-semibold">First Law</h4>
+                                    <p class="text-center my-2">ΔU = Q - W</p>
+                                    <p>Energy cannot be created or destroyed, only converted from one form to another.</p>
+                                </div>
+                                <div class="p-4 bg-yellow-50 rounded-lg">
+                                    <h4 class="font-semibold">Second Law</h4>
+                                    <p>Heat flows spontaneously from hot to cold bodies.</p>
+                                    <p>Entropy of an isolated system always increases.</p>
+                                </div>
+                                <div class="p-4 bg-red-50 rounded-lg">
+                                    <h4 class="font-semibold">Third Law</h4>
+                                    <p>It is impossible to reach absolute zero temperature.</p>
+                                </div>
+                            </div>
+                        </div>
+                    `
+                },
+                {
+                    title: "Gas Laws",
+                    content: `
+                        <div class="prose max-w-none">
+                            <h3 class="text-xl font-bold mb-4">Ideal Gas Laws</h3>
+                            <div class="grid grid-cols-2 gap-4 mb-4">
+                                <div class="p-4 bg-blue-50 rounded-lg">
+                                    <h4 class="font-semibold">Boyle's Law</h4>
+                                    <p class="text-center my-2">PV = constant</p>
+                                    <p class="text-sm">At constant temperature</p>
+                                </div>
+                                <div class="p-4 bg-green-50 rounded-lg">
+                                    <h4 class="font-semibold">Charles's Law</h4>
+                                    <p class="text-center my-2">V/T = constant</p>
+                                    <p class="text-sm">At constant pressure</p>
+                                </div>
+                            </div>
+                            <div class="p-4 bg-yellow-50 rounded-lg">
+                                <h4 class="font-semibold">Ideal Gas Law</h4>
+                                <p class="text-center my-2">PV = nRT</p>
+                                <ul class="list-disc list-inside text-sm">
+                                    <li>P: pressure</li>
+                                    <li>V: volume</li>
+                                    <li>n: number of moles</li>
+                                    <li>R: gas constant</li>
+                                    <li>T: temperature</li>
+                                </ul>
+                            </div>
+                        </div>
+                    `
+                },
+                {
+                    title: "Processes",
+                    content: `
+                        <div class="prose max-w-none">
+                            <h3 class="text-xl font-bold mb-4">Thermodynamic Processes</h3>
+                            <div class="space-y-4">
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div class="p-4 bg-blue-50 rounded-lg">
+                                        <h4 class="font-semibold">Isothermal Process</h4>
+                                        <p>Temperature remains constant</p>
+                                        <p class="text-sm">Q = W</p>
+                                    </div>
+                                    <div class="p-4 bg-green-50 rounded-lg">
+                                        <h4 class="font-semibold">Isobaric Process</h4>
+                                        <p>Pressure remains constant</p>
+                                        <p class="text-sm">W = PΔV</p>
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div class="p-4 bg-yellow-50 rounded-lg">
+                                        <h4 class="font-semibold">Isochoric Process</h4>
+                                        <p>Volume remains constant</p>
+                                        <p class="text-sm">W = 0</p>
+                                    </div>
+                                    <div class="p-4 bg-red-50 rounded-lg">
+                                        <h4 class="font-semibold">Adiabatic Process</h4>
+                                        <p>No heat exchange</p>
+                                        <p class="text-sm">Q = 0</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `
+                }
+            ],
+            quiz: [
+                {
+                    question: "Which law of thermodynamics states that energy cannot be created or destroyed?",
+                    options: [
+                        "Zeroth Law",
+                        "First Law",
+                        "Second Law",
+                        "Third Law"
+                    ],
+                    correct: 1
+                },
+                {
+                    question: "In an isothermal process, which quantity remains constant?",
+                    options: [
+                        "Pressure",
+                        "Volume",
+                        "Temperature",
+                        "Entropy"
+                    ],
+                    correct: 2
+                },
+                {
+                    question: "According to Boyle's Law, if pressure doubles, what happens to volume (at constant temperature)?",
+                    options: [
+                        "Doubles",
+                        "Halves",
+                        "Stays the same",
+                        "Becomes zero"
+                    ],
+                    correct: 1
+                }
+            ]
+        };
+
+        let currentStep = 0;
+        let completedSteps = new Set();
+        let currentMode = 'isotherm';
+        let temperature = 300;
+        let volume = 50;
+        let molecules = [];
+        let initialEnergy = 0;
+        let work = 0;
+        
+        const canvas = document.getElementById('thermoCanvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = canvas.offsetWidth;
+        canvas.height = 400;
+
+        const containerBox = document.getElementById('containerBox');
+        function updateContainer() {
+            const baseWidth = canvas.width * 0.3;
+            const width = baseWidth * (volume/50);
+            const height = canvas.height * 0.6;
+            const left = (canvas.width - width) / 2;
+            const top = (canvas.height - height) / 2;
+            
+            containerBox.style.width = width + 'px';
+            containerBox.style.height = height + 'px';
+            containerBox.style.left = left + 'px';
+            containerBox.style.top = top + 'px';
+        }
+
+        class Molecule {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+                this.vx = (Math.random() - 0.5) * temperature/100;
+                this.vy = (Math.random() - 0.5) * temperature/100;
+                this.element = document.createElement('div');
+                this.element.className = 'molecule';
+                document.getElementById('moleculeContainer').appendChild(this.element);
+                this.updatePosition();
+            }
+
+            updatePosition() {
+                this.element.style.transform = `translate(${this.x}px, ${this.y}px)`;
+            }
+
+            update() {
+                const box = containerBox.getBoundingClientRect();
+                const containerLeft = parseFloat(containerBox.style.left);
+                const containerTop = parseFloat(containerBox.style.top);
+                const containerWidth = parseFloat(containerBox.style.width);
+                const containerHeight = parseFloat(containerBox.style.height);
+
+                this.x += this.vx * (temperature/300);
+                this.y += this.vy * (temperature/300);
+
+                // Bounce off walls
+                if (this.x < containerLeft || this.x > containerLeft + containerWidth) {
+                    this.vx *= -1;
+                    work += Math.abs(this.vx) * 0.1;
+                }
+                if (this.y < containerTop || this.y > containerTop + containerHeight) {
+                    this.vy *= -1;
+                }
+
+                this.updatePosition();
+            }
+
+            remove() {
+                this.element.remove();
+            }
+        }
+
+        function initializeMolecules() {
+            molecules = [];
+            document.getElementById('moleculeContainer').innerHTML = '';
+            
+            const box = containerBox.getBoundingClientRect();
+            const containerLeft = parseFloat(containerBox.style.left);
+            const containerTop = parseFloat(containerBox.style.top);
+            const containerWidth = parseFloat(containerBox.style.width);
+            const containerHeight = parseFloat(containerBox.style.height);
+
+            for(let i = 0; i < 50; i++) {
+                const x = containerLeft + Math.random() * containerWidth;
+                const y = containerTop + Math.random() * containerHeight;
+                molecules.push(new Molecule(x, y));
+            }
+
+            initialEnergy = temperature * 100;
+            work = 0;
+        }
+
+        function updateSimulation() {
+            molecules.forEach(m => m.update());
+
+            // Calculate and update displays
+            const pressure = (temperature * 50/volume) / 100;
+            document.getElementById('pressureDisplay').textContent = pressure.toFixed(2) + ' atm';
+            
+            const energy = temperature * 100;
+            document.getElementById('energyDisplay').textContent = 
+                (energy - initialEnergy).toFixed(0) + ' J';
+            
+            document.getElementById('workDisplay').textContent = 
+                work.toFixed(0) + ' J';
+
+            requestAnimationFrame(updateSimulation);
+        }
+
+        // Event listeners
+        document.getElementById('tempSlider').addEventListener('input', (e) => {
+            temperature = parseInt(e.target.value);
+            document.getElementById('tempValue').textContent = temperature + ' K';
+            
+            if (currentMode === 'isotherm') {
+                // Keep PV constant
+                volume = (300 * 50) / temperature;
+                document.getElementById('volumeSlider').value = volume;
+                document.getElementById('volumeValue').textContent = volume.toFixed(0) + ' L';
+                updateContainer();
+            }
+        });
+
+        document.getElementById('volumeSlider').addEventListener('input', (e) => {
+            volume = parseInt(e.target.value);
+            document.getElementById('volumeValue').textContent = volume + ' L';
+            updateContainer();
+            
+            if (currentMode === 'isobaric') {
+                // Keep P constant
+                temperature = (volume * 300) / 50;
+                document.getElementById('tempSlider').value = temperature;
+                document.getElementById('tempValue').textContent = temperature + ' K';
+            }
+        });
+
+        document.getElementById('isothermBtn').onclick = () => {
+            currentMode = 'isotherm';
+            document.getElementById('isothermBtn').className = 'px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700';
+            document.getElementById('isobaricBtn').className = 'px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300';
+            document.getElementById('adiabaticBtn').className = 'px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300';
+            initializeMolecules();
+        };
+
+        document.getElementById('isobaricBtn').onclick = () => {
+            currentMode = 'isobaric';
+            document.getElementById('isobaricBtn').className = 'px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700';
+            document.getElementById('isothermBtn').className = 'px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300';
+            document.getElementById('adiabaticBtn').className = 'px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300';
+            initializeMolecules();
+        };
+
+        document.getElementById('adiabaticBtn').onclick = () => {
+            currentMode = 'adiabatic';
+            document.getElementById('adiabaticBtn').className = 'px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700';
+            document.getElementById('isothermBtn').className = 'px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300';
+            document.getElementById('isobaricBtn').className = 'px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300';
+            initializeMolecules();
+        };
+
+        function renderSteps() {
+            const stepsList = document.getElementById('stepsList');
+            stepsList.innerHTML = '';
+            topicData.steps.forEach((step, idx) => {
+                const li = document.createElement('li');
+                li.className = `cursor-pointer p-2 rounded ${idx === currentStep ? 'step-active' : 'step-inactive'}`;
+                li.textContent = step.title;
+                li.onclick = () => showStep(idx);
+                stepsList.appendChild(li);
+            });
+        }
+
+        function showStep(idx) {
+            currentStep = idx;
+            document.getElementById('stepContent').innerHTML = topicData.steps[idx].content;
+            renderSteps();
+            updateProgress();
+            document.getElementById('prevBtn').disabled = idx === 0;
+            document.getElementById('nextBtn').disabled = idx === topicData.steps.length - 1;
+        }
+
+        function updateProgress() {
+            const percent = ((completedSteps.size) / topicData.steps.length) * 100;
+            document.getElementById('progress').style.width = percent + '%';
+        }
+
+        function showQuiz() {
+            const quizModal = document.getElementById('quizModal');
+            quizModal.classList.remove('hidden');
+            
+            const quizContent = document.getElementById('quizContent');
+            quizContent.innerHTML = topicData.quiz.map((q, idx) => `
+                <div class="mb-6">
+                    <p class="font-semibold mb-2">${idx + 1}. ${q.question}</p>
+                    <div class="space-y-2">
+                        ${q.options.map((opt, i) => `
+                            <label class="flex items-center">
+                                <input type="radio" name="q${idx}" value="${i}" class="mr-2">
+                                <span>${opt}</span>
+                            </label>
+                        `).join('')}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        document.getElementById('closeQuiz').onclick = () => {
+            document.getElementById('quizModal').classList.add('hidden');
+        };
+
+        document.getElementById('submitQuiz').onclick = () => {
+            let score = 0;
+            topicData.quiz.forEach((q, idx) => {
+                const selected = document.querySelector(`input[name="q${idx}"]:checked`);
+                if (selected && parseInt(selected.value) === q.correct) score++;
+            });
+            
+            const percent = (score / topicData.quiz.length) * 100;
+            if (percent >= 70) {
+                completedSteps.add(currentStep);
+                updateProgress();
+            }
+            
+            document.getElementById('quizContent').innerHTML = `
+                <div class="text-center">
+                    <p class="text-2xl font-bold ${percent >= 70 ? 'text-green-600' : 'text-red-600'}">${score}/${topicData.quiz.length}</p>
+                    <p class="mt-2">${percent >= 70 ? 'Great job! You can move on to the next section.' : 'Try again to improve your score.'}</p>
+                </div>
+            `;
+            document.getElementById('submitQuiz').style.display = 'none';
+        };
+
+        // Navigation buttons
+        document.getElementById('prevBtn').onclick = () => {
+            if (currentStep > 0) showStep(currentStep - 1);
+        };
+
+        document.getElementById('nextBtn').onclick = () => {
+            if (currentStep < topicData.steps.length - 1) {
+                showQuiz();
+            }
+        };
+
+        // Initialize
+        window.onload = () => {
+            renderSteps();
+            showStep(0);
+            updateContainer();
+            initializeMolecules();
+            updateSimulation();
+
+            // Handle window resize
+            window.addEventListener('resize', () => {
+                canvas.width = canvas.offsetWidth;
+                updateContainer();
+                initializeMolecules();
+            });
+        };
+    </script>
+<!-- Topic Quiz System -->
+<script src="/js/topic-quiz-loader.js"></script>
+<script src="/js/topic-quiz-injector.js"></script>
+</body>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Deformation of Solids | Properties of Matter</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body{font-family:Inter, sans-serif}
+    .card{ -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); background:rgba(255,255,255,0.75); border:1px solid rgba(255,255,255,0.35); box-shadow:0 8px 30px rgba(0,0,0,0.08)}
+  </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-cyan-50 to-blue-50 p-6">
+  <div class="max-w-5xl mx-auto">
+    <nav class="mb-6"><a href="../index.html" class="text-blue-600 hover:text-blue-700">← Back to Properties</a></nav>
+
+    <main class="card rounded-xl p-8">
+      <header class="mb-6">
+        <h1 class="text-3xl font-bold text-gray-800">Deformation of Solids</h1>
+        <p class="text-gray-600 mt-2">Elastic & plastic deformation, Hooke's law, stress-strain curves and strain energy.</p>
+      </header>
+
+      <section class="space-y-6 text-gray-700">
+        <div>
+          <h2 class="text-xl font-semibold mb-2">Elastic vs Plastic Deformation</h2>
+          <p>Elastic deformation is reversible on removal of load; plastic deformation is permanent.</p>
+          <ul class="list-disc pl-6 mt-3">
+            <li>Elastic limit: maximum stress for reversible deformation</li>
+            <li>Yield point: stress where plastic deformation begins</li>
+            <li>Fracture point: material breaks</li>
+          </ul>
+        </div>
+
+        <div>
+          <h2 class="text-xl font-semibold mb-2">Hooke's Law</h2>
+          <p>Within elastic limit, extension is proportional to load: F = kx where k is spring constant.</p>
+          <div class="bg-white/60 p-3 rounded mt-3">
+            <p class="text-sm">Spring constant k = F/Δx. Energy stored in spring = ½ k x².</p>
+          </div>
+        </div>
+
+        <div>
+          <h2 class="text-xl font-semibold mb-2">Stress-Strain Curve</h2>
+          <p>Graphical representation of material response to increasing stress; important regions: elastic, yield, strain hardening, necking and fracture.</p>
+          <ul class="list-disc pl-6 mt-3">
+            <li>Proportional limit (linear region)</li>
+            <li>Elastic limit and yield point</li>
+            <li>Ultimate tensile strength and fracture</li>
+          </ul>
+        </div>
+
+        <div>
+          <h2 class="text-xl font-semibold mb-2">Strain Energy</h2>
+          <p>Energy stored per unit volume when material is elastically deformed: U = ½ σε = ½ Y ε² (for linear behaviour), where σ is stress and ε is strain.</p>
+        </div>
+
+        <div>
+          <h2 class="text-xl font-semibold mb-2">Examples & Problems</h2>
+          <div class="space-y-3">
+            <div>
+              <p class="font-medium">Problem: Wire under Tension</p>
+              <p>Calculate extension and stored energy for a wire of given length, area, Young's modulus and applied load.</p>
+            </div>
+            <div>
+              <p class="font-medium">Application: Engineering Design</p>
+              <p>Consider elastic limits and safety factors to avoid plastic deformation or failure.</p>
+            </div>
+          </div>
+        </div>
+
+      </section>
+    </main>
+  </div>
+<!-- Topic Quiz System -->
+<script src="/js/topic-quiz-loader.js"></script>
+<script src="/js/topic-quiz-injector.js"></script>
+</body>
+</html>

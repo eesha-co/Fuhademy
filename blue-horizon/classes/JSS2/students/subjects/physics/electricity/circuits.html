@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Current Electricity & Circuits | Physics</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .content-card { -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); background: rgba(255,255,255,0.75); border:1px solid rgba(255,255,255,0.2); box-shadow:0 8px 32px rgba(0,0,0,0.06); }
+    .formula { font-family: 'Georgia', serif; background:#f8fafc; padding:.5rem; border-radius:.25rem }
+  </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-6">
+  <div class="max-w-4xl mx-auto">
+    <nav class="mb-6"><a href="index.html" class="text-blue-600 hover:text-blue-700">← Back to Electricity</a></nav>
+
+    <article class="content-card rounded-xl p-8">
+      <header class="mb-6">
+        <h1 class="text-2xl font-bold text-gray-800 mb-2">Current Electricity & Circuits</h1>
+        <p class="text-gray-600">Ohm's law, series and parallel circuits, Kirchhoff's rules and practical measurements.</p>
+      </header>
+
+      <section class="mb-6">
+        <h2 class="text-lg font-semibold mb-2">Ohm's law & basics</h2>
+        <p class="text-gray-700">V = IR relates potential difference, current and resistance. Power in circuits: P = VI = I²R = V²/R.</p>
+      </section>
+
+      <section class="mb-6">
+        <h2 class="text-lg font-semibold mb-2">Series & Parallel</h2>
+        <ul class="list-disc list-inside text-gray-700 space-y-1">
+          <li>Series: resistances add (R = R1 + R2 + ...). Current is same through each element.</li>
+          <li>Parallel: reciprocals add (1/R = 1/R1 + 1/R2 + ...). Voltage across each branch is the same.</li>
+        </ul>
+      </section>
+
+      <section class="mb-6">
+        <h2 class="text-lg font-semibold mb-2">Worked problem</h2>
+        <p class="text-gray-700">Find equivalent resistance of 10 Ω and 20 Ω in parallel, then in series with 5 Ω.</p>
+        <p class="text-gray-700 mt-2">R_parallel = 1 / (1/10 + 1/20) = 1/(0.15) = 6.666... Ω. Total R = 6.666... + 5 = 11.666... Ω.</p>
+      </section>
+
+      <section class="mb-6">
+        <h2 class="text-lg font-semibold mb-2">Practical notes</h2>
+        <p class="text-gray-700">Using ammeters and voltmeters: ammeters in series, voltmeters in parallel; internal resistance of meters affects readings.</p>
+      </section>
+
+      <section>
+        <h2 class="text-lg font-semibold mb-2">Practice</h2>
+        <ol class="list-decimal list-inside text-gray-700 space-y-1">
+          <li>Calculate current through a 12 V battery connected to 4 Ω total resistance.</li>
+          <li>A 60 W bulb operates at 240 V. Compute its resistance.</li>
+          <li>Find the equivalent resistance of three resistors 5 Ω, 10 Ω and 20 Ω where 10 and 20 are in parallel, then series with 5 Ω.</li>
+        </ol>
+      </section>
+
+      <section>
+        <h2 class="text-lg font-semibold mb-2">Solutions (brief)</h2>
+        <ol class="list-decimal list-inside text-gray-700 space-y-1">
+          <li>I = V/R = 12/4 = 3 A.</li>
+          <li>R = V²/P = 240²/60 = 960 Ω.</li>
+          <li>R_parallel = 1/(1/10 + 1/20) = 6.666... Ω → Total = 6.666... + 5 = 11.666... Ω.</li>
+        </ol>
+      </section>
+    </article>
+  </div>
+<!-- Topic Quiz System -->
+<script src="/js/topic-quiz-loader.js"></script>
+<script src="/js/topic-quiz-injector.js"></script>
+</body>
+</html>

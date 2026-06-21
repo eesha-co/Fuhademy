@@ -1,0 +1,1948 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WAEC Chemistry Practical - Titration Simulator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        .apparatus-container {
+            position: relative;
+            min-height: 600px;
+            background: linear-gradient(180deg, #e8f4f8 0%, #d1e8f0 50%, #c4dce6 100%);
+            border-radius: 12px;
+            box-shadow: 
+                inset 0 2px 20px rgba(255,255,255,0.8),
+                inset 0 -5px 20px rgba(0,0,0,0.05),
+                0 10px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        /* Lab bench surface */
+        .apparatus-container::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 80px;
+            background: linear-gradient(180deg, #8b7355 0%, #6b5344 100%);
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.3);
+            border-radius: 0 0 12px 12px;
+            z-index: 0;
+        }
+
+        .glassware {
+            position: absolute;
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .glassware.moving {
+            z-index: 100;
+        }
+
+        .cleaning-animation {
+            animation: clean 1s ease-in-out;
+        }
+
+        .filling-animation {
+            animation: fill 2s ease-in-out;
+        }
+
+        @keyframes clean {
+            0% { filter: brightness(1); }
+            25% { filter: brightness(1.3); }
+            75% { filter: brightness(1.3); }
+            100% { filter: brightness(1); }
+        }
+
+        @keyframes fill {
+            0% { height: 0%; }
+            100% { height: 100%; }
+        }
+
+        /* Drop falling animation */
+        @keyframes dropFall {
+            0% { transform: translateY(0) scale(1); opacity: 1; }
+            60% { transform: translateY(150px) scale(0.9); opacity: 0.9; }
+            100% { transform: translateY(250px) scale(0.7); opacity: 0; }
+        }
+
+        .falling-drop {
+            position: absolute;
+            width: 8px;
+            height: 12px;
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            animation: dropFall 0.8s ease-in forwards;
+            pointer-events: none;
+            z-index: 50;
+        }
+
+        /* 3D Burette Stand */
+        .burette-stand {
+            position: absolute;
+            z-index: 1;
+        }
+
+        .stand-rod {
+            background: linear-gradient(90deg, #4a4a4a 0%, #7a7a7a 30%, #5a5a5a 70%, #3a3a3a 100%);
+            border-radius: 3px;
+            box-shadow: 2px 0 8px rgba(0,0,0,0.4);
+            position: relative;
+        }
+
+        .stand-base {
+            position: absolute;
+            background: linear-gradient(180deg, #5a5a5a 0%, #3a3a3a 100%);
+            border-radius: 4px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+        }
+
+        .stand-clamp {
+            position: absolute;
+            background: linear-gradient(180deg, #6a6a6a 0%, #4a4a4a 100%);
+            border-radius: 3px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+        }
+
+        /* Burette */
+        .burette {
+            position: absolute;
+            z-index: 5;
+        }
+
+        .burette-body {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                rgba(200,220,240,0.3) 0%,
+                rgba(255,255,255,0.5) 20%,
+                rgba(200,220,240,0.2) 50%,
+                rgba(180,200,220,0.4) 80%,
+                rgba(160,180,200,0.3) 100%
+            );
+            border-radius: 12px 12px 3px 3px;
+            box-shadow: 
+                inset -5px 0 15px rgba(255,255,255,0.6),
+                inset 5px 0 10px rgba(0,0,0,0.1),
+                -2px 0 8px rgba(0,0,0,0.2);
+            border: 1px solid rgba(150,180,200,0.5);
+            overflow: hidden;
+        }
+
+        .burette-body::before {
+            content: '';
+            position: absolute;
+            left: 4px;
+            top: 0;
+            width: 5px;
+            height: 100%;
+            background: linear-gradient(180deg, rgba(255,255,255,0.8), rgba(255,255,255,0.4));
+            border-radius: 3px;
+        }
+
+        .burette-tip {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(90deg,
+                rgba(180,200,220,0.4) 0%,
+                rgba(255,255,255,0.5) 30%,
+                rgba(180,200,220,0.3) 70%,
+                rgba(160,180,200,0.4) 100%
+            );
+            border-radius: 0 0 3px 3px;
+        }
+
+        .burette-liquid {
+            position: absolute;
+            bottom: 0;
+            left: 2px;
+            right: 2px;
+            background: transparent;
+            height: 100%;
+            transition: height 0.3s;
+            border-radius: 0 0 2px 2px;
+        }
+
+        .meniscus {
+            position: absolute;
+            left: 2px;
+            right: 2px;
+            height: 5px;
+            background: linear-gradient(180deg, rgba(255,255,255,0.9) 0%, currentColor 30%);
+            border-radius: 50% 50% 0 0;
+            transition: top 0.3s;
+        }
+
+        .reading-scale {
+            position: absolute;
+            background: linear-gradient(90deg, rgba(255,255,255,0.95), rgba(245,245,245,0.98));
+            border-radius: 3px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-shadow: 2px 2px 6px rgba(0,0,0,0.12);
+            border: 1px solid rgba(0,0,0,0.1);
+        }
+
+        .reading-scale div {
+            text-align: center;
+            font-weight: 600;
+            color: #333;
+        }
+
+        /* Pipette */
+        .pipette {
+            position: absolute;
+            z-index: 10;
+        }
+
+        .pipette-body {
+            position: absolute;
+            width: 100%;
+            background: linear-gradient(90deg,
+                rgba(200,220,240,0.3) 0%,
+                rgba(255,255,255,0.6) 25%,
+                rgba(200,220,240,0.2) 50%,
+                rgba(180,200,220,0.4) 75%,
+                rgba(160,180,200,0.3) 100%
+            );
+            border-radius: 8px 8px 5px 5px;
+            box-shadow: inset -3px 0 10px rgba(255,255,255,0.6), -1px 0 5px rgba(0,0,0,0.15);
+            border: 1px solid rgba(150,180,200,0.4);
+            overflow: hidden;
+        }
+
+        .pipette-body::before {
+            content: '';
+            position: absolute;
+            left: 2px;
+            top: 3px;
+            width: 3px;
+            height: 90%;
+            background: linear-gradient(180deg, rgba(255,255,255,0.9), rgba(255,255,255,0.5));
+            border-radius: 2px;
+            z-index: 2;
+        }
+
+        .pipette-liquid {
+            position: absolute;
+            bottom: 0;
+            left: 2px;
+            right: 2px;
+            height: 0%;
+            background: transparent;
+            border-radius: 0 0 3px 3px;
+            transition: height 0.8s ease-out, background 0.3s;
+            z-index: 1;
+        }
+
+        .pipette-bulb {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(90deg,
+                rgba(200,220,240,0.3),
+                rgba(255,255,255,0.6) 30%,
+                rgba(200,220,240,0.2) 50%,
+                rgba(180,200,220,0.4) 70%,
+                rgba(160,180,200,0.3)
+            );
+            border-radius: 50%;
+            box-shadow: inset -5px 0 12px rgba(255,255,255,0.6), -2px 0 6px rgba(0,0,0,0.15);
+            border: 1px solid rgba(150,180,200,0.4);
+            overflow: hidden;
+        }
+
+        .pipette-bulb::before {
+            content: '';
+            position: absolute;
+            left: 4px;
+            top: 6px;
+            width: 4px;
+            height: 60%;
+            background: linear-gradient(180deg, rgba(255,255,255,0.8), rgba(255,255,255,0.4));
+            border-radius: 2px;
+            z-index: 2;
+        }
+
+        .pipette-bulb-liquid {
+            position: absolute;
+            bottom: 3px;
+            left: 3px;
+            right: 3px;
+            height: 0%;
+            background: transparent;
+            border-radius: 50%;
+            transition: height 0.8s ease-out, background 0.3s;
+        }
+
+        .pipette-tip {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(90deg,
+                rgba(180,200,220,0.4),
+                rgba(255,255,255,0.5) 30%,
+                rgba(180,200,220,0.3) 70%,
+                rgba(160,180,200,0.4)
+            );
+            border-radius: 0 0 2px 2px;
+        }
+
+        /* Beaker */
+        .analyte-beaker {
+            position: absolute;
+            z-index: 10;
+        }
+
+        .beaker-body {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: linear-gradient(90deg,
+                rgba(200,220,240,0.25) 0%,
+                rgba(255,255,255,0.5) 20%,
+                rgba(200,220,240,0.15) 50%,
+                rgba(180,200,220,0.35) 80%,
+                rgba(160,180,200,0.25) 100%
+            );
+            border-radius: 0 0 6px 6px;
+            box-shadow: inset -6px 0 15px rgba(255,255,255,0.6), -2px 2px 8px rgba(0,0,0,0.15);
+            border: 1px solid rgba(150,180,200,0.4);
+            border-top: none;
+            overflow: hidden;
+        }
+
+        .beaker-body::before {
+            content: '';
+            position: absolute;
+            left: 6px;
+            top: 6px;
+            width: 8px;
+            height: 70%;
+            background: linear-gradient(180deg, rgba(255,255,255,0.7), rgba(255,255,255,0.3));
+            border-radius: 4px;
+        }
+
+        .beaker-spout {
+            position: absolute;
+            top: 0;
+            right: -3px;
+            background: linear-gradient(90deg, rgba(180,200,220,0.4), rgba(255,255,255,0.5) 50%, rgba(180,200,220,0.3));
+            border-radius: 0 6px 0 0;
+        }
+
+        .beaker-liquid {
+            position: absolute;
+            bottom: 3px;
+            left: 3px;
+            right: 3px;
+            background: transparent;
+            border-radius: 0 0 5px 5px;
+            transition: background 0.5s, height 0.5s;
+        }
+
+        .beaker-label {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            font-weight: 600;
+            color: #374151;
+            white-space: nowrap;
+        }
+
+        /* Conical Flask */
+        .conical-flask {
+            position: absolute;
+            z-index: 10;
+        }
+
+        .flask-neck {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(90deg,
+                rgba(200,220,240,0.3),
+                rgba(255,255,255,0.6) 25%,
+                rgba(200,220,240,0.2) 50%,
+                rgba(180,200,220,0.4) 75%,
+                rgba(160,180,200,0.3)
+            );
+            border-radius: 5px 5px 0 0;
+            box-shadow: inset -3px 0 10px rgba(255,255,255,0.6);
+            border: 1px solid rgba(150,180,200,0.4);
+        }
+
+        .flask-neck::before {
+            content: '';
+            position: absolute;
+            left: 3px;
+            top: 3px;
+            width: 4px;
+            height: 70%;
+            background: linear-gradient(180deg, rgba(255,255,255,0.9), rgba(255,255,255,0.4));
+            border-radius: 2px;
+        }
+
+        .flask-body {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: linear-gradient(90deg,
+                rgba(200,220,240,0.25),
+                rgba(255,255,255,0.5) 20%,
+                rgba(200,220,240,0.15) 50%,
+                rgba(180,200,220,0.35) 80%,
+                rgba(160,180,200,0.25)
+            );
+            border-radius: 0 0 50px 50px;
+            box-shadow: inset -10px 0 20px rgba(255,255,255,0.6), -3px 3px 12px rgba(0,0,0,0.2);
+            border: 1px solid rgba(150,180,200,0.4);
+            overflow: hidden;
+        }
+
+        .flask-body::before {
+            content: '';
+            position: absolute;
+            left: 10px;
+            top: 6px;
+            width: 12px;
+            height: 80%;
+            background: linear-gradient(180deg, rgba(255,255,255,0.7), rgba(255,255,255,0.3) 50%, rgba(255,255,255,0.5));
+            border-radius: 50%;
+            transform: skewY(-5deg);
+        }
+
+        .flask-liquid {
+            position: absolute;
+            bottom: 3px;
+            left: 3px;
+            right: 3px;
+            background: transparent;
+            border-radius: 0 0 45px 45px;
+            transition: background-color 0.3s;
+        }
+
+        .feedback-popup {
+            position: absolute;
+            background: linear-gradient(135deg, #ffffff, #f8fafc);
+            border-radius: 6px;
+            padding: 8px 12px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+            font-size: 12px;
+            z-index: 200;
+            opacity: 0;
+            transition: all 0.3s;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .feedback-popup.show {
+            opacity: 1;
+            transform: translateY(-3px);
+        }
+
+        /* Procedure steps */
+        #procedure-steps.procedure-steps-inline {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            padding: 0.25rem 0;
+        }
+
+        .procedure-step {
+            white-space: nowrap;
+            padding: 0.45rem 0.9rem;
+            border-radius: 9999px;
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            border: 1px solid #f59e0b;
+            color: #92400e;
+            font-weight: 600;
+            font-size: 0.95rem;
+            flex: 0 0 auto;
+            box-shadow: 0 2px 8px rgba(245, 158, 11, 0.2);
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .procedure-step:hover {
+            transform: translateY(-2px);
+        }
+
+        .procedure-step.active {
+            background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+            border-color: #059669;
+            color: #065f46;
+            box-shadow: 0 4px 15px rgba(5, 150, 105, 0.3);
+        }
+
+        .procedure-guide {
+            background: linear-gradient(180deg, #ffffff, #f8fafc);
+            border: 1px solid rgba(15, 23, 42, 0.08);
+            padding: 1rem;
+            border-radius: 12px;
+            margin-top: 0.75rem;
+            font-size: 0.95rem;
+            color: #0f172a;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+        }
+
+        .guide-actions button {
+            background: linear-gradient(135deg, #0ea5a4, #0d9488);
+            color: white;
+            padding: 0.35rem 0.6rem;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            margin-right: 0.4rem;
+            box-shadow: 0 4px 15px rgba(14, 165, 164, 0.3);
+            transition: all 0.2s;
+        }
+
+        .glass-card {
+            background: linear-gradient(135deg, rgba(255,255,255,0.95), rgba(248,250,252,0.95));
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .control-btn {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.2s;
+        }
+
+        .control-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        select:focus, input:focus {
+            outline: none;
+            border-color: #0ea5a4;
+            box-shadow: 0 0 0 3px rgba(14, 165, 164, 0.15);
+        }
+
+        .mode-btn {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .mode-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40%;
+            height: 4px;
+            background: linear-gradient(90deg, transparent, currentColor, transparent);
+            border-radius: 4px;
+        }
+
+        .header-gradient {
+            background: linear-gradient(135deg, #0d9488, #0284c7 50%, #0369a1);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+        }
+
+        /* Liquid colors */
+        .analyte-naoh { background: linear-gradient(180deg, rgba(59,130,246,0.5), rgba(37,99,235,0.6)); }
+        .analyte-koh { background: linear-gradient(180deg, rgba(16,185,129,0.5), rgba(5,150,105,0.6)); }
+        .analyte-caoh2 { background: linear-gradient(180deg, rgba(6,182,212,0.5), rgba(8,145,178,0.6)); }
+
+        /* Cortex AI Chat Button */
+        #cortex-ai-chat-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            z-index: 1000;
+            cursor: pointer;
+        }
+
+        #cortex-ai-chat-button img {
+            width: 72px;
+            height: 72px;
+            box-shadow: 0 6px 24px rgba(0,0,0,0.25);
+            border-radius: 18px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        #cortex-ai-chat-popup {
+            position: fixed;
+            bottom: 100px;
+            right: 20px;
+            width: 400px;
+            height: 600px;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            display: none;
+            z-index: 1000;
+            overflow: hidden;
+        }
+
+        /* ========================================
+           DESKTOP DEFAULT SIZES
+           ======================================== */
+        
+        /* Stand - Desktop */
+        .burette-stand {
+            left: 22%;
+            top: 10px;
+        }
+        .stand-rod {
+            width: 12px;
+            height: 480px;
+        }
+        .stand-base {
+            bottom: -15px;
+            left: -30px;
+            width: 80px;
+            height: 25px;
+        }
+        .stand-clamp { width: 50px; height: 20px; left: 10px; }
+        .clamp-top { top: 30px; }
+        .clamp-bottom { top: 380px; }
+
+        /* Burette - Desktop */
+        .burette {
+            width: 50px;
+            height: 400px;
+            left: 26%;
+            top: 40px;
+        }
+        .burette-tip {
+            bottom: -25px;
+            width: 10px;
+            height: 30px;
+        }
+        .reading-scale {
+            right: -35px;
+            top: 0;
+            height: 100%;
+            width: 30px;
+            font-size: 10px;
+            padding: 5px 2px;
+        }
+        .reading-scale div { font-size: 10px; }
+
+        /* Pipette - Desktop */
+        .pipette {
+            width: 24px;
+            height: 280px;
+            left: 54%;
+            top: 20px;
+        }
+        .pipette-body { height: 100%; }
+        .pipette-bulb {
+            top: 50px;
+            width: 40px;
+            height: 80px;
+        }
+        .pipette-tip {
+            bottom: -18px;
+            width: 6px;
+            height: 22px;
+        }
+
+        /* Beaker - Desktop */
+        .analyte-beaker {
+            width: 100px;
+            height: 120px;
+            left: 52%;
+            bottom: 90px;
+        }
+        .beaker-body { height: 100px; }
+        .beaker-spout { width: 20px; height: 25px; }
+        .beaker-liquid { height: 70px; }
+        .beaker-label { bottom: -20px; font-size: 11px; }
+
+        /* Conical Flask - Desktop */
+        .conical-flask {
+            width: 160px;
+            height: 180px;
+            left: 24%;
+            bottom: 90px;
+        }
+        .flask-neck {
+            width: 45px;
+            height: 50px;
+        }
+        .flask-body { height: 140px; }
+        .flask-liquid { height: 80px; }
+
+        .working-area {
+            position: absolute;
+            right: 16px;
+            top: 16px;
+            width: 160px;
+            padding: 12px;
+            background: rgba(255,255,255,0.95);
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        /* ========================================
+           MOBILE RESPONSIVE STYLES
+           ======================================== */
+        @media (max-width: 768px) {
+            body {
+                padding: 4px;
+                padding-bottom: 90px;
+            }
+
+            #canvas-wrapper {
+                width: 100% !important;
+                display: block !important;
+            }
+
+            #controls-sidebar {
+                display: none !important;
+            }
+
+            .apparatus-container {
+                min-height: 420px !important;
+                height: 420px !important;
+                width: 100% !important;
+                display: block !important;
+                visibility: visible !important;
+                opacity: 1 !important;
+            }
+
+            .apparatus-container::before {
+                height: 50px !important;
+            }
+
+            .working-area {
+                display: none !important;
+            }
+
+            /* === MOBILE SIZES - No transforms, actual smaller sizes === */
+            
+            /* Stand - Mobile */
+            .burette-stand {
+                left: 5px !important;
+                top: 5px !important;
+            }
+            .stand-rod {
+                width: 5px !important;
+                height: 180px !important;
+            }
+            .stand-base {
+                bottom: -8px !important;
+                left: -12px !important;
+                width: 30px !important;
+                height: 10px !important;
+            }
+            .stand-clamp { 
+                width: 20px !important; 
+                height: 8px !important; 
+                left: 4px !important;
+            }
+            .clamp-top { top: 12px !important; }
+            .clamp-bottom { top: 145px !important; }
+
+            /* Burette - Mobile */
+            .burette {
+                width: 20px !important;
+                height: 150px !important;
+                left: 20px !important;
+                top: 8px !important;
+            }
+            .burette-tip {
+                bottom: -12px !important;
+                width: 4px !important;
+                height: 15px !important;
+            }
+            
+            /* Reading Scale - Mobile (showing all values 0-50) */
+            .reading-scale {
+                display: flex !important;
+                right: -22px !important;
+                top: 0 !important;
+                height: 150px !important;
+                width: 18px !important;
+                font-size: 6px !important;
+                padding: 2px 1px !important;
+            }
+            .reading-scale div { 
+                font-size: 6px !important; 
+                line-height: 1;
+            }
+
+            /* Pipette - Mobile */
+            .pipette {
+                width: 10px !important;
+                height: 105px !important;
+                left: 65px !important;
+                top: 8px !important;
+            }
+            .pipette-body { height: 100% !important; }
+            .pipette-bulb {
+                top: 18px !important;
+                width: 16px !important;
+                height: 32px !important;
+            }
+            .pipette-tip {
+                bottom: -8px !important;
+                width: 3px !important;
+                height: 10px !important;
+            }
+
+            /* Beaker - Mobile */
+            .analyte-beaker {
+                width: 40px !important;
+                height: 50px !important;
+                left: 65px !important;
+                top: 140px !important;
+                bottom: auto !important;
+            }
+            .beaker-body { height: 40px !important; }
+            .beaker-spout { width: 8px !important; height: 10px !important; }
+            .beaker-liquid { height: 28px !important; }
+            .beaker-label { bottom: -8px !important; font-size: 6px !important; }
+
+            /* Conical Flask - Mobile */
+            .conical-flask {
+                width: 60px !important;
+                height: 70px !important;
+                left: 5px !important;
+                top: 200px !important;
+                bottom: auto !important;
+            }
+            .flask-neck {
+                width: 18px !important;
+                height: 20px !important;
+            }
+            .flask-body { height: 55px !important; }
+            .flask-liquid { height: 35px !important; }
+
+            /* Mobile bottom menu bar */
+            .mobile-menu-bar {
+                display: flex !important;
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                background: linear-gradient(180deg, #ffffff, #f8fafc);
+                padding: 10px 16px;
+                gap: 12px;
+                justify-content: center;
+                box-shadow: 0 -4px 20px rgba(0,0,0,0.15);
+                z-index: 9999;
+                border-top: 1px solid rgba(0,0,0,0.1);
+            }
+
+            .mobile-menu-btn {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                flex: 1;
+                max-width: 100px;
+                padding: 10px 8px;
+                border-radius: 12px;
+                border: none;
+                cursor: pointer;
+                color: white;
+                font-size: 11px;
+                font-weight: 600;
+                box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+                transition: transform 0.2s;
+            }
+
+            .mobile-menu-btn:active {
+                transform: scale(0.95);
+            }
+
+            .mobile-menu-btn svg {
+                width: 24px;
+                height: 24px;
+                margin-bottom: 4px;
+            }
+
+            /* Mobile dropdown overlay */
+            .mobile-dropdown-overlay {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(0,0,0,0.4);
+                z-index: 10000;
+            }
+
+            .mobile-dropdown-overlay.show {
+                display: block;
+            }
+
+            /* Mobile dropdown panels */
+            .mobile-dropdown {
+                display: none;
+                position: fixed;
+                bottom: 75px;
+                left: 10px;
+                right: 10px;
+                background: white;
+                border-radius: 16px;
+                box-shadow: 0 10px 40px rgba(0,0,0,0.25);
+                z-index: 10001;
+                padding: 16px;
+                max-height: 60vh;
+                overflow-y: auto;
+            }
+
+            .mobile-dropdown.show {
+                display: block;
+            }
+
+            .mobile-dropdown h4 {
+                font-size: 16px;
+                margin: 0 0 12px 0;
+                padding-bottom: 8px;
+                border-bottom: 2px solid #e5e7eb;
+                color: #1f2937;
+            }
+
+            .mobile-dropdown label {
+                display: block;
+                font-size: 13px;
+                margin-bottom: 4px;
+                color: #4b5563;
+            }
+
+            .mobile-dropdown select {
+                width: 100%;
+                padding: 10px 12px;
+                margin-bottom: 12px;
+                border: 2px solid #e5e7eb;
+                border-radius: 8px;
+                font-size: 14px;
+                background: white;
+            }
+
+            .mobile-dropdown .action-grid {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 8px;
+            }
+
+            .mobile-dropdown .action-btn {
+                padding: 12px 8px;
+                font-size: 12px;
+                font-weight: 600;
+                border: none;
+                border-radius: 8px;
+                cursor: pointer;
+                color: white;
+                text-align: center;
+            }
+
+            /* Compact procedure steps */
+            #procedure-steps {
+                flex-wrap: nowrap;
+                overflow-x: auto;
+                padding-bottom: 4px;
+                gap: 4px;
+            }
+
+            .procedure-step {
+                padding: 6px 10px;
+                font-size: 11px;
+                flex-shrink: 0;
+            }
+
+            #procedure-guide {
+                display: block;
+                padding: 8px;
+                margin-top: 8px;
+            }
+            #procedure-guide h3 {
+                display: none;
+            }
+            #procedure-guide-content {
+                font-size: 12px;
+            }
+            .guide-actions {
+                display: none;
+            }
+
+            h1 { font-size: 1.1rem !important; }
+            .header-gradient { padding: 12px !important; }
+            .header-gradient p { font-size: 12px !important; }
+            .mode-btn { padding: 10px 16px !important; font-size: 13px !important; }
+            .mode-btn .text-xs { display: none; }
+        }
+
+        @media (max-width: 480px) {
+            .apparatus-container {
+                min-height: 380px !important;
+                height: 380px !important;
+            }
+
+            /* Even smaller for tiny phones */
+            .burette-stand {
+                left: 3px !important;
+                top: 3px !important;
+            }
+            .stand-rod { height: 160px !important; }
+            .stand-base { width: 25px !important; left: -10px !important; }
+            .stand-clamp { width: 16px !important; }
+            .clamp-bottom { top: 125px !important; }
+
+            .burette {
+                width: 16px !important;
+                height: 130px !important;
+                left: 15px !important;
+                top: 5px !important;
+            }
+            .burette-tip {
+                bottom: -10px !important;
+                width: 3px !important;
+                height: 12px !important;
+            }
+            .reading-scale {
+                height: 130px !important;
+                width: 16px !important;
+                right: -18px !important;
+            }
+            .reading-scale div { font-size: 5px !important; }
+
+            .pipette {
+                width: 8px !important;
+                height: 90px !important;
+                left: 55px !important;
+                top: 5px !important;
+            }
+            .pipette-bulb {
+                top: 15px !important;
+                width: 14px !important;
+                height: 28px !important;
+            }
+            .pipette-tip {
+                bottom: -7px !important;
+                width: 2px !important;
+                height: 8px !important;
+            }
+
+            .analyte-beaker {
+                width: 35px !important;
+                height: 42px !important;
+                left: 55px !important;
+                top: 120px !important;
+            }
+            .beaker-body { height: 35px !important; }
+            .beaker-spout { width: 6px !important; height: 8px !important; }
+            .beaker-liquid { height: 24px !important; }
+            .beaker-label { font-size: 5px !important; bottom: -6px !important; }
+
+            .conical-flask {
+                width: 50px !important;
+                height: 58px !important;
+                left: 3px !important;
+                top: 170px !important;
+            }
+            .flask-neck { width: 15px !important; height: 16px !important; }
+            .flask-body { height: 46px !important; }
+            .flask-liquid { height: 30px !important; }
+
+            .apparatus-container::before {
+                height: 40px !important;
+            }
+        }
+
+        @media (max-width: 500px) {
+            #cortex-ai-chat-popup {
+                width: calc(100% - 40px);
+                right: 20px;
+                left: 20px;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-gray-100 to-gray-200 p-4 min-h-screen">
+    <div class="max-w-7xl mx-auto">
+        <!-- Header -->
+        <div class="header-gradient text-white p-5 rounded-2xl shadow-2xl mb-6">
+            <h1 class="text-3xl font-bold m-0">WAEC Chemistry Practical - Titration</h1>
+            <p class="text-sm mt-1 opacity-90">Interactive 3D titration simulation with realistic animations</p>
+        </div>
+
+        <!-- Mode Selector -->
+        <div class="glass-card p-5 mb-6">
+            <div class="flex items-center justify-center gap-4">
+                <button id="learning-mode" class="mode-btn px-7 py-4 bg-gradient-to-r from-teal-600 to-teal-500 text-white font-semibold rounded-xl shadow-lg active">
+                    Learning Mode
+                    <div class="text-xs mt-1 opacity-80">Step-by-step tutorial</div>
+                </button>
+                <button id="practice-mode" class="mode-btn px-7 py-4 bg-gradient-to-r from-gray-600 to-gray-500 text-white font-semibold rounded-xl shadow-lg">
+                    Practice Mode
+                    <div class="text-xs mt-1 opacity-80">WAEC exam questions</div>
+                </button>
+            </div>
+        </div>
+
+        <!-- Practice Mode -->
+        <div id="practice-question" class="glass-card p-6 mb-6 hidden">
+            <div id="exam-timer" class="hidden mb-4 p-4 bg-gradient-to-r from-yellow-50 to-amber-50 border border-yellow-200 rounded-xl">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <span class="font-semibold">Time Remaining:</span>
+                        <span id="timer-display" class="ml-2 font-mono text-lg">2:45:00</span>
+                    </div>
+                    <div class="space-x-2">
+                        <button id="start-timer" class="px-4 py-2 bg-gradient-to-r from-green-600 to-green-500 text-white text-sm rounded-lg">Start</button>
+                        <button id="pause-timer" class="px-4 py-2 bg-gradient-to-r from-yellow-600 to-yellow-500 text-white text-sm rounded-lg" disabled>Pause</button>
+                        <button id="reset-timer" class="px-4 py-2 bg-gradient-to-r from-red-600 to-red-500 text-white text-sm rounded-lg" disabled>Reset</button>
+                    </div>
+                </div>
+            </div>
+            <div id="question-content" class="space-y-4">
+                <div class="bg-gradient-to-r from-blue-50 to-indigo-50 p-4 rounded-xl">
+                    <p class="mb-2"><strong>Given:</strong></p>
+                    <div id="given-content"></div>
+                </div>
+                <div>
+                    <p class="mb-2"><strong>Requirements:</strong></p>
+                    <div id="requirements-content"></div>
+                </div>
+                <div class="p-3 bg-gray-50 rounded-xl font-mono text-sm">
+                    <p class="mb-2"><strong>Reaction:</strong></p>
+                    <div id="reaction-content"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="space-y-4">
+            <!-- Procedure Steps -->
+            <div class="glass-card p-5">
+                <h2 class="text-xl font-semibold mb-4">Procedure Steps</h2>
+                <div id="procedure-steps" class="procedure-steps-inline">
+                    <div class="procedure-step active" id="step1">1. Clean Burette</div>
+                    <div class="procedure-step" id="step2">2. Clean Pipette</div>
+                    <div class="procedure-step" id="step3">3. Clean Flask</div>
+                    <div class="procedure-step" id="step4">4. Rinse Burette</div>
+                    <div class="procedure-step" id="step5">5. Rinse Pipette</div>
+                    <div class="procedure-step" id="step6">6. Fill Burette</div>
+                    <div class="procedure-step" id="step7">7. Measure 25cm³</div>
+                    <div class="procedure-step" id="step8">8. Add Indicator</div>
+                    <div class="procedure-step" id="step9">9. Titrate</div>
+                </div>
+
+                <div id="procedure-guide" class="procedure-guide">
+                    <h3 class="text-lg font-semibold mb-2">Step Guide</h3>
+                    <div id="procedure-guide-content">
+                        <p><strong>1. Clean Burette</strong> — Clean the burette with distilled water.</p>
+                    </div>
+                    <div class="mt-3 guide-actions">
+                        <button onclick="moveToStep(1)">Step 1</button>
+                        <button class="secondary" onclick="moveToStep(9)">Skip to Titration</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-6">
+                <!-- Simulation Area - Canvas Wrapper -->
+                <div id="canvas-wrapper" class="md:col-span-2">
+                    <div class="apparatus-container glass-card p-4" id="apparatus-container">
+                        <!-- Burette Stand -->
+                        <div class="burette-stand">
+                            <div class="stand-rod">
+                                <div class="stand-clamp clamp-top"></div>
+                                <div class="stand-clamp clamp-bottom"></div>
+                            </div>
+                            <div class="stand-base"></div>
+                        </div>
+
+                        <!-- Burette -->
+                        <div id="burette" class="glassware burette">
+                            <div class="burette-body">
+                                <div class="burette-liquid" id="burette-liquid"></div>
+                                <div class="meniscus" id="meniscus" style="top: 0%; color: rgba(250, 204, 21, 0.8);"></div>
+                            </div>
+                            <div class="burette-tip"></div>
+                            <div class="reading-scale">
+                                <div>0</div>
+                                <div>5</div>
+                                <div>10</div>
+                                <div>15</div>
+                                <div>20</div>
+                                <div>25</div>
+                                <div>30</div>
+                                <div>35</div>
+                                <div>40</div>
+                                <div>45</div>
+                                <div>50</div>
+                            </div>
+                        </div>
+
+                        <!-- Pipette -->
+                        <div id="pipette" class="glassware pipette">
+                            <div class="pipette-body">
+                                <div class="pipette-liquid" id="pipette-liquid"></div>
+                            </div>
+                            <div class="pipette-bulb">
+                                <div class="pipette-bulb-liquid" id="pipette-bulb-liquid"></div>
+                            </div>
+                            <div class="pipette-tip"></div>
+                        </div>
+
+                        <!-- Analyte Beaker -->
+                        <div id="analyte-beaker" class="glassware analyte-beaker">
+                            <div class="beaker-spout"></div>
+                            <div class="beaker-body">
+                                <div class="beaker-liquid" id="beaker-liquid"></div>
+                            </div>
+                            <div class="beaker-label" id="beaker-label">Solution B</div>
+                        </div>
+
+                        <!-- Conical Flask -->
+                        <div id="conical-flask" class="glassware conical-flask">
+                            <div class="flask-neck"></div>
+                            <div class="flask-body">
+                                <div class="flask-liquid" id="flask-liquid"></div>
+                            </div>
+                        </div>
+
+                        <!-- Working Area (Desktop only) -->
+                        <div class="working-area">
+                            <strong>Working Area</strong>
+                            <div id="selected-reagents" class="mt-2 text-sm text-gray-700">
+                                <div id="sel-titrant">Titrant: <em>None</em></div>
+                                <div id="sel-analyte" class="mt-1">Analyte: <em>None</em></div>
+                                <div id="sel-indicator" class="mt-1">Indicator: <em>None</em></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Controls Sidebar - Hidden on Mobile -->
+                <div id="controls-sidebar">
+                    <div class="glass-card p-5">
+                        <h3 class="font-semibold mb-3">Reagents</h3>
+                        <label class="block text-sm mb-1">Titrant (Acid)</label>
+                        <select id="titrant-select" onchange="selectTitrant(this.value)" class="w-full border px-3 py-2 rounded-lg mb-3">
+                            <option value="">-- select --</option>
+                            <option value="HCl">HCl (0.1M)</option>
+                            <option value="H2SO4">H₂SO₄ (0.1M)</option>
+                            <option value="HNO3">HNO₃ (0.1M)</option>
+                        </select>
+
+                        <label class="block text-sm mb-1">Indicator</label>
+                        <select id="indicator-select" onchange="selectIndicator(this.value)" class="w-full border px-3 py-2 rounded-lg mb-3">
+                            <option value="">-- select --</option>
+                            <option value="Phenolphthalein">Phenolphthalein</option>
+                            <option value="Methyl orange">Methyl orange</option>
+                        </select>
+                        
+                        <label class="block text-sm mb-1 mt-3">Analyte (Base)</label>
+                        <select id="analyte-select" onchange="selectAnalyte(this.value)" class="w-full border px-3 py-2 rounded-lg">
+                            <option value="">-- select --</option>
+                            <option value="NaOH">NaOH (0.1M)</option>
+                            <option value="KOH">KOH (0.1M)</option>
+                            <option value="Ca(OH)2">Ca(OH)₂ (0.1M)</option>
+                        </select>
+                    </div>
+
+                    <div class="glass-card p-5">
+                        <h3 class="font-semibold mb-3">Actions</h3>
+                        <div class="grid grid-cols-2 gap-2">
+                            <button onclick="cleanGlassware('burette')" id="btn-clean-burette" class="control-btn w-full bg-gradient-to-r from-blue-500 to-blue-600 text-white px-2 py-2.5 rounded-lg text-sm shadow-md">Clean Burette</button>
+                            <button onclick="cleanGlassware('pipette')" id="btn-clean-pipette" class="control-btn w-full bg-gradient-to-r from-blue-500 to-blue-600 text-white px-2 py-2.5 rounded-lg text-sm shadow-md">Clean Pipette</button>
+                            <button onclick="cleanGlassware('flask')" id="btn-clean-flask" class="control-btn w-full bg-gradient-to-r from-blue-500 to-blue-600 text-white px-2 py-2.5 rounded-lg text-sm shadow-md">Clean Flask</button>
+                            <button onclick="rinseBurette()" id="btn-rinse-burette" class="control-btn w-full bg-gradient-to-r from-yellow-500 to-yellow-600 text-white px-2 py-2.5 rounded-lg text-sm shadow-md">Rinse Burette</button>
+                            <button onclick="rinsePipette()" id="btn-rinse-pipette" class="control-btn w-full bg-gradient-to-r from-purple-500 to-purple-600 text-white px-2 py-2.5 rounded-lg text-sm shadow-md">Rinse Pipette</button>
+                            <button onclick="fillBurette()" id="btn-fill-burette" class="control-btn w-full bg-gradient-to-r from-amber-500 to-amber-600 text-white px-2 py-2.5 rounded-lg text-sm shadow-md">Fill Burette</button>
+                            <button onclick="measureAnalyte()" id="btn-measure-analyte" class="control-btn w-full bg-gradient-to-r from-purple-600 to-purple-700 text-white px-2 py-2.5 rounded-lg text-sm shadow-md">Measure 25cm³</button>
+                            <button onclick="addIndicator()" id="btn-add-indicator" class="control-btn w-full bg-gradient-to-r from-pink-500 to-pink-600 text-white px-2 py-2.5 rounded-lg text-sm shadow-md">Add Indicator</button>
+                            <button onclick="addDrop()" id="btn-add-drop" class="control-btn w-full bg-gradient-to-r from-green-500 to-green-600 text-white px-2 py-2.5 rounded-lg text-sm shadow-md">Add Drop</button>
+                            <button onclick="swirl()" id="btn-swirl" class="control-btn w-full bg-gradient-to-r from-indigo-500 to-indigo-600 text-white px-2 py-2.5 rounded-lg text-sm shadow-md">Swirl Flask</button>
+                        </div>
+                    </div>
+
+                    <!-- Readings -->
+                    <div class="glass-card p-5">
+                        <h2 class="text-xl font-semibold mb-4">Burette Readings</h2>
+                        <table class="w-full mb-4 border text-sm">
+                            <thead>
+                                <tr class="bg-gray-50">
+                                    <th class="px-2 py-2 border">&nbsp;</th>
+                                    <th class="px-2 py-2 border">Rough</th>
+                                    <th class="px-2 py-2 border">1st</th>
+                                    <th class="px-2 py-2 border">2nd</th>
+                                    <th class="px-2 py-2 border">3rd</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="px-2 py-1 border font-medium">Final</td>
+                                    <td class="px-2 py-1 border"><input id="final-rough" class="w-full border px-1 py-1 rounded" /></td>
+                                    <td class="px-2 py-1 border"><input id="final-1" class="w-full border px-1 py-1 rounded" /></td>
+                                    <td class="px-2 py-1 border"><input id="final-2" class="w-full border px-1 py-1 rounded" /></td>
+                                    <td class="px-2 py-1 border"><input id="final-3" class="w-full border px-1 py-1 rounded" /></td>
+                                </tr>
+                                <tr>
+                                    <td class="px-2 py-1 border font-medium">Initial</td>
+                                    <td class="px-2 py-1 border"><input id="initial-rough" class="w-full border px-1 py-1 rounded" value="0.00" /></td>
+                                    <td class="px-2 py-1 border"><input id="initial-1" class="w-full border px-1 py-1 rounded" value="0.00" /></td>
+                                    <td class="px-2 py-1 border"><input id="initial-2" class="w-full border px-1 py-1 rounded" value="0.00" /></td>
+                                    <td class="px-2 py-1 border"><input id="initial-3" class="w-full border px-1 py-1 rounded" value="0.00" /></td>
+                                </tr>
+                                <tr>
+                                    <td class="px-2 py-1 border font-medium">Used</td>
+                                    <td class="px-2 py-1 border"><input id="used-rough" class="w-full border px-1 py-1 rounded bg-gray-100" readonly /></td>
+                                    <td class="px-2 py-1 border"><input id="used-1" class="w-full border px-1 py-1 rounded bg-gray-100" readonly /></td>
+                                    <td class="px-2 py-1 border"><input id="used-2" class="w-full border px-1 py-1 rounded bg-gray-100" readonly /></td>
+                                    <td class="px-2 py-1 border"><input id="used-3" class="w-full border px-1 py-1 rounded bg-gray-100" readonly /></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <button id="submit-readings" class="w-full bg-gradient-to-r from-green-600 to-green-500 text-white px-4 py-2.5 rounded-xl shadow-lg font-semibold">Submit Readings</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile Menu Bar -->
+    <div class="mobile-menu-bar" style="display: none;">
+        <button class="mobile-menu-btn" style="background: linear-gradient(135deg, #3b82f6, #1d4ed8);" onclick="toggleMobileDropdown('reagents')">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path></svg>
+            <span>Reagents</span>
+        </button>
+        <button class="mobile-menu-btn" style="background: linear-gradient(135deg, #10b981, #059669);" onclick="toggleMobileDropdown('actions')">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+            <span>Actions</span>
+        </button>
+        <button class="mobile-menu-btn" style="background: linear-gradient(135deg, #8b5cf6, #6d28d9);" onclick="toggleMobileDropdown('readings')">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+            <span>Readings</span>
+        </button>
+    </div>
+
+    <!-- Mobile Dropdown Overlay -->
+    <div class="mobile-dropdown-overlay" id="dropdown-overlay" onclick="closeMobileDropdowns()"></div>
+
+    <!-- Mobile Reagents Dropdown -->
+    <div class="mobile-dropdown" id="mobile-reagents-dropdown">
+        <h4>⚗️ Select Reagents</h4>
+        <label>Titrant (Acid)</label>
+        <select id="mobile-titrant" onchange="selectTitrant(this.value); document.getElementById('titrant-select').value=this.value;">
+            <option value="">-- select --</option>
+            <option value="HCl">HCl (0.1M)</option>
+            <option value="H2SO4">H₂SO₄ (0.1M)</option>
+            <option value="HNO3">HNO₃ (0.1M)</option>
+        </select>
+        <label>Analyte (Base)</label>
+        <select id="mobile-analyte" onchange="selectAnalyte(this.value); document.getElementById('analyte-select').value=this.value;">
+            <option value="">-- select --</option>
+            <option value="NaOH">NaOH (0.1M)</option>
+            <option value="KOH">KOH (0.1M)</option>
+            <option value="Ca(OH)2">Ca(OH)₂ (0.1M)</option>
+        </select>
+        <label>Indicator</label>
+        <select id="mobile-indicator" onchange="selectIndicator(this.value); document.getElementById('indicator-select').value=this.value;">
+            <option value="">-- select --</option>
+            <option value="Phenolphthalein">Phenolphthalein</option>
+            <option value="Methyl orange">Methyl orange</option>
+        </select>
+    </div>
+
+    <!-- Mobile Actions Dropdown -->
+    <div class="mobile-dropdown" id="mobile-actions-dropdown">
+        <h4>🔧 Actions</h4>
+        <div class="action-grid">
+            <button class="action-btn" style="background: linear-gradient(135deg, #3b82f6, #1d4ed8);" onclick="cleanGlassware('burette'); closeMobileDropdowns();">Clean Burette</button>
+            <button class="action-btn" style="background: linear-gradient(135deg, #3b82f6, #1d4ed8);" onclick="cleanGlassware('pipette'); closeMobileDropdowns();">Clean Pipette</button>
+            <button class="action-btn" style="background: linear-gradient(135deg, #3b82f6, #1d4ed8);" onclick="cleanGlassware('flask'); closeMobileDropdowns();">Clean Flask</button>
+            <button class="action-btn" style="background: linear-gradient(135deg, #f59e0b, #d97706);" onclick="rinseBurette(); closeMobileDropdowns();">Rinse Burette</button>
+            <button class="action-btn" style="background: linear-gradient(135deg, #8b5cf6, #6d28d9);" onclick="rinsePipette(); closeMobileDropdowns();">Rinse Pipette</button>
+            <button class="action-btn" style="background: linear-gradient(135deg, #f59e0b, #d97706);" onclick="fillBurette(); closeMobileDropdowns();">Fill Burette</button>
+            <button class="action-btn" style="background: linear-gradient(135deg, #8b5cf6, #6d28d9);" onclick="measureAnalyte(); closeMobileDropdowns();">Measure 25cm³</button>
+            <button class="action-btn" style="background: linear-gradient(135deg, #ec4899, #be185d);" onclick="addIndicator(); closeMobileDropdowns();">Add Indicator</button>
+            <button class="action-btn" style="background: linear-gradient(135deg, #10b981, #059669);" onclick="addDrop();">Add Drop</button>
+            <button class="action-btn" style="background: linear-gradient(135deg, #6366f1, #4338ca);" onclick="swirl(); closeMobileDropdowns();">Swirl Flask</button>
+        </div>
+    </div>
+
+    <!-- Mobile Readings Dropdown -->
+    <div class="mobile-dropdown" id="mobile-readings-dropdown">
+        <h4>📊 Burette Readings</h4>
+        <table style="width: 100%; font-size: 12px; border-collapse: collapse;">
+            <tr style="background: #f3f4f6;"><th style="padding: 6px; border: 1px solid #ddd;"></th><th style="padding: 6px; border: 1px solid #ddd;">Rough</th><th style="padding: 6px; border: 1px solid #ddd;">1st</th><th style="padding: 6px; border: 1px solid #ddd;">2nd</th><th style="padding: 6px; border: 1px solid #ddd;">3rd</th></tr>
+            <tr><td style="padding: 4px; border: 1px solid #ddd; font-weight: bold;">Final</td><td style="padding: 2px; border: 1px solid #ddd;"><input type="number" step="0.05" id="mob-final-rough" style="width: 100%; padding: 4px;" onchange="syncReading('final', 'rough')"></td><td style="padding: 2px; border: 1px solid #ddd;"><input type="number" step="0.05" id="mob-final-1" style="width: 100%; padding: 4px;" onchange="syncReading('final', '1')"></td><td style="padding: 2px; border: 1px solid #ddd;"><input type="number" step="0.05" id="mob-final-2" style="width: 100%; padding: 4px;" onchange="syncReading('final', '2')"></td><td style="padding: 2px; border: 1px solid #ddd;"><input type="number" step="0.05" id="mob-final-3" style="width: 100%; padding: 4px;" onchange="syncReading('final', '3')"></td></tr>
+            <tr><td style="padding: 4px; border: 1px solid #ddd; font-weight: bold;">Initial</td><td style="padding: 2px; border: 1px solid #ddd;"><input type="number" step="0.05" value="0.00" id="mob-initial-rough" style="width: 100%; padding: 4px;" onchange="syncReading('initial', 'rough')"></td><td style="padding: 2px; border: 1px solid #ddd;"><input type="number" step="0.05" value="0.00" id="mob-initial-1" style="width: 100%; padding: 4px;" onchange="syncReading('initial', '1')"></td><td style="padding: 2px; border: 1px solid #ddd;"><input type="number" step="0.05" value="0.00" id="mob-initial-2" style="width: 100%; padding: 4px;" onchange="syncReading('initial', '2')"></td><td style="padding: 2px; border: 1px solid #ddd;"><input type="number" step="0.05" value="0.00" id="mob-initial-3" style="width: 100%; padding: 4px;" onchange="syncReading('initial', '3')"></td></tr>
+            <tr><td style="padding: 4px; border: 1px solid #ddd; font-weight: bold;">Used</td><td style="padding: 2px; border: 1px solid #ddd;"><input type="text" readonly id="mob-used-rough" style="width: 100%; padding: 4px; background: #f3f4f6;"></td><td style="padding: 2px; border: 1px solid #ddd;"><input type="text" readonly id="mob-used-1" style="width: 100%; padding: 4px; background: #f3f4f6;"></td><td style="padding: 2px; border: 1px solid #ddd;"><input type="text" readonly id="mob-used-2" style="width: 100%; padding: 4px; background: #f3f4f6;"></td><td style="padding: 2px; border: 1px solid #ddd;"><input type="text" readonly id="mob-used-3" style="width: 100%; padding: 4px; background: #f3f4f6;"></td></tr>
+        </table>
+        <button onclick="document.getElementById('submit-readings').click(); closeMobileDropdowns();" style="width: 100%; margin-top: 12px; padding: 10px; background: linear-gradient(135deg, #10b981, #059669); color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer;">Submit Readings</button>
+    </div>
+
+    <!-- Cortex AI Chat Button -->
+    <button id="cortex-ai-chat-button" aria-label="Open Cortex Practical AI">
+        <img src="cortex-ai.svg" alt="Cortex AI" />
+    </button>
+
+    <!-- Cortex AI Chat Popup -->
+    <iframe 
+        id="cortex-ai-chat-popup" 
+        src="https://app.edcafe.ai/chatbots/69112078b84fa01834b93400" 
+        title="Cortex-Practical Bot" 
+        allow="microphone"
+    ></iframe>
+
+    <script>
+        // Mobile Dropdown Functions
+        function toggleMobileDropdown(name) {
+            const overlay = document.getElementById('dropdown-overlay');
+            const dropdown = document.getElementById('mobile-' + name + '-dropdown');
+            const allDropdowns = document.querySelectorAll('.mobile-dropdown');
+            
+            allDropdowns.forEach(d => {
+                if (d.id !== 'mobile-' + name + '-dropdown') {
+                    d.classList.remove('show');
+                }
+            });
+            
+            const isOpen = dropdown.classList.contains('show');
+            if (isOpen) {
+                dropdown.classList.remove('show');
+                overlay.classList.remove('show');
+            } else {
+                dropdown.classList.add('show');
+                overlay.classList.add('show');
+            }
+        }
+
+        function closeMobileDropdowns() {
+            document.getElementById('dropdown-overlay').classList.remove('show');
+            document.querySelectorAll('.mobile-dropdown').forEach(d => d.classList.remove('show'));
+        }
+
+        function syncReading(type, col) {
+            const mobInput = document.getElementById('mob-' + type + '-' + col);
+            const mainInput = document.getElementById(type + '-' + col);
+            const usedInput = document.getElementById('used-' + col);
+            const mobUsedInput = document.getElementById('mob-used-' + col);
+            
+            if (mainInput && mobInput) {
+                mainInput.value = mobInput.value;
+            }
+            
+            const finalInput = document.getElementById('final-' + col);
+            const initialInput = document.getElementById('initial-' + col);
+            if (finalInput && initialInput && usedInput) {
+                const f = parseFloat(finalInput.value) || 0;
+                const i = parseFloat(initialInput.value) || 0;
+                const result = (f - i).toFixed(2);
+                usedInput.value = result;
+                if (mobUsedInput) mobUsedInput.value = result;
+            }
+        }
+
+        // State
+        let currentMode = 'learning';
+        let currentStep = 1;
+        let glasswareCleaned = { burette: false, pipette: false, flask: false };
+        let currentVolume = 50.00;
+        let cumulativeDispensed = 0.0;
+        let dropVolume = 0.50;
+        let endpointVolume = 24.80;
+
+        let selectedTitrant = null;
+        let selectedAnalyte = null;
+        let selectedIndicator = null;
+
+        const practiceQuestions = [
+            {
+                given: `Solution A is <span class="text-blue-600 font-semibold">HCl</span> of unknown concentration.<br>Solution B is <span class="text-green-600 font-semibold">NaOH</span> solution containing 4.0g per 250cm³.`,
+                requirements: `Using the burette readings, calculate the:<br>a) Concentration of Solution B in mol/dm³<br>b) Concentration of Solution A in mol/dm³<br>c) Mass of HCl in 25cm³ of Solution A<br>[H=1, O=16, Na=23, Cl=35.5]`,
+                reaction: `HCl + NaOH → NaCl + H₂O`
+            }
+        ];
+
+        const procedureSteps = [
+            { title: '1. Clean Burette', description: 'Clean the burette with distilled water.' },
+            { title: '2. Clean Pipette', description: 'Clean the pipette thoroughly with distilled water.' },
+            { title: '3. Clean Flask', description: 'Clean the conical flask with distilled water.' },
+            { title: '4. Rinse Burette', description: 'Rinse the burette with the titrant solution (acid).' },
+            { title: '5. Rinse Pipette', description: 'Rinse the pipette with the analyte solution (base).' },
+            { title: '6. Fill Burette', description: 'Fill the burette with the acid solution above the zero mark.' },
+            { title: '7. Measure 25cm³', description: 'Use the pipette to measure exactly 25cm³ of the base solution.' },
+            { title: '8. Add Indicator', description: 'Add 2-3 drops of indicator to the conical flask.' },
+            { title: '9. Titrate', description: 'Slowly add the acid from the burette while swirling.' }
+        ];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            updateProcedureGuide(1);
+            setupEventListeners();
+        });
+
+        function setupEventListeners() {
+            document.getElementById('learning-mode').addEventListener('click', () => setMode('learning'));
+            document.getElementById('practice-mode').addEventListener('click', () => setMode('practice'));
+            document.getElementById('start-timer').addEventListener('click', startTimer);
+            document.getElementById('pause-timer').addEventListener('click', pauseTimer);
+            document.getElementById('reset-timer').addEventListener('click', resetTimer);
+
+            for (let col of ['rough', '1', '2', '3']) {
+                document.getElementById('final-' + col).addEventListener('input', () => calculateUsed(col));
+                document.getElementById('initial-' + col).addEventListener('input', () => calculateUsed(col));
+            }
+
+            document.getElementById('submit-readings').addEventListener('click', submitReadings);
+            document.getElementById('cortex-ai-chat-button').addEventListener('click', () => {
+                const popup = document.getElementById('cortex-ai-chat-popup');
+                popup.style.display = popup.style.display === 'none' ? 'block' : 'none';
+            });
+        }
+
+        function setMode(mode) {
+            currentMode = mode;
+            const learningMode = document.getElementById('learning-mode');
+            const practiceMode = document.getElementById('practice-mode');
+            const practiceQuestion = document.getElementById('practice-question');
+            const examTimer = document.getElementById('exam-timer');
+
+            if (mode === 'learning') {
+                learningMode.classList.add('active');
+                learningMode.classList.remove('bg-gradient-to-r', 'from-gray-600', 'to-gray-500');
+                learningMode.classList.add('bg-gradient-to-r', 'from-teal-600', 'to-teal-500');
+                practiceMode.classList.remove('active');
+                practiceMode.classList.add('bg-gradient-to-r', 'from-gray-600', 'to-gray-500');
+                practiceMode.classList.remove('bg-gradient-to-r', 'from-teal-600', 'to-teal-500');
+                practiceQuestion.classList.add('hidden');
+                examTimer.classList.add('hidden');
+            } else {
+                practiceMode.classList.add('active');
+                practiceMode.classList.remove('bg-gradient-to-r', 'from-gray-600', 'to-gray-500');
+                practiceMode.classList.add('bg-gradient-to-r', 'from-teal-600', 'to-teal-500');
+                learningMode.classList.remove('active');
+                learningMode.classList.add('bg-gradient-to-r', 'from-gray-600', 'to-gray-500');
+                learningMode.classList.remove('bg-gradient-to-r', 'from-teal-600', 'to-teal-500');
+                practiceQuestion.classList.remove('hidden');
+                examTimer.classList.remove('hidden');
+                loadQuestion();
+            }
+        }
+
+        function loadQuestion() {
+            const q = practiceQuestions[0];
+            document.getElementById('given-content').innerHTML = q.given;
+            document.getElementById('requirements-content').innerHTML = q.requirements;
+            document.getElementById('reaction-content').textContent = q.reaction;
+        }
+
+        let timerInterval = null;
+        let timerSeconds = 2 * 3600 + 45 * 60;
+
+        function startTimer() {
+            if (timerInterval) return;
+            document.getElementById('start-timer').disabled = true;
+            document.getElementById('pause-timer').disabled = false;
+            document.getElementById('reset-timer').disabled = false;
+            timerInterval = setInterval(() => {
+                timerSeconds--;
+                updateTimerDisplay();
+                if (timerSeconds <= 0) {
+                    clearInterval(timerInterval);
+                    timerInterval = null;
+                }
+            }, 1000);
+        }
+
+        function pauseTimer() {
+            clearInterval(timerInterval);
+            timerInterval = null;
+            document.getElementById('start-timer').disabled = false;
+            document.getElementById('pause-timer').disabled = true;
+        }
+
+        function resetTimer() {
+            clearInterval(timerInterval);
+            timerInterval = null;
+            timerSeconds = 2 * 3600 + 45 * 60;
+            updateTimerDisplay();
+            document.getElementById('start-timer').disabled = false;
+            document.getElementById('pause-timer').disabled = true;
+            document.getElementById('reset-timer').disabled = true;
+        }
+
+        function updateTimerDisplay() {
+            const hours = Math.floor(timerSeconds / 3600);
+            const minutes = Math.floor((timerSeconds % 3600) / 60);
+            const seconds = timerSeconds % 60;
+            document.getElementById('timer-display').textContent = 
+                `${hours}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+        }
+
+        function selectTitrant(value) {
+            selectedTitrant = value;
+            document.getElementById('sel-titrant').innerHTML = `Titrant: <strong>${value || 'None'}</strong>`;
+        }
+
+        function selectAnalyte(value) {
+            selectedAnalyte = value;
+            document.getElementById('sel-analyte').innerHTML = `Analyte: <strong>${value || 'None'}</strong>`;
+            const beakerLiquid = document.getElementById('beaker-liquid');
+            beakerLiquid.className = 'beaker-liquid';
+            if (value === 'NaOH') beakerLiquid.classList.add('analyte-naoh');
+            else if (value === 'KOH') beakerLiquid.classList.add('analyte-koh');
+            else if (value === 'Ca(OH)2') beakerLiquid.classList.add('analyte-caoh2');
+        }
+
+        function selectIndicator(value) {
+            selectedIndicator = value;
+            document.getElementById('sel-indicator').innerHTML = `Indicator: <strong>${value || 'None'}</strong>`;
+        }
+
+        function cleanGlassware(type) {
+            let element;
+            if (type === 'burette') {
+                element = document.getElementById('burette');
+                glasswareCleaned.burette = true;
+            } else if (type === 'pipette') {
+                element = document.getElementById('pipette');
+                glasswareCleaned.pipette = true;
+            } else if (type === 'flask') {
+                element = document.getElementById('conical-flask');
+                glasswareCleaned.flask = true;
+            }
+            
+            if (element) {
+                element.classList.add('cleaning-animation');
+                setTimeout(() => element.classList.remove('cleaning-animation'), 1000);
+                showFeedback(element, `${type.charAt(0).toUpperCase() + type.slice(1)} cleaned!`);
+                
+                if (type === 'burette' && currentStep === 1) moveToStep(2);
+                else if (type === 'pipette' && currentStep === 2) moveToStep(3);
+                else if (type === 'flask' && currentStep === 3) moveToStep(4);
+            }
+        }
+
+        function rinseBurette() {
+            if (!selectedTitrant) { alert('Please select a titrant first!'); return; }
+            const burette = document.getElementById('burette');
+            const liquid = document.getElementById('burette-liquid');
+            liquid.style.background = 'rgba(250, 204, 21, 0.3)';
+            setTimeout(() => liquid.style.background = 'transparent', 500);
+            showFeedback(burette, 'Burette rinsed!');
+            if (currentStep === 4) moveToStep(5);
+        }
+
+        // Store original pipette position
+        let pipetteOriginalTop = null;
+        let pipetteOriginalLeft = null;
+
+        function rinsePipette() {
+            if (!selectedAnalyte) { alert('Please select an analyte first!'); return; }
+            
+            const pipette = document.getElementById('pipette');
+            const liquid = document.getElementById('pipette-liquid');
+            const bulbLiquid = document.getElementById('pipette-bulb-liquid');
+            const beaker = document.getElementById('analyte-beaker');
+            
+            // Store original position if not stored
+            if (pipetteOriginalTop === null) {
+                pipetteOriginalTop = getComputedStyle(pipette).top;
+                pipetteOriginalLeft = getComputedStyle(pipette).left;
+            }
+            
+            // Add moving class for higher z-index
+            pipette.classList.add('moving');
+            
+            // Get beaker position
+            const beakerTop = parseInt(getComputedStyle(beaker).top);
+            const beakerHeight = parseInt(getComputedStyle(beaker).height);
+            const beakerLeft = parseInt(getComputedStyle(beaker).left);
+            const beakerWidth = parseInt(getComputedStyle(beaker).width);
+            
+            // Move pipette to beaker position (centered over beaker)
+            const targetLeft = (beakerLeft + beakerWidth/2 - 5) + 'px';
+            const targetTop = (beakerTop + beakerHeight - 20) + 'px';
+            
+            showFeedback(pipette, 'Moving down...');
+            
+            // Animate pipette down into beaker
+            pipette.style.transition = 'top 1.2s ease-in-out, left 1.2s ease-in-out';
+            pipette.style.left = targetLeft;
+            pipette.style.top = targetTop;
+            
+            setTimeout(() => {
+                // Show rinsing animation - draw liquid up
+                showFeedback(pipette, 'Drawing analyte...');
+                
+                let liquidColor = 'rgba(59, 130, 246, 0.5)';
+                if (selectedAnalyte === 'NaOH') liquidColor = 'rgba(59, 130, 246, 0.5)';
+                else if (selectedAnalyte === 'KOH') liquidColor = 'rgba(16, 185, 129, 0.5)';
+                else if (selectedAnalyte === 'Ca(OH)2') liquidColor = 'rgba(6, 182, 212, 0.5)';
+                
+                liquid.style.transition = 'height 1s ease-out, background 0.5s';
+                bulbLiquid.style.transition = 'height 1s ease-out, background 0.5s';
+                liquid.style.background = liquidColor;
+                bulbLiquid.style.background = liquidColor;
+                liquid.style.height = '80%';
+                bulbLiquid.style.height = '70%';
+                
+                setTimeout(() => {
+                    showFeedback(pipette, 'Dispensing rinse...');
+                    
+                    // Empty back out
+                    liquid.style.transition = 'height 0.8s ease-out';
+                    bulbLiquid.style.transition = 'height 0.8s ease-out';
+                    liquid.style.height = '0%';
+                    bulbLiquid.style.height = '0%';
+                    
+                    setTimeout(() => {
+                        // Move back to original position
+                        pipette.style.left = pipetteOriginalLeft;
+                        pipette.style.top = pipetteOriginalTop;
+                        
+                        setTimeout(() => {
+                            pipette.classList.remove('moving');
+                            pipette.style.transition = '';
+                            liquid.style.background = 'transparent';
+                            bulbLiquid.style.background = 'transparent';
+                            showFeedback(pipette, 'Pipette rinsed!');
+                            if (currentStep === 5) moveToStep(6);
+                        }, 1200);
+                    }, 1000);
+                }, 1200);
+            }, 1500);
+        }
+
+        function fillBurette() {
+            if (!selectedTitrant) { alert('Please select a titrant first!'); return; }
+            const burette = document.getElementById('burette');
+            const liquid = document.getElementById('burette-liquid');
+            const meniscus = document.getElementById('meniscus');
+            liquid.style.background = 'linear-gradient(180deg, rgba(250, 204, 21, 0.7), rgba(245, 158, 11, 0.8))';
+            liquid.style.height = '100%';
+            meniscus.style.top = '2%';
+            meniscus.style.color = 'rgba(250, 204, 21, 0.9)';
+            currentVolume = 50.00;
+            showFeedback(burette, 'Burette filled!');
+            if (currentStep === 6) moveToStep(7);
+        }
+
+        function measureAnalyte() {
+            if (!selectedAnalyte) { alert('Please select an analyte first!'); return; }
+            
+            const pipette = document.getElementById('pipette');
+            const liquid = document.getElementById('pipette-liquid');
+            const bulbLiquid = document.getElementById('pipette-bulb-liquid');
+            const beaker = document.getElementById('analyte-beaker');
+            const flask = document.getElementById('conical-flask');
+            const flaskLiquid = document.getElementById('flask-liquid');
+            const beakerLiquid = document.getElementById('beaker-liquid');
+            
+            // Store original position if not stored
+            if (pipetteOriginalTop === null) {
+                pipetteOriginalTop = getComputedStyle(pipette).top;
+                pipetteOriginalLeft = getComputedStyle(pipette).left;
+            }
+            
+            // Add moving class for higher z-index
+            pipette.classList.add('moving');
+            
+            // Get beaker position
+            const beakerTop = parseInt(getComputedStyle(beaker).top);
+            const beakerHeight = parseInt(getComputedStyle(beaker).height);
+            const beakerLeft = parseInt(getComputedStyle(beaker).left);
+            const beakerWidth = parseInt(getComputedStyle(beaker).width);
+            
+            // Move pipette to beaker position (centered over beaker)
+            const targetLeft = (beakerLeft + beakerWidth/2 - 5) + 'px';
+            const targetTop = (beakerTop + beakerHeight - 20) + 'px';
+            
+            showFeedback(pipette, 'Moving down...');
+            
+            // Animate pipette down into beaker
+            pipette.style.transition = 'top 1.2s ease-in-out, left 1.2s ease-in-out';
+            pipette.style.left = targetLeft;
+            pipette.style.top = targetTop;
+            
+            setTimeout(() => {
+                showFeedback(pipette, 'Drawing 25cm³...');
+                
+                // Set the color based on analyte
+                let liquidColor = 'linear-gradient(180deg, rgba(59, 130, 246, 0.7), rgba(37, 99, 235, 0.8))';
+                if (selectedAnalyte === 'NaOH') {
+                    liquidColor = 'linear-gradient(180deg, rgba(59, 130, 246, 0.7), rgba(37, 99, 235, 0.8))';
+                } else if (selectedAnalyte === 'KOH') {
+                    liquidColor = 'linear-gradient(180deg, rgba(16, 185, 129, 0.7), rgba(5, 150, 105, 0.8))';
+                } else if (selectedAnalyte === 'Ca(OH)2') {
+                    liquidColor = 'linear-gradient(180deg, rgba(6, 182, 212, 0.7), rgba(8, 145, 178, 0.8))';
+                }
+                
+                // Animate drawing liquid up into pipette (fill from bottom)
+                liquid.style.transition = 'height 2s ease-out';
+                bulbLiquid.style.transition = 'height 2s ease-out';
+                
+                liquid.style.background = liquidColor;
+                bulbLiquid.style.background = liquidColor;
+                liquid.style.height = '100%';
+                bulbLiquid.style.height = '90%';
+                
+                // Reduce beaker liquid
+                beakerLiquid.style.transition = 'height 2s ease-out';
+                beakerLiquid.style.height = '40%';
+                
+                setTimeout(() => {
+                    showFeedback(pipette, 'Moving to flask...');
+                    
+                    // Get flask position
+                    const flaskTop = parseInt(getComputedStyle(flask).top);
+                    const flaskHeight = parseInt(getComputedStyle(flask).height);
+                    const flaskLeft = parseInt(getComputedStyle(flask).left);
+                    const flaskWidth = parseInt(getComputedStyle(flask).width);
+                    
+                    // Move pipette to flask (centered over flask neck)
+                    const flaskTargetLeft = (flaskLeft + flaskWidth/2 - 5) + 'px';
+                    const flaskTargetTop = (flaskTop + 30) + 'px';  // Just above flask neck
+                    
+                    pipette.style.left = flaskTargetLeft;
+                    pipette.style.top = flaskTargetTop;
+                    
+                    setTimeout(() => {
+                        showFeedback(pipette, 'Dispensing...');
+                        
+                        // Animate dispensing into flask
+                        liquid.style.transition = 'height 1.5s ease-out';
+                        bulbLiquid.style.transition = 'height 1.5s ease-out';
+                        liquid.style.height = '0%';
+                        bulbLiquid.style.height = '0%';
+                        
+                        // Fill flask
+                        flaskLiquid.style.transition = 'height 1.5s ease-out';
+                        flaskLiquid.style.height = '50%';
+                        flaskLiquid.style.background = liquidColor;
+                        
+                        setTimeout(() => {
+                            // Move pipette back to original position
+                            pipette.style.left = pipetteOriginalLeft;
+                            pipette.style.top = pipetteOriginalTop;
+                            
+                            setTimeout(() => {
+                                pipette.classList.remove('moving');
+                                pipette.style.transition = '';
+                                showFeedback(flask, '25cm³ transferred!');
+                                if (currentStep === 7) moveToStep(8);
+                            }, 1200);
+                        }, 1800);
+                    }, 1500);
+                }, 2500);
+            }, 1500);
+        }
+
+        function addIndicator() {
+            if (!selectedIndicator) { alert('Please select an indicator first!'); return; }
+            const flask = document.getElementById('conical-flask');
+            const flaskLiquid = document.getElementById('flask-liquid');
+            if (selectedIndicator === 'Phenolphthalein') {
+                flaskLiquid.style.background = 'linear-gradient(180deg, rgba(236, 72, 153, 0.4), rgba(219, 39, 119, 0.5))';
+            } else {
+                flaskLiquid.style.background = 'linear-gradient(180deg, rgba(251, 146, 60, 0.4), rgba(234, 88, 12, 0.5))';
+            }
+            showFeedback(flask, `${selectedIndicator} added!`);
+            if (currentStep === 8) moveToStep(9);
+        }
+
+        function addDrop() {
+            if (currentVolume <= 0) { alert('Burette is empty!'); return; }
+            const liquid = document.getElementById('burette-liquid');
+            const meniscus = document.getElementById('meniscus');
+            const flaskLiquid = document.getElementById('flask-liquid');
+            const container = document.getElementById('apparatus-container');
+            
+            const drop = document.createElement('div');
+            drop.className = 'falling-drop';
+            drop.style.background = 'linear-gradient(180deg, rgba(250, 204, 21, 0.8), rgba(245, 158, 11, 0.9))';
+            drop.style.left = '25px';
+            drop.style.top = '170px';
+            container.appendChild(drop);
+            
+            currentVolume -= dropVolume;
+            cumulativeDispensed += dropVolume;
+            const heightPercent = Math.max(0, (currentVolume / 50) * 100);
+            liquid.style.height = heightPercent + '%';
+            meniscus.style.top = (100 - heightPercent) + '%';
+            
+            setTimeout(() => {
+                drop.remove();
+                if (cumulativeDispensed >= endpointVolume - 0.5 && cumulativeDispensed < endpointVolume + 0.5) {
+                    if (selectedIndicator === 'Phenolphthalein') {
+                        flaskLiquid.style.background = 'linear-gradient(180deg, rgba(255, 255, 255, 0.3), rgba(249, 250, 251, 0.4))';
+                    } else {
+                        flaskLiquid.style.background = 'linear-gradient(180deg, rgba(239, 68, 68, 0.5), rgba(220, 38, 38, 0.6))';
+                    }
+                    showFeedback(document.getElementById('conical-flask'), 'Endpoint!');
+                }
+            }, 800);
+        }
+
+        function swirl() {
+            const flask = document.getElementById('conical-flask');
+            flask.style.transform = 'rotate(15deg)';
+            setTimeout(() => flask.style.transform = 'rotate(-15deg)', 150);
+            setTimeout(() => flask.style.transform = 'rotate(10deg)', 300);
+            setTimeout(() => flask.style.transform = 'rotate(-10deg)', 450);
+            setTimeout(() => flask.style.transform = 'rotate(0deg)', 600);
+        }
+
+        function showFeedback(element, message) {
+            const popup = document.createElement('div');
+            popup.className = 'feedback-popup show';
+            popup.textContent = message;
+            popup.style.left = '50%';
+            popup.style.top = '-25px';
+            popup.style.transform = 'translateX(-50%)';
+            element.appendChild(popup);
+            setTimeout(() => popup.remove(), 2000);
+        }
+
+        function moveToStep(step) {
+            currentStep = step;
+            document.querySelectorAll('.procedure-step').forEach((el, index) => {
+                el.classList.toggle('active', index + 1 === step);
+            });
+            updateProcedureGuide(step);
+        }
+
+        function updateProcedureGuide(step) {
+            const stepData = procedureSteps[step - 1];
+            document.getElementById('procedure-guide-content').innerHTML = 
+                `<p><strong>${stepData.title}</strong> — ${stepData.description}</p>`;
+        }
+
+        function calculateUsed(col) {
+            const final = parseFloat(document.getElementById('final-' + col).value) || 0;
+            const initial = parseFloat(document.getElementById('initial-' + col).value) || 0;
+            document.getElementById('used-' + col).value = (final - initial).toFixed(2);
+        }
+
+        function submitReadings() {
+            alert('Readings submitted!');
+        }
+    </script>
+<!-- Topic Quiz System -->
+<script src="/js/topic-quiz-loader.js"></script>
+<script src="/js/topic-quiz-injector.js"></script>
+</body>
+</html>

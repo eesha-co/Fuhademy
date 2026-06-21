@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Physics - Interactive Learning</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <style>
+        .step-active { background-color: #2563eb; color: white; }
+        .step-inactive { background-color: #e5e7eb; color: #374151; }
+        #quantumCanvas { touch-action: none; }
+        .particle { position: absolute; border-radius: 50%; transition: all 0.3s ease; }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen font-inter">
+    <nav class="bg-blue-700 p-4">
+        <div class="max-w-7xl mx-auto px-4 flex justify-between items-center">
+            <a href="../index.html" class="text-white hover:text-blue-100 flex items-center gap-2">
+                <i class="fas fa-arrow-left"></i>
+                <span>Back to Physics</span>
+            </a>
+            <h1 class="text-white text-xl font-bold">Modern Physics</h1>
+        </div>
+    </nav>
+
+    <div class="flex">
+        <!-- Sidebar Steps -->
+        <aside class="w-64 bg-white shadow-md p-4 min-h-screen">
+            <h2 class="text-lg font-semibold mb-4">Learning Steps</h2>
+            <ul id="stepsList" class="space-y-2"></ul>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 p-8">
+            <div id="progressBar" class="mb-6 h-3 bg-gray-200 rounded-full overflow-hidden">
+                <div id="progress" class="h-full bg-blue-600 transition-all" style="width: 0%"></div>
+            </div>
+
+            <div id="stepContent" class="bg-white rounded-xl shadow-sm p-6 min-h-[300px]"></div>
+
+            <!-- Quantum/Relativity Simulation -->
+            <div id="simulationContainer" class="mt-6 bg-white rounded-xl shadow-sm p-6">
+                <div class="flex gap-4 mb-4">
+                    <button id="waveFunctionBtn" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+                        Wave Function
+                    </button>
+                    <button id="relativityBtn" class="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300">
+                        Special Relativity
+                    </button>
+                </div>
+
+                <!-- Wave Function Simulation -->
+                <div id="waveFunction" class="space-y-4">
+                    <h3 class="text-lg font-semibold">Quantum Wave Function</h3>
+                    <canvas id="quantumCanvas" class="w-full border rounded-lg bg-gray-50" height="300"></canvas>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Energy Level</label>
+                            <input type="range" id="energySlider" min="1" max="4" value="1" class="w-full">
+                            <span id="energyValue" class="text-sm text-gray-600">n = 1</span>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Well Width</label>
+                            <input type="range" id="wellWidthSlider" min="50" max="200" value="100" class="w-full">
+                            <span id="wellWidthValue" class="text-sm text-gray-600">100 units</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Relativity Simulation -->
+                <div id="relativity" class="hidden space-y-4">
+                    <h3 class="text-lg font-semibold">Length Contraction & Time Dilation</h3>
+                    <div id="relativityAnimation" class="relative w-full h-[300px] border rounded-lg bg-gray-50">
+                        <div id="spaceshipContainer" class="absolute inset-0"></div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Velocity (c)</label>
+                            <input type="range" id="velocitySlider" min="0" max="99" value="0" class="w-full">
+                            <span id="velocityValue" class="text-sm text-gray-600">0% of c</span>
+                        </div>
+                        <div>
+                            <div class="p-4 bg-blue-50 rounded-lg">
+                                <p class="text-sm font-medium">Time Dilation:</p>
+                                <p id="timeDilation" class="text-lg font-bold text-blue-600">1.00x</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex justify-between mt-8">
+                <button id="prevBtn" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400" disabled>Previous</button>
+                <button id="nextBtn" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Next</button>
+            </div>
+        </main>
+    </div>
+
+    <!-- Quiz Modal -->
+    <div id="quizModal" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center hidden">
+        <div class="bg-white p-8 rounded-xl shadow-lg max-w-lg w-full">
+            <h3 class="text-xl font-bold mb-4">Check Your Understanding</h3>
+            <div id="quizContent"></div>
+            <div class="mt-6 flex justify-end gap-4">
+                <button id="closeQuiz" class="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300">Close</button>
+                <button id="submitQuiz" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Submit</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const topicData = {
+            title: "Modern Physics",
+            steps: [
+                {
+                    title: "Quantum Mechanics",
+                    content: `
+                        <div class="prose max-w-none">
+                            <h3 class="text-xl font-bold mb-4">Introduction to Quantum Mechanics</h3>
+                            <div class="space-y-6">
+                                <div class="p-4 bg-blue-50 rounded-lg">
+                                    <h4 class="font-semibold">Wave-Particle Duality</h4>
+                                    <ul class="list-disc list-inside">
+                                        <li>Light exhibits both wave and particle properties</li>
+                                        <li>Matter also shows wave-like behavior</li>
+                                        <li>De Broglie wavelength: λ = h/p</li>
+                                    </ul>
+                                </div>
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div class="p-4 bg-green-50 rounded-lg">
+                                        <h4 class="font-semibold">Uncertainty Principle</h4>
+                                        <p>ΔxΔp ≥ ℏ/2</p>
+                                        <p class="text-sm text-green-600">Cannot know both position and momentum precisely</p>
+                                    </div>
+                                    <div class="p-4 bg-yellow-50 rounded-lg">
+                                        <h4 class="font-semibold">Wave Function</h4>
+                                        <p>Describes quantum state</p>
+                                        <p class="text-sm text-yellow-600">|ψ|² gives probability density</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `
+                },
+                {
+                    title: "Special Relativity",
+                    content: `
+                        <div class="prose max-w-none">
+                            <h3 class="text-xl font-bold mb-4">Einstein's Special Relativity</h3>
+                            <div class="space-y-6">
+                                <div class="p-4 bg-blue-50 rounded-lg">
+                                    <h4 class="font-semibold">Postulates</h4>
+                                    <ol class="list-decimal list-inside">
+                                        <li>Laws of physics are the same in all inertial frames</li>
+                                        <li>Speed of light is constant in all frames</li>
+                                    </ol>
+                                </div>
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div class="p-4 bg-green-50 rounded-lg">
+                                        <h4 class="font-semibold">Time Dilation</h4>
+                                        <p>t' = t/√(1-v²/c²)</p>
+                                        <p class="text-sm text-green-600">Moving clocks run slower</p>
+                                    </div>
+                                    <div class="p-4 bg-yellow-50 rounded-lg">
+                                        <h4 class="font-semibold">Length Contraction</h4>
+                                        <p>L = L₀√(1-v²/c²)</p>
+                                        <p class="text-sm text-yellow-600">Moving objects appear shorter</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `
+                },
+                {
+                    title: "Applications",
+                    content: `
+                        <div class="prose max-w-none">
+                            <h3 class="text-xl font-bold mb-4">Modern Physics Applications</h3>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="p-4 bg-blue-50 rounded-lg">
+                                    <h4 class="font-semibold">Quantum Technologies</h4>
+                                    <ul class="list-disc list-inside">
+                                        <li>Quantum computers</li>
+                                        <li>Quantum cryptography</li>
+                                        <li>Quantum sensors</li>
+                                    </ul>
+                                </div>
+                                <div class="p-4 bg-green-50 rounded-lg">
+                                    <h4 class="font-semibold">Relativistic Effects</h4>
+                                    <ul class="list-disc list-inside">
+                                        <li>GPS corrections</li>
+                                        <li>Particle accelerators</li>
+                                        <li>Space travel</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    `
+                }
+            ],
+            quiz: [
+                {
+                    question: "According to the uncertainty principle, if we know a particle's position exactly, what happens to our knowledge of its momentum?",
+                    options: [
+                        "We can know it exactly",
+                        "It becomes completely uncertain",
+                        "It remains unchanged",
+                        "It becomes negative"
+                    ],
+                    correct: 1
+                },
+                {
+                    question: "At what speed does time dilation become noticeable?",
+                    options: [
+                        "Walking speed",
+                        "Sound speed",
+                        "Near the speed of light",
+                        "Zero speed"
+                    ],
+                    correct: 2
+                },
+                {
+                    question: "What is the main principle of wave-particle duality?",
+                    options: [
+                        "Matter is only particles",
+                        "Light is only waves",
+                        "Matter and light can exhibit both wave and particle properties",
+                        "Waves and particles cannot coexist"
+                    ],
+                    correct: 2
+                }
+            ]
+        };
+
+        let currentStep = 0;
+        let completedSteps = new Set();
+        let currentSimulation = 'wave';
+        
+        const canvas = document.getElementById('quantumCanvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = canvas.offsetWidth;
+        canvas.height = 300;
+
+        let energyLevel = 1;
+        let wellWidth = 100;
+        let velocity = 0;
+        let spaceships = [];
+
+        function drawWaveFunction() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            const centerY = canvas.height / 2;
+            
+            // Draw potential well
+            ctx.beginPath();
+            ctx.moveTo(50, 50);
+            ctx.lineTo(50, canvas.height - 50);
+            ctx.lineTo(50 + wellWidth, canvas.height - 50);
+            ctx.lineTo(50 + wellWidth, 50);
+            ctx.strokeStyle = '#666';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            // Draw wave function
+            ctx.beginPath();
+            ctx.moveTo(50, centerY);
+            
+            for(let x = 0; x <= wellWidth; x++) {
+                const xPos = 50 + x;
+                const amplitude = 50 * Math.sin(energyLevel * Math.PI * x / wellWidth);
+                const yPos = centerY + amplitude;
+                ctx.lineTo(xPos, yPos);
+            }
+
+            ctx.strokeStyle = '#2563eb';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            // Draw probability density
+            ctx.beginPath();
+            for(let x = 0; x <= wellWidth; x++) {
+                const xPos = 50 + x;
+                const amplitude = 50 * Math.sin(energyLevel * Math.PI * x / wellWidth);
+                const probability = (amplitude * amplitude) / 2500;
+                const yPos = canvas.height - 50 - (probability * 100);
+                
+                if(x === 0) {
+                    ctx.moveTo(xPos, canvas.height - 50);
+                }
+                ctx.lineTo(xPos, yPos);
+            }
+            
+            ctx.lineTo(50 + wellWidth, canvas.height - 50);
+            ctx.closePath();
+            ctx.fillStyle = 'rgba(37, 99, 235, 0.2)';
+            ctx.fill();
+        }
+
+        function createSpaceship() {
+            const ship = document.createElement('div');
+            ship.className = 'absolute h-8 bg-blue-600 rounded transition-all duration-1000';
+            ship.style.width = '40px';
+            return ship;
+        }
+
+        function updateRelativity() {
+            const container = document.getElementById('spaceshipContainer');
+            container.innerHTML = '';
+
+            // Reference frame spaceship
+            const refShip = createSpaceship();
+            refShip.style.top = '30px';
+            refShip.style.left = '20px';
+            container.appendChild(refShip);
+
+            // Moving spaceship
+            const movingShip = createSpaceship();
+            movingShip.style.top = '100px';
+            movingShip.style.left = '20px';
+            
+            // Calculate length contraction
+            const gamma = 1 / Math.sqrt(1 - (velocity/100) * (velocity/100));
+            const contractedWidth = 40 / gamma;
+            movingShip.style.width = contractedWidth + 'px';
+            
+            container.appendChild(movingShip);
+
+            // Update time dilation display
+            document.getElementById('timeDilation').textContent = gamma.toFixed(2) + 'x';
+
+            // Animate ships
+            setTimeout(() => {
+                refShip.style.left = (container.offsetWidth - 60) + 'px';
+                movingShip.style.left = (container.offsetWidth - 60) + 'px';
+            }, 100);
+        }
+
+        function updateSimulation() {
+            if(currentSimulation === 'wave') {
+                drawWaveFunction();
+            } else {
+                updateRelativity();
+            }
+        }
+
+        // Event listeners for controls
+        document.getElementById('energySlider').addEventListener('input', (e) => {
+            energyLevel = parseInt(e.target.value);
+            document.getElementById('energyValue').textContent = 'n = ' + energyLevel;
+            drawWaveFunction();
+        });
+
+        document.getElementById('wellWidthSlider').addEventListener('input', (e) => {
+            wellWidth = parseInt(e.target.value);
+            document.getElementById('wellWidthValue').textContent = wellWidth + ' units';
+            drawWaveFunction();
+        });
+
+        document.getElementById('velocitySlider').addEventListener('input', (e) => {
+            velocity = parseInt(e.target.value);
+            document.getElementById('velocityValue').textContent = velocity + '% of c';
+            updateRelativity();
+        });
+
+        document.getElementById('waveFunctionBtn').onclick = () => {
+            currentSimulation = 'wave';
+            document.getElementById('waveFunction').classList.remove('hidden');
+            document.getElementById('relativity').classList.add('hidden');
+            document.getElementById('waveFunctionBtn').className = 'px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700';
+            document.getElementById('relativityBtn').className = 'px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300';
+            updateSimulation();
+        };
+
+        document.getElementById('relativityBtn').onclick = () => {
+            currentSimulation = 'relativity';
+            document.getElementById('relativity').classList.remove('hidden');
+            document.getElementById('waveFunction').classList.add('hidden');
+            document.getElementById('relativityBtn').className = 'px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700';
+            document.getElementById('waveFunctionBtn').className = 'px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300';
+            updateSimulation();
+        };
+
+        function renderSteps() {
+            const stepsList = document.getElementById('stepsList');
+            stepsList.innerHTML = '';
+            topicData.steps.forEach((step, idx) => {
+                const li = document.createElement('li');
+                li.className = `cursor-pointer p-2 rounded ${idx === currentStep ? 'step-active' : 'step-inactive'}`;
+                li.textContent = step.title;
+                li.onclick = () => showStep(idx);
+                stepsList.appendChild(li);
+            });
+        }
+
+        function showStep(idx) {
+            currentStep = idx;
+            document.getElementById('stepContent').innerHTML = topicData.steps[idx].content;
+            renderSteps();
+            updateProgress();
+            document.getElementById('prevBtn').disabled = idx === 0;
+            document.getElementById('nextBtn').disabled = idx === topicData.steps.length - 1;
+        }
+
+        function updateProgress() {
+            const percent = ((completedSteps.size) / topicData.steps.length) * 100;
+            document.getElementById('progress').style.width = percent + '%';
+        }
+
+        function showQuiz() {
+            const quizModal = document.getElementById('quizModal');
+            quizModal.classList.remove('hidden');
+            
+            const quizContent = document.getElementById('quizContent');
+            quizContent.innerHTML = topicData.quiz.map((q, idx) => `
+                <div class="mb-6">
+                    <p class="font-semibold mb-2">${idx + 1}. ${q.question}</p>
+                    <div class="space-y-2">
+                        ${q.options.map((opt, i) => `
+                            <label class="flex items-center">
+                                <input type="radio" name="q${idx}" value="${i}" class="mr-2">
+                                <span>${opt}</span>
+                            </label>
+                        `).join('')}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        document.getElementById('closeQuiz').onclick = () => {
+            document.getElementById('quizModal').classList.add('hidden');
+        };
+
+        document.getElementById('submitQuiz').onclick = () => {
+            let score = 0;
+            topicData.quiz.forEach((q, idx) => {
+                const selected = document.querySelector(`input[name="q${idx}"]:checked`);
+                if (selected && parseInt(selected.value) === q.correct) score++;
+            });
+            
+            const percent = (score / topicData.quiz.length) * 100;
+            if (percent >= 70) {
+                completedSteps.add(currentStep);
+                updateProgress();
+            }
+            
+            document.getElementById('quizContent').innerHTML = `
+                <div class="text-center">
+                    <p class="text-2xl font-bold ${percent >= 70 ? 'text-green-600' : 'text-red-600'}">${score}/${topicData.quiz.length}</p>
+                    <p class="mt-2">${percent >= 70 ? 'Great job! You can move on to the next section.' : 'Try again to improve your score.'}</p>
+                </div>
+            `;
+            document.getElementById('submitQuiz').style.display = 'none';
+        };
+
+        // Navigation buttons
+        document.getElementById('prevBtn').onclick = () => {
+            if (currentStep > 0) showStep(currentStep - 1);
+        };
+
+        document.getElementById('nextBtn').onclick = () => {
+            if (currentStep < topicData.steps.length - 1) {
+                showQuiz();
+            }
+        };
+
+        // Initialize
+        window.onload = () => {
+            renderSteps();
+            showStep(0);
+            updateSimulation();
+
+            // Handle window resize
+            window.addEventListener('resize', () => {
+                if(canvas) {
+                    canvas.width = canvas.offsetWidth;
+                    updateSimulation();
+                }
+            });
+        };
+    </script>
+<!-- Topic Quiz System -->
+<script src="/js/topic-quiz-loader.js"></script>
+<script src="/js/topic-quiz-injector.js"></script>
+</body>
+</html>

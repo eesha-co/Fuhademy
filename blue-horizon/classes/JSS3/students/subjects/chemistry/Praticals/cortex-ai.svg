@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024" role="img" aria-labelledby="titleDesc">
+  <title id="titleDesc">Cortex AI mascot: friendly owl with visible brain (revised)</title>
+  <defs>
+    <linearGradient id="g_owl_body" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#56d36a"/>
+      <stop offset="100%" stop-color="#2bbf8f"/>
+    </linearGradient>
+    <linearGradient id="g_belly" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#74e08a"/>
+      <stop offset="100%" stop-color="#3fc494"/>
+    </linearGradient>
+    <linearGradient id="g_brain" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#ffd0e6"/>
+      <stop offset="100%" stop-color="#ff86bf"/>
+    </linearGradient>
+    <linearGradient id="g_stroke" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#076b84"/>
+      <stop offset="100%" stop-color="#00b3d8"/>
+    </linearGradient>
+    <radialGradient id="g_shadow" cx="50%" cy="80%" r="50%">
+      <stop offset="0%" stop-color="#000" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#000" stop-opacity="0"/>
+    </radialGradient>
+    <style type="text/css"><![CDATA[
+      .strokeTech { stroke: #0e7fa0; stroke-width: 10; stroke-linecap: round; stroke-linejoin: round; fill: none; }
+      .strokeThin { stroke: #0e7fa0; stroke-width: 6; stroke-linecap: round; stroke-linejoin: round; fill: none; }
+    ]]></style>
+  </defs>
+  <!-- subtle shadow -->
+  <ellipse cx="512" cy="880" rx="260" ry="42" fill="url(#g_shadow)" opacity="0.55"/>
+  <!-- OWL GROUP -->
+  <g id="owl" transform="translate(0,-10)">
+    <!-- Wings -->
+    <path d="M210 420 C120 420,100 560,220 620 C210 580,240 520,300 500 C260 480,240 460,210 420 Z" fill="url(#g_owl_body)" stroke="url(#g_stroke)" stroke-width="8"/>
+    <path d="M814 420 C904 420,924 560,804 620 C814 580,784 520,724 500 C764 480,784 460,814 420 Z" fill="url(#g_owl_body)" stroke="url(#g_stroke)" stroke-width="8"/>
+    <!-- Combined Body and Feet Shape -->
+    <!-- The body and foot base are now a single path for correct layering -->
+    <path d="M240 300 C180 460,180 720,512 800 C844 720,844 460,784 300 C640 260,384 260,240 300 Z" fill="url(#g_owl_body)" stroke="url(#g_stroke)" stroke-width="10"/>
+    <!-- Feet (Layered above the body but below the belly) -->
+    <path d="M430 800 q20 30 40 0 q20 30 40 0" fill="#ffb04d" stroke="#c97a2c" stroke-width="4"/>
+    <path d="M510 800 q20 30 40 0 q20 30 40 0" fill="#ffb04d" stroke="#c97a2c" stroke-width="4" transform="translate(80,0)"/>
+    <!-- Belly (Drawn on top to cover the connection point) -->
+    <ellipse cx="512" cy="610" rx="190" ry="160" fill="url(#g_belly)" opacity="0.95"/>
+    <!-- HEAD -->
+    <g id="head" transform="translate(0,-20)">
+      <!-- main head shape -->
+      <path d="M280 220 C240 120,360 60,512 60 C664 60,784 120,744 220 C700 260,564 260,512 260 C460 260,324 260,280 220 Z" fill="url(#g_owl_body)" stroke="url(#g_stroke)" stroke-width="10"/>
+      <!-- BRAIN CLIP (a clean window area inside head where brain sits) -->
+      <clipPath id="brainClipNew">
+        <path d="M360 88 C380 60, 430 48, 512 48 C594 48, 644 60, 664 88 C692 120, 692 168, 664 190 C644 206, 594 220, 512 220 C430 220, 380 206, 360 190 C332 168,332 120,360 88 Z"/>
+      </clipPath>
+      <!-- Brain - now with clearer left/right hemispheres + gyri -->
+      <g clip-path="url(#brainClipNew)">
+        <!-- outer brain silhouette -->
+        <path d="M360 88 C380 60, 430 48, 512 48 C594 48, 644 60, 664 88 C692 120,692 168,664 190 C644 206,594 220,512 220 C430 220,380 206,360 190 C332 168,332 120,360 88 Z" fill="url(#g_brain)" stroke="#e55a98" stroke-width="6"/>
+        <!-- Left hemisphere folds (gyri/sulci) -->
+        <g stroke="#c34a84" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M430 92 C400 100, 398 130, 430 140" />
+          <path d="M420 116 C395 122,390 150,420 160" />
+          <path d="M450 128 C430 132,425 154,450 162" />
+          <path d="M390 150 C370 158,370 178,390 186" />
+          <path d="M460 152 C440 156,435 176,460 182" />
+        </g>
+        <!-- Right hemisphere folds -->
+        <g stroke="#c34a84" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M594 100 C620 108,622 138,594 148" />
+          <path d="M582 124 C610 130,615 156,586 164" />
+          <path d="M548 136 C572 140,576 162,548 170" />
+          <path d="M608 154 C630 160,630 178,608 186" />
+        </g>
+        <!-- Central connector / corpus-callosum stylized -->
+        <path d="M512 84 C508 98,508 122,512 136 C516 122,516 98,512 84 Z" fill="#ff8fb2" opacity="0.85"/>
+        <!-- circuit accents integrated into brain -->
+        <g stroke="#ff4a8a" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" fill="#ff4a8a">
+          <path d="M448 164 L470 178 L492 170" fill="none"/>
+          <circle cx="492" cy="170" r="7"/>
+          <path d="M560 140 L582 156 L600 150" fill="none"/>
+          <circle cx="600" cy="150" r="7"/>
+          <path d="M500 120 L520 136 L540 128" fill="none"/>
+          <circle cx="540" cy="128" r="7"/>
+        </g>
+      </g>
+      <!-- FACE (eyes, beak, smile) -->
+      <g id="face" transform="translate(0,38)">
+        <!-- left eye -->
+        <g transform="translate(360,240)">
+          <circle cx="0" cy="0" r="72" fill="#fff" stroke="#073d47" stroke-width="8"/>
+          <circle cx="-12" cy="-8" r="36" fill="#051012"/>
+          <circle cx="-4" cy="-18" r="12" fill="#fff"/>
+        </g>
+        <!-- right eye -->
+        <g transform="translate(664,240)">
+          <circle cx="0" cy="0" r="72" fill="#fff" stroke="#073d47" stroke-width="8"/>
+          <circle cx="-8" cy="-8" r="36" fill="#051012"/>
+          <circle cx="2" cy="-18" r="12" fill="#fff"/>
+        </g>
+        <!-- smile -->
+        <path d="M460 320 C500 350, 540 350, 580 320" fill="none" stroke="#07464f" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+        <!-- beak -->
+        <path d="M512 300 L476 340 L548 340 Z" fill="#ffb04d" stroke="#c97a2c" stroke-width="6"/>
+      </g>
+      <!-- head outline stroke -->
+      <path d="M280 220 C240 120,360 60,512 60 C664 60,784 120,744 220 C700 260,564 260,512 260 C460 260,324 260,280 220 Z" fill="none" stroke="url(#g_stroke)" stroke-width="10" opacity="0.95"/>
+    </g>
+    <!-- headset / AI accent -->
+    <g transform="translate(0,0)">
+      <rect x="260" y="250" rx="18" ry="18" width="26" height="80" fill="#073d47" />
+      <rect x="738" y="250" rx="18" ry="18" width="26" height="80" fill="#073d47" />
+      <path d="M286 295 C356 340, 668 340, 738 295" stroke="#07a0c0" stroke-width="8" fill="none" stroke-linecap="round"/>
+      <circle cx="286" cy="375" r="12" fill="#07a0c0"/>
+      <circle cx="738" cy="375" r="12" fill="#07a0c0"/>
+      <path d="M744 340 Q770 352, 792 350" stroke="#073d47" stroke-width="8" stroke-linecap="round" fill="none"/>
+      <circle cx="804" cy="346" r="12" fill="#073d47"/>
+    </g>
+    <!-- decorative tech traces on belly -->
+    <g transform="translate(0,0)" opacity="0.95">
+      <path class="strokeThin" d="M420 680 L460 640 L520 640 L560 600" />
+      <circle cx="420" cy="680" r="8" fill="#0e7fa0"/>
+      <circle cx="560" cy="600" r="8" fill="#0e7fa0"/>
+    </g>
+  </g>
+  <!-- label -->
+  <g id="label">
+    <text x="512" y="970" font-family="Montserrat, Arial, sans-serif" font-weight="700" font-size="150" text-anchor="middle" fill="#00b7e0" letter-spacing="4"> CORTEX AI </text>
+  </g>
+</svg>

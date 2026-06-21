@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Simple Machines — Interactive Tutorial</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>Simple Machines — Interactive Tutorial</h1>
+    <p>A short, step-by-step module covering levers and inclined planes with interactive simulations and a short quiz.</p>
+  </header>
+
+  <main>
+    <section id="intro">
+      <h2>How to use this module</h2>
+      <ol>
+        <li>Read the short explanation for each machine.</li>
+        <li>Use the controls in the interactive panels to experiment.</li>
+        <li>Try to predict what will happen, then confirm with the simulation.</li>
+        <li>Take the short quiz at the end to check your understanding.</li>
+      </ol>
+    </section>
+
+    <section id="lever" class="card">
+      <h2>1) Levers — Concepts</h2>
+      <p>A lever rotates about a fulcrum. Torque = Force × Distance (from fulcrum). The lever balances when torques on both sides are equal.</p>
+
+      <div class="sim-container">
+        <div class="sim-left">
+          <svg id="lever-svg" viewBox="0 0 600 200" preserveAspectRatio="xMidYMid meet" aria-label="Lever simulation">
+            <rect id="base" x="0" y="140" width="600" height="20" fill="#444"/>
+            <polygon id="fulcrum" points="290,140 310,140 300,110" fill="#6b4"/>
+            <g id="beam" transform="translate(300,120)">
+              <rect id="beam-rect" x="-260" y="-8" width="520" height="16" rx="4" fill="#2196f3" />
+              <circle id="left-weight" cx="-120" cy="24" r="12" fill="#ff5722" />
+              <circle id="right-weight" cx="140" cy="24" r="12" fill="#ff5722" />
+            </g>
+            <text id="status" x="10" y="20" font-size="14">Status: Balanced</text>
+          </svg>
+        </div>
+        <div class="sim-right">
+          <label>Fulcrum position (% from left): <input id="fulcrumRange" type="range" min="10" max="90" value="50"></label>
+          <label>Left weight (N): <input id="leftWeight" type="range" min="0" max="50" value="20"></label>
+          <label>Right weight (N): <input id="rightWeight" type="range" min="0" max="50" value="20"></label>
+          <div class="readouts">
+            <p>Left torque: <span id="leftTorque">0</span> N·m</p>
+            <p>Right torque: <span id="rightTorque">0</span> N·m</p>
+            <p>Net torque: <span id="netTorque">0</span> N·m</p>
+          </div>
+          <p class="hint">Move the fulcrum and change weights. Predict which side will tip.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <h3>Step-by-step</h3>
+        <ol>
+          <li>Set the fulcrum in the center.</li>
+          <li>Place equal weights at equal distances — the beam should balance.</li>
+          <li>Move one weight further away or increase its force to create imbalance.</li>
+          <li>Observe torques displayed and predict motion direction.</li>
+        </ol>
+      </div>
+    </section>
+
+    <section id="inclined" class="card">
+      <h2>2) Inclined Plane — Concepts</h2>
+      <p>On a frictionless incline, the component of gravity along the plane is g·sin(theta). Acceleration = g·sin(theta).</p>
+
+      <div class="sim-container">
+        <div class="sim-left">
+          <svg id="incline-svg" viewBox="0 0 600 240" preserveAspectRatio="xMidYMid meet" aria-label="Inclined plane">
+            <rect x="0" y="200" width="600" height="40" fill="#6c6c6c"/>
+            <g id="plane-group" transform="translate(100,200)">
+              <rect id="plane" x="0" y="-8" width="360" height="12" fill="#8d6e63" transform-origin="0 0" />
+              <rect id="block" x="40" y="-44" width="40" height="40" fill="#ffeb3b" />
+            </g>
+            <text id="inclineStatus" x="10" y="20" font-size="14">Angle: 30°</text>
+          </svg>
+        </div>
+        <div class="sim-right">
+          <label>Angle (degrees): <input id="angleRange" type="range" min="0" max="80" value="30"></label>
+          <label>Mass (kg): <input id="massRange" type="range" min="0.1" max="10" step="0.1" value="1"></label>
+          <div class="readouts">
+            <p>Downhill force: <span id="downForce">0</span> N</p>
+            <p>Acceleration (no friction): <span id="accel">0</span> m/s²</p>
+          </div>
+          <p class="hint">Try low and high angles and watch how acceleration changes.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <h3>Step-by-step</h3>
+        <ol>
+          <li>Set the angle to a small value — the block will accelerate slowly.</li>
+          <li>Increase the angle — acceleration increases roughly with sin(theta).</li>
+          <li>Change the mass — note that acceleration does not depend on mass for frictionless incline.</li>
+        </ol>
+      </div>
+    </section>
+
+    <section id="quiz" class="card">
+      <h2>3) Quick Quiz</h2>
+      <form id="quizForm">
+        <ol>
+          <li>
+            <p>Which expression gives torque?</p>
+            <label><input type="radio" name="q1" value="a"> Force × Distance</label><br>
+            <label><input type="radio" name="q1" value="b"> Force + Distance</label><br>
+            <label><input type="radio" name="q1" value="c"> Force / Distance</label>
+          </li>
+          <li>
+            <p>On a frictionless incline, acceleration down the slope is:</p>
+            <label><input type="radio" name="q2" value="a"> g·cos(theta)</label><br>
+            <label><input type="radio" name="q2" value="b"> g·sin(theta)</label><br>
+            <label><input type="radio" name="q2" value="c"> g</label>
+          </li>
+          <li>
+            <p>Two equal forces are applied at different distances from fulcrum. Which will produce larger torque?</p>
+            <label><input type="radio" name="q3" value="a"> The one closer to fulcrum</label><br>
+            <label><input type="radio" name="q3" value="b"> The one farther from fulcrum</label><br>
+            <label><input type="radio" name="q3" value="c"> They produce equal torque</label>
+          </li>
+        </ol>
+        <button type="button" id="submitQuiz">Submit Answers</button>
+      </form>
+      <div id="quizResult" aria-live="polite"></div>
+    </section>
+
+    <footer>
+      <p>Built as a lightweight learning module. Modify and extend experiments as you like.</p>
+    </footer>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,1358 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Smart Notes - Prep100</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+      /* Custom animations */
+      @keyframes float {
+        0%, 100% { transform: translateY(0) rotate(0deg); }
+        50% { transform: translateY(-10px) rotate(2deg); }
+      }
+      @keyframes bounce-in {
+        0% { transform: scale(0.5); opacity: 0; }
+        50% { transform: scale(1.1); }
+        100% { transform: scale(1); opacity: 1; }
+      }
+      @keyframes slide-up {
+        0% { transform: translateY(20px); opacity: 0; }
+        100% { transform: translateY(0); opacity: 1; }
+      }
+      .animate-bounce-in { animation: bounce-in 0.5s ease-out; }
+      .animate-slide-up { animation: slide-up 0.3s ease-out; }
+      
+      /* Flip card for flashcards */
+      .flip-card { perspective: 1000px; }
+      .flip-card-inner {
+        transition: transform 0.6s;
+        transform-style: preserve-3d;
+      }
+      .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
+      .flip-card-front, .flip-card-back {
+        backface-visibility: hidden;
+        -webkit-backface-visibility: hidden;
+      }
+      .flip-card-back { transform: rotateY(180deg); }
+      
+      /* Progress bar animation */
+      .progress-fill { transition: width 1s ease-out; }
+      
+      /* Streak fire effect */
+      .streak-fire { text-shadow: 0 0 10px rgba(251, 146, 60, 0.5); }
+      
+      /* Tab active indicator */
+      .tab-active {
+        position: relative;
+      }
+      .tab-active::after {
+        content: '';
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, #f59e0b, #fbbf24);
+        border-radius: 2px;
+      }
+      
+      /* Custom scrollbar */
+      .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+      .custom-scrollbar::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 3px; }
+      .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+      .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+      
+      /* Modal backdrop blur */
+      .modal-backdrop {
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+      }
+      
+      /* Quiz option styles */
+      .quiz-option { transition: all 0.2s ease; }
+      .quiz-option.selected { background: #dbeafe; border-color: #3b82f6; }
+      .quiz-option.correct { background: #dcfce7; border-color: #22c55e; }
+      .quiz-option.incorrect { background: #fee2e2; border-color: #ef4444; }
+      
+      /* Mobile-specific styles */
+      @media (max-width: 640px) {
+        /* Smaller text sizes */
+        .mobile-text-xs { font-size: 0.65rem; }
+        .mobile-text-sm { font-size: 0.75rem; }
+        .mobile-text-base { font-size: 0.875rem; }
+        .mobile-text-lg { font-size: 1rem; }
+        .mobile-text-xl { font-size: 1.125rem; }
+        .mobile-text-2xl { font-size: 1.25rem; }
+        
+        /* Smaller padding/margins */
+        .mobile-p-2 { padding: 0.5rem; }
+        .mobile-p-3 { padding: 0.75rem; }
+        .mobile-p-4 { padding: 1rem; }
+        
+        /* Smaller icons */
+        .mobile-icon-sm { font-size: 0.75rem; }
+        .mobile-icon { font-size: 0.875rem; }
+        .mobile-icon-lg { font-size: 1rem; }
+        
+        /* Compact cards */
+        .mobile-card { padding: 0.75rem; }
+        .mobile-card-sm { padding: 0.5rem; }
+        
+        /* Smaller buttons */
+        .mobile-btn { padding: 0.5rem 0.75rem; font-size: 0.75rem; }
+        .mobile-btn-sm { padding: 0.375rem 0.5rem; font-size: 0.65rem; }
+        
+        /* Smaller inputs */
+        .mobile-input { padding: 0.5rem; font-size: 0.875rem; }
+        
+        /* Tab adjustments */
+        .mobile-tab { padding: 0.5rem 0.25rem; font-size: 0.65rem; }
+        .mobile-tab i { font-size: 0.75rem; }
+        
+        /* Badge adjustments */
+        .mobile-badge { padding: 0.125rem 0.375rem; font-size: 0.6rem; }
+        
+        /* Hide on mobile */
+        .mobile-hide { display: none !important; }
+        
+        /* Smaller rounded corners */
+        .mobile-rounded { border-radius: 0.75rem; }
+        .mobile-rounded-lg { border-radius: 0.5rem; }
+        
+        /* Adjust banner */
+        .mobile-banner { padding: 0.75rem; }
+        
+        /* Smaller gap */
+        .mobile-gap-1 { gap: 0.25rem; }
+        .mobile-gap-2 { gap: 0.5rem; }
+        .mobile-gap-3 { gap: 0.75rem; }
+        
+        /* Full width on mobile */
+        .mobile-w-full { width: 100%; }
+        
+        /* Smaller avatars */
+        .mobile-avatar { width: 1.5rem; height: 1.5rem; }
+        .mobile-avatar-lg { width: 2rem; height: 2rem; }
+        
+        /* Note card compact */
+        .note-card-mobile { 
+          padding: 0.625rem; 
+          margin-bottom: 0.5rem;
+        }
+        .note-card-mobile h3 { font-size: 0.875rem; }
+        .note-card-mobile p { font-size: 0.75rem; }
+      }
+      
+      /* Prevent text selection on mobile for buttons */
+      @media (max-width: 640px) {
+        button, .no-select {
+          -webkit-user-select: none;
+          user-select: none;
+          -webkit-touch-callout: none;
+        }
+      }
+      
+      /* Safe area for mobile */
+      @supports (padding-bottom: env(safe-area-inset-bottom)) {
+        .safe-bottom { padding-bottom: env(safe-area-inset-bottom); }
+      }
+    </style>
+    
+    <!-- Preload user data -->
+    <script>
+      function getInitials(fullName) {
+        return fullName.split(' ')
+          .slice(0, 2)
+          .map(name => name.charAt(0))
+          .join('')
+          .toUpperCase();
+      }
+
+      try {
+        const cachedUserData = localStorage.getItem('cachedUserData_current');
+        if (cachedUserData) {
+          const { data: user } = JSON.parse(cachedUserData);
+          window.preloadedUserData = user;
+          
+          document.addEventListener('DOMContentLoaded', () => {
+            if (user) {
+              const fullName = user.displayName || 'Student';
+              const name = fullName.split(' ')[0];
+              const level = (user.profile?.level || '').startsWith('SS') ? user.profile.level : 'SS 3';
+              const initials = getInitials(fullName);
+              
+              const heading = document.querySelector('h1');
+              if (heading) heading.textContent = `${name}'s Smart Notes`;
+
+              document.getElementById('userName').textContent = name;
+              document.getElementById('userLevel').textContent = level;
+              document.getElementById('topName').textContent = fullName;
+              document.getElementById('topLevel').textContent = level;
+              
+              const avatarUrl = user.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(initials)}&background=2563eb&color=fff&size=128`;
+              ['avatar-sm', 'topAvatar'].forEach(id => {
+                const avatar = document.getElementById(id);
+                if (avatar) avatar.setAttribute('src', avatarUrl);
+              });
+              
+              if (user.unreadNotifications) {
+                const notifCount = document.getElementById('notifCount');
+                if (notifCount) notifCount.textContent = user.unreadNotifications.length;
+              }
+            }
+          });
+        }
+      } catch (err) {
+        console.error('Error pre-loading user data:', err);
+      }
+    </script>
+  </head>
+  <body class="bg-slate-50 text-slate-800 text-sm sm:text-base">
+    <div class="min-h-screen flex">
+      <!-- Sidebar -->
+      <aside id="sidebar" class="fixed inset-y-0 left-0 w-64 sm:w-72 bg-white border-r border-slate-200 flex flex-col p-3 sm:p-4 z-40 transition-transform duration-300 -translate-x-full lg:translate-x-0">
+        <div class="flex items-center gap-2 sm:gap-3">
+          <img src="/assets/images/logo.png" alt="logo" class="h-10 w-10 sm:h-12 sm:w-12 rounded-full shadow-sm">
+          <div>
+            <div class="text-base sm:text-lg font-bold text-sky-700">JUANOVA CORTEX</div>
+            <div class="text-xs text-slate-500">Student Dashboard</div>
+          </div>
+        </div>
+
+        <nav class="flex-1 overflow-auto mt-3 sm:mt-4">
+          <ul class="space-y-0.5 sm:space-y-1 text-sm">
+            <li><a href="student-dashboard.html" class="flex items-center gap-2 sm:gap-3 px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-home text-sky-600 text-xs sm:text-sm"></i> Home</a></li>
+            <li><a href="news-feed-gemini.html" class="flex items-center gap-2 sm:gap-3 px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-newspaper text-pink-500 text-xs sm:text-sm"></i> News Feed</a></li>
+            <li><a href="ai-tutor-chatbot.html" class="flex items-center gap-2 sm:gap-3 px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-robot text-purple-500 text-xs sm:text-sm"></i> AI Tutor</a></li>
+            <li><a href="study-plan.html" class="flex items-center gap-2 sm:gap-3 px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-calendar-check text-green-500 text-xs sm:text-sm"></i> Study Plan</a></li>
+            <li><a href="formula-bank.html" class="flex items-center gap-2 sm:gap-3 px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-book-open text-teal-600 text-xs sm:text-sm"></i> All Formula</a></li>
+            <li><a href="../PhysicsQuest/PhysicsQuest/client/index.html" class="flex items-center gap-2 sm:gap-3 px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-gamepad text-red-500 text-xs sm:text-sm"></i> Game</a></li>
+            <li><a href="video-library.html" class="flex items-center gap-2 sm:gap-3 px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-film text-rose-500 text-xs sm:text-sm"></i> Video Library</a></li>
+            <li><a href="digital-library.html" class="flex items-center gap-2 sm:gap-3 px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-book text-indigo-500 text-xs sm:text-sm"></i> Digital Library</a></li>
+            <li><a href="mock-exams.html" class="flex items-center gap-2 sm:gap-3 px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-pencil-alt text-orange-500 text-xs sm:text-sm"></i> Mock Exams</a></li>
+            <li><a href="cbt/cbt.html" class="flex items-center gap-2 sm:gap-3 px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-computer text-red-500 text-xs sm:text-sm"></i> JAMB CBT</a></li>
+            <li><a href="notifications.html" class="flex items-center gap-2 sm:gap-3 px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-bell text-pink-600 text-xs sm:text-sm"></i> Notifications</a></li>
+            <li><a href="student-live-session.html" class="flex items-center gap-2 sm:gap-3 px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-chalkboard-teacher text-blue-400 text-xs sm:text-sm"></i> Live Sessions</a></li>
+            <li><a href="smart-note.html" class="flex items-center gap-2 sm:gap-3 px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg bg-yellow-50 text-yellow-700 font-semibold"><i class="fas fa-sticky-note text-yellow-500 text-xs sm:text-sm"></i> Smart Notes</a></li>
+            <li><a href="learning-report.html" class="flex items-center gap-2 sm:gap-3 px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-chart-line text-indigo-500 text-xs sm:text-sm"></i> Learning Report</a></li>
+            <li><a href="nobel-laureate.html" class="flex items-center gap-2 sm:gap-3 px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-award text-yellow-600 text-xs sm:text-sm"></i> Nobel Laureate</a></li>
+          </ul>
+        </nav>
+
+        <div class="text-xs sm:text-sm text-slate-500 pt-3 sm:pt-4 border-t">
+          <div class="mb-1.5 sm:mb-2">Account</div>
+          <div class="flex items-center gap-2 sm:gap-3">
+            <img id="avatar-sm" src="../assets/images/unnamed.jpg" alt="avatar" class="h-8 w-8 sm:h-10 sm:w-10 rounded-full border">
+            <div>
+              <div id="userName" class="font-semibold text-sm">Student</div>
+              <div id="userLevel" class="text-xs text-slate-400"></div>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Main area -->
+      <div id="main-content" class="flex-1 flex flex-col lg:ml-64 xl:ml-72">
+        <!-- Top Bar -->
+        <header class="flex items-center justify-between p-2 sm:p-4 bg-white border-b border-slate-200 sticky top-0 z-30">
+          <div class="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
+            <button id="toggleSidebar" class="p-1.5 sm:p-2 rounded-md hover:bg-slate-100 lg:hidden flex-shrink-0" title="Toggle sidebar">
+              <i class="fas fa-bars text-sm sm:text-base"></i>
+            </button>
+            <div class="relative flex-1 max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg">
+              <i class="fas fa-search absolute left-2 sm:left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs sm:text-sm"></i>
+              <input id="searchInput" type="search" placeholder="Search notes..." class="w-full pl-7 sm:pl-9 pr-3 sm:pr-4 py-1.5 sm:py-2 text-xs sm:text-sm rounded-full border border-slate-200 bg-white focus:outline-none focus:ring-2 focus:ring-yellow-100 focus:border-yellow-400">
+            </div>
+          </div>
+
+          <div class="flex items-center gap-1.5 sm:gap-3 flex-shrink-0">
+            <!-- Streak Counter - Hidden on very small screens -->
+            <div class="hidden md:flex items-center gap-1.5 bg-gradient-to-r from-orange-100 to-yellow-100 px-2.5 py-1 rounded-full">
+              <i class="fas fa-fire text-orange-500 text-xs streak-fire"></i>
+              <span id="streakCount" class="font-bold text-orange-600 text-xs">0</span>
+              <span class="text-xs text-orange-500 hidden sm:inline">streak</span>
+            </div>
+            
+            <!-- Points Counter -->
+            <div class="hidden md:flex items-center gap-1.5 bg-gradient-to-r from-violet-100 to-purple-100 px-2.5 py-1 rounded-full">
+              <i class="fas fa-gem text-violet-500 text-xs"></i>
+              <span id="pointsCount" class="font-bold text-violet-600 text-xs">0</span>
+              <span class="text-xs text-violet-500 hidden sm:inline">pts</span>
+            </div>
+            
+            <div class="relative">
+              <button id="notifBtn" class="p-1.5 sm:p-2 rounded-full hover:bg-slate-50" aria-label="Notifications">
+                <i class="fas fa-bell text-sky-600 text-sm sm:text-base"></i>
+              </button>
+              <span id="notifCount" class="absolute -top-0.5 -right-0.5 bg-pink-500 text-white rounded-full w-4 h-4 text-xs flex items-center justify-center">0</span>
+            </div>
+            <div class="flex items-center gap-1.5 sm:gap-2">
+              <div class="text-right hidden sm:block">
+                <div id="topName" class="font-semibold text-xs sm:text-sm">Student</div>
+                <div id="topLevel" class="text-xs text-slate-400">SS 3</div>
+              </div>
+              <img id="topAvatar" src="../assets/images/unnamed.jpg" alt="avatar" class="h-8 w-8 sm:h-9 sm:w-9 rounded-full border-2">
+            </div>
+          </div>
+        </header>
+
+        <main class="p-2 sm:p-4 md:p-6 space-y-3 sm:space-y-4 md:space-y-6 safe-bottom">
+          <!-- Banner / Header -->
+          <div class="rounded-2xl sm:rounded-3xl bg-gradient-to-r from-yellow-500 via-amber-500 to-orange-500 text-white p-3 sm:p-5 md:p-6 shadow-lg relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-24 sm:w-32 h-24 sm:h-32 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2"></div>
+            <div class="absolute bottom-0 left-1/4 w-12 sm:w-16 h-12 sm:h-16 bg-white/10 rounded-full translate-y-1/2"></div>
+            
+            <div class="relative z-10">
+              <div class="flex flex-col gap-2 sm:gap-3 md:gap-4">
+                <div>
+                  <h1 class="text-lg sm:text-xl md:text-2xl font-extrabold flex items-center gap-1.5 sm:gap-2">
+                    <i class="fas fa-sticky-note text-base sm:text-lg md:text-2xl"></i>
+                    Smart Notes
+                  </h1>
+                  <p class="text-yellow-100 mt-0.5 sm:mt-1 text-xs sm:text-sm">Create notes, flashcards & AI-powered quizzes!</p>
+                </div>
+                <div class="flex flex-wrap gap-1.5 sm:gap-2">
+                  <button id="openCreate" class="bg-white text-yellow-600 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full font-semibold hover:bg-yellow-50 transition-all shadow-md text-xs sm:text-sm">
+                    <i class="fas fa-plus mr-1 text-xs"></i> Create
+                  </button>
+                  <button id="importBtn" class="bg-white/20 text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded-full font-semibold hover:bg-white/30 transition-all border border-white/30 text-xs sm:text-sm">
+                    <i class="fas fa-file-import mr-1 text-xs"></i> Import
+                  </button>
+                  <button id="aiGenerateBtn" class="bg-gradient-to-r from-violet-500 to-purple-600 text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded-full font-semibold hover:from-violet-600 hover:to-purple-700 transition-all shadow-md text-xs sm:text-sm">
+                    <i class="fas fa-magic mr-1 text-xs"></i> AI
+                  </button>
+                </div>
+              </div>
+              
+              <!-- Quick Stats -->
+              <div class="flex flex-wrap gap-2 sm:gap-3 md:gap-4 mt-3 sm:mt-4 pt-3 sm:pt-4 border-t border-white/20">
+                <div class="flex items-center gap-1.5 sm:gap-2">
+                  <div class="w-6 h-6 sm:w-8 sm:h-8 bg-white/20 rounded-lg flex items-center justify-center">
+                    <i class="fas fa-sticky-note text-xs sm:text-sm"></i>
+                  </div>
+                  <div>
+                    <div id="totalNotes" class="font-bold text-sm sm:text-base">0</div>
+                    <div class="text-xs text-yellow-100">Notes</div>
+                  </div>
+                </div>
+                <div class="flex items-center gap-1.5 sm:gap-2">
+                  <div class="w-6 h-6 sm:w-8 sm:h-8 bg-white/20 rounded-lg flex items-center justify-center">
+                    <i class="fas fa-layer-group text-xs sm:text-sm"></i>
+                  </div>
+                  <div>
+                    <div id="totalFlashcards" class="font-bold text-sm sm:text-base">0</div>
+                    <div class="text-xs text-yellow-100">Cards</div>
+                  </div>
+                </div>
+                <div class="flex items-center gap-1.5 sm:gap-2">
+                  <div class="w-6 h-6 sm:w-8 sm:h-8 bg-white/20 rounded-lg flex items-center justify-center">
+                    <i class="fas fa-check-circle text-xs sm:text-sm"></i>
+                  </div>
+                  <div>
+                    <div id="cardsLearned" class="font-bold text-sm sm:text-base">0</div>
+                    <div class="text-xs text-yellow-100">Learned</div>
+                  </div>
+                </div>
+                <div class="flex items-center gap-1.5 sm:gap-2">
+                  <div class="w-6 h-6 sm:w-8 sm:h-8 bg-white/20 rounded-lg flex items-center justify-center">
+                    <i class="fas fa-percentage text-xs sm:text-sm"></i>
+                  </div>
+                  <div>
+                    <div id="masteryLevel" class="font-bold text-sm sm:text-base">0%</div>
+                    <div class="text-xs text-yellow-100">Mastery</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Mode Tabs -->
+          <div class="bg-white rounded-xl sm:rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+            <div class="flex border-b border-slate-200 overflow-x-auto">
+              <button id="tabNotes" class="flex-1 min-w-0 px-2 sm:px-4 md:px-6 py-2.5 sm:py-3 md:py-4 font-semibold text-yellow-600 tab-active transition-colors text-xs sm:text-sm whitespace-nowrap" onclick="switchTab('notes')">
+                <i class="fas fa-sticky-note mr-1 sm:mr-2 text-xs sm:text-sm"></i>Notes
+              </button>
+              <button id="tabFlashcards" class="flex-1 min-w-0 px-2 sm:px-4 md:px-6 py-2.5 sm:py-3 md:py-4 font-semibold text-slate-500 hover:text-slate-700 transition-colors text-xs sm:text-sm whitespace-nowrap" onclick="switchTab('flashcards')">
+                <i class="fas fa-layer-group mr-1 sm:mr-2 text-xs sm:text-sm"></i>Cards
+              </button>
+              <button id="tabQuiz" class="flex-1 min-w-0 px-2 sm:px-4 md:px-6 py-2.5 sm:py-3 md:py-4 font-semibold text-slate-500 hover:text-slate-700 transition-colors text-xs sm:text-sm whitespace-nowrap" onclick="switchTab('quiz')">
+                <i class="fas fa-gamepad mr-1 sm:mr-2 text-xs sm:text-sm"></i>Quiz
+              </button>
+              <button id="tabSpaced" class="flex-1 min-w-0 px-2 sm:px-4 md:px-6 py-2.5 sm:py-3 md:py-4 font-semibold text-slate-500 hover:text-slate-700 transition-colors text-xs sm:text-sm whitespace-nowrap" onclick="switchTab('spaced')">
+                <i class="fas fa-clock mr-1 sm:mr-2 text-xs sm:text-sm"></i>Review
+              </button>
+            </div>
+            
+            <!-- Tab Content -->
+            <div class="p-2 sm:p-4 md:p-6">
+              <!-- Notes View -->
+              <div id="viewNotes" class="space-y-3 sm:space-y-4">
+                <div id="notesGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-3 md:gap-4"></div>
+              </div>
+              
+              <!-- Flashcards View -->
+              <div id="viewFlashcards" class="hidden">
+                <div class="flex flex-col md:flex-row gap-3 sm:gap-4 md:gap-6">
+                  <!-- Decks Sidebar -->
+                  <div class="w-full md:w-56 lg:w-64 space-y-2">
+                    <div class="flex items-center justify-between mb-2 sm:mb-4">
+                      <h3 class="font-bold text-slate-800 text-sm sm:text-base">Decks</h3>
+                      <button onclick="createDeck()" class="text-yellow-600 hover:text-yellow-700 text-sm">
+                        <i class="fas fa-plus"></i>
+                      </button>
+                    </div>
+                    <div id="decksList" class="flex md:flex-col gap-2 overflow-x-auto md:overflow-y-auto md:max-h-[60vh] custom-scrollbar pb-2 md:pb-0"></div>
+                  </div>
+                  
+                  <!-- Flashcards Grid -->
+                  <div class="flex-1 min-w-0">
+                    <div id="flashcardsContainer" class="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
+                      <div class="col-span-full text-center py-6 sm:py-12 text-slate-400 text-xs sm:text-sm">
+                        <i class="fas fa-layer-group text-2xl sm:text-4xl mb-2 sm:mb-3"></i>
+                        <p>Select a deck or create flashcards</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Quiz View -->
+              <div id="viewQuiz" class="hidden">
+                <div id="quizSetup" class="max-w-lg mx-auto text-center py-4 sm:py-8">
+                  <div class="w-14 h-14 sm:w-20 sm:h-20 bg-gradient-to-br from-violet-100 to-purple-100 rounded-2xl flex items-center justify-center mx-auto mb-3 sm:mb-4">
+                    <i class="fas fa-gamepad text-2xl sm:text-3xl text-violet-600"></i>
+                  </div>
+                  <h3 class="text-lg sm:text-xl font-bold text-slate-800 mb-1 sm:mb-2">Ready to Quiz?</h3>
+                  <p class="text-slate-500 mb-4 sm:mb-6 text-xs sm:text-sm">Test your knowledge with AI questions</p>
+                  
+                  <div class="space-y-3 sm:space-y-4">
+                    <div class="flex flex-wrap justify-center gap-2">
+                      <button onclick="startQuiz('all')" class="bg-gradient-to-r from-violet-500 to-purple-600 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-xl font-semibold hover:from-violet-600 hover:to-purple-700 transition-all text-xs sm:text-sm">
+                        <i class="fas fa-random mr-1 sm:mr-2"></i>Quick Quiz
+                      </button>
+                      <button onclick="startQuiz('due')" class="bg-gradient-to-r from-orange-500 to-amber-500 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-xl font-semibold hover:from-orange-600 hover:to-amber-600 transition-all text-xs sm:text-sm">
+                        <i class="fas fa-clock mr-1 sm:mr-2"></i>Due Cards
+                      </button>
+                    </div>
+                    
+                    <div class="pt-3 sm:pt-4 border-t border-slate-200">
+                      <p class="text-xs sm:text-sm text-slate-500 mb-2">Or select a deck:</p>
+                      <div id="quizDeckSelect" class="flex flex-wrap justify-center gap-1.5 sm:gap-2"></div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div id="quizActive" class="hidden max-w-2xl mx-auto">
+                  <div class="mb-4 sm:mb-6">
+                    <div class="flex justify-between text-xs sm:text-sm text-slate-500 mb-1.5 sm:mb-2">
+                      <span>Q<span id="quizCurrent">1</span>/<span id="quizTotal">10</span></span>
+                      <span><i class="fas fa-gem text-violet-500 mr-1"></i><span id="quizScore">0</span> pts</span>
+                    </div>
+                    <div class="h-1.5 sm:h-2 bg-slate-200 rounded-full overflow-hidden">
+                      <div id="quizProgress" class="h-full bg-gradient-to-r from-yellow-400 to-orange-500 progress-fill" style="width: 10%"></div>
+                    </div>
+                  </div>
+                  
+                  <div id="questionCard" class="bg-white rounded-xl sm:rounded-2xl border border-slate-200 shadow-lg p-4 sm:p-6 md:p-8 text-center">
+                    <div id="questionText" class="text-base sm:text-lg md:text-xl font-semibold text-slate-800 mb-4 sm:mb-6">Loading...</div>
+                    <div id="questionOptions" class="space-y-2 sm:space-y-3 text-left"></div>
+                  </div>
+                  
+                  <div class="flex justify-between mt-4 sm:mt-6">
+                    <button onclick="endQuiz()" class="px-3 sm:px-4 py-1.5 sm:py-2 text-slate-500 hover:text-slate-700 text-xs sm:text-sm">
+                      <i class="fas fa-times mr-1"></i> End
+                    </button>
+                    <button id="nextQuestionBtn" onclick="nextQuestion()" class="bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-4 sm:px-6 py-1.5 sm:py-2 rounded-full font-semibold hidden text-xs sm:text-sm">
+                      Next <i class="fas fa-arrow-right ml-1"></i>
+                    </button>
+                  </div>
+                </div>
+                
+                <div id="quizResults" class="hidden max-w-lg mx-auto text-center py-4 sm:py-8">
+                  <div id="resultsContent"></div>
+                </div>
+              </div>
+              
+              <!-- Spaced Repetition View -->
+              <div id="viewSpaced" class="hidden">
+                <div class="max-w-4xl mx-auto">
+                  <div class="text-center mb-4 sm:mb-6">
+                    <h3 class="text-lg sm:text-xl font-bold text-slate-800">Cards Due for Review</h3>
+                    <p class="text-slate-500 text-xs sm:text-sm">Spaced repetition algorithm</p>
+                  </div>
+                  
+                  <div id="dueCardsContainer" class="space-y-2 sm:space-y-4">
+                    <div class="text-center py-8 sm:py-12 text-slate-400">
+                      <i class="fas fa-check-circle text-3xl sm:text-4xl mb-2 sm:mb-3 text-green-500"></i>
+                      <p class="text-green-600 font-semibold text-sm sm:text-base">All caught up!</p>
+                      <p class="text-xs sm:text-sm">No cards due for review.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <!-- Note Modal -->
+    <div id="jotModal" class="fixed inset-0 bg-black/40 modal-backdrop hidden items-center justify-center z-50 p-3 sm:p-4">
+      <div class="bg-white rounded-xl sm:rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto animate-bounce-in">
+        <div class="sticky top-0 bg-white border-b border-slate-100 p-3 sm:p-4 flex items-center justify-between">
+          <h2 id="modalTitle" class="text-base sm:text-lg md:text-xl font-bold text-slate-800">Create Note</h2>
+          <button id="closeModalBtn" class="text-slate-400 hover:text-slate-600 p-1.5 sm:p-2">
+            <i class="fas fa-times text-sm sm:text-base"></i>
+          </button>
+        </div>
+        <div class="p-3 sm:p-4 md:p-6 space-y-3 sm:space-y-4">
+          <div>
+            <label class="block text-xs sm:text-sm font-medium text-slate-700 mb-1">Title</label>
+            <input id="jotTitle" type="text" placeholder="Enter note title..." class="w-full p-2 sm:p-3 text-sm border border-slate-200 rounded-lg sm:rounded-xl focus:outline-none focus:ring-2 focus:ring-yellow-100 focus:border-yellow-400">
+          </div>
+          <div>
+            <label class="block text-xs sm:text-sm font-medium text-slate-700 mb-1">Content</label>
+            <textarea id="jotContent" placeholder="Write your notes here..." class="w-full p-2 sm:p-3 text-sm border border-slate-200 rounded-lg sm:rounded-xl h-32 sm:h-48 focus:outline-none focus:ring-2 focus:ring-yellow-100 focus:border-yellow-400"></textarea>
+          </div>
+          <div>
+            <label class="block text-xs sm:text-sm font-medium text-slate-700 mb-1">Tags</label>
+            <input id="jotTags" type="text" placeholder="physics, formulas (comma-separated)" class="w-full p-2 sm:p-3 text-sm border border-slate-200 rounded-lg sm:rounded-xl focus:outline-none focus:ring-2 focus:ring-yellow-100 focus:border-yellow-400">
+          </div>
+          
+          <!-- AI Options -->
+          <div class="bg-gradient-to-r from-violet-50 to-purple-50 rounded-lg sm:rounded-xl p-3 sm:p-4 border border-violet-100">
+            <div class="flex items-center gap-2 mb-2 sm:mb-3">
+              <i class="fas fa-magic text-violet-500 text-sm"></i>
+              <span class="font-semibold text-violet-700 text-xs sm:text-sm">AI Options</span>
+            </div>
+            <div class="flex flex-wrap gap-1.5 sm:gap-2">
+              <label class="flex items-center gap-1.5 sm:gap-2 bg-white px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-lg border border-violet-200 cursor-pointer hover:bg-violet-50 text-xs sm:text-sm">
+                <input type="checkbox" id="autoFlashcard" class="accent-violet-500">
+                <span>Auto flashcards</span>
+              </label>
+              <label class="flex items-center gap-1.5 sm:gap-2 bg-white px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-lg border border-violet-200 cursor-pointer hover:bg-violet-50 text-xs sm:text-sm">
+                <input type="checkbox" id="autoQuiz" class="accent-violet-500">
+                <span>Quiz questions</span>
+              </label>
+            </div>
+          </div>
+          
+          <div class="flex gap-2 sm:gap-3 justify-end pt-3 sm:pt-4 border-t border-slate-100">
+            <button id="cancelJotBtn" class="px-4 sm:px-6 py-2 sm:py-2.5 rounded-lg sm:rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-50 font-medium text-xs sm:text-sm">Cancel</button>
+            <button id="saveJotBtn" class="px-4 sm:px-6 py-2 sm:py-2.5 rounded-lg sm:rounded-xl bg-gradient-to-r from-yellow-400 to-orange-500 text-white font-semibold hover:from-yellow-500 hover:to-orange-600 shadow-md text-xs sm:text-sm">
+              <i class="fas fa-save mr-1"></i> Save
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Import Modal -->
+    <div id="importModal" class="fixed inset-0 bg-black/40 modal-backdrop hidden items-center justify-center z-50 p-3 sm:p-4">
+      <div class="bg-white rounded-xl sm:rounded-2xl w-full max-w-lg animate-bounce-in">
+        <div class="p-3 sm:p-4 border-b border-slate-100 flex items-center justify-between">
+          <h2 class="text-base sm:text-lg md:text-xl font-bold text-slate-800">Import Content</h2>
+          <button onclick="closeImportModal()" class="text-slate-400 hover:text-slate-600 p-1.5 sm:p-2">
+            <i class="fas fa-times text-sm sm:text-base"></i>
+          </button>
+        </div>
+        <div class="p-3 sm:p-4 md:p-6 space-y-3 sm:space-y-4">
+          <!-- Import Tabs -->
+          <div class="flex border-b border-slate-200">
+            <button onclick="showImportTab('youtube')" class="import-tab flex-1 px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium text-red-500 border-b-2 border-red-500" data-tab="youtube">
+              <i class="fab fa-youtube mr-1"></i> YouTube
+            </button>
+            <button onclick="showImportTab('pdf')" class="import-tab flex-1 px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium text-slate-500" data-tab="pdf">
+              <i class="fas fa-file-pdf mr-1"></i> PDF
+            </button>
+            <button onclick="showImportTab('paste')" class="import-tab flex-1 px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium text-slate-500" data-tab="paste">
+              <i class="fas fa-paste mr-1"></i> Paste
+            </button>
+          </div>
+          
+          <!-- YouTube Import -->
+          <div id="importYoutube" class="space-y-3 sm:space-y-4">
+            <div>
+              <label class="block text-xs sm:text-sm font-medium text-slate-700 mb-1">YouTube URL</label>
+              <input type="url" id="youtubeUrl" placeholder="https://youtube.com/watch?v=..." class="w-full p-2 sm:p-3 text-sm border border-slate-200 rounded-lg sm:rounded-xl focus:outline-none focus:ring-2 focus:ring-red-100 focus:border-red-400">
+            </div>
+            <p class="text-xs text-slate-500">
+              <i class="fas fa-info-circle mr-1"></i>
+              AI extracts key concepts from videos
+            </p>
+            <button onclick="importFromYouTube()" class="w-full py-2 sm:py-3 bg-red-500 hover:bg-red-600 text-white rounded-lg sm:rounded-xl font-semibold transition-colors text-xs sm:text-sm">
+              <i class="fas fa-download mr-1"></i> Import
+            </button>
+          </div>
+          
+          <!-- PDF Import -->
+          <div id="importPdf" class="hidden space-y-3 sm:space-y-4">
+            <div class="border-2 border-dashed border-slate-300 rounded-lg sm:rounded-xl p-6 sm:p-8 text-center hover:border-yellow-400 transition-colors cursor-pointer" onclick="document.getElementById('pdfInput').click()">
+              <i class="fas fa-cloud-upload-alt text-3xl sm:text-4xl text-slate-400 mb-2 sm:mb-3"></i>
+              <p class="text-slate-600 text-xs sm:text-sm">Tap to upload PDF</p>
+              <p class="text-xs text-slate-400 mt-1">Max 10MB</p>
+              <input type="file" id="pdfInput" accept=".pdf" class="hidden" onchange="handlePdfUpload(event)">
+            </div>
+          </div>
+          
+          <!-- Paste Import -->
+          <div id="importPaste" class="hidden space-y-3 sm:space-y-4">
+            <div>
+              <label class="block text-xs sm:text-sm font-medium text-slate-700 mb-1">Paste content</label>
+              <textarea id="pasteContent" placeholder="Paste text here..." class="w-full p-2 sm:p-3 text-sm border border-slate-200 rounded-lg sm:rounded-xl h-28 sm:h-40 focus:outline-none focus:ring-2 focus:ring-yellow-100 focus:border-yellow-400"></textarea>
+            </div>
+            <button onclick="importFromPaste()" class="w-full py-2 sm:py-3 bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-white rounded-lg sm:rounded-xl font-semibold transition-colors text-xs sm:text-sm">
+              <i class="fas fa-magic mr-1"></i> Generate
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Flashcard Study Modal -->
+    <div id="studyModal" class="fixed inset-0 bg-black/40 modal-backdrop hidden items-center justify-center z-50 p-3 sm:p-4">
+      <div class="w-full max-w-sm sm:max-w-lg">
+        <div class="flex justify-between text-white text-xs sm:text-sm mb-2 sm:mb-4">
+          <span>Card <span id="studyCurrent">1</span>/<span id="studyTotal">10</span></span>
+          <span id="studyDeckName" class="font-semibold text-xs"></span>
+        </div>
+        
+        <div id="studyCard" class="flip-card cursor-pointer" onclick="flipStudyCard()">
+          <div class="flip-card-inner relative">
+            <div class="flip-card-front bg-white rounded-xl sm:rounded-2xl shadow-2xl p-4 sm:p-6 md:p-8 min-h-[200px] sm:min-h-[300px] flex flex-col items-center justify-center">
+              <div class="text-xs text-slate-400 mb-2 sm:mb-4 uppercase tracking-wide">Question</div>
+              <div id="studyQuestion" class="text-base sm:text-lg md:text-xl font-semibold text-slate-800 text-center"></div>
+              <div class="text-xs sm:text-sm text-slate-400 mt-3 sm:mt-6">
+                <i class="fas fa-hand-pointer mr-1"></i> Tap to flip
+              </div>
+            </div>
+            <div class="flip-card-back bg-gradient-to-br from-yellow-400 to-orange-500 rounded-xl sm:rounded-2xl shadow-2xl p-4 sm:p-6 md:p-8 min-h-[200px] sm:min-h-[300px] flex flex-col items-center justify-center absolute inset-0">
+              <div class="text-xs text-yellow-100 mb-2 sm:mb-4 uppercase tracking-wide">Answer</div>
+              <div id="studyAnswer" class="text-base sm:text-lg md:text-xl font-semibold text-white text-center"></div>
+            </div>
+          </div>
+        </div>
+        
+        <div id="ratingButtons" class="hidden mt-4 sm:mt-6">
+          <p class="text-white text-center text-xs sm:text-sm mb-2 sm:mb-3">How well did you know this?</p>
+          <div class="flex justify-center gap-1.5 sm:gap-2">
+            <button onclick="rateCard(1)" class="flex-1 py-2 sm:py-3 bg-red-500 hover:bg-red-600 text-white rounded-lg sm:rounded-xl font-semibold transition-colors text-xs sm:text-sm">
+              <i class="fas fa-times mr-1"></i>Again
+            </button>
+            <button onclick="rateCard(2)" class="flex-1 py-2 sm:py-3 bg-orange-500 hover:bg-orange-600 text-white rounded-lg sm:rounded-xl font-semibold transition-colors text-xs sm:text-sm">
+              <i class="fas fa-redo mr-1"></i>Hard
+            </button>
+            <button onclick="rateCard(3)" class="flex-1 py-2 sm:py-3 bg-green-500 hover:bg-green-600 text-white rounded-lg sm:rounded-xl font-semibold transition-colors text-xs sm:text-sm">
+              <i class="fas fa-check mr-1"></i>Good
+            </button>
+            <button onclick="rateCard(4)" class="flex-1 py-2 sm:py-3 bg-blue-500 hover:bg-blue-600 text-white rounded-lg sm:rounded-xl font-semibold transition-colors text-xs sm:text-sm">
+              <i class="fas fa-bolt mr-1"></i>Easy
+            </button>
+          </div>
+        </div>
+        
+        <button onclick="closeStudyModal()" class="w-full mt-3 sm:mt-4 text-white/80 hover:text-white py-1.5 sm:py-2 text-xs sm:text-sm">
+          <i class="fas fa-times mr-1"></i> End Session
+        </button>
+      </div>
+    </div>
+
+    <!-- Achievement Toast -->
+    <div id="achievementToast" class="fixed bottom-4 right-4 left-4 sm:left-auto sm:w-auto bg-white rounded-xl sm:rounded-2xl shadow-2xl p-3 sm:p-4 hidden z-50 animate-slide-up max-w-xs">
+      <div class="flex items-center gap-2 sm:gap-3">
+        <div id="achievementIcon" class="w-10 h-10 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl flex items-center justify-center text-xl sm:text-2xl"></div>
+        <div>
+          <div id="achievementTitle" class="font-bold text-slate-800 text-sm sm:text-base"></div>
+          <div id="achievementDesc" class="text-xs sm:text-sm text-slate-500"></div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // =====================
+      // DATA STORE
+      // =====================
+      let jots = [
+        { id: 1, title: "Physics: Newton's Laws", content: "1st Law: Object at rest stays at rest unless acted upon by external force.\n\n2nd Law: F = ma\n\n3rd Law: Every action has an equal and opposite reaction.", tags: ["physics", "mechanics", "formulas"], created: Date.now() - 86400000 },
+        { id: 2, title: "Chemistry: Periodic Table Trends", content: "Atomic radius: Increases down a group, decreases across a period.\n\nElectronegativity: Increases across a period, decreases down a group.\n\nIonization energy: Follows same trend as electronegativity.", tags: ["chemistry", "periodic table"], created: Date.now() - 172800000 },
+        { id: 3, title: "Biology: Cell Structure", content: "Nucleus: Contains genetic material (DNA)\n\nMitochondria: Powerhouse of the cell, produces ATP\n\nRibosomes: Site of protein synthesis\n\nEndoplasmic Reticulum: Transport system", tags: ["biology", "cells"], created: Date.now() - 259200000 }
+      ];
+      
+      let flashcardDecks = [
+        { id: 1, name: "Physics - Newton's Laws", color: "blue", cards: [
+          { id: 1, front: "What is Newton's First Law?", back: "An object at rest stays at rest, and an object in motion stays in motion unless acted upon by an external force.", ease: 2.5, interval: 1, due: Date.now() },
+          { id: 2, front: "State Newton's Second Law formula", back: "F = ma (Force = mass × acceleration)", ease: 2.5, interval: 1, due: Date.now() },
+          { id: 3, front: "What does Newton's Third Law state?", back: "For every action, there is an equal and opposite reaction.", ease: 2.5, interval: 1, due: Date.now() + 86400000 }
+        ]},
+        { id: 2, name: "Chemistry - Periodic Trends", color: "green", cards: [
+          { id: 4, front: "How does atomic radius change across a period?", back: "Atomic radius decreases across a period due to increasing nuclear charge.", ease: 2.5, interval: 1, due: Date.now() },
+          { id: 5, front: "What is the trend for electronegativity?", back: "Electronegativity increases across a period and decreases down a group.", ease: 2.5, interval: 1, due: Date.now() + 172800000 }
+        ]}
+      ];
+      
+      let userStats = { streak: 3, points: 245, cardsLearned: 12, totalReviews: 45 };
+      let editingJotId = null;
+      let currentTab = 'notes';
+      let currentDeckId = null;
+      let quizState = { active: false, questions: [], current: 0, score: 0 };
+      let studyState = { cards: [], current: 0 };
+
+      // =====================
+      // INITIALIZATION
+      // =====================
+      document.addEventListener('DOMContentLoaded', () => {
+        loadFromStorage();
+        renderNotes();
+        renderDecks();
+        updateStats();
+        setupEventListeners();
+      });
+
+      function loadFromStorage() {
+        const savedJots = localStorage.getItem('smartNotes_jots');
+        const savedDecks = localStorage.getItem('smartNotes_decks');
+        const savedStats = localStorage.getItem('smartNotes_stats');
+        if (savedJots) jots = JSON.parse(savedJots);
+        if (savedDecks) flashcardDecks = JSON.parse(savedDecks);
+        if (savedStats) userStats = JSON.parse(savedStats);
+      }
+
+      function saveToStorage() {
+        localStorage.setItem('smartNotes_jots', JSON.stringify(jots));
+        localStorage.setItem('smartNotes_decks', JSON.stringify(flashcardDecks));
+        localStorage.setItem('smartNotes_stats', JSON.stringify(userStats));
+      }
+
+      function setupEventListeners() {
+        document.getElementById('openCreate').addEventListener('click', () => openModal(null));
+        document.getElementById('closeModalBtn').addEventListener('click', closeModal);
+        document.getElementById('cancelJotBtn').addEventListener('click', closeModal);
+        document.getElementById('saveJotBtn').addEventListener('click', saveJot);
+        document.getElementById('importBtn').addEventListener('click', () => {
+          document.getElementById('importModal').classList.remove('hidden');
+          document.getElementById('importModal').classList.add('flex');
+        });
+        document.getElementById('aiGenerateBtn').addEventListener('click', () => {
+          document.getElementById('importModal').classList.remove('hidden');
+          document.getElementById('importModal').classList.add('flex');
+          showImportTab('paste');
+        });
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+          if (currentTab === 'notes') renderNotes(e.target.value);
+          else if (currentTab === 'flashcards') renderFlashcards(currentDeckId, e.target.value);
+        });
+      }
+
+      // =====================
+      // STATS
+      // =====================
+      function updateStats() {
+        document.getElementById('streakCount').textContent = userStats.streak;
+        document.getElementById('pointsCount').textContent = userStats.points;
+        document.getElementById('totalNotes').textContent = jots.length;
+        document.getElementById('totalFlashcards').textContent = flashcardDecks.reduce((sum, d) => sum + d.cards.length, 0);
+        document.getElementById('cardsLearned').textContent = userStats.cardsLearned;
+        const totalCards = flashcardDecks.reduce((sum, d) => sum + d.cards.length, 0);
+        const mastery = totalCards > 0 ? Math.round((userStats.cardsLearned / totalCards) * 100) : 0;
+        document.getElementById('masteryLevel').textContent = mastery + '%';
+      }
+
+      function addPoints(amount, reason) {
+        userStats.points += amount;
+        updateStats();
+        saveToStorage();
+        showAchievement('+' + amount + ' Points', reason, '⭐', 'bg-yellow-100 text-yellow-600');
+      }
+
+      function showAchievement(title, desc, icon, iconClass) {
+        const toast = document.getElementById('achievementToast');
+        document.getElementById('achievementTitle').textContent = title;
+        document.getElementById('achievementDesc').textContent = desc;
+        document.getElementById('achievementIcon').innerHTML = icon;
+        document.getElementById('achievementIcon').className = 'w-10 h-10 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl flex items-center justify-center text-xl sm:text-2xl ' + iconClass;
+        toast.classList.remove('hidden');
+        setTimeout(() => toast.classList.add('hidden'), 3000);
+      }
+
+      // =====================
+      // TAB SWITCHING
+      // =====================
+      function switchTab(tab) {
+        currentTab = tab;
+        ['tabNotes', 'tabFlashcards', 'tabQuiz', 'tabSpaced'].forEach(id => {
+          const el = document.getElementById(id);
+          el.classList.remove('text-yellow-600', 'tab-active');
+          el.classList.add('text-slate-500');
+        });
+        document.getElementById('tab' + tab.charAt(0).toUpperCase() + tab.slice(1)).classList.remove('text-slate-500');
+        document.getElementById('tab' + tab.charAt(0).toUpperCase() + tab.slice(1)).classList.add('text-yellow-600', 'tab-active');
+        ['viewNotes', 'viewFlashcards', 'viewQuiz', 'viewSpaced'].forEach(id => document.getElementById(id).classList.add('hidden'));
+        document.getElementById('view' + tab.charAt(0).toUpperCase() + tab.slice(1)).classList.remove('hidden');
+        if (tab === 'flashcards') renderDecks();
+        if (tab === 'quiz') updateQuizDeckSelect();
+        if (tab === 'spaced') renderDueCards();
+      }
+
+      // =====================
+      // NOTES CRUD
+      // =====================
+      function renderNotes(filter = "") {
+        const grid = document.getElementById('notesGrid');
+        const filtered = jots.filter(jot =>
+          jot.title.toLowerCase().includes(filter.toLowerCase()) ||
+          jot.content.toLowerCase().includes(filter.toLowerCase()) ||
+          jot.tags.some(tag => tag.toLowerCase().includes(filter.toLowerCase()))
+        );
+
+        if (filtered.length === 0) {
+          grid.innerHTML = `<div class="col-span-full text-center py-8 sm:py-12 text-slate-400 text-xs sm:text-sm"><i class="fas fa-sticky-note text-2xl sm:text-4xl mb-2 sm:mb-3"></i><p>No notes yet</p></div>`;
+          return;
+        }
+
+        grid.innerHTML = filtered.map(jot => `
+          <div class="bg-white rounded-xl sm:rounded-2xl p-3 sm:p-4 md:p-5 shadow-sm border border-slate-100 hover:shadow-md transition-all">
+            <div class="flex items-start justify-between mb-2">
+              <h3 class="font-bold text-slate-800 text-sm sm:text-base">${escapeHtml(jot.title)}</h3>
+              <div class="flex gap-0.5 sm:gap-1 flex-shrink-0">
+                <button onclick="openModal(${jot.id})" class="p-1.5 sm:p-2 text-slate-400 hover:text-blue-500 hover:bg-blue-50 rounded-lg transition-colors" title="Edit">
+                  <i class="fas fa-edit text-xs sm:text-sm"></i>
+                </button>
+                <button onclick="deleteJot(${jot.id})" class="p-1.5 sm:p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors" title="Delete">
+                  <i class="fas fa-trash text-xs sm:text-sm"></i>
+                </button>
+              </div>
+            </div>
+            <p class="text-slate-600 text-xs sm:text-sm line-clamp-2 sm:line-clamp-3 mb-2 sm:mb-3">${escapeHtml(jot.content)}</p>
+            <div class="flex flex-wrap gap-1 mb-2 sm:mb-3">
+              ${jot.tags.slice(0, 3).map(t => `<span class="text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full">${escapeHtml(t)}</span>`).join('')}
+            </div>
+            <div class="flex items-center justify-between pt-2 sm:pt-3 border-t border-slate-100">
+              <span class="text-xs text-slate-400">${formatDate(jot.created)}</span>
+              <div class="flex gap-2 sm:gap-3">
+                <button onclick="convertToFlashcards(${jot.id})" class="text-xs text-violet-500 hover:text-violet-700 font-medium">Cards</button>
+                <button onclick="shareJot(${jot.id})" class="text-xs text-green-500 hover:text-green-700 font-medium hidden sm:inline">Share</button>
+              </div>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      function openModal(id) {
+        if (id) {
+          const jot = jots.find(j => j.id === id);
+          jotTitle.value = jot.title;
+          jotContent.value = jot.content;
+          jotTags.value = jot.tags.join(', ');
+          editingJotId = id;
+          modalTitle.textContent = 'Edit Note';
+        } else {
+          jotTitle.value = '';
+          jotContent.value = '';
+          jotTags.value = '';
+          editingJotId = null;
+          modalTitle.textContent = 'Create Note';
+        }
+        jotModal.classList.remove('hidden');
+        jotModal.classList.add('flex');
+      }
+
+      function closeModal() {
+        jotModal.classList.add('hidden');
+        jotModal.classList.remove('flex');
+        editingJotId = null;
+      }
+
+      function saveJot() {
+        const title = jotTitle.value.trim();
+        const content = jotContent.value.trim();
+        const tags = jotTags.value.split(',').map(t => t.trim()).filter(Boolean);
+        if (!title || !content) { alert('Title and content required'); return; }
+        if (editingJotId) {
+          jots = jots.map(j => j.id === editingJotId ? { ...j, title, content, tags } : j);
+        } else {
+          jots.push({ id: Date.now(), title, content, tags, created: Date.now() });
+          addPoints(10, 'Created a note!');
+          if (document.getElementById('autoFlashcard').checked) {
+            setTimeout(() => convertToFlashcards(jots[jots.length - 1].id), 500);
+          }
+        }
+        closeModal();
+        saveToStorage();
+        renderNotes();
+        updateStats();
+      }
+
+      function deleteJot(id) {
+        if (!confirm('Delete this note?')) return;
+        jots = jots.filter(j => j.id !== id);
+        saveToStorage();
+        renderNotes();
+        updateStats();
+      }
+
+      function shareJot(id) {
+        const jot = jots.find(j => j.id === id);
+        const text = `📝 ${jot.title}\n\n${jot.content}\n\nTags: ${jot.tags.join(', ')}`;
+        navigator.clipboard?.writeText(text).then(() => showAchievement('Copied!', 'Note copied', '📋', 'bg-blue-100 text-blue-600'), () => alert('Could not copy'));
+      }
+
+      // =====================
+      // FLASHCARD DECKS
+      // =====================
+      function renderDecks() {
+        const list = document.getElementById('decksList');
+        if (flashcardDecks.length === 0) {
+          list.innerHTML = `<div class="text-center py-3 sm:py-4 text-slate-400 text-xs sm:text-sm">No decks</div>`;
+          return;
+        }
+        const colorMap = { blue: 'from-blue-400 to-blue-600', green: 'from-green-400 to-green-600', purple: 'from-purple-400 to-purple-600', orange: 'from-orange-400 to-orange-600', pink: 'from-pink-400 to-pink-600' };
+        list.innerHTML = flashcardDecks.map(deck => {
+          const dueCards = deck.cards.filter(c => c.due <= Date.now()).length;
+          return `
+            <div onclick="selectDeck(${deck.id})" class="deck-item flex-shrink-0 md:flex-shrink p-2 sm:p-3 rounded-lg sm:rounded-xl cursor-pointer transition-all ${currentDeckId === deck.id ? 'bg-yellow-50 border-2 border-yellow-400' : 'bg-slate-50 hover:bg-slate-100 border-2 border-transparent'}">
+              <div class="flex items-center gap-2 sm:gap-3">
+                <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-gradient-to-br ${colorMap[deck.color] || 'from-slate-400 to-slate-600'} flex items-center justify-center text-white flex-shrink-0">
+                  <i class="fas fa-layer-group text-xs sm:text-sm"></i>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <div class="font-medium text-slate-800 truncate text-xs sm:text-sm">${escapeHtml(deck.name)}</div>
+                  <div class="text-xs text-slate-500">${deck.cards.length} cards</div>
+                </div>
+                ${dueCards > 0 ? `<span class="bg-orange-100 text-orange-600 text-xs px-1.5 sm:px-2 py-0.5 rounded-full">${dueCards}</span>` : ''}
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      function selectDeck(id) { currentDeckId = id; renderDecks(); renderFlashcards(id); }
+
+      function renderFlashcards(deckId, filter = '') {
+        const container = document.getElementById('flashcardsContainer');
+        if (!deckId) {
+          container.innerHTML = `<div class="col-span-full text-center py-8 sm:py-12 text-slate-400 text-xs sm:text-sm"><i class="fas fa-layer-group text-2xl sm:text-4xl mb-2 sm:mb-3"></i><p>Select a deck</p></div>`;
+          return;
+        }
+        const deck = flashcardDecks.find(d => d.id === deckId);
+        if (!deck) return;
+        const filtered = filter ? deck.cards.filter(c => c.front.toLowerCase().includes(filter.toLowerCase()) || c.back.toLowerCase().includes(filter.toLowerCase())) : deck.cards;
+        if (filtered.length === 0) {
+          container.innerHTML = `<div class="col-span-full text-center py-6 sm:py-12 text-slate-400 text-xs sm:text-sm"><i class="fas fa-layer-group text-2xl sm:text-4xl mb-2 sm:mb-3"></i><p>No cards</p><button onclick="addCardToDeck(${deckId})" class="mt-2 text-yellow-600 font-medium text-xs sm:text-sm">+ Add</button></div>`;
+          return;
+        }
+        container.innerHTML = `
+          <div class="col-span-full flex justify-between items-center mb-2 sm:mb-4">
+            <h3 class="font-bold text-slate-800 text-sm sm:text-base">${escapeHtml(deck.name)}</h3>
+            <div class="flex gap-1.5 sm:gap-2">
+              <button onclick="studyDeck(${deckId})" class="bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-2.5 sm:px-4 py-1 sm:py-2 rounded-lg sm:rounded-xl font-medium text-xs sm:text-sm">
+                <i class="fas fa-play mr-1"></i> Study
+              </button>
+              <button onclick="addCardToDeck(${deckId})" class="bg-slate-100 text-slate-700 px-2.5 sm:px-4 py-1 sm:py-2 rounded-lg sm:rounded-xl font-medium text-xs sm:text-sm hover:bg-slate-200">
+                <i class="fas fa-plus mr-1"></i> Add
+              </button>
+            </div>
+          </div>
+          ${filtered.map(card => `
+            <div class="bg-white rounded-lg sm:rounded-xl p-3 sm:p-4 border border-slate-200 hover:shadow-md transition-all">
+              <div class="text-xs text-slate-400 uppercase mb-1">Q</div>
+              <div class="font-medium text-slate-800 mb-2 text-xs sm:text-sm">${escapeHtml(card.front)}</div>
+              <div class="text-xs text-slate-400 uppercase mb-1">A</div>
+              <div class="text-slate-600 text-xs sm:text-sm">${escapeHtml(card.back)}</div>
+              <div class="flex justify-between items-center mt-2 sm:mt-3 pt-2 sm:pt-3 border-t border-slate-100">
+                <span class="text-xs text-slate-400">${card.due <= Date.now() ? '<span class="text-orange-500">Due</span>' : formatDate(card.due)}</span>
+                <button onclick="deleteCard(${deckId}, ${card.id})" class="text-xs text-red-400 hover:text-red-600"><i class="fas fa-trash"></i></button>
+              </div>
+            </div>
+          `).join('')}
+        `;
+      }
+
+      function createDeck() {
+        const name = prompt('Deck name:');
+        if (!name) return;
+        const colors = ['blue', 'green', 'purple', 'orange', 'pink'];
+        flashcardDecks.push({ id: Date.now(), name, color: colors[Math.floor(Math.random() * colors.length)], cards: [] });
+        saveToStorage(); renderDecks(); updateStats();
+        addPoints(5, 'New deck created!');
+      }
+
+      function addCardToDeck(deckId) {
+        const front = prompt('Question:');
+        if (!front) return;
+        const back = prompt('Answer:');
+        if (!back) return;
+        const deck = flashcardDecks.find(d => d.id === deckId);
+        if (deck) {
+          deck.cards.push({ id: Date.now(), front, back, ease: 2.5, interval: 1, due: Date.now() });
+          saveToStorage(); renderFlashcards(deckId); updateStats();
+        }
+      }
+
+      function deleteCard(deckId, cardId) {
+        if (!confirm('Delete card?')) return;
+        const deck = flashcardDecks.find(d => d.id === deckId);
+        if (deck) { deck.cards = deck.cards.filter(c => c.id !== cardId); saveToStorage(); renderFlashcards(deckId); updateStats(); }
+      }
+
+      // =====================
+      // CONVERT NOTES TO FLASHCARDS
+      // =====================
+      function convertToFlashcards(jotId) {
+        const jot = jots.find(j => j.id === jotId);
+        if (!jot) return;
+        const lines = jot.content.split('\n').filter(l => l.trim());
+        const cards = [];
+        lines.forEach(line => {
+          if (line.includes(':') || line.includes('=')) {
+            const parts = line.split(/[:=]/);
+            if (parts.length >= 2) {
+              cards.push({ id: Date.now() + Math.random(), front: parts[0].trim(), back: parts.slice(1).join(':').trim(), ease: 2.5, interval: 1, due: Date.now() });
+            }
+          }
+        });
+        if (cards.length === 0) {
+          cards.push({ id: Date.now(), front: `What is ${jot.title}?`, back: jot.content.substring(0, 150), ease: 2.5, interval: 1, due: Date.now() });
+        }
+        let deck = flashcardDecks.find(d => d.name.toLowerCase().includes(jot.title.toLowerCase().split(' ')[0]));
+        if (!deck) { deck = { id: Date.now(), name: jot.title, color: 'blue', cards: [] }; flashcardDecks.push(deck); }
+        deck.cards = [...deck.cards, ...cards];
+        saveToStorage(); renderDecks(); updateStats();
+        showAchievement('Cards Created!', `${cards.length} from "${jot.title}"`, '🃏', 'bg-violet-100 text-violet-600');
+      }
+
+      // =====================
+      // STUDY MODE
+      // =====================
+      function studyDeck(deckId) {
+        const deck = flashcardDecks.find(d => d.id === deckId);
+        if (!deck || deck.cards.length === 0) return;
+        studyState.cards = deck.cards.filter(c => c.due <= Date.now());
+        if (studyState.cards.length === 0) studyState.cards = deck.cards;
+        studyState.current = 0;
+        document.getElementById('studyDeckName').textContent = deck.name;
+        document.getElementById('studyTotal').textContent = studyState.cards.length;
+        showStudyCard();
+        document.getElementById('studyModal').classList.remove('hidden');
+        document.getElementById('studyModal').classList.add('flex');
+      }
+
+      function showStudyCard() {
+        if (studyState.current >= studyState.cards.length) {
+          closeStudyModal();
+          showAchievement('Done! 🎉', `Reviewed ${studyState.current} cards`, '🎓', 'bg-green-100 text-green-600');
+          return;
+        }
+        const card = studyState.cards[studyState.current];
+        document.getElementById('studyCurrent').textContent = studyState.current + 1;
+        document.getElementById('studyQuestion').textContent = card.front;
+        document.getElementById('studyAnswer').textContent = card.back;
+        document.getElementById('studyCard').classList.remove('flipped');
+        document.getElementById('ratingButtons').classList.add('hidden');
+      }
+
+      function flipStudyCard() {
+        document.getElementById('studyCard').classList.toggle('flipped');
+        if (document.getElementById('studyCard').classList.contains('flipped')) {
+          document.getElementById('ratingButtons').classList.remove('hidden');
+        }
+      }
+
+      function rateCard(rating) {
+        const card = studyState.cards[studyState.current];
+        let ease = card.ease, interval = card.interval;
+        if (rating < 2) { interval = 1; ease = Math.max(1.3, ease - 0.2); }
+        else {
+          if (interval === 1) interval = rating === 4 ? 2 : 1;
+          else interval = Math.round(interval * ease);
+          ease = rating === 4 ? ease + 0.1 : ease;
+        }
+        for (let deck of flashcardDecks) {
+          const idx = deck.cards.findIndex(c => c.id === card.id);
+          if (idx >= 0) { deck.cards[idx].ease = ease; deck.cards[idx].interval = interval; deck.cards[idx].due = Date.now() + interval * 86400000; break; }
+        }
+        saveToStorage();
+        const pts = [0, 5, 10, 15][rating];
+        if (pts > 0) userStats.points += pts;
+        userStats.cardsLearned++;
+        updateStats();
+        studyState.current++;
+        showStudyCard();
+      }
+
+      function closeStudyModal() {
+        document.getElementById('studyModal').classList.add('hidden');
+        document.getElementById('studyModal').classList.remove('flex');
+      }
+
+      // =====================
+      // QUIZ MODE
+      // =====================
+      function updateQuizDeckSelect() {
+        const container = document.getElementById('quizDeckSelect');
+        container.innerHTML = flashcardDecks.map(deck => `<button onclick="startQuiz(${deck.id})" class="px-2.5 sm:px-4 py-1 sm:py-2 bg-slate-100 hover:bg-slate-200 rounded-lg text-xs sm:text-sm font-medium">${escapeHtml(deck.name)}</button>`).join('');
+      }
+
+      function startQuiz(deckId) {
+        let cards = [];
+        if (deckId === 'all') cards = flashcardDecks.flatMap(d => d.cards);
+        else if (deckId === 'due') cards = flashcardDecks.flatMap(d => d.cards.filter(c => c.due <= Date.now()));
+        else { const deck = flashcardDecks.find(d => d.id === deckId); if (deck) cards = deck.cards; }
+        if (cards.length === 0) { alert('No cards'); return; }
+        quizState.questions = cards.slice(0, 10).map(card => {
+          const others = cards.filter(c => c.id !== card.id);
+          const wrongs = others.sort(() => Math.random() - 0.5).slice(0, 3).map(c => c.back);
+          const opts = [card.back, ...wrongs].sort(() => Math.random() - 0.5);
+          return { question: card.front, correctAnswer: card.back, options: opts, cardId: card.id };
+        });
+        quizState.current = 0; quizState.score = 0; quizState.active = true;
+        document.getElementById('quizSetup').classList.add('hidden');
+        document.getElementById('quizActive').classList.remove('hidden');
+        document.getElementById('quizResults').classList.add('hidden');
+        document.getElementById('quizTotal').textContent = quizState.questions.length;
+        document.getElementById('quizScore').textContent = '0';
+        showQuestion();
+      }
+
+      function showQuestion() {
+        const q = quizState.questions[quizState.current];
+        document.getElementById('quizCurrent').textContent = quizState.current + 1;
+        document.getElementById('quizProgress').style.width = ((quizState.current + 1) / quizState.questions.length * 100) + '%';
+        document.getElementById('questionText').textContent = q.question;
+        document.getElementById('questionOptions').innerHTML = q.options.map((opt, i) => `
+          <button onclick="selectAnswer(${i})" class="quiz-option w-full p-3 sm:p-4 text-left border-2 border-slate-200 rounded-lg sm:rounded-xl font-medium text-xs sm:text-sm">
+            <span class="inline-block w-5 h-5 sm:w-6 sm:h-6 bg-slate-100 rounded-full text-center text-xs sm:text-sm mr-2">${String.fromCharCode(65 + i)}</span>
+            ${escapeHtml(opt)}
+          </button>
+        `).join('');
+        document.getElementById('nextQuestionBtn').classList.add('hidden');
+      }
+
+      function selectAnswer(index) {
+        const q = quizState.questions[quizState.current];
+        document.querySelectorAll('.quiz-option').forEach((btn, i) => {
+          btn.onclick = null;
+          if (q.options[i] === q.correctAnswer) btn.classList.add('correct');
+          else if (i === index && q.options[i] !== q.correctAnswer) btn.classList.add('incorrect');
+        });
+        if (q.options[index] === q.correctAnswer) {
+          quizState.score += 10;
+          userStats.points += 10;
+          document.getElementById('quizScore').textContent = quizState.score;
+        }
+        document.getElementById('nextQuestionBtn').classList.remove('hidden');
+      }
+
+      function nextQuestion() {
+        quizState.current++;
+        if (quizState.current >= quizState.questions.length) showQuizResults();
+        else showQuestion();
+      }
+
+      function showQuizResults() {
+        document.getElementById('quizActive').classList.add('hidden');
+        document.getElementById('quizResults').classList.remove('hidden');
+        const pct = Math.round((quizState.score / (quizState.questions.length * 10)) * 100);
+        let msg, icon;
+        if (pct >= 90) { msg = "Excellent!"; icon = "🏆"; }
+        else if (pct >= 70) { msg = "Great job!"; icon = "⭐"; }
+        else if (pct >= 50) { msg = "Good effort!"; icon = "💪"; }
+        else { msg = "Keep studying!"; icon = "📚"; }
+        document.getElementById('resultsContent').innerHTML = `
+          <div class="text-4xl sm:text-6xl mb-3 sm:mb-4">${icon}</div>
+          <h3 class="text-lg sm:text-2xl font-bold text-slate-800 mb-2">Quiz Complete!</h3>
+          <p class="text-slate-500 mb-4 sm:mb-6 text-xs sm:text-sm">${msg}</p>
+          <div class="flex justify-center gap-6 sm:gap-8 mb-4 sm:mb-6">
+            <div class="text-center"><div class="text-2xl sm:text-3xl font-bold text-yellow-600">${quizState.score}</div><div class="text-xs sm:text-sm text-slate-500">Points</div></div>
+            <div class="text-center"><div class="text-2xl sm:text-3xl font-bold text-yellow-600">${pct}%</div><div class="text-xs sm:text-sm text-slate-500">Accuracy</div></div>
+          </div>
+          <button onclick="resetQuiz()" class="bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-6 sm:px-8 py-2 sm:py-3 rounded-lg sm:rounded-xl font-semibold text-xs sm:text-sm">Try Again</button>
+        `;
+        userStats.cardsLearned += quizState.questions.length;
+        updateStats(); saveToStorage();
+      }
+
+      function resetQuiz() {
+        quizState.active = false;
+        document.getElementById('quizResults').classList.add('hidden');
+        document.getElementById('quizSetup').classList.remove('hidden');
+      }
+
+      function endQuiz() { if (quizState.current > 0) showQuizResults(); else resetQuiz(); }
+
+      // =====================
+      // SPACED REPETITION VIEW
+      // =====================
+      function renderDueCards() {
+        const container = document.getElementById('dueCardsContainer');
+        const due = [];
+        flashcardDecks.forEach(deck => {
+          deck.cards.filter(c => c.due <= Date.now()).forEach(card => due.push({ ...card, deckName: deck.name, deckId: deck.id }));
+        });
+        if (due.length === 0) {
+          container.innerHTML = `<div class="text-center py-8 sm:py-12 text-slate-400"><i class="fas fa-check-circle text-3xl sm:text-4xl mb-2 sm:mb-3 text-green-500"></i><p class="text-green-600 font-semibold text-sm sm:text-base">All caught up!</p><p class="text-xs sm:text-sm">No cards due.</p></div>`;
+          return;
+        }
+        container.innerHTML = `
+          <div class="text-center mb-3 sm:mb-4"><span class="bg-orange-100 text-orange-600 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full font-semibold text-xs sm:text-sm">${due.length} cards due</span></div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4">
+            ${due.map(card => `
+              <div class="bg-white rounded-lg sm:rounded-xl p-3 sm:p-4 border border-slate-200 hover:shadow-md transition-all">
+                <div class="flex justify-between items-start mb-1 sm:mb-2">
+                  <span class="text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full">${escapeHtml(card.deckName)}</span>
+                  <button onclick="studyDeck(${card.deckId})" class="text-xs text-yellow-600 font-medium">Study</button>
+                </div>
+                <div class="font-medium text-slate-800 text-xs sm:text-sm">${escapeHtml(card.front)}</div>
+              </div>
+            `).join('')}
+          </div>
+          <div class="text-center mt-4 sm:mt-6">
+            <button onclick="studyDeck(${due[0].deckId})" class="bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-6 sm:px-8 py-2 sm:py-3 rounded-lg sm:rounded-xl font-semibold text-xs sm:text-sm">
+              <i class="fas fa-play mr-2"></i>Start Review
+            </button>
+          </div>
+        `;
+      }
+
+      // =====================
+      // IMPORT FUNCTIONS
+      // =====================
+      function closeImportModal() {
+        document.getElementById('importModal').classList.add('hidden');
+        document.getElementById('importModal').classList.remove('flex');
+      }
+
+      function showImportTab(tab) {
+        document.querySelectorAll('.import-tab').forEach(t => {
+          t.classList.remove('text-red-500', 'border-b-2', 'border-red-500');
+          t.classList.add('text-slate-500');
+        });
+        document.querySelector(`.import-tab[data-tab="${tab}"]`).classList.remove('text-slate-500');
+        document.querySelector(`.import-tab[data-tab="${tab}"]`).classList.add('text-red-500', 'border-b-2', 'border-red-500');
+        document.getElementById('importYoutube').classList.add('hidden');
+        document.getElementById('importPdf').classList.add('hidden');
+        document.getElementById('importPaste').classList.add('hidden');
+        document.getElementById('import' + tab.charAt(0).toUpperCase() + tab.slice(1)).classList.remove('hidden');
+      }
+
+      function importFromYouTube() {
+        const url = document.getElementById('youtubeUrl').value;
+        if (!url) { alert('Enter URL'); return; }
+        alert('Processing video... (AI extraction simulated)');
+        const note = { id: Date.now(), title: "From YouTube", content: "AI extracted:\n\n• Key point 1\n• Key point 2\n• Formula: F = ma", tags: ["youtube"], created: Date.now() };
+        jots.push(note);
+        saveToStorage(); renderNotes(); closeImportModal();
+        addPoints(15, 'Imported from YouTube!');
+      }
+
+      function handlePdfUpload(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+        alert('Processing PDF...');
+        const note = { id: Date.now(), title: file.name.replace('.pdf', ''), content: "Extracted from PDF:\n\n• Point 1\n• Point 2", tags: ["pdf"], created: Date.now() };
+        jots.push(note);
+        saveToStorage(); renderNotes(); closeImportModal();
+        addPoints(15, 'PDF imported!');
+      }
+
+      function importFromPaste() {
+        const content = document.getElementById('pasteContent').value;
+        if (!content.trim()) { alert('Paste content'); return; }
+        const lines = content.split('\n').filter(l => l.trim());
+        const title = lines[0].substring(0, 40) || "Imported";
+        const note = { id: Date.now(), title, content, tags: ["imported"], created: Date.now() };
+        jots.push(note);
+        const cards = [];
+        lines.forEach(line => {
+          if (line.includes(':') || line.includes('=')) {
+            const parts = line.split(/[:=]| - /);
+            if (parts.length >= 2 && parts[0].length < 80) {
+              cards.push({ id: Date.now() + Math.random(), front: parts[0].trim(), back: parts.slice(1).join(':').trim(), ease: 2.5, interval: 1, due: Date.now() });
+            }
+          }
+        });
+        if (cards.length > 0) flashcardDecks.push({ id: Date.now(), name: title, color: 'purple', cards });
+        saveToStorage(); renderNotes(); renderDecks(); updateStats(); closeImportModal();
+        addPoints(20, 'Content imported!');
+      }
+
+      // =====================
+      // UTILITIES
+      // =====================
+      function escapeHtml(str) {
+        return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+      }
+
+      function formatDate(ts) {
+        const d = new Date(ts), now = new Date(), diff = now - d;
+        if (diff < 86400000) return 'Today';
+        if (diff < 172800000) return 'Yesterday';
+        if (diff < 604800000) return Math.floor(diff / 86400000) + 'd ago';
+        return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+      }
+    </script>
+    
+    <script type="module">
+      import { getGlobalUserData } from '../js/user-cache.js';
+      function getInitials(fullName) { try { return String(fullName || '').split(' ').slice(0, 2).map(n => n.charAt(0)).join('').toUpperCase(); } catch (e) { return ''; } }
+      function normalizeCachedEntry(entry) { if (!entry) return null; if (entry.uid || entry.displayName || entry.email) return entry; if (entry.data) return entry.data; return null; }
+      function applyPreloadedUser(user) {
+        if (!user) return;
+        const fullName = user.displayName || 'Student', name = fullName.split(' ')[0], level = (user.profile?.level || '').startsWith('SS') ? user.profile.level : 'SS 3', initials = getInitials(fullName);
+        const userNameEl = document.getElementById('userName'); if (userNameEl) userNameEl.textContent = name;
+        const userLevelEl = document.getElementById('userLevel'); if (userLevelEl) userLevelEl.textContent = level;
+        const topName = document.getElementById('topName'); if (topName) topName.textContent = fullName;
+        const topLevel = document.getElementById('topLevel'); if (topLevel) topLevel.textContent = level;
+        const avatarUrl = user.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(initials)}&background=2563eb&color=fff&size=128`;
+        ['avatar-sm','topAvatar'].forEach(id => { const a = document.getElementById(id); if (a) a.src = avatarUrl; });
+        if (user.unreadNotifications) { const n = document.getElementById('notifCount'); if (n) n.textContent = String(user.unreadNotifications.length || 0); }
+      }
+      try {
+        const global = getGlobalUserData();
+        if (global) { window.preloadedUserData = global; if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', () => applyPreloadedUser(global)); else applyPreloadedUser(global); }
+        else { const raw = localStorage.getItem('cachedUserData_current'); if (raw) { try { const parsed = JSON.parse(raw); const user = normalizeCachedEntry(parsed); if (user) { window.preloadedUserData = user; if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', () => applyPreloadedUser(user)); else applyPreloadedUser(user); } } catch (e) {} } }
+      } catch (err) {}
+    </script>
+    
+    <script src="/js/user-cache.js"></script>
+    <script>
+      window.addEventListener('userDataUpdated', (event) => {
+        const user = event.detail;
+        if (user) {
+          const fullName = user.displayName || 'Student', name = fullName.split(' ')[0], level = (user.profile?.level || '').startsWith('SS') ? user.profile.level : 'SS 3', initials = getInitials(fullName);
+          const heading = document.querySelector('h1'); if (heading) heading.textContent = `${name}'s Smart Notes`;
+          const userName = document.getElementById('userName'); if (userName) userName.textContent = name;
+          const userLevel = document.getElementById('userLevel'); if (userLevel) userLevel.textContent = level;
+          const topName = document.getElementById('topName'); if (topName) topName.textContent = fullName;
+          const topLevel = document.getElementById('topLevel'); if (topLevel) topLevel.textContent = level;
+          const avatarUrl = user.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(initials)}&background=2563eb&color=fff&size=128`;
+          ['avatar-sm', 'topAvatar'].forEach(id => { const avatar = document.getElementById(id); if (avatar) avatar.setAttribute('src', avatarUrl); });
+          if (user.unreadNotifications) { const notifCount = document.getElementById('notifCount'); if (notifCount) notifCount.textContent = user.unreadNotifications.length; }
+        }
+      });
+
+      (function setupSidebarToggle() {
+        const sidebar = document.getElementById('sidebar'), mainContent = document.getElementById('main-content'), toggleButton = document.getElementById('toggleSidebar');
+        if (!sidebar || !mainContent) return;
+        if (window.innerWidth < 1024) { sidebar.classList.add('-translate-x-full'); }
+        if (toggleButton && !toggleButton.dataset.hasToggle) {
+          toggleButton.addEventListener('click', (e) => { e.stopPropagation(); sidebar.classList.toggle('-translate-x-full'); });
+          toggleButton.dataset.hasToggle = '1';
+        }
+        mainContent.addEventListener('click', () => { if (window.innerWidth < 1024 && !sidebar.classList.contains('-translate-x-full')) sidebar.classList.add('-translate-x-full'); });
+        let lastIsDesktop = window.innerWidth >= 1024;
+        window.addEventListener('resize', () => {
+          const isDesktop = window.innerWidth >= 1024;
+          if (isDesktop !== lastIsDesktop) { lastIsDesktop = isDesktop; if (isDesktop) sidebar.classList.remove('-translate-x-full'); else sidebar.classList.add('-translate-x-full'); }
+        });
+      })();
+    </script>
+  </body>
+</html>

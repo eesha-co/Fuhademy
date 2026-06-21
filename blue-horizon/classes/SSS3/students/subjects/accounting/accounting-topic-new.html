@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/assets/images/logo.png" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Accounting Topics - JUANOVA CORTEX</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <link rel="stylesheet" href="../general/styles.css" />
+    <style>
+        .topics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .topic-card {
+            background: white;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .topic-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        .topic-icon {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--accent-blue);
+        }
+
+        .topic-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #1F2937;
+            margin-bottom: 0.5rem;
+        }
+
+        .topic-description {
+            color: #6B7280;
+            font-size: 0.875rem;
+            line-height: 1.25rem;
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 50;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+            z-index: 51;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1F2937;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: #6B7280;
+            cursor: pointer;
+        }
+
+        .subtopic-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .subtopic-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            border-bottom: 1px solid #E5E7EB;
+        }
+
+        .subtopic-item:last-child {
+            border-bottom: none;
+        }
+
+        .start-learning-btn {
+            background: #4F46E5;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            transition: background-color 0.2s;
+        }
+
+        .start-learning-btn:hover {
+            background: #4338CA;
+        }
+
+        .progress-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #6B7280;
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+        }
+
+        .progress-bar {
+            flex-grow: 1;
+            height: 4px;
+            background: #E5E7EB;
+            border-radius: 2px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #4F46E5;
+            border-radius: 2px;
+            transition: width 0.3s ease;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="container mx-auto px-4 py-8">
+        <nav class="breadcrumbs mb-6">
+            <a href="../student-dashboard.html">Dashboard</a>
+            <i class="fas fa-chevron-right text-sm"></i>
+            <a href="accounting.html">Accounting</a>
+            <i class="fas fa-chevron-right text-sm"></i>
+            <span id="currentDivision">Topics</span>
+        </nav>
+
+        <header class="mb-8">
+            <h1 id="divisionTitle" class="text-3xl font-bold text-gray-900 mb-2">Loading...</h1>
+            <p id="divisionDescription" class="text-gray-600">Loading...</p>
+        </header>
+
+        <div id="topicsGrid" class="topics-grid">
+            <!-- Topics will be dynamically inserted here -->
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="subtopicModal" class="modal-overlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 id="modalTitle" class="modal-title">Topic Subtopics</h2>
+                <button class="close-modal" onclick="closeModal()">&times;</button>
+            </div>
+            <div id="modalContent">
+                <ul class="subtopic-list">
+                    <!-- Subtopics will be dynamically inserted here -->
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Topic data structure
+        const divisionData = {
+            'core-foundations': {
+                title: 'Core Accounting Foundations',
+                description: 'Basic principles, development, branches, and significance of accounting',
+                topics: [
+                    {
+                        id: 'development',
+                        title: 'Development of Accounting',
+                        description: 'Historical evolution and branches of accounting',
+                        icon: 'fas fa-history',
+                        subtopics: [
+                            'History of accounting',
+                            'Cost Accounting',
+                            'Management Accounting',
+                            'Financial Accounting',
+                            'Taxation'
+                        ]
+                    },
+                    {
+                        id: 'objectives',
+                        title: 'Objectives and Purpose',
+                        description: 'Core objectives of bookkeeping and accounting',
+                        icon: 'fas fa-bullseye',
+                        subtopics: [
+                            'Recording financial transactions',
+                            'Preparing financial statements',
+                            'Analysis of financial information',
+                            'Decision making support'
+                        ]
+                    },
+                    {
+                        id: 'users',
+                        title: 'Users and Information',
+                        description: 'Users and characteristics of accounting information',
+                        icon: 'fas fa-users',
+                        subtopics: [
+                            'Internal users',
+                            'External users',
+                            'Qualitative characteristics',
+                            'Information needs'
+                        ]
+                    },
+                    {
+                        id: 'principles',
+                        title: 'Principles and Concepts',
+                        description: 'Fundamental accounting principles and conventions',
+                        icon: 'fas fa-scroll',
+                        subtopics: [
+                            'Going concern concept',
+                            'Accrual concept',
+                            'Consistency principle',
+                            'Materiality principle'
+                        ]
+                    },
+                    {
+                        id: 'records',
+                        title: 'Accounting Records',
+                        description: 'Role and importance of accounting records',
+                        icon: 'fas fa-folder',
+                        subtopics: [
+                            'Types of records',
+                            'Record maintenance',
+                            'Information retrieval',
+                            'Decision support'
+                        ]
+                    }
+                ]
+            },
+            'double-entry': {
+                title: 'Double Entry System',
+                description: 'Source documents, books of entry, ledgers, and trial balance',
+                topics: [
+                    {
+                        id: 'source-docs',
+                        title: 'Source Documents',
+                        description: 'Understanding and using source documents',
+                        icon: 'fas fa-file-alt',
+                        subtopics: [
+                            'Invoices',
+                            'Receipts',
+                            'Credit notes',
+                            'Debit notes',
+                            'Bank statements'
+                        ]
+                    },
+                    {
+                        id: 'books-entry',
+                        title: 'Books of Original Entry',
+                        description: 'Recording transactions in journals',
+                        icon: 'fas fa-book',
+                        subtopics: [
+                            'Sales journal',
+                            'Purchases journal',
+                            'Cash book',
+                            'Petty cash book',
+                            'General journal'
+                        ]
+                    },
+                    {
+                        id: 'equation',
+                        title: 'Accounting Equation',
+                        description: 'Understanding the basic accounting equation',
+                        icon: 'fas fa-equals',
+                        subtopics: [
+                            'Assets = Liabilities + Capital',
+                            'Effect of transactions',
+                            'Equation analysis',
+                            'Balance sheet equation'
+                        ]
+                    },
+                    {
+                        id: 'ledger',
+                        title: 'The Ledger',
+                        description: 'Understanding ledger accounts and their classification',
+                        icon: 'fas fa-database',
+                        subtopics: [
+                            'Types of ledgers',
+                            'Posting entries',
+                            'Balancing accounts',
+                            'Subdivisions of ledger'
+                        ]
+                    },
+                    {
+                        id: 'trial-balance',
+                        title: 'Trial Balance',
+                        description: 'Preparing and using the trial balance',
+                        icon: 'fas fa-balance-scale',
+                        subtopics: [
+                            'Purpose',
+                            'Preparation method',
+                            'Error detection',
+                            'Limitations'
+                        ]
+                    },
+                    {
+                        id: 'errors',
+                        title: 'Errors and Corrections',
+                        description: 'Types of errors and their treatment',
+                        icon: 'fas fa-exclamation-triangle',
+                        subtopics: [
+                            'Types of errors',
+                            'Error correction',
+                            'Suspense account',
+                            'Effect on trial balance'
+                        ]
+                    }
+                ]
+            },
+            'ethics': {
+                title: 'Professional Ethics',
+                description: 'Ethical principles and professional conduct in accounting',
+                topics: [
+                    {
+                        id: 'objectives',
+                        title: 'Ethical Objectives',
+                        description: 'Understanding the importance of ethics in accounting',
+                        icon: 'fas fa-target',
+                        subtopics: [
+                            'Professional integrity',
+                            'Public interest',
+                            'Confidentiality',
+                            'Professional behavior'
+                        ]
+                    },
+                    {
+                        id: 'qualities',
+                        title: 'Accountant Qualities',
+                        description: 'Essential qualities of a professional accountant',
+                        icon: 'fas fa-user-tie',
+                        subtopics: [
+                            'Honesty',
+                            'Integrity',
+                            'Transparency',
+                            'Accountability',
+                            'Fairness'
+                        ]
+                    }
+                ]
+            }
+        };
+
+        // Get URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const currentDivision = urlParams.get('unit');
+
+        // Initialize page
+        function initializePage() {
+            if (!divisionData[currentDivision]) {
+                window.location.href = 'accounting.html';
+                return;
+            }
+
+            const division = divisionData[currentDivision];
+            
+            // Update page title and description
+            document.getElementById('currentDivision').textContent = division.title;
+            document.getElementById('divisionTitle').textContent = division.title;
+            document.getElementById('divisionDescription').textContent = division.description;
+
+            // Populate topics
+            const topicsGrid = document.getElementById('topicsGrid');
+            topicsGrid.innerHTML = division.topics.map(topic => `
+                <div class="topic-card" onclick="showSubtopics('${topic.id}')">
+                    <i class="${topic.icon} topic-icon"></i>
+                    <h3 class="topic-title">${topic.title}</h3>
+                    <p class="topic-description">${topic.description}</p>
+                    <div class="progress-indicator">
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 0%"></div>
+                        </div>
+                        <span>0%</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Show subtopics modal
+        function showSubtopics(topicId) {
+            const topic = divisionData[currentDivision].topics.find(t => t.id === topicId);
+            if (!topic) return;
+
+            const modal = document.getElementById('subtopicModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalContent = document.getElementById('modalContent');
+
+            modalTitle.textContent = topic.title;
+            modalContent.innerHTML = `
+                <ul class="subtopic-list">
+                    ${topic.subtopics.map((subtopic, index) => `
+                        <li class="subtopic-item">
+                            <span>${subtopic}</span>
+                            <button class="start-learning-btn" onclick="startLearning('${topic.id}', ${index})">
+                                Start Learning
+                            </button>
+                        </li>
+                    `).join('')}
+                </ul>
+            `;
+
+            modal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Close modal
+        function closeModal() {
+            const modal = document.getElementById('subtopicModal');
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        // Start learning
+        function startLearning(topicId, subtopicIndex) {
+            window.location.href = `accounting-explanation.html?topic=${topicId}&subtopic=${subtopicIndex}`;
+        }
+
+        // Initialize when page loads
+        window.onload = initializePage;
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('subtopicModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+    </script>
+</body>
+</html>
+

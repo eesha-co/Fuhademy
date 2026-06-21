@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Acids, Bases & Salts — Introduction</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <style> 
+    body{font-family:Inter, sans-serif}
+    .content-card{backdrop-filter:blur(16px);background:rgba(255,255,255,0.95);border:1px solid rgba(255,255,255,0.2);box-shadow:0 8px 32px rgba(0,0,0,0.1);}
+    .accordion-content{max-height:0;overflow:hidden;transition:max-height 0.3s ease-out;}
+    .accordion-content.open{max-height:2000px;}
+    .step-card{transition:all 0.2s ease;}
+    .step-card:hover{transform:translateX(4px);}
+    .ph-scale{background:linear-gradient(to right,#ff4444,#ff8888,#ffffff,#8888ff,#4444ff);}
+  </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-emerald-50 to-teal-100 p-4 md:p-6">
+  <div class="max-w-4xl mx-auto">
+    <nav class="mb-4">
+      <a href="index.html" class="text-emerald-600 hover:text-emerald-800 transition">
+        <i class="fas fa-arrow-left mr-2"></i>Back to Acids & Bases
+      </a>
+    </nav>
+    
+    <article class="content-card rounded-xl p-6 md:p-8 shadow-lg">
+      <!-- Header -->
+      <div class="border-b pb-4 mb-6">
+        <h1 class="text-2xl md:text-3xl font-bold text-gray-800 mb-2">
+          <i class="fas fa-flask text-purple-600 mr-3"></i>Acids, Bases and Salts
+        </h1>
+        <p class="text-gray-600">Understanding the fundamental concepts of acids, bases, and the salts they produce.</p>
+      </div>
+
+      <!-- Learning Objectives -->
+      <div class="bg-purple-50 border-l-4 border-purple-500 p-4 rounded-r-lg mb-6">
+        <h3 class="font-semibold text-purple-800 mb-2"><i class="fas fa-bullseye mr-2"></i>Learning Objectives</h3>
+        <ul class="text-purple-700 text-sm space-y-1">
+          <li>• Define acids and bases using different theories</li>
+          <li>• Identify properties of acids and bases</li>
+          <li>• Describe the pH scale and its significance</li>
+          <li>• Explain neutralization reactions</li>
+          <li>• Classify different types of salts</li>
+        </ul>
+      </div>
+
+      <!-- Section 1: Definitions -->
+      <section class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <span class="bg-purple-100 text-purple-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">1</span>
+          Definitions of Acids and Bases
+        </h2>
+        
+        <div class="space-y-4">
+          <!-- Arrhenius Theory -->
+          <div class="bg-gray-50 p-5 rounded-lg">
+            <h3 class="font-semibold text-gray-800 mb-3 flex items-center">
+              <i class="fas fa-user text-blue-500 mr-2"></i>Arrhenius Theory (1884)
+            </h3>
+            <div class="grid md:grid-cols-2 gap-4">
+              <div class="bg-red-50 p-4 rounded-lg border border-red-200">
+                <p class="font-medium text-red-800 mb-2">Acid</p>
+                <p class="text-red-700 text-sm">A substance that produces <strong>H<sup>+</sup></strong> ions (protons) when dissolved in water.</p>
+                <p class="text-xs text-red-600 mt-2">Example: HCl → H<sup>+</sup> + Cl<sup>-</sup></p>
+              </div>
+              <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                <p class="font-medium text-blue-800 mb-2">Base</p>
+                <p class="text-blue-700 text-sm">A substance that produces <strong>OH<sup>-</sup></strong> ions (hydroxide ions) when dissolved in water.</p>
+                <p class="text-xs text-blue-600 mt-2">Example: NaOH → Na<sup>+</sup> + OH<sup>-</sup></p>
+              </div>
+            </div>
+            <p class="text-yellow-700 text-sm mt-3 bg-yellow-50 p-2 rounded"><strong>Limitation:</strong> Only applies to aqueous solutions; cannot explain basicity of NH₃.</p>
+          </div>
+          
+          <!-- Brønsted-Lowry Theory -->
+          <div class="bg-gray-50 p-5 rounded-lg">
+            <h3 class="font-semibold text-gray-800 mb-3 flex items-center">
+              <i class="fas fa-users text-green-500 mr-2"></i>Brønsted-Lowry Theory (1923)
+            </h3>
+            <div class="grid md:grid-cols-2 gap-4">
+              <div class="bg-red-50 p-4 rounded-lg border border-red-200">
+                <p class="font-medium text-red-800 mb-2">Acid</p>
+                <p class="text-red-700 text-sm">A <strong>proton donor</strong> (H<sup>+</sup> donor)</p>
+                <p class="text-xs text-red-600 mt-2">Example: HCl + H₂O → H₃O<sup>+</sup> + Cl<sup>-</sup></p>
+              </div>
+              <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                <p class="font-medium text-blue-800 mb-2">Base</p>
+                <p class="text-blue-700 text-sm">A <strong>proton acceptor</strong> (H<sup>+</sup> acceptor)</p>
+                <p class="text-xs text-blue-600 mt-2">Example: NH₃ + H₂O ⇌ NH₄<sup>+</sup> + OH<sup>-</sup></p>
+              </div>
+            </div>
+            <p class="text-green-700 text-sm mt-3 bg-green-50 p-2 rounded"><strong>Advantage:</strong> Explains basicity of ammonia and applies to non-aqueous solutions.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 2: Properties -->
+      <section class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <span class="bg-purple-100 text-purple-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">2</span>
+          Properties of Acids and Bases
+        </h2>
+        
+        <div class="grid md:grid-cols-2 gap-6">
+          <!-- Acids -->
+          <div class="bg-red-50 p-5 rounded-lg border border-red-200">
+            <h3 class="font-semibold text-red-800 mb-3"><i class="fas fa-tint mr-2"></i>Properties of Acids</h3>
+            <ul class="text-red-700 text-sm space-y-2">
+              <li>• Sour taste (e.g., lemon juice, vinegar)</li>
+              <li>• Turn blue litmus paper <strong class="text-red-600">RED</strong></li>
+              <li>• React with metals to produce hydrogen gas</li>
+              <li>• React with carbonates to produce CO₂</li>
+              <li>• Conduct electricity in solution</li>
+              <li>• pH value less than 7</li>
+              <li>• React with bases to form salt and water</li>
+            </ul>
+          </div>
+          
+          <!-- Bases -->
+          <div class="bg-blue-50 p-5 rounded-lg border border-blue-200">
+            <h3 class="font-semibold text-blue-800 mb-3"><i class="fas fa-tint mr-2"></i>Properties of Bases</h3>
+            <ul class="text-blue-700 text-sm space-y-2">
+              <li>• Bitter taste (e.g., soap, baking soda)</li>
+              <li>• Turn red litmus paper <strong class="text-blue-600">BLUE</strong></li>
+              <li>• Soapy/slippery feel</li>
+              <li>• React with acids to form salt and water</li>
+              <li>• Conduct electricity in solution</li>
+              <li>• pH value greater than 7</li>
+              <li>• Can neutralize acids</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 3: The pH Scale -->
+      <section class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <span class="bg-purple-100 text-purple-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">3</span>
+          The pH Scale
+        </h2>
+        
+        <div class="bg-gray-50 p-5 rounded-lg mb-4">
+          <p class="text-gray-700 mb-4">The <strong class="text-purple-600">pH scale</strong> is a measure of the acidity or alkalinity of a solution. It ranges from 0 to 14, with 7 being neutral.</p>
+          
+          <!-- Visual pH Scale -->
+          <div class="mb-4">
+            <div class="ph-scale h-8 rounded-lg mb-2"></div>
+            <div class="flex justify-between text-xs text-gray-600">
+              <span>0 (Acidic)</span>
+              <span>7 (Neutral)</span>
+              <span>14 (Alkaline)</span>
+            </div>
+          </div>
+          
+          <div class="bg-white p-4 rounded-lg border">
+            <p class="font-mono text-center text-lg mb-2">pH = -log[H<sup>+</sup>]</p>
+            <p class="text-sm text-gray-600 text-center">Lower pH = Higher [H<sup>+</sup>] = More acidic</p>
+          </div>
+        </div>
+        
+        <!-- Common Substances Table -->
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm">
+            <thead class="bg-purple-100">
+              <tr>
+                <th class="p-3 text-left text-purple-800">pH</th>
+                <th class="p-3 text-left text-purple-800">Substance</th>
+                <th class="p-3 text-left text-purple-800">Nature</th>
+              </tr>
+            </thead>
+            <tbody class="bg-white">
+              <tr class="border-b bg-red-100"><td class="p-3">1</td><td class="p-3">Stomach acid (HCl)</td><td class="p-3 text-red-700">Strongly acidic</td></tr>
+              <tr class="border-b bg-red-50"><td class="p-3">2-3</td><td class="p-3">Lemon juice, vinegar</td><td class="p-3 text-red-600">Acidic</td></tr>
+              <tr class="border-b bg-orange-50"><td class="p-3">4-5</td><td class="p-3">Tomatoes, coffee</td><td class="p-3 text-orange-600">Weakly acidic</td></tr>
+              <tr class="border-b bg-green-50"><td class="p-3">7</td><td class="p-3">Pure water, blood</td><td class="p-3 text-green-600">Neutral</td></tr>
+              <tr class="border-b bg-blue-50"><td class="p-3">8-9</td><td class="p-3">Baking soda, seawater</td><td class="p-3 text-blue-600">Weakly basic</td></tr>
+              <tr class="border-b bg-blue-100"><td class="p-3">10-11</td><td class="p-3">Milk of magnesia</td><td class="p-3 text-blue-700">Basic</td></tr>
+              <tr class="bg-indigo-100"><td class="p-3">13-14</td><td class="p-3">NaOH, bleach</td><td class="p-3 text-indigo-700">Strongly basic</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Section 4: Neutralization -->
+      <section class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <span class="bg-purple-100 text-purple-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">4</span>
+          Neutralization Reactions
+        </h2>
+        
+        <div class="bg-gray-50 p-5 rounded-lg mb-4">
+          <p class="text-gray-700 mb-3"><strong class="text-purple-600">Neutralization</strong> is the reaction between an acid and a base to form salt and water.</p>
+          
+          <div class="bg-white p-4 rounded-lg border border-purple-200 text-center">
+            <p class="text-purple-800 font-semibold mb-2">General Equation:</p>
+            <p class="font-mono text-lg">Acid + Base → Salt + Water</p>
+            <p class="font-mono text-lg mt-2 text-gray-700">HCl + NaOH → NaCl + H₂O</p>
+          </div>
+        </div>
+
+        <!-- Worked Examples -->
+        <div class="space-y-4">
+          <div class="border border-gray-200 rounded-lg overflow-hidden">
+            <button class="accordion-btn w-full p-4 bg-purple-50 text-left font-semibold text-purple-800 flex justify-between items-center hover:bg-purple-100 transition">
+              <span><i class="fas fa-lightbulb mr-2 text-yellow-500"></i>Worked Example 1: Writing Neutralization Equations</span>
+              <i class="fas fa-chevron-down transform transition-transform"></i>
+            </button>
+            <div class="accordion-content">
+              <div class="p-5">
+                <p class="font-medium text-gray-800 mb-3">Write the equation for the neutralization of sulfuric acid by potassium hydroxide.</p>
+                
+                <div class="space-y-3">
+                  <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-purple-500">
+                    <p class="text-sm text-gray-600"><strong>Step 1:</strong> Write the formula of the acid and base</p>
+                    <p class="text-purple-700 font-mono mt-1">H₂SO₄ + KOH →</p>
+                  </div>
+                  
+                  <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-purple-500">
+                    <p class="text-sm text-gray-600"><strong>Step 2:</strong> Balance the equation (H₂SO₄ has 2 H⁺, KOH has 1 OH⁻)</p>
+                    <p class="text-purple-700 font-mono mt-1">H₂SO₄ + 2KOH →</p>
+                  </div>
+                  
+                  <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-purple-500">
+                    <p class="text-sm text-gray-600"><strong>Step 3:</strong> Write the products (salt + water)</p>
+                    <p class="text-purple-700 font-mono mt-1">H₂SO₄ + 2KOH → K₂SO₄ + 2H₂O</p>
+                  </div>
+                  
+                  <div class="bg-purple-100 p-3 rounded-lg">
+                    <p class="text-purple-800 font-semibold"><i class="fas fa-check-circle mr-2"></i>Answer: H₂SO₄ + 2KOH → K₂SO₄ + 2H₂O</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 5: Types of Salts -->
+      <section class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <span class="bg-purple-100 text-purple-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">5</span>
+          Types of Salts
+        </h2>
+        
+        <div class="grid md:grid-cols-2 gap-4">
+          <div class="bg-white p-4 rounded-lg border border-gray-200">
+            <h4 class="font-semibold text-gray-800 mb-2">Normal Salts</h4>
+            <p class="text-sm text-gray-600">Formed when all H⁺ ions of an acid are replaced. No replaceable H⁺ remains.</p>
+            <p class="text-xs text-gray-500 mt-1">Examples: NaCl, K₂SO₄, CaCO₃</p>
+          </div>
+          
+          <div class="bg-white p-4 rounded-lg border border-gray-200">
+            <h4 class="font-semibold text-gray-800 mb-2">Acid Salts</h4>
+            <p class="text-sm text-gray-600">Formed when only some H⁺ ions of a polyprotic acid are replaced.</p>
+            <p class="text-xs text-gray-500 mt-1">Examples: NaHSO₄, NaHCO₃, KH₂PO₄</p>
+          </div>
+          
+          <div class="bg-white p-4 rounded-lg border border-gray-200">
+            <h4 class="font-semibold text-gray-800 mb-2">Basic Salts</h4>
+            <p class="text-sm text-gray-600">Formed when not all OH⁻ ions of a base are replaced.</p>
+            <p class="text-xs text-gray-500 mt-1">Examples: Pb(OH)Cl, Bi(OH)₂NO₃</p>
+          </div>
+          
+          <div class="bg-white p-4 rounded-lg border border-gray-200">
+            <h4 class="font-semibold text-gray-800 mb-2">Double Salts</h4>
+            <p class="text-sm text-gray-600">Contain two different cations in a definite proportion.</p>
+            <p class="text-xs text-gray-500 mt-1">Examples: KAl(SO₄)₂·12H₂O (potash alum)</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Practice Problems -->
+      <section class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <i class="fas fa-pencil-alt text-blue-600 mr-3"></i>
+          Practice Problems
+        </h2>
+        
+        <div class="space-y-4">
+          <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+            <p class="font-medium text-gray-800 mb-2">1. Define an acid according to Brønsted-Lowry theory.</p>
+            <details class="mt-2">
+              <summary class="text-sm text-blue-600 cursor-pointer hover:text-blue-800">Show Answer</summary>
+              <div class="mt-2 text-sm text-gray-700">
+                <p>An acid is a proton (H⁺) donor.</p>
+              </div>
+            </details>
+          </div>
+          
+          <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+            <p class="font-medium text-gray-800 mb-2">2. Write the balanced equation for the reaction between HNO₃ and Ca(OH)₂.</p>
+            <details class="mt-2">
+              <summary class="text-sm text-blue-600 cursor-pointer hover:text-blue-800">Show Answer</summary>
+              <div class="mt-2 text-sm text-gray-700">
+                <p>2HNO₃ + Ca(OH)₂ → Ca(NO₃)₂ + 2H₂O</p>
+              </div>
+            </details>
+          </div>
+          
+          <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+            <p class="font-medium text-gray-800 mb-2">3. Calculate the pH of a solution with [H⁺] = 0.01 mol/dm³</p>
+            <details class="mt-2">
+              <summary class="text-sm text-blue-600 cursor-pointer hover:text-blue-800">Show Answer</summary>
+              <div class="mt-2 text-sm text-gray-700">
+                <p>pH = -log[H⁺] = -log(0.01) = -log(10⁻²) = <strong>2</strong></p>
+              </div>
+            </details>
+          </div>
+          
+          <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+            <p class="font-medium text-gray-800 mb-2">4. Why is NaHCO₃ called an acid salt?</p>
+            <details class="mt-2">
+              <summary class="text-sm text-blue-600 cursor-pointer hover:text-blue-800">Show Answer</summary>
+              <div class="mt-2 text-sm text-gray-700">
+                <p>NaHCO₃ is an acid salt because it still contains one replaceable hydrogen ion (H⁺) from the parent acid H₂CO₃. It can further react with bases to form Na₂CO₃.</p>
+              </div>
+            </details>
+          </div>
+        </div>
+      </section>
+
+      <!-- Key Takeaways -->
+      <div class="bg-gradient-to-r from-purple-50 to-pink-50 p-5 rounded-lg border border-purple-200">
+        <h3 class="font-semibold text-purple-800 mb-3"><i class="fas fa-star mr-2"></i>Key Takeaways</h3>
+        <ul class="text-purple-700 text-sm space-y-2">
+          <li>• Acids are proton donors (Brønsted-Lowry); bases are proton acceptors</li>
+          <li>• pH scale ranges from 0-14; pH 7 is neutral</li>
+          <li>• Neutralization: Acid + Base → Salt + Water</li>
+          <li>• Litmus is a common indicator: acids turn blue litmus red; bases turn red litmus blue</li>
+          <li>• Salts are classified as normal, acid, basic, or double salts</li>
+        </ul>
+      </div>
+    </article>
+  </div>
+
+  <script>
+    // Accordion functionality
+    document.querySelectorAll('.accordion-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const content = btn.nextElementSibling;
+        const icon = btn.querySelector('.fa-chevron-down');
+        content.classList.toggle('open');
+        icon.classList.toggle('rotate-180');
+      });
+    });
+  </script>
+
+<!-- Topic Quiz System -->
+<script src="/js/topic-quiz-loader.js"></script>
+<script src="/js/topic-quiz-injector.js"></script>
+</body>
+</html>

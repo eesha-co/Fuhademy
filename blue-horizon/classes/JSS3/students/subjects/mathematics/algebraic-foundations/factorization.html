@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mathematics - Factorization</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * { transition: color 0.2s; }
+    
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    
+    .feedback-correct { 
+      color: #16a34a; 
+      animation: slideIn 0.3s ease-out;
+      font-weight: 500;
+    }
+    .feedback-wrong { 
+      color: #e11d48; 
+      animation: slideIn 0.3s ease-out;
+      font-weight: 500;
+    }
+    .card-glow { 
+      box-shadow: 0 6px 18px rgba(99,102,241,0.08); 
+      animation: fadeIn 0.5s ease-out;
+    }
+    .card-glow:hover {
+      box-shadow: 0 8px 24px rgba(99,102,241,0.12);
+      transform: translateY(-2px);
+      transition: all 0.3s ease;
+    }
+    .accent-gradient { 
+      background: linear-gradient(90deg,#6366f1,#06b6d4); 
+    }
+    .step-badge { 
+      background: rgba(99,102,241,0.08); 
+      color: #3730a3; 
+      padding: .25rem .5rem; 
+      border-radius: .5rem; 
+      font-weight:600;
+      display: inline-block;
+      width: 24px;
+      height: 24px;
+      text-align: center;
+      line-height: 1;
+      font-size: 0.75rem;
+    }
+    
+    button {
+      transition: all 0.2s ease;
+    }
+    
+    button:hover:not(:disabled) {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    
+    button:active:not(:disabled) {
+      transform: translateY(0);
+    }
+    
+    input {
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    
+    input:focus {
+      outline: none;
+      border-color: #6366f1;
+      box-shadow: 0 0 0 3px rgba(99,102,241,0.1);
+    }
+    
+    article {
+      animation: fadeIn 0.6s ease-out;
+    }
+
+    .accordion-btn {
+      cursor: pointer;
+    }
+
+    .accordion-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+    }
+
+    .accordion-content.open {
+      max-height: 1000px;
+    }
+  </style>
+</head>
+<body class="bg-gray-100 font-sans">
+  <header class="accent-gradient text-white sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
+      <a href="../algebraic-foundations.html" class="flex items-center gap-4">
+        <div class="p-2 bg-white/20 rounded-lg"><i class="fas fa-cube"></i></div>
+        <div>
+          <div class="font-semibold text-lg">Factorization</div>
+          <div class="text-xs opacity-80">Break down expressions • Master all techniques</div>
+        </div>
+      </a>
+      <div class="flex items-center gap-4">
+        <div class="text-sm opacity-90">Progress: <span id="progress">0%</span></div>
+        <a href="../mathematics.html" class="text-white/90 hover:text-white text-sm">Back to Math</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-4 py-8">
+    <div class="grid lg:grid-cols-4 gap-8">
+      <aside class="lg:col-span-1">
+        <div class="bg-white p-5 rounded-xl card-glow sticky top-24">
+          <h3 class="font-semibold mb-3">Contents</h3>
+          <ul class="space-y-2 text-sm">
+            <li><a href="#definition" class="hover:text-indigo-600 flex items-center gap-2"><span class="step-badge">1</span>Definition</a></li>
+            <li><a href="#methods" class="hover:text-indigo-600 flex items-center gap-2"><span class="step-badge">2</span>Methods</a></li>
+            <li><a href="#examples" class="hover:text-indigo-600 flex items-center gap-2"><span class="step-badge">3</span>Examples</a></li>
+            <li><a href="#practice" class="hover:text-indigo-600 flex items-center gap-2"><span class="step-badge">4</span>Practice</a></li>
+          </ul>
+          <div class="mt-6 text-xs text-gray-500">Tip: Master common factor and difference of squares first!</div>
+        </div>
+      </aside>
+
+      <section class="lg:col-span-3 space-y-6">
+        <article id="definition" class="bg-white p-6 rounded-xl card-glow">
+          <div class="flex items-start gap-4">
+            <div class="text-3xl text-indigo-600 mt-1"><i class="fas fa-info-circle"></i></div>
+            <div>
+              <h2 class="text-2xl font-semibold mb-2">What is Factorization?</h2>
+              <p class="text-gray-700">Factorization is breaking down an algebraic expression into its simplest form by finding common factors and patterns. It's the reverse of expansion.</p>
+              <div class="mt-4 space-y-2">
+                <div class="inline-flex items-center gap-3 bg-indigo-50 text-indigo-700 px-4 py-2 rounded-lg">
+                  <div class="font-mono">x² + 5x + 6</div>
+                  <div class="opacity-70">=&gt;</div>
+                  <div class="font-semibold">(x+2)(x+3)</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article id="methods" class="bg-white p-6 rounded-xl card-glow">
+          <div class="flex items-start gap-4">
+            <div class="text-3xl text-indigo-600 mt-1"><i class="fas fa-tools"></i></div>
+            <div class="w-full">
+              <h2 class="text-2xl font-semibold mb-3">Factorization Methods</h2>
+              
+              <!-- Accordion: Method 1 -->
+              <div class="border rounded-lg mb-3">
+                <button class="accordion-btn w-full text-left p-4 font-semibold flex justify-between items-center hover:bg-gray-50" data-accordion="method1">
+                  <span>1. Common Factor</span>
+                  <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="accordion-content" id="method1">
+                  <div class="p-4 pt-0 text-gray-700 bg-gray-50">
+                      <p class="font-semibold mb-2">What is GCF (Greatest Common Factor)?</p>
+                      <p class="mb-3">It's the biggest piece that all the terms share — a number and/or variable you can take outside the parentheses.</p>
+
+                      <p class="font-semibold mb-2">Step-by-step: Factor <code class="font-mono bg-white px-2 py-1 rounded">3x² + 6x</code></p>
+                      <ol class="list-decimal list-inside space-y-2 mb-3">
+                        <li><strong>Look at each term:</strong> 3x² and 6x</li>
+                        <li><strong>Find what they have in common (numbers):</strong> List the factors of each number to see the largest shared one.
+                          <ul class="list-disc list-inside ml-3 mt-1">
+                            <li>3 → 1, 3</li>
+                            <li>6 → 1, 2, 3</li>
+                            <li>Common factors: 1, 3 → largest is <strong>3</strong></li>
+                          </ul>
+                        </li>
+                        <li><strong>Find what they have in common (variables):</strong> Compare powers of x in each term.
+                          <ul class="list-disc list-inside ml-3 mt-1">
+                            <li>x² has x·x</li>
+                            <li>x has x</li>
+                            <li>Both have at least one <strong>x</strong>, so take the lowest power: <strong>x</strong></li>
+                          </ul>
+                        </li>
+                        <li><strong>Combine the common parts:</strong> number 3 and variable x → GCF = <strong>3x</strong></li>
+                        <li><strong>Divide each term by the GCF to find what's left:</strong>
+                          <ul class="list-disc list-inside ml-3 mt-1">
+                            <li>3x² ÷ 3x = x</li>
+                            <li>6x ÷ 3x = 2</li>
+                          </ul>
+                        </li>
+                        <li><strong>Write the answer:</strong> 3x(x + 2)</li>
+                      </ol>
+
+                      <p class="text-sm bg-blue-50 p-2 rounded border-l-4 border-blue-400"><strong>Quick check:</strong> Multiply back: 3x·x + 3x·2 = 3x² + 6x ✓</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Accordion: Method 2 -->
+              <div class="border rounded-lg mb-3">
+                <button class="accordion-btn w-full text-left p-4 font-semibold flex justify-between items-center hover:bg-gray-50" data-accordion="method2">
+                  <span>2. Difference of Squares</span>
+                  <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="accordion-content" id="method2">
+                  <div class="p-4 pt-0 text-gray-700 bg-gray-50">
+                      <p class="font-semibold mb-2">The Magic Pattern: a² - b² = (a+b)(a-b)</p>
+                      <p class="mb-3">This works when you have two PERFECT SQUARES being subtracted.</p>
+                    
+                      <p class="font-semibold mb-2">Step-by-step: Factor <code class="font-mono bg-white px-2 py-1 rounded">x² - 9</code></p>
+                      <ol class="list-decimal list-inside space-y-2 mb-3">
+                        <li><strong>Check if both are perfect squares:</strong>
+                          <ul class="list-disc list-inside ml-3 mt-1">
+                            <li>x² = x·x ✓ (perfect square)</li>
+                            <li>9 = 3·3 ✓ (perfect square)</li>
+                          </ul>
+                        </li>
+                        <li><strong>Check if it's subtraction:</strong> x² - 9 (yes, minus sign) ✓</li>
+                        <li><strong>Identify a and b:</strong> a = x, b = 3</li>
+                        <li><strong>Use the pattern:</strong> (a+b)(a-b) = (x+3)(x-3)</li>
+                      </ol>
+                    
+                      <p class="text-sm bg-blue-50 p-2 rounded border-l-4 border-blue-400"><strong>Check:</strong> (x+3)(x-3) = x² - 3x + 3x - 9 = x² - 9 ✓</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Accordion: Method 3 -->
+              <div class="border rounded-lg mb-3">
+                <button class="accordion-btn w-full text-left p-4 font-semibold flex justify-between items-center hover:bg-gray-50" data-accordion="method3">
+                  <span>3. Trinomial Factorization</span>
+                  <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="accordion-content" id="method3">
+                  <div class="p-4 pt-0 text-gray-700 bg-gray-50">
+                      <p class="font-semibold mb-2">Trinomial = Expression with 3 terms</p>
+                      <p class="mb-3"><strong>Pattern:</strong> <code class="font-mono">x² + bx + c = (x + ?)(x + ?)</code></p>
+                      <p class="mb-3">You need to find the two numbers that go in the blanks.</p>
+                    
+                      <p class="font-semibold mb-2">Step-by-step: Factor <code class="font-mono bg-white px-2 py-1 rounded">x² + 5x + 6</code></p>
+                      <ol class="list-decimal list-inside space-y-2 mb-3">
+                        <li><strong>Identify b and c:</strong> b = 5, c = 6</li>
+                        <li><strong>Find two numbers that MULTIPLY to give c (6):</strong>
+                          <ul class="list-disc list-inside ml-3 mt-1">
+                            <li>1 × 6 = 6</li>
+                            <li>2 × 3 = 6</li>
+                          </ul>
+                        </li>
+                        <li><strong>Check which pair ADDS to b (5):</strong>
+                          <ul class="list-disc list-inside ml-3 mt-1">
+                            <li>1 + 6 = 7 ✗</li>
+                            <li>2 + 3 = 5 ✓</li>
+                          </ul>
+                        </li>
+                        <li><strong>Use these numbers:</strong> (x + 2)(x + 3)</li>
+                      </ol>
+                    
+                      <p class="text-sm bg-blue-50 p-2 rounded border-l-4 border-blue-400"><strong>Check:</strong> (x+2)(x+3) = x² + 3x + 2x + 6 = x² + 5x + 6 ✓</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Accordion: Method 4 -->
+              <div class="border rounded-lg mb-3">
+                <button class="accordion-btn w-full text-left p-4 font-semibold flex justify-between items-center hover:bg-gray-50" data-accordion="method4">
+                  <span>4. Grouping</span>
+                  <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="accordion-content" id="method4">
+                  <div class="p-4 pt-0 text-gray-700 bg-gray-50">
+                      <p class="font-semibold mb-2">Grouping = Split into pairs and find common factors</p>
+                      <p class="mb-3">This works with 4 terms that have a hidden pattern.</p>
+                    
+                      <p class="font-semibold mb-2">Step-by-step: Factor <code class="font-mono bg-white px-2 py-1 rounded">xy + 2y + 3x + 6</code></p>
+                      <ol class="list-decimal list-inside space-y-2 mb-3">
+                        <li><strong>Split into two pairs:</strong>
+                          <ul class="list-disc list-inside ml-3 mt-1">
+                            <li>(xy + 2y) + (3x + 6)</li>
+                          </ul>
+                        </li>
+                        <li><strong>Factor out the common factor from each pair:</strong>
+                          <ul class="list-disc list-inside ml-3 mt-1">
+                            <li>First pair: xy + 2y = y(x + 2)</li>
+                            <li>Second pair: 3x + 6 = 3(x + 2)</li>
+                          </ul>
+                        </li>
+                        <li><strong>Now you have:</strong> y(x + 2) + 3(x + 2)</li>
+                        <li><strong>Notice (x + 2) appears in both!</strong> Factor it out:</li>
+                        <li><strong>Answer:</strong> (x + 2)(y + 3)</li>
+                      </ol>
+                    
+                      <p class="text-sm bg-blue-50 p-2 rounded border-l-4 border-blue-400"><strong>Check:</strong> (x+2)(y+3) = xy + 3x + 2y + 6 ✓</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article id="examples" class="bg-white p-6 rounded-xl card-glow">
+          <div class="flex items-start gap-4">
+            <div class="text-3xl text-indigo-600 mt-1"><i class="fas fa-lightbulb"></i></div>
+            <div>
+              <h2 class="text-2xl font-semibold mb-3">Worked Examples (step-by-step)</h2>
+              <div class="grid sm:grid-cols-2 gap-4 text-gray-700">
+
+                <div class="p-4 bg-gray-50 rounded">
+                  <div class="font-semibold">Example 1: 2x² - 8x</div>
+                  <div class="mt-2 text-sm">
+                    <ol class="list-decimal list-inside ml-3 space-y-1">
+                      <li><strong>Look at each term:</strong> 2x² and -8x</li>
+                      <li><strong>Find what they have in common (numbers):</strong> 2 and 8 → common factors 1,2 → take <strong>2</strong></li>
+                      <li><strong>Find what they have in common (variables):</strong> x² and x → lowest power is <strong>x</strong></li>
+                      <li><strong>GCF:</strong> 2x</li>
+                      <li><strong>Divide each term by 2x:</strong> 2x² ÷ 2x = x, −8x ÷ 2x = −4</li>
+                      <li><strong>Answer:</strong> 2x(x − 4)</li>
+                    </ol>
+                    <div class="mt-2 text-xs bg-blue-50 p-2 rounded border-l-4 border-blue-400">Check: 2x·x + 2x·(−4) = 2x² − 8x ✓</div>
+                  </div>
+                </div>
+
+                <div class="p-4 bg-gray-50 rounded">
+                  <div class="font-semibold">Example 2: 4a² − 25b²</div>
+                  <div class="mt-2 text-sm">
+                    <ol class="list-decimal list-inside ml-3 space-y-1">
+                      <li><strong>Recognise the pattern:</strong> Both terms are perfect squares (4a² = (2a)², 25b² = (5b)²)</li>
+                      <li><strong>Structure:</strong> a² − b² = (a + b)(a − b)</li>
+                      <li><strong>Set a and b:</strong> a = 2a, b = 5b (treating whole parts as 'a' and 'b')</li>
+                      <li><strong>Answer:</strong> (2a + 5b)(2a − 5b)</li>
+                    </ol>
+                    <div class="mt-2 text-xs bg-blue-50 p-2 rounded border-l-4 border-blue-400">Check: Multiply to confirm the cross terms cancel and you get 4a² − 25b² ✓</div>
+                  </div>
+                </div>
+
+                <div class="p-4 bg-gray-50 rounded">
+                  <div class="font-semibold">Example 3: m² + 7m + 12</div>
+                  <div class="mt-2 text-sm">
+                    <ol class="list-decimal list-inside ml-3 space-y-1">
+                      <li><strong>Identify b and c:</strong> b = 7, c = 12</li>
+                      <li><strong>List factor pairs of 12:</strong> (1,12), (2,6), (3,4)</li>
+                      <li><strong>Find pair that adds to 7:</strong> 3 + 4 = 7 → choose (3,4)</li>
+                      <li><strong>Answer:</strong> (m + 3)(m + 4)</li>
+                    </ol>
+                    <div class="mt-2 text-xs bg-blue-50 p-2 rounded border-l-4 border-blue-400">Check: (m+3)(m+4) = m² + 4m + 3m + 12 = m² + 7m + 12 ✓</div>
+                  </div>
+                </div>
+
+                <div class="p-4 bg-gray-50 rounded">
+                  <div class="font-semibold">Example 4: ab + 3a + b + 3</div>
+                  <div class="mt-2 text-sm">
+                    <ol class="list-decimal list-inside ml-3 space-y-1">
+                      <li><strong>Group terms:</strong> (ab + 3a) + (b + 3)</li>
+                      <li><strong>Factor each group:</strong> a(b + 3) + 1(b + 3)</li>
+                      <li><strong>Factor out the common binomial:</strong> (b + 3)(a + 1)</li>
+                      <li><strong>Answer:</strong> (a + 1)(b + 3)</li>
+                    </ol>
+                    <div class="mt-2 text-xs bg-blue-50 p-2 rounded border-l-4 border-blue-400">Check: (a+1)(b+3) = ab + 3a + b + 3 ✓</div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article id="practice" class="bg-white p-6 rounded-xl card-glow">
+          <div class="flex items-start gap-4">
+            <div class="text-3xl text-indigo-600 mt-1"><i class="fas fa-pencil-alt"></i></div>
+            <div class="w-full">
+              <h2 class="text-2xl font-semibold mb-3">Practice Problems</h2>
+              <p class="text-gray-700 mb-4">Interactive checks with hints and feedback.</p>
+
+              <div class="grid md:grid-cols-2 gap-4">
+                <div class="p-4 border rounded-md bg-gray-50">
+                  <div class="font-semibold">1) Common Factor</div>
+                  <div class="font-mono text-indigo-700">5x² + 10x</div>
+                  <input id="q1" class="mt-3 p-2 border rounded w-full" placeholder="e.g., 5x(x+2)" />
+                  <div class="mt-2 flex gap-2">
+                    <button id="check1" class="px-3 py-1 bg-indigo-600 text-white rounded text-sm">Check</button>
+                    <button id="hint1" class="px-3 py-1 text-xs bg-white border rounded">Hint</button>
+                  </div>
+                  <div id="fb1" class="mt-3 text-sm"></div>
+                </div>
+
+                <div class="p-4 border rounded-md bg-gray-50">
+                  <div class="font-semibold">2) Difference of Squares</div>
+                  <div class="font-mono text-indigo-700">y² - 16</div>
+                  <input id="q2" class="mt-3 p-2 border rounded w-full" placeholder="e.g., (y+4)(y-4)" />
+                  <div class="mt-2 flex gap-2">
+                    <button id="check2" class="px-3 py-1 bg-indigo-600 text-white rounded text-sm">Check</button>
+                    <button id="hint2" class="px-3 py-1 text-xs bg-white border rounded">Hint</button>
+                  </div>
+                  <div id="fb2" class="mt-3 text-sm"></div>
+                </div>
+
+                <div class="p-4 border rounded-md bg-gray-50">
+                  <div class="font-semibold">3) Trinomial</div>
+                  <div class="font-mono text-indigo-700">x² + 8x + 15</div>
+                  <input id="q3" class="mt-3 p-2 border rounded w-full" placeholder="e.g., (x+3)(x+5)" />
+                  <div class="mt-2 flex gap-2">
+                    <button id="check3" class="px-3 py-1 bg-indigo-600 text-white rounded text-sm">Check</button>
+                    <button id="hint3" class="px-3 py-1 text-xs bg-white border rounded">Hint</button>
+                  </div>
+                  <div id="fb3" class="mt-3 text-sm"></div>
+                </div>
+
+                <div class="p-4 border rounded-md bg-gray-50">
+                  <div class="font-semibold">4) Grouping</div>
+                  <div class="font-mono text-indigo-700">p³ - 3p² + 2p - 6</div>
+                  <input id="q4" class="mt-3 p-2 border rounded w-full" placeholder="e.g., (p-3)(p²+2)" />
+                  <div class="mt-2 flex gap-2">
+                    <button id="check4" class="px-3 py-1 bg-indigo-600 text-white rounded text-sm">Check</button>
+                    <button id="hint4" class="px-3 py-1 text-xs bg-white border rounded">Hint</button>
+                  </div>
+                  <div id="fb4" class="mt-3 text-sm"></div>
+                </div>
+              </div>
+
+              <div class="mt-6 pt-4 border-t">
+                <h3 class="font-semibold mb-2">Independent Practice</h3>
+                <p class="text-sm text-gray-600 mb-2">Factor this expression completely.</p>
+                <label class="block text-sm">Problem: <code class="font-mono">2x² - 18</code></label>
+                <div class="mt-2 flex gap-3">
+                  <input id="independent" class="p-2 border rounded w-60" placeholder="Final answer" />
+                  <button id="check-ind" class="px-4 py-2 bg-green-600 text-white rounded">Check</button>
+                </div>
+                <div id="fb-ind" class="mt-3 text-sm"></div>
+                <div id="solution-ind" class="mt-3 hidden p-3 bg-gray-50 rounded text-sm"></div>
+                <button id="show-solution" class="text-xs mt-2 text-indigo-600 hover:text-indigo-700">Show solution</button>
+              </div>
+            </div>
+          </div>
+        </article>
+
+      </section>
+    </div>
+  </main>
+
+  <!-- Quiz Mode Button -->
+  <button id="quiz-mode-btn" class="fixed bottom-8 right-8 z-50 bg-indigo-600 text-white px-6 py-3 rounded-full shadow-lg hover:bg-indigo-700 text-lg font-semibold flex items-center gap-2">
+    <i class="fas fa-stopwatch"></i> Quiz Mode
+  </button>
+
+  <!-- Quiz Modal -->
+  <div id="quiz-modal" class="hidden fixed inset-0 bg-black/40 z-50 flex items-center justify-center">
+    <div class="bg-white rounded-xl shadow-2xl max-w-lg w-full p-6 relative">
+      <button id="close-quiz-modal" class="absolute top-3 right-4 text-gray-400 hover:text-gray-700 text-2xl">&times;</button>
+      <div id="quiz-content">
+        <!-- Quiz content will be injected here -->
+      </div>
+    </div>
+  </div>
+
+  <footer class="max-w-7xl mx-auto px-4 py-6 text-sm text-gray-500">
+    <div>Created from templates in the algebraic foundations collection.</div>
+  </footer>
+
+  <script>
+    // --- Accordion Setup ---
+    document.querySelectorAll('.accordion-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const contentId = btn.dataset.accordion;
+        const content = document.getElementById(contentId);
+        content.classList.toggle('open');
+        const icon = btn.querySelector('i');
+        icon.classList.toggle('rotate-180');
+      });
+    });
+
+    // --- Quiz Mode Logic ---
+    const quizQuestions = [
+      {
+        q: 'Factor: 3x² + 6x',
+        a: ['3x(x+2)','3x(x+2)=0','3x(x+2)'],
+        explain: 'GCF is 3x. 3x² + 6x = 3x(x + 2).'
+      },
+      {
+        q: 'Factor: a² - 25',
+        a: ['(a+5)(a-5)','(a-5)(a+5)'],
+        explain: 'Use a² - b² = (a+b)(a-b). a² - 25 = (a+5)(a-5).'
+      },
+      {
+        q: 'Factor: x² + 6x + 8',
+        a: ['(x+2)(x+4)','(x+4)(x+2)'],
+        explain: 'Find two numbers that multiply to 8 and add to 6: 2 and 4.'
+      },
+      {
+        q: 'Factor: 4b² - 9c²',
+        a: ['(2b+3c)(2b-3c)','(2b-3c)(2b+3c)'],
+        explain: '4b² - 9c² = (2b)² - (3c)² = (2b+3c)(2b-3c).'
+      },
+      {
+        q: 'Factor: m² - 12m + 35',
+        a: ['(m-5)(m-7)','(m-7)(m-5)'],
+        explain: 'Find two numbers that multiply to 35 and add to -12: -5 and -7.'
+      },
+      {
+        q: 'Factor by grouping: xy + 2y + 3x + 6',
+        a: ['(x+2)(y+3)','(y+3)(x+2)'],
+        explain: 'Group: y(x+2) + 3(x+2) = (x+2)(y+3).'
+      },
+      {
+        q: 'Factor: 16p² - q²',
+        a: ['(4p+q)(4p-q)','(4p-q)(4p+q)'],
+        explain: '16p² - q² = (4p)² - q² = (4p+q)(4p-q).'
+      },
+      {
+        q: 'Factor completely: 2x² - 32',
+        a: ['2(x+4)(x-4)','2(x-4)(x+4)'],
+        explain: '2x² - 32 = 2(x² - 16) = 2(x+4)(x-4).'
+      }
+    ];
+
+    let quizState = null;
+
+    function startQuizMode() {
+      const pool = [...quizQuestions];
+      const selected = [];
+      for(let i=0;i<3;i++) {
+        const idx = Math.floor(Math.random()*pool.length);
+        selected.push(pool.splice(idx,1)[0]);
+      }
+      quizState = {
+        questions: selected,
+        current: 0,
+        score: 0,
+        answers: [],
+        timer: 25,
+        timerId: null,
+        finished: false
+      };
+      showQuizQuestion();
+      document.getElementById('quiz-modal').classList.remove('hidden');
+    }
+
+    function showQuizQuestion() {
+      const q = quizState.questions[quizState.current];
+      const quizContent = document.getElementById('quiz-content');
+      quizContent.innerHTML = `
+        <div class="flex items-center justify-between mb-2">
+          <div class="text-lg font-semibold">Question ${quizState.current+1} of 3</div>
+          <div class="flex items-center gap-2"><i class="fas fa-stopwatch text-indigo-500"></i> <span id="quiz-timer" class="font-mono">${quizState.timer}</span>s</div>
+        </div>
+        <div class="mb-4 text-lg">${q.q}</div>
+        <input id="quiz-answer" class="w-full p-3 border rounded text-lg mb-4" placeholder="Your answer..." autocomplete="off" />
+        <button id="quiz-submit" class="w-full bg-indigo-600 text-white py-2 rounded font-semibold text-lg hover:bg-indigo-700">Submit</button>
+        <div id="quiz-feedback" class="mt-4 text-base"></div>
+      `;
+      document.getElementById('quiz-answer').focus();
+      quizState.timer = 25;
+      updateQuizTimer();
+      quizState.timerId = setInterval(()=>{
+        quizState.timer--;
+        updateQuizTimer();
+        if(quizState.timer<=0) {
+          clearInterval(quizState.timerId);
+          quizTimeout();
+        }
+      },1000);
+      document.getElementById('quiz-submit').onclick = submitQuizAnswer;
+      document.getElementById('quiz-answer').onkeypress = function(e){ if(e.key==='Enter'){ submitQuizAnswer(); } };
+    }
+
+    function updateQuizTimer() {
+      const el = document.getElementById('quiz-timer');
+      if(el) el.textContent = quizState.timer;
+    }
+
+    function submitQuizAnswer() {
+      if(quizState.finished) return;
+      clearInterval(quizState.timerId);
+      const q = quizState.questions[quizState.current];
+      const ans = document.getElementById('quiz-answer').value.trim().toLowerCase().replace(/\s+/g,'');
+      let correct = false;
+      for(const a of q.a) {
+        if(ans === a.replace(/\s+/g,'').toLowerCase()) correct = true;
+      }
+      quizState.answers.push({correct, ans, q});
+      if(correct) quizState.score++;
+      showQuizFeedback(correct, q);
+    }
+
+    function quizTimeout() {
+      showQuizFeedback(false, quizState.questions[quizState.current], true);
+    }
+
+    function showQuizFeedback(correct, q, timeout=false) {
+      const fb = document.getElementById('quiz-feedback');
+      if(correct) {
+        fb.innerHTML = `<span class="feedback-correct"><i class="fas fa-check-circle"></i> Correct!</span>`;
+      } else if(timeout) {
+        fb.innerHTML = `<span class="feedback-wrong"><i class="fas fa-clock"></i> Time's up!</span><br><span class="text-gray-700">${q.explain}</span>`;
+      } else {
+        fb.innerHTML = `<span class="feedback-wrong"><i class="fas fa-times-circle"></i> Not quite.</span><br><span class="text-gray-700">${q.explain}</span>`;
+      }
+      setTimeout(()=>{
+        nextQuizStep();
+      }, 1600);
+    }
+
+    function nextQuizStep() {
+      quizState.current++;
+      if(quizState.current < quizState.questions.length) {
+        showQuizQuestion();
+      } else {
+        quizState.finished = true;
+        showQuizResult();
+      }
+    }
+
+    function showQuizResult() {
+      const quizContent = document.getElementById('quiz-content');
+      let msg = '';
+      if(quizState.score === 3) msg = '🏆 Excellent! Mastering factorization!';
+      else if(quizState.score === 2) msg = '🎉 Good work! Keep practicing!';
+      else if(quizState.score === 1) msg = '👍 Getting there! Review the methods.';
+      else msg = '💡 Try again! Review all factorization techniques.';
+      quizContent.innerHTML = `
+        <div class="text-2xl font-bold mb-2">Quiz Complete</div>
+        <div class="mb-4 text-lg">Score: <span class="font-mono">${quizState.score} / 3</span></div>
+        <div class="mb-4">${msg}</div>
+        <button id="quiz-retry" class="w-full bg-indigo-600 text-white py-2 rounded font-semibold text-lg hover:bg-indigo-700">Try Again</button>
+        <button id="quiz-close" class="w-full mt-2 bg-gray-200 text-gray-800 py-2 rounded font-semibold text-lg hover:bg-gray-300">Close</button>
+      `;
+      document.getElementById('quiz-retry').onclick = startQuizMode;
+      document.getElementById('quiz-close').onclick = closeQuizModal;
+    }
+
+    function closeQuizModal() {
+      document.getElementById('quiz-modal').classList.add('hidden');
+      quizState = null;
+    }
+
+    document.getElementById('quiz-mode-btn').onclick = startQuizMode;
+    document.getElementById('close-quiz-modal').onclick = closeQuizModal;
+
+    // --- Progress Tracking ---
+    const progressEl = document.getElementById('progress');
+    const correctFlags = {q1:false,q2:false,q3:false,q4:false,ind:false};
+
+    function setCorrect(id){
+      if(!correctFlags[id]){
+        correctFlags[id]=true;
+        const total = Object.keys(correctFlags).length;
+        const done = Object.values(correctFlags).filter(Boolean).length;
+        progressEl.textContent = Math.round((done/total)*100)+'%';
+      }
+    }
+
+    function normalizeAnswer(s){
+      if(!s) return '';
+      return s.toString().trim().replace(/\s+/g,'').toLowerCase();
+    }
+
+    // Problem 1: 5x² + 10x
+    document.getElementById('check1').addEventListener('click', ()=>{
+      const input = normalizeAnswer(document.getElementById('q1').value);
+      const fb = document.getElementById('fb1');
+      const correct = ['5x(x+2)','5x(x+2)=0'];
+      if(correct.some(c => normalizeAnswer(c) === input)){
+        fb.innerHTML = '<span class="feedback-correct"><i class="fas fa-check-circle"></i> Correct! 5x² + 10x = 5x(x+2)</span>';
+        setCorrect('q1');
+      } else {
+        fb.innerHTML = '<span class="feedback-wrong"><i class="fas fa-times-circle"></i> Not quite. Find the GCF: 5x.</span>';
+      }
+    });
+    document.getElementById('hint1').addEventListener('click', ()=>{
+      alert('Hint: Find the greatest common factor (GCF) of 5x² and 10x. The GCF is 5x.');
+    });
+
+    // Problem 2: y² - 16
+    document.getElementById('check2').addEventListener('click', ()=>{
+      const input = normalizeAnswer(document.getElementById('q2').value);
+      const fb = document.getElementById('fb2');
+      const correct = ['(y+4)(y-4)','(y-4)(y+4)'];
+      if(correct.some(c => normalizeAnswer(c) === input)){
+        fb.innerHTML = '<span class="feedback-correct"><i class="fas fa-check-circle"></i> Correct! y² - 16 = (y+4)(y-4)</span>';
+        setCorrect('q2');
+      } else {
+        fb.innerHTML = '<span class="feedback-wrong"><i class="fas fa-times-circle"></i> Not quite. Use a² - b² = (a+b)(a-b).</span>';
+      }
+    });
+    document.getElementById('hint2').addEventListener('click', ()=>{
+      alert('Hint: Difference of squares: a² - b² = (a+b)(a-b). Here a = y and b = 4.');
+    });
+
+    // Problem 3: x² + 8x + 15
+    document.getElementById('check3').addEventListener('click', ()=>{
+      const input = normalizeAnswer(document.getElementById('q3').value);
+      const fb = document.getElementById('fb3');
+      const correct = ['(x+3)(x+5)','(x+5)(x+3)'];
+      if(correct.some(c => normalizeAnswer(c) === input)){
+        fb.innerHTML = '<span class="feedback-correct"><i class="fas fa-check-circle"></i> Correct! x² + 8x + 15 = (x+3)(x+5)</span>';
+        setCorrect('q3');
+      } else {
+        fb.innerHTML = '<span class="feedback-wrong"><i class="fas fa-times-circle"></i> Not quite. Find two numbers that multiply to 15 and add to 8.</span>';
+      }
+    });
+    document.getElementById('hint3').addEventListener('click', ()=>{
+      alert('Hint: Find two numbers that multiply to 15 and add to 8. Answer: 3 and 5.');
+    });
+
+    // Problem 4: p³ - 3p² + 2p - 6
+    document.getElementById('check4').addEventListener('click', ()=>{
+      const input = normalizeAnswer(document.getElementById('q4').value);
+      const fb = document.getElementById('fb4');
+      const correct = ['(p-3)(p²+2)','(p²+2)(p-3)'];
+      if(correct.some(c => normalizeAnswer(c) === input)){
+        fb.innerHTML = '<span class="feedback-correct"><i class="fas fa-check-circle"></i> Correct! (p-3)(p²+2)</span>';
+        setCorrect('q4');
+      } else {
+        fb.innerHTML = '<span class="feedback-wrong"><i class="fas fa-times-circle"></i> Not quite. Try grouping: (p³-3p²) + (2p-6).</span>';
+      }
+    });
+    document.getElementById('hint4').addEventListener('click', ()=>{
+      alert('Hint: Group as p²(p-3) + 2(p-3) = (p-3)(p²+2).');
+    });
+
+    // Independent Practice: 2x² - 18
+    document.getElementById('check-ind').addEventListener('click', ()=>{
+      const input = normalizeAnswer(document.getElementById('independent').value);
+      const fb = document.getElementById('fb-ind');
+      const correct = ['2(x+3)(x-3)','2(x-3)(x+3)'];
+      if(correct.some(c => normalizeAnswer(c) === input)){
+        fb.innerHTML = '<span class="feedback-correct"><i class="fas fa-check-circle"></i> Correct! 2x² - 18 = 2(x+3)(x-3)</span>';
+        setCorrect('ind');
+      } else {
+        fb.innerHTML = '<span class="feedback-wrong"><i class="fas fa-times-circle"></i> Not quite. Factor out 2 first, then use difference of squares.</span>';
+      }
+    });
+
+    document.getElementById('show-solution').addEventListener('click', (e)=>{
+      e.preventDefault();
+      const sol = document.getElementById('solution-ind');
+      sol.classList.remove('hidden');
+      sol.innerHTML = `
+        <strong>Step-by-step solution:</strong><br>
+        1. Factor out 2: 2x² - 18 = 2(x² - 9)<br>
+        2. Use difference of squares: 2(x² - 9) = 2(x+3)(x-3)<br>
+        <strong>Final answer: 2(x+3)(x-3)</strong>
+      `;
+    });
+
+    // Smooth scrolling
+    document.querySelectorAll('a[href^="#"]').forEach(link=>{
+      link.addEventListener('click', (e)=>{
+        const href = link.getAttribute('href');
+        if(href !== '#' && document.querySelector(href)){
+          e.preventDefault();
+          document.querySelector(href).scrollIntoView({behavior:'smooth'});
+        }
+      });
+    });
+
+    // Keyboard support: Enter to check
+    ['q1','q2','q3','q4','independent'].forEach(id=>{
+      document.getElementById(id).addEventListener('keypress', (e)=>{
+        if(e.key === 'Enter'){
+          const checkId = id === 'independent' ? 'check-ind' : 'check' + id.slice(1);
+          document.getElementById(checkId).click();
+        }
+      });
+    });
+  </script>
+<!-- Topic Quiz System -->
+<script src="/js/topic-quiz-loader.js"></script>
+<script src="/js/topic-quiz-injector.js"></script>
+</body>
+</html>

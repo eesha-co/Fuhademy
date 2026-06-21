@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Biology — Micro & Unicellular Organisms</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+</head>
+<body class="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-100 font-inter">
+  <nav class="fixed inset-x-0 top-0 bg-white/60 backdrop-blur-sm border-b border-blue-100 z-50">
+    <div class="max-w-6xl mx-auto px-4 py-3">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-4">
+          <nav class="text-sm text-blue-600">
+            <a href="../student-dashboard.html" class="hover:underline">Dashboard</a>
+            <span class="mx-2">/</span>
+            <a href="biology.html" class="hover:underline">Biology</a>
+            <span class="mx-2">/</span>
+            <span class="font-semibold">Micro & Unicellular Organisms</span>
+          </nav>
+        </div>
+        <div class="flex items-center gap-3">
+          <div class="relative">
+            <i class="fas fa-search text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
+            <input aria-label="Search" class="pl-10 pr-3 py-2 rounded-lg border border-slate-200 bg-white" placeholder="Search biology topics" />
+          </div>
+          <img src="/assets/images/logo.png" alt="logo" class="h-10 w-auto" />
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <main class="max-w-6xl mx-auto px-4 pt-24 pb-12">
+    <header class="text-center mb-6">
+      <h1 class="text-3xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-700 to-blue-400">Micro & Unicellular Organisms</h1>
+      <p class="text-gray-600 mt-2">Microbiology and unicellular life</p>
+    </header>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <a href="#" onclick="openModal('Micro-organisms around us')" class="block rounded-xl bg-white/60 backdrop-blur-sm shadow-sm border p-5 hover:shadow-md transition group">
+        <h3 class="font-semibold text-blue-700 group-hover:text-blue-500">Micro-organisms around us</h3>
+      </a>
+      <a href="#" onclick="openModal('Micro-organisms in Action')" class="block rounded-xl bg-white/60 backdrop-blur-sm shadow-sm border p-5 hover:shadow-md transition group">
+        <h3 class="font-semibold text-blue-700 group-hover:text-blue-500">Micro-organisms in Action</h3>
+      </a>
+      <a href="#" onclick="openModal('Micro-organisms and better Health')" class="block rounded-xl bg-white/60 backdrop-blur-sm shadow-sm border p-5 hover:shadow-md transition group">
+        <h3 class="font-semibold text-blue-700 group-hover:text-blue-500">Micro-organisms and better Health</h3>
+      </a>
+      <a href="#" onclick="openModal('Mode of Nutrition in Micro-organisms')" class="block rounded-xl bg-white/60 backdrop-blur-sm shadow-sm border p-5 hover:shadow-md transition group">
+        <h3 class="font-semibold text-blue-700 group-hover:text-blue-500">Mode of Nutrition in Micro-organisms</h3>
+      </a>
+      <a href="#" onclick="openModal('Reproduction in Unicellular organisms')" class="block rounded-xl bg-white/60 backdrop-blur-sm shadow-sm border p-5 hover:shadow-md transition group">
+        <h3 class="font-semibold text-blue-700 group-hover:text-blue-500">Reproduction in Unicellular organisms</h3>
+      </a>
+      <a href="#" onclick="openModal('Transport in lower organisms')" class="block rounded-xl bg-white/60 backdrop-blur-sm shadow-sm border p-5 hover:shadow-md transition group">
+        <h3 class="font-semibold text-blue-700 group-hover:text-blue-500">Transport in lower organisms</h3>
+      </a>
+      <a href="#" onclick="openModal('Excretion')" class="block rounded-xl bg-white/60 backdrop-blur-sm shadow-sm border p-5 hover:shadow-md transition group">
+        <h3 class="font-semibold text-blue-700 group-hover:text-blue-500">Excretion</h3>
+      </a>
+    </div>
+  </main>
+
+  <!-- Modal -->
+  <div id="modal" class="hidden fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50">
+    <div class="flex items-center justify-center min-h-screen px-4">
+      <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-xl relative">
+        <div class="flex justify-between items-center mb-4">
+          <h2 id="modalTitle" class="text-xl font-semibold text-blue-700">Sub-topics:</h2>
+          <button onclick="closeModal()" class="text-slate-400 hover:text-slate-600" title="Close">
+            <span class="sr-only">Close</span>
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        <div id="modalContent" class="space-y-4"></div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const subtopics = {
+      'Micro-organisms around us': [
+        { name: 'Characteristics, cell structure and functions, levels of organization', link: 'biology-topic-micro-organisms-around-us.html?vid=0' },
+        { name: 'Monera, Protista, Fungi, Plantae, Animalia', link: 'biology-topic-micro-organisms-around-us.html?vid=1' },
+        { name: 'analyze features and characteristics of listed organisms', link: 'biology-topic-micro-organisms-around-us.html?vid=2' }
+      ],
+      'Micro-organisms in Action': [
+        { name: 'demonstrate increase in structural complexity', link: 'biology-topic-micro-organisms-in-action.html?vid=0' },
+        { name: 'trace life histories and evolution', link: 'biology-topic-micro-organisms-in-action.html?vid=1' },
+        { name: 'determine economic and environmental importance', link: 'biology-topic-micro-organisms-in-action.html?vid=2' }
+      ],
+      'Micro-organisms and better Health': [
+        { name: 'describe adaptations to environment and way of life', link: 'biology-topic-micro-organisms-and-better-health.html?vid=0' },
+        { name: 'categorize colouration and behaviour in animals', link: 'biology-topic-micro-organisms-and-better-health.html?vid=1' },
+        { name: 'account for adaptation in food, protection, mating, temperature, and water conservation', link: 'biology-topic-micro-organisms-and-better-health.html?vid=2' }
+      ],
+      'Mode of Nutrition in Micro-organisms': [
+        { name: 'Modes (autotrophic, heterotrophic), types', link: 'biology-topic-mode-of-nutrition-in-micro-organisms.html?vid=0' },
+        { name: 'compare nutrition modes and provide examples', link: 'biology-topic-mode-of-nutrition-in-micro-organisms.html?vid=1' },
+        { name: 'analyze photosynthesis, macro/micro-nutrients', link: 'biology-topic-mode-of-nutrition-in-micro-organisms.html?vid=2' }
+      ],
+      'Reproduction in Unicellular organisms': [
+        { name: 'Asexual and sexual reproduction', link: 'biology-topic-reproduction-in-unicellular-organisms.html?vid=0' },
+        { name: 'differentiate reproduction types', link: 'biology-topic-reproduction-in-unicellular-organisms.html?vid=1' },
+        { name: 'describe fertilization and development', link: 'biology-topic-reproduction-in-unicellular-organisms.html?vid=2' }
+      ],
+      'Transport in lower organisms': [
+        { name: 'Need, materials, channels (circulatory and vascular systems)', link: 'biology-topic-transport-in-lower-organisms.html?vid=0' },
+        { name: 'media and processes (diffusion, osmosis, transpiration, root pressure, active transport)', link: 'biology-topic-transport-in-lower-organisms.html?vid=1' },
+        { name: 'describe media and mechanisms of transport', link: 'biology-topic-transport-in-lower-organisms.html?vid=2' }
+      ],
+      'Excretion': [
+        { name: 'Excretory structures and mechanisms', link: 'biology-topic-excretion.html?vid=0' },
+        { name: 'define and relate excretion to structure and function', link: 'biology-topic-excretion.html?vid=1' },
+        { name: 'analyze excretory organs and products', link: 'biology-topic-excretion.html?vid=2' }
+      ]
+    };
+    function openModal(topic) {
+      document.getElementById('modal').classList.remove('hidden');
+      document.getElementById('modalTitle').textContent = 'Sub-topics: ' + topic;
+      const content = subtopics[topic] || [];
+      document.getElementById('modalContent').innerHTML = content.map(s => 
+        `<div class="flex items-center justify-between gap-4 p-3 rounded-lg hover:bg-slate-50">
+          <span class="text-slate-600">${s.name}</span>
+          <a href="${s.link}" class="flex-shrink-0 px-4 py-2 text-sm font-medium text-blue-600 hover:text-blue-500 bg-blue-50 hover:bg-blue-100 rounded-lg transition">
+            Start Learning
+          </a>
+        </div>`
+      ).join('');
+    }
+    function closeModal() {
+      document.getElementById('modal').classList.add('hidden');
+    }
+    window.onclick = function(event) {
+      const modal = document.getElementById('modal');
+      if(event.target === modal) closeModal();
+    }
+  </script>
+<!-- Topic Quiz System -->
+<script src="/js/topic-quiz-loader.js"></script>
+<script src="/js/topic-quiz-injector.js"></script>
+</body>
+</html>
+

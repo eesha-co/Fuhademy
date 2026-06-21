@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Factors Affecting Ion Discharge - Chemistry</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @keyframes fade-in-up {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in-up { animation: fade-in-up 0.5s ease-out forwards; }
+        .section-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            border: 1px solid #e5e7eb;
+        }
+        .video-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 8px;
+            background: #f9fafb;
+        }
+        .video-container iframe {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Header -->
+    <nav class="bg-white shadow-sm fixed top-0 w-full z-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center">
+                    <a href="index.html" class="text-rose-600 hover:text-rose-800 mr-4">
+                        <i class="fas fa-arrow-left"></i>
+                    </a>
+                    <h1 class="text-xl font-semibold text-gray-900">Factors Affecting Ion Discharge</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="text-sm text-gray-600 hidden sm:block">
+                        Progress: <span id="progressPercent">0%</span>
+                    </div>
+                    <div class="w-24 sm:w-32 h-2 bg-gray-200 rounded-full">
+                        <div id="progressBar" class="h-2 bg-rose-500 rounded-full transition-all duration-300" style="width: 0%"></div>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <div class="text-sm text-gray-600">
+                            <span id="topic-progress-text">0% Complete</span>
+                        </div>
+                        <div class="w-24 h-2 bg-gray-200 rounded-full overflow-hidden">
+                            <div id="topic-progress-bar" class="h-full bg-gradient-to-r from-rose-400 to-pink-500 transition-all duration-300" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="pt-20 pb-8 px-4 max-w-5xl mx-auto">
+        <!-- Learning Objectives -->
+        <div class="bg-rose-50 border-l-4 border-rose-500 p-4 rounded-r-lg mb-6 animate-fade-in-up">
+            <h3 class="font-semibold text-rose-800 mb-2"><i class="fas fa-bullseye mr-2"></i>Learning Objectives</h3>
+            <ul class="text-rose-700 text-sm space-y-1">
+                <li>• Explain the factors that determine which ion is discharged at an electrode</li>
+                <li>• Apply the electrochemical series to predict discharge products</li>
+                <li>• Understand the effect of concentration on selective discharge</li>
+                <li>• Explain overpotential and its effects</li>
+                <li>• Predict products of electrolysis for different electrolytes</li>
+            </ul>
+        </div>
+
+        <!-- Section 1: Introduction -->
+        <div class="section-card animate-fade-in-up">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <span class="bg-rose-100 text-rose-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">1</span>
+                Introduction to Selective Discharge
+            </h2>
+            
+            <p class="text-gray-700 mb-4">During electrolysis, when an electrolyte contains more than one type of cation or anion, <strong>which ion gets discharged?</strong> The answer depends on several factors working together.</p>
+            
+            <div class="bg-amber-50 p-4 rounded-lg border-l-4 border-amber-500 mb-4">
+                <h4 class="font-semibold text-amber-700 mb-2"><i class="fas fa-question-circle mr-2"></i>The Key Question</h4>
+                <p class="text-gray-600 text-sm">If an electrolyte contains multiple ions (e.g., CuSO₄ solution has Cu²⁺, H⁺, SO₄²⁻, OH⁻), which ions will be discharged at each electrode?</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-4">
+                <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                    <h4 class="font-semibold text-blue-700 mb-2 text-center"><i class="fas fa-minus-circle mr-2"></i>At the Cathode (Reduction)</h4>
+                    <p class="text-gray-600 text-sm">Cations (positive ions) gain electrons</p>
+                    <p class="text-center mt-2 text-lg font-medium text-blue-800">Mⁿ⁺ + ne⁻ → M</p>
+                </div>
+                <div class="bg-red-50 p-4 rounded-lg border border-red-200">
+                    <h4 class="font-semibold text-red-700 mb-2 text-center"><i class="fas fa-plus-circle mr-2"></i>At the Anode (Oxidation)</h4>
+                    <p class="text-gray-600 text-sm">Anions (negative ions) lose electrons</p>
+                    <p class="text-center mt-2 text-lg font-medium text-red-800">Aⁿ⁻ → A + ne⁻</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 2: The Electrochemical Series -->
+        <div class="section-card animate-fade-in-up">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <span class="bg-rose-100 text-rose-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">2</span>
+                Factor 1: Position in the Electrochemical Series
+            </h2>
+
+            <p class="text-gray-700 mb-4">The <strong>electrochemical series</strong> ranks ions by their tendency to be discharged. Ions lower in the series are discharged preferentially.</p>
+
+            <div class="grid md:grid-cols-2 gap-4 mb-4">
+                <div class="bg-purple-50 p-4 rounded-lg border border-purple-200">
+                    <h4 class="font-semibold text-purple-700 mb-3 text-center"><i class="fas fa-arrow-down mr-2"></i>Cations (At Cathode)</h4>
+                    <p class="text-xs text-gray-500 text-center mb-2">Listed from LEAST to MOST easily discharged</p>
+                    <div class="space-y-1 text-sm">
+                        <div class="flex justify-between items-center bg-white p-2 rounded">
+                            <span class="font-medium">K⁺</span>
+                            <span class="text-xs text-gray-400">least easily discharged</span>
+                        </div>
+                        <div class="flex justify-between items-center bg-white p-2 rounded"><span class="font-medium">Na⁺</span></div>
+                        <div class="flex justify-between items-center bg-white p-2 rounded"><span class="font-medium">Ca²⁺</span></div>
+                        <div class="flex justify-between items-center bg-white p-2 rounded"><span class="font-medium">Mg²⁺</span></div>
+                        <div class="flex justify-between items-center bg-white p-2 rounded"><span class="font-medium">Al³⁺</span></div>
+                        <div class="flex justify-between items-center bg-white p-2 rounded"><span class="font-medium">Zn²⁺</span></div>
+                        <div class="flex justify-between items-center bg-white p-2 rounded"><span class="font-medium">Fe²⁺</span></div>
+                        <div class="flex justify-between items-center bg-white p-2 rounded"><span class="font-medium">Ni²⁺</span></div>
+                        <div class="flex justify-between items-center bg-white p-2 rounded"><span class="font-medium">Sn²⁺</span></div>
+                        <div class="flex justify-between items-center bg-white p-2 rounded"><span class="font-medium">Pb²⁺</span></div>
+                        <div class="flex justify-between items-center bg-yellow-100 p-2 rounded border border-yellow-400">
+                            <span class="font-medium text-yellow-700">H⁺</span>
+                            <span class="text-xs text-yellow-600">hydrogen</span>
+                        </div>
+                        <div class="flex justify-between items-center bg-white p-2 rounded"><span class="font-medium">Cu²⁺</span></div>
+                        <div class="flex justify-between items-center bg-white p-2 rounded"><span class="font-medium">Ag⁺</span></div>
+                        <div class="flex justify-between items-center bg-white p-2 rounded"><span class="font-medium">Au³⁺</span></div>
+                        <div class="flex justify-between items-center bg-green-100 p-2 rounded border border-green-400">
+                            <span class="font-medium text-green-700">Cu⁺, Ag⁺, Au⁺</span>
+                            <span class="text-xs text-green-600">most easily discharged</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-teal-50 p-4 rounded-lg border border-teal-200">
+                    <h4 class="font-semibold text-teal-700 mb-3 text-center"><i class="fas fa-arrow-up mr-2"></i>Anions (At Anode)</h4>
+                    <p class="text-xs text-gray-500 text-center mb-2">Listed from MOST to LEAST easily discharged</p>
+                    <div class="space-y-1 text-sm">
+                        <div class="flex justify-between items-center bg-green-100 p-2 rounded border border-green-400">
+                            <span class="font-medium text-green-700">Halides: I⁻ > Br⁻ > Cl⁻</span>
+                            <span class="text-xs text-green-600">most easily discharged</span>
+                        </div>
+                        <div class="flex justify-between items-center bg-white p-2 rounded">
+                            <span class="font-medium">OH⁻</span>
+                            <span class="text-xs text-gray-400">hydroxide</span>
+                        </div>
+                        <div class="flex justify-between items-center bg-white p-2 rounded"><span class="font-medium">NO₃⁻</span></div>
+                        <div class="flex justify-between items-center bg-white p-2 rounded"><span class="font-medium">SO₄²⁻</span></div>
+                        <div class="flex justify-between items-center bg-white p-2 rounded"><span class="font-medium">CO₃²⁻</span></div>
+                        <div class="flex justify-between items-center bg-white p-2 rounded"><span class="font-medium">PO₄³⁻</span></div>
+                        <div class="flex justify-between items-center bg-yellow-100 p-2 rounded border border-yellow-400">
+                            <span class="font-medium text-yellow-700">F⁻</span>
+                            <span class="text-xs text-yellow-600">least easily discharged</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-green-50 p-4 rounded-lg border-l-4 border-green-500">
+                <h4 class="font-semibold text-green-700 mb-2"><i class="fas fa-lightbulb mr-2"></i>Key Rule</h4>
+                <p class="text-gray-600 text-sm"><strong>At the cathode:</strong> Cations below H⁺ in the series (Cu²⁺, Ag⁺, Au³⁺) are discharged instead of H⁺. If the cation is above H⁺, then H⁺ from water is discharged instead.</p>
+                <p class="text-gray-600 text-sm mt-2"><strong>At the anode:</strong> Halide ions are discharged before OH⁻. If no halide is present, OH⁻ from water is discharged.</p>
+            </div>
+        </div>
+
+        <!-- Section 3: Effect of Concentration -->
+        <div class="section-card animate-fade-in-up">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <span class="bg-rose-100 text-rose-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">3</span>
+                Factor 2: Concentration of Ions
+            </h2>
+
+            <p class="text-gray-700 mb-4">The <strong>concentration</strong> of ions can override the electrochemical series predictions, especially for chloride ions.</p>
+
+            <div class="bg-yellow-50 p-4 rounded-lg border-l-4 border-yellow-500 mb-4">
+                <h4 class="font-semibold text-yellow-700 mb-2"><i class="fas fa-flask mr-2"></i>Concentration Effect on Chloride</h4>
+                <p class="text-gray-600 text-sm mb-2"><strong>Low concentration Cl⁻:</strong> OH⁻ is discharged (oxygen produced)</p>
+                <p class="text-gray-600 text-sm"><strong>High concentration Cl⁻:</strong> Cl⁻ is discharged (chlorine produced)</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-4">
+                <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                    <h4 class="font-semibold text-blue-700 mb-2">Dilute NaCl Solution</h4>
+                    <p class="text-gray-600 text-sm mb-2"><strong>Cathode:</strong> H⁺ discharged → H₂ gas (H⁺ from water)</p>
+                    <p class="text-gray-600 text-sm mb-2"><strong>Anode:</strong> OH⁻ discharged → O₂ gas</p>
+                    <p class="text-gray-600 text-sm"><strong>Overall:</strong> Na⁺ and Cl⁻ remain in solution</p>
+                </div>
+                <div class="bg-orange-50 p-4 rounded-lg border border-orange-200">
+                    <h4 class="font-semibold text-orange-700 mb-2">Concentrated NaCl Solution</h4>
+                    <p class="text-gray-600 text-sm mb-2"><strong>Cathode:</strong> H⁺ discharged → H₂ gas</p>
+                    <p class="text-gray-600 text-sm mb-2"><strong>Anode:</strong> Cl⁻ discharged → Cl₂ gas</p>
+                    <p class="text-gray-600 text-sm"><strong>Overall:</strong> NaOH remains in solution</p>
+                </div>
+            </div>
+
+            <div class="bg-red-50 p-4 rounded-lg border-l-4 border-red-500 mt-4">
+                <h4 class="font-semibold text-red-700 mb-2"><i class="fas fa-exclamation-triangle mr-2"></i>Important Note</h4>
+                <p class="text-gray-600 text-sm">The concentration effect is most significant for chloride. For very dilute solutions, OH⁻ is discharged. For concentrated chloride solutions, Cl⁻ is discharged. This is the basis of the <strong>chlor-alkali industry</strong>.</p>
+            </div>
+        </div>
+
+        <!-- Section 4: Nature of Electrodes -->
+        <div class="section-card animate-fade-in-up">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <span class="bg-rose-100 text-rose-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">4</span>
+                Factor 3: Nature of Electrodes
+            </h2>
+
+            <p class="text-gray-700 mb-4">The electrode material affects which products are formed. <strong>Inert electrodes</strong> (Pt, C/Graphite) do not participate in reactions. <strong>Reactive electrodes</strong> can be oxidized.</p>
+
+            <div class="grid md:grid-cols-2 gap-4 mb-4">
+                <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                    <h4 class="font-semibold text-gray-700 mb-3 text-center"><i class="fas fa-circle mr-2"></i>Inert Electrodes</h4>
+                    <ul class="text-gray-600 text-sm space-y-1">
+                        <li>• <strong>Platinum (Pt)</strong></li>
+                        <li>• <strong>Graphite (Carbon)</strong></li>
+                        <li>• Do not react during electrolysis</li>
+                        <li>• Only transfer electrons</li>
+                        <li>• Products depend on ions present</li>
+                    </ul>
+                </div>
+                <div class="bg-orange-50 p-4 rounded-lg border border-orange-200">
+                    <h4 class="font-semibold text-orange-700 mb-3 text-center"><i class="fas fa-cog mr-2"></i>Reactive (Active) Electrodes</h4>
+                    <ul class="text-gray-600 text-sm space-y-1">
+                        <li>• <strong>Copper, Silver, etc.</strong></li>
+                        <li>• Anode can dissolve</li>
+                        <li>• Cathode can gain metal coating</li>
+                        <li>• Used in electroplating</li>
+                        <li>• Anode reaction: M → Mⁿ⁺ + ne⁻</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="bg-green-50 p-4 rounded-lg border-l-4 border-green-500">
+                <h4 class="font-semibold text-green-700 mb-2"><i class="fas fa-industry mr-2"></i>Electroplating with Copper</h4>
+                <ul class="text-gray-600 text-sm space-y-1">
+                    <li>• <strong>Anode:</strong> Pure copper → dissolves (Cu → Cu²⁺ + 2e⁻)</li>
+                    <li>• <strong>Cathode:</strong> Object to be plated → copper deposits (Cu²⁺ + 2e⁻ → Cu)</li>
+                    <li>• <strong>Electrolyte:</strong> CuSO₄ solution</li>
+                    <li>• The concentration of Cu²⁺ in solution remains constant</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Section 5: Overpotential -->
+        <div class="section-card animate-fade-in-up">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <span class="bg-rose-100 text-rose-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">5</span>
+                Factor 4: Overpotential
+            </h2>
+
+            <div class="bg-purple-50 p-4 rounded-lg border-l-4 border-purple-500 mb-4">
+                <p class="text-purple-800 font-medium"><strong>Overpotential</strong> is the extra voltage needed beyond the theoretical value to discharge an ion at an electrode. It depends on the electrode material and the ion being discharged.</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-4">
+                <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                    <h4 class="font-semibold text-blue-700 mb-2">Effects of Overpotential</h4>
+                    <ul class="text-gray-600 text-sm space-y-2">
+                        <li>• O₂ and H₂ have high overpotential on many electrodes</li>
+                        <li>• This can affect which ion is discharged</li>
+                        <li>• Platinum has low overpotential for H₂</li>
+                        <li>• Mercury has high overpotential for H₂</li>
+                    </ul>
+                </div>
+                <div class="bg-amber-50 p-4 rounded-lg border border-amber-200">
+                    <h4 class="font-semibold text-amber-700 mb-2">Practical Example</h4>
+                    <p class="text-gray-600 text-sm">When electrolysing concentrated NaCl with a mercury cathode, Na⁺ is discharged instead of H⁺ because H₂ has very high overpotential on mercury. This produces sodium amalgam (Na/Hg) used industrially.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 6: Summary Table -->
+        <div class="section-card animate-fade-in-up">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <span class="bg-rose-100 text-rose-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">6</span>
+                Summary: Predicting Products
+            </h2>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm border-collapse">
+                    <thead>
+                        <tr class="bg-rose-50">
+                            <th class="border border-gray-200 p-3 text-left">Electrolyte</th>
+                            <th class="border border-gray-200 p-3 text-left">Cathode Product</th>
+                            <th class="border border-gray-200 p-3 text-left">Anode Product</th>
+                            <th class="border border-gray-200 p-3 text-left">Explanation</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="border border-gray-200 p-3 font-medium">CuSO₄ (aq)</td>
+                            <td class="border border-gray-200 p-3">Copper (Cu)</td>
+                            <td class="border border-gray-200 p-3">Oxygen (O₂)</td>
+                            <td class="border border-gray-200 p-3">Cu²⁺ below H⁺; SO₄²⁻ above OH⁻</td>
+                        </tr>
+                        <tr class="bg-gray-50">
+                            <td class="border border-gray-200 p-3 font-medium">AgNO₃ (aq)</td>
+                            <td class="border border-gray-200 p-3">Silver (Ag)</td>
+                            <td class="border border-gray-200 p-3">Oxygen (O₂)</td>
+                            <td class="border border-gray-200 p-3">Ag⁺ below H⁺; NO₃⁻ above OH⁻</td>
+                        </tr>
+                        <tr>
+                            <td class="border border-gray-200 p-3 font-medium">NaCl (dilute)</td>
+                            <td class="border border-gray-200 p-3">Hydrogen (H₂)</td>
+                            <td class="border border-gray-200 p-3">Oxygen (O₂)</td>
+                            <td class="border border-gray-200 p-3">Na⁺ above H⁺; dilute Cl⁻</td>
+                        </tr>
+                        <tr class="bg-gray-50">
+                            <td class="border border-gray-200 p-3 font-medium">NaCl (conc.)</td>
+                            <td class="border border-gray-200 p-3">Hydrogen (H₂)</td>
+                            <td class="border border-gray-200 p-3">Chlorine (Cl₂)</td>
+                            <td class="border border-gray-200 p-3">Na⁺ above H⁺; concentrated Cl⁻</td>
+                        </tr>
+                        <tr>
+                            <td class="border border-gray-200 p-3 font-medium">CuCl₂ (aq)</td>
+                            <td class="border border-gray-200 p-3">Copper (Cu)</td>
+                            <td class="border border-gray-200 p-3">Chlorine (Cl₂)</td>
+                            <td class="border border-gray-200 p-3">Cu²⁺ below H⁺; Cl⁻ is halide</td>
+                        </tr>
+                        <tr class="bg-gray-50">
+                            <td class="border border-gray-200 p-3 font-medium">PbBr₂ (molten)</td>
+                            <td class="border border-gray-200 p-3">Lead (Pb)</td>
+                            <td class="border border-gray-200 p-3">Bromine (Br₂)</td>
+                            <td class="border border-gray-200 p-3">Only ions present</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Section 7: Video -->
+        <div class="section-card animate-fade-in-up">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <span class="bg-rose-100 text-rose-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">7</span>
+                Video: Selective Discharge Explained
+            </h2>
+            
+            <div class="bg-gray-50 p-4 rounded-lg border">
+                <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/dLVDVn7ZX5M" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 8: Practice Problems -->
+        <div class="section-card animate-fade-in-up">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-pencil-alt text-rose-600 mr-3"></i>
+                Practice Questions
+            </h2>
+
+            <div class="space-y-4">
+                <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+                    <p class="font-medium text-gray-800 mb-2">1. Predict the products of electrolysis of dilute CuSO₄ solution using inert electrodes.</p>
+                    <details class="mt-2">
+                        <summary class="text-sm text-blue-600 cursor-pointer hover:text-blue-800">Show Answer</summary>
+                        <div class="mt-2 text-sm text-gray-700">
+                            <strong>Cathode:</strong> Copper (Cu) - Cu²⁺ is below H⁺ in the electrochemical series<br>
+                            <strong>Anode:</strong> Oxygen (O₂) - SO₄²⁻ is above OH⁻ in the series<br><br>
+                            <strong>Equations:</strong><br>
+                            Cathode: Cu²⁺ + 2e⁻ → Cu<br>
+                            Anode: 4OH⁻ → O₂ + 2H₂O + 4e⁻
+                        </div>
+                    </details>
+                </div>
+
+                <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+                    <p class="font-medium text-gray-800 mb-2">2. Explain why chlorine is produced at the anode when concentrated NaCl is electrolysed, but oxygen is produced when dilute NaCl is used.</p>
+                    <details class="mt-2">
+                        <summary class="text-sm text-blue-600 cursor-pointer hover:text-blue-800">Show Answer</summary>
+                        <div class="mt-2 text-sm text-gray-700">
+                            <strong>Concentrated NaCl:</strong> The high concentration of Cl⁻ ions makes them discharge preferentially, producing Cl₂ gas. The concentration effect overrides the fact that OH⁻ should be discharged based on the electrochemical series.<br><br>
+                            <strong>Dilute NaCl:</strong> The low concentration of Cl⁻ means OH⁻ ions (from water) are discharged instead, producing O₂ gas. Without high concentration, the electrochemical series order is followed.
+                        </div>
+                    </details>
+                </div>
+
+                <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+                    <p class="font-medium text-gray-800 mb-2">3. What happens at the electrodes during copper purification by electrolysis?</p>
+                    <details class="mt-2">
+                        <summary class="text-sm text-blue-600 cursor-pointer hover:text-blue-800">Show Answer</summary>
+                        <div class="mt-2 text-sm text-gray-700">
+                            <strong>Anode (Impure copper):</strong> Copper dissolves<br>
+                            Cu → Cu²⁺ + 2e⁻<br><br>
+                            <strong>Cathode (Pure copper strip):</strong> Copper deposits<br>
+                            Cu²⁺ + 2e⁻ → Cu<br><br>
+                            <strong>Result:</strong> Impurities fall to the bottom as "anode sludge" and pure copper is deposited on the cathode.
+                        </div>
+                    </details>
+                </div>
+
+                <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+                    <p class="font-medium text-gray-800 mb-2">4. Predict the products of electrolysis of molten PbBr₂ and aqueous PbBr₂.</p>
+                    <details class="mt-2">
+                        <summary class="text-sm text-blue-600 cursor-pointer hover:text-blue-800">Show Answer</summary>
+                        <div class="mt-2 text-sm text-gray-700">
+                            <strong>Molten PbBr₂:</strong><br>
+                            • Cathode: Lead (Pb) - only Pb²⁺ present<br>
+                            • Anode: Bromine (Br₂) - only Br⁻ present<br><br>
+                            <strong>Aqueous PbBr₂:</strong><br>
+                            • Cathode: Lead (Pb) - Pb²⁺ below H⁺<br>
+                            • Anode: Bromine (Br₂) - Br⁻ is a halide, discharged before OH⁻
+                        </div>
+                    </details>
+                </div>
+            </div>
+        </div>
+
+        <!-- Key Takeaways -->
+        <div class="bg-gradient-to-r from-rose-50 to-pink-50 p-5 rounded-lg border border-rose-200 animate-fade-in-up">
+            <h3 class="font-semibold text-rose-800 mb-3"><i class="fas fa-star mr-2"></i>Key Takeaways</h3>
+            <ul class="text-rose-700 text-sm space-y-2">
+                <li>• Electrochemical series determines discharge order when concentration is similar</li>
+                <li>• At cathode: Cations below H⁺ are discharged instead of H⁺</li>
+                <li>• At anode: Halides are discharged before OH⁻; high [Cl⁻] overrides this</li>
+                <li>• Inert electrodes (Pt, C) don't react; active electrodes participate in reactions</li>
+                <li>• Overpotential affects discharge of gases, especially H₂ and O₂</li>
+            </ul>
+        </div>
+
+        <!-- Complete Topic Button -->
+        <div class="mt-8 pt-6 border-t border-gray-200">
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div class="text-center sm:text-left">
+                    <h3 class="font-semibold text-gray-800">Ready to Complete?</h3>
+                    <p class="text-sm text-gray-600">View all sections, then take the quiz to mark this topic as complete.</p>
+                </div>
+                <button id="topic-complete-btn" disabled
+                        class="px-6 py-3 rounded-xl bg-gray-300 text-gray-500 cursor-not-allowed opacity-50 flex items-center gap-2 text-lg font-medium">
+                    <i class="fas fa-lock mr-2"></i>
+                    <span>Complete (0% viewed)</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="flex justify-between items-center mt-8">
+            <a href="electrolysis-basics.html" class="px-4 py-2 text-gray-600 hover:text-gray-900">
+                <i class="fas fa-chevron-left mr-2"></i>Previous
+            </a>
+            <a href="electrolysis-calculations.html" class="px-4 py-2 bg-rose-500 text-white rounded-lg hover:bg-rose-600">
+                Next: Electrolysis Calculations<i class="fas fa-chevron-right ml-2"></i>
+            </a>
+        </div>
+    </main>
+
+    <script>
+        // Progress tracking
+        let progress = 0;
+        const totalSections = 8;
+        
+        function updateProgress() {
+            const percentage = Math.round((progress / totalSections) * 100);
+            document.getElementById('progressPercent').textContent = percentage + '%';
+            document.getElementById('progressBar').style.width = percentage + '%';
+        }
+
+        // Intersection Observer for progress
+        const sections = document.querySelectorAll('.section-card');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    progress = Array.from(sections).indexOf(entry.target) + 1;
+                    updateProgress();
+                }
+            });
+        }, { threshold: 0.5 });
+
+        sections.forEach(section => observer.observe(section));
+    </script>
+
+<!-- Topic Tracking and Quiz System -->
+  <script type="module">
+    import { TopicTracker } from '/js/topic-tracker.js';
+    import { TopicQuiz } from '/js/topic-quiz.js';
+
+    const quizQuestions = [
+      {
+        question: "Which ion is discharged preferentially at the cathode: Cu²⁺ or H⁺?",
+        options: [
+          "H⁺ because hydrogen is more reactive",
+          "Cu²⁺ because copper is below hydrogen in the electrochemical series",
+          "Neither - both are discharged equally",
+          "It depends on the concentration only"
+        ],
+        correct: 1,
+        explanation: "Cu²⁺ is discharged preferentially because copper is below hydrogen in the electrochemical series. Cu²⁺ + 2e⁻ → Cu"
+      },
+      {
+        question: "At the anode, which ion is discharged first: Cl⁻ or OH⁻ (in concentrated solution)?",
+        options: [
+          "OH⁻ is always discharged first",
+          "Cl⁻ is discharged first because it's a halide",
+          "Both are discharged simultaneously",
+          "Neither - other anions are discharged"
+        ],
+        correct: 1,
+        explanation: "Halide ions (Cl⁻, Br⁻, I⁻) are discharged before OH⁻. In concentrated solution, Cl⁻ is oxidized to Cl₂."
+      },
+      {
+        question: "What is the effect of concentration on the discharge of chloride ions?",
+        options: [
+          "Concentration has no effect",
+          "High concentration favors Cl⁻ discharge; low concentration favors OH⁻ discharge",
+          "Low concentration favors Cl⁻ discharge",
+          "Concentration only affects the rate, not the product"
+        ],
+        correct: 1,
+        explanation: "At high Cl⁻ concentration, chloride is discharged (producing Cl₂). At low concentration, OH⁻ from water is discharged (producing O₂)."
+      },
+      {
+        question: "Why does sodium NOT deposit at the cathode during electrolysis of NaCl(aq)?",
+        options: [
+          "Sodium is too heavy",
+          "Sodium ions are too small",
+          "Sodium is more reactive than hydrogen, so H⁺ is discharged instead",
+          "Sodium reacts immediately with water"
+        ],
+        correct: 2,
+        explanation: "Na is above H in the electrochemical series (more reactive), so H⁺ from water is discharged preferentially: 2H⁺ + 2e⁻ → H₂"
+      },
+      {
+        question: "What is overpotential?",
+        options: [
+          "The voltage produced by the cell",
+          "Extra voltage needed beyond the theoretical value to discharge an ion",
+          "The potential difference between electrodes",
+          "The maximum voltage a cell can produce"
+        ],
+        correct: 1,
+        explanation: "Overpotential is the additional voltage required beyond the theoretical value to drive an electrode reaction at a practical rate."
+      },
+      {
+        question: "What products are formed at the electrodes when CuSO₄(aq) is electrolyzed with inert electrodes?",
+        options: [
+          "Cathode: H₂, Anode: O₂",
+          "Cathode: Cu, Anode: O₂",
+          "Cathode: Cu, Anode: Cl₂",
+          "Cathode: H₂, Anode: SO₂"
+        ],
+        correct: 1,
+        explanation: "Cu²⁺ is below H⁺, so Cu deposits at cathode. SO₄²⁻ is not discharged (above OH⁻), so OH⁻ is oxidized to O₂ at anode."
+      },
+      {
+        question: "In electroplating with copper, what happens at the anode?",
+        options: [
+          "Copper deposits on the anode",
+          "The anode dissolves: Cu → Cu²⁺ + 2e⁻",
+          "Oxygen gas is evolved",
+          "The anode remains unchanged"
+        ],
+        correct: 1,
+        explanation: "In electroplating, the copper anode dissolves (Cu → Cu²⁺ + 2e⁻), maintaining Cu²⁺ concentration in solution."
+      },
+      {
+        question: "Which statement about inert electrodes is correct?",
+        options: [
+          "They participate in the reaction",
+          "They are made of reactive metals like sodium",
+          "They only transfer electrons without participating in reactions",
+          "They are always the cathode"
+        ],
+        correct: 2,
+        explanation: "Inert electrodes (platinum, graphite) only transfer electrons and do not participate in the electrode reactions."
+      }
+    ];
+
+    const tracker = new TopicTracker({
+      topicId: 'discharge-factors',
+      topicTitle: 'Factors Affecting Ion Discharge',
+      subject: 'chemistry',
+      sections: ['section-1', 'section-2', 'section-3', 'section-4', 'section-5', 'section-6', 'section-7', 'section-8'],
+      quizRequired: true
+    });
+
+    const quiz = new TopicQuiz({
+      topicId: 'discharge-factors',
+      topicTitle: 'Factors Affecting Ion Discharge',
+      subject: 'chemistry',
+      questions: quizQuestions,
+      passingScore: 60,
+      tracker: tracker
+    });
+
+    // Track practice problem views
+    document.querySelectorAll('details').forEach(details => {
+      details.addEventListener('toggle', () => {
+        if (details.open) {
+          tracker.markSectionViewed('section-8');
+        }
+      });
+    });
+
+    // Override updateProgress to also update our custom progress bar
+    const originalUpdateProgress = tracker.updateUI.bind(tracker);
+    tracker.updateUI = function() {
+      originalUpdateProgress();
+      const progress = this.getProgress();
+      document.getElementById('progressPercent').textContent = Math.round(progress) + '%';
+      document.getElementById('progressBar').style.width = progress + '%';
+    };
+  </script>
+</body>
+</html>

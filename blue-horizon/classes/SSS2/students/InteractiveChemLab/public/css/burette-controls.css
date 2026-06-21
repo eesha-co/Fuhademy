@@ -1,0 +1,152 @@
+.burette-control-panel {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    width: 250px;
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    transform: translateX(20px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    z-index: 100;
+}
+
+.burette-control-panel.visible {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.burette-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.burette-controls h3 {
+    margin: 0;
+    color: #2c3e50;
+    font-size: 1.1em;
+    border-bottom: 2px solid #e9ecef;
+    padding-bottom: 8px;
+}
+
+.burette-display {
+    background: #fff;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+}
+
+.burette-scale {
+    position: relative;
+    width: 40px;
+    height: 200px;
+}
+
+.burette-tube {
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.9);
+    border: 2px solid #adb5bd;
+    border-radius: 4px;
+    position: relative;
+    overflow: hidden;
+}
+
+.liquid-level {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: #ffd700;
+    transition: height 0.3s ease;
+}
+
+.meniscus {
+    position: absolute;
+    width: 100%;
+    height: 4px;
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 50% 50% 0 0;
+}
+
+.scale-marks {
+    position: absolute;
+    right: -25px;
+    top: 0;
+    height: 100%;
+    width: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    font-size: 0.8em;
+    color: #495057;
+}
+
+.burette-reading {
+    text-align: center;
+    font-size: 1.1em;
+    color: #2c3e50;
+    padding: 8px;
+    background: #e9ecef;
+    border-radius: 4px;
+}
+
+.control-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.control-btn {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
+    background: #4a90e2;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.control-btn:hover {
+    background: #357abd;
+}
+
+.control-btn:active {
+    background: #2c6aa0;
+}
+
+#releaseBtn {
+    background: #e74c3c;
+}
+
+#releaseBtn:hover {
+    background: #c0392b;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1200px) {
+    .burette-control-panel {
+        position: relative;
+        right: auto;
+        top: auto;
+        width: 100%;
+        margin-top: 20px;
+    }
+    
+    .control-buttons {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .control-btn {
+        flex: 1;
+        min-width: 150px;
+    }
+}

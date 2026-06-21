@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Textbooks - Prep100</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>#sidebar { transition: transform 0.3s ease-in-out; } #sidebar.hide { transform: translateX(-100%); } @media (min-width: 1024px) { #sidebar { transform: translateX(0) !important; } }</style>
+</head>
+<body class="bg-slate-50">
+  <div class="min-h-screen flex">
+    <aside id="sidebar" class="w-64 md:w-72 lg:w-80 fixed left-0 top-0 h-full bg-white border-r border-slate-200 p-5 flex flex-col gap-6 overflow-auto z-40">
+      <div class="flex items-center gap-3"><img src="/assets/images/logo.png" alt="logo" class="h-12 w-12 rounded-full shadow-sm"><div><div class="text-lg font-bold text-sky-700">JUANOVA CORTEX</div><div class="text-xs text-slate-500">Student Dashboard</div></div></div>
+      <nav class="flex-1 overflow-auto"><ul class="space-y-1">
+        <li><a href="student-dashboard-supabase.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-home text-sky-600"></i> Home</a></li>
+        <li><a href="news-feed-supabase.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-newspaper text-pink-500"></i> News Feed</a></li>
+        <li><a href="notes-supabase.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-note-sticky text-yellow-500"></i> Study Notes</a></li>
+        <li><a href="textbooks-supabase.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50 bg-sky-50"><i class="fas fa-book text-indigo-500"></i> Textbooks</a></li>
+        <li><a href="formula-bank-supabase.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-book-open text-teal-600"></i> All Formula</a></li>
+        <li><a href="study-plan-supabase.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-calendar-check text-green-500"></i> Study Plan</a></li>
+        <li><a href="video-library-supabase.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-photo-video text-cyan-600"></i> Video Library</a></li>
+        <li><a href="digital-library-supabase.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-book text-indigo-500"></i> Digital Library</a></li>
+        <li><a href="game-supabase.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-puzzle-piece text-purple-500"></i> Game</a></li>
+        <li><a href="mock-exams-supabase.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-pencil-alt text-orange-500"></i> Mock Exams</a></li>
+        <li><a href="notifications-supabase.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-bell text-pink-600"></i> Notifications</a></li>
+        <li><a href="student-live-session-supabase.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-chalkboard-teacher text-blue-400"></i> Live Sessions</a></li>
+        <li><a href="nobel-laureate-supabase.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-award text-yellow-600"></i> Nobel Laureate</a></li>
+      </ul></nav>
+      <div class="text-sm text-slate-500 border-t pt-4"><div class="mb-2">Account</div><div class="flex items-center gap-3"><img id="avatar-sm" src="../assets/images/unnamed.jpg" alt="avatar" class="h-10 w-10 rounded-full border"><div><div id="userName" class="font-semibold">Student</div><div id="userLevel" class="text-xs text-slate-400"></div></div></div></div>
+    </aside>
+    <!-- Main content area -->
+  <div id="main-content" class="flex-1 flex flex-col ml-64 md:ml-72 lg:ml-80">
+    <!-- Topbar -->
+    <header class="flex items-center justify-between p-4 bg-white border-b border-slate-200">
+      <div class="flex items-center gap-3">
+        <button id="toggleSidebar" class="p-2 rounded-md hover:bg-slate-100 lg:hidden" title="Toggle sidebar">
+          <i class="fas fa-bars"></i>
+        </button>
+        <div class="relative">
+          <input id="globalSearch" type="search" placeholder="Search textbooks..." class="w-[520px] hidden md:inline-block pl-10 pr-4 py-2 rounded-full border border-slate-200 bg-white focus:outline-none focus:ring-2 focus:ring-sky-100">
+          <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-4">
+        <div class="relative">
+          <button id="notifBtn" class="p-2 rounded-full hover:bg-slate-50" aria-label="Notifications">
+            <i class="fas fa-bell text-sky-600"></i>
+          </button>
+          <span id="notifCount" class="absolute -top-1 -right-1 bg-pink-500 text-white rounded-full w-5 h-5 text-xs flex items-center justify-center">0</span>
+        </div>
+        <div class="flex items-center gap-3">
+          <div class="text-right mr-2">
+            <div id="topName" class="font-semibold">Student Name</div>
+            <div id="topLevel" class="text-xs text-slate-400">SS 3</div>
+          </div>
+          <img id="topAvatar" src="/assets/images/unnamed.jpg" alt="avatar" class="h-10 w-10 rounded-full border-2">
+        </div>
+      </div>
+    </header>
+
+    <!-- Page Content -->
+    <main class="p-6">
+      <!-- Page Header -->
+      <div class="mb-8">
+        <h1 class="text-3xl font-bold text-gray-800 mb-2">Digital Textbooks</h1>
+        <p class="text-gray-600">Access your digital textbooks and study materials.</p>
+      </div>
+
+      <!-- Subject Filter -->
+      <div class="flex gap-3 mb-6 overflow-x-auto pb-2">
+        <button class="px-4 py-2 rounded-full bg-sky-600 text-white font-medium text-sm">All Subjects</button>
+        <button class="px-4 py-2 rounded-full bg-white text-slate-600 font-medium text-sm hover:bg-slate-50">Mathematics</button>
+        <button class="px-4 py-2 rounded-full bg-white text-slate-600 font-medium text-sm hover:bg-slate-50">Physics</button>
+        <button class="px-4 py-2 rounded-full bg-white text-slate-600 font-medium text-sm hover:bg-slate-50">Chemistry</button>
+        <button class="px-4 py-2 rounded-full bg-white text-slate-600 font-medium text-sm hover:bg-slate-50">Biology</button>
+      </div>
+
+      <!-- Textbooks Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <!-- Mathematics Textbook -->
+        <div class="bg-white rounded-xl shadow">
+          <div class="aspect-[3/4] relative rounded-t-xl overflow-hidden bg-slate-100">
+            <img src="/assets/images/math-textbook-cover.jpg" alt="Mathematics Textbook" class="absolute inset-0 w-full h-full object-cover">
+            <div class="absolute top-3 right-3">
+              <button class="p-2 bg-white rounded-full shadow hover:bg-slate-50">
+                <i class="far fa-heart text-pink-500"></i>
+              </button>
+            </div>
+          </div>
+          <div class="p-4">
+            <h3 class="font-semibold text-gray-800 mb-1">Advanced Mathematics</h3>
+            <p class="text-sm text-gray-500 mb-3">Essential concepts for WAEC</p>
+            <div class="flex items-center gap-2 text-sm text-gray-600 mb-4">
+              <i class="fas fa-book-open"></i>
+              <span>24 chapters</span>
+              <span class="mx-2">•</span>
+              <i class="fas fa-clock"></i>
+              <span>480 pages</span>
+            </div>
+            <button class="w-full py-2 bg-sky-600 text-white font-medium rounded-md hover:bg-sky-700 transition-colors">
+              Open Book
+            </button>
+          </div>
+        </div>
+
+        <!-- Physics Textbook -->
+        <div class="bg-white rounded-xl shadow">
+          <div class="aspect-[3/4] relative rounded-t-xl overflow-hidden bg-slate-100">
+            <img src="/assets/images/physics-textbook-cover.jpg" alt="Physics Textbook" class="absolute inset-0 w-full h-full object-cover">
+            <div class="absolute top-3 right-3">
+              <button class="p-2 bg-white rounded-full shadow hover:bg-slate-50">
+                <i class="fas fa-heart text-pink-500"></i>
+              </button>
+            </div>
+          </div>
+          <div class="p-4">
+            <h3 class="font-semibold text-gray-800 mb-1">Modern Physics</h3>
+            <p class="text-sm text-gray-500 mb-3">Complete WAEC guide</p>
+            <div class="flex items-center gap-2 text-sm text-gray-600 mb-4">
+              <i class="fas fa-book-open"></i>
+              <span>18 chapters</span>
+              <span class="mx-2">•</span>
+              <i class="fas fa-clock"></i>
+              <span>320 pages</span>
+            </div>
+            <button class="w-full py-2 bg-sky-600 text-white font-medium rounded-md hover:bg-sky-700 transition-colors">
+              Open Book
+            </button>
+          </div>
+        </div>
+
+        <!-- Chemistry Textbook -->
+        <div class="bg-white rounded-xl shadow">
+          <div class="aspect-[3/4] relative rounded-t-xl overflow-hidden bg-slate-100">
+            <img src="/assets/images/chemistry-textbook-cover.jpg" alt="Chemistry Textbook" class="absolute inset-0 w-full h-full object-cover">
+            <div class="absolute top-3 right-3">
+              <button class="p-2 bg-white rounded-full shadow hover:bg-slate-50">
+                <i class="far fa-heart text-pink-500"></i>
+              </button>
+            </div>
+          </div>
+          <div class="p-4">
+            <h3 class="font-semibold text-gray-800 mb-1">Chemistry Fundamentals</h3>
+            <p class="text-sm text-gray-500 mb-3">WAEC preparation guide</p>
+            <div class="flex items-center gap-2 text-sm text-gray-600 mb-4">
+              <i class="fas fa-book-open"></i>
+              <span>20 chapters</span>
+              <span class="mx-2">•</span>
+              <i class="fas fa-clock"></i>
+              <span>400 pages</span>
+            </div>
+            <button class="w-full py-2 bg-sky-600 text-white font-medium rounded-md hover:bg-sky-700 transition-colors">
+              Open Book
+            </button>
+          </div>
+        </div>
+
+        <!-- Biology Textbook -->
+        <div class="bg-white rounded-xl shadow">
+          <div class="aspect-[3/4] relative rounded-t-xl overflow-hidden bg-slate-100">
+            <img src="/assets/images/biology-textbook-cover.jpg" alt="Biology Textbook" class="absolute inset-0 w-full h-full object-cover">
+            <div class="absolute top-3 right-3">
+              <button class="p-2 bg-white rounded-full shadow hover:bg-slate-50">
+                <i class="far fa-heart text-pink-500"></i>
+              </button>
+            </div>
+          </div>
+          <div class="p-4">
+            <h3 class="font-semibold text-gray-800 mb-1">Biology in Context</h3>
+            <p class="text-sm text-gray-500 mb-3">Complete WAEC syllabus</p>
+            <div class="flex items-center gap-2 text-sm text-gray-600 mb-4">
+              <i class="fas fa-book-open"></i>
+              <span>22 chapters</span>
+              <span class="mx-2">•</span>
+              <i class="fas fa-clock"></i>
+              <span>440 pages</span>
+            </div>
+            <button class="w-full py-2 bg-sky-600 text-white font-medium rounded-md hover:bg-sky-700 transition-colors">
+              Open Book
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recently Accessed Section -->
+      <div class="mt-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4">Recently Accessed</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <!-- Recent Book 1 -->
+          <div class="bg-white rounded-xl shadow p-4 flex items-center gap-4">
+            <div class="w-16 h-20 bg-slate-100 rounded-lg overflow-hidden">
+              <img src="/assets/images/math-textbook-cover.jpg" alt="Mathematics" class="w-full h-full object-cover">
+            </div>
+            <div class="flex-1">
+              <h3 class="font-semibold text-gray-800 mb-1">Advanced Mathematics</h3>
+              <p class="text-sm text-gray-500 mb-2">Last accessed 2 hours ago</p>
+              <button class="text-sky-600 text-sm font-medium hover:text-sky-700">Continue Reading</button>
+            </div>
+          </div>
+
+          <!-- Recent Book 2 -->
+          <div class="bg-white rounded-xl shadow p-4 flex items-center gap-4">
+            <div class="w-16 h-20 bg-slate-100 rounded-lg overflow-hidden">
+              <img src="/assets/images/physics-textbook-cover.jpg" alt="Physics" class="w-full h-full object-cover">
+            </div>
+            <div class="flex-1">
+              <h3 class="font-semibold text-gray-800 mb-1">Modern Physics</h3>
+              <p class="text-sm text-gray-500 mb-2">Last accessed 1 day ago</p>
+              <button class="text-sky-600 text-sm font-medium hover:text-sky-700">Continue Reading</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Chatbot Widget -->
+  <div id="cortex-ai-chat-button" role="button" aria-label="Open Cortex AI chat">
+    <img src="../cortex-owl-brain.svg" alt="Cortex AI" class="cortex-icon" style="width:72px;height:72px;box-shadow:0 4px 16px rgba(0,0,0,0.20);border-radius:16px;transition:transform 0.18s cubic-bezier(.4,2,.6,1),box-shadow 0.18s;cursor:pointer;" onmouseover="this.style.transform='scale(1.12)';this.style.boxShadow='0 8px 32px rgba(0,0,0,0.28)';" onmouseout="this.style.transform='scale(1)';this.style.boxShadow='0 4px 16px rgba(0,0,0,0.20)';" onmousedown="this.style.transform='scale(0.96)';" onmouseup="this.style.transform='scale(1.12)';" />
+  </div>
+  <iframe id="cortex-ai-chat-popup" src="https://app.edcafe.ai/chatbots/68b96ebb2a5be310497b6a0b"></iframe>
+</div>
+  <!-- Scripts -->
+  <script type="module">
+    import { config } from '../js/config.js';
+    import { initSupabase } from '../js/supabase-client.js';
+    
+    // Initialize Supabase client
+    const supabase = initSupabase(config.supabase.url, config.supabase.anonKey);
+
+    // Check authentication state
+    supabase.auth.onAuthStateChange((event, session) => {
+      if (!session || !session.user) {
+        window.location.href = '../general/login.html';
+        return;
+      }
+
+      // Verify email confirmation
+      if (!session.user.email_confirmed_at) {
+        alert('Please verify your email first. Check your inbox for the verification link.');
+        supabase.auth.signOut();
+        window.location.href = '../general/login.html';
+        return;
+      }
+    });
+
+    // Chat widget logic
+    const button = document.getElementById("cortex-ai-chat-button");
+    const popup = document.getElementById("cortex-ai-chat-popup");
+    
+    if (button && popup) {
+      button.addEventListener("click", () => {
+        popup.style.display = popup.style.display === "none" || popup.style.display === "" ? "block" : "none";
+      });
+    }
+  </script>
+
+  <!-- Import shared student page components -->
+  <script type="module" src="./js/student-page-shared.js"></script>
+  <script type="module" src="./js/sidebar-fragment.js"></script>
+
+  <script type="module">
+    import { config } from '../js/config.js';
+    import { initSupabase } from '../js/supabase-client.js';
+    const supabase = initSupabase(config.supabase.url, config.supabase.anonKey);
+    function setText(id, text) { const el = document.getElementById(id); if (el) el.textContent = text; }
+    function setImage(id, url) { const el = document.getElementById(id); if (el) el.src = url; }
+    const sidebar = document.getElementById('sidebar');
+    const mainContent = document.getElementById('main-content');
+    const toggleBtn = document.getElementById('toggleSidebar');
+    const marginClasses = ['ml-64', 'md:ml-72', 'lg:ml-80'];
+    if (window.innerWidth < 1024) { sidebar.classList.add('hide'); mainContent.classList.remove(...marginClasses); } else { sidebar.classList.remove('hide'); mainContent.classList.add(...marginClasses); }
+    if (toggleBtn) toggleBtn.addEventListener('click', (e) => { e.stopPropagation(); sidebar.classList.toggle('hide'); if (sidebar.classList.contains('hide')) { mainContent.classList.remove(...marginClasses); } else { mainContent.classList.add(...marginClasses); } });
+    let lastIsDesktop = window.innerWidth >= 1024;
+    window.addEventListener('resize', () => { const isDesktop = window.innerWidth >= 1024; if (isDesktop !== lastIsDesktop) { lastIsDesktop = isDesktop; if (isDesktop) { sidebar.classList.remove('hide'); mainContent.classList.add(...marginClasses); } else { sidebar.classList.add('hide'); mainContent.classList.remove(...marginClasses); } } });
+    supabase.auth.onAuthStateChange(async (event, session) => {
+      if (!session || !session.user) { window.location.href = '../general/login.html'; return; }
+      if (!session.user.email_confirmed_at) { alert('Please verify your email first.'); await supabase.auth.signOut(); window.location.href = '../general/login.html'; return; }
+      const { data: profile } = await supabase.from('profiles').select('*').eq('id', session.user.id).single();
+      if (profile) { const displayName = profile.full_name || session.user.email?.split('@')[0] || 'Student'; setText('userName', displayName.split(' ')[0]); setText('topName', displayName); if (profile.avatar_url) { setImage('avatar-sm', profile.avatar_url); setImage('topAvatar', profile.avatar_url); } if (profile.level) { setText('userLevel', profile.level); setText('topLevel', profile.level); } }
+    });
+  </script>
+  <style>
+    #cortex-ai-chat-button {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: transparent;
+      display: flex;
+      align-items: center;
+      justify-center;
+      font-size: 0;
+      border: none;
+      z-index: 1000;
+    }
+
+    #cortex-ai-chat-popup {
+      position: fixed;
+      bottom: 90px;
+      right: 20px;
+      width: 380px;
+      height: 500px;
+      border: none;
+      border-radius: 12px;
+      box-shadow: 0px 4px 16px rgba(0,0,0,0.4);
+      display: none;
+      z-index: 1000;
+    }
+  </style>
+</body>
+</html>

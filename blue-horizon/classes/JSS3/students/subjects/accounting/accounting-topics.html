@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="/assets/images/logo.png" />
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Accounting Topics - JUANOVA CORTEX</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <link rel="stylesheet" href="../../general/styles.css" />
+    <style>
+        .topics-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .topic-card {
+            background: white;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            height: 100%;
+        }
+
+        .topic-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .topic-icon {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--accent-blue);
+        }
+
+        .topic-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #1F2937;
+            margin-bottom: 0.5rem;
+        }
+
+        .topic-description {
+            color: #6B7280;
+            font-size: 0.875rem;
+            line-height: 1.25rem;
+            margin-bottom: 1rem;
+        }
+
+        .objectives-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            font-size: 0.875rem;
+            color: #4B5563;
+        }
+
+        .objectives-list li {
+            display: flex;
+            align-items: start;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .objectives-list li i {
+            color: var(--accent-blue);
+            margin-top: 0.25rem;
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 50;
+            backdrop-filter: blur(4px);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+            z-index: 51;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-title-section {
+            flex: 1;
+        }
+
+        .modal-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1F2937;
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-subtitle {
+            font-size: 0.875rem;
+            color: #6B7280;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: #6B7280;
+            cursor: pointer;
+            padding: 0.5rem;
+            margin: -0.5rem;
+            transition: color 0.2s;
+        }
+
+        .close-modal:hover {
+            color: #1F2937;
+        }
+
+        .subtopics-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .subtopic-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            border-bottom: 1px solid #E5E7EB;
+            transition: background-color 0.2s;
+        }
+
+        .subtopic-item:last-child {
+            border-bottom: none;
+        }
+
+        .subtopic-item:hover {
+            background: #F9FAFB;
+        }
+
+        .subtopic-content {
+            flex: 1;
+        }
+
+        .subtopic-title {
+            font-weight: 500;
+            color: #1F2937;
+            margin-bottom: 0.25rem;
+        }
+
+        .subtopic-description {
+            font-size: 0.875rem;
+            color: #6B7280;
+        }
+
+        .start-learning-btn {
+            background: #4F46E5;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            transition: all 0.2s;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .start-learning-btn:hover {
+            background: #4338CA;
+            transform: translateY(-1px);
+        }
+
+        .progress-bar {
+            height: 4px;
+            background: #E5E7EB;
+            border-radius: 2px;
+            margin-top: 1rem;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--accent-blue);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="container mx-auto px-4 py-8">
+        <nav class="breadcrumbs mb-6">
+            <a href="../student-dashboard.html">Dashboard</a>
+            <i class="fas fa-chevron-right text-sm"></i>
+            <a href="accounting-main.html">Accounting</a>
+            <i class="fas fa-chevron-right text-sm"></i>
+            <span id="currentSection">Topics</span>
+        </nav>
+
+        <header class="mb-8">
+            <h1 id="sectionTitle" class="text-3xl font-bold text-gray-900 mb-2">Loading...</h1>
+            <p id="sectionDescription" class="text-gray-600">Loading...</p>
+        </header>
+
+        <div id="topicsContainer" class="topics-container">
+            <!-- Topics will be dynamically inserted here -->
+        </div>
+    </div>
+
+    <!-- Subtopics Modal -->
+    <div id="subtopicsModal" class="modal-overlay">
+        <div class="modal">
+            <div class="modal-header">
+                <div class="modal-title-section">
+                    <h2 id="modalTitle" class="modal-title">Topic Subtopics</h2>
+                    <p id="modalSubtitle" class="modal-subtitle"></p>
+                </div>
+                <button class="close-modal" onclick="closeModal()">&times;</button>
+            </div>
+            <div id="modalContent">
+                <ul class="subtopics-list">
+                    <!-- Subtopics will be dynamically inserted here -->
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Content data structure
+        const contentData = {
+            'fundamentals': {
+                title: 'Accounting Fundamentals',
+                description: 'Core concepts, principles, and foundations of accounting',
+                topics: [
+                    {
+                        id: 'nature',
+                        title: 'Nature of Accounting',
+                        description: 'Understanding the fundamental nature and significance of accounting',
+                        icon: 'fas fa-book',
+                        objectives: [
+                            'Differentiate between bookkeeping and accounting',
+                            'Understand the historical development of accounting',
+                            'Identify the role of accounting in decision making'
+                        ],
+                        subtopics: [
+                            {
+                                title: 'Development of Accounting',
+                                description: 'Historical evolution and modern practices',
+                                duration: '45 min'
+                            },
+                            {
+                                title: 'Bookkeeping vs Accounting',
+                                description: 'Key differences and relationships',
+                                duration: '30 min'
+                            },
+                            {
+                                title: 'Branches of Accounting',
+                                description: 'Different specializations in accounting',
+                                duration: '45 min'
+                            }
+                        ]
+                    },
+                    {
+                        id: 'principles',
+                        title: 'Accounting Principles',
+                        description: 'Core principles, concepts, and conventions',
+                        icon: 'fas fa-scroll',
+                        objectives: [
+                            'Understand fundamental accounting principles',
+                            'Apply accounting concepts to business scenarios',
+                            'Recognize the importance of accounting conventions'
+                        ],
+                        subtopics: [
+                            {
+                                title: 'Basic Principles',
+                                description: 'Fundamental rules of accounting',
+                                duration: '45 min'
+                            },
+                            {
+                                title: 'Accounting Concepts',
+                                description: 'Key theoretical foundations',
+                                duration: '45 min'
+                            },
+                            {
+                                title: 'Accounting Conventions',
+                                description: 'Standard practices and guidelines',
+                                duration: '30 min'
+                            }
+                        ]
+                    },
+                    {
+                        id: 'ethics',
+                        title: 'Professional Ethics',
+                        description: 'Ethical principles and professional conduct',
+                        icon: 'fas fa-shield-alt',
+                        objectives: [
+                            'Understand the importance of ethics in accounting',
+                            'Identify key qualities of an accountant',
+                            'Apply ethical principles in practice'
+                        ],
+                        subtopics: [
+                            {
+                                title: 'Ethical Principles',
+                                description: 'Core values in accounting',
+                                duration: '30 min'
+                            },
+                            {
+                                title: 'Professional Conduct',
+                                description: 'Standards of behavior',
+                                duration: '45 min'
+                            },
+                            {
+                                title: 'Case Studies',
+                                description: 'Real-world ethical scenarios',
+                                duration: '45 min'
+                            }
+                        ]
+                    }
+                ]
+            },
+            // Add more divisions here...
+        };
+
+        // Get URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const currentUnit = urlParams.get('unit');
+
+        // Initialize page
+        function initializePage() {
+            if (!contentData[currentUnit]) {
+                window.location.href = 'accounting-main.html';
+                return;
+            }
+
+            const unitData = contentData[currentUnit];
+            
+            // Update page title and description
+            document.getElementById('currentSection').textContent = unitData.title;
+            document.getElementById('sectionTitle').textContent = unitData.title;
+            document.getElementById('sectionDescription').textContent = unitData.description;
+
+            // Populate topics
+            const topicsContainer = document.getElementById('topicsContainer');
+            topicsContainer.innerHTML = unitData.topics.map(topic => `
+                <div class="topic-card" onclick="showSubtopics('${topic.id}')">
+                    <i class="${topic.icon} topic-icon"></i>
+                    <h3 class="topic-title">${topic.title}</h3>
+                    <p class="topic-description">${topic.description}</p>
+                    <ul class="objectives-list">
+                        ${topic.objectives.map(objective => `
+                            <li>
+                                <i class="fas fa-check-circle"></i>
+                                <span>${objective}</span>
+                            </li>
+                        `).join('')}
+                    </ul>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 0%"></div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Show subtopics modal
+        function showSubtopics(topicId) {
+            const topic = contentData[currentUnit].topics.find(t => t.id === topicId);
+            if (!topic) return;
+
+            const modal = document.getElementById('subtopicsModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalSubtitle = document.getElementById('modalSubtitle');
+            const modalContent = document.getElementById('modalContent');
+
+            modalTitle.textContent = topic.title;
+            modalSubtitle.textContent = topic.description;
+            modalContent.innerHTML = `
+                <ul class="subtopics-list">
+                    ${topic.subtopics.map((subtopic, index) => `
+                        <li class="subtopic-item">
+                            <div class="subtopic-content">
+                                <h4 class="subtopic-title">${subtopic.title}</h4>
+                                <p class="subtopic-description">${subtopic.description}</p>
+                                <small class="text-gray-500">
+                                    <i class="fas fa-clock"></i> ${subtopic.duration}
+                                </small>
+                            </div>
+                            <button class="start-learning-btn" onclick="startLearning('${topic.id}', ${index})">
+                                <i class="fas fa-play"></i>
+                                Start Learning
+                            </button>
+                        </li>
+                    `).join('')}
+                </ul>
+            `;
+
+            modal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Close modal
+        function closeModal() {
+            const modal = document.getElementById('subtopicsModal');
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        // Start learning
+        function startLearning(topicId, subtopicIndex) {
+            window.location.href = `accounting-lesson.html?topic=${topicId}&subtopic=${subtopicIndex}`;
+        }
+
+        // Initialize when page loads
+        window.onload = initializePage;
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('subtopicsModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+    </script>
+</body>
+</html>
+

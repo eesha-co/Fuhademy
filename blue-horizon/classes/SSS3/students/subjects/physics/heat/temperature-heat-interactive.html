@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Temperature and Heat - Interactive Learning</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <style>
+        .step-active { background-color: #2563eb; color: white; }
+        .step-inactive { background-color: #e5e7eb; color: #374151; }
+        #simulationCanvas { touch-action: none; }
+        @keyframes vibrate {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-1px); }
+            75% { transform: translateX(1px); }
+        }
+        .vibrating { animation: vibrate 0.1s infinite; }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen font-inter">
+    <nav class="bg-blue-700 p-4">
+        <div class="max-w-7xl mx-auto px-4 flex justify-between items-center">
+            <a href="../index.html" class="text-white hover:text-blue-100 flex items-center gap-2">
+                <i class="fas fa-arrow-left"></i>
+                <span>Back to Physics</span>
+            </a>
+            <h1 class="text-white text-xl font-bold">Temperature and Heat</h1>
+        </div>
+    </nav>
+
+    <div class="flex">
+        <!-- Sidebar Steps -->
+        <aside class="w-64 bg-white shadow-md p-4 min-h-screen">
+            <h2 class="text-lg font-semibold mb-4">Learning Steps</h2>
+            <ul id="stepsList" class="space-y-2"></ul>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 p-8">
+            <div id="progressBar" class="mb-6 h-3 bg-gray-200 rounded-full overflow-hidden">
+                <div id="progress" class="h-full bg-blue-600 transition-all" style="width: 0%"></div>
+            </div>
+
+            <div id="stepContent" class="bg-white rounded-xl shadow-sm p-6 min-h-[300px]"></div>
+
+            <!-- Heat Transfer Simulation -->
+            <div id="simulationContainer" class="mt-6 bg-white rounded-xl shadow-sm p-6">
+                <h3 class="text-lg font-semibold mb-4">Interactive Heat Transfer Simulation</h3>
+                <canvas id="simulationCanvas" class="w-full border rounded-lg bg-gray-50" height="300"></canvas>
+                <div class="mt-4 grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Temperature (°C)</label>
+                        <input type="range" id="tempSlider" min="0" max="100" value="25" class="w-full">
+                        <span id="tempValue" class="text-sm text-gray-600">25 °C</span>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Heat Transfer Rate</label>
+                        <input type="range" id="rateSlider" min="1" max="10" value="5" class="w-full">
+                        <span id="rateValue" class="text-sm text-gray-600">5 units/s</span>
+                    </div>
+                </div>
+                <button id="resetSimulation" class="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+                    Reset Simulation
+                </button>
+            </div>
+
+            <div class="flex justify-between mt-8">
+                <button id="prevBtn" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400" disabled>Previous</button>
+                <button id="nextBtn" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Next</button>
+            </div>
+        </main>
+    </div>
+
+    <!-- Quiz Modal -->
+    <div id="quizModal" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center hidden">
+        <div class="bg-white p-8 rounded-xl shadow-lg max-w-lg w-full">
+            <h3 class="text-xl font-bold mb-4">Check Your Understanding</h3>
+            <div id="quizContent"></div>
+            <div class="mt-6 flex justify-end gap-4">
+                <button id="closeQuiz" class="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300">Close</button>
+                <button id="submitQuiz" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Submit</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const topicData = {
+            title: "Temperature and Heat",
+            steps: [
+                {
+                    title: "Temperature Basics",
+                    content: `
+                        <div class="prose max-w-none">
+                            <h3 class="text-xl font-bold mb-4">Understanding Temperature</h3>
+                            <div class="space-y-6">
+                                <div class="p-4 bg-blue-50 rounded-lg">
+                                    <h4 class="font-semibold">What is Temperature?</h4>
+                                    <p>Temperature is a measure of the average kinetic energy of particles in a substance. The faster the particles move, the higher the temperature.</p>
+                                </div>
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div class="p-4 bg-green-50 rounded-lg">
+                                        <h4 class="font-semibold">Celsius Scale (°C)</h4>
+                                        <ul class="list-disc list-inside">
+                                            <li>Water freezes: 0°C</li>
+                                            <li>Water boils: 100°C</li>
+                                            <li>Room temp: ~20-25°C</li>
+                                        </ul>
+                                    </div>
+                                    <div class="p-4 bg-yellow-50 rounded-lg">
+                                        <h4 class="font-semibold">Kelvin Scale (K)</h4>
+                                        <ul class="list-disc list-inside">
+                                            <li>Absolute zero: 0K</li>
+                                            <li>Water freezes: 273.15K</li>
+                                            <li>Water boils: 373.15K</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `
+                },
+                {
+                    title: "Heat Transfer",
+                    content: `
+                        <div class="prose max-w-none">
+                            <h3 class="text-xl font-bold mb-4">Methods of Heat Transfer</h3>
+                            <div class="grid grid-cols-3 gap-4">
+                                <div class="p-4 bg-blue-50 rounded-lg">
+                                    <h4 class="font-semibold">Conduction</h4>
+                                    <p>Direct transfer through physical contact</p>
+                                    <p class="text-sm text-blue-600">Example: Heat through a metal spoon</p>
+                                </div>
+                                <div class="p-4 bg-green-50 rounded-lg">
+                                    <h4 class="font-semibold">Convection</h4>
+                                    <p>Transfer through fluid movement</p>
+                                    <p class="text-sm text-green-600">Example: Hot air rising</p>
+                                </div>
+                                <div class="p-4 bg-yellow-50 rounded-lg">
+                                    <h4 class="font-semibold">Radiation</h4>
+                                    <p>Transfer through electromagnetic waves</p>
+                                    <p class="text-sm text-yellow-600">Example: Heat from the sun</p>
+                                </div>
+                            </div>
+                            <div class="mt-4 p-4 bg-gray-50 rounded-lg">
+                                <p class="font-semibold">Key Formula:</p>
+                                <p class="text-lg text-center my-2">Q = mcΔT</p>
+                                <p>Where:</p>
+                                <ul class="list-disc list-inside">
+                                    <li>Q = Heat energy (Joules)</li>
+                                    <li>m = Mass (kg)</li>
+                                    <li>c = Specific heat capacity (J/kg°C)</li>
+                                    <li>ΔT = Change in temperature (°C)</li>
+                                </ul>
+                            </div>
+                        </div>
+                    `
+                },
+                {
+                    title: "Applications",
+                    content: `
+                        <div class="prose max-w-none">
+                            <h3 class="text-xl font-bold mb-4">Real-World Applications</h3>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="p-4 bg-blue-50 rounded-lg">
+                                    <h4 class="font-semibold">Home & Technology</h4>
+                                    <ul class="list-disc list-inside">
+                                        <li>Insulation in buildings</li>
+                                        <li>Cooking and baking</li>
+                                        <li>Computer cooling systems</li>
+                                    </ul>
+                                </div>
+                                <div class="p-4 bg-green-50 rounded-lg">
+                                    <h4 class="font-semibold">Industry & Science</h4>
+                                    <ul class="list-disc list-inside">
+                                        <li>Industrial processes</li>
+                                        <li>Weather patterns</li>
+                                        <li>Chemical reactions</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    `
+                }
+            ],
+            quiz: [
+                {
+                    question: "Which of the following is NOT a method of heat transfer?",
+                    options: ["Conduction", "Convection", "Compression", "Radiation"],
+                    correct: 2
+                },
+                {
+                    question: "At what temperature does water freeze on the Celsius scale?",
+                    options: ["-273°C", "0°C", "32°C", "100°C"],
+                    correct: 1
+                },
+                {
+                    question: "In the formula Q = mcΔT, what does 'c' represent?",
+                    options: ["Conductivity", "Celsius", "Specific heat capacity", "Change in temperature"],
+                    correct: 2
+                }
+            ]
+        };
+
+        let currentStep = 0;
+        let completedSteps = new Set();
+
+        // Initialize heat transfer simulation
+        const canvas = document.getElementById('simulationCanvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = canvas.offsetWidth;
+        canvas.height = 300;
+
+        let particles = [];
+        let temperature = 25;
+        let transferRate = 5;
+
+        class Particle {
+            constructor() {
+                this.reset();
+                this.y = Math.random() * canvas.height;
+            }
+
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.speed = (Math.random() * 2 + 1) * (temperature / 25);
+                this.radius = Math.random() * 3 + 1;
+                this.color = this.getTemperatureColor();
+            }
+
+            getTemperatureColor() {
+                const hue = Math.min(240 - (temperature * 2.4), 360); // Blue (cold) to Red (hot)
+                return `hsl(${hue}, 100%, 50%)`;
+            }
+
+            update() {
+                this.x += this.speed;
+                if (this.x > canvas.width) {
+                    this.x = 0;
+                }
+                this.speed = (Math.random() * 2 + 1) * (temperature / 25);
+                this.color = this.getTemperatureColor();
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = this.color;
+                ctx.fill();
+            }
+        }
+
+        // Create particles
+        function initParticles() {
+            particles = [];
+            for (let i = 0; i < 100; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        function updateSimulation() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Draw container
+            ctx.strokeStyle = '#666';
+            ctx.strokeRect(10, 10, canvas.width - 20, canvas.height - 20);
+
+            // Update and draw particles
+            particles.forEach(particle => {
+                particle.update();
+                particle.draw();
+            });
+
+            requestAnimationFrame(updateSimulation);
+        }
+
+        // Event listeners for sliders
+        document.getElementById('tempSlider').addEventListener('input', (e) => {
+            temperature = parseInt(e.target.value);
+            document.getElementById('tempValue').textContent = temperature + ' °C';
+        });
+
+        document.getElementById('rateSlider').addEventListener('input', (e) => {
+            transferRate = parseInt(e.target.value);
+            document.getElementById('rateValue').textContent = transferRate + ' units/s';
+            particles.forEach(particle => {
+                particle.speed = (Math.random() * 2 + 1) * (transferRate / 5);
+            });
+        });
+
+        document.getElementById('resetSimulation').addEventListener('click', () => {
+            temperature = 25;
+            transferRate = 5;
+            document.getElementById('tempSlider').value = temperature;
+            document.getElementById('rateSlider').value = transferRate;
+            document.getElementById('tempValue').textContent = temperature + ' °C';
+            document.getElementById('rateValue').textContent = transferRate + ' units/s';
+            initParticles();
+        });
+
+        // Initialize steps navigation
+        function renderSteps() {
+            const stepsList = document.getElementById('stepsList');
+            stepsList.innerHTML = '';
+            topicData.steps.forEach((step, idx) => {
+                const li = document.createElement('li');
+                li.className = `cursor-pointer p-2 rounded ${idx === currentStep ? 'step-active' : 'step-inactive'}`;
+                li.textContent = step.title;
+                li.onclick = () => showStep(idx);
+                stepsList.appendChild(li);
+            });
+        }
+
+        function showStep(idx) {
+            currentStep = idx;
+            document.getElementById('stepContent').innerHTML = topicData.steps[idx].content;
+            renderSteps();
+            updateProgress();
+            document.getElementById('prevBtn').disabled = idx === 0;
+            document.getElementById('nextBtn').disabled = idx === topicData.steps.length - 1;
+        }
+
+        function updateProgress() {
+            const percent = ((completedSteps.size) / topicData.steps.length) * 100;
+            document.getElementById('progress').style.width = percent + '%';
+        }
+
+        // Quiz functionality
+        function showQuiz() {
+            const quizModal = document.getElementById('quizModal');
+            quizModal.classList.remove('hidden');
+            
+            const quizContent = document.getElementById('quizContent');
+            quizContent.innerHTML = topicData.quiz.map((q, idx) => `
+                <div class="mb-6">
+                    <p class="font-semibold mb-2">${idx + 1}. ${q.question}</p>
+                    <div class="space-y-2">
+                        ${q.options.map((opt, i) => `
+                            <label class="flex items-center">
+                                <input type="radio" name="q${idx}" value="${i}" class="mr-2">
+                                <span>${opt}</span>
+                            </label>
+                        `).join('')}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        document.getElementById('closeQuiz').onclick = () => {
+            document.getElementById('quizModal').classList.add('hidden');
+        };
+
+        document.getElementById('submitQuiz').onclick = () => {
+            let score = 0;
+            topicData.quiz.forEach((q, idx) => {
+                const selected = document.querySelector(`input[name="q${idx}"]:checked`);
+                if (selected && parseInt(selected.value) === q.correct) score++;
+            });
+            
+            const percent = (score / topicData.quiz.length) * 100;
+            if (percent >= 70) {
+                completedSteps.add(currentStep);
+                updateProgress();
+            }
+            
+            document.getElementById('quizContent').innerHTML = `
+                <div class="text-center">
+                    <p class="text-2xl font-bold ${percent >= 70 ? 'text-green-600' : 'text-red-600'}">${score}/${topicData.quiz.length}</p>
+                    <p class="mt-2">${percent >= 70 ? 'Great job! You can move on to the next section.' : 'Try again to improve your score.'}</p>
+                </div>
+            `;
+            document.getElementById('submitQuiz').style.display = 'none';
+        };
+
+        // Navigation buttons
+        document.getElementById('prevBtn').onclick = () => {
+            if (currentStep > 0) showStep(currentStep - 1);
+        };
+
+        document.getElementById('nextBtn').onclick = () => {
+            if (currentStep < topicData.steps.length - 1) {
+                showQuiz();
+            }
+        };
+
+        // Initialize
+        window.onload = () => {
+            renderSteps();
+            showStep(0);
+            initParticles();
+            updateSimulation();
+            
+            // Handle window resize
+            window.addEventListener('resize', () => {
+                canvas.width = canvas.offsetWidth;
+                initParticles();
+            });
+        };
+    </script>
+<!-- Topic Quiz System -->
+<script src="/js/topic-quiz-loader.js"></script>
+<script src="/js/topic-quiz-injector.js"></script>
+</body>
+</html>

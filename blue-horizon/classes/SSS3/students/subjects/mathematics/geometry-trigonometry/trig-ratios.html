@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Trigonometric Ratios — sin, cos, tan</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>.card{background:#fff;padding:1rem;border-radius:10px;box-shadow:0 10px 30px rgba(2,6,23,0.06)} .mono{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Helvetica Neue", monospace}</style>
+</head>
+<body class="bg-green-50 font-sans">
+  <header class="bg-green-600 text-white py-3 mb-6">
+    <div class="max-w-5xl mx-auto px-4 flex items-center justify-between">
+      <div class="font-semibold">Trigonometric Ratios</div>
+      <a href="index.html" class="text-white/90">Back</a>
+    </div>
+  </header>
+
+  <main class="max-w-5xl mx-auto px-4 space-y-6">
+    <section class="card">
+      <h2 class="text-lg font-semibold">Definitions</h2>
+      <div class="mt-2 text-gray-700">
+        <div><strong>sin θ</strong> = opposite / hypotenuse</div>
+        <div><strong>cos θ</strong> = adjacent / hypotenuse</div>
+        <div><strong>tan θ</strong> = opposite / adjacent = sin θ / cos θ</div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2 class="text-lg font-semibold">Exact values</h2>
+      <div class="mt-2 mono text-sm text-gray-700">
+        sin30 = 1/2, cos30 = √3/2, tan30 = 1/√3<br>
+        sin45 = √2/2, cos45 = √2/2, tan45 = 1<br>
+        sin60 = √3/2, cos60 = 1/2, tan60 = √3
+      </div>
+    </section>
+
+    <section class="card">
+      <h2 class="text-lg font-semibold">Practice</h2>
+      <div class="grid md:grid-cols-2 gap-4 mt-3">
+        <div class="p-3 bg-gray-50 rounded">
+          <div class="font-medium">1) Find sin30° (exact)</div>
+          <input id="r1" class="mt-2 p-2 border rounded w-full" placeholder="e.g., 1/2" />
+          <div class="mt-2 flex gap-2"><button id="rc1" class="px-3 py-1 bg-green-600 text-white rounded">Check</button><button id="rh1" class="px-3 py-1 border rounded">Hint</button></div>
+          <div id="rfb1" class="mt-2 text-sm"></div>
+        </div>
+
+        <div class="p-3 bg-gray-50 rounded">
+          <div class="font-medium">2) tan45° = ?</div>
+          <input id="r2" class="mt-2 p-2 border rounded w-full" placeholder="e.g., 1" />
+          <div class="mt-2 flex gap-2"><button id="rc2" class="px-3 py-1 bg-green-600 text-white rounded">Check</button><button id="rh2" class="px-3 py-1 border rounded">Hint</button></div>
+          <div id="rfb2" class="mt-2 text-sm"></div>
+        </div>
+      </div>
+    </section>
+
+    <div class="text-right"><button id="trQuiz" class="bg-green-600 text-white px-4 py-2 rounded">Open Quiz</button></div>
+  </main>
+
+  <div id="trModal" class="hidden fixed inset-0 bg-black/40 flex items-center justify-center z-40">
+    <div class="bg-white rounded p-6 max-w-md w-full">
+      <div id="trContent"></div>
+      <div class="mt-4 text-right"><button id="trClose" class="px-3 py-1 border rounded">Close</button></div>
+    </div>
+  </div>
+
+  <script>
+    function norm(s){ return (s||'').toString().trim().replace(/\s+/g,'').toLowerCase(); }
+    document.getElementById('rc1').addEventListener('click', ()=>{ const v=norm(document.getElementById('r1').value); const fb=document.getElementById('rfb1'); if(['1/2','0.5','1⁄2'].includes(v)) fb.innerHTML='<span style="color:#16a34a">Correct — 1/2</span>'; else fb.innerHTML='<span style="color:#e11d48">Try exact form: 1/2</span>'; });
+    document.getElementById('rh1').addEventListener('click', ()=> alert('Hint: sin30 corresponds to half of the hypotenuse in a 30-60-90 triangle'));
+
+    document.getElementById('rc2').addEventListener('click', ()=>{ const v=norm(document.getElementById('r2').value); const fb=document.getElementById('rfb2'); if(v==='1') fb.innerHTML='<span style="color:#16a34a">Correct — 1</span>'; else fb.innerHTML='<span style="color:#e11d48">tan45 = 1</span>'; });
+    document.getElementById('rh2').addEventListener('click', ()=> alert('Hint: tanθ = sinθ / cosθ; at 45° they are equal'));
+
+    const pool=[{q:'sin45 = ?', a:['√2/2','sqrt2/2']},{q:'tan30 = ?', a:['1/√3','1/sqrt3','0.577']}];
+    function show(){ let i=0,score=0; const modal=document.getElementById('trModal'); const content=document.getElementById('trContent'); modal.classList.remove('hidden'); function next(){ if(i>=pool.length){ content.innerHTML=`<div class="font-bold">Done</div><div>Score: ${score}/${pool.length}</div>`; return; } const cur=pool[i]; content.innerHTML=`<div class="font-semibold">${cur.q}</div><input id="qa" class="mt-3 p-2 border rounded w-full"><div class="mt-3"><button id="subq" class="px-3 py-1 bg-green-600 text-white rounded">Submit</button></div><div id="qfb" class="mt-2"></div>`; document.getElementById('subq').onclick=()=>{ const a=norm(document.getElementById('qa').value); if(cur.a.some(x=>norm(x)===a)){ score++; document.getElementById('qfb').innerHTML='<span style="color:#16a34a">Correct</span>'; } else document.getElementById('qfb').innerHTML=`<span style="color:#e11d48">Wrong — ${cur.a[0]}</span>`; i++; setTimeout(next,700); }; }
+    next(); }
+    document.getElementById('trQuiz').addEventListener('click', show);
+    document.getElementById('trClose').addEventListener('click', ()=> document.getElementById('trModal').classList.add('hidden'));
+  </script>
+<!-- Topic Quiz System -->
+<script src="/js/topic-quiz-loader.js"></script>
+<script src="/js/topic-quiz-injector.js"></script>
+</body>
+</html>

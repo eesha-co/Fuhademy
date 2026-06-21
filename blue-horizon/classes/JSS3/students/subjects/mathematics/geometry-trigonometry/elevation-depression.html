@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Geometry - Elevation & Depression</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    @keyframes fadeIn { from { opacity: 0 } to { opacity: 1 } }
+    .card-glow { box-shadow: 0 6px 18px rgba(99,102,241,0.06); animation: fadeIn 0.45s ease; }
+    .accent-gradient { background: linear-gradient(90deg,#06b6d4,#06b6d4); }
+    .step-badge { background: rgba(6,182,212,0.08); color:#065f46; padding:.25rem .5rem; border-radius:.5rem; font-weight:600; display:inline-block; width:24px; height:24px; text-align:center; font-size:.75rem }
+  </style>
+</head>
+<body class="bg-sky-50 font-sans">
+  <header class="accent-gradient text-white sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-4">
+        <div class="p-2 bg-white/20 rounded-lg"><i class="fas fa-mountain"></i></div>
+        <div>
+          <div class="font-semibold text-lg">Elevation & Depression</div>
+          <div class="text-xs opacity-90">Solve heights and distances using right-triangle trig</div>
+        </div>
+      </a>
+      <div class="flex items-center gap-4">
+        <div class="text-sm opacity-90">Progress: <span id="progress">0%</span></div>
+        <a href="../mathematics.html" class="text-white/90 hover:text-white text-sm">Back to Math</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-4 py-8">
+    <div class="grid lg:grid-cols-4 gap-8">
+      <aside class="lg:col-span-1">
+        <div class="bg-white p-5 rounded-xl card-glow sticky top-24">
+          <h3 class="font-semibold mb-3">Contents</h3>
+          <ul class="space-y-2 text-sm">
+            <li><a href="#idea" class="hover:text-sky-700 flex items-center gap-2"><span class="step-badge">1</span>Idea</a></li>
+            <li><a href="#examples" class="hover:text-sky-700 flex items-center gap-2"><span class="step-badge">2</span>Examples</a></li>
+            <li><a href="#practice" class="hover:text-sky-700 flex items-center gap-2"><span class="step-badge">3</span>Practice</a></li>
+          </ul>
+        </div>
+      </aside>
+
+      <section class="lg:col-span-3 space-y-6">
+        <article id="idea" class="bg-white p-6 rounded-xl card-glow">
+          <div class="flex items-start gap-4">
+            <div class="text-3xl text-sky-700 mt-1"><i class="fas fa-info-circle"></i></div>
+            <div>
+              <h2 class="text-2xl font-semibold mb-2">Idea</h2>
+              <p class="text-gray-700">Angles of elevation and depression use right-triangle trig. Use sin, cos, tan with opposite/adjacent/hypotenuse to find heights or distances.</p>
+            </div>
+          </div>
+        </article>
+
+        <article id="examples" class="bg-white p-6 rounded-xl card-glow">
+          <div class="flex items-start gap-4">
+            <div class="text-3xl text-sky-700 mt-1"><i class="fas fa-lightbulb"></i></div>
+            <div>
+              <h2 class="text-2xl font-semibold mb-3">Worked Examples</h2>
+              <div class="grid sm:grid-cols-2 gap-4 text-gray-700">
+                <div class="p-4 bg-gray-50 rounded">
+                  <div class="font-semibold">Example 1</div>
+                  <div class="mt-2">Point 30 m from tower, angle of elevation 30°. Height = 30·tan30° ≈ 17.32 m.</div>
+                </div>
+                <div class="p-4 bg-gray-50 rounded">
+                  <div class="font-semibold">Example 2</div>
+                  <div class="mt-2">Cliff 50 m, angle of depression 20° → horizontal distance = 50·cot20° ≈ 137.35 m.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article id="practice" class="bg-white p-6 rounded-xl card-glow">
+          <div class="flex items-start gap-4">
+            <div class="text-3xl text-sky-700 mt-1"><i class="fas fa-pencil-alt"></i></div>
+            <div class="w-full">
+              <h2 class="text-2xl font-semibold mb-3">Practice Problems</h2>
+              <div class="grid md:grid-cols-2 gap-4">
+                <div class="p-4 border rounded-md bg-gray-50">
+                  <div class="font-semibold">1) Point 40 m from pole, angle of elevation 35°. Find height (to 2 dp)</div>
+                  <input id="p1" class="mt-3 p-2 border rounded w-full" placeholder="e.g., 28.01" />
+                  <div class="mt-2 flex gap-2"><button id="c1" class="px-3 py-1 bg-sky-700 text-white rounded text-sm">Check</button><button id="h1" class="px-3 py-1 text-xs bg-white border rounded">Hint</button></div>
+                  <div id="fb1" class="mt-3 text-sm"></div>
+                </div>
+
+                <div class="p-4 border rounded-md bg-gray-50">
+                  <div class="font-semibold">2) From cliff 60 m high, depression angle 25°. Find horizontal distance (to 2 dp)</div>
+                  <input id="p2" class="mt-3 p-2 border rounded w-full" placeholder="e.g., 128.14" />
+                  <div class="mt-2 flex gap-2"><button id="c2" class="px-3 py-1 bg-sky-700 text-white rounded text-sm">Check</button><button id="h2" class="px-3 py-1 text-xs bg-white border rounded">Hint</button></div>
+                  <div id="fb2" class="mt-3 text-sm"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+      </section>
+    </div>
+  </main>
+
+  <button id="quizBtn" class="fixed bottom-8 right-8 z-50 bg-sky-700 text-white px-5 py-3 rounded-full shadow-lg hover:bg-sky-800 flex items-center gap-2"><i class="fas fa-bolt"></i> Quiz</button>
+
+  <div id="quizModal" class="hidden fixed inset-0 bg-black/40 z-50 flex items-center justify-center">
+    <div class="bg-white rounded-xl shadow-2xl max-w-lg w-full p-6 relative">
+      <button id="closeQuiz" class="absolute top-3 right-4 text-gray-400 hover:text-gray-700 text-2xl">&times;</button>
+      <div id="quizContent"></div>
+    </div>
+  </div>
+
+  <footer class="max-w-7xl mx-auto px-4 py-6 text-sm text-gray-500">Elevation & Depression — interactive lesson</footer>
+
+  <script>
+    const progressEl = document.getElementById('progress');
+    const done = {p1:false,p2:false};
+    function setDone(k){ if(!done[k]){ done[k]=true; const total=Object.keys(done).length; const c=Object.values(done).filter(Boolean).length; progressEl.textContent = Math.round((c/total)*100)+'%'; }}
+    function round2(x){ return Math.round(x*100)/100; }
+    function norm(s){ return (s||'').toString().trim().replace(/[^0-9.-]/g,''); }
+
+    document.getElementById('c1').addEventListener('click', ()=>{ const v=parseFloat(norm(document.getElementById('p1').value)); const fb=document.getElementById('fb1'); const ans=round2(40*Math.tan(35*Math.PI/180)); if(Math.abs(v-ans)<0.05){ fb.innerHTML = `<span style="color:#16a34a">Correct — ${ans.toFixed(2)} m</span>`; setDone('p1'); } else { fb.innerHTML = `<span style="color:#e11d48">Try again — use h = d·tan(θ). Expected ≈ ${ans.toFixed(2)}</span>`; } });
+    document.getElementById('h1').addEventListener('click', ()=> alert('Hint: height = distance × tan(angle)'));
+
+    document.getElementById('c2').addEventListener('click', ()=>{ const v=parseFloat(norm(document.getElementById('p2').value)); const fb=document.getElementById('fb2'); const ans=round2(60/Math.tan(25*Math.PI/180)); if(Math.abs(v-ans)<0.1){ fb.innerHTML = `<span style="color:#16a34a">Correct — ${ans.toFixed(2)} m</span>`; setDone('p2'); } else { fb.innerHTML = `<span style="color:#e11d48">Try again — use distance = height / tan(angle)</span>`; } });
+    document.getElementById('h2').addEventListener('click', ()=> alert('Hint: horizontal distance = height ÷ tan(angle of depression)'));
+
+    const quizPool = [
+      {q:'If tanθ = 0.577 and base = 30, find height', a:[(30*Math.tan(30*Math.PI/180)).toFixed(2)]},
+      {q:'If cliff 50 m and depression 20°, find distance', a:[(50/Math.tan(20*Math.PI/180)).toFixed(2)]}
+    ];
+    let quizState=null;
+    function startQuiz(){ const sel=[...quizPool]; quizState={q:sel,i:0,score:0,timer:20,id:null}; showQ(); document.getElementById('quizModal').classList.remove('hidden'); }
+    function showQ(){ const cur=quizState.q[quizState.i]; document.getElementById('quizContent').innerHTML = `<div class="text-lg font-semibold mb-2">Q ${quizState.i+1}/${quizState.q.length}</div><div class="mb-4">${cur.q}</div><input id="qa" class="w-full p-3 border rounded mb-3"><button id="subq" class="w-full bg-sky-700 text-white py-2 rounded">Submit</button><div id="qfb" class="mt-3"></div>`; document.getElementById('subq').onclick=submitQ; quizState.timer=20; updateTimer(); quizState.id=setInterval(()=>{ quizState.timer--; updateTimer(); if(quizState.timer<=0){ clearInterval(quizState.id); submitQ(true); } },1000); }
+    function updateTimer(){ const t=document.getElementById('qfb'); if(t) t.innerHTML = `<div class='text-xs text-gray-500'>Time: ${quizState.timer}s</div>`; }
+    function submitQ(timeout){ clearInterval(quizState.id); const ans=norm(document.getElementById('qa').value||''); const cur=quizState.q[quizState.i]; const ok=cur.a.map(x=>x.toString()); let correct=ok.includes(ans); if(timeout) correct=false; const qfb=document.getElementById('qfb'); if(correct){ qfb.innerHTML='<span style="color:#16a34a">Correct!</span>'; quizState.score++; } else { qfb.innerHTML=`<span style="color:#e11d48">Wrong — Answer: ${cur.a[0]}</span>`; } setTimeout(()=>{ quizState.i++; if(quizState.i<quizState.q.length) showQ(); else finishQuiz(); },900); }
+    function finishQuiz(){ document.getElementById('quizContent').innerHTML = `<div class="text-2xl font-bold">Quiz complete</div><div class="mt-2">Score: ${quizState.score}/${quizState.q.length}</div><button id="closeQ" class="mt-4 w-full bg-gray-200 py-2 rounded">Close</button>`; document.getElementById('closeQ').onclick=()=>document.getElementById('quizModal').classList.add('hidden'); }
+    document.getElementById('quizBtn').addEventListener('click', startQuiz);
+    document.getElementById('closeQuiz').addEventListener('click', ()=> document.getElementById('quizModal').classList.add('hidden'));
+  </script>
+<!-- Topic Quiz System -->
+<script src="/js/topic-quiz-loader.js"></script>
+<script src="/js/topic-quiz-injector.js"></script>
+</body>
+</html>

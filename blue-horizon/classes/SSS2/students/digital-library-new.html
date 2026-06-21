@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Digital Library - EduNext</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- PDF.js library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
+
+  <!-- Firebase SDK -->
+  <script type="module" src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
+  <script type="module" src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js"></script>
+  <script type="module" src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js"></script>
+  
+  <!-- User Data Initialization -->
+  <script type="module">
+    // Helper function to get user initials
+    function getInitials(fullName) {
+      return fullName.split(' ')
+        .slice(0, 2)
+        .map(name => name.charAt(0))
+        .join('')
+        .toUpperCase();
+    }
+
+    // Initialize user data from cache immediately
+    try {
+      const cachedUserData = localStorage.getItem('cachedUserData_current');
+      if (cachedUserData) {
+        const { data: user } = JSON.parse(cachedUserData);
+        window.preloadedUserData = user;
+        
+        // Pre-initialize user interface as soon as DOM is ready
+        document.addEventListener('DOMContentLoaded', () => {
+          if (user) {
+            const fullName = user.displayName || 'Student';
+            const name = fullName.split(' ')[0];
+            const level = (user.profile?.level || '').startsWith('SS') ? user.profile.level : 'SS 3';
+            const initials = getInitials(fullName);
+            
+            // Update user name instances
+            document.querySelectorAll('.user-fullname').forEach(el => {
+              el.textContent = fullName;
+            });
+            document.querySelectorAll('.user-firstname').forEach(el => {
+              el.textContent = name;
+            });
+            
+            // Update avatars with user photo or initials
+            const avatarUrl = user.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(initials)}&background=2563eb&color=fff&size=128`;
+            ['avatar-sm', 'userAvatar'].forEach(id => {
+              const avatar = document.getElementById(id);
+              if (avatar) avatar.setAttribute('src', avatarUrl);
+            });
+            
+            // Update user name and level
+            document.getElementById('userName').textContent = name;
+            document.getElementById('userLevel').textContent = level;
+            
+            // Update topbar elements
+            document.getElementById('topName').textContent = fullName;
+            document.getElementById('topLevel').textContent = level;
+            
+            // Update notification count if available
+            if (user.unreadNotifications) {
+              const notifCount = document.getElementById('notifCount');
+              if (notifCount) notifCount.textContent = user.unreadNotifications.length;
+            }
+          }
+        });
+      }
+    } catch (err) {
+      console.error('Error pre-loading user data:', err);
+    }
+  </script>
+</head>
+<body class="bg-slate-50">
+  <div class="layout">
+    <!-- Topbar -->
+    <header class="fixed top-0 left-0 right-0 h-16 bg-white border-b border-slate-200 flex items-center justify-between px-4 z-30">
+      <button id="menu-toggle" class="lg:hidden p-2 hover:bg-slate-50 rounded-lg">
+        <i class="fas fa-bars"></i>
+      </button>
+      
+      <div class="flex items-center gap-4">
+        <div class="flex items-center gap-2">
+          <img id="topAvatar" src="../assets/images/unnamed.jpg" alt="User avatar" class="w-8 h-8 rounded-full border">
+          <div class="hidden sm:block">
+            <div id="topName" class="text-sm font-semibold">Student</div>
+            <div id="topLevel" class="text-xs text-slate-500">SS3</div>
+          </div>
+        </div>
+        
+        <a href="notifications.html" class="p-2 hover:bg-slate-50 rounded-lg relative">
+          <i class="fas fa-bell text-slate-600"></i>
+          <span id="notifCount" class="absolute top-0 right-0 w-4 h-4 bg-red-500 text-white text-xs rounded-full flex items-center justify-center transform translate-x-1 -translate-y-1">0</span>
+        </a>
+      </div>
+    </header>
+
+    <!-- Sidebar injected by sidebar-fragment.js -->
+
+    <main class="main-content" style="margin-left: 18rem; padding-top: 5rem;">
+      <!-- Rest of the content remains the same -->
+      [Previous content goes here...]
+    </main>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+  
+  <!-- App Scripts -->
+  <script type="module">
+    import { onUserChange } from '../js/firebase-user.js';
+    import { getGlobalUserData } from '../js/user-cache.js';
+
+    // Initialize with cached data immediately if available
+    const cachedUser = getGlobalUserData();
+    if (cachedUser) {
+      updateUserInterface(cachedUser);
+    }
+
+    // Update UI when user data changes
+    onUserChange((user) => {
+      if (user) {
+        updateUserInterface(user);
+      } else {
+        // Handle not logged in state
+        document.getElementById('userName').textContent = 'Guest';
+        document.getElementById('userLevel').textContent = '';
+        document.getElementById('topName').textContent = 'Guest';
+        document.getElementById('topLevel').textContent = '';
+      }
+    });
+
+    function updateUserInterface(user) {
+      const fullName = user.displayName || 'Student';
+      const name = fullName.split(' ')[0];
+      const level = (user.profile?.level || '').startsWith('SS') ? user.profile.level : 'SS 3';
+      
+      // Update sidebar elements
+      document.getElementById('userName').textContent = name;
+      document.getElementById('userLevel').textContent = level;
+      
+      // Update topbar elements
+      document.getElementById('topName').textContent = fullName;
+      document.getElementById('topLevel').textContent = level;
+      
+      // Update avatar
+      const avatarUrl = user.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(getInitials(fullName))}&background=2563eb&color=fff&size=128`;
+      ['avatar-sm', 'topAvatar'].forEach(id => {
+        const avatar = document.getElementById(id);
+        if (avatar) avatar.src = avatarUrl;
+      });
+
+      // Update notification count if available
+      if (user.unreadNotifications) {
+        const notifCount = document.getElementById('notifCount');
+        if (notifCount) notifCount.textContent = user.unreadNotifications.length;
+      }
+    }
+
+    function getInitials(fullName) {
+      return fullName.split(' ')
+        .slice(0, 2)
+        .map(name => name.charAt(0))
+        .join('')
+        .toUpperCase();
+    }
+
+    // Initialize app features
+    document.addEventListener('DOMContentLoaded', () => {
+      // Mobile menu toggle
+      const menuToggle = document.getElementById('menu-toggle');
+      const sidebar = document.getElementById('sidebar');
+      
+      if (menuToggle && sidebar) {
+        menuToggle.addEventListener('click', () => {
+          sidebar.classList.toggle('-translate-x-full');
+        });
+      }
+
+      // Initialize PDF viewer and other features
+      if (typeof app !== 'undefined' && app.init) {
+        app.init();
+      }
+    });
+  </script>
+  <script type="module" src="./js/sidebar-fragment.js"></script>
+</body>
+</html>

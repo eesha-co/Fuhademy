@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Galvanic Cells | Chemistry</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <style> 
+    body{font-family:Inter, sans-serif}
+    .content-card{-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);background:rgba(255,255,255,0.95);border:1px solid rgba(255,255,255,0.2);} 
+    .accordion-content{max-height:0;overflow:hidden;transition:max-height 0.3s ease-out;}
+    .accordion-content.open{max-height:2000px;}
+    .step-card{transition:all 0.2s ease;}
+    .step-card:hover{transform:translateX(4px);}
+    .video-container{position:relative;width:100%;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;background:#f9fafb;}
+    .video-container iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:none;}
+  </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-green-50 to-emerald-100 p-4 md:p-6">
+  <div class="max-w-4xl mx-auto">
+    <!-- Navigation -->
+    <nav class="mb-4 flex items-center justify-between">
+      <a href="index.html" class="text-blue-600 hover:text-blue-800 transition flex items-center">
+        <i class="fas fa-arrow-left mr-2"></i>Back to Electrochemistry & Redox
+      </a>
+      <!-- Progress indicator -->
+      <div class="flex items-center gap-3">
+        <div class="text-sm text-gray-600">
+          <span id="topic-progress-text">0% Complete</span>
+        </div>
+        <div class="w-24 h-2 bg-gray-200 rounded-full overflow-hidden">
+          <div id="topic-progress-bar" class="h-full bg-gradient-to-r from-green-400 to-emerald-500 transition-all duration-300" style="width: 0%"></div>
+        </div>
+      </div>
+    </nav>
+    
+    <article class="content-card rounded-xl p-6 md:p-8 shadow-lg">
+      <!-- Header -->
+      <div class="border-b pb-4 mb-6">
+        <h1 class="text-2xl md:text-3xl font-bold text-gray-800 mb-2">
+          <i class="fas fa-battery-full text-green-500 mr-3"></i>Galvanic (Voltaic) Cells
+        </h1>
+        <p class="text-gray-600">Understanding electrochemical cells that convert chemical energy into electrical energy spontaneously.</p>
+      </div>
+
+      <!-- Learning Objectives -->
+      <div class="bg-green-50 border-l-4 border-green-500 p-4 rounded-r-lg mb-6">
+        <h3 class="font-semibold text-green-800 mb-2"><i class="fas fa-bullseye mr-2"></i>Learning Objectives</h3>
+        <ul class="text-green-700 text-sm space-y-1">
+          <li>• Explain how a galvanic cell produces electricity</li>
+          <li>• Identify the anode and cathode in a galvanic cell</li>
+          <li>• Write cell notation using standard conventions</li>
+          <li>• Calculate cell potential from standard electrode potentials</li>
+        </ul>
+      </div>
+
+      <!-- Section 1: What is a Galvanic Cell? -->
+      <section id="section-1" class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <span class="bg-green-100 text-green-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">1</span>
+          What is a Galvanic Cell?
+        </h2>
+        
+        <div class="bg-gray-50 p-5 rounded-lg mb-4">
+          <p class="text-gray-700 mb-3">A <strong class="text-green-600">Galvanic (Voltaic) cell</strong> is an electrochemical cell that converts chemical energy from spontaneous redox reactions into electrical energy. Unlike electrolysis, galvanic cells generate electricity naturally!</p>
+          
+          <div class="bg-white p-4 rounded-lg border border-gray-200 mt-3">
+            <p class="font-semibold text-gray-800 mb-2">Key Characteristics:</p>
+            <ul class="text-gray-700 text-sm space-y-2">
+              <li>• Uses a <strong>spontaneous</strong> redox reaction</li>
+              <li>• Converts chemical energy → electrical energy</li>
+              <li>• Produces a positive cell potential (E°<sub>cell</sub> > 0)</li>
+              <li>• Electrons flow from anode to cathode through external circuit</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Comparison with Electrolytic Cell -->
+        <div class="grid md:grid-cols-2 gap-4">
+          <div class="bg-green-50 p-4 rounded-lg border border-green-200">
+            <h4 class="font-semibold text-green-700 mb-2"><i class="fas fa-battery-three-quarters mr-2"></i>Galvanic Cell</h4>
+            <ul class="text-green-700 text-sm space-y-1">
+              <li>• Spontaneous reaction</li>
+              <li>• Produces electricity</li>
+              <li>• No external power needed</li>
+              <li>• E°<sub>cell</sub> is positive</li>
+              <li>• Chemical → Electrical energy</li>
+              <li><strong>Examples:</strong> Batteries, fuel cells</li>
+            </ul>
+          </div>
+          <div class="bg-red-50 p-4 rounded-lg border border-red-200">
+            <h4 class="font-semibold text-red-700 mb-2"><i class="fas fa-plug mr-2"></i>Electrolytic Cell</h4>
+            <ul class="text-red-700 text-sm space-y-1">
+              <li>• Non-spontaneous reaction</li>
+              <li>• Uses electricity</li>
+              <li>• External power required</li>
+              <li>• Applied voltage overcomes E°<sub>cell</sub></li>
+              <li>• Electrical → Chemical energy</li>
+              <li><strong>Examples:</strong> Electroplating, electrolysis</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 2: Parts of a Galvanic Cell -->
+      <section id="section-2" class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <span class="bg-green-100 text-green-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">2</span>
+          Parts of a Galvanic Cell
+        </h2>
+
+        <!-- Diagram -->
+        <div class="bg-white p-4 rounded-lg border border-gray-200 mb-4">
+          <div class="text-center">
+            <svg viewBox="0 0 500 280" class="w-full max-w-lg mx-auto">
+              <!-- Left beaker (Anode) -->
+              <path d="M 50 100 L 50 220 Q 50 240 70 240 L 130 240 Q 150 240 150 220 L 150 100" fill="none" stroke="#4a5568" stroke-width="2"/>
+              <rect x="50" y="100" width="100" height="120" fill="#fef3c7" opacity="0.5"/>
+              <text x="100" y="260" text-anchor="middle" fill="#4a5568" font-size="11">ZnSO<sub>4</sub>(aq)</text>
+              
+              <!-- Right beaker (Cathode) -->
+              <path d="M 350 100 L 350 220 Q 350 240 370 240 L 430 240 Q 450 240 450 220 L 450 100" fill="none" stroke="#4a5568" stroke-width="2"/>
+              <rect x="350" y="100" width="100" height="120" fill="#dbeafe" opacity="0.5"/>
+              <text x="400" y="260" text-anchor="middle" fill="#4a5568" font-size="11">CuSO<sub>4</sub>(aq)</text>
+              
+              <!-- Zinc electrode -->
+              <rect x="90" y="60" width="20" height="100" fill="#a0aec0" rx="2"/>
+              <text x="100" y="50" text-anchor="middle" fill="#718096" font-size="10" font-weight="bold">Zn</text>
+              
+              <!-- Copper electrode -->
+              <rect x="390" y="60" width="20" height="100" fill="#ed8936" rx="2"/>
+              <text x="400" y="50" text-anchor="middle" fill="#c05621" font-size="10" font-weight="bold">Cu</text>
+              
+              <!-- Wire and voltmeter -->
+              <line x1="100" y1="60" x2="100" y2="30" stroke="#718096" stroke-width="2"/>
+              <line x1="100" y1="30" x2="200" y2="30" stroke="#718096" stroke-width="2"/>
+              <rect x="200" y="15" width="100" height="30" fill="#4a5568" rx="3"/>
+              <text x="250" y="35" text-anchor="middle" fill="white" font-size="10">V</text>
+              <line x1="300" y1="30" x2="400" y2="30" stroke="#718096" stroke-width="2"/>
+              <line x1="400" y1="30" x2="400" y2="60" stroke="#718096" stroke-width="2"/>
+              
+              <!-- Salt bridge -->
+              <path d="M 170 140 Q 250 120 330 140" fill="none" stroke="#48bb78" stroke-width="6"/>
+              <path d="M 170 145 L 170 180" stroke="#48bb78" stroke-width="6"/>
+              <path d="M 330 145 L 330 180" stroke="#48bb78" stroke-width="6"/>
+              <text x="250" y="110" text-anchor="middle" fill="#276749" font-size="10">Salt Bridge</text>
+              
+              <!-- Labels -->
+              <text x="100" y="175" text-anchor="middle" fill="#e53e3e" font-size="9" font-weight="bold">ANODE</text>
+              <text x="100" y="188" text-anchor="middle" fill="#e53e3e" font-size="8">(-)</text>
+              <text x="400" y="175" text-anchor="middle" fill="#3182ce" font-size="9" font-weight="bold">CATHODE</text>
+              <text x="400" y="188" text-anchor="middle" fill="#3182ce" font-size="8">(+)</text>
+              
+              <!-- Electron flow -->
+              <text x="250" y="20" text-anchor="middle" fill="#e53e3e" font-size="9">e⁻ flow →</text>
+              
+              <!-- Ion labels -->
+              <text x="100" y="140" text-anchor="middle" fill="#b7791f" font-size="8">Zn²⁺</text>
+              <text x="400" y="140" text-anchor="middle" fill="#3182ce" font-size="8">Cu²⁺</text>
+            </svg>
+          </div>
+          <p class="text-center text-xs text-gray-500 mt-2">Daniel Cell: A common type of galvanic cell</p>
+        </div>
+
+        <div class="space-y-3">
+          <div class="bg-red-50 p-4 rounded-lg border-l-4 border-red-500">
+            <h4 class="font-semibold text-red-800 flex items-center">
+              <i class="fas fa-minus-circle mr-2"></i>Anode (Negative Electrode)
+            </h4>
+            <ul class="text-red-700 text-sm mt-2 space-y-1">
+              <li>• Where <strong>oxidation</strong> occurs</li>
+              <li>• Electrons flow OUT from anode</li>
+              <li>• Metal electrode dissolves (loses mass)</li>
+              <li>• In Daniel Cell: Zn → Zn²⁺ + 2e⁻</li>
+            </ul>
+          </div>
+          
+          <div class="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-500">
+            <h4 class="font-semibold text-blue-800 flex items-center">
+              <i class="fas fa-plus-circle mr-2"></i>Cathode (Positive Electrode)
+            </h4>
+            <ul class="text-blue-700 text-sm mt-2 space-y-1">
+              <li>• Where <strong>reduction</strong> occurs</li>
+              <li>• Electrons flow INTO cathode</li>
+              <li>• Metal deposits on electrode (gains mass)</li>
+              <li>• In Daniel Cell: Cu²⁺ + 2e⁻ → Cu</li>
+            </ul>
+          </div>
+          
+          <div class="bg-green-50 p-4 rounded-lg border-l-4 border-green-500">
+            <h4 class="font-semibold text-green-800 flex items-center">
+              <i class="fas fa-bridge mr-2"></i>Salt Bridge
+            </h4>
+            <ul class="text-green-700 text-sm mt-2 space-y-1">
+              <li>• Contains inert electrolyte (e.g., KNO₃, KCl)</li>
+              <li>• Completes the circuit by allowing ion flow</li>
+              <li>• Maintains electrical neutrality in each half-cell</li>
+              <li>• Anions flow to anode; Cations flow to cathode</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 3: Cell Notation -->
+      <section id="section-3" class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <span class="bg-green-100 text-green-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">3</span>
+          Cell Notation (Shorthand)
+        </h2>
+        
+        <div class="bg-gray-50 p-5 rounded-lg mb-4">
+          <p class="text-gray-700 mb-3">Cell notation is a shorthand way to represent a galvanic cell without drawing a diagram.</p>
+          
+          <div class="bg-white p-4 rounded-lg border border-gray-200">
+            <p class="font-semibold text-gray-800 mb-2">General Format:</p>
+            <div class="bg-gray-100 p-3 rounded text-center font-mono text-lg mb-3">
+              Anode | Anode ion || Cathode ion | Cathode
+            </div>
+            <ul class="text-gray-700 text-sm space-y-1">
+              <li>• <strong>|</strong> = Phase boundary (between solid and solution)</li>
+              <li>• <strong>||</strong> = Salt bridge (separates two half-cells)</li>
+              <li>• Anode (oxidation) written on the left</li>
+              <li>• Cathode (reduction) written on the right</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Example -->
+        <div class="border border-gray-200 rounded-lg overflow-hidden mb-4">
+          <button class="accordion-btn w-full p-4 bg-green-50 text-left font-semibold text-green-800 flex justify-between items-center hover:bg-green-100 transition">
+            <span><i class="fas fa-lightbulb mr-2 text-yellow-500"></i>Example: Daniel Cell Notation</span>
+            <i class="fas fa-chevron-down transform transition-transform"></i>
+          </button>
+          <div class="accordion-content">
+            <div class="p-5">
+              <div class="bg-white p-3 rounded-lg text-center font-mono text-lg mb-3">
+                Zn(s) | Zn²⁺(aq) || Cu²⁺(aq) | Cu(s)
+              </div>
+              <div class="space-y-2 text-sm">
+                <p><strong>Zn(s) | Zn²⁺(aq)</strong> → Anode half-cell (oxidation: Zn → Zn²⁺ + 2e⁻)</p>
+                <p><strong>||</strong> → Salt bridge</p>
+                <p><strong>Cu²⁺(aq) | Cu(s)</strong> → Cathode half-cell (reduction: Cu²⁺ + 2e⁻ → Cu)</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 4: Cell Potential -->
+      <section id="section-4" class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <span class="bg-green-100 text-green-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">4</span>
+          Calculating Cell Potential
+        </h2>
+        
+        <div class="bg-gray-50 p-5 rounded-lg mb-4">
+          <p class="text-gray-700 mb-3">The cell potential (voltage) tells us the "driving force" of the reaction. It's calculated using standard electrode potentials (E° values).</p>
+          
+          <div class="bg-white p-4 rounded-lg border border-gray-200 mb-3">
+            <p class="font-semibold text-gray-800 mb-2">Formula:</p>
+            <div class="bg-green-100 p-3 rounded text-center font-mono text-lg">
+              E°<sub>cell</sub> = E°<sub>cathode</sub> - E°<sub>anode</sub>
+            </div>
+            <p class="text-xs text-gray-500 mt-2 text-center">Or: E°<sub>cell</sub> = E°<sub>reduction</sub> - E°<sub>oxidation</sub></p>
+          </div>
+
+          <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-r-lg">
+            <h4 class="font-semibold text-yellow-800 mb-2"><i class="fas fa-info-circle mr-2"></i>Important Points</h4>
+            <ul class="text-gray-700 text-sm space-y-1">
+              <li>• For a spontaneous cell, E°<sub>cell</sub> must be <strong>positive</strong></li>
+              <li>• Standard electrode potentials are measured at 25°C, 1 M, 1 atm</li>
+              <li>• More positive E° = stronger oxidizing agent (better at gaining e⁻)</li>
+              <li>• More negative E° = stronger reducing agent (better at losing e⁻)</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Worked Example -->
+        <div class="border border-gray-200 rounded-lg overflow-hidden">
+          <button class="accordion-btn w-full p-4 bg-purple-50 text-left font-semibold text-purple-800 flex justify-between items-center hover:bg-purple-100 transition">
+            <span><i class="fas fa-calculator mr-2 text-purple-500"></i>Worked Example: Calculate E° for Daniel Cell</span>
+            <i class="fas fa-chevron-down transform transition-transform"></i>
+          </button>
+          <div class="accordion-content">
+            <div class="p-5">
+              <p class="font-medium text-gray-800 mb-3">Given: E°(Zn²⁺/Zn) = -0.76 V and E°(Cu²⁺/Cu) = +0.34 V</p>
+              
+              <div class="space-y-3">
+                <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-purple-500">
+                  <p class="text-sm text-gray-600"><strong>Step 1:</strong> Identify cathode and anode</p>
+                  <p class="text-purple-700 mt-1">Cu has more positive E°, so Cu²⁺ is reduced (cathode)<br>Zn is oxidized (anode)</p>
+                </div>
+                
+                <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-green-500">
+                  <p class="text-sm text-gray-600"><strong>Step 2:</strong> Apply the formula</p>
+                  <p class="text-green-700 font-mono mt-1">E°<sub>cell</sub> = E°<sub>cathode</sub> - E°<sub>anode</sub></p>
+                  <p class="text-green-700 font-mono mt-1">E°<sub>cell</sub> = (+0.34 V) - (-0.76 V)</p>
+                  <p class="text-green-700 font-mono mt-1">E°<sub>cell</sub> = +1.10 V</p>
+                </div>
+                
+                <div class="bg-green-100 p-3 rounded-lg">
+                  <p class="text-green-800 font-semibold"><i class="fas fa-check-circle mr-2"></i>Answer: E°<sub>cell</sub> = +1.10 V (spontaneous)</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 5: Video -->
+      <section id="section-5" class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <span class="bg-green-100 text-green-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">5</span>
+          Video: Galvanic Cells Explained
+        </h2>
+        
+        <div class="bg-gray-50 p-4 rounded-lg border">
+          <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/7b34XYgADlM" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 6: Practice Problems -->
+      <section id="section-6" class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <i class="fas fa-pencil-alt text-green-600 mr-3"></i>
+          Practice Problems
+        </h2>
+        
+        <div class="space-y-4">
+          <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+            <p class="font-medium text-gray-800 mb-2">1. In a galvanic cell, electrons flow from the _____ to the _____ through the external circuit.</p>
+            <details class="mt-2">
+              <summary class="text-sm text-blue-600 cursor-pointer hover:text-blue-800">Show Answer</summary>
+              <div class="mt-2 text-sm text-gray-700">
+                <strong>Anode to Cathode</strong> - The anode is where oxidation occurs (loses electrons), and electrons flow to the cathode where reduction occurs (gains electrons).
+              </div>
+            </details>
+          </div>
+          
+          <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+            <p class="font-medium text-gray-800 mb-2">2. Write the cell notation for a cell with Mg(s)|Mg²⁺(aq) as the anode and Ag⁺(aq)|Ag(s) as the cathode.</p>
+            <details class="mt-2">
+              <summary class="text-sm text-blue-600 cursor-pointer hover:text-blue-800">Show Answer</summary>
+              <div class="mt-2 text-sm text-gray-700">
+                <strong>Mg(s) | Mg²⁺(aq) || Ag⁺(aq) | Ag(s)</strong>
+              </div>
+            </details>
+          </div>
+          
+          <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+            <p class="font-medium text-gray-800 mb-2">3. Calculate E°<sub>cell</sub> if E°(Mg²⁺/Mg) = -2.37 V and E°(Ag⁺/Ag) = +0.80 V.</p>
+            <details class="mt-2">
+              <summary class="text-sm text-blue-600 cursor-pointer hover:text-blue-800">Show Answer</summary>
+              <div class="mt-2 text-sm text-gray-700">
+                <p>E°<sub>cell</sub> = E°<sub>cathode</sub> - E°<sub>anode</sub></p>
+                <p>E°<sub>cell</sub> = (+0.80 V) - (-2.37 V)</p>
+                <p>E°<sub>cell</sub> = <strong>+3.17 V</strong></p>
+              </div>
+            </details>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 7: Key Takeaways -->
+      <section id="section-7" class="mb-8">
+      <div class="bg-gradient-to-r from-green-50 to-emerald-50 p-5 rounded-lg border border-green-200">
+        <h3 class="font-semibold text-green-800 mb-3"><i class="fas fa-star mr-2"></i>Key Takeaways</h3>
+        <ul class="text-green-700 text-sm space-y-2">
+          <li>• Galvanic cells convert chemical energy to electrical energy spontaneously</li>
+          <li>• Anode = oxidation (negative); Cathode = reduction (positive)</li>
+          <li>• Electrons flow: Anode → external circuit → Cathode</li>
+          <li>• Cell notation: Anode | Anode ion || Cathode ion | Cathode</li>
+          <li>• E°<sub>cell</sub> = E°<sub>cathode</sub> - E°<sub>anode</sub> (must be positive for spontaneous reaction)</li>
+        </ul>
+      </div>
+      </section>
+
+      <!-- Complete Topic Button -->
+      <div class="mt-8 pt-6 border-t border-gray-200">
+        <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div class="text-center sm:text-left">
+            <h3 class="font-semibold text-gray-800">Ready to Complete?</h3>
+            <p class="text-sm text-gray-600">View all sections, then take the quiz to mark this topic as complete.</p>
+          </div>
+          <button id="topic-complete-btn" disabled
+                  class="px-6 py-3 rounded-xl bg-gray-300 text-gray-500 cursor-not-allowed opacity-50 flex items-center gap-2 text-lg font-medium">
+            <i class="fas fa-lock mr-2"></i>
+            <span>Complete (0% viewed)</span>
+          </button>
+        </div>
+      </div>
+    </article>
+  </div>
+
+  <script>
+    // Accordion functionality
+    document.querySelectorAll('.accordion-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const content = btn.nextElementSibling;
+        const icon = btn.querySelector('.fa-chevron-down');
+        
+        content.classList.toggle('open');
+        icon.classList.toggle('rotate-180');
+      });
+    });
+  </script>
+
+  <!-- Topic Tracking and Quiz System -->
+  <script type="module">
+    import { TopicTracker } from '/js/topic-tracker.js';
+    import { TopicQuiz } from '/js/topic-quiz.js';
+
+    const quizQuestions = [
+      {
+        question: "In a galvanic cell, where does oxidation occur?",
+        options: [
+          "At the cathode",
+          "At the anode",
+          "In the salt bridge",
+          "In the external circuit"
+        ],
+        correct: 1,
+        explanation: "Oxidation always occurs at the anode. Remember: Anode is where electrons are lost (oxidation)."
+      },
+      {
+        question: "What is the purpose of a salt bridge in a galvanic cell?",
+        options: [
+          "To generate electricity",
+          "To complete the circuit by allowing ion flow",
+          "To increase the voltage",
+          "To store the electrodes"
+        ],
+        correct: 1,
+        explanation: "The salt bridge completes the circuit by allowing ions to flow between half-cells, maintaining electrical neutrality."
+      },
+      {
+        question: "In the Daniel Cell, what happens at the zinc electrode?",
+        options: [
+          "Cu²⁺ is reduced to Cu",
+          "Zn²⁺ is reduced to Zn",
+          "Zn is oxidized to Zn²⁺",
+          "Cu is oxidized to Cu²⁺"
+        ],
+        correct: 2,
+        explanation: "Zinc is the anode where oxidation occurs: Zn → Zn²⁺ + 2e⁻"
+      },
+      {
+        question: "What does E°cell = +1.10 V indicate?",
+        options: [
+          "The reaction is non-spontaneous",
+          "The reaction is spontaneous",
+          "The cell needs external power",
+          "No reaction occurs"
+        ],
+        correct: 1,
+        explanation: "A positive E°cell indicates a spontaneous reaction. The cell can generate electricity without external power."
+      },
+      {
+        question: "Write the cell notation for Zn|Zn²⁺||Cu²⁺|Cu. What is the cathode?",
+        options: [
+          "Zn",
+          "Zn²⁺",
+          "Cu",
+          "Cu²⁺"
+        ],
+        correct: 2,
+        explanation: "In cell notation, the right side is the cathode. Cu²⁺|Cu means Cu is the cathode where reduction occurs."
+      },
+      {
+        question: "If E°(Zn²⁺/Zn) = -0.76 V and E°(Cu²⁺/Cu) = +0.34 V, calculate E°cell",
+        options: [
+          "-1.10 V",
+          "+0.42 V",
+          "+1.10 V",
+          "-0.42 V"
+        ],
+        correct: 2,
+        explanation: "E°cell = E°cathode - E°anode = (+0.34) - (-0.76) = +1.10 V"
+      },
+      {
+        question: "Which way do electrons flow in a galvanic cell?",
+        options: [
+          "Cathode to anode through the external circuit",
+          "Anode to cathode through the external circuit",
+          "Anode to cathode through the salt bridge",
+          "Cathode to anode through the solution"
+        ],
+        correct: 1,
+        explanation: "Electrons flow from the anode (where they are produced) to the cathode (where they are consumed) through the external circuit."
+      },
+      {
+        question: "Which electrode is negative in a galvanic cell?",
+        options: [
+          "Cathode",
+          "Anode",
+          "Both electrodes",
+          "Neither electrode"
+        ],
+        correct: 1,
+        explanation: "The anode is negative because it is the source of electrons. Oxidation releases electrons, making it electron-rich (negative)."
+      }
+    ];
+
+    const tracker = new TopicTracker({
+      topicId: 'galvanic-cells',
+      topicTitle: 'Galvanic (Voltaic) Cells',
+      subject: 'chemistry',
+      sections: ['section-1', 'section-2', 'section-3', 'section-4', 'section-5', 'section-6', 'section-7'],
+      quizRequired: true
+    });
+
+    const quiz = new TopicQuiz({
+      topicId: 'galvanic-cells',
+      topicTitle: 'Galvanic (Voltaic) Cells',
+      subject: 'chemistry',
+      questions: quizQuestions,
+      passingScore: 60,
+      tracker: tracker
+    });
+
+    // Track accordion opens
+    document.querySelectorAll('.accordion-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const section = btn.closest('section');
+        if (section && section.id) {
+          tracker.markSectionViewed(section.id);
+        }
+      });
+    });
+
+    // Track practice problem views
+    document.querySelectorAll('details').forEach(details => {
+      details.addEventListener('toggle', () => {
+        if (details.open) {
+          tracker.markSectionViewed('section-6');
+        }
+      });
+    });
+  </script>
+</body>
+</html>

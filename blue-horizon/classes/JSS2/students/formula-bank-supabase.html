@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Formula Bank - Prep100</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    #sidebar { transition: transform 0.3s ease-in-out; }
+    #sidebar.hide { transform: translateX(-100%); }
+    @media (min-width: 1024px) { #sidebar { transform: translateX(0) !important; } }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+  <div class="min-h-screen flex">
+    <!-- Sidebar (Embedded) -->
+    <aside id="sidebar" class="w-64 md:w-72 lg:w-80 fixed left-0 top-0 h-full bg-white border-r border-slate-200 p-5 flex flex-col gap-6 overflow-auto z-40">
+      <div class="flex items-center gap-3">
+        <img src="/assets/images/logo.png" alt="logo" class="h-12 w-12 rounded-full shadow-sm">
+        <div>
+          <div class="text-lg font-bold text-sky-700">JUANOVA CORTEX</div>
+          <div class="text-xs text-slate-500">Student Dashboard</div>
+        </div>
+      </div>
+
+      <nav class="flex-1 overflow-auto">
+        <ul class="space-y-1">
+          <li><a href="student-dashboard-supabase.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-home text-sky-600"></i> Home</a></li>
+          <li><a href="news-feed-supabase.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-newspaper text-pink-500"></i> News Feed</a></li>
+          <li><a href="notes-supabase.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-note-sticky text-yellow-500"></i> Study Notes</a></li>
+          <li><a href="textbooks-supabase.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-book text-indigo-500"></i> Textbooks</a></li>
+          <li><a href="formula-bank-supabase.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50 bg-sky-50"><i class="fas fa-book-open text-teal-600"></i> All Formula</a></li>
+          <li><a href="study-plan-supabase.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-calendar-check text-green-500"></i> Study Plan</a></li>
+          <li><a href="video-library-supabase.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-photo-video text-cyan-600"></i> Video Library</a></li>
+          <li><a href="digital-library-supabase.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-book text-indigo-500"></i> Digital Library</a></li>
+          <li><a href="game-supabase.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-puzzle-piece text-purple-500"></i> Game</a></li>
+          <li><a href="mock-exams-supabase.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-pencil-alt text-orange-500"></i> Mock Exams</a></li>
+          <li><a href="cbt/cbt.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-computer text-red-500"></i> JAMB CBT</a></li>
+          <li><a href="notifications-supabase.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-bell text-pink-600"></i> Notifications</a></li>
+          <li><a href="student-live-session-supabase.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-chalkboard-teacher text-blue-400"></i> Live Sessions</a></li>
+          <li><a href="nobel-laureate-supabase.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-award text-yellow-600"></i> Nobel Laureate</a></li>
+        </ul>
+      </nav>
+
+      <div class="text-sm text-slate-500 border-t pt-4">
+        <div class="mb-2">Account</div>
+        <div class="flex items-center gap-3">
+          <img id="avatar-sm" src="../assets/images/unnamed.jpg" alt="avatar" class="h-10 w-10 rounded-full border">
+          <div>
+            <div id="userName" class="font-semibold">Student</div>
+            <div id="userLevel" class="text-xs text-slate-400"></div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+      <div class="layout">
+      <!-- Sidebar injected at runtime by students/js/sidebar-fragment.js -->
+
+    <main class="main-content" style="margin-left: 18rem;">
+      <div class="page-header">
+        <h1 class="page-title"><i class="fa fa-lightbulb"></i> Quick Formula Bank</h1>
+        <button class="add-formula-btn" onclick="showAddFormulaModal()">
+          <i class="fa fa-plus"></i> Add Formula
+        </button>
+      </div>
+
+      <div class="search-bar">
+        <input type="search" class="search-input" placeholder="Search formulas...">
+        <label for="subject-filter" class="visually-hidden">Filter by subject</label>
+        <select class="subject-filter" id="subject-filter">
+          <option value="">All Subjects</option>
+          <option value="mathematics">Mathematics</option>
+          <option value="physics">Physics</option>
+          <option value="chemistry">Chemistry</option>
+        </select>
+      </div>
+
+      <div class="formulas-grid">
+        <!-- Mathematics Formulas -->
+        <div class="formula-card">
+          <div class="formula-subject">Mathematics</div>
+          <h3 class="formula-title">Quadratic Formula</h3>
+          <div class="formula-content">x = (-b ± √(b² - 4ac)) / 2a</div>
+          <div class="formula-actions">
+            <button class="formula-btn" title="Edit"><i class="fa fa-edit"></i></button>
+            <button class="formula-btn" title="Delete"><i class="fa fa-trash"></i></button>
+            <button class="formula-btn" title="Copy"><i class="fa fa-copy"></i></button>
+          </div>
+        </div>
+
+        <!-- Physics Formulas -->
+        <div class="formula-card">
+          <div class="formula-subject">Physics</div>
+          <h3 class="formula-title">Force</h3>
+          <div class="formula-content">F = ma</div>
+          <div class="formula-actions">
+            <button class="formula-btn" title="Edit"><i class="fa fa-edit"></i></button>
+            <button class="formula-btn" title="Delete"><i class="fa fa-trash"></i></button>
+            <button class="formula-btn" title="Copy"><i class="fa fa-copy"></i></button>
+          </div>
+        </div>
+
+        <!-- Chemistry Formulas -->
+        <div class="formula-card">
+          <div class="formula-subject">Chemistry</div>
+          <h3 class="formula-title">Density</h3>
+          <div class="formula-content">ρ = m/V</div>
+          <div class="formula-actions">
+            <button class="formula-btn" title="Edit"><i class="fa fa-edit"></i></button>
+            <button class="formula-btn" title="Delete"><i class="fa fa-trash"></i></button>
+            <button class="formula-btn" title="Copy"><i class="fa fa-copy"></i></button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Add Formula Modal -->
+  <div class="modal-overlay" id="addFormulaModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 class="modal-title">Add New Formula</h2>
+        <button class="modal-close" onclick="hideAddFormulaModal()">&times;</button>
+      </div>
+      <form class="modal-form" id="addFormulaForm" onsubmit="handleAddFormula(event)">
+        <div class="form-group">
+          <label for="formulaSubject">Subject</label>
+          <select id="formulaSubject" required>
+            <option value="">Select Subject</option>
+            <option value="mathematics">Mathematics</option>
+            <option value="physics">Physics</option>
+            <option value="chemistry">Chemistry</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="formulaCategory">Category</label>
+          <select id="formulaCategory">
+            <option value="General">General</option>
+            <option value="Mechanics">Mechanics</option>
+            <option value="Kinematics">Kinematics</option>
+            <option value="Electricity">Electricity</option>
+            <option value="Electromagnetism">Electromagnetism</option>
+            <option value="Optics">Optics</option>
+            <option value="Sound">Sound</option>
+            <option value="Fluid Mechanics">Fluid Mechanics</option>
+            <option value="Thermodynamics">Thermodynamics</option>
+            <option value="Waves">Waves</option>
+            <!-- Chemistry Categories -->
+            <option value="Stoichiometry">Stoichiometry</option>
+            <option value="Gas Laws">Gas Laws</option>
+            <option value="Solutions">Solutions</option>
+            <option value="Kinetics">Kinetics</option>
+            <option value="Equilibrium">Equilibrium</option>
+            <option value="Acids and Bases">Acids and Bases</option>
+            <option value="Thermochemistry">Thermochemistry</option>
+            <option value="Electrochemistry">Electrochemistry</option>
+            <option value="Nuclear Chemistry">Nuclear Chemistry</option>
+            <option value="Organic Chemistry">Organic Chemistry</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="formulaTitle">Formula Title</label>
+          <input type="text" id="formulaTitle" required placeholder="e.g., Pythagorean Theorem">
+        </div>
+        <div class="form-group">
+          <label for="formulaContent">Formula</label>
+          <textarea id="formulaContent" required placeholder="e.g., a² + b² = c²"></textarea>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="modal-btn cancel" onclick="hideAddFormulaModal()">Cancel</button>
+          <button type="submit" class="modal-btn save">Save Formula</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  </div>
+  <script type="module">
+    import { initializeStudentPage } from './js/student-page-shared.js';
+    initializeStudentPage();
+  </script>
+  <script type="module" src="./js/sidebar-fragment.js"></script>
+  <script>
+    function showAddFormulaModal() {
+      document.getElementById('addFormulaModal').style.display = 'flex';
+    }
+
+    function hideAddFormulaModal() {
+      document.getElementById('addFormulaModal').style.display = 'none';
+      document.getElementById('addFormulaForm').reset();
+    }
+
+    function handleAddFormula(event) {
+      event.preventDefault();
+      
+      const subject = document.getElementById('formulaSubject').value;
+      const title = document.getElementById('formulaTitle').value;
+      const content = document.getElementById('formulaContent').value;
+
+      const formulaCard = document.createElement('div');
+      formulaCard.className = 'formula-card';
+      const category = document.getElementById('formulaCategory').value;
+      formulaCard.innerHTML = `
+        <div class="formula-subject">${subject.charAt(0).toUpperCase() + subject.slice(1)} - ${category}</div>
+        <h3 class="formula-title">${title}</h3>
+        <div class="formula-content">${content}</div>
+        <div class="formula-actions">
+          <button class="formula-btn" title="Edit"><i class="fa fa-edit"></i></button>
+          <button class="formula-btn" title="Delete"><i class="fa fa-trash"></i></button>
+          <button class="formula-btn" title="Copy"><i class="fa fa-copy"></i></button>
+        </div>
+      `;
+
+      // Add copy functionality to the new card
+      const copyBtn = formulaCard.querySelector('.formula-btn[title="Copy"]');
+      copyBtn.addEventListener('click', function() {
+        const formula = this.closest('.formula-card').querySelector('.formula-content').textContent;
+        navigator.clipboard.writeText(formula).then(() => {
+          alert('Formula copied to clipboard!');
+        });
+      });
+
+      // Add delete functionality
+      const deleteBtn = formulaCard.querySelector('.formula-btn[title="Delete"]');
+      deleteBtn.addEventListener('click', function() {
+        if (confirm('Are you sure you want to delete this formula?')) {
+          this.closest('.formula-card').remove();
+        }
+      });
+
+      // Add edit functionality
+      const editBtn = formulaCard.querySelector('.formula-btn[title="Edit"]');
+      editBtn.addEventListener('click', function() {
+        const card = this.closest('.formula-card');
+        document.getElementById('formulaSubject').value = subject;
+        document.getElementById('formulaTitle').value = title;
+        document.getElementById('formulaContent').value = content;
+        showAddFormulaModal();
+        // Remove the old card when editing
+        card.remove();
+      });
+
+      document.querySelector('.formulas-grid').appendChild(formulaCard);
+      hideAddFormulaModal();
+    }
+
+    // Add predefined physics formulas
+    const physicsFormulas = [
+      // Mechanics - Kinematics
+      { category: "Mechanics", title: "Velocity (Average)", content: "v = Δs/Δt" },
+      { category: "Mechanics", title: "Velocity (Instantaneous)", content: "v = ds/dt" },
+      { category: "Mechanics", title: "Acceleration (Average)", content: "a = Δv/Δt" },
+      { category: "Mechanics", title: "Acceleration (Instantaneous)", content: "a = dv/dt" },
+      { category: "Mechanics", title: "First Equation of Motion", content: "v = v₀ + at" },
+      { category: "Mechanics", title: "Second Equation of Motion", content: "s = s₀ + v₀t + ½at²" },
+      { category: "Mechanics", title: "Third Equation of Motion", content: "v² = v₀² + 2a(s − s₀)" },
+      { category: "Mechanics", title: "Average Velocity", content: "v = ½(v + v₀)" },
+      { category: "Mechanics", title: "Newton's Second Law", content: "∑F = ma" },
+      { category: "Mechanics", title: "Momentum Form", content: "∑F = dp/dt" },
+      { category: "Mechanics", title: "Weight", content: "W = mg" },
+      { category: "Mechanics", title: "Static Friction", content: "fs ≤ μsN" },
+      { category: "Mechanics", title: "Kinetic Friction", content: "fk = μkN" },
+      { category: "Mechanics", title: "Centripetal Acceleration", content: "ac = v²/r" },
+      { category: "Mechanics", title: "Angular Centripetal Acceleration", content: "ac = −ω²r" },
+
+      // Mechanics - Work and Energy
+      { category: "Mechanics", title: "Momentum", content: "p = mv" },
+      { category: "Mechanics", title: "Impulse", content: "J = FΔt" },
+      { category: "Mechanics", title: "Impulse (Integral)", content: "J = ∫F dt" },
+      { category: "Mechanics", title: "Impulse-Momentum", content: "FΔt = mΔv" },
+      { category: "Mechanics", title: "Impulse-Momentum (Integral)", content: "∫F dt = Δp" },
+      { category: "Mechanics", title: "Work", content: "W = FΔs cos θ" },
+      { category: "Mechanics", title: "Work (Integral)", content: "W = ∫F ⋅ ds" },
+      { category: "Mechanics", title: "Work-Energy Theorem", content: "FΔs cos θ = ΔE" },
+      { category: "Mechanics", title: "Work-Energy (Integral)", content: "∫F ⋅ ds = ΔE" },
+      { category: "Mechanics", title: "Kinetic Energy", content: "K = ½mv²" },
+      { category: "Mechanics", title: "Kinetic Energy (Momentum)", content: "K = p²/2m" },
+      { category: "Mechanics", title: "General Potential Energy", content: "ΔU = −∫F ⋅ ds" },
+      { category: "Mechanics", title: "Potential Energy Gradient", content: "F = −∇U" },
+      { category: "Mechanics", title: "Gravitational Potential Energy", content: "ΔUg = mgΔh" },
+      { category: "Mechanics", title: "Efficiency", content: "η = Wout/Ein" },
+
+      // Mechanics - Rotational Motion
+      { category: "Mechanics", title: "Angular Velocity", content: "ω = dθ/dt" },
+      { category: "Mechanics", title: "Linear Velocity", content: "v = ω × r" },
+      { category: "Mechanics", title: "Angular Acceleration", content: "α = dω/dt" },
+      { category: "Mechanics", title: "Linear Acceleration", content: "a = α × r − ω²r" },
+      { category: "Mechanics", title: "First Equation (Rotational)", content: "ω = ω₀ + αt" },
+      { category: "Mechanics", title: "Second Equation (Rotational)", content: "θ = θ₀ + ω₀t + ½αt²" },
+      { category: "Mechanics", title: "Third Equation (Rotational)", content: "ω² = ω₀² + 2α(θ − θ₀)" },
+      { category: "Mechanics", title: "Average Angular Velocity", content: "ω = ½(ω + ω₀)" },
+      { category: "Mechanics", title: "Torque", content: "τ = r × F" },
+      { category: "Mechanics", title: "Rotational Second Law", content: "∑τ = Iα" },
+      { category: "Mechanics", title: "Angular Momentum Change", content: "∑τ = dL/dt" },
+      { category: "Mechanics", title: "Moment of Inertia", content: "I = ∑mr²" },
+      { category: "Mechanics", title: "Continuous Moment of Inertia", content: "I = ∫r² dm" },
+      { category: "Mechanics", title: "Rotational Work", content: "W = τΔθ" },
+      { category: "Mechanics", title: "Rotational Work (Integral)", content: "W = ∫τ ⋅ dθ" },
+
+      // Mechanics - Additional Rotational
+      { category: "Mechanics", title: "Rotational Power", content: "P = τω cos θ" },
+      { category: "Mechanics", title: "Rotational Power (Vector)", content: "P = τ ⋅ ω" },
+      { category: "Mechanics", title: "Rotational Kinetic Energy", content: "K = ½Iω²" },
+      { category: "Mechanics", title: "Angular Momentum", content: "L = r × p" },
+      { category: "Mechanics", title: "Angular Momentum (Rotational)", content: "L = Iω" },
+      { category: "Mechanics", title: "Angular Impulse", content: "H = τΔt" },
+      { category: "Mechanics", title: "Angular Impulse (Integral)", content: "H = ∫τ dt" },
+      { category: "Mechanics", title: "Angular Impulse-Momentum", content: "τΔt = mΔω" },
+      { category: "Mechanics", title: "Angular I-M (Integral)", content: "∫τ dt = ΔL" },
+
+      // Mechanics - Gravitation
+      { category: "Mechanics", title: "Universal Gravitation", content: "Fg = -GM₁M₂r̂/r²" },
+      { category: "Mechanics", title: "Gravitational Field", content: "g = -GM r̂/r²" },
+      { category: "Mechanics", title: "Gravitational PE", content: "Ug = -GM₁M₂/r" },
+      { category: "Mechanics", title: "Gravitational Potential", content: "Vg = -GM/r" },
+      { category: "Mechanics", title: "Orbital Speed", content: "v = √(GM/r)" },
+      { category: "Mechanics", title: "Escape Speed", content: "v = √(2GM/r)" },
+
+      // Simple Harmonic Motion
+      { category: "Mechanics", title: "Hooke's Law", content: "F = -kΔx" },
+      { category: "Mechanics", title: "Spring Potential Energy", content: "Us = ½kΔx²" },
+      { category: "Mechanics", title: "Simple Harmonic Period", content: "T = 2π√(m/k)" },
+      { category: "Mechanics", title: "Simple Pendulum Period", content: "T = 2π√(ℓ/g)" },
+      { category: "Mechanics", title: "Frequency", content: "f = 1/T" },
+      { category: "Mechanics", title: "Angular Frequency", content: "ω = 2πf" },
+
+      // Fluid Mechanics
+      { category: "Fluid Mechanics", title: "Density", content: "ρ = m/V" },
+      { category: "Fluid Mechanics", title: "Pressure in Fluid", content: "P = P₀ + ρgh" },
+      { category: "Fluid Mechanics", title: "Buoyancy", content: "B = ρgVdisplaced" },
+      { category: "Fluid Mechanics", title: "Mass Flow Rate", content: "qₘ = dm/dt" },
+      { category: "Fluid Mechanics", title: "Volume Flow Rate", content: "qᵥ = dV/dt" },
+      { category: "Fluid Mechanics", title: "Mass Continuity", content: "ρ₁A₁v₁ = ρ₂A₂v₂" },
+      { category: "Fluid Mechanics", title: "Volume Continuity", content: "A₁v₁ = A₂v₂" },
+      { category: "Fluid Mechanics", title: "Bernoulli's Equation", content: "P₁ + ρgy₁ + ½ρv₁² = P₂ + ρgy₂ + ½ρv₂²" },
+      { category: "Fluid Mechanics", title: "Dynamic Viscosity", content: "F/A = η(dvₓ/dy)" },
+      { category: "Fluid Mechanics", title: "Kinematic Viscosity", content: "ν = η/ρ" },
+      { category: "Fluid Mechanics", title: "Drag Force", content: "R = ½ρCAv²" },
+      { category: "Fluid Mechanics", title: "Mach Number", content: "Ma = v/c" },
+      { category: "Fluid Mechanics", title: "Reynolds Number", content: "Re = ρvD/η" },
+      { category: "Fluid Mechanics", title: "Froude Number", content: "Fr = v/√gℓ" },
+
+      // Thermal Physics
+      { category: "Thermal", title: "Linear Expansion", content: "Δℓ = αℓ₀ΔT" },
+      { category: "Thermal", title: "Area Expansion", content: "ΔA = 2αA₀ΔT" },
+      { category: "Thermal", title: "Volume Expansion (Solid)", content: "ΔV = 3αV₀ΔT" },
+      { category: "Thermal", title: "Volume Expansion (Liquid)", content: "ΔV = βV₀ΔT" },
+      { category: "Thermal", title: "Sensible Heat", content: "Q = mcΔT" },
+      { category: "Thermal", title: "Latent Heat", content: "Q = mL" },
+      { category: "Thermal", title: "Ideal Gas Law", content: "PV = nRT" },
+      { category: "Thermal", title: "Average Kinetic Energy", content: "⟨K⟩ = (3/2)kT" },
+      { category: "Thermal", title: "Most Probable Speed", content: "vₚ = √(2kT/m)" },
+      { category: "Thermal", title: "RMS Speed", content: "vᵣₘₛ = √(3kT/m)" },
+      { category: "Thermal", title: "Heat Flow Rate", content: "P = dQ/dt" },
+      { category: "Thermal", title: "Thermal Conduction", content: "P = kAΔT/ℓ" },
+      { category: "Thermal", title: "Stefan-Boltzmann Law", content: "P = εσA(T⁴ - T₀⁴)" },
+      { category: "Thermal", title: "Wien's Law", content: "λₘₐₓ = b/T" },
+      { category: "Thermal", title: "Internal Energy", content: "ΔU = (3/2)nRΔT" },
+
+      // Waves & Optics
+      { category: "Waves", title: "Wave Equation", content: "f(x,t) = A sin(2π(x/λ - ft) + φ)" },
+      { category: "Waves", title: "Beat Frequency", content: "fbeat = fhigh - flow" },
+      { category: "Waves", title: "Wave Intensity", content: "I = ⟨P⟩/A" },
+      { category: "Waves", title: "Intensity Level", content: "LI = 10 log(I/I₀)" },
+      { category: "Waves", title: "Pressure Level", content: "LP = 20 log(ΔP/ΔP₀)" },
+      { category: "Waves", title: "Doppler Effect", content: "fo/fs = λs/λo = (c ± vo)/(c ∓ vs)" },
+      { category: "Waves", title: "Mach Angle", content: "sin μ = c/v" },
+      { category: "Waves", title: "Cerenkov Angle", content: "cos θ = c/nvp" },
+      { category: "Waves", title: "Interference", content: "nλ = d sin θ" },
+      { category: "Optics", title: "Index of Refraction", content: "n = c/v" },
+      { category: "Optics", title: "Snell's Law", content: "n₁ sin θ₁ = n₂ sin θ₂" },
+      { category: "Optics", title: "Critical Angle", content: "sin θc = n₂/n₁" },
+      { category: "Optics", title: "Lens/Mirror Equation", content: "1/f = 1/do + 1/di" },
+      { category: "Optics", title: "Magnification", content: "M = hi/ho = di/do" },
+      { category: "Optics", title: "Spherical Mirrors", content: "f ≈ r/2" },
+
+      // Electricity & Magnetism - Electric Fields
+      { category: "Electromagnetics", title: "Coulomb's Law", content: "F = k(q₁q₂/r²)" },
+      { category: "Electromagnetics", title: "Electric Field Definition", content: "E = FE/q" },
+      { category: "Electromagnetics", title: "Electric Potential", content: "ΔV = ΔUE/q" },
+      { category: "Electromagnetics", title: "Field from Potential", content: "E = -∇V" },
+      { category: "Electromagnetics", title: "Capacitance", content: "C = Q/V" },
+      { category: "Electromagnetics", title: "Plate Capacitor", content: "C = κε₀A/d" },
+      { category: "Electromagnetics", title: "Cylindrical Capacitor", content: "C = 2πκε₀ℓ/ln(r₂/r₁)" },
+      { category: "Electromagnetics", title: "Capacitive Energy", content: "Uc = ½QV = ½CV² = ½Q²/C" },
+      { category: "Electromagnetics", title: "Current Density", content: "J = I/A = ρv" },
+      { category: "Electromagnetics", title: "Ohm's Law", content: "V = IR, E = ρJ, J = σE" },
+      { category: "Electromagnetics", title: "Resistivity", content: "R = ρℓ/A" },
+      { category: "Electromagnetics", title: "Electric Power", content: "P = VI = I²R = V²/R" },
+      { category: "Electromagnetics", title: "Series Resistors", content: "Rs = ∑Ri" },
+      { category: "Electromagnetics", title: "Parallel Resistors", content: "1/Rp = ∑(1/Ri)" },
+      { category: "Electromagnetics", title: "Series Capacitors", content: "1/Cs = ∑(1/Ci)" },
+
+      // Thermodynamics
+      { category: "Thermodynamics", title: "First Law", content: "ΔU = Q - W" },
+      { category: "Thermodynamics", title: "Ideal Gas Law", content: "PV = nRT" },
+      { category: "Thermodynamics", title: "Entropy Change", content: "ΔS = Q/T" },
+      { category: "Thermodynamics", title: "Gibbs Free Energy", content: "ΔG = ΔH - TΔS" },
+
+      // Electricity & Magnetism - Magnetic Fields and Modern Physics
+      { category: "Electromagnetics", title: "Magnetic Force (Charge)", content: "FB = qv × B" },
+      { category: "Electromagnetics", title: "Magnetic Force (Current)", content: "FB = IℓB sin θ" },
+      { category: "Electromagnetics", title: "Biot-Savart Law", content: "B = (μ₀I/4π)∫(ds × r̂)/r²" },
+      { category: "Electromagnetics", title: "Solenoid Field", content: "B = μ₀nI" },
+      { category: "Electromagnetics", title: "Straight Wire Field", content: "B = μ₀I/2πr" },
+      { category: "Electromagnetics", title: "Parallel Wire Force", content: "FB/ℓ = (μ₀/2π)(I₁I₂/r)" },
+      { category: "Electromagnetics", title: "Electric Flux", content: "ΦE = ∫E⋅dA" },
+      { category: "Electromagnetics", title: "Magnetic Flux", content: "ΦB = ∫B⋅dA" },
+      { category: "Electromagnetics", title: "Faraday's Law", content: "ε = -dΦB/dt" },
+      { category: "Electromagnetics", title: "Inductance", content: "ε = -L(dI/dt)" },
+      
+      // Chemistry - Atomic Structure and Properties
+      { category: "Atomic Structure", title: "Atomic Mass", content: "Mass number = protons + neutrons" },
+      { category: "Atomic Structure", title: "Isotope Mass", content: "Average atomic mass = Σ(mass × abundance)" },
+      { category: "Atomic Structure", title: "Electron Configuration", content: "2n² electrons per shell" },
+      { category: "Atomic Structure", title: "Orbital Energy", content: "E = -2.178 × 10⁻¹⁸ J (1/n²)" },
+      { category: "Atomic Structure", title: "Wavelength", content: "E = hc/λ" },
+      { category: "Atomic Structure", title: "Frequency", content: "E = hν" },
+      
+      // Chemistry - Stoichiometry and Mass Relations
+      { category: "Stoichiometry", title: "Density", content: "ρ = m/V" },
+      { category: "Stoichiometry", title: "Molar Mass", content: "M = m/n" },
+      { category: "Stoichiometry", title: "Percent Composition", content: "% composition = (mass of element/total mass) × 100" },
+      { category: "Stoichiometry", title: "Mass Percent", content: "Mass % = (mass of solute/mass of solution) × 100" },
+      { category: "Stoichiometry", title: "Empirical Formula", content: "subscript ratio = (moles of element)/(smallest mole value)" },
+      { category: "Stoichiometry", title: "Limiting Reagent", content: "Theoretical yield = minimum(actual yield/coefficient)" },
+      { category: "Stoichiometry", title: "Percent Yield", content: "% yield = (actual yield/theoretical yield) × 100" },
+      
+      // Chemistry - Gas Laws and Properties
+      { category: "Gas Laws", title: "Boyle's Law", content: "P₁V₁ = P₂V₂ (constant T)" },
+      { category: "Gas Laws", title: "Charles' Law", content: "V₁/T₁ = V₂/T₂ (constant P)" },
+      { category: "Gas Laws", title: "Gay-Lussac's Law", content: "P₁/T₁ = P₂/T₂ (constant V)" },
+      { category: "Gas Laws", title: "Combined Gas Law", content: "P₁V₁/T₁ = P₂V₂/T₂" },
+      { category: "Gas Laws", title: "Ideal Gas Law", content: "PV = nRT" },
+      { category: "Gas Laws", title: "Dalton's Law", content: "Pₜₒₜₐₗ = P₁ + P₂ + P₃ + ..." },
+      { category: "Gas Laws", title: "Graham's Law", content: "rate₁/rate₂ = √(M₂/M₁)" },
+      { category: "Gas Laws", title: "Real Gas Equation", content: "P + (an²/V²)(V - nb) = nRT" },
+      { category: "Gas Laws", title: "Gas Density", content: "d = PM/RT" },
+
+      // Chemistry - Solutions and Colligative Properties
+      { category: "Solutions", title: "Molarity", content: "M = moles solute/L solution" },
+      { category: "Solutions", title: "Molality", content: "m = moles solute/kg solvent" },
+      { category: "Solutions", title: "Mole Fraction", content: "X = moles component/total moles" },
+      { category: "Solutions", title: "Dilution", content: "M₁V₁ = M₂V₂" },
+      { category: "Solutions", title: "Henry's Law", content: "c = kP" },
+      { category: "Solutions", title: "Raoult's Law", content: "Pₐ = XₐP°ₐ" },
+      { category: "Solutions", title: "Boiling Point Elevation", content: "ΔTb = Kb × m" },
+      { category: "Solutions", title: "Freezing Point Depression", content: "ΔTf = Kf × m" },
+      { category: "Solutions", title: "Osmotic Pressure", content: "π = MRT" },
+      { category: "Solutions", title: "Van't Hoff Factor", content: "i = moles of particles/moles of solute" },
+      { category: "Solutions", title: "Solution Concentration", content: "ppm = (mass solute/mass solution) × 10⁶" },
+
+      // Chemistry - Kinetics
+      { category: "Kinetics", title: "Rate Law", content: "rate = k[A]ᵐ[B]ⁿ" },
+      { category: "Kinetics", title: "First Order Half-Life", content: "t½ = 0.693/k" },
+      { category: "Kinetics", title: "Arrhenius Equation", content: "k = Ae⁻ᴱᵃ/ᴿᵀ" },
+      { category: "Kinetics", title: "Activation Energy", content: "ln(k₂/k₁) = -(Eₐ/R)(1/T₂ - 1/T₁)" },
+
+      // Chemistry - Equilibrium and Le Chatelier's Principle
+      { category: "Equilibrium", title: "Equilibrium Constant", content: "Kc = [C]ᶜ[D]ᵈ/[A]ᵃ[B]ᵇ" },
+      { category: "Equilibrium", title: "Pressure Equilibrium", content: "Kp = Kc(RT)ᐩⁿ" },
+      { category: "Equilibrium", title: "ICE Table", content: "Initial - Change = Equilibrium" },
+      { category: "Equilibrium", title: "Le Chatelier's Principle", content: "System shifts to oppose change" },
+      { category: "Equilibrium", title: "Reaction Quotient", content: "Q = [C]ᶜ[D]ᵈ/[A]ᵃ[B]ᵇ at any time" },
+      { category: "Equilibrium", title: "Solubility Product", content: "Ksp = [cation]ᵃ[anion]ᵇ" },
+      { category: "Equilibrium", title: "Ion Product", content: "Q = [cation]ᵃ[anion]ᵇ at any time" },
+      { category: "Equilibrium", title: "Common Ion Effect", content: "Solubility decreases with common ion" },
+
+      // Chemistry - Acids, Bases, and Buffers
+      { category: "Acids and Bases", title: "pH Definition", content: "pH = -log[H⁺]" },
+      { category: "Acids and Bases", title: "pOH Definition", content: "pOH = -log[OH⁻]" },
+      { category: "Acids and Bases", title: "Water Equilibrium", content: "Kw = [H⁺][OH⁻] = 1.0×10⁻¹⁴" },
+      { category: "Acids and Bases", title: "Henderson-Hasselbalch", content: "pH = pKa + log([A⁻]/[HA])" },
+      { category: "Acids and Bases", title: "Buffer Capacity", content: "β = ΔCb/ΔpH" },
+      { category: "Acids and Bases", title: "Acid Dissociation", content: "Ka = [H⁺][A⁻]/[HA]" },
+      { category: "Acids and Bases", title: "Base Dissociation", content: "Kb = [OH⁻][BH⁺]/[B]" },
+      { category: "Acids and Bases", title: "pH and pKa Relation", content: "Ka × Kb = Kw" },
+      { category: "Acids and Bases", title: "Percent Ionization", content: "% ionization = ([H⁺]/[HA]initial) × 100" },
+      { category: "Acids and Bases", title: "Buffer pH Change", content: "ΔpH = -log(1 ± x/buffer capacity)" },
+
+      // Chemistry - Thermochemistry
+      { category: "Thermochemistry", title: "Enthalpy Change", content: "ΔH = ΣnₚΔHₚ° - ΣnᵣΔHᵣ°" },
+      { category: "Thermochemistry", title: "Gibbs Free Energy", content: "ΔG = ΔH - TΔS" },
+      { category: "Thermochemistry", title: "Heat Capacity", content: "q = mcΔT" },
+      { category: "Thermochemistry", title: "Hess's Law", content: "ΔH°ᵣₓₙ = ΣΔH°ₚᵣₒᵈᵤᶜₜₛ - ΣΔH°ᵣₑₐᶜₜₐₙₜₛ" },
+
+      // Chemistry - Electrochemistry and Redox Reactions
+      { category: "Electrochemistry", title: "Nernst Equation", content: "E = E° - (RT/nF)lnQ" },
+      { category: "Electrochemistry", title: "Cell Potential", content: "E°cell = E°reduction + E°oxidation" },
+      { category: "Electrochemistry", title: "Faraday's Law", content: "q = nFQ" },
+      { category: "Electrochemistry", title: "Work from Cell", content: "w = -nFE°cell" },
+      { category: "Electrochemistry", title: "Current-Time Relation", content: "Q = It" },
+      { category: "Electrochemistry", title: "Mass of Product", content: "m = (It × M)/(nF)" },
+      { category: "Electrochemistry", title: "Concentration Cell", content: "E = (RT/nF)ln(C₁/C₂)" },
+      { category: "Electrochemistry", title: "Standard Cell Potential", content: "ΔG° = -nFE°" },
+      { category: "Electrochemistry", title: "Electrolysis Time", content: "t = (nFm)/(MI)" },
+
+      // Chemistry - Nuclear Chemistry and Radioactivity
+      { category: "Nuclear Chemistry", title: "Half-Life", content: "N = N₀(½)ᵗ/ᵗ½" },
+      { category: "Nuclear Chemistry", title: "Decay Constant", content: "λ = ln(2)/t½" },
+      { category: "Nuclear Chemistry", title: "Activity", content: "A = λN" },
+      { category: "Nuclear Chemistry", title: "Binding Energy", content: "ΔE = Δmc²" },
+      { category: "Nuclear Chemistry", title: "First-Order Decay", content: "ln(N₀/N) = λt" },
+      { category: "Nuclear Chemistry", title: "Decay Rate", content: "dN/dt = -λN" },
+      { category: "Nuclear Chemistry", title: "Mass Defect", content: "Δm = Σ(atomic masses) - nuclear mass" },
+      { category: "Nuclear Chemistry", title: "Nuclear Binding Energy", content: "BE = (Δm)c²" },
+      { category: "Nuclear Chemistry", title: "Energy per Nucleon", content: "BE/A = binding energy/mass number" },
+
+      // Chemistry - Organic Chemistry and Biochemistry
+      { category: "Organic Chemistry", title: "Empirical Formula", content: "%element = (n × atomic mass × 100)/molar mass" },
+      { category: "Organic Chemistry", title: "Molecular Formula", content: "(Molecular mass)/(Empirical formula mass) = n" },
+      { category: "Organic Chemistry", title: "Percent Yield", content: "% yield = (actual yield/theoretical yield) × 100" },
+      { category: "Organic Chemistry", title: "Heat of Combustion", content: "ΔH°c = Σ(bonds broken) - Σ(bonds formed)" },
+      { category: "Organic Chemistry", title: "Heat of Formation", content: "ΔH°f = Σ(products) - Σ(reactants)" },
+      { category: "Organic Chemistry", title: "Octane Number", content: "RON = [(test fuel knock/reference fuel knock) × 100]" },
+      { category: "Organic Chemistry", title: "Saponification Value", content: "SV = (56.1 × N × V)/W" },
+      { category: "Organic Chemistry", title: "Iodine Value", content: "IV = (12.69 × N × V)/W" },
+      { category: "Biochemistry", title: "pH of Buffer", content: "pH = pKa + log([salt]/[acid])" },
+      { category: "Biochemistry", title: "Enzyme Kinetics", content: "v = (Vmax × [S])/(Km + [S])" },
+      { category: "Biochemistry", title: "Free Energy", content: "ΔG = ΔH - TΔS" },
+
+      // Modern Physics
+      { category: "Modern Physics", title: "Relativistic Energy", content: "E = γmc²" },
+      { category: "Modern Physics", title: "Mass-Energy", content: "E = mc²" },
+      { category: "Modern Physics", title: "Photon Energy", content: "E = hf = pc" },
+      { category: "Modern Physics", title: "de Broglie Wavelength", content: "λ = h/p" },
+      { category: "Modern Physics", title: "Uncertainty Principle", content: "ΔpₓΔx ≥ ℏ/2" },
+      { category: "Modern Physics", title: "Radioactive Decay", content: "N = N₀2⁻ᵗ/ᵀ½" },
+      { category: "Modern Physics", title: "Activity", content: "A = n/t" },
+      { category: "Modern Physics", title: "Absorbed Dose", content: "D = E/m" },
+      { category: "Modern Physics", title: "Equivalent Dose", content: "H = wᵣD" },
+    ];
+
+    // Function to determine subject based on category
+    function getSubjectFromCategory(category) {
+      const chemistryCategories = ["Stoichiometry", "Gas Laws", "Solutions", "Kinetics", 
+        "Equilibrium", "Acids and Bases", "Thermochemistry", "Electrochemistry", 
+        "Nuclear Chemistry", "Organic Chemistry", "Atomic Structure", "Biochemistry"];
+      
+      const physicsCategories = ["Mechanics", "Kinematics", "Electricity", "Electromagnetism", 
+        "Optics", "Sound", "Fluid Mechanics", "Thermodynamics", "Waves", "Modern Physics"];
+      
+      if (chemistryCategories.includes(category)) return "chemistry";
+      if (physicsCategories.includes(category)) return "physics";
+      return "physics"; // default fallback
+    }
+
+    // Function to add all formulas
+    function addAllFormulas() {
+      physicsFormulas.forEach(formula => {
+        const subject = getSubjectFromCategory(formula.category);
+        document.getElementById('formulaSubject').value = subject;
+        document.getElementById('formulaCategory').value = formula.category;
+        document.getElementById('formulaTitle').value = formula.title;
+        document.getElementById('formulaContent').value = formula.content;
+        
+        // Trigger form submission
+        const event = new Event('submit');
+        document.getElementById('addFormulaForm').dispatchEvent(event);
+      });
+    }
+
+    // Add formulas when page loads
+    window.addEventListener('load', addAllFormulas);
+
+    // Initialize search and filter functionality
+    const searchInput = document.querySelector('.search-input');
+    const subjectFilter = document.querySelector('.subject-filter');
+    const formulaCards = document.querySelectorAll('.formula-card');
+
+    function filterFormulas() {
+      const searchTerm = searchInput.value.toLowerCase();
+      const subject = subjectFilter.value.toLowerCase();
+      
+      // Get all formula cards (including dynamically added ones)
+      const currentCards = document.querySelectorAll('.formula-card');
+
+      currentCards.forEach(card => {
+        const cardSubject = card.querySelector('.formula-subject').textContent.split('-')[0].toLowerCase().trim();
+        const cardTitle = card.querySelector('.formula-title').textContent.toLowerCase();
+        const cardContent = card.querySelector('.formula-content').textContent.toLowerCase();
+        const cardCategory = card.querySelector('.formula-subject').textContent.split('-')[1]?.toLowerCase().trim() || '';
+
+        const matchesSearch = searchTerm === '' || 
+          cardTitle.includes(searchTerm) || 
+          cardContent.includes(searchTerm) ||
+          cardCategory.includes(searchTerm);
+        const matchesSubject = subject === '' || cardSubject === subject;
+
+        card.style.display = matchesSearch && matchesSubject ? 'block' : 'none';
+      });
+    }
+
+    searchInput.addEventListener('input', filterFormulas);
+    subjectFilter.addEventListener('change', filterFormulas);
+
+    // Copy formula functionality
+    document.querySelectorAll('.formula-btn[title="Copy"]').forEach(btn => {
+      btn.addEventListener('click', function() {
+        const formula = this.closest('.formula-card').querySelector('.formula-content').textContent;
+        navigator.clipboard.writeText(formula).then(() => {
+          alert('Formula copied to clipboard!');
+        });
+      });
+    });
+  </script>
+  <script type="module">
+    import { config } from '../js/config.js';
+    import { initSupabase } from '../js/supabase-client.js';
+
+    const supabase = initSupabase(config.supabase.url, config.supabase.anonKey);
+
+    function setText(id, text) { const el = document.getElementById(id); if (el) el.textContent = text; }
+    function setImage(id, url) { const el = document.getElementById(id); if (el) el.src = url; }
+
+    // Sidebar toggle
+    const sidebar = document.getElementById('sidebar');
+    const mainContent = document.getElementById('main-content');
+    const toggleBtn = document.getElementById('toggleSidebar');
+    const marginClasses = ['ml-64', 'md:ml-72', 'lg:ml-80'];
+
+    function applyInitialState() {
+      if (window.innerWidth < 1024) {
+        sidebar.classList.add('hide');
+        mainContent.classList.remove(...marginClasses);
+      } else {
+        sidebar.classList.remove('hide');
+        mainContent.classList.add(...marginClasses);
+      }
+    }
+
+    applyInitialState();
+
+    if (toggleBtn) {
+      toggleBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        sidebar.classList.toggle('hide');
+        if (sidebar.classList.contains('hide')) {
+          mainContent.classList.remove(...marginClasses);
+        } else {
+          mainContent.classList.add(...marginClasses);
+        }
+      });
+    }
+
+    let lastIsDesktop = window.innerWidth >= 1024;
+    window.addEventListener('resize', () => {
+      const isDesktop = window.innerWidth >= 1024;
+      if (isDesktop !== lastIsDesktop) {
+        lastIsDesktop = isDesktop;
+        if (isDesktop) {
+          sidebar.classList.remove('hide');
+          mainContent.classList.add(...marginClasses);
+        } else {
+          sidebar.classList.add('hide');
+          mainContent.classList.remove(...marginClasses);
+        }
+      }
+    });
+
+    let currentUid = null;
+
+    // Formula management
+    async function loadFormulas(userId) {
+      try {
+        const { data: formulas, error } = await supabase
+          .from('formulas')
+          .select('*')
+          .eq('user_id', userId)
+          .order('created_at', { ascending: false });
+        if (error) throw error;
+        return formulas || [];
+      } catch (e) { console.warn('loadFormulas failed', e); return []; }
+    }
+
+    function renderFormulas(formulas) {
+      const grid = document.getElementById('formulaGrid');
+      grid.innerHTML = '';
+      formulas.forEach(f => {
+        const card = document.createElement('div');
+        card.className = 'bg-white rounded-lg p-4 shadow hover:shadow-lg transition';
+        card.innerHTML = `
+          <div class="flex justify-between items-start mb-2">
+            <h3 class="font-semibold text-sky-600">${f.name}</h3>
+            <div class="flex gap-2">
+              <button class="text-xs px-2 py-1 bg-slate-100 rounded hover:bg-slate-200 copy-btn" data-id="${f.id}">Copy</button>
+              <button class="text-xs px-2 py-1 bg-red-100 text-red-600 rounded hover:bg-red-200 delete-btn" data-id="${f.id}">Delete</button>
+            </div>
+          </div>
+          <p class="text-sm font-mono bg-slate-50 p-2 rounded mb-2 break-all">${f.formula}</p>
+          <div class="text-xs text-slate-500">${f.subject || 'General'}</div>
+        `;
+        grid.appendChild(card);
+      });
+
+      // Wire copy/delete buttons
+      document.querySelectorAll('.copy-btn').forEach(btn => {
+        btn.onclick = async (e) => {
+          e.stopPropagation();
+          const formula = formulas.find(f => f.id === btn.getAttribute('data-id'));
+          if (formula) {
+            navigator.clipboard.writeText(formula.formula);
+            alert('Copied!');
+          }
+        };
+      });
+
+      document.querySelectorAll('.delete-btn').forEach(btn => {
+        btn.onclick = async (e) => {
+          e.stopPropagation();
+          const id = btn.getAttribute('data-id');
+          try {
+            await supabase.from('formulas').delete().eq('id', id).eq('user_id', currentUid);
+            const refreshed = await loadFormulas(currentUid);
+            renderFormulas(refreshed);
+          } catch (err) { alert('Failed to delete'); }
+        };
+      });
+    }
+
+    // Modal handlers
+    const modal = document.getElementById('addFormulaModal');
+    document.getElementById('addFormulaBtn').onclick = () => modal.classList.remove('hidden');
+    document.getElementById('closeModal').onclick = () => modal.classList.add('hidden');
+
+    document.getElementById('addFormulaConfirm').onclick = async () => {
+      const name = document.getElementById('formulaName').value;
+      const formula = document.getElementById('formulaText').value;
+      const subject = document.getElementById('formulaSubject').value;
+      if (!name || !formula) { alert('Fill all fields'); return; }
+      try {
+        await supabase.from('formulas').insert({
+          user_id: currentUid,
+          name,
+          formula,
+          subject,
+          created_at: new Date().toISOString()
+        });
+        modal.classList.add('hidden');
+        document.getElementById('formulaName').value = '';
+        document.getElementById('formulaText').value = '';
+        document.getElementById('formulaSubject').value = '';
+        const refreshed = await loadFormulas(currentUid);
+        renderFormulas(refreshed);
+      } catch (err) { alert('Failed to add formula'); }
+    };
+
+    // Auth
+    supabase.auth.onAuthStateChange(async (event, session) => {
+      if (!session || !session.user) {
+        window.location.href = '../general/login.html';
+        return;
+      }
+
+      if (!session.user.email_confirmed_at) {
+        alert('Please verify your email first.');
+        await supabase.auth.signOut();
+        window.location.href = '../general/login.html';
+        return;
+      }
+
+      currentUid = session.user.id;
+
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', currentUid)
+        .single();
+
+      if (profile) {
+        const displayName = profile.full_name || session.user.email?.split('@')[0] || 'Student';
+        setText('userName', displayName.split(' ')[0]);
+        setText('topName', displayName);
+        if (profile.avatar_url) {
+          setImage('avatar-sm', profile.avatar_url);
+          setImage('topAvatar', profile.avatar_url);
+        }
+        if (profile.level) {
+          setText('userLevel', profile.level);
+          setText('topLevel', profile.level);
+        }
+      }
+
+      const formulas = await loadFormulas(currentUid);
+      renderFormulas(formulas);
+    });
+  </script>
+</body>
+</html>

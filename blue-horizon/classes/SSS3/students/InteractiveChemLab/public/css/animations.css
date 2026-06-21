@@ -1,0 +1,148 @@
+@keyframes fadeInOut {
+    0% { opacity: 0; transform: translate(-50%, -20px); }
+    10% { opacity: 1; transform: translate(-50%, 0); }
+    90% { opacity: 1; transform: translate(-50%, 0); }
+    100% { opacity: 0; transform: translate(-50%, -20px); }
+}
+
+/* Enhanced sparkle animation with more dynamic behavior */
+@keyframes sparkle {
+    0% { transform: scale(0) rotate(0deg); opacity: 0; }
+    20% { transform: scale(1.2) rotate(45deg); opacity: 0.9; }
+    50% { transform: scale(0.9) rotate(90deg); opacity: 0.6; }
+    80% { transform: scale(1.1) rotate(180deg); opacity: 0.4; }
+    100% { transform: scale(0) rotate(360deg); opacity: 0; }
+}
+
+.sparkle {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: #ffd700;
+    border-radius: 50%;
+    filter: blur(1px);
+    animation: sparkle 0.6s ease-out forwards;
+    pointer-events: none;
+}
+
+/* Improved burette liquid transitions */
+.burette-liquid {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 0%;
+    background: #ffd34d;
+    transition: height 700ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.burette-meniscus {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 6px;
+    bottom: 0;
+    transform: translateY(50%);
+    opacity: 0;
+    transition: opacity 200ms ease;
+    background: radial-gradient(
+        ellipse at center,
+        rgba(255, 211, 77, 0.9) 0%,
+        rgba(255, 211, 77, 0.5) 50%,
+        transparent 100%
+    );
+}
+
+/* Enhanced filled hover effect */
+.filled-hover {
+    animation: filledPulse 1s cubic-bezier(0.4, 0, 0.6, 1);
+}
+
+@keyframes filledPulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.02); }
+    100% { transform: scale(1); }
+}
+
+/* Add styles for the floating alignment guide */
+.alignment-guide {
+    position: absolute;
+    border: 2px dashed #4a90e2;
+    border-radius: 4px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.alignment-guide.visible {
+    opacity: 1;
+}
+
+/* Improve clamp visibility */
+.clamp {
+    position: relative;
+    transition: transform 0.2s ease;
+}
+
+.clamp:hover {
+    transform: scale(1.05);
+}
+
+/* Add a subtle pulse animation to the empty clamp */
+@keyframes clampPulse {
+    0% { box-shadow: 0 0 0 0 rgba(74, 144, 226, 0.4); }
+    70% { box-shadow: 0 0 0 10px rgba(74, 144, 226, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(74, 144, 226, 0); }
+}
+
+.clamp:not(.with-burette) {
+    animation: clampPulse 2s infinite;
+}
+
+/* Add touch-friendly hover states */
+@media (hover: none) {
+    .clamp:active {
+        transform: scale(1.05);
+    }
+}
+
+/* Apply sparkles to both views */
+.burette-sparkles {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: visible;
+    z-index: 10;
+}
+
+/* Pipette visual and flask flash helpers */
+.pipette-item {
+    box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+}
+
+.flash-add {
+    animation: flashAdd 600ms ease-in-out;
+}
+
+@keyframes flashAdd {
+    0% { box-shadow: 0 0 0 0 rgba(255,215,0,0.0); transform: scale(1); }
+    50% { box-shadow: 0 8px 24px rgba(255,215,0,0.25); transform: scale(1.01); }
+    100% { box-shadow: 0 0 0 0 rgba(255,215,0,0.0); transform: scale(1); }
+}
+
+/* Flask visual and focus styles */
+.flask-element:focus, .pipette-item:focus, #buretteClamp:focus {
+    outline: 3px solid rgba(74,144,226,0.3);
+    outline-offset: 2px;
+}
+
+.flask-liquid {
+    transition: height 500ms ease;
+}
+
+/* Reduced motion: shorten or remove animations for users who opt out */
+@media (prefers-reduced-motion: reduce) {
+    .sparkle { animation-duration: 250ms !important; }
+    .burette-liquid { transition-duration: 250ms !important; }
+    .pipette-item.dragging { transition: none !important; }
+}

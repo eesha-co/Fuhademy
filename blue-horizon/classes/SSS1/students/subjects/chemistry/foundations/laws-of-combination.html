@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Laws of Chemical Combination | Chemistry Foundations</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .content-card {
+      -webkit-backdrop-filter: blur(12px);
+      backdrop-filter: blur(12px);
+      background: rgba(255, 255, 255, 0.95);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    .accordion-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease-out;
+    }
+    .accordion-content.open {
+      max-height: 2000px;
+    }
+    .step-card { transition: all 0.2s ease; }
+    .step-card:hover { transform: translateX(4px); }
+    #topic-complete-btn { transition: all 0.3s ease; }
+    #topic-complete-btn:not(:disabled):hover { transform: scale(1.02); }
+  </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-amber-50 to-orange-100 p-4 md:p-6">
+  <div class="max-w-4xl mx-auto">
+    <!-- Navigation -->
+    <nav class="mb-4 flex items-center justify-between">
+      <a href="index.html" class="text-blue-600 hover:text-blue-800 transition flex items-center">
+        <i class="fas fa-arrow-left mr-2"></i>Back to Foundations
+      </a>
+      <div class="flex items-center gap-3">
+        <div class="text-sm text-gray-600">
+          <span id="topic-progress-text">0% Complete</span>
+        </div>
+        <div class="w-24 h-2 bg-gray-200 rounded-full overflow-hidden">
+          <div id="topic-progress-bar" class="h-full bg-gradient-to-r from-amber-400 to-orange-500 transition-all duration-300" style="width: 0%"></div>
+        </div>
+      </div>
+    </nav>
+    
+    <article class="content-card rounded-xl p-6 md:p-8 shadow-lg">
+      <!-- Header -->
+      <div class="border-b pb-4 mb-6">
+        <h1 class="text-2xl md:text-3xl font-bold text-gray-800 mb-2">
+          <i class="fas fa-balance-scale text-amber-500 mr-3"></i>Laws of Chemical Combination
+        </h1>
+        <p class="text-gray-600">The fundamental laws governing how elements combine to form compounds.</p>
+      </div>
+
+      <!-- Learning Objectives -->
+      <div class="bg-amber-50 border-l-4 border-amber-500 p-4 rounded-r-lg mb-6">
+        <h3 class="font-semibold text-amber-800 mb-2"><i class="fas fa-bullseye mr-2"></i>Learning Objectives</h3>
+        <ul class="text-amber-700 text-sm space-y-1">
+          <li>• State and explain the Law of Conservation of Mass</li>
+          <li>• State and explain the Law of Constant Composition</li>
+          <li>• State the Law of Multiple Proportions</li>
+          <li>• Apply these laws to solve problems</li>
+        </ul>
+      </div>
+
+      <!-- Section 1: Introduction -->
+      <section id="section-1" class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <span class="bg-amber-100 text-amber-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">1</span>
+          Introduction
+        </h2>
+        
+        <div class="bg-gray-50 p-5 rounded-lg">
+          <p class="text-gray-700 mb-4">When elements react to form compounds, they follow certain fundamental laws. These <strong class="text-amber-600">Laws of Chemical Combination</strong> form the basis of quantitative chemistry and were discovered through careful experiments by early chemists.</p>
+          
+          <div class="bg-white p-4 rounded-lg border border-gray-200">
+            <p class="text-gray-700 text-sm">These laws helped establish <strong>Dalton's Atomic Theory</strong> and our modern understanding of atoms and molecules.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 2: Law of Conservation of Mass -->
+      <section id="section-2" class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <span class="bg-amber-100 text-amber-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">2</span>
+          Law of Conservation of Mass
+        </h2>
+        
+        <div class="bg-gray-50 p-5 rounded-lg mb-4">
+          <div class="bg-gradient-to-r from-green-100 to-teal-100 p-4 rounded-lg mb-4">
+            <p class="text-lg text-center font-semibold text-green-800">
+              "Mass is neither created nor destroyed in a chemical reaction."
+            </p>
+            <p class="text-center text-green-700 text-sm mt-1">— Antoine Lavoisier (1774)</p>
+          </div>
+
+          <div class="grid md:grid-cols-2 gap-4 mb-4">
+            <div class="bg-white p-4 rounded-lg border">
+              <h4 class="font-semibold text-gray-800 mb-2">Statement</h4>
+              <p class="text-gray-700 text-sm">In any chemical reaction, the total mass of the reactants equals the total mass of the products.</p>
+            </div>
+            <div class="bg-white p-4 rounded-lg border">
+              <h4 class="font-semibold text-gray-800 mb-2">Implication</h4>
+              <p class="text-gray-700 text-sm">Atoms are neither created nor destroyed; they simply rearrange to form new substances.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Worked Example -->
+        <div class="border border-gray-200 rounded-lg overflow-hidden">
+          <button class="accordion-btn w-full p-4 bg-green-50 text-left font-semibold text-green-800 flex justify-between items-center hover:bg-green-100 transition">
+            <span><i class="fas fa-calculator mr-2 text-green-500"></i>Worked Example</span>
+            <i class="fas fa-chevron-down transform transition-transform"></i>
+          </button>
+          <div class="accordion-content">
+            <div class="p-5">
+              <p class="font-medium text-gray-800 mb-3">When 4 g of hydrogen reacts with 32 g of oxygen, what mass of water is formed?</p>
+              
+              <div class="space-y-3">
+                <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-green-500">
+                  <p class="text-sm text-gray-600"><strong>Apply the law:</strong> Mass of reactants = Mass of products</p>
+                </div>
+                <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-blue-500">
+                  <p class="text-sm text-gray-600"><strong>Calculate:</strong></p>
+                  <p class="text-blue-700 mt-1">Mass of H₂O = Mass of H₂ + Mass of O₂</p>
+                  <p class="text-blue-700">Mass of H₂O = 4 g + 32 g = <strong>36 g</strong></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 3: Law of Constant Composition -->
+      <section id="section-3" class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <span class="bg-amber-100 text-amber-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">3</span>
+          Law of Constant Composition
+        </h2>
+        
+        <div class="bg-gray-50 p-5 rounded-lg mb-4">
+          <div class="bg-gradient-to-r from-blue-100 to-indigo-100 p-4 rounded-lg mb-4">
+            <p class="text-lg text-center font-semibold text-blue-800">
+              "A given compound always contains the same elements in the same proportion by mass."
+            </p>
+            <p class="text-center text-blue-700 text-sm mt-1">— Joseph Proust (1799)</p>
+          </div>
+
+          <div class="bg-white p-4 rounded-lg border border-gray-200 mb-4">
+            <h4 class="font-semibold text-gray-800 mb-2">Also Known As:</h4>
+            <ul class="text-gray-700 text-sm space-y-1">
+              <li>• Law of Definite Proportions</li>
+              <li>• Law of Constant Composition</li>
+            </ul>
+          </div>
+
+          <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-r-lg">
+            <h4 class="font-semibold text-yellow-800 mb-2"><i class="fas fa-lightbulb mr-2"></i>Example</h4>
+            <p class="text-gray-700 text-sm">Water (H₂O) always contains hydrogen and oxygen in the ratio <strong>1:8 by mass</strong> (or 11.1% H and 88.9% O by mass), whether it comes from a river, a glacier, or a laboratory.</p>
+          </div>
+        </div>
+
+        <!-- Worked Example -->
+        <div class="border border-gray-200 rounded-lg overflow-hidden">
+          <button class="accordion-btn w-full p-4 bg-blue-50 text-left font-semibold text-blue-800 flex justify-between items-center hover:bg-blue-100 transition">
+            <span><i class="fas fa-calculator mr-2 text-blue-500"></i>Worked Example</span>
+            <i class="fas fa-chevron-down transform transition-transform"></i>
+          </button>
+          <div class="accordion-content">
+            <div class="p-5">
+              <p class="font-medium text-gray-800 mb-3">If 9 g of water is decomposed, what masses of hydrogen and oxygen are obtained?</p>
+              
+              <div class="space-y-3">
+                <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-blue-500">
+                  <p class="text-sm text-gray-600"><strong>Known ratio:</strong> H₂O contains H:O = 1:8 by mass</p>
+                </div>
+                <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-indigo-500">
+                  <p class="text-sm text-gray-600"><strong>Calculate:</strong></p>
+                  <p class="text-indigo-700 mt-1">Total parts = 1 + 8 = 9 parts</p>
+                  <p class="text-indigo-700">Mass of H = (1/9) × 9 g = <strong>1 g</strong></p>
+                  <p class="text-indigo-700">Mass of O = (8/9) × 9 g = <strong>8 g</strong></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 4: Law of Multiple Proportions -->
+      <section id="section-4" class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <span class="bg-amber-100 text-amber-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">4</span>
+          Law of Multiple Proportions
+        </h2>
+        
+        <div class="bg-gray-50 p-5 rounded-lg mb-4">
+          <div class="bg-gradient-to-r from-purple-100 to-pink-100 p-4 rounded-lg mb-4">
+            <p class="text-lg text-center font-semibold text-purple-800">
+              "When two elements combine to form more than one compound, the masses of one element that combine with a fixed mass of the other are in simple whole number ratios."
+            </p>
+            <p class="text-center text-purple-700 text-sm mt-1">— John Dalton (1803)</p>
+          </div>
+
+          <div class="bg-white p-4 rounded-lg border border-gray-200">
+            <h4 class="font-semibold text-gray-800 mb-2">Example: Carbon and Oxygen</h4>
+            <table class="w-full text-sm">
+              <thead class="bg-purple-100">
+                <tr>
+                  <th class="p-2 text-left">Compound</th>
+                  <th class="p-2 text-center">Carbon (g)</th>
+                  <th class="p-2 text-center">Oxygen (g)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td class="p-2 border">CO (carbon monoxide)</td><td class="p-2 border text-center">12</td><td class="p-2 border text-center">16</td></tr>
+                <tr><td class="p-2 border">CO₂ (carbon dioxide)</td><td class="p-2 border text-center">12</td><td class="p-2 border text-center">32</td></tr>
+              </tbody>
+            </table>
+            <p class="text-gray-700 text-sm mt-3">The ratio of oxygen in CO and CO₂ = 16:32 = <strong>1:2</strong> (simple whole numbers!)</p>
+          </div>
+        </div>
+
+        <!-- Worked Example -->
+        <div class="border border-gray-200 rounded-lg overflow-hidden">
+          <button class="accordion-btn w-full p-4 bg-purple-50 text-left font-semibold text-purple-800 flex justify-between items-center hover:bg-purple-100 transition">
+            <span><i class="fas fa-calculator mr-2 text-purple-500"></i>Worked Example</span>
+            <i class="fas fa-chevron-down transform transition-transform"></i>
+          </button>
+          <div class="accordion-content">
+            <div class="p-5">
+              <p class="font-medium text-gray-800 mb-3">Nitrogen forms two oxides. In NO, 14 g N combines with 16 g O. In NO₂, 14 g N combines with 32 g O. Show this illustrates the Law of Multiple Proportions.</p>
+              
+              <div class="space-y-3">
+                <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-purple-500">
+                  <p class="text-sm text-gray-600"><strong>Fixed mass of N:</strong> 14 g in both compounds</p>
+                </div>
+                <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-indigo-500">
+                  <p class="text-sm text-gray-600"><strong>Masses of O:</strong> 16 g in NO, 32 g in NO₂</p>
+                </div>
+                <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-blue-500">
+                  <p class="text-sm text-gray-600"><strong>Ratio:</strong> 16:32 = <strong>1:2</strong></p>
+                </div>
+                <div class="bg-green-100 p-3 rounded-lg">
+                  <p class="text-green-800 font-semibold">Simple whole number ratio = Law of Multiple Proportions verified!</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 5: Summary Table -->
+      <section id="section-5" class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <span class="bg-amber-100 text-amber-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">5</span>
+          Summary of Laws
+        </h2>
+        
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm border-collapse border border-gray-300 rounded-lg overflow-hidden">
+            <thead class="bg-amber-600 text-white">
+              <tr>
+                <th class="border border-gray-300 p-3 text-left">Law</th>
+                <th class="border border-gray-300 p-3 text-left">Scientist</th>
+                <th class="border border-gray-300 p-3 text-left">Statement</th>
+              </tr>
+            </thead>
+            <tbody class="bg-white">
+              <tr>
+                <td class="border border-gray-300 p-3 font-medium">Conservation of Mass</td>
+                <td class="border border-gray-300 p-3">Lavoisier</td>
+                <td class="border border-gray-300 p-3">Mass is neither created nor destroyed</td>
+              </tr>
+              <tr class="bg-gray-50">
+                <td class="border border-gray-300 p-3 font-medium">Constant Composition</td>
+                <td class="border border-gray-300 p-3">Proust</td>
+                <td class="border border-gray-300 p-3">Compounds have fixed composition by mass</td>
+              </tr>
+              <tr>
+                <td class="border border-gray-300 p-3 font-medium">Multiple Proportions</td>
+                <td class="border border-gray-300 p-3">Dalton</td>
+                <td class="border border-gray-300 p-3">Masses combine in simple whole number ratios</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Section 6: Practice Problems -->
+      <section id="section-6" class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <i class="fas fa-pencil-alt text-amber-600 mr-3"></i>
+          Practice Problems
+        </h2>
+        
+        <div class="space-y-4">
+          <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+            <p class="font-medium text-gray-800 mb-2">1. 10 g of CaCO₃ on heating gives 5.6 g of CaO and 4.4 g of CO₂. Show this illustrates the Law of Conservation of Mass.</p>
+            <details class="mt-2">
+              <summary class="text-sm text-blue-600 cursor-pointer hover:text-blue-800">Show Solution</summary>
+              <div class="mt-2 text-sm text-gray-700">
+                <p>Mass of reactant = 10 g</p>
+                <p>Mass of products = 5.6 + 4.4 = 10 g</p>
+                <p>Mass of reactant = Mass of products ✓</p>
+              </div>
+            </details>
+          </div>
+          
+          <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+            <p class="font-medium text-gray-800 mb-2">2. CuO always contains 79.9% Cu and 20.1% O by mass. Which law does this illustrate?</p>
+            <details class="mt-2">
+              <summary class="text-sm text-blue-600 cursor-pointer hover:text-blue-800">Show Solution</summary>
+              <div class="mt-2 text-sm text-gray-700">
+                <p><strong>Law of Constant Composition</strong> - the compound CuO always has the same composition by mass.</p>
+              </div>
+            </details>
+          </div>
+          
+          <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+            <p class="font-medium text-gray-800 mb-2">3. In CO, 12 g C combines with 16 g O. In CO₂, 12 g C combines with 32 g O. What is the ratio of oxygen masses?</p>
+            <details class="mt-2">
+              <summary class="text-sm text-blue-600 cursor-pointer hover:text-blue-800">Show Solution</summary>
+              <div class="mt-2 text-sm text-gray-700">
+                <p>Ratio = 16:32 = <strong>1:2</strong></p>
+                <p>(Simple whole number ratio - Law of Multiple Proportions)</p>
+              </div>
+            </details>
+          </div>
+        </div>
+      </section>
+
+      <!-- Key Takeaways -->
+      <section id="section-7" class="mb-8">
+        <div class="bg-gradient-to-r from-amber-50 to-orange-50 p-5 rounded-lg border border-amber-200">
+          <h3 class="font-semibold text-amber-800 mb-3"><i class="fas fa-star mr-2"></i>Key Takeaways for WAEC/JAMB/NECO</h3>
+          <ul class="text-amber-700 text-sm space-y-2">
+            <li>• <strong>Conservation of Mass:</strong> Mass reactants = Mass products</li>
+            <li>• <strong>Constant Composition:</strong> Same compound = same % composition always</li>
+            <li>• <strong>Multiple Proportions:</strong> Different compounds of same elements = simple mass ratios</li>
+            <li>• Know the scientists associated with each law</li>
+            <li>• Be able to calculate and verify these laws</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Complete Topic Button -->
+      <div class="mt-8 pt-6 border-t border-gray-200">
+        <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div class="text-center sm:text-left">
+            <h3 class="font-semibold text-gray-800">Ready to Complete?</h3>
+            <p class="text-sm text-gray-600">View all sections, then take the quiz to mark this topic as complete.</p>
+          </div>
+          <button id="topic-complete-btn" disabled
+                  class="px-6 py-3 rounded-xl bg-gray-300 text-gray-500 cursor-not-allowed opacity-50 flex items-center gap-2 text-lg font-medium">
+            <i class="fas fa-lock mr-2"></i>
+            <span>Complete (0% viewed)</span>
+          </button>
+        </div>
+      </div>
+    </article>
+  </div>
+
+  <script>
+    document.querySelectorAll('.accordion-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const content = btn.nextElementSibling;
+        const icon = btn.querySelector('.fa-chevron-down');
+        content.classList.toggle('open');
+        icon?.classList.toggle('rotate-180');
+      });
+    });
+  </script>
+
+  <script type="module">
+    import { TopicTracker } from '/js/topic-tracker.js';
+    import { TopicQuiz } from '/js/topic-quiz.js';
+
+    const quizQuestions = [
+      {
+        question: "Who proposed the Law of Conservation of Mass?",
+        options: ["Dalton", "Proust", "Lavoisier", "Boyle"],
+        correct: 2,
+        explanation: "Antoine Lavoisier proposed the Law of Conservation of Mass in 1774."
+      },
+      {
+        question: "In a chemical reaction, 20 g of reactants produce:",
+        options: ["Less than 20 g products", "More than 20 g products", "Exactly 20 g products", "Variable mass of products"],
+        correct: 2,
+        explanation: "By the Law of Conservation of Mass, mass of reactants = mass of products."
+      },
+      {
+        question: "The Law of Constant Composition is also called:",
+        options: ["Law of Multiple Proportions", "Law of Definite Proportions", "Law of Conservation", "Law of Reciprocal Proportions"],
+        correct: 1,
+        explanation: "The Law of Constant Composition is also known as the Law of Definite Proportions."
+      },
+      {
+        question: "Water always contains H and O in ratio 1:8 by mass. This illustrates which law?",
+        options: ["Conservation of Mass", "Multiple Proportions", "Constant Composition", "Boyle's Law"],
+        correct: 2,
+        explanation: "The fixed composition of water illustrates the Law of Constant Composition."
+      },
+      {
+        question: "CO contains 12g C + 16g O. CO₂ contains 12g C + 32g O. What law does this illustrate?",
+        options: ["Conservation of Mass", "Constant Composition", "Multiple Proportions", "Gay-Lussac's Law"],
+        correct: 2,
+        explanation: "The ratio 16:32 = 1:2 shows the Law of Multiple Proportions."
+      },
+      {
+        question: "If 18 g of water decomposes, what mass of hydrogen is obtained?",
+        options: ["1 g", "2 g", "16 g", "9 g"],
+        correct: 1,
+        explanation: "H₂O has H:O = 1:8 by mass. Total = 9 parts. H = (1/9) × 18 = 2 g"
+      },
+      {
+        question: "Who proposed the Law of Multiple Proportions?",
+        options: ["Lavoisier", "Proust", "Dalton", "Gay-Lussac"],
+        correct: 2,
+        explanation: "John Dalton proposed the Law of Multiple Proportions in 1803."
+      },
+      {
+        question: "The Law of Conservation of Mass implies that:",
+        options: [
+          "Atoms are destroyed in reactions",
+          "Atoms are created in reactions",
+          "Atoms are rearranged but not created or destroyed",
+          "Mass can change during reactions"
+        ],
+        correct: 2,
+        explanation: "The law means atoms simply rearrange to form new substances - they are neither created nor destroyed."
+      }
+    ];
+
+    const tracker = new TopicTracker({
+      topicId: 'laws-of-combination',
+      topicTitle: 'Laws of Chemical Combination',
+      subject: 'chemistry',
+      sections: ['section-1', 'section-2', 'section-3', 'section-4', 'section-5', 'section-6', 'section-7'],
+      quizRequired: true
+    });
+
+    const quiz = new TopicQuiz({
+      topicId: 'laws-of-combination',
+      topicTitle: 'Laws of Chemical Combination',
+      subject: 'chemistry',
+      questions: quizQuestions,
+      passingScore: 60,
+      tracker: tracker
+    });
+
+    document.querySelectorAll('.accordion-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const section = btn.closest('section');
+        if (section && section.id) tracker.markSectionViewed(section.id);
+      });
+    });
+
+    document.querySelectorAll('details').forEach(details => {
+      details.addEventListener('toggle', () => {
+        if (details.open) tracker.markSectionViewed('section-6');
+      });
+    });
+  </script>
+</body>
+</html>

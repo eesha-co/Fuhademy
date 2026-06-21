@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Photosynthesis - Biology</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @keyframes fade-in-up {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in-up { animation: fade-in-up 0.5s ease-out forwards; }
+        .section-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            border: 1px solid #e5e7eb;
+        }
+        .simulation-container {
+            position: relative;
+            width: 100%;
+            height: 500px;
+            overflow: hidden;
+            border-radius: 8px;
+            background: #f9fafb;
+        }
+        .simulation-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        .video-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 8px;
+            background: #f9fafb;
+        }
+        .video-container iframe {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Header -->
+    <nav class="bg-white shadow-sm fixed top-0 w-full z-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center">
+                    <a href="biology-nutrition.html" class="text-green-600 hover:text-green-800 mr-4">
+                        <i class="fas fa-arrow-left"></i>
+                    </a>
+                    <h1 class="text-xl font-semibold text-gray-900">Photosynthesis</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="text-sm text-gray-600 hidden sm:block">
+                        Progress: <span id="progressPercent">0%</span>
+                    </div>
+                    <div class="w-24 sm:w-32 h-2 bg-gray-200 rounded-full">
+                        <div id="progressBar" class="h-2 bg-green-500 rounded-full transition-all duration-300" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="pt-20 pb-8 px-4 max-w-5xl mx-auto">
+        <!-- Learning Objectives -->
+        <div class="bg-green-50 border-l-4 border-green-500 p-4 rounded-r-lg mb-6 animate-fade-in-up">
+            <h3 class="font-semibold text-green-800 mb-2"><i class="fas fa-bullseye mr-2"></i>Learning Objectives</h3>
+            <ul class="text-green-700 text-sm space-y-1">
+                <li>• Define photosynthesis and state its importance</li>
+                <li>• Write the word and chemical equation for photosynthesis</li>
+                <li>• Explain the role of chlorophyll, light, and carbon dioxide</li>
+                <li>• Describe the structure of a leaf in relation to photosynthesis</li>
+                <li>• Identify factors that affect the rate of photosynthesis</li>
+            </ul>
+        </div>
+
+        <!-- Section 1: What is Photosynthesis? -->
+        <div class="section-card animate-fade-in-up">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <span class="bg-green-100 text-green-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">1</span>
+                What is Photosynthesis?
+            </h2>
+            
+            <p class="text-gray-700 mb-4"><strong>Photosynthesis</strong> is the process by which green plants and some other organisms convert light energy into chemical energy stored in glucose. It is one of the most important biological processes on Earth!</p>
+            
+            <div class="bg-emerald-50 p-4 rounded-lg border-l-4 border-emerald-500 mb-4">
+                <h4 class="font-semibold text-emerald-800 mb-2"><i class="fas fa-sun mr-2"></i>Simple Definition</h4>
+                <p class="text-gray-700">Photosynthesis is how plants make their own food using <strong>sunlight</strong>, <strong>carbon dioxide</strong>, and <strong>water</strong> to produce <strong>glucose</strong> and <strong>oxygen</strong>.</p>
+            </div>
+
+            <div class="bg-blue-50 p-4 rounded-lg mb-4">
+                <h4 class="font-semibold text-blue-800 mb-2"><i class="fas fa-lightbulb mr-2 text-yellow-500"></i>Why is Photosynthesis Important?</h4>
+                <ul class="text-blue-700 text-sm space-y-1">
+                    <li>• Produces <strong>oxygen</strong> for all living organisms to breathe</li>
+                    <li>• Forms the base of most food chains on Earth</li>
+                    <li>• Removes CO<sub>2</sub> from the atmosphere (helps with climate regulation)</li>
+                    <li>• Creates stored energy in the form of glucose (food)</li>
+                    <li>• Source of fossil fuels (ancient photosynthesis)</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Section 2: The Equation -->
+        <div class="section-card animate-fade-in-up">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <span class="bg-green-100 text-green-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">2</span>
+                The Equation for Photosynthesis
+            </h2>
+
+            <div class="bg-white p-4 rounded-lg border-2 border-green-200 mb-4">
+                <h4 class="font-semibold text-gray-800 mb-2">Word Equation:</h4>
+                <div class="bg-green-50 p-3 rounded-lg text-center font-medium text-green-800">
+                    Carbon Dioxide + Water → (Light + Chlorophyll) → Glucose + Oxygen
+                </div>
+            </div>
+
+            <div class="bg-white p-4 rounded-lg border-2 border-emerald-200 mb-4">
+                <h4 class="font-semibold text-gray-800 mb-2">Chemical Equation:</h4>
+                <div class="bg-emerald-50 p-3 rounded-lg text-center font-mono text-emerald-800 text-lg">
+                    6CO<sub>2</sub> + 6H<sub>2</sub>O → (Light + Chlorophyll) → C<sub>6</sub>H<sub>12</sub>O<sub>6</sub> + 6O<sub>2</sub>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-4">
+                <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                    <h4 class="font-semibold text-blue-700 mb-2"><i class="fas fa-arrow-down mr-2"></i>Reactants (Inputs)</h4>
+                    <ul class="text-gray-700 text-sm space-y-1">
+                        <li>• Carbon Dioxide (CO<sub>2</sub>) - from the air</li>
+                        <li>• Water (H<sub>2</sub>O) - absorbed by roots</li>
+                        <li>• Light Energy - from the sun</li>
+                        <li>• Chlorophyll - in chloroplasts</li>
+                    </ul>
+                </div>
+                <div class="bg-orange-50 p-4 rounded-lg border border-orange-200">
+                    <h4 class="font-semibold text-orange-700 mb-2"><i class="fas fa-arrow-up mr-2"></i>Products (Outputs)</h4>
+                    <ul class="text-gray-700 text-sm space-y-1">
+                        <li>• Glucose (C<sub>6</sub>H<sub>12</sub>O<sub>6</sub>) - food/energy</li>
+                        <li>• Oxygen (O<sub>2</sub>) - released into air</li>
+                        <li>• Water vapor (sometimes)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 3: Leaf Structure -->
+        <div class="section-card animate-fade-in-up">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <span class="bg-green-100 text-green-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">3</span>
+                Leaf Structure for Photosynthesis
+            </h2>
+
+            <p class="text-gray-700 mb-4">Leaves are perfectly adapted for photosynthesis. Here's how their structure supports this vital process:</p>
+
+            <div class="space-y-3">
+                <div class="bg-green-50 p-4 rounded-lg border-l-4 border-green-500">
+                    <h4 class="font-semibold text-green-800 flex items-center">
+                        <i class="fas fa-circle text-green-500 mr-2 text-xs"></i>Upper Epidermis
+                    </h4>
+                    <p class="text-gray-600 text-sm mt-1">Transparent layer that allows light to pass through to the palisade layer below. Has a waxy cuticle to reduce water loss.</p>
+                </div>
+
+                <div class="bg-emerald-50 p-4 rounded-lg border-l-4 border-emerald-500">
+                    <h4 class="font-semibold text-emerald-800 flex items-center">
+                        <i class="fas fa-circle text-emerald-500 mr-2 text-xs"></i>Palisade Mesophyll
+                    </h4>
+                    <p class="text-gray-600 text-sm mt-1">Tightly packed column-shaped cells near the upper surface. Contains many chloroplasts for maximum light absorption. Main site of photosynthesis!</p>
+                </div>
+
+                <div class="bg-teal-50 p-4 rounded-lg border-l-4 border-teal-500">
+                    <h4 class="font-semibold text-teal-800 flex items-center">
+                        <i class="fas fa-circle text-teal-500 mr-2 text-xs"></i>Spongy Mesophyll
+                    </h4>
+                    <p class="text-gray-600 text-sm mt-1">Loosely arranged cells with air spaces between them. Allows gas exchange (CO<sub>2</sub> in, O<sub>2</sub> out) through the stomata.</p>
+                </div>
+
+                <div class="bg-cyan-50 p-4 rounded-lg border-l-4 border-cyan-500">
+                    <h4 class="font-semibold text-cyan-800 flex items-center">
+                        <i class="fas fa-circle text-cyan-500 mr-2 text-xs"></i>Stomata & Guard Cells
+                    </h4>
+                    <p class="text-gray-600 text-sm mt-1">Tiny pores on the lower epidermis that open and close to control gas exchange and water loss. Guard cells control the opening.</p>
+                </div>
+
+                <div class="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-500">
+                    <h4 class="font-semibold text-blue-800 flex items-center">
+                        <i class="fas fa-circle text-blue-500 mr-2 text-xs"></i>Vascular Bundle (Veins)
+                    </h4>
+                    <p class="text-gray-600 text-sm mt-1"><strong>Xylem</strong> transports water to leaf cells. <strong>Phloem</strong> transports glucose away from the leaf to other parts of the plant.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 4: Factors Affecting Photosynthesis -->
+        <div class="section-card animate-fade-in-up">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <span class="bg-green-100 text-green-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">4</span>
+                Factors Affecting the Rate of Photosynthesis
+            </h2>
+
+            <p class="text-gray-700 mb-4">Several factors can limit the rate of photosynthesis. These are called <strong>limiting factors</strong>:</p>
+
+            <div class="grid md:grid-cols-2 gap-4">
+                <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+                    <h4 class="font-semibold text-yellow-700 mb-2"><i class="fas fa-sun mr-2"></i>Light Intensity</h4>
+                    <p class="text-gray-600 text-sm">More light = faster photosynthesis (up to a point). The rate levels off when another factor becomes limiting.</p>
+                </div>
+
+                <div class="bg-gray-100 p-4 rounded-lg border border-gray-300">
+                    <h4 class="font-semibold text-gray-700 mb-2"><i class="fas fa-cloud mr-2"></i>Carbon Dioxide Concentration</h4>
+                    <p class="text-gray-600 text-sm">More CO<sub>2</sub> = faster photosynthesis (up to a point). Greenhouses often add CO<sub>2</sub> to increase crop yields.</p>
+                </div>
+
+                <div class="bg-red-50 p-4 rounded-lg border border-red-200">
+                    <h4 class="font-semibold text-red-700 mb-2"><i class="fas fa-thermometer-half mr-2"></i>Temperature</h4>
+                    <p class="text-gray-600 text-sm">Rate increases with temperature until enzymes denature (usually above 40-45°C). Optimum is around 25-35°C for most plants.</p>
+                </div>
+
+                <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                    <h4 class="font-semibold text-blue-700 mb-2"><i class="fas fa-tint mr-2"></i>Water Availability</h4>
+                    <p class="text-gray-600 text-sm">Water shortage causes stomata to close, reducing CO<sub>2</sub> uptake. Severe shortage stops photosynthesis entirely.</p>
+                </div>
+            </div>
+
+            <div class="mt-4 bg-purple-50 border-l-4 border-purple-400 p-4 rounded-r-lg">
+                <h4 class="font-semibold text-purple-800 mb-2"><i class="fas fa-info-circle mr-2"></i>Liebig's Law of the Minimum</h4>
+                <p class="text-gray-700 text-sm">The rate of photosynthesis is limited by the factor that is in shortest supply. Even if light and temperature are perfect, low CO<sub>2</sub> will limit the rate.</p>
+            </div>
+        </div>
+
+        <!-- Section 5: Interactive & Video -->
+        <div class="section-card animate-fade-in-up">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <span class="bg-green-100 text-green-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">5</span>
+                Video: Understanding Photosynthesis
+            </h2>
+            
+            <div class="bg-gray-50 p-4 rounded-lg border">
+                <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/sQK3Yr4Sc_k" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 6: Practice Problems -->
+        <div class="section-card animate-fade-in-up">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-pencil-alt text-green-600 mr-3"></i>
+                Practice Questions
+            </h2>
+
+            <div class="space-y-4">
+                <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+                    <p class="font-medium text-gray-800 mb-2">1. Write the word equation for photosynthesis.</p>
+                    <details class="mt-2">
+                        <summary class="text-sm text-blue-600 cursor-pointer hover:text-blue-800">Show Answer</summary>
+                        <div class="mt-2 text-sm text-gray-700">
+                            <strong>Carbon Dioxide + Water → (Light + Chlorophyll) → Glucose + Oxygen</strong>
+                        </div>
+                    </details>
+                </div>
+
+                <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+                    <p class="font-medium text-gray-800 mb-2">2. Why are the palisade cells located near the upper surface of the leaf?</p>
+                    <details class="mt-2">
+                        <summary class="text-sm text-blue-600 cursor-pointer hover:text-blue-800">Show Answer</summary>
+                        <div class="mt-2 text-sm text-gray-700">
+                            Palisade cells are near the upper surface to receive maximum light for photosynthesis. They are packed with chloroplasts and their position allows them to capture as much light energy as possible for the photosynthesis process.
+                        </div>
+                    </details>
+                </div>
+
+                <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+                    <p class="font-medium text-gray-800 mb-2">3. Explain why a plant might stop growing in a closed container with no fresh air supply.</p>
+                    <details class="mt-2">
+                        <summary class="text-sm text-blue-600 cursor-pointer hover:text-blue-800">Show Answer</summary>
+                        <div class="mt-2 text-sm text-gray-700">
+                            <ol class="list-decimal list-inside">
+                                <li>The plant uses up the available CO<sub>2</sub> in the container for photosynthesis</li>
+                                <li>Without fresh air, CO<sub>2</sub> becomes a limiting factor</li>
+                                <li>Photosynthesis slows or stops, reducing glucose production</li>
+                                <li>Without glucose, the plant cannot grow or carry out cellular respiration</li>
+                            </ol>
+                        </div>
+                    </details>
+                </div>
+
+                <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+                    <p class="font-medium text-gray-800 mb-2">4. State the function of stomata in photosynthesis.</p>
+                    <details class="mt-2">
+                        <summary class="text-sm text-blue-600 cursor-pointer hover:text-blue-800">Show Answer</summary>
+                        <div class="mt-2 text-sm text-gray-700">
+                            <ul class="list-disc list-inside">
+                                <li>Allow CO<sub>2</sub> to enter the leaf for photosynthesis</li>
+                                <li>Allow O<sub>2</sub> (produced during photosynthesis) to exit</li>
+                                <li>Control water loss through transpiration</li>
+                                <li>Open during the day for gas exchange, close at night to save water</li>
+                            </ul>
+                        </div>
+                    </details>
+                </div>
+            </div>
+        </div>
+
+        <!-- Key Takeaways -->
+        <div class="bg-gradient-to-r from-green-50 to-emerald-50 p-5 rounded-lg border border-green-200 animate-fade-in-up">
+            <h3 class="font-semibold text-green-800 mb-3"><i class="fas fa-star mr-2"></i>Key Takeaways</h3>
+            <ul class="text-green-700 text-sm space-y-2">
+                <li>• Photosynthesis converts light energy into chemical energy (glucose)</li>
+                <li>• Equation: CO<sub>2</sub> + H<sub>2</sub>O → (Light + Chlorophyll) → C<sub>6</sub>H<sub>12</sub>O<sub>6</sub> + O<sub>2</sub></li>
+                <li>• Leaf structure (palisade cells, stomata, veins) is adapted for efficient photosynthesis</li>
+                <li>• Limiting factors: light intensity, CO<sub>2</sub> concentration, temperature, water</li>
+                <li>• Photosynthesis produces oxygen and food - essential for life on Earth</li>
+            </ul>
+        </div>
+
+        <!-- Navigation -->
+        <div class="flex justify-between items-center mt-8">
+            <a href="biology-topic-plant-nutrition.html" class="px-4 py-2 text-gray-600 hover:text-gray-900">
+                <i class="fas fa-chevron-left mr-2"></i>Previous
+            </a>
+            <a href="biology-topic-respiratory-animals.html" class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600">
+                Next<i class="fas fa-chevron-right ml-2"></i>
+            </a>
+        </div>
+    </main>
+
+    <script>
+        // Progress tracking
+        let progress = 0;
+        const totalSections = 6;
+        
+        function updateProgress() {
+            const percentage = Math.round((progress / totalSections) * 100);
+            document.getElementById('progressPercent').textContent = percentage + '%';
+            document.getElementById('progressBar').style.width = percentage + '%';
+        }
+
+        // Intersection Observer for progress
+        const sections = document.querySelectorAll('.section-card');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    progress = Array.from(sections).indexOf(entry.target) + 1;
+                    updateProgress();
+                }
+            });
+        }, { threshold: 0.5 });
+
+        sections.forEach(section => observer.observe(section));
+    </script>
+
+<!-- Topic Quiz System -->
+<script src="/js/topic-quiz-loader.js"></script>
+<script src="/js/topic-quiz-injector.js"></script>
+</body>
+</html>

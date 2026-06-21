@@ -1,0 +1,1484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="../js/instant-user-loader.js"></script>
+  <!-- Favicon -->
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Practice Exams - Prep100</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Autosize library for dynamic textarea resizing -->
+  <script src="https://cdn.jsdelivr.net/npm/autosize@5.0.2/dist/autosize.min.js"></script>
+  <style>
+    /* Ensure textareas and inputs don't overflow */
+    textarea, input[type="text"] {
+      max-width: 100%;
+      box-sizing: border-box;
+    }
+    /* Style for address textareas */
+    .address-textarea {
+      resize: none;
+      height: 60px;
+      min-height: 60px;
+    }
+    /* Dynamic input width */
+    input.dynamic-width {
+      width: auto;
+      min-width: 200px;
+      max-width: 100%;
+      transition: width 0.2s ease;
+    }
+  </style>
+</head>
+  <body class="bg-slate-50 text-slate-800">
+        <div class="min-h-screen flex">
+            <!-- Sidebar injected by sidebar-fragment.js -->
+        <div class="flex items-center gap-3">
+          <img src="/assets/images/logo.png" alt="logo" class="h-12 w-12 rounded-full shadow-sm">
+          <div>
+            <div class="text-lg font-bold text-sky-700">JUANOVA CORTEX</div>
+            <div class="text-xs text-slate-500">Student Dashboard</div>
+          </div>
+        </div>
+
+        <nav class="flex-1 overflow-auto">
+          <ul class="space-y-1">
+            <li><a href="student-dashboard.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-home text-sky-600"></i> Home</a></li>
+            <li><a href="news-feed-gemini.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-newspaper text-pink-500"></i> News Feed</a></li>
+            <li><a href="ai-tutor-chatbot.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-robot text-purple-500"></i> AI Tutor</a></li>
+            <li><a href="study-plan.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-calendar-check text-green-500"></i> Study Plan</a></li>
+           <li><a href="all-formula.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-book-open text-teal-600"></i> All Formula</a></li>
+            <li><a href="video-library.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-video text-red-500"></i> Video Library</a></li>
+            <li><a href="mock-exams.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-pencil-alt text-orange-500"></i> Mock Exams</a></li>
+            <li><a href="cbt/cbt.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-computer text-red-500"></i> JAMB CBT</a></li>
+            <li><a href="notifications.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-bell text-pink-600"></i> Notifications</a></li>
+            <li><a href="student-live-session.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-chalkboard-teacher text-blue-400"></i> Live Sessions</a></li>
+            <li><a href="smart-note.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-sticky-note text-yellow-500"></i> Smart Notes</a></li>
+          </ul>
+        </nav>
+
+        <div class="text-sm text-slate-500">
+          <div class="mb-2">Account</div>
+          <div class="flex items-center gap-3">
+            <img id="avatar-sm" src="../assets/images/unnamed.jpg" alt="avatar" class="h-10 w-10 rounded-full border">
+            <div>
+              <div id="userName" class="font-semibold">Student</div>
+              <div id="userLevel" class="text-xs text-slate-400"></div>
+            </div>
+          </div>
+        </div>
+      </aside>
+      <div id="main-cards" class="practice-list">
+        <div class="practice-card" onclick="showTopics()">
+          <div class="practice-title">Topic-by-topic</div>
+          <div class="practice-meta">Practice by subject and topic</div>
+        </div>
+        <div class="practice-card" onclick="showYearly()">
+          <div class="practice-title">Year-by-year</div>
+          <div class="practice-meta">Practice by year for each subject</div>
+        </div>
+        <div class="practice-card" onclick="showEssay()">
+          <div class="practice-title">English Essay Writing</div>
+          <div class="practice-meta">Practice WAEC/NECO essay types</div>
+        </div>
+      </div>
+      <div id="dynamic-content"></div>
+    </main>
+  </div>
+  <script>
+    // Full list of Mathematics topics
+    const mathematicsTopics = [
+      "Algebra",
+      "Simple Operations On Algebraic Expression",
+      "Solution Of Linear Equations",
+      "Change Of Subject Of Formula",
+      "Quadratic Equations",
+      "Graph Of Linear and Quadratic Functions",
+      "Linear Inequalities",
+      "Algebraic Fractions",
+      "Functions and Relations",
+      "Polynomials",
+      "Progressions",
+      "Binary Operations",
+      "Geometry and Trigonometry",
+      "Angles and Intercepts on Parallel Lines",
+      "Triangles and Polygons",
+      "Circles",
+      "Construction",
+      "Coordinate Geometry of Straight Lines",
+      "Trigonometric Ratios",
+      "Angles of Elevation and Depression",
+      "Bearings and Distances",
+      "Number and Numeration",
+      "Number Bases",
+      "Indices",
+      "Logarithms",
+      "Surds",
+      "Fractions, Decimals, Percentages and Approximation",
+      "Sets",
+      "Logic",
+      "Modular Arithmetic",
+      "Positive and Negative Integers",
+      "Rational Numbers",
+      "Matrices and Determinants",
+      "Ratios, Proportions and Rates",
+      "Financial Arithmetic",
+      "Variations",
+      "Mensuration",
+      "Lengths and Perimeters",
+      "Areas",
+      "Volumes",
+      "Calculus",
+      "Differentiation",
+      "Application of differentiation",
+      "Integration",
+      "Application of Integration",
+      "Statistics",
+      "Representation of data",
+      "Measures of Location",
+      "Measures of Dispersion",
+      "Permutation and Combination",
+      "Probability."
+    ];
+    // Full list of Biology topics
+    const biologyTopics = [
+      "Science of Living Things",
+      "Classification or Organisation of Life",
+      "Cell 1 : Living Unit - Structure",
+      "Cell 2 : Properties and Functions",
+      "Basic Ecological Concepts",
+      "Functioning Ecosystem",
+      "Ecological Management",
+      "Ecology of Population",
+      "Aquatic and Terrestrial Habitat",
+      "Introduction to Micro-Organisms",
+      "Micro-Organisms and Health",
+      "Nutrition / Photosynthesis / Food substances",
+      "Feeding Mechanism / Digestive System",
+      "Transport System and Mechanism",
+      "Gaseous Exchange / Respiratory System",
+      "Sexual Reproduction: System / Behaviours",
+      "Development of New Organisms / Fruits",
+      "Regulation of the Internal Environment",
+      "Nervous Coordination",
+      "Sensory Receptors and Organs",
+      "Variations / Adaptation for Survival / Evolution",
+      "Genetics: The Science of Heredity",
+      "Excretory Systems and Mechanisms",
+      "Supporting systems and Mechanisms"
+    ];
+    // Subjects for topic-by-topic and year-by-year
+    const subjects = [
+      "MATHEMATICS", "BIOLOGY", "CHEMISTRY", "LITERATURE", "PHYSICS", "ENGLISH", "ECONOMICS", "ACCOUNTING", "GOVERNMENT", "COMMERCE"
+    ];
+    // Full list of Chemistry topics
+    const chemistryTopics = [
+      "BASIC CHEMISTRY",
+      "Chapter 1: Matter and Separation Techniques",
+      "Chapter 2: Particulate Nature of Matter",
+      "Chapter 3: Chemical Combinations",
+      "Chapter 4: Properties of Gases (Gas Laws)",
+      "Chapter 5: Properties of Solids and Liquids",
+      "Chapter 6: Acids, Bases and Salts",
+      "Chapter 7: Periodic Table",
+      "Chapter 8: Air and Air Pollution",
+      "Chapter 9: Water and Solubility Concept",
+      "Chapter 10: Mass-Volume Concepts",
+      "Chapter 11: Quantitative and Qualitative Analyses",
+      "Chapter 12: Electrodes, Electrochemical Series and Electrolysis",
+      "Chapter 13: Types of Reactions",
+      "Chapter 14: Energy and Chemical Reactions",
+      "Chapter 15: Reactions' Rates and Chemical Equilibria",
+      "Chapter 16: Shapes of Molecules and Solids",
+      "Chapter 17: Radioactivity (Nuclear Chemistry)",
+      "INORGANIC CHEMISTRY",
+      "Chapter 19: Hydrogen (Hydrides)",
+      "Chapter 20: Oxygen (Oxides - Ozone)",
+      "Chapter 21: Carbon - Carbon Compounds",
+      "Chapter 22: Nitrogen - Nitrogen Compounds",
+      "Chapter 23: Phosphorus - Phosphorus Compounds",
+      "Chapter 24: Sulphur - Sulphur Compounds",
+      "Chapter 25: Halogen Family",
+      "Chapter 26: Silicon and its Compounds",
+      "Chapter 27: Metals and their Compounds 1",
+      "Chapter 28: Transition Metals and their Compounds",
+      "ORGANIC CHEMISTRY",
+      "Chapter 30: Hydrocarbons",
+      "Chapter 31: Crude Oil",
+      "Chapter 32: Basic Concepts of Organic Chemistry",
+      "Chapter 33: Organic Chemistry 2",
+      "Chapter 34: Applied Chemistry",
+      "Chapter 35: Chemical Industry",
+      "Chapter 36: The Solar System",
+      "Chapter 37: Separation of mixtures and purification of chemical substance",
+      "Chapter 38: Definition and classification of matter",
+      "Chapter 39: Elements, compounds and mixtures",
+      "Chapter 40: Physical and chemical changes",
+      "Chapter 41: Pure and Impure substances",
+      "Chapter 42: Separation techniques/processes",
+      "Chapter 43: Chemical Combination",
+      "Chapter 44: Stoichiometry",
+      "Chapter 45: Laws of definite and multiple proportions",
+      "Chapter 46: Law of conservation of matter",
+      "Chapter 47: Gay Lussac's law of combining volumes",
+      "Chapter 48: Avogadro's law",
+      "Chapter 49: chemical symbols, formulae, equations and their uses",
+      "Chapter 50: Relative atomic mass based on 12C-12",
+      "Chapter 51: The mole concept and Avogadro's number",
+      "Chapter 52: Kinetic Theory of Matter and Gas Laws",
+      "Chapter 53: States of matter",
+      "Chapter 54: Change of States of matter",
+      "Chapter 55: Phenomena Supporting Kinetic theory-Diffusion and Osmosis",
+      "Chapter 56: Assumptions of Kinetic theory of Gases",
+      "Chapter 57: The Gas Laws: Boyle, Charles, Graham and Dalton (law of partial pressure), combined gas law",
+      "Chapter 58: Molar volume and atomicity of gases",
+      "Chapter 59: The ideal gas equation (PV = nRT)",
+      "Chapter 60: The relationship between vapour density of gases and the relative molecular mass.",
+      "Chapter 61: Atomic Structure and Bonding",
+      "Chapter 62: The concept of atoms, molecules and ions, the works of Dalton, Millikan, Rutherford, Moseley, Thompson and Bohr",
+      "Chapter 63: Atomic structure, electron configuration, atomic number, mass number and isotopes.",
+      "Chapter 64: Shapes of S and P orbitals",
+      "Chapter 65: The Periodic table and periodicity of elements",
+      "Chapter 66: The variation of the following properties: ionization energy, ionic radii, electron affinity and electronegativity",
+      "Chapter 67: Chemical bonding",
+      "Chapter 68: Van der Waals' forces.",
+      "Chapter 69: Shapes of simple molecules",
+      "Chapter 70: Nuclear Chemistry",
+      "Chapter 71: Radioactivity - Types and properties of radiations",
+      "Chapter 72: Nuclear Reactions - Natural and Artificial Radioactivity, uses and Application.",
+      "Chapter 73: Air",
+      "Chapter 74: The natural gaseous constituents and their proportion in the air",
+      "Chapter 75: Air as a mixture and some uses of the noble gas",
+      "Chapter 76: Water",
+      "Chapter 77: Water as a product of the combustion of hydrogen and its composition by volume",
+      "Chapter 78: Water as a solvent",
+      "Chapter 79: Hardness of water",
+      "Chapter 80: Treatment of water for town supply.",
+      "Chapter 81: Water of crystallization, efflorescence, deliquescence and hygroscopy",
+      "Chapter 82: Solubility",
+      "Chapter 83: Unsaturated, saturated and supersaturated solutions",
+      "Chapter 84: Definition of Solubility and Solubility curves and simple deductions",
+      "Chapter 85: Solvents for fats, oil and paints",
+      "Chapter 86: False solution (Suspensions and colloids)",
+      "Chapter 87: Simple calculations on Solubility",
+      "Chapter 88: Environmental pollution",
+      "Chapter 89: Sources and effects of pollutants",
+      "Chapter 90: Air pollution",
+      "Chapter 91: Water pollution",
+      "Chapter 92: Soil pollution",
+      "Chapter 93: Acids, Bases and Salts",
+      "Chapter 94: Definition, General characteristics, types and properties of acids, bases and salts",
+      "Chapter 95: Acids/base indicators, basicity of acids and preparation of salts",
+      "Chapter 96: Oxides and trioxocarbonate (IV) salts",
+      "Chapter 97: Qualitative comparison of the conductances of molar solutions of strong and weak acids and bases",
+      "Chapter 98: Relationship between conductance and amount of ions present, and Buffer solutions",
+      "Chapter 99: pH and pOH scale; Simple calculations",
+      "Chapter 100: Acid/base titrations.",
+      "Chapter 101: Hydrolysis of salts",
+      "Chapter 102: Oxidation and Reduction (REDOX) Reactions",
+      "Chapter 103: Oxidation in terms of the addition of oxygen or removal of hydrogen.",
+      "Chapter 104: Reduction as removal of oxygen or addition of hydrogen.",
+      "Chapter 105: Oxidation and reduction in terms of electron transfer",
+      "Chapter 106: Use of oxidation numbers in defining REDOX reactions and balancing simple equations.",
+      "Chapter 107: IUPAC nomenclature of inorganic compounds using oxidation number",
+      "Chapter 108: Tests for oxidizing and reducing agents",
+      "Chapter 109: Electrolysis",
+      "Chapter 110: Electrolytes and non-electrolytes, and Faraday's laws of electrolysis",
+      "Chapter 111: Electrolysis of dilute H2SO4, aqueous CuSO4, CuCl2 solution, dilute and concentrated NaCl solutions and fused NaCl",
+      "Chapter 112: Factors affecting discharge of ions at the electrodes",
+      "Chapter 113: Uses of electrolysis",
+      "Chapter 114: Electrochemical cells: Redox series",
+      "Chapter 115: Half-cell reactions and electrode potentials",
+      "Chapter 116: Calculations on electrolysis",
+      "Chapter 117: Corrosion as an electrolytic process",
+      "Chapter 118: Energy changes",
+      "Chapter 119: Energy changes accompanying physical and chemical changes",
+      "Chapter 120: Endothermic and exothermic reactions.",
+      "Chapter 121: Entropy as an order-disorder phenomenon",
+      "Chapter 122: Spontaneity of reactions",
+      "Chapter 123: Rates of Chemical reaction",
+      "Chapter 124: Meaning of the rate of a chemical reaction.",
+      "Chapter 125: Ways of measuring the rate of chemical reaction",
+      "Chapter 126: Factors affecting rates of reaction",
+      "Chapter 127: Arrhenius’ law and Collision theory",
+      "Chapter 128: Reaction rate curves",
+      "Chapter 129: Chemical equilibrium",
+      "Chapter 130: Definition of the following terminologies: systems, reactions and dynamic equilibrium.",
+      "Chapter 131: Properties of a system in equilibrium",
+      "Chapter 132: Factors governing the equilibrium position",
+      "Chapter 133: Le Chatelier’s principle",
+      "Chapter 134: Equilibrium constant",
+      "Chapter 135: Non-metals and their compounds",
+      "Chapter 136: Hydrogen and Hydrides",
+      "Chapter 137: Halogens: Chlorine as a representative element of the halogen",
+      "Chapter 138: Oxygen and Oxides",
+      "Chapter 139: Sulphur and its compound",
+      "Chapter 140: Nitrogen and its compounds",
+      "Chapter 141: Carbon: Allotropes, Uses and properties.",
+      "Chapter 142: Metals and their compounds",
+      "Chapter 143: General properties of metals",
+      "Chapter 144: Alkali metals e.g. sodium",
+      "Chapter 145: Alkaline-earth metals",
+      "Chapter 146: Aluminium and its compound",
+      "Chapter 147: Tin Extraction from its ores",
+      "Chapter 148: Metals of the first transition series",
+      "Chapter 149: Iron Extraction from sulphide and oxide ores",
+      "Chapter 150: Copper Extraction from sulphide and oxide ores",
+      "Chapter 151: Alloy",
+      "Chapter 152: Organic Compounds",
+      "Chapter 153: Introduction to the tetravalency of carbon",
+      "Chapter 154: Alkanes: Homologous series in relation to physical properties",
+      "Chapter 155: Alkenes: Isomerism (structural and geometric isomerism)",
+      "Chapter 156: Alkynes: Ethyne",
+      "Chapter 157: Aromatic hydrocarbons e.g. benzene - structure, properties and uses",
+      "Chapter 158: Alkanols: Primary, secondary, tertiary",
+      "Chapter 159: Alkanals and alkanones",
+      "Chapter 160: Alkanoic acids",
+      "Chapter 161: Alkanoates",
+      "Chapter 162: Amines (Alkanamines): Primary, Secondary, and tertiary",
+      "Chapter 163: Carbohydrates",
+      "Chapter 164: Proteins: Primary structures, hydrolysis and tests",
+      "Chapter 165: Enzymes and their functions",
+      "Chapter 166: Polymers: Natural and synthetic rubber",
+      "Chapter 167: Industrial Chemistry",
+      "Chapter 168: Chemical industries: Types, raw materials and relevances",
+      "Chapter 169: Economics of Industrial process",
+      "Chapter 170: Importance of industrial chemistry in Nigeria"
+    ];
+    // Full list of Literature topics
+    const literatureTopics = [
+      "DRAMA: Types (Tragedy, Comedy, Tragicomedy, Melodrama, Farce, Opera etc.), Dramatic Techniques (Characterization, Dialogue, Flashback, Mime, Costume, Music/Dance, Décor/scenery, Acts/Scenes, Soliloquy/aside, Figures of Speech etc), Interpretation of the Prescribed Texts (Theme, Plot, Socio-political context, Setting)",
+      "Chapter 1",
+      "PROSE: Types (Fiction: Novel, Novella/Novelette, Short story; Non-fiction: Biography, Autobiography, Memoir; Faction), Narrative Techniques/Devices (Point of view, Characterisation, Language), Textual Analysis (Theme, Plot, Setting, Socio-political context)",
+      "Chapter 2",
+      "POETRY: Types (Sonnet, Ode, Lyrics, Elegy, Ballad, Panegyric, Epic, Blank Verse, etc.), Poetic devices (Structure, Imagery, Sound, Diction, Persona), Appreciation (Thematic preoccupation, Socio-political relevance, Style)",
+      "Chapter 3",
+      "GENERAL LITERARY PRINCIPLES: Literary terms, Literary principles, Relationship between literary terms and principles",
+      "Chapter 4",
+      "LITERARY APPRECIATION: Unseen passages/extracts from Drama, Prose, and Poetry",
+      "Chapter 5"
+    ];
+    // Full list of Physics topics
+    const physicsTopics = [
+      "Motion",
+      "Chapter 1: Work, Energy and Power",
+      "Chapter 2: Heat Energy",
+      "Chapter 3: Electrical Energy",
+      "Chapter 4: Current Electricity",
+      "Chapter 5: Elastic Properties of Solid",
+      "Chapter 6: Vector",
+      "Chapter 7: Projectiles",
+      "Chapter 8: Equilibrium of Forces",
+      "Chapter 9: Pressure in Fluids",
+      "Chapter 10: Simple Harmonic Motion",
+      "Chapter 11: Newton's Laws of Motion",
+      "Chapter 12: Machines",
+      "Chapter 13: Heat Energy (Measurement of Temperature)",
+      "Chapter 14: Measurement of Heat Energy",
+      "Chapter 15: Gas Laws",
+      "Chapter 16: Reflection of Light Waves",
+      "Chapter 17: Waves",
+      "Chapter 18: waves",
+      "Chapter 19: sound wave",
+      "Chapter 20: Vibration in springs and pipes",
+      "Chapter 21: Refraction of Light Waves at Plane Surfaces",
+      "Chapter 22: Optical Instruments",
+      "Chapter 23: Propagation of Sound Waves",
+      "Chapter 24: Gravitational Field",
+      "Chapter 25: Electric Field (Charges)",
+      "Chapter 26: Electric Field (Current Electricity)",
+      "Chapter 27: Magnetic Field",
+      "Chapter 28: Simple Alternating Current Circuits",
+      "Chapter 29: Models of Atoms and Nuclear Physics",
+      "Chapter 30: Energy Quantitization",
+      "Chapter 31: Electrical Conduction Through Liquids and Gases",
+      "Chapter 32: Fundamentals of Electronics",
+      "Chapter 33: Electromagnetic Field",
+      "Chapter 34: Fluids at Rest and in Motion",
+      "Chapter 35: Application of Light waves",
+      "Chapter 36: Thermodynamics",
+      "Chapter 37: Heat and temperature",
+      "Chapter 38: heat transfer",
+      "Chapter 39: Heat energy",
+      "Chapter 40: Evaporation and Boiling",
+      "Chapter 41: Wave",
+      "Chapter 42: Field",
+      "Chapter 43: concept of field",
+      "Chapter 44: Gravitational Field",
+      "Chapter 45: description of field",
+      "Chapter 46: Gravitational field",
+      "Chapter 47: Electric field1",
+      "Chapter 48: magnetic field",
+      "Chapter 49: Electromagnetic field",
+      "Chapter 50: Electric field2",
+      "Chapter 51: Current Electricity",
+      "Chapter 52: Energy and power",
+      "Chapter 53: Simple A.C Circuit",
+      "Chapter 54: Light and Optics",
+      "Chapter 55: Reflection of light",
+      "Chapter 56: Refraction of light",
+      "Chapter 57: Application of lense",
+      "Chapter 58: Atomic physics",
+      "Chapter 59: Structure of the atom",
+      "Chapter 60: Laser",
+      "Chapter 61: Semi conductor",
+      "Chapter 62: structure of the nucleus",
+      "Chapter 63: Wave particle paradox",
+      "Chapter 64: Mechanics",
+      "Chapter 65: motion/force/circular motion",
+      "Chapter 66: work/energy/power",
+      "Chapter 67: Simple machine",
+      "Chapter 68: linear motion",
+      "Chapter 69: Equilibrium of forces",
+      "Chapter 70: projectile motion.",
+      "Chapter 71: equation of motion/motion under gravity",
+      "Chapter 72: momentum/impulse/newton's law of motion",
+      "Chapter 73: Simple harmonic motion",
+      "Chapter 74: friction",
+      "Chapter 75: simple structure of matter",
+      "Chapter 76: density and relative density",
+      "Chapter 77: deformation of solids",
+      "Chapter 78: scalars and vectors",
+      "Chapter 79: Fundamental and derived quantities",
+      "Chapter 80: Measurement",
+      "Chapter 81: Astrophysics",
+      "Chapter 82: Satellite and Rocket",
+      "Chapter 83"
+    ];
+    // Full list of English topics
+    const englishTopics = [
+      "English Grammar",
+      "Chapter 1: Word Classes",
+      "Chapter 2: Phrasal Verb",
+      "Chapter 3: Sentence Classification",
+      "Chapter 4: Tense and Aspect",
+      "Chapter 5: Concord",
+      "Chapter 6: Question Tag",
+      "Chapter 7: Language Registers",
+      "Chapter 8: Reported Speech",
+      "Chapter 9: Punctuation",
+      "Chapter 10: Idiomatic Expression",
+      "Chapter 11: Infinitives, Gerunds and Participles.",
+      "Chapter 12: Elements of sentence structure",
+      "Chapter 13: Antonyms, Synonyms & Homonyms",
+      "Chapter 14: Oral English",
+      "Chapter 15: The Sound System",
+      "Chapter 16: Vowels",
+      "Chapter 17: Consonants",
+      "Chapter 18: Syllable",
+      "Chapter 19: Stress",
+      "Chapter 20: Intonation",
+      "Chapter 21: The Vowel Sound: Monophthongs (Pure Vowels)",
+      "Chapter 22: The Vowel Sound: Diphthongs",
+      "Chapter 23: The Short Vowel Sounds",
+      "Chapter 24: Consonant Sounds: Plosives",
+      "Chapter 25: Consonant Sounds: Liquid and Semi-Vowel",
+      "Chapter 26: Consonant Sounds: Fricatives",
+      "Chapter 27: Consonant Sounds: Affricates and Nasals",
+      "Chapter 28: Comprehension",
+      "Chapter 29: Concept of Comprehension",
+      "Chapter 30: Topic Sentence",
+      "Chapter 31: Sentence Interpretation",
+      "Chapter 32: Grammatical Applications",
+      "Chapter 33: Writing",
+      "Chapter 34: Summary Writing",
+      "Chapter 35: The Writing Process",
+      "Chapter 36: The Spelling Rules",
+      "Chapter 37: Essay Writing: Descriptive Essay",
+      "Chapter 38: Essay Writing: Narrative Essay",
+      "Chapter 39: Essay Writing: Argumentative Essay",
+      "Chapter 40: Essay Writing: Expository Essay",
+      "Chapter 41: Informal Letter Writing",
+      "Chapter 42: Formal Letter Writing",
+      "Chapter 43: Sentence Building",
+      "Chapter 44: Clauses",
+      "Chapter 45: Phrases",
+      "Chapter 46: Morphemes and Words",
+      "Chapter 47: The concept of a Sentence",
+      "Chapter 48: The Long Vowel Sounds"
+    ];
+    // Full list of Economics topics
+    const economicsTopics = [
+      "Economics as a science",
+      "Chapter 1: Basic Concepts: Wants, Scarcity, choice, scale of preference, opportunity cost, Rationality, production, distribution, consumption.",
+      "Chapter 2: Economic problems of; What, how, and for whom to produce and efficiency of resource use.",
+      "Chapter 3: Application of PPF to solution of economic problems.",
+      "Chapter 4: Economic Systems",
+      "Chapter 5: Types; free enterprise centrally planned and mixed economies",
+      "Chapter 6: Solutions to economic problems under different systems",
+      "Chapter 7: Contemporary issues in economic systems (economic reforms e.g deregulation, banking sector consolidation, cash policy reform).",
+      "Chapter 8: Methods and Tools of Economic Analysis",
+      "Chapter 9: Scientific Approach: inductive and deductive methods, positive and normative reasoning",
+      "Chapter 10: Basic Tools: tables, charts and graphs, measures of central tendency: mean, median and mode, and their applications, measures of dispersion; variance, standard deviation, range and their applications; merits and demerits of the tools.",
+      "Chapter 11: The Theory of Demand",
+      "Chapter 12: Meaning and determinants of demand",
+      "Chapter 13: Demand schedules and curves",
+      "Chapter 14: Distinction between change in quantity demanded and change in demand.",
+      "Chapter 15: Types of demand: Composite, derived, competitive and joint demand",
+      "Chapter 16: Types, nature and determinants of elasticity and their measurement - price, income and cross elasticity of demand",
+      "Chapter 17: Importance of elasticity of demand to consumers, producers and government.",
+      "Chapter 18: The Theory of Consumer Behaviour",
+      "Chapter 19: Utility (cardinal, ordinal, total average and marginal utilities)",
+      "Chapter 20: Indifference curve and budget line.",
+      "Chapter 21: Diminishing marginal utility and the law of demand.",
+      "Chapter 22: Consumer equilibrium using the indifference curve and marginal analyses.",
+      "Chapter 23: Effects of shift in the budget line and the indifference curve.",
+      "Chapter 24: Consumer surplus and its applications.",
+      "Chapter 25: The Theory of Supply",
+      "Chapter 26: Meaning and determinants of supply",
+      "Chapter 27: Supply schedules and supply curves",
+      "Chapter 28: Distinction between change in quantity supplied and change in supply",
+      "Chapter 29: Types of Supply: Joint/complementary, competitive and composite",
+      "Chapter 30: Elasticity of Supply: determinants, measurements, nature and applications",
+      "Chapter 31: The Theory of Price Determination",
+      "Chapter 32: The concepts of market and price",
+      "Chapter 33: Functions of the price system",
+      "Chapter 34: Equilibrium price and quantity in product and factor markets",
+      "Chapter 35: Price legislation and its effects",
+      "Chapter 36: Effects of changes in supply and demand on equilibrium price and quantity.",
+      "Chapter 37: The Theory of Production",
+      "Chapter 38: Meaning and types of production",
+      "Chapter 39: Concepts of production and their interrelationships (TP, AP, MP and the law of variable proportion).",
+      "Chapter 40: Division of labour and specialization",
+      "Chapter 41: Scale of Production: Internal and external economies of scale and their implications.",
+      "Chapter 42: Production functions and returns to scale",
+      "Chapter 43: Producers' equilibrium isoquant - isocost and marginal analyses.",
+      "Chapter 44: Factors affecting productivity."
+    ];
+    // Full list of Accounting topics
+    const accountingTopics = [
+      "Nature and Significance of Accounting: Development of accounting (including branches of accounting), Objectives of bookkeeping and accounting, Users and characteristics of Accounting information, Principles, concepts and conventions of accounting (nature, significance and application), Role of accounting records and information",
+      "Chapter 1: Principles of Double Entry: Functions of source documents, Books of original entry, Accounting equation, The ledger and its classifications, Trial balance, Types and treatment of errors and uses of suspense account",
+      "Chapter 2: Ethics in Accounting: Objectives, Qualities of an Accountant",
+      "Chapter 3: Cashbook: Columnar cashbooks, Discounts, Petty cashbook and the imprest system",
+      "Chapter 4: Bank Transactions and Reconciliation Statements: Instrument of bank transactions, e-banking system, Courses of discrepancies between cashbook and bank statement, Bank reconciliation statement",
+      "Chapter 5: The Final Accounts of a Sole Trader: Income statement (Trading and profit and loss account), Statement of financial position (Balance sheet), Adjustments (provision for bad and doubtful debt, provision for discounts, provision for depreciation using straight-line and reducing balance methods, accruals and prepayments)",
+      "Chapter 6: Stock Valuation: Methods of cost determination using FIFO, LIFO and simple average, The advantages and disadvantages of the methods, The importance of stock valuation",
+      "Chapter 7: Control Accounts and Self-balancing Ledgers: Importance of control accounts, Purchases ledger control account, Sales ledger control account",
+      "Chapter 8: Incomplete Records and Single Entry: Conversion of single entry to double entry, Determination of missing figures, Preparation of final accounts from incomplete records",
+      "Chapter 9: Manufacturing Accounts: Cost classification, Cost apportionment, Preparation of manufacturing account",
+      "Chapter 10: Accounts of Not-For-Profit-Making Organizations: Objectives of Not-For-Profit-Making organizations, Receipts and payments account, Income and expenditure account, Statement of financial position (Balance sheet)",
+      "Chapter 11: Departmental Accounts: Objectives, Apportionment of expenses, Departmental trading and profit and loss account",
+      "Chapter 12: Branch Accounts: Objectives, Branch accounts in the head office books, Head office account, Reconciliation of branch and head office books",
+      "Chapter 13: Joint Venture Accounts: Objectives, Personal accounts of venturers, Memorandum Joint venture accounts",
+      "Chapter 14: Partnership Accounts: Formation of partnership, Profit and loss account, Appropriation account, Partners current and capital accounts, Treatment of goodwill, Admission/retirement of a partner, Dissolution of partnership, Conversion of a partnership to a company",
+      "Chapter 15: Introduction to Company Accounts: Formation and classification of companies, Issue of shares and debentures, Final accounts of companies, Interpretation of accounts using ratios, Distinction between capital and revenue reserves",
+      "Chapter 16: Public Sector Accounting: Comparison of cash and accrual basis of accounting, Sources of government revenue, Capital and recurrent expenditure, Consolidated revenue fund, Statement of assets and liabilities, Responsibilities and powers of Accountant General, Auditor General, Minister of Finance, Treasurer of local government, Instruments of financial regulation",
+      "Chapter 17: Information Technology in Accounting: Manual and computerized accounting processing system, Processes involved in data processing, Computer hardware and software, Advantages and disadvantages of manual and computerized accounting processing system"
+    ];
+    // Full list of Government topics
+    const governmentTopics = [
+      "Government Topics",
+      "Chapter 1: Basic Elements in Government",
+      "Chapter 2: Introduction to Government - Basic Concepts",
+      "Chapter 3: Forms of Government",
+      "Chapter 4: The Workings of Government I - Organs & Systems",
+      "Chapter 5: The Workings of Government II - Unitary, Federal & Confederal Structures",
+      "Chapter 6: Basic Principles of Government",
+      "Chapter 7: Political Ideologies",
+      "Chapter 8: Constitution",
+      "Chapter 9: Principles of a Democratic Government",
+      "Chapter 10: Processes of Legislation",
+      "Chapter 11: Day-to-Day Operation and Public Administration",
+      "Chapter 12: Citizenship",
+      "Chapter 13: Political Parties & Party Systems",
+      "Chapter 14: Franchise, Elections & The Electoral System",
+      "Chapter 15: Public Opinion & The Mass Media",
+      "Chapter 16: Pressure Groups",
+      "Chapter 17: The Civil Service",
+      "Chapter 18: Public Corporations",
+      "Chapter 19: Local Government",
+      "Chapter 20: Political and Constitutional Development in Nigeria",
+      "Chapter 21: Pre-Colonial Administration in Nigeria",
+      "Chapter 22: Colonial Administration I - British Colonial Administration",
+      "Chapter 23: Colonial Administration II - French Colonial Administration",
+      "Chapter 24: Colonial Administration III - Putting it all together...",
+      "Chapter 25: The Process of Decolonisation - Nationalism",
+      "Chapter 26: Constitutional Development in Nigeria I - Pre-Independence",
+      "Chapter 27: Constitutional Development in Nigeria II - Independence & Post-Independence",
+      "Chapter 28: Military Rule in Nigeria",
+      "Chapter 29: Nigerian Federalism",
+      "Chapter 30: Institutions of Government in Post-Independence Nigeria",
+      "Chapter 31: Political Parties in Nigeria",
+      "Chapter 32: Political Crises in Nigeria",
+      "Chapter 33: Local Government Administration in Nigeria",
+      "Chapter 34: Foreign Policy and Nigeria's Relationship with the International Community",
+      "Chapter 35: Nigeria's Foreign Policy",
+      "Chapter 36: International Organisations I - OAU, AU, ECOWAS, APPA",
+      "Chapter 37: International Organisations II- League of Nations, UNO/ UN, OPEC, The Commonwealth of Nations",
+      "Chapter 38: Social Dynamics and Classical Political Thought",
+      "Chapter 39: Conflict Resolution and Management",
+      "Chapter 40: Peace Education",
+      "Chapter 41: Leadership and Followership",
+      "Chapter 42: Classical Political Thoughts",
+      "Chapter 43"
+    ];
+    // Full list of Commerce topics
+    const commerceTopics = [
+      "Commerce: Meaning and scope, Characteristics, Functions",
+      "Chapter 1: Occupation: Meaning and importance, Types (industrial, commercial, and services), Factors that determine choice of occupation",
+      "Chapter 2: Production: Factors, characteristics, and rewards (land, labour, capital, and entrepreneur), Division of Labour and specialization, Types (primary, secondary and tertiary)",
+      "Chapter 3: Trade: Home Trade (Retail trade: Types of retailers, Functions of retailers, Factors to be considered in setting up retail trade, Trends in retailing, Advantages and disadvantages of retailers; Wholesale trade: Types of wholesalers, Functions of wholesalers, Advantages and disadvantages of wholesalers), Foreign trade (Basic issues in foreign trade, Procedures and documents used in export, import, and entreport trade, Barriers to international trade, Role of Customs and Excise Authority, Ports Authority, etc in foreign trade)",
+      "Chapter 4: Purchase and Sale of Goods: Procedure and documentation, Terms of trade, Terms of payments (Cash, Credit)",
+      "Chapter 5: Aids-to-trade: Advertising, Banking, Communication, Insurance, Tourism, Transportation, Warehousing",
+      "Chapter 6: Business Units: Forms and features, Registration of businesses, Business Mergers, Determination of choice of business units, Dissolution and liquidation, Merits and demerits",
+      "Chapter 7: Financing Business: Sources of finance, Types of capital, Calculation of forms of capital, profits, and turnover, Problems of sourcing finance, The role of Bureau de change in an economy",
+      "Chapter 8: Trade Associations: Objectives and functions of trade and manufacturer's associations, Objectives and functions of Chambers of Commerce",
+      "Chapter 9: Money: Evolution, Forms and qualities, Functions",
+      "Chapter 10: Elements of Business Management: Functions, Principles, Organizational structure, Functional areas of business, Business resources",
+      "Chapter 11: Stock Exchange: Importance and functions, Types of securities, Procedure of transactions and speculations, Second-Tier Securities Market",
+      "Chapter 12: Elements of Marketing: Importance and Functions, The marketing concept, Marketing mix, Market Segmentation, Public relations and Customer Service",
+      "Chapter 13: Legal Aspects of Business: Meaning and validity of a simple contract, Agency, Sale of Goods Act and Hire Purchase Act, Contract of employment, Government regulations of business, Consumer protection, Regulatory agencies",
+      "Chapter 14: Information and Communication Technology (ICT): Computer, Terms, Activities (e-commerce, e-banking, e-business)",
+      "Chapter 15: Business Environment and Social Responsibility: Legal, political, economic, social, cultural, technological environments, Safe products, Types and implication of pollution",
+      "Chapter 16"
+    ];
+    // Example essay types
+    const essayTypes = [
+      "Informal Letter", "Formal Letter", "Speech", "Descriptive Essay", "Narrative Essay", "Argumentative Essay", "Expository Essay"
+    ];
+    function showTopics() {
+      document.getElementById('main-cards').style.display = 'none';
+      const content = document.getElementById('dynamic-content');
+      content.innerHTML = `<h2 style='margin-bottom:1rem;'>Select a Subject</h2><div class='practice-list'>${subjects.map(sub => `<div class='practice-card' onclick='showSubjectTopics("${sub}")'><div class='practice-title'>${sub}</div></div>`).join('')}</div>`;
+    }
+    function showSubjectTopics(subject) {
+      let topics = [];
+      if(subject === "MATHEMATICS") topics = mathematicsTopics;
+      else if(subject === "BIOLOGY") topics = biologyTopics;
+      else if(subject === "CHEMISTRY") topics = chemistryTopics;
+      else if(subject === "LITERATURE") topics = literatureTopics;
+      else if(subject === "PHYSICS") topics = physicsTopics;
+      else if(subject === "ENGLISH") topics = englishTopics;
+      else if(subject === "ECONOMICS") topics = economicsTopics;
+      else if(subject === "ACCOUNTING") topics = accountingTopics;
+      else if(subject === "GOVERNMENT") topics = governmentTopics;
+      else if(subject === "COMMERCE") topics = commerceTopics;
+      if(topics.length === 0) topics = ["Topics coming soon..."];
+      document.getElementById('dynamic-content').innerHTML = `<h2 style='margin-bottom:1rem;'>${subject} Topics</h2><div class='practice-list'>${topics.map(topic => `<div class='practice-card' onclick='showQuestions(\"${subject}\", \"${topic}\")'><div class='practice-title'>${topic}</div></div>`).join('')}</div><button class='btn btn-outline' onclick='backToSubjects()' style='margin-top:2rem;'>Back</button>`;
+    }
+    function showQuestions(subject, topic) {
+      document.getElementById('dynamic-content').innerHTML = `<h2>${subject} - ${topic}</h2><div class='practice-card'>Questions from myschool.ng will appear here.</div><button class='btn btn-outline' onclick='backToTopics("${subject}")' style='margin-top:2rem;'>Back</button>`;
+    }
+    function backToSubjects() {
+      showTopics();
+    }
+    function backToTopics(subject) {
+      showSubjectTopics(subject);
+    }
+    function showYearly() {
+      document.getElementById('main-cards').style.display = 'none';
+      const content = document.getElementById('dynamic-content');
+      content.innerHTML = `<h2 style='margin-bottom:1rem;'>Select a Subject</h2><div class='practice-list'>${subjects.map(sub => `<div class='practice-card' onclick='showYears("${sub}")'><div class='practice-title'>${sub}</div></div>`).join('')}</div>`;
+    }
+    function showYears(subject) {
+      const years = [2024,2023,2022,2021,2020,2019,2018,2017,2016,2015];
+      document.getElementById('dynamic-content').innerHTML = `<h2 style='margin-bottom:1rem;'>${subject} - Select Year</h2><div class='practice-list'>${years.map(year => `<div class='practice-card' onclick='showYearQuestions("${subject}",${year})'><div class='practice-title'>${year}</div></div>`).join('')}</div><button class='btn btn-outline' onclick='backToYearSubjects()' style='margin-top:2rem;'>Back</button>`;
+    }
+    function showYearQuestions(subject, year) {
+      document.getElementById('dynamic-content').innerHTML = `<h2>${subject} - ${year}</h2><div class='practice-card'>Questions from myschool.ng for ${year} will appear here.</div><button class='btn btn-outline' onclick='backToYears("${subject}")' style='margin-top:2rem;'>Back</button>`;
+    }
+    function backToYearSubjects() {
+      showYearly();
+    }
+    function backToYears(subject) {
+      showYears(subject);
+    }
+    function showEssay() {
+      document.getElementById('main-cards').style.display = 'none';
+      const content = document.getElementById('dynamic-content');
+      content.innerHTML = `<h2 style='margin-bottom:1rem;'>Select Essay Type</h2><div class='practice-list'>${essayTypes.map(type => `<div class='practice-card' onclick='showEssayForm("${type}")'><div class='practice-title'>${type}</div></div>`).join('')}</div>`;
+    }
+    function showEssayForm(type) {
+      let formHtml = '';
+      if(type === "Informal Letter") {
+        formHtml = `<div style='display:flex;flex-direction:column;gap:1rem;'>
+          <div style='align-self:flex-end;width:220px;'><input type='text' placeholder='Address' style='width:100%;padding:8px;border-radius:6px;border:1px solid #ddd;'></div>
+          <div style='align-self:flex-end;width:120px;'><input type='text' placeholder='Date' style='width:100%;padding:8px;border-radius:6px;border:1px solid #ddd;'></div>
+          <div style='width:180px;'><input type='text' placeholder='Salutation' style='width:100%;padding:8px;border-radius:6px;border:1px solid #ddd;'></div>
+          <textarea placeholder='Write your letter here...' style='width:100%;min-height:180px;padding:12px;border-radius:8px;border:1px solid #ddd;'></textarea>
+        </div>`;
+      } else {
+        formHtml = `<textarea placeholder='Write your essay here...' style='width:100%;min-height:220px;padding:12px;border-radius:8px;border:1px solid #ddd;'></textarea>`;
+      }
+      document.getElementById('dynamic-content').innerHTML = `<h2>${type}</h2><div class='practice-card'>${formHtml}<div style='margin-top:1rem;'><button class='btn btn-primary'>Submit Essay</button></div></div><button class='btn btn-outline' onclick='showEssay()' style='margin-top:2rem;'>Back</button>`;
+    }
+    // Show main cards on page load
+    window.onload = function() {
+      document.getElementById('main-cards').style.display = 'grid';
+      document.getElementById('dynamic-content').innerHTML = '';
+    }
+  </script>
+        <!-- Main Content -->
+        <main class="flex-1 p-8 lg:ml-72 ml-0 pt-16 lg:pt-0">
+            <!-- Top Bar -->
+            <div class="flex items-center justify-between mb-8">
+                <div class="flex-1 max-w-xl relative">
+                    <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                    <input type="text" class="w-full pl-12 pr-4 py-3 rounded-full border-2 border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 bg-white" placeholder="Search topics, subjects, or questions...">
+                </div>
+                <div class="flex items-center gap-4">
+                    <span class="bg-blue-100 text-blue-700 px-4 py-1 rounded-full font-semibold text-sm">SS 3</span>
+                    <span class="font-semibold text-gray-700">Student</span>
+                    <div class="relative">
+                        <button class="p-2 rounded-full hover:bg-blue-100 transition" aria-label="Notifications" title="Notifications">
+                            <i class="fas fa-bell text-blue-600 text-lg"></i>
+                            <span class="absolute -top-1 -right-1 bg-pink-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold">3</span>
+                        </button>
+                    </div>
+                    <img src="../assets/images/unnamed.jpg" alt="User" class="h-10 w-10 rounded-full border-2 border-blue-500">
+                </div>
+            </div>
+
+            <!-- Page Title -->
+            <h1 class="text-3xl font-bold text-gray-800 mb-6">Mock Exams</h1>
+
+            <!-- Cards Section -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="main-cards">
+                <div class="bg-white rounded-2xl p-6 shadow hover:shadow-lg transition cursor-pointer" onclick="showTopics()">
+                    <h2 class="text-xl font-bold text-gray-800 mb-2">Topic-by-topic</h2>
+                    <p class="text-gray-600">Practice by subject and topic in JAMB CBT format with past WAEC questions</p>
+                </div>
+                <div class="bg-white rounded-2xl p-6 shadow hover:shadow-lg transition cursor-pointer" onclick="showYearly()">
+                    <h2 class="text-xl font-bold text-gray-800 mb-2">Year-by-year</h2>
+                    <p class="text-gray-600">Practice past WAEC years in JAMB CBT format</p>
+                </div>
+                <div class="bg-white rounded-2xl p-6 shadow hover:shadow-lg transition cursor-pointer" onclick="showEssay()">
+                    <h2 class="text-xl font-bold text-gray-800 mb-2">English Essay Writing</h2>
+                    <p class="text-gray-600">Practice WAEC/NECO essay types with auto topics and COEM marking</p>
+                </div>
+            </div>
+
+            <!-- Dynamic Content Section -->
+            <div id="dynamic-content" class="mt-8"></div>
+
+            <!-- Quick Actions Toolbar -->
+            <div id="toolbar" class="fixed bottom-8 right-12">
+                <div class="relative group">
+                    <button id="toolsButton" onclick="toggleToolsMenu()" title="Learning Tools" aria-label="Toggle Learning Tools" class="text-purple-500 hover:text-purple-700 transition-colors p-2">
+                        <i class="fas fa-toolbox text-4xl drop-shadow-lg hover:scale-110 transform transition-transform" aria-hidden="true"></i>
+                    </button>
+
+                    <div id="toolsMenu" class="hidden absolute bottom-14 right-0 bg-white/95 backdrop-blur-sm rounded-xl shadow-2xl overflow-hidden min-w-[220px] border border-purple-100/50">
+                        <button onclick="openTool('ai-tutor')" class="w-full px-6 py-4 flex items-center gap-4 hover:bg-purple-50 transition-all text-left group">
+                            <i class="fas fa-robot text-xl text-purple-500 group-hover:scale-110 transition-transform"></i>
+                            <span class="text-gray-700 group-hover:text-purple-600 font-medium">AI Tutor</span>
+                        </button>
+                        <button onclick="openTool('smart-notes')" class="w-full px-6 py-4 flex items-center gap-4 hover:bg-yellow-50 transition-all text-left group border-t border-purple-100/30">
+                            <i class="fas fa-sticky-note text-xl text-yellow-500 group-hover:scale-110 transition-transform"></i>
+                            <span class="text-gray-700 group-hover:text-yellow-600 font-medium">Smart Notes</span>
+                        </button>
+                        <button onclick="openTool('formula')" class="w-full px-6 py-4 flex items-center gap-4 hover:bg-teal-50 transition-all text-left group border-t border-purple-100/30">
+                            <i class="fas fa-superscript text-xl text-teal-500 group-hover:scale-110 transition-transform"></i>
+                            <span class="text-gray-700 group-hover:text-teal-600 font-medium">Formula Tool</span>
+                        </button>
+                        <button onclick="openTool('dictionary')" class="w-full px-6 py-4 flex items-center gap-4 hover:bg-amber-50 transition-all text-left group border-t border-purple-100/30">
+                            <i class="fas fa-book-reader text-xl text-amber-500 group-hover:scale-110 transition-transform"></i>
+                            <span class="text-gray-700 group-hover:text-amber-600 font-medium">Dictionary</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tool Windows (Initially Hidden) -->
+            <div id="smart-notes-window" class="hidden fixed bg-white rounded-lg shadow-2xl p-4 w-80 cursor-move z-[1000]">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="font-bold text-lg text-yellow-600">Smart Notes</h3>
+                    <button onclick="closeTool('smart-notes')" class="text-gray-500 hover:text-gray-700" title="Close Smart Notes" aria-label="Close Smart Notes">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <textarea id="smart-notes-input" class="w-full p-2 border rounded-lg mb-2" rows="4" placeholder="Write your note..."></textarea>
+                <button onclick="saveNote()" class="w-full bg-yellow-500 text-white py-2 rounded-lg hover:bg-yellow-600">Save Note</button>
+            </div>
+
+            <div id="formula-window" class="hidden fixed bg-white rounded-lg shadow-2xl p-4 w-80 cursor-move z-[1000]">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="font-bold text-lg text-teal-600">Formula Tool</h3>
+                    <button onclick="closeTool('formula')" class="text-gray-500 hover:text-gray-700" title="Close Formula Tool" aria-label="Close Formula Tool">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <input type="text" id="formula-name" class="w-full p-2 border rounded-lg mb-2 dynamic-width" placeholder="Formula Name">
+                <textarea id="formula-input" class="w-full p-2 border rounded-lg mb-2" rows="3" placeholder="Enter your formula..."></textarea>
+                <button onclick="saveFormula()" class="w-full bg-teal-600 text-white py-2 rounded-lg hover:bg-teal-700">Save Formula</button>
+            </div>
+
+            <div id="dictionary-window" class="hidden fixed bg-white rounded-lg shadow-2xl p-4 w-80 cursor-move z-[1000]">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="font-bold text-lg text-amber-600">Dictionary</h3>
+                    <button onclick="closeTool('dictionary')" class="text-gray-500 hover:text-gray-700" title="Close Dictionary" aria-label="Close Dictionary">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <input type="text" id="dictionary-search" class="w-full p-2 border rounded-lg mb-2 dynamic-width" placeholder="Search word...">
+                <div id="dictionary-result" class="text-gray-600"></div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Subject styles for dashboard-like cards
+        const subjectStyles = {
+            "MATHEMATICS": { gradient: 'from-blue-600 to-blue-400', icon: 'fas fa-square-root-alt' },
+            "BIOLOGY": { gradient: 'from-green-500 to-green-300', icon: 'fas fa-dna' },
+            "CHEMISTRY": { gradient: 'from-pink-500 to-pink-300', icon: 'fas fa-flask' },
+            "PHYSICS": { gradient: 'from-yellow-500 to-yellow-300', icon: 'fas fa-atom' },
+            "ENGLISH": { gradient: 'from-indigo-500 to-indigo-300', icon: 'fas fa-book' },
+            "LITERATURE": { gradient: 'from-purple-500 to-purple-300', icon: 'fas fa-feather' },
+            "GOVERNMENT": { gradient: 'from-red-500 to-red-300', icon: 'fas fa-landmark' },
+            "ECONOMICS": { gradient: 'from-teal-500 to-teal-300', icon: 'fas fa-chart-pie' },
+            "COMMERCE": { gradient: 'from-orange-500 to-orange-300', icon: 'fas fa-balance-scale' },
+            "ACCOUNTING": { gradient: 'from-gray-700 to-gray-400', icon: 'fas fa-calculator' }
+        };
+
+        // Subjects for topic-by-topic and year-by-year
+        const subjects = [
+            "MATHEMATICS", "BIOLOGY", "CHEMISTRY", "LITERATURE", "PHYSICS", "ENGLISH", "ECONOMICS", "ACCOUNTING", "GOVERNMENT", "COMMERCE"
+        ];
+
+        // Sample topics for each subject
+        const subjectTopics = {
+            "MATHEMATICS": ["Algebra", "Geometry", "Trigonometry", "Calculus", "Statistics"],
+            "BIOLOGY": ["Cell Biology", "Genetics", "Ecology", "Human Physiology", "Plant Biology"],
+            "CHEMISTRY": ["Organic Chemistry", "Inorganic Chemistry", "Physical Chemistry", "Chemical Reactions"],
+            "PHYSICS": ["Mechanics", "Electricity and Magnetism", "Waves", "Thermodynamics"],
+            "ENGLISH": ["Comprehension", "Grammar", "Vocabulary", "Summary"],
+            "LITERATURE": ["Prose", "Poetry", "Drama"],
+            "GOVERNMENT": ["Constitution", "Political Systems", "Governance"],
+            "ECONOMICS": ["Microeconomics", "Macroeconomics", "Economic Systems"],
+            "COMMERCE": ["Trade", "Business Organizations", "Marketing"],
+            "ACCOUNTING": ["Financial Accounting", "Cost Accounting", "Bookkeeping"]
+        };
+
+        // Placeholder for real WAEC past questions
+        // Populate this object with questions from WAEC e-learning portal (http://waeconline.org.ng/e-learning/index.htm)
+        // or other legitimate sources like MySchoolGist (https://www.myschoolgist.com/ng/waec-past-questions/)
+        const waecQuestions = {
+            "MATHEMATICS": {
+                "Algebra": {
+                    "2023": [
+                        // Example from MySchoolGist[](https://myschoolgist.com/ng/waec-maths-past-questions/)
+                        {
+                            question: "If the 2nd and 5th terms of a G.P. are 6 and 48 respectively, find the sum of the first four terms.",
+                            options: ["45", "54", "63", "84"],
+                            answer: "84"
+                        },
+                        // Add more questions from WAEC sources
+                        // e.g., { question: "...", options: ["...", "...", "...", "..."], answer: "..." }
+                    ],
+                    "2022": [
+                        // Add real WAEC questions for 2022
+                    ],
+                    // Add more years as needed
+                },
+                "Geometry": {
+                    "2023": [
+                        // Add real WAEC questions for Geometry 2023
+                    ],
+                    // Add more years
+                },
+                "Trigonometry": {
+                    // Add years and questions
+                },
+                "Calculus": {
+                    // Add years and questions
+                },
+                "Statistics": {
+                    // Add years and questions
+                }
+            },
+            "BIOLOGY": {
+                "Cell Biology": {
+                    "2023": [
+                        // Add real WAEC questions from http://waeconline.org.ng/e-learning/index.htm
+                    ],
+                    "2022": [
+                        // Add real WAEC questions
+                    ]
+                },
+                "Genetics": {
+                    // Add years and questions
+                },
+                // Add other topics
+            },
+            "CHEMISTRY": {
+                "Organic Chemistry": {
+                    "2023": [
+                        // Add real WAEC questions
+                    ]
+                },
+                // Add other topics and years
+            },
+            "PHYSICS": {
+                "Mechanics": {
+                    "2023": [
+                        // Add real WAEC questions
+                    ]
+                },
+                // Add other topics and years
+            },
+            "ENGLISH": {
+                "Comprehension": {
+                    "2023": [
+                        // Example from MySchoolGist[](https://myschoolgist.com/ng/waec-english-past-questions/)
+                        {
+                            question: "According to the passage, what is the primary purpose of education? (Assume a passage was provided)",
+                            options: ["To acquire wealth", "To gain knowledge and skills", "To secure employment", "To achieve social status"],
+                            answer: "To gain knowledge and skills"
+                        },
+                        // Add more questions from WAEC sources
+                    ],
+                    "2022": [
+                        // Add real WAEC questions
+                    ]
+                },
+                "Grammar": {
+                    // Add years and questions
+                },
+                "Vocabulary": {
+                    // Add years and questions
+                },
+                "Summary": {
+                    // Add years and questions
+                }
+            },
+            "LITERATURE": {
+                "Prose": {
+                    "2023": [
+                        // Add real WAEC questions
+                    ]
+                },
+                // Add other topics and years
+            },
+            "GOVERNMENT": {
+                "Constitution": {
+                    "2023": [
+                        // Add real WAEC questions
+                    ]
+                },
+                // Add other topics and years
+            },
+            "ECONOMICS": {
+                "Microeconomics": {
+                    "2023": [
+                        // Add real WAEC questions
+                    ]
+                },
+                // Add other topics and years
+            },
+            "COMMERCE": {
+                "Trade": {
+                    "2023": [
+                        // Add real WAEC questions
+                    ]
+                },
+                // Add other topics and years
+            },
+            "ACCOUNTING": {
+                "Financial Accounting": {
+                    "2023": [
+                        // Add real WAEC questions
+                    ]
+                },
+                // Add other topics and years
+            }
+        };
+
+        // Essay topics
+        const essayTopics = {
+            "Informal Letter": [
+                "Write a letter to your friend telling him/her about your new school.",
+                "Write a letter to your uncle thanking him for the birthday present.",
+                "Write a letter to your cousin describing a recent family event."
+            ],
+            "Formal Letter": [
+                "Write a letter to the principal requesting permission for a school trip.",
+                "Write a letter to the editor of a newspaper about environmental pollution.",
+                "Write a letter applying for a scholarship."
+            ],
+            "Speech": [
+                "Write a speech on the importance of education.",
+                "Write a speech about the effects of social media on youth.",
+                "Write a speech on climate change."
+            ],
+            "Descriptive Essay": [
+                "Describe your favorite place.",
+                "Describe a memorable journey.",
+                "Describe a market scene."
+            ],
+            "Narrative Essay": [
+                "Narrate an experience that changed your life.",
+                "Narrate a story about overcoming a challenge.",
+                "Narrate an adventure in the forest."
+            ],
+            "Argumentative Essay": [
+                "Argue for or against the use of mobile phones in schools.",
+                "Argue whether technology is a blessing or a curse.",
+                "Argue for or against capital punishment."
+            ],
+            "Expository Essay": [
+                "Explain the causes and effects of deforestation.",
+                "Explain how to prepare for examinations.",
+                "Explain the process of photosynthesis."
+            ]
+        };
+
+        // Example essay types
+        const essayTypes = Object.keys(essayTopics);
+
+        // Initialize autosize for textareas
+        document.addEventListener('DOMContentLoaded', () => {
+            autosize(document.querySelectorAll('textarea'));
+            // Dynamic width for inputs
+            document.querySelectorAll('input.dynamic-width').forEach(input => {
+                input.addEventListener('input', adjustInputWidth);
+            });
+        });
+
+        // Adjust input width based on content
+        function adjustInputWidth(e) {
+            const input = e.target;
+            const tmp = document.createElement('span');
+            tmp.style.fontSize = window.getComputedStyle(input).fontSize;
+            tmp.style.fontFamily = window.getComputedStyle(input).fontFamily;
+            tmp.style.padding = window.getComputedStyle(input).padding;
+            tmp.style.whiteSpace = 'pre';
+            tmp.textContent = input.value || input.placeholder;
+            document.body.appendChild(tmp);
+            const width = tmp.offsetWidth + 20; // Add padding
+            document.body.removeChild(tmp);
+            input.style.width = `${Math.min(Math.max(width, 200), window.innerWidth - 40)}px`;
+        }
+
+        // Toggle View All subjects
+        function toggleViewAllSubjects() {
+            const btn = document.getElementById('view-all-subjects');
+            const hiddenSubjects = document.querySelectorAll('.subject-card.hidden');
+            const anyHidden = hiddenSubjects.length > 0 && Array.from(hiddenSubjects).some(el => el.classList.contains('hidden'));
+
+            if (anyHidden) {
+                hiddenSubjects.forEach(el => el.classList.remove('hidden'));
+                btn.textContent = 'Show Less';
+            } else {
+                const allCards = document.querySelectorAll('.subject-card');
+                allCards.forEach((el, idx) => {
+                    if (idx >= 5) el.classList.add('hidden');
+                });
+                btn.textContent = 'View All';
+            }
+        }
+
+        // Basic tools menu handlers
+        function toggleToolsMenu() {
+            const menu = document.getElementById('toolsMenu');
+            const isHidden = menu.classList.contains('hidden');
+            if (isHidden) {
+                menu.classList.remove('hidden');
+                setTimeout(() => {
+                    const closeMenu = (e) => {
+                        if (!menu.contains(e.target) && !e.target.closest('#toolsButton')) {
+                            menu.classList.add('hidden');
+                            document.removeEventListener('click', closeMenu);
+                        }
+                    };
+                    document.addEventListener('click', closeMenu);
+                }, 0);
+            } else {
+                menu.classList.add('hidden');
+            }
+        }
+
+        function openTool(name) {
+            document.getElementById('toolsMenu').classList.add('hidden');
+            if (name === 'ai-tutor') {
+                window.location.href = 'ai-tutor-chatbot.html';
+                return;
+            }
+            const el = document.getElementById(`${name}-window`);
+            if (el) el.classList.remove('hidden');
+            autosize.update(document.querySelectorAll('textarea'));
+            document.querySelectorAll('input.dynamic-width').forEach(input => adjustInputWidth({ target: input }));
+        }
+
+        function closeTool(name) {
+            const el = document.getElementById(`${name}-window`);
+            if (el) el.classList.add('hidden');
+        }
+
+        // Save smart notes/formula
+        function saveNote() {
+            const noteInput = document.getElementById('smart-notes-input');
+            if (!noteInput || !noteInput.value.trim()) return;
+            const notes = JSON.parse(localStorage.getItem('smartNotes') || '[]');
+            notes.push({ id: Date.now(), text: noteInput.value, timestamp: new Date().toISOString() });
+            localStorage.setItem('smartNotes', JSON.stringify(notes));
+            noteInput.value = '';
+            alert('Note saved');
+        }
+
+        function saveFormula() {
+            const nameInput = document.getElementById('formula-name');
+            const formulaInput = document.getElementById('formula-input');
+            if (!nameInput || !formulaInput) return;
+            if (!nameInput.value.trim() || !formulaInput.value.trim()) return;
+            const formulas = JSON.parse(localStorage.getItem('formulas') || '[]');
+            formulas.push({ id: Date.now(), name: nameInput.value, formula: formulaInput.value, timestamp: new Date().toISOString() });
+            localStorage.setItem('formulas', JSON.stringify(formulas));
+            nameInput.value = '';
+            formulaInput.value = '';
+            alert('Formula saved');
+        }
+
+        function showTopics() {
+            document.getElementById('main-cards').style.display = 'none';
+            const content = document.getElementById('dynamic-content');
+
+            content.innerHTML = `
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-2xl font-bold text-gray-800">Select a Subject</h2>
+                    <button id="view-all-subjects" class="border border-blue-500 text-blue-600 px-5 py-1.5 rounded-full font-semibold hover:bg-blue-50 transition" onclick="toggleViewAllSubjects()">View All</button>
+                </div>
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                    ${subjects.map((sub, i) => {
+                        const style = subjectStyles[sub] || { gradient: 'from-gray-400 to-gray-200', icon: 'fas fa-book' };
+                        const hiddenClass = i >= 5 ? 'hidden' : '';
+                        return `
+                            <button onclick='showSubjectTopics("${sub}")' class="subject-card ${hiddenClass} flex flex-col items-center justify-center gap-2 p-6 rounded-2xl font-bold text-white text-lg shadow-lg bg-gradient-to-br ${style.gradient} hover:scale-105 transition">
+                                <i class="${style.icon} text-3xl"></i>
+                                <span class="mt-1">${sub}</span>
+                            </button>
+                        `;
+                    }).join('')}
+                </div>
+            `;
+        }
+
+        function showSubjectTopics(subject) {
+            const topics = subjectTopics[subject] || ["No topics available"];
+            const content = document.getElementById('dynamic-content');
+            content.innerHTML = `
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-2xl font-bold text-gray-800">${subject} Topics</h2>
+                    <div class="flex items-center gap-2">
+                        <button class="px-4 py-2 rounded-full bg-white border border-gray-200 text-gray-700 hover:bg-gray-50" onclick="showTopics()">Back</button>
+                        <button class="px-4 py-2 rounded-full bg-gray-100 text-gray-700" onclick="backToMain()">Main Options</button>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-h-[60vh] overflow-auto">
+                    ${topics.map(topic => `
+                        <div onclick='startCBT("${subject}", "${topic}", "topic")' class="bg-white p-4 rounded-xl shadow hover:shadow-lg cursor-pointer transition">
+                            <h3 class="text-gray-800 font-semibold">${topic}</h3>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        function showYearly() {
+            document.getElementById('main-cards').style.display = 'none';
+            const content = document.getElementById('dynamic-content');
+            content.innerHTML = `
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">Select a Subject</h2>
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                    ${subjects.map(sub => `
+                        <button onclick='showYears("${sub}")' class="flex flex-col items-center justify-center gap-2 p-6 rounded-2xl font-bold text-white text-lg shadow-lg bg-gradient-to-br from-indigo-600 to-indigo-400 hover:scale-105 transition">
+                            <i class="fas fa-calendar-alt text-3xl"></i>
+                            <span class="mt-1">${sub}</span>
+                        </button>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        function showYears(subject) {
+            const years = [2023, 2022, 2021, 2020, 2019, 2018, 2017, 2016, 2015, 2014];
+            const content = document.getElementById('dynamic-content');
+            content.innerHTML = `
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-2xl font-bold text-gray-800">${subject} — Select Year</h2>
+                    <button class="px-4 py-2 rounded-full bg-white border border-gray-200 text-gray-700" onclick='showYearly()'>Back</button>
+                </div>
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                    ${years.map(year => `
+                        <div onclick='startCBT("${subject}", "${year}", "year")' class="bg-white p-4 rounded-xl shadow hover:shadow-lg cursor-pointer transition text-center font-semibold text-gray-800">${year}</div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        let currentQuestion = 0;
+        let timerInterval;
+        let timeLeft = 2400; // 40 minutes in seconds
+        let answers = {};
+        let currentQuestions = [];
+
+        function startCBT(subject, identifier, mode) {
+            // Select questions based on mode (topic or year)
+            if (mode === "topic") {
+                const topics = Object.keys(waecQuestions[subject] || {});
+                currentQuestions = topics.includes(identifier) ? (waecQuestions[subject][identifier]["2023"] || []) : [];
+            } else if (mode === "year") {
+                const topics = Object.keys(waecQuestions[subject] || {});
+                currentQuestions = [];
+                topics.forEach(topic => {
+                    if (waecQuestions[subject][topic][identifier]) {
+                        currentQuestions = currentQuestions.concat(waecQuestions[subject][topic][identifier]);
+                    }
+                });
+            }
+
+            if (currentQuestions.length === 0) {
+                currentQuestions = [
+                    { question: "No questions available for this selection. Please obtain real WAEC questions from http://waeconline.org.ng/e-learning/index.htm or other legitimate sources.", options: ["N/A"], answer: "N/A" }
+                ];
+            }
+
+            const content = document.getElementById('dynamic-content');
+            content.innerHTML = `
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-2xl font-bold text-gray-800">${subject} — ${identifier} (WAEC CBT Mode)</h2>
+                    <div id="timer" class="text-red-600 font-bold">Time: 40:00</div>
+                </div>
+                <div class="bg-white p-6 rounded-2xl shadow">
+                    <div id="question-container"></div>
+                    <div class="mt-4 flex justify-between">
+                        <button id="prev-btn" class="px-4 py-2 bg-gray-200 rounded-lg" onclick="changeQuestion(-1)">Previous (P)</button>
+                        <button id="next-btn" class="px-4 py-2 bg-blue-600 text-white rounded-lg" onclick="changeQuestion(1)">Next (N)</button>
+                        <button id="submit-btn" class="px-4 py-2 bg-green-600 text-white rounded-lg" onclick="submitExam()">Submit (S)</button>
+                    </div>
+                    <div class="mt-4">
+                        <p class="text-gray-600">Use keyboard: A/B/C/D to select, N next, P prev, S submit, R revert.</p>
+                    </div>
+                </div>
+            `;
+
+            currentQuestion = 0;
+            answers = {};
+            timeLeft = 2400;
+            startTimer();
+            displayQuestion(currentQuestions);
+            setupKeyboardShortcuts(currentQuestions);
+        }
+
+        function startTimer() {
+            if (timerInterval) clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                const minutes = Math.floor(timeLeft / 60);
+                const seconds = timeLeft % 60;
+                document.getElementById('timer').textContent = `Time: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    submitExam();
+                }
+            }, 1000);
+        }
+
+        function displayQuestion(questions) {
+            const q = questions[currentQuestion];
+            document.getElementById('question-container').innerHTML = `
+                <p class="font-semibold text-gray-800 mb-4">Question ${currentQuestion + 1}: ${q.question}</p>
+                <div class="flex flex-col gap-2">
+                    ${q.options.map((opt, idx) => `
+                        <label class="flex items-center gap-2">
+                            <input type="radio" name="answer" value="${opt}" ${answers[currentQuestion] === opt ? 'checked' : ''} onclick="saveAnswer('${opt}')">
+                            ${String.fromCharCode(65 + idx)}. ${opt}
+                        </label>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        function saveAnswer(answer) {
+            answers[currentQuestion] = answer;
+        }
+
+        function changeQuestion(delta) {
+            currentQuestion += delta;
+            if (currentQuestion < 0) currentQuestion = 0;
+            if (currentQuestion >= currentQuestions.length) currentQuestion = currentQuestions.length - 1;
+            displayQuestion(currentQuestions);
+        }
+
+        function submitExam() {
+            clearInterval(timerInterval);
+            let score = 0;
+            currentQuestions.forEach((q, idx) => {
+                if (answers[idx] === q.answer) score++;
+            });
+            alert(`Exam submitted! Your score: ${score}/${currentQuestions.length}`);
+            backToMain();
+        }
+
+        function setupKeyboardShortcuts(questions) {
+            document.removeEventListener('keydown', handleKeydown); // Remove previous listener
+            document.addEventListener('keydown', handleKeydown);
+            function handleKeydown(e) {
+                const key = e.key.toUpperCase();
+                if (['A', 'B', 'C', 'D'].includes(key)) {
+                    const idx = key.charCodeAt(0) - 65;
+                    if (idx < questions[currentQuestion].options.length) {
+                        const opt = questions[currentQuestion].options[idx];
+                        saveAnswer(opt);
+                        displayQuestion(questions);
+                    }
+                } else if (key === 'N') {
+                    changeQuestion(1);
+                } else if (key === 'P') {
+                    changeQuestion(-1);
+                } else if (key === 'S') {
+                    submitExam();
+                } else if (key === 'R') {
+                    delete answers[currentQuestion];
+                    displayQuestion(questions);
+                }
+            }
+        }
+
+        function showEssay() {
+            document.getElementById('main-cards').style.display = 'none';
+            const content = document.getElementById('dynamic-content');
+            content.innerHTML = `
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">Select Essay Type</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    ${essayTypes.map(type => `
+                        <div onclick='showEssayForm("${type}")' class="bg-white p-6 rounded-xl shadow hover:shadow-lg cursor-pointer transition">
+                            <h3 class="font-semibold text-gray-800">${type}</h3>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        function showEssayForm(type) {
+            const topics = essayTopics[type] || [];
+            const randomTopic = topics[Math.floor(Math.random() * topics.length)] || "No topics available";
+
+            let formHtml = '';
+            if (type === "Informal Letter") {
+                formHtml = `
+                    <div class="flex flex-col gap-4">
+                        <textarea class="address-textarea self-end w-56 p-2 border rounded-md" placeholder="Your Address"></textarea>
+                        <textarea class="address-textarea self-end w-40 p-2 border rounded-md" placeholder="Date"></textarea>
+                        <input type="text" class="dynamic-width w-72 p-2 border rounded-md" placeholder="Dear Friend," />
+                        <textarea id="essay-body" placeholder="Body of the letter..." class="w-full min-h-[180px] p-3 border rounded-lg"></textarea>
+                        <input type="text" class="dynamic-width self-end w-72 p-2 border rounded-md" placeholder="Yours sincerely," />
+                    </div>
+                `;
+            } else if (type === "Formal Letter") {
+                formHtml = `
+                    <div class="flex flex-col gap-4">
+                        <textarea class="address-textarea w-56 p-2 border rounded-md" placeholder="Recipient's Address"></textarea>
+                        <textarea class="address-textarea self-end w-56 p-2 border rounded-md" placeholder="Your Address"></textarea>
+                        <textarea class="address-textarea self-end w-40 p-2 border rounded-md" placeholder="Date"></textarea>
+                        <input type="text" class="dynamic-width w-full p-2 border rounded-md" placeholder="Subject" />
+                        <input type="text" class="dynamic-width w-72 p-2 border rounded-md" placeholder="Dear Sir/Madam," />
+                        <textarea id="essay-body" placeholder="Body of the letter..." class="w-full min-h-[180px] p-3 border rounded-lg"></textarea>
+                        <input type="text" class="dynamic-width self-end w-72 p-2 border rounded-md" placeholder="Yours faithfully," />
+                    </div>
+                `;
+            } else if (type === "Speech") {
+                formHtml = `
+                    <div class="flex flex-col gap-4">
+                        <input type="text" class="dynamic-width w-full p-2 border rounded-md" placeholder="Title of Speech" />
+                        <input type="text" class="dynamic-width w-full p-2 border rounded-md" placeholder="Salutation (e.g., Ladies and Gentlemen)" />
+                        <textarea id="essay-body" placeholder="Body of the speech..." class="w-full min-h-[180px] p-3 border rounded-lg"></textarea>
+                        <input type="text" class="dynamic-width w-full p-2 border rounded-md" placeholder="Closing remarks" />
+                    </div>
+                `;
+            } else {
+                formHtml = `
+                    <div class="flex flex-col gap-4">
+                        <input type="text" class="dynamic-width w-full p-2 border rounded-md" placeholder="Essay Title" />
+                        <textarea id="essay-body" placeholder="Write your essay here..." class="w-full min-h-[220px] p-3 border rounded-lg"></textarea>
+                    </div>
+                `;
+            }
+
+            const content = document.getElementById('dynamic-content');
+            content.innerHTML = `
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-2xl font-bold text-gray-800">${type}</h2>
+                    <button class="px-4 py-2 rounded-full bg-white border border-gray-200 text-gray-700" onclick='showEssay()'>Back</button>
+                </div>
+                <div class="bg-white p-6 rounded-2xl shadow">
+                    <p class="font-semibold text-gray-800 mb-4">Topic: ${randomTopic}</p>
+                    ${formHtml}
+                    <div class="mt-4 flex gap-2">
+                        <button class="px-4 py-2 bg-blue-600 text-white rounded-lg" onclick="submitEssay()">Submit Essay</button>
+                    </div>
+                    <p class="mt-4 text-gray-600">Your essay will be marked using WAEC COEM standard: Content (10), Organization (10), Expression (20), Mechanical Accuracy (10).</p>
+                </div>
+            `;
+
+            // Initialize autosize for textareas and dynamic width for inputs
+            autosize(document.querySelectorAll('textarea'));
+            document.querySelectorAll('input.dynamic-width').forEach(input => {
+                input.addEventListener('input', adjustInputWidth);
+                adjustInputWidth({ target: input });
+            });
+        }
+
+        function submitEssay() {
+            const body = document.getElementById('essay-body').value;
+            if (!body.trim()) {
+                alert('Please write your essay.');
+                return;
+            }
+            alert('Essay submitted for marking using COEM standard!');
+            showEssay();
+        }
+
+        function backToMain() {
+            document.getElementById('main-cards').style.display = 'grid';
+            document.getElementById('dynamic-content').innerHTML = '';
+            if (timerInterval) clearInterval(timerInterval);
+            document.removeEventListener('keydown', handleKeydown);
+            currentQuestion = 0;
+            timeLeft = 2400;
+            answers = {};
+            currentQuestions = [];
+        }
+
+        // Show main cards on page load
+        window.onload = function() {
+            document.getElementById('main-cards').style.display = 'grid';
+            document.getElementById('dynamic-content').innerHTML = '';
+        }
+
+        // Toggle mobile sidebar
+        function toggleMobileSidebar(forceOpen) {
+            const sidebar = document.getElementById('mobile-sidebar');
+            const backdrop = document.getElementById('sidebar-backdrop');
+            const btn = document.getElementById('mobileMenuBtn');
+            const isOpen = !sidebar.classList.contains('-translate-x-full');
+            const willOpen = typeof forceOpen === 'boolean' ? forceOpen : !isOpen;
+
+            if (willOpen) {
+                sidebar.classList.remove('-translate-x-full');
+                backdrop.classList.remove('hidden');
+                sidebar.setAttribute('aria-hidden', 'false');
+                if (btn) btn.setAttribute('aria-expanded', 'true');
+                document.body.style.overflow = 'hidden';
+                const firstInteractive = sidebar.querySelector('a, button');
+                if (firstInteractive) firstInteractive.focus();
+            } else {
+                sidebar.classList.add('-translate-x-full');
+                backdrop.classList.add('hidden');
+                sidebar.setAttribute('aria-hidden', 'true');
+                if (btn) btn.setAttribute('aria-expanded', 'false');
+                document.body.style.overflow = '';
+                if (btn) btn.focus();
+            }
+        }
+        </script>
+        <script type="module" src="./js/sidebar-fragment.js"></script>
+    </body>
+    </html>

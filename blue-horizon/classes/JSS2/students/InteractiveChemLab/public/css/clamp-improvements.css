@@ -1,0 +1,74 @@
+.clamp {
+    /* Increase clickable/droppable area */
+    width: 60px;
+    height: 80px;
+    background: linear-gradient(to bottom, #666, #444);
+    border: 2px solid #888;
+    border-radius: 6px;
+    position: relative;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.clamp::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 40px;
+    height: 40px;
+    border: 2px dashed #aaa;
+    border-radius: 4px;
+    opacity: 0.6;
+}
+
+.clamp.hover-valid {
+    background: linear-gradient(to bottom, #4a90e2, #357abd);
+    box-shadow: 0 0 15px rgba(74, 144, 226, 0.5);
+}
+
+.clamp.hover-invalid {
+    background: linear-gradient(to bottom, #e25c4a, #bd3535);
+    box-shadow: 0 0 15px rgba(226, 92, 74, 0.5);
+}
+
+.clamp.with-burette {
+    background: linear-gradient(to bottom, #2ecc71, #27ae60);
+}
+
+.burette-guidance {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 14px;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+
+.clamp:hover .burette-guidance {
+    opacity: 1;
+}
+
+/* Animation for burette attachment */
+@keyframes attachBurette {
+    0% {
+        transform: translate(0, -20px) scale(0.9);
+        opacity: 0;
+    }
+    100% {
+        transform: translate(0, 0) scale(1);
+        opacity: 1;
+    }
+}
+
+.burette-element {
+    animation: attachBurette 0.5s ease-out forwards;
+}

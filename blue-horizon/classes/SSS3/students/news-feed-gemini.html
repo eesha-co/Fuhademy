@@ -1,0 +1,375 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>EduNews Feed — Prep100</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    #sidebar { transition: transform 0.3s ease-in-out; }
+    #sidebar.hide { transform: translateX(-100%); }
+    @media (min-width: 1024px) { #sidebar { transform: translateX(0) !important; } }
+  </style>
+    <script type="module">
+      import '../js/personalize-page.js';
+    </script>
+      <!-- Preload user data -->
+    <!-- Preload user data (use centralized cache module if available) -->
+    <script type="module">
+      import { getGlobalUserData } from '../js/user-cache.js';
+
+      // Helper: returns initials safely
+      function getInitials(fullName) {
+        try {
+          return String(fullName || '').split(' ').slice(0, 2).map(n => n.charAt(0)).join('').toUpperCase();
+        } catch (e) { return '' }
+      }
+
+      // Normalize a cached entry into a plain user object
+      function normalizeCachedEntry(entry) {
+        if (!entry) return null;
+        // If it's already a user object (has uid or displayName), return it
+        if (entry.uid || entry.displayName || entry.email) return entry;
+        // If it looks like the { data, timestamp } wrapper used by cacheUserData
+        if (entry.data) return entry.data;
+        return null;
+      }
+
+      // Apply preloaded user to the UI (safe checks)
+      function applyPreloadedUser(user) {
+        if (!user) return;
+        const fullName = user.displayName || 'Student';
+        const name = fullName.split(' ')[0];
+        const level = (user.profile?.level || '').startsWith('SS') ? user.profile.level : 'SS 3';
+        const initials = getInitials(fullName);
+
+        const heroName = document.getElementById('heroName'); if (heroName) heroName.textContent = name;
+        const userNameEl = document.getElementById('userName'); if (userNameEl) userNameEl.textContent = name;
+        const userLevelEl = document.getElementById('userLevel'); if (userLevelEl) userLevelEl.textContent = level;
+        const topName = document.getElementById('topName'); if (topName) topName.textContent = fullName;
+        const topLevel = document.getElementById('topLevel'); if (topLevel) topLevel.textContent = level;
+
+        document.querySelectorAll('.user-fullname').forEach(el => { el.textContent = fullName; });
+        document.querySelectorAll('.user-firstname').forEach(el => { el.textContent = name; });
+
+        const avatarUrl = user.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(initials)}&background=2563eb&color=fff&size=128`;
+        ['avatar-sm','topAvatar','main-avatar'].forEach(id => { const a = document.getElementById(id); if (a) a.src = avatarUrl; });
+
+        if (user.progress) {
+          const weekly = document.getElementById('weeklyProgressLabel'); if (weekly) weekly.textContent = `${user.progress.weekly || 0}%`;
+          const mockAvg = document.getElementById('mockAvgLabel'); if (mockAvg) mockAvg.textContent = `${user.progress.mockAvg || 0}%`;
+          const streak = document.getElementById('streakLabel'); if (streak) streak.textContent = `${user.progress.streak || 0} days`;
+        }
+        if (user.unreadNotifications) {
+          const notifCount = document.getElementById('notifCount'); if (notifCount) notifCount.textContent = String(user.unreadNotifications.length || 0);
+        }
+      }
+
+      // Try module-based global cache first (fast)
+      try {
+        const global = getGlobalUserData();
+        if (global) {
+          window.preloadedUserData = global;
+          // DOMContentLoaded might already have fired; apply immediately and also on ready
+          if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', () => applyPreloadedUser(global));
+          else applyPreloadedUser(global);
+        } else {
+          // Fallback: some pages set a legacy cachedUserData_current key directly in localStorage
+          const raw = localStorage.getItem('cachedUserData_current');
+          if (raw) {
+            try {
+              const parsed = JSON.parse(raw);
+              const user = normalizeCachedEntry(parsed);
+              if (user) {
+                window.preloadedUserData = user;
+                if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', () => applyPreloadedUser(user));
+                else applyPreloadedUser(user);
+              }
+            } catch (e) {
+              console.warn('Could not parse legacy cachedUserData_current', e);
+            }
+          }
+        }
+      } catch (err) {
+        // Keep silent but log to console for debugging
+        console.debug('Preload cache check failed', err);
+      }
+    </script>  
+    <!-- User data and sidebar imports -->
+    <script type="module" src="../js/user-cache.js"></script>
+    <script type="module" src="./js/sidebar-fragment.js"></script>
+    <script src="../js/personalize-fallback.js"></script>
+  </head>
+  <body class="bg-slate-50 text-slate-800">
+    <div class="min-h-screen flex">
+   <aside id="sidebar" class="w-64 md:w-72 lg:w-80 fixed left-0 top-0 h-full bg-white border-r border-slate-200 p-5 flex flex-col gap-6 overflow-auto z-40">
+      <div class="flex items-center gap-3">
+        <img src="/assets/images/logo.png" alt="logo" class="h-12 w-12 rounded-full shadow-sm">
+        <div>
+          <div class="text-lg font-bold text-sky-700">JUANOVA CORTEX</div>
+          <div class="text-xs text-slate-500">Student Dashboard</div>
+        </div>
+      </div>
+
+      <nav class="flex-1 overflow-auto">
+        <ul class="space-y-1">
+          <li><a href="student-dashboard.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-home text-sky-600"></i> Home</a></li>
+          <li><a href="news-feed-gemini.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50 bg-sky-50"><i class="fas fa-newspaper text-pink-500"></i> News Feed</a></li>
+          <li><a href="notes.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-note-sticky text-yellow-500"></i> Study Notes</a></li>
+          <li><a href="textbooks.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-book text-indigo-500"></i> Textbooks</a></li>
+          <li><a href="formula-bank.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-book-open text-teal-600"></i> All Formula</a></li>
+          <li><a href="study-plan.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-calendar-check text-green-500"></i> Study Plan</a></li>
+          <li><a href="video-library.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-photo-video text-cyan-600"></i> Video Library</a></li>
+          <li><a href="digital-library.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-book text-indigo-500"></i> Digital Library</a></li>
+          <li><a href="game.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-puzzle-piece text-purple-500"></i> Game</a></li>
+          <li><a href="mock-exams.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-pencil-alt text-orange-500"></i> Mock Exams</a></li>
+          <li><a href="cbt/cbt.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-computer text-red-500"></i> JAMB CBT</a></li>
+          <li><a href="notifications.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-bell text-pink-600"></i> Notifications</a></li>
+          <li><a href="student-live-session.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-chalkboard-teacher text-blue-400"></i> Live Sessions</a></li>
+          <li><a href="Nobel-laureate.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-award text-yellow-600"></i> Nobel Laureate</a></li>
+        </ul>
+      </nav>
+
+      <div class="text-sm text-slate-500 border-t pt-4">
+        <div class="mb-2">Account</div>
+        <div class="flex items-center gap-3">
+          <img id="avatar-sm" src="../assets/images/unnamed.jpg" alt="avatar" class="h-10 w-10 rounded-full border">
+          <div>
+            <div id="userName" class="font-semibold">Student</div>
+            <div id="userLevel" class="text-xs text-slate-400"></div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Quick personalization: apply preloaded/cached user info to sidebar/topbar immediately -->
+    <script>
+      (function(){
+        function setText(id, txt){ const el = document.getElementById(id); if (el) el.textContent = txt; }
+        function setImg(id, url){ const el = document.getElementById(id); if (el && url) el.src = url; }
+
+        function applyFromUser(user){
+          if (!user) return false;
+          const u = user.data ? user.data : user;
+          const displayName = u.displayName || u.profile?.full_name || u.full_name || (u.user_metadata && (u.user_metadata.full_name || u.user_metadata.displayName)) || '';
+          if (!displayName) return false;
+          const shortName = String(displayName).split(' ')[0] || displayName;
+          const level = u.profile?.level || u.level || 'SS 3';
+          const avatar = u.photoURL || u.profile?.avatar_url || u.avatar_url || (shortName ? `https://ui-avatars.com/api/?name=${encodeURIComponent(shortName)}&background=2563eb&color=fff` : '');
+
+          setText('userName', shortName);
+          setText('topName', displayName);
+          setText('userLevel', level);
+          setText('topLevel', level);
+          if (avatar) setImg('avatar-sm', avatar);
+          if (avatar) setImg('topAvatar', avatar);
+          return true;
+        }
+
+        function readAndApply(){
+          try {
+            if (window.preloadedUserData && applyFromUser(window.preloadedUserData)) return true;
+            const raw = localStorage.getItem('cachedUserData_current') || localStorage.getItem('userProfile') || null;
+            if (raw) {
+              try {
+                const parsed = JSON.parse(raw);
+                if (applyFromUser(parsed.data ? parsed.data : parsed)) return true;
+              } catch (e) { /* ignore parse errors */ }
+            }
+          } catch (e) { console.debug('Personalization script error', e); }
+          return false;
+        }
+
+        // Try immediately, then retry a few times in case data arrives shortly after page parse
+        if (!readAndApply()) {
+          let attempts = 0;
+          const maxAttempts = 5;
+          const interval = setInterval(() => {
+            attempts += 1;
+            if (readAndApply() || attempts >= maxAttempts) clearInterval(interval);
+          }, 250);
+
+          // Also listen for custom event `userDataUpdated` used elsewhere in the app
+          window.addEventListener('userDataUpdated', (e) => { applyFromUser(e.detail || window.preloadedUserData); });
+        }
+      })();
+    </script>
+
+  <div id="main-content" class="flex-1 flex flex-col lg:ml-72">
+        <header class="flex items-center justify-between p-4 bg-white border-b border-slate-200">
+          <div class="flex items-center gap-3">
+            <button id="toggleSidebar" class="p-2 rounded-md hover:bg-slate-100 lg:hidden" title="Toggle sidebar"><i class="fas fa-bars"></i></button>
+            <div class="relative">
+              <input id="globalSearch" type="search" placeholder="Search subjects, topics, resources..." class="w-[520px] hidden md:inline-block pl-10 pr-4 py-2 rounded-full border border-slate-200 bg-white focus:outline-none focus:ring-2 focus:ring-sky-100">
+              <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-4">
+            <div class="relative">
+              <button id="notifBtn" class="p-2 rounded-full hover:bg-slate-50" aria-label="Notifications"><i class="fas fa-bell text-sky-600"></i></button>
+              <span id="notifCount" class="absolute -top-1 -right-1 bg-pink-500 text-white rounded-full w-5 h-5 text-xs flex items-center justify-center">0</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <div class="text-right mr-2">
+                <div id="topName" class="font-semibold">Student Name</div>
+                <div id="topLevel" class="text-xs text-slate-400">SS 3</div>
+              </div>
+              <img id="topAvatar" src="../assets/images/unnamed.jpg" alt="avatar" class="h-10 w-10 rounded-full border-2">
+            </div>
+          </div>
+        </header>
+
+        <main class="p-6 space-y-6">
+          <!-- Page content preserved -->
+          <div class="max-w-4xl mx-auto py-6 px-4">
+            <header class="text-center mb-6">
+              <h1 class="text-4xl md:text-5xl font-extrabold text-blue-800">EduNews Feed</h1>
+              <p class="mt-2 text-lg text-gray-600">Your daily source for WAEC, JAMB, NECO & University News</p>
+            </header>
+
+            <div id="news-feed-list" class="space-y-6">
+              <div class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-6 flex items-center gap-4 border border-blue-200">
+                <svg class="w-8 h-8 text-blue-500 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7v4a2 2 0 01-2 2H7a2 2 0 01-2-2V7m14 0a2 2 0 00-2-2H7a2 2 0 00-2 2m14 0V5a2 2 0 00-2-2H7a2 2 0 00-2 2v2m14 0H5"></path></svg>
+                <div>
+                  <h2 id="newsWelcome" class="font-bold text-xl text-blue-800 mb-1">Welcome to your News Feed!</h2>
+                  <p class="text-blue-600">Stay updated with the latest announcements and information from top educational sources.</p>
+                </div>
+              </div>
+
+              <div id="news-loading" class="text-center text-blue-600 py-8 flex items-center justify-center gap-3">
+                <svg class="animate-spin h-6 w-6 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                <span>Fetching latest educational news...</span>
+              </div>
+            </div>
+          </div>
+        </main>
+
+        <link rel="stylesheet" href="./dashboard-styles.css">
+      </div>
+    </div>
+
+    <script type="module">
+      // Personalize page using Supabase (profiles + notifications)
+      import { config } from '../js/config.js';
+      import { initSupabase } from '../js/supabase-client.js';
+
+      const supabaseClient = window.supabase || initSupabase(config.supabase.url, config.supabase.anonKey);
+
+      function safeText(id, text) { const el = document.getElementById(id); if (el) el.textContent = text; }
+      function safeImg(id, url) { const el = document.getElementById(id); if (el) el.src = url; }
+
+      // Apply cached user data quickly if available so sidebar/nav show name immediately
+      try {
+        const cached = localStorage.getItem('cachedUserData_current');
+        if (cached) {
+          const parsed = JSON.parse(cached);
+          const displayName = parsed?.data?.displayName || parsed?.data?.profile?.full_name;
+          const profile = parsed?.data?.profile || null;
+          if (displayName) {
+            safeText('userName', String(displayName).split(' ')[0]);
+            safeText('topName', String(displayName));
+          }
+          if (profile?.avatar_url) {
+            safeImg('avatar-sm', profile.avatar_url);
+            safeImg('topAvatar', profile.avatar_url);
+          }
+          if (profile?.level) {
+            safeText('userLevel', profile.level);
+            safeText('topLevel', profile.level);
+          }
+        }
+      } catch (e) { /* ignore parse errors */ }
+
+      async function updatePersonalization(session) {
+        try {
+          if (!session || !session.user) return;
+          const user = session.user;
+
+          const { data: profile, error: pErr } = await supabaseClient.from('profiles').select('*').eq('id', user.id).single();
+          if (pErr && pErr.code !== 'PGRST116') console.warn('Profile fetch error', pErr);
+
+          const displayName = profile?.full_name || user.user_metadata?.full_name || user.email?.split('@')[0] || 'Student';
+          const shortName = displayName.split(' ')[0];
+          const level = profile?.level || 'SS 3';
+          const avatarUrl = profile?.avatar_url || user.user_metadata?.avatar_url || `https://ui-avatars.com/api/?name=${encodeURIComponent(shortName)}&background=2563eb&color=fff`;
+
+          safeText('userName', shortName);
+          safeText('topName', displayName);
+          safeText('userLevel', level);
+          safeText('topLevel', level);
+          safeText('newsWelcome', `Welcome to your News Feed, ${shortName}!`);
+          safeImg('avatar-sm', avatarUrl);
+          safeImg('topAvatar', avatarUrl);
+
+          // Unread notifications count (assumes table 'notifications' with recipient and read boolean)
+          try {
+            const { data: unread, error: nErr } = await supabaseClient.from('notifications').select('id').eq('recipient', user.id).eq('read', false);
+            const notifEl = document.getElementById('notifCount');
+            if (notifEl) notifEl.textContent = unread ? String(unread.length) : '0';
+            if (nErr) console.debug('Notifications query error', nErr);
+          } catch (e) { console.warn('Notif count error', e); }
+
+          // Cache a small copy for faster next-page render
+          try { localStorage.setItem('cachedUserData_current', JSON.stringify({ data: { displayName, profile }, timestamp: Date.now() })); } catch (e) { /* ignore */ }
+        } catch (err) {
+          console.error('Personalization error', err);
+        }
+      }
+
+      // React to auth changes using the local supabaseClient
+      if (supabaseClient && supabaseClient.auth && supabaseClient.auth.onAuthStateChange) {
+        supabaseClient.auth.onAuthStateChange((event, session) => {
+          if (session && session.user) updatePersonalization(session);
+        });
+
+        // Try to initialize once on load
+        (async () => {
+          try {
+            const { data } = await supabaseClient.auth.getSession();
+            const session = data?.session ?? null;
+            if (session && session.user) await updatePersonalization(session);
+          } catch (err) { console.debug('Supabase session check failed', err); }
+        })();
+      }
+
+      // --- news fetch logic kept as-is ---
+      const rssFeeds = ['https://www.myschoolgist.com/ng/feed/','https://schoolnewsng.com/feed/'];
+      function cleanHTML(htmlString) { const parser = new DOMParser(); const doc = parser.parseFromString(htmlString, 'text/html'); let text = doc.body.textContent || ''; if (text.length > 200) text = text.substring(0,200).trim() + '...'; return text; }
+      async function fetchAllNews(){ const newsContainer=document.getElementById('news-feed-list'); const loadingIndicator=document.getElementById('news-loading'); const rssToJsonService='https://api.rss2json.com/v1/api.json?rss_url='; const fetchPromises = rssFeeds.map(feedUrl=> fetch(`${rssToJsonService}${encodeURIComponent(feedUrl)}`).then(res=> res.ok? res.json(): Promise.reject()).then(data=> data.items? data.items.map(i=> (i.source=data.feed.title,i)): []).catch(()=>[])); try{ const results = await Promise.all(fetchPromises); const combinedNews = results.flat(); combinedNews.sort((a,b)=> new Date(b.pubDate)-new Date(a.pubDate)); loadingIndicator.remove(); if(!combinedNews.length){ newsContainer.innerHTML += `<div class="bg-yellow-100 text-yellow-800 rounded-lg p-4 text-center">Could not fetch news at this time.</div>`; return; } combinedNews.forEach(item=>{ const newsCard=document.createElement('div'); newsCard.className='bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl p-6 transform transition hover:scale-[1.02] duration-300'; const formattedDate=new Date(item.pubDate).toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'}); newsCard.innerHTML = `<article class="space-y-3"><h2 class="font-bold text-xl text-blue-800 hover:text-blue-600"><a href="${item.link}" target="_blank" rel="noopener noreferrer">${item.title}</a></h2><p class="text-gray-600 text-base leading-relaxed">${cleanHTML(item.description)}</p><div class="flex flex-wrap justify-between items-center gap-4 pt-3 border-t border-gray-200"><div class="text-sm text-gray-500">Source: <strong>${item.source}</strong><span class="mx-2">|</span>${formattedDate}</div><a href="${item.link}" target="_blank" rel="noopener noreferrer" class="inline-block bg-blue-600 text-white font-semibold px-4 py-2 rounded-lg text-sm hover:bg-blue-700 transition-colors">Read More →</a></div></article>`; newsContainer.appendChild(newsCard); }); }catch(e){ console.error(e); loadingIndicator.textContent='Failed to load news.'; loadingIndicator.className='text-center text-red-500 py-8'; } }
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', fetchAllNews);
+      } else {
+        fetchAllNews();
+      }
+
+      const sidebar = document.getElementById('sidebar');
+      const mainContent = document.getElementById('main-content');
+      const toggleSidebarBtn = document.getElementById('toggleSidebar');
+
+      if (toggleSidebarBtn) {
+        toggleSidebarBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          sidebar.classList.toggle('-translate-x-full');
+        });
+      }
+
+      if (mainContent) {
+        mainContent.addEventListener('click', () => {
+          if (window.innerWidth < 1024 && !sidebar.classList.contains('-translate-x-full')) {
+              sidebar.classList.add('-translate-x-full');
+          }
+        });
+      }
+    </script>
+  </body>
+  </html>

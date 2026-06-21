@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fluid Dynamics - Interactive Learning</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <style>
+        .step-active { background-color: #2563eb; color: white; }
+        .step-inactive { background-color: #e5e7eb; color: #374151; }
+        #fluidCanvas { touch-action: none; }
+        .particle {
+            width: 4px;
+            height: 4px;
+            background-color: #3b82f6;
+            position: absolute;
+            border-radius: 50%;
+            transition: transform 0.1s linear;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen font-inter">
+    <nav class="bg-blue-700 p-4">
+        <div class="max-w-7xl mx-auto px-4 flex justify-between items-center">
+            <a href="../index.html" class="text-white hover:text-blue-100 flex items-center gap-2">
+                <i class="fas fa-arrow-left"></i>
+                <span>Back to Physics</span>
+            </a>
+            <h1 class="text-white text-xl font-bold">Fluid Dynamics</h1>
+        </div>
+    </nav>
+
+    <div class="flex">
+        <!-- Sidebar Steps -->
+        <aside class="w-64 bg-white shadow-md p-4 min-h-screen">
+            <h2 class="text-lg font-semibold mb-4">Learning Steps</h2>
+            <ul id="stepsList" class="space-y-2"></ul>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 p-8">
+            <div id="progressBar" class="mb-6 h-3 bg-gray-200 rounded-full overflow-hidden">
+                <div id="progress" class="h-full bg-blue-600 transition-all" style="width: 0%"></div>
+            </div>
+
+            <div id="stepContent" class="bg-white rounded-xl shadow-sm p-6 min-h-[300px]"></div>
+
+            <!-- Fluid Simulation -->
+            <div id="simulationContainer" class="mt-6 bg-white rounded-xl shadow-sm p-6">
+                <div class="flex gap-4 mb-4">
+                    <button id="laminarBtn" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+                        Laminar Flow
+                    </button>
+                    <button id="turbulentBtn" class="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300">
+                        Turbulent Flow
+                    </button>
+                    <button id="pressureBtn" class="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300">
+                        Pressure Changes
+                    </button>
+                </div>
+
+                <div class="relative w-full h-[400px] border rounded-lg bg-gray-50">
+                    <canvas id="fluidCanvas" class="absolute top-0 left-0 w-full h-full"></canvas>
+                    <div id="particleContainer"></div>
+                </div>
+
+                <div class="mt-4 grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Flow Speed</label>
+                        <input type="range" id="speedSlider" min="1" max="10" value="5" class="w-full">
+                        <span id="speedValue" class="text-sm text-gray-600">5 m/s</span>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Viscosity</label>
+                        <input type="range" id="viscositySlider" min="1" max="100" value="50" class="w-full">
+                        <span id="viscosityValue" class="text-sm text-gray-600">50 cP</span>
+                    </div>
+                </div>
+
+                <div class="mt-4 grid grid-cols-3 gap-4 text-center">
+                    <div class="p-4 bg-blue-50 rounded-lg">
+                        <p class="text-sm font-medium text-gray-700">Reynolds Number</p>
+                        <p id="reynoldsDisplay" class="text-lg font-bold text-blue-600">2000</p>
+                    </div>
+                    <div class="p-4 bg-green-50 rounded-lg">
+                        <p class="text-sm font-medium text-gray-700">Flow Rate</p>
+                        <p id="flowRateDisplay" class="text-lg font-bold text-green-600">0.5 m³/s</p>
+                    </div>
+                    <div class="p-4 bg-yellow-50 rounded-lg">
+                        <p class="text-sm font-medium text-gray-700">Pressure Drop</p>
+                        <p id="pressureDisplay" class="text-lg font-bold text-yellow-600">0 Pa</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex justify-between mt-8">
+                <button id="prevBtn" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400" disabled>Previous</button>
+                <button id="nextBtn" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Next</button>
+            </div>
+        </main>
+    </div>
+
+    <!-- Quiz Modal -->
+    <div id="quizModal" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center hidden">
+        <div class="bg-white p-8 rounded-xl shadow-lg max-w-lg w-full">
+            <h3 class="text-xl font-bold mb-4">Check Your Understanding</h3>
+            <div id="quizContent"></div>
+            <div class="mt-6 flex justify-end gap-4">
+                <button id="closeQuiz" class="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300">Close</button>
+                <button id="submitQuiz" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Submit</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const topicData = {
+            title: "Fluid Dynamics",
+            steps: [
+                {
+                    title: "Basic Concepts",
+                    content: `
+                        <div class="prose max-w-none">
+                            <h3 class="text-xl font-bold mb-4">Fundamentals of Fluid Flow</h3>
+                            <div class="space-y-6">
+                                <div class="p-4 bg-blue-50 rounded-lg">
+                                    <h4 class="font-semibold">Key Properties</h4>
+                                    <ul class="list-disc list-inside">
+                                        <li>Density (ρ): mass per unit volume</li>
+                                        <li>Viscosity (μ): resistance to flow</li>
+                                        <li>Pressure (P): force per unit area</li>
+                                        <li>Flow rate (Q): volume per unit time</li>
+                                    </ul>
+                                </div>
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div class="p-4 bg-green-50 rounded-lg">
+                                        <h4 class="font-semibold">Flow Types</h4>
+                                        <p>Laminar: Smooth, parallel flow</p>
+                                        <p>Turbulent: Chaotic, mixing flow</p>
+                                    </div>
+                                    <div class="p-4 bg-yellow-50 rounded-lg">
+                                        <h4 class="font-semibold">Reynolds Number</h4>
+                                        <p>Re = ρvD/μ</p>
+                                        <p>Determines flow regime</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `
+                },
+                {
+                    title: "Bernoulli's Principle",
+                    content: `
+                        <div class="prose max-w-none">
+                            <h3 class="text-xl font-bold mb-4">Conservation of Energy in Fluids</h3>
+                            <div class="grid grid-cols-2 gap-4 mb-4">
+                                <div class="p-4 bg-blue-50 rounded-lg">
+                                    <h4 class="font-semibold">Bernoulli's Equation</h4>
+                                    <p class="text-center my-2">P + ½ρv² + ρgh = constant</p>
+                                    <ul class="list-disc list-inside text-sm">
+                                        <li>P: pressure</li>
+                                        <li>ρ: density</li>
+                                        <li>v: velocity</li>
+                                        <li>g: gravity</li>
+                                        <li>h: height</li>
+                                    </ul>
+                                </div>
+                                <div class="p-4 bg-green-50 rounded-lg">
+                                    <h4 class="font-semibold">Applications</h4>
+                                    <ul class="list-disc list-inside">
+                                        <li>Aircraft wings</li>
+                                        <li>Venturi tubes</li>
+                                        <li>Water flow in pipes</li>
+                                        <li>Atomizers</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="p-4 bg-yellow-50 rounded-lg">
+                                <h4 class="font-semibold">Key Implications</h4>
+                                <ul class="list-disc list-inside">
+                                    <li>Higher velocity → Lower pressure</li>
+                                    <li>Lower velocity → Higher pressure</li>
+                                    <li>Conservation of mechanical energy</li>
+                                </ul>
+                            </div>
+                        </div>
+                    `
+                },
+                {
+                    title: "Continuity Equation",
+                    content: `
+                        <div class="prose max-w-none">
+                            <h3 class="text-xl font-bold mb-4">Conservation of Mass</h3>
+                            <div class="space-y-4">
+                                <div class="p-4 bg-blue-50 rounded-lg">
+                                    <h4 class="font-semibold">Continuity Equation</h4>
+                                    <p class="text-center my-2">A₁v₁ = A₂v₂</p>
+                                    <p class="text-sm">For incompressible fluids, flow rate (Q) is constant:</p>
+                                    <p class="text-center">Q = Av = constant</p>
+                                </div>
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div class="p-4 bg-green-50 rounded-lg">
+                                        <h4 class="font-semibold">Implications</h4>
+                                        <ul class="list-disc list-inside">
+                                            <li>Narrower pipe → Higher velocity</li>
+                                            <li>Wider pipe → Lower velocity</li>
+                                        </ul>
+                                    </div>
+                                    <div class="p-4 bg-yellow-50 rounded-lg">
+                                        <h4 class="font-semibold">Applications</h4>
+                                        <ul class="list-disc list-inside">
+                                            <li>Pipe design</li>
+                                            <li>Nozzle flow</li>
+                                            <li>River dynamics</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `
+                }
+            ],
+            quiz: [
+                {
+                    question: "What determines whether a flow is laminar or turbulent?",
+                    options: [
+                        "Temperature",
+                        "Reynolds number",
+                        "Pressure",
+                        "Volume"
+                    ],
+                    correct: 1
+                },
+                {
+                    question: "According to Bernoulli's principle, as fluid velocity increases, what happens to pressure?",
+                    options: [
+                        "Increases",
+                        "Decreases",
+                        "Stays the same",
+                        "Becomes zero"
+                    ],
+                    correct: 1
+                },
+                {
+                    question: "What happens to fluid velocity when a pipe narrows?",
+                    options: [
+                        "Increases",
+                        "Decreases",
+                        "Stays constant",
+                        "Becomes zero"
+                    ],
+                    correct: 0
+                }
+            ]
+        };
+
+        let currentStep = 0;
+        let completedSteps = new Set();
+        let currentMode = 'laminar';
+        let flowSpeed = 5;
+        let viscosity = 50;
+        let particles = [];
+        
+        const canvas = document.getElementById('fluidCanvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = canvas.offsetWidth;
+        canvas.height = 400;
+
+        class FluidParticle {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+                this.baseY = y;
+                this.vx = flowSpeed;
+                this.vy = 0;
+                this.turbulence = 0;
+                this.element = document.createElement('div');
+                this.element.className = 'particle';
+                document.getElementById('particleContainer').appendChild(this.element);
+                this.updatePosition();
+            }
+
+            updatePosition() {
+                this.element.style.transform = `translate(${this.x}px, ${this.y}px)`;
+            }
+
+            update() {
+                if (currentMode === 'turbulent') {
+                    this.turbulence = Math.sin(this.x * 0.05) * (10 - viscosity/10);
+                    this.vy = this.turbulence;
+                } else {
+                    this.vy = (this.baseY - this.y) * 0.1;
+                }
+
+                this.x += this.vx * (flowSpeed/5);
+                this.y += this.vy;
+
+                if (this.x > canvas.width) {
+                    this.x = 0;
+                    this.y = this.baseY;
+                }
+
+                this.updatePosition();
+            }
+
+            remove() {
+                this.element.remove();
+            }
+        }
+
+        function initializeParticles() {
+            particles = [];
+            document.getElementById('particleContainer').innerHTML = '';
+            
+            for(let i = 0; i < 100; i++) {
+                const y = (canvas.height * 0.2) + (canvas.height * 0.6 * Math.random());
+                particles.push(new FluidParticle(Math.random() * canvas.width, y));
+            }
+        }
+
+        function drawPipe() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw pipe walls
+            ctx.beginPath();
+            ctx.moveTo(0, canvas.height * 0.2);
+            ctx.lineTo(canvas.width, canvas.height * 0.2);
+            ctx.moveTo(0, canvas.height * 0.8);
+            ctx.lineTo(canvas.width, canvas.height * 0.8);
+            ctx.strokeStyle = '#9ca3af';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            if (currentMode === 'pressure') {
+                // Draw constriction
+                ctx.beginPath();
+                ctx.moveTo(canvas.width * 0.4, canvas.height * 0.2);
+                ctx.lineTo(canvas.width * 0.6, canvas.height * 0.4);
+                ctx.lineTo(canvas.width * 0.6, canvas.height * 0.6);
+                ctx.lineTo(canvas.width * 0.4, canvas.height * 0.8);
+                ctx.stroke();
+            }
+        }
+
+        function updateSimulation() {
+            drawPipe();
+            particles.forEach(p => p.update());
+
+            // Update displays
+            const reynolds = Math.round((flowSpeed * 1000) / viscosity);
+            document.getElementById('reynoldsDisplay').textContent = reynolds;
+            
+            const flowRate = (flowSpeed * 0.1).toFixed(1);
+            document.getElementById('flowRateDisplay').textContent = flowRate + ' m³/s';
+            
+            const pressureDrop = Math.round(flowSpeed * viscosity / 10);
+            document.getElementById('pressureDisplay').textContent = pressureDrop + ' Pa';
+
+            requestAnimationFrame(updateSimulation);
+        }
+
+        // Event listeners
+        document.getElementById('speedSlider').addEventListener('input', (e) => {
+            flowSpeed = parseInt(e.target.value);
+            document.getElementById('speedValue').textContent = flowSpeed + ' m/s';
+        });
+
+        document.getElementById('viscositySlider').addEventListener('input', (e) => {
+            viscosity = parseInt(e.target.value);
+            document.getElementById('viscosityValue').textContent = viscosity + ' cP';
+        });
+
+        document.getElementById('laminarBtn').onclick = () => {
+            currentMode = 'laminar';
+            document.getElementById('laminarBtn').className = 'px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700';
+            document.getElementById('turbulentBtn').className = 'px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300';
+            document.getElementById('pressureBtn').className = 'px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300';
+            initializeParticles();
+        };
+
+        document.getElementById('turbulentBtn').onclick = () => {
+            currentMode = 'turbulent';
+            document.getElementById('turbulentBtn').className = 'px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700';
+            document.getElementById('laminarBtn').className = 'px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300';
+            document.getElementById('pressureBtn').className = 'px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300';
+            initializeParticles();
+        };
+
+        document.getElementById('pressureBtn').onclick = () => {
+            currentMode = 'pressure';
+            document.getElementById('pressureBtn').className = 'px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700';
+            document.getElementById('laminarBtn').className = 'px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300';
+            document.getElementById('turbulentBtn').className = 'px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300';
+            initializeParticles();
+        };
+
+        function renderSteps() {
+            const stepsList = document.getElementById('stepsList');
+            stepsList.innerHTML = '';
+            topicData.steps.forEach((step, idx) => {
+                const li = document.createElement('li');
+                li.className = `cursor-pointer p-2 rounded ${idx === currentStep ? 'step-active' : 'step-inactive'}`;
+                li.textContent = step.title;
+                li.onclick = () => showStep(idx);
+                stepsList.appendChild(li);
+            });
+        }
+
+        function showStep(idx) {
+            currentStep = idx;
+            document.getElementById('stepContent').innerHTML = topicData.steps[idx].content;
+            renderSteps();
+            updateProgress();
+            document.getElementById('prevBtn').disabled = idx === 0;
+            document.getElementById('nextBtn').disabled = idx === topicData.steps.length - 1;
+        }
+
+        function updateProgress() {
+            const percent = ((completedSteps.size) / topicData.steps.length) * 100;
+            document.getElementById('progress').style.width = percent + '%';
+        }
+
+        function showQuiz() {
+            const quizModal = document.getElementById('quizModal');
+            quizModal.classList.remove('hidden');
+            
+            const quizContent = document.getElementById('quizContent');
+            quizContent.innerHTML = topicData.quiz.map((q, idx) => `
+                <div class="mb-6">
+                    <p class="font-semibold mb-2">${idx + 1}. ${q.question}</p>
+                    <div class="space-y-2">
+                        ${q.options.map((opt, i) => `
+                            <label class="flex items-center">
+                                <input type="radio" name="q${idx}" value="${i}" class="mr-2">
+                                <span>${opt}</span>
+                            </label>
+                        `).join('')}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        document.getElementById('closeQuiz').onclick = () => {
+            document.getElementById('quizModal').classList.add('hidden');
+        };
+
+        document.getElementById('submitQuiz').onclick = () => {
+            let score = 0;
+            topicData.quiz.forEach((q, idx) => {
+                const selected = document.querySelector(`input[name="q${idx}"]:checked`);
+                if (selected && parseInt(selected.value) === q.correct) score++;
+            });
+            
+            const percent = (score / topicData.quiz.length) * 100;
+            if (percent >= 70) {
+                completedSteps.add(currentStep);
+                updateProgress();
+            }
+            
+            document.getElementById('quizContent').innerHTML = `
+                <div class="text-center">
+                    <p class="text-2xl font-bold ${percent >= 70 ? 'text-green-600' : 'text-red-600'}">${score}/${topicData.quiz.length}</p>
+                    <p class="mt-2">${percent >= 70 ? 'Great job! You can move on to the next section.' : 'Try again to improve your score.'}</p>
+                </div>
+            `;
+            document.getElementById('submitQuiz').style.display = 'none';
+        };
+
+        // Navigation buttons
+        document.getElementById('prevBtn').onclick = () => {
+            if (currentStep > 0) showStep(currentStep - 1);
+        };
+
+        document.getElementById('nextBtn').onclick = () => {
+            if (currentStep < topicData.steps.length - 1) {
+                showQuiz();
+            }
+        };
+
+        // Initialize
+        window.onload = () => {
+            renderSteps();
+            showStep(0);
+            initializeParticles();
+            updateSimulation();
+
+            // Handle window resize
+            window.addEventListener('resize', () => {
+                canvas.width = canvas.offsetWidth;
+                initializeParticles();
+            });
+        };
+    </script>
+<!-- Topic Quiz System -->
+<script src="/js/topic-quiz-loader.js"></script>
+<script src="/js/topic-quiz-injector.js"></script>
+</body>
+</html>

@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JAMB CBT - Physics Practice</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .question-btn.current { background-color: #e11d48; color: white; }
+        .question-btn.answered { background-color: #22c55e; color: white; }
+        .question-btn { background-color: #f1f5f9; }
+    </style>
+</head>
+<body class="bg-slate-100 min-h-screen">
+    <!-- Home Screen -->
+    <div id="home-screen" class="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl p-8 max-w-md w-full">
+            <div class="text-center mb-8">
+                <h1 class="text-3xl font-bold text-slate-800 mb-2">JAMB CBT</h1>
+                <p class="text-slate-600">Physics Practice Test</p>
+            </div>
+
+            <div class="mb-6">
+                <label class="block text-sm font-medium text-slate-700 mb-2">Select Year</label>
+                <select id="year-select" class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-rose-500 text-lg">
+                    <option value="2010">2010 (50 questions)</option>
+                    <option value="2011">2011 (50 questions)</option>
+                    <option value="2012">2012 (50 questions)</option>
+                    <option value="2013">2013 (50 questions)</option>
+                    <option value="2014">2014 (50 questions)</option>
+                    <option value="2015">2015 (40 questions)</option>
+                    <option value="2016">2016 (40 questions)</option>
+                    <option value="2017">2017 (40 questions)</option>
+                    <option value="2018">2018 (40 questions)</option>
+                </select>
+            </div>
+
+            <div class="bg-rose-50 rounded-lg p-4 mb-6">
+                <h3 class="font-semibold text-rose-800 mb-2">Instructions</h3>
+                <ul class="text-sm text-rose-700 space-y-1">
+                    <li>• Each question is displayed as an image</li>
+                    <li>• Select the correct option (A, B, C, or D)</li>
+                    <li>• You have 35 minutes to complete</li>
+                    <li>• Navigate using the question buttons</li>
+                </ul>
+            </div>
+
+            <button onclick="startExam()" class="w-full bg-rose-600 hover:bg-rose-700 text-white font-semibold py-4 rounded-xl transition-colors text-lg">
+                Start Test
+            </button>
+        </div>
+    </div>
+
+    <!-- Exam Screen -->
+    <div id="exam-screen" class="hidden min-h-screen flex flex-col">
+        <!-- Header -->
+        <header class="bg-white shadow-sm sticky top-0 z-10">
+            <div class="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <span id="year-badge" class="px-3 py-1 bg-rose-100 text-rose-600 font-semibold rounded-lg text-sm">2010</span>
+                    <span class="text-slate-500">Physics</span>
+                </div>
+                
+                <div class="flex items-center gap-4">
+                    <div class="flex items-center gap-2 bg-rose-50 px-4 py-2 rounded-lg">
+                        <svg class="w-5 h-5 text-rose-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        <span id="timer" class="font-mono font-bold text-rose-600">35:00</span>
+                    </div>
+                    
+                    <button onclick="submitExam()" class="bg-rose-600 hover:bg-rose-700 text-white px-4 py-2 rounded-lg font-medium transition-colors">
+                        Submit
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="flex-1 p-4">
+            <div class="max-w-4xl mx-auto">
+                <!-- Question Card -->
+                <div class="bg-white rounded-2xl shadow-sm overflow-hidden mb-4">
+                    <div class="bg-slate-50 px-6 py-3 border-b border-slate-100">
+                        <span id="question-number" class="font-semibold text-rose-600">Question 1 of 50</span>
+                    </div>
+
+                    <div class="p-6">
+                        <div id="question-image-container" class="cursor-zoom-in" onclick="showModal()">
+                            <img id="question-image" src="" alt="Question" class="max-w-full h-auto mx-auto rounded-lg border border-slate-200 shadow-sm" style="max-height: 400px;">
+                        </div>
+                        <p class="text-center text-sm text-slate-400 mt-2">Click image to enlarge</p>
+                    </div>
+
+                    <!-- Options -->
+                    <div class="px-6 pb-6">
+                        <div class="grid grid-cols-2 gap-3">
+                            <button onclick="selectAnswer(0)" id="opt-0" class="p-4 rounded-xl border-2 border-slate-200 hover:border-slate-300 bg-white text-left flex items-center gap-3 transition-all">
+                                <span class="w-10 h-10 rounded-full flex items-center justify-center text-sm font-semibold bg-slate-100 text-slate-600">A</span>
+                                <span class="font-medium text-slate-700">Option A</span>
+                            </button>
+                            <button onclick="selectAnswer(1)" id="opt-1" class="p-4 rounded-xl border-2 border-slate-200 hover:border-slate-300 bg-white text-left flex items-center gap-3 transition-all">
+                                <span class="w-10 h-10 rounded-full flex items-center justify-center text-sm font-semibold bg-slate-100 text-slate-600">B</span>
+                                <span class="font-medium text-slate-700">Option B</span>
+                            </button>
+                            <button onclick="selectAnswer(2)" id="opt-2" class="p-4 rounded-xl border-2 border-slate-200 hover:border-slate-300 bg-white text-left flex items-center gap-3 transition-all">
+                                <span class="w-10 h-10 rounded-full flex items-center justify-center text-sm font-semibold bg-slate-100 text-slate-600">C</span>
+                                <span class="font-medium text-slate-700">Option C</span>
+                            </button>
+                            <button onclick="selectAnswer(3)" id="opt-3" class="p-4 rounded-xl border-2 border-slate-200 hover:border-slate-300 bg-white text-left flex items-center gap-3 transition-all">
+                                <span class="w-10 h-10 rounded-full flex items-center justify-center text-sm font-semibold bg-slate-100 text-slate-600">D</span>
+                                <span class="font-medium text-slate-700">Option D</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Navigation Buttons -->
+                <div class="flex gap-3 mb-4">
+                    <button onclick="prevQuestion()" id="prev-btn" class="flex-1 py-3 bg-white border border-slate-200 rounded-xl font-medium hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
+                        Previous
+                    </button>
+                    <button onclick="nextQuestion()" id="next-btn" class="flex-1 py-3 bg-slate-800 text-white rounded-xl font-medium hover:bg-slate-900 disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
+                        Next
+                    </button>
+                </div>
+
+                <!-- Question Navigation -->
+                <div class="bg-white rounded-2xl shadow-sm p-4">
+                    <div id="question-nav" class="flex flex-wrap gap-2 justify-center">
+                        <!-- Buttons will be generated here -->
+                    </div>
+                    <div class="flex justify-center gap-6 mt-4 text-sm">
+                        <div class="flex items-center gap-2">
+                            <div class="w-4 h-4 bg-rose-600 rounded"></div>
+                            <span class="text-slate-600">Current</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <div class="w-4 h-4 bg-green-500 rounded"></div>
+                            <span class="text-slate-600">Answered</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <div class="w-4 h-4 bg-slate-100 rounded"></div>
+                            <span class="text-slate-600">Not Answered</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Result Screen -->
+    <div id="result-screen" class="hidden min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl p-8 max-w-md w-full">
+            <div class="text-center mb-8">
+                <h1 class="text-3xl font-bold text-slate-800 mb-2">Test Complete!</h1>
+                <p class="text-slate-600">Here is your result</p>
+            </div>
+
+            <div class="flex justify-center mb-6">
+                <div class="relative w-32 h-32">
+                    <svg class="w-full h-full transform -rotate-90">
+                        <circle cx="64" cy="64" r="45" stroke="#e5e7eb" stroke-width="12" fill="none"/>
+                        <circle id="progress-circle" cx="64" cy="64" r="45" stroke="#22c55e" stroke-width="12" fill="none" stroke-linecap="round"/>
+                    </svg>
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <span id="score-percentage" class="text-3xl font-bold text-slate-800">0%</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-3 gap-4 mb-6">
+                <div class="bg-green-50 rounded-xl p-4 text-center">
+                    <div id="correct-count" class="text-2xl font-bold text-green-600">0</div>
+                    <div class="text-sm text-slate-500">Correct</div>
+                </div>
+                <div class="bg-red-50 rounded-xl p-4 text-center">
+                    <div id="wrong-count" class="text-2xl font-bold text-red-600">0</div>
+                    <div class="text-sm text-slate-500">Wrong</div>
+                </div>
+                <div class="bg-slate-50 rounded-xl p-4 text-center">
+                    <div id="total-count" class="text-2xl font-bold text-slate-600">0</div>
+                    <div class="text-sm text-slate-500">Total</div>
+                </div>
+            </div>
+
+            <button onclick="restartExam()" class="w-full bg-rose-600 hover:bg-rose-700 text-white font-semibold py-4 rounded-xl transition-colors">
+                Try Again
+            </button>
+        </div>
+    </div>
+
+    <!-- Image Modal -->
+    <div id="image-modal" class="fixed inset-0 bg-black/90 z-50 hidden items-center justify-center p-4" onclick="hideModal()">
+        <button onclick="hideModal()" class="absolute top-4 right-4 w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-lg hover:bg-slate-100 transition-colors">
+            <svg class="w-6 h-6 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+        </button>
+        <img id="modal-image" src="" alt="Question" class="max-w-full max-h-[90vh] object-contain rounded-lg" onclick="event.stopPropagation()">
+    </div>
+
+    <script>
+        // Answer keys
+        const answerKeys = {
+            '2010': {1:'B',2:'D',3:'D',4:'A',5:'D',6:'C',7:'C',8:'B',9:'A',10:'C',11:'D',12:'D',13:'D',14:'A',15:'D',16:'C',17:'A',18:'C',19:'B',20:'A',21:'D',22:'C',23:'A',24:'B',25:'D',26:'B',27:'D',28:'D',29:'D',30:'A',31:'A',32:'A',33:'C',34:'C',35:'B',36:'C',37:'A',38:'A',39:'B',40:'C',41:'A',42:'A',43:'A',44:'A',45:'B',46:'A',47:'A',48:'C',49:'C',50:'A'},
+            '2011': {1:'C',2:'A',3:'B',4:'A',5:'D',6:'A',7:'A',8:'C',9:'A',10:'A',11:'C',12:'D',13:'D',14:'A',15:'A',16:'C',17:'D',18:'B',19:'B',20:'D',21:'C',22:'D',23:'A',24:'B',25:'D',26:'C',27:'C',28:'B',29:'A',30:'C',31:'B',32:'C',33:'A',34:'D',35:'A',36:'B',37:'D',38:'A',39:'A',40:'A',41:'A',42:'A',43:'C',44:'A',45:'A',46:'D',47:'B',48:'C',49:'D',50:'B'},
+            '2012': {1:'B',2:'C',3:'D',4:'C',5:'D',6:'B',7:'A',8:'A',9:'A',10:'C',11:'B',12:'B',13:'D',14:'C',15:'B',16:'B',17:'A',18:'C',19:'D',20:'A',21:'C',22:'C',23:'A',24:'B',25:'D',26:'C',27:'A',28:'C',29:'D',30:'C',31:'D',32:'B',33:'B',34:'A',35:'C',36:'C',37:'A',38:'A',39:'A',40:'C',41:'A',42:'B',43:'A',44:'A',45:'A',46:'B',47:'A',48:'C',49:'C',50:'A'},
+            '2013': {1:'B',2:'C',3:'D',4:'C',5:'D',6:'B',7:'A',8:'A',9:'A',10:'C',11:'B',12:'B',13:'D',14:'C',15:'B',16:'B',17:'A',18:'C',19:'D',20:'A',21:'C',22:'C',23:'A',24:'B',25:'D',26:'C',27:'A',28:'C',29:'D',30:'C',31:'D',32:'B',33:'B',34:'A',35:'C',36:'C',37:'A',38:'A',39:'A',40:'C',41:'A',42:'B',43:'A',44:'A',45:'A',46:'B',47:'A',48:'C',49:'C',50:'A'},
+            '2014': {1:'A',2:'A',3:'C',4:'A',5:'C',6:'B',7:'D',8:'C',9:'C',10:'C',11:'D',12:'C',13:'A',14:'C',15:'C',16:'D',17:'D',18:'D',19:'C',20:'A',21:'C',22:'A',23:'B',24:'B',25:'C',26:'C',27:'B',28:'A',29:'A',30:'A',31:'A',32:'B',33:'A',34:'D',35:'D',36:'C',37:'C',38:'A',39:'B',40:'C',41:'B',42:'A',43:'A',44:'D',45:'C',46:'C',47:'C',48:'D',49:'A',50:'C'},
+            '2015': {1:'A',2:'C',3:'B',4:'D',5:'A',6:'B',7:'C',8:'D',9:'A',10:'B',11:'C',12:'D',13:'A',14:'B',15:'C',16:'D',17:'A',18:'B',19:'C',20:'D',21:'A',22:'B',23:'C',24:'D',25:'A',26:'B',27:'C',28:'D',29:'A',30:'D',31:'A',32:'B',33:'D',34:'A',35:'D',36:'A',37:'B',38:'A',39:'B',40:'C'},
+            '2016': {1:'B',2:'C',3:'A',4:'C',5:'A',6:'B',7:'C',8:'D',9:'A',10:'B',11:'C',12:'D',13:'D',14:'B',15:'A',16:'B',17:'C',18:'D',19:'A',20:'C',21:'A',22:'C',23:'B',24:'D',25:'A',26:'B',27:'C',28:'D',29:'B',30:'C',31:'A',32:'D',33:'B',34:'C',35:'A',36:'B',37:'C',38:'A',39:'D',40:'C'},
+            '2017': {1:'A',2:'B',3:'D',4:'D',5:'A',6:'B',7:'C',8:'D',9:'A',10:'C',11:'B',12:'D',13:'A',14:'C',15:'B',16:'A',17:'D',18:'C',19:'B',20:'A',21:'C',22:'A',23:'B',24:'C',25:'D',26:'A',27:'B',28:'C',29:'D',30:'A',31:'B',32:'D',33:'C',34:'A',35:'B',36:'C',37:'D',38:'D',39:'A',40:'D'},
+            '2018': {1:'A',2:'B',3:'D',4:'C',5:'D',6:'A',7:'B',8:'D',9:'C',10:'B',11:'A',12:'C',13:'B',14:'D',15:'A',16:'C',17:'D',18:'A',19:'B',20:'D',21:'C',22:'A',23:'B',24:'C',25:'D',26:'A',27:'B',28:'C',29:'D',30:'A',31:'B',32:'D',33:'C',34:'A',35:'B',36:'C',37:'D',38:'D',39:'A',40:'D'}
+        };
+
+        // State
+        let selectedYear = '2010';
+        let questions = [];
+        let currentIndex = 0;
+        let answers = {};
+        let timeRemaining = 35 * 60;
+        let timerInterval = null;
+
+        function startExam() {
+            selectedYear = document.getElementById('year-select').value;
+            const count = ['2015','2016','2017','2018'].includes(selectedYear) ? 40 : 50;
+            
+            questions = [];
+            for (let i = 1; i <= count; i++) {
+                questions.push({
+                    id: i,
+                    image: `/questions/physics/${selectedYear}_q${i}.png`,
+                    correct: answerKeys[selectedYear][i] ? answerKeys[selectedYear][i].charCodeAt(0) - 65 : 0
+                });
+            }
+            
+            currentIndex = 0;
+            answers = {};
+            timeRemaining = 35 * 60;
+            
+            document.getElementById('home-screen').classList.add('hidden');
+            document.getElementById('exam-screen').classList.remove('hidden');
+            document.getElementById('year-badge').textContent = selectedYear;
+            
+            renderQuestionNav();
+            renderQuestion();
+            startTimer();
+        }
+
+        function startTimer() {
+            if (timerInterval) clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                timeRemaining--;
+                document.getElementById('timer').textContent = formatTime(timeRemaining);
+                if (timeRemaining <= 0) {
+                    clearInterval(timerInterval);
+                    submitExam();
+                }
+            }, 1000);
+        }
+
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        function renderQuestionNav() {
+            const nav = document.getElementById('question-nav');
+            nav.innerHTML = questions.map((q, i) => 
+                `<button onclick="goToQuestion(${i})" id="nav-btn-${i}" class="question-btn w-10 h-10 rounded-lg text-sm font-medium transition-colors">${i + 1}</button>`
+            ).join('');
+            updateNavButtons();
+        }
+
+        function updateNavButtons() {
+            questions.forEach((q, i) => {
+                const btn = document.getElementById(`nav-btn-${i}`);
+                btn.className = 'question-btn w-10 h-10 rounded-lg text-sm font-medium transition-colors';
+                if (i === currentIndex) {
+                    btn.classList.add('current');
+                } else if (answers[q.id] !== undefined) {
+                    btn.classList.add('answered');
+                }
+            });
+        }
+
+        function renderQuestion() {
+            const q = questions[currentIndex];
+            document.getElementById('question-image').src = q.image;
+            document.getElementById('question-number').textContent = `Question ${currentIndex + 1} of ${questions.length}`;
+            
+            // Update option buttons
+            for (let i = 0; i < 4; i++) {
+                const btn = document.getElementById(`opt-${i}`);
+                if (answers[q.id] === i) {
+                    btn.classList.add('border-rose-600', 'bg-rose-50');
+                    btn.querySelector('span:first-child').classList.add('bg-rose-600', 'text-white');
+                    btn.querySelector('span:first-child').classList.remove('bg-slate-100', 'text-slate-600');
+                } else {
+                    btn.classList.remove('border-rose-600', 'bg-rose-50');
+                    btn.querySelector('span:first-child').classList.remove('bg-rose-600', 'text-white');
+                    btn.querySelector('span:first-child').classList.add('bg-slate-100', 'text-slate-600');
+                }
+            }
+            
+            // Update nav buttons
+            document.getElementById('prev-btn').disabled = currentIndex === 0;
+            document.getElementById('next-btn').disabled = currentIndex === questions.length - 1;
+            
+            updateNavButtons();
+        }
+
+        function selectAnswer(option) {
+            answers[questions[currentIndex].id] = option;
+            renderQuestion();
+        }
+
+        function goToQuestion(index) {
+            currentIndex = index;
+            renderQuestion();
+        }
+
+        function prevQuestion() {
+            if (currentIndex > 0) {
+                currentIndex--;
+                renderQuestion();
+            }
+        }
+
+        function nextQuestion() {
+            if (currentIndex < questions.length - 1) {
+                currentIndex++;
+                renderQuestion();
+            }
+        }
+
+        function submitExam() {
+            if (timerInterval) clearInterval(timerInterval);
+            
+            let correct = 0;
+            questions.forEach(q => {
+                if (answers[q.id] === q.correct) correct++;
+            });
+            
+            const percentage = Math.round((correct / questions.length) * 100);
+            
+            document.getElementById('exam-screen').classList.add('hidden');
+            document.getElementById('result-screen').classList.remove('hidden');
+            
+            document.getElementById('score-percentage').textContent = `${percentage}%`;
+            document.getElementById('correct-count').textContent = correct;
+            document.getElementById('wrong-count').textContent = questions.length - correct;
+            document.getElementById('total-count').textContent = questions.length;
+            
+            const circle = document.getElementById('progress-circle');
+            circle.style.strokeDasharray = 283;
+            circle.style.strokeDashoffset = 283 - (283 * percentage) / 100;
+            circle.style.stroke = percentage >= 50 ? '#22c55e' : '#ef4444';
+        }
+
+        function restartExam() {
+            document.getElementById('result-screen').classList.add('hidden');
+            document.getElementById('home-screen').classList.remove('hidden');
+        }
+
+        function showModal() {
+            document.getElementById('modal-image').src = questions[currentIndex].image;
+            document.getElementById('image-modal').classList.remove('hidden');
+            document.getElementById('image-modal').classList.add('flex');
+        }
+
+        function hideModal() {
+            document.getElementById('image-modal').classList.add('hidden');
+            document.getElementById('image-modal').classList.remove('flex');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Newton's Laws of Motion - Physics</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @keyframes fade-in-up {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in-up { animation: fade-in-up 0.5s ease-out forwards; }
+        .section-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            border: 1px solid #e5e7eb;
+        }
+        .simulation-container {
+            position: relative;
+            width: 100%;
+            height: 450px;
+            overflow: hidden;
+            border-radius: 8px;
+            background: #f9fafb;
+        }
+        .simulation-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        .video-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 8px;
+            background: #f9fafb;
+        }
+        .video-container iframe {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Header -->
+    <nav class="bg-white shadow-sm fixed top-0 w-full z-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center">
+                    <a href="index.html" class="text-blue-600 hover:text-blue-800 mr-4">
+                        <i class="fas fa-arrow-left"></i>
+                    </a>
+                    <h1 class="text-xl font-semibold text-gray-900">Newton's Laws of Motion</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="text-sm text-gray-600 hidden sm:block">
+                        Progress: <span id="progressPercent">0%</span>
+                    </div>
+                    <div class="w-24 sm:w-32 h-2 bg-gray-200 rounded-full">
+                        <div id="progressBar" class="h-2 bg-blue-500 rounded-full transition-all duration-300" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="pt-20 pb-8 px-4 max-w-5xl mx-auto">
+        <!-- Learning Objectives -->
+        <div class="bg-blue-50 border-l-4 border-blue-500 p-4 rounded-r-lg mb-6 animate-fade-in-up">
+            <h3 class="font-semibold text-blue-800 mb-2"><i class="fas fa-bullseye mr-2"></i>Learning Objectives</h3>
+            <ul class="text-blue-700 text-sm space-y-1">
+                <li>• State and explain Newton's three laws of motion</li>
+                <li>• Apply F = ma to solve problems involving force, mass, and acceleration</li>
+                <li>• Explain inertia and its effects in everyday situations</li>
+                <li>• Identify action-reaction pairs in various scenarios</li>
+            </ul>
+        </div>
+
+        <!-- Section 1: First Law - Inertia -->
+        <div class="section-card animate-fade-in-up">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <span class="bg-blue-100 text-blue-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">I</span>
+                Newton's First Law: The Law of Inertia
+            </h2>
+            
+            <div class="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-500 mb-4">
+                <p class="text-blue-800 font-medium text-lg">"An object at rest stays at rest, and an object in motion stays in motion at constant velocity, unless acted upon by an unbalanced external force."</p>
+            </div>
+
+            <p class="text-gray-700 mb-4"><strong>Inertia</strong> is the tendency of an object to resist changes in its state of motion. The greater the mass, the greater the inertia.</p>
+
+            <div class="grid md:grid-cols-2 gap-4">
+                <div class="bg-green-50 p-4 rounded-lg border border-green-200">
+                    <h4 class="font-semibold text-green-700 mb-2"><i class="fas fa-car mr-2"></i>Examples of Inertia</h4>
+                    <ul class="text-gray-600 text-sm space-y-2">
+                        <li>• <strong>Seatbelts:</strong> Your body keeps moving forward when a car stops suddenly</li>
+                        <li>• <strong>Headrests:</strong> Protect against whiplash in rear-end collisions</li>
+                        <li>• <strong>Table cloth trick:</strong> Dishes stay in place when cloth is pulled quickly</li>
+                        <li>• <strong>Sports:</strong> A soccer ball keeps rolling until friction stops it</li>
+                    </ul>
+                </div>
+                <div class="bg-purple-50 p-4 rounded-lg border border-purple-200">
+                    <h4 class="font-semibold text-purple-700 mb-2"><i class="fas fa-balance-scale mr-2"></i>Key Points</h4>
+                    <ul class="text-gray-600 text-sm space-y-2">
+                        <li>• Mass is a measure of inertia</li>
+                        <li>• Heavier objects have more inertia (harder to start or stop)</li>
+                        <li>• No force needed to maintain motion (contrary to Aristotle!)</li>
+                        <li>• Friction often masks the first law in everyday life</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 2: Second Law - F = ma -->
+        <div class="section-card animate-fade-in-up">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <span class="bg-blue-100 text-blue-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">II</span>
+                Newton's Second Law: F = ma
+            </h2>
+            
+            <div class="bg-green-50 p-4 rounded-lg border-l-4 border-green-500 mb-4">
+                <p class="text-green-800 font-medium text-lg">"The acceleration of an object is directly proportional to the net force acting on it and inversely proportional to its mass."</p>
+            </div>
+
+            <div class="bg-white p-4 rounded-lg border-2 border-blue-200 mb-4 text-center">
+                <p class="text-3xl font-bold text-blue-700 font-serif">F = ma</p>
+                <p class="text-sm text-gray-500 mt-2">Force (N) = Mass (kg) × Acceleration (m/s²)</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-4 mb-4">
+                <div class="bg-red-50 p-4 rounded-lg text-center">
+                    <p class="font-semibold text-red-700">Force (F)</p>
+                    <p class="text-gray-600 text-sm">Measured in Newtons (N)</p>
+                    <p class="text-gray-500 text-xs">1 N = 1 kg·m/s²</p>
+                </div>
+                <div class="bg-blue-50 p-4 rounded-lg text-center">
+                    <p class="font-semibold text-blue-700">Mass (m)</p>
+                    <p class="text-gray-600 text-sm">Measured in kilograms (kg)</p>
+                    <p class="text-gray-500 text-xs">Amount of matter</p>
+                </div>
+                <div class="bg-green-50 p-4 rounded-lg text-center">
+                    <p class="font-semibold text-green-700">Acceleration (a)</p>
+                    <p class="text-gray-600 text-sm">Measured in m/s²</p>
+                    <p class="text-gray-500 text-xs">Rate of velocity change</p>
+                </div>
+            </div>
+
+            <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-r-lg mb-4">
+                <h4 class="font-semibold text-yellow-800 mb-2"><i class="fas fa-calculator mr-2"></i>Worked Example</h4>
+                <p class="text-gray-700 text-sm mb-2">A 5 kg box is pushed with a force of 20 N. What is its acceleration?</p>
+                <div class="bg-white p-3 rounded-lg">
+                    <p class="font-mono text-sm">F = ma → a = F/m</p>
+                    <p class="font-mono text-sm">a = 20 N ÷ 5 kg = <strong>4 m/s²</strong></p>
+                </div>
+            </div>
+
+            <!-- Key relationships -->
+            <div class="grid md:grid-cols-2 gap-4">
+                <div class="bg-gray-50 p-4 rounded-lg border">
+                    <p class="font-semibold text-gray-700 mb-2">If Force ↑ and Mass constant:</p>
+                    <p class="text-gray-600 text-sm">Acceleration ↑ (directly proportional)</p>
+                </div>
+                <div class="bg-gray-50 p-4 rounded-lg border">
+                    <p class="font-semibold text-gray-700 mb-2">If Mass ↑ and Force constant:</p>
+                    <p class="text-gray-600 text-sm">Acceleration ↓ (inversely proportional)</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 3: Third Law - Action-Reaction -->
+        <div class="section-card animate-fade-in-up">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <span class="bg-blue-100 text-blue-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">III</span>
+                Newton's Third Law: Action-Reaction
+            </h2>
+            
+            <div class="bg-purple-50 p-4 rounded-lg border-l-4 border-purple-500 mb-4">
+                <p class="text-purple-800 font-medium text-lg">"For every action, there is an equal and opposite reaction."</p>
+            </div>
+
+            <p class="text-gray-700 mb-4">When object A exerts a force on object B, object B simultaneously exerts an equal and opposite force on object A. These forces always come in pairs!</p>
+
+            <div class="space-y-3">
+                <div class="bg-gray-50 p-4 rounded-lg border-l-4 border-blue-400">
+                    <h4 class="font-semibold text-blue-700">Rocket Propulsion</h4>
+                    <p class="text-gray-600 text-sm">Hot gases are expelled downward (action); Rocket moves upward (reaction)</p>
+                </div>
+                <div class="bg-gray-50 p-4 rounded-lg border-l-4 border-green-400">
+                    <h4 class="font-semibold text-green-700">Walking</h4>
+                    <p class="text-gray-600 text-sm">You push ground backward (action); Ground pushes you forward (reaction)</p>
+                </div>
+                <div class="bg-gray-50 p-4 rounded-lg border-l-4 border-purple-400">
+                    <h4 class="font-semibold text-purple-700">Swimming</h4>
+                    <p class="text-gray-600 text-sm">You push water backward (action); Water pushes you forward (reaction)</p>
+                </div>
+                <div class="bg-gray-50 p-4 rounded-lg border-l-4 border-orange-400">
+                    <h4 class="font-semibold text-orange-700">Book on Table</h4>
+                    <p class="text-gray-600 text-sm">Book pushes table down (action); Table pushes book up (reaction) - Normal force!</p>
+                </div>
+            </div>
+
+            <div class="bg-red-50 border-l-4 border-red-400 p-4 rounded-r-lg mt-4">
+                <h4 class="font-semibold text-red-800 mb-2"><i class="fas fa-exclamation-triangle mr-2"></i>Common Misconception</h4>
+                <p class="text-gray-700 text-sm">The action and reaction forces act on <strong>different objects</strong>, so they don't cancel out! That's why objects can still move. If you push a box, you push it forward while it pushes you backward - the box moves because only the forward force acts on IT.</p>
+            </div>
+        </div>
+
+        <!-- Section 4: Interactive Simulation -->
+        <div class="section-card animate-fade-in-up">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <span class="bg-blue-100 text-blue-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">4</span>
+                Interactive Simulation: Forces and Motion
+            </h2>
+            
+            <p class="text-gray-700 mb-4">Explore how forces affect motion with this PhET simulation. Try pushing objects of different masses!</p>
+            
+            <div class="bg-gray-50 p-4 rounded-lg border">
+                <div class="simulation-container">
+                    <iframe src="https://phet.colorado.edu/sims/html/forces-and-motion-basics/latest/forces-and-motion-basics_en.html"></iframe>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 5: Video -->
+        <div class="section-card animate-fade-in-up">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <span class="bg-blue-100 text-blue-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">5</span>
+                Video: Newton's Laws Explained
+            </h2>
+            
+            <div class="bg-gray-50 p-4 rounded-lg border">
+                <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/kKKM8Y-u7ds" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+            </div>
+        </div>
+
+        <!-- Practice Problems -->
+        <div class="section-card animate-fade-in-up">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-pencil-alt text-blue-600 mr-3"></i>
+                Practice Questions
+            </h2>
+
+            <div class="space-y-4">
+                <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+                    <p class="font-medium text-gray-800 mb-2">1. A 10 kg box accelerates at 2 m/s². What force is applied?</p>
+                    <details class="mt-2">
+                        <summary class="text-sm text-blue-600 cursor-pointer hover:text-blue-800">Show Answer</summary>
+                        <div class="mt-2 text-sm text-gray-700">
+                            <p>F = ma</p>
+                            <p>F = 10 kg × 2 m/s² = <strong>20 N</strong></p>
+                        </div>
+                    </details>
+                </div>
+
+                <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+                    <p class="font-medium text-gray-800 mb-2">2. A force of 50 N causes an object to accelerate at 5 m/s². What is its mass?</p>
+                    <details class="mt-2">
+                        <summary class="text-sm text-blue-600 cursor-pointer hover:text-blue-800">Show Answer</summary>
+                        <div class="mt-2 text-sm text-gray-700">
+                            <p>F = ma → m = F/a</p>
+                            <p>m = 50 N ÷ 5 m/s² = <strong>10 kg</strong></p>
+                        </div>
+                    </details>
+                </div>
+
+                <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+                    <p class="font-medium text-gray-800 mb-2">3. Explain why you move forward when you jump off a boat.</p>
+                    <details class="mt-2">
+                        <summary class="text-sm text-blue-600 cursor-pointer hover:text-blue-800">Show Answer</summary>
+                        <div class="mt-2 text-sm text-gray-700">
+                            <strong>Newton's Third Law (Action-Reaction):</strong> When you push backward against the boat (action), the boat pushes you forward (reaction). This is why the boat moves backward as you jump forward.
+                        </div>
+                    </details>
+                </div>
+
+                <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+                    <p class="font-medium text-gray-800 mb-2">4. Why do passengers lurch forward when a car brakes suddenly?</p>
+                    <details class="mt-2">
+                        <summary class="text-sm text-blue-600 cursor-pointer hover:text-blue-800">Show Answer</summary>
+                        <div class="mt-2 text-sm text-gray-700">
+                            <strong>Newton's First Law (Inertia):</strong> The passengers' bodies want to keep moving at the same speed (inertia). When the car stops, there's no force directly stopping the passengers, so they continue moving forward until the seatbelt or dashboard exerts a force on them.
+                        </div>
+                    </details>
+                </div>
+            </div>
+        </div>
+
+        <!-- Key Takeaways -->
+        <div class="bg-gradient-to-r from-blue-50 to-indigo-50 p-5 rounded-lg border border-blue-200 animate-fade-in-up">
+            <h3 class="font-semibold text-blue-800 mb-3"><i class="fas fa-star mr-2"></i>Key Takeaways</h3>
+            <ul class="text-blue-700 text-sm space-y-2">
+                <li>• <strong>1st Law:</strong> Objects resist changes in motion (inertia) - need force to change velocity</li>
+                <li>• <strong>2nd Law:</strong> F = ma - force causes acceleration, mass resists it</li>
+                <li>• <strong>3rd Law:</strong> Every action has an equal and opposite reaction (on different objects!)</li>
+                <li>• Mass measures inertia - more mass = harder to accelerate</li>
+                <li>• Forces always come in pairs - you can't touch without being touched</li>
+            </ul>
+        </div>
+
+        <!-- Navigation -->
+        <div class="flex justify-between items-center mt-8">
+            <a href="linear-motion.html" class="px-4 py-2 text-gray-600 hover:text-gray-900">
+                <i class="fas fa-chevron-left mr-2"></i>Previous
+            </a>
+            <a href="momentum.html" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
+                Next: Momentum<i class="fas fa-chevron-right ml-2"></i>
+            </a>
+        </div>
+    </main>
+
+    <script>
+        let progress = 0;
+        const totalSections = 5;
+        
+        function updateProgress() {
+            const percentage = Math.round((progress / totalSections) * 100);
+            document.getElementById('progressPercent').textContent = percentage + '%';
+            document.getElementById('progressBar').style.width = percentage + '%';
+        }
+
+        const sections = document.querySelectorAll('.section-card');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    progress = Array.from(sections).indexOf(entry.target) + 1;
+                    updateProgress();
+                }
+            });
+        }, { threshold: 0.5 });
+
+        sections.forEach(section => observer.observe(section));
+    </script>
+
+<!-- Topic Quiz System -->
+<script src="/js/topic-quiz-loader.js"></script>
+<script src="/js/topic-quiz-injector.js"></script>
+</body>
+</html>

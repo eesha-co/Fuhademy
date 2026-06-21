@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Physical & Chemical Changes | Chemistry Foundations</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .content-card {
+      -webkit-backdrop-filter: blur(12px);
+      backdrop-filter: blur(12px);
+      background: rgba(255, 255, 255, 0.95);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    .accordion-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease-out;
+    }
+    .accordion-content.open {
+      max-height: 2000px;
+    }
+    .step-card { transition: all 0.2s ease; }
+    .step-card:hover { transform: translateX(4px); }
+    #topic-complete-btn { transition: all 0.3s ease; }
+    #topic-complete-btn:not(:disabled):hover { transform: scale(1.02); }
+  </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-rose-50 to-pink-100 p-4 md:p-6">
+  <div class="max-w-4xl mx-auto">
+    <!-- Navigation -->
+    <nav class="mb-4 flex items-center justify-between">
+      <a href="index.html" class="text-blue-600 hover:text-blue-800 transition flex items-center">
+        <i class="fas fa-arrow-left mr-2"></i>Back to Foundations
+      </a>
+      <div class="flex items-center gap-3">
+        <div class="text-sm text-gray-600">
+          <span id="topic-progress-text">0% Complete</span>
+        </div>
+        <div class="w-24 h-2 bg-gray-200 rounded-full overflow-hidden">
+          <div id="topic-progress-bar" class="h-full bg-gradient-to-r from-rose-400 to-pink-500 transition-all duration-300" style="width: 0%"></div>
+        </div>
+      </div>
+    </nav>
+
+    <article class="content-card rounded-xl p-6 md:p-8 shadow-lg">
+      <!-- Header -->
+      <div class="border-b pb-4 mb-6">
+        <h1 class="text-2xl md:text-3xl font-bold text-gray-800 mb-2">
+          <i class="fas fa-sync-alt text-rose-500 mr-3"></i>Physical & Chemical Changes
+        </h1>
+        <p class="text-gray-600">Understanding the differences between changes that affect physical form versus chemical identity.</p>
+      </div>
+
+      <!-- Learning Objectives -->
+      <div class="bg-rose-50 border-l-4 border-rose-500 p-4 rounded-r-lg mb-6">
+        <h3 class="font-semibold text-rose-800 mb-2"><i class="fas fa-bullseye mr-2"></i>Learning Objectives</h3>
+        <ul class="text-rose-700 text-sm space-y-1">
+          <li>• Distinguish between physical and chemical changes</li>
+          <li>• Identify evidence of chemical changes</li>
+          <li>• Give examples of each type of change</li>
+          <li>• Understand reversible and irreversible changes</li>
+          <li>• Apply knowledge to classify everyday changes</li>
+        </ul>
+      </div>
+
+      <!-- Section 1: Physical Changes -->
+      <section id="section-1" class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <span class="bg-rose-100 text-rose-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">1</span>
+          Physical Changes
+        </h2>
+
+        <div class="bg-gray-50 p-5 rounded-lg mb-4">
+          <div class="bg-gradient-to-r from-blue-100 to-cyan-100 p-4 rounded-lg mb-4 border-l-4 border-blue-500">
+            <p class="text-lg font-semibold text-blue-800 mb-1">Definition</p>
+            <p class="text-gray-700">A <strong class="text-blue-600">physical change</strong> is a change in which no new substance is formed. The substance only changes its physical state, shape, or size.</p>
+          </div>
+
+          <div class="grid md:grid-cols-2 gap-4 mb-4">
+            <div class="bg-white p-4 rounded-lg border border-gray-200">
+              <h4 class="font-semibold text-blue-800 mb-2"><i class="fas fa-cube mr-2"></i>Characteristics</h4>
+              <ul class="text-gray-700 text-sm space-y-1">
+                <li>• No new substance formed</li>
+                <li>• Easily reversible</li>
+                <li>• No change in chemical composition</li>
+                <li>• Usually no heat/light produced</li>
+              </ul>
+            </div>
+            <div class="bg-white p-4 rounded-lg border border-gray-200">
+              <h4 class="font-semibold text-blue-800 mb-2"><i class="fas fa-list mr-2"></i>Examples</h4>
+              <ul class="text-gray-700 text-sm space-y-1">
+                <li>• Melting ice → water</li>
+                <li>• Boiling water → steam</li>
+                <li>• Dissolving salt in water</li>
+                <li>• Crushing a can</li>
+                <li>• Tearing paper</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-r-lg">
+            <h4 class="font-semibold text-yellow-800 mb-2"><i class="fas fa-lightbulb mr-2"></i>Key Point</h4>
+            <p class="text-gray-700 text-sm">In physical changes, the same substance is present before and after the change. Water is still H₂O whether it's ice, liquid, or steam!</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 2: Chemical Changes -->
+      <section id="section-2" class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <span class="bg-rose-100 text-rose-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">2</span>
+          Chemical Changes
+        </h2>
+
+        <div class="bg-gray-50 p-5 rounded-lg mb-4">
+          <div class="bg-gradient-to-r from-orange-100 to-red-100 p-4 rounded-lg mb-4 border-l-4 border-orange-500">
+            <p class="text-lg font-semibold text-orange-800 mb-1">Definition</p>
+            <p class="text-gray-700">A <strong class="text-orange-600">chemical change</strong> (chemical reaction) is a change in which one or more new substances are formed with different properties from the original substances.</p>
+          </div>
+
+          <div class="grid md:grid-cols-2 gap-4 mb-4">
+            <div class="bg-white p-4 rounded-lg border border-gray-200">
+              <h4 class="font-semibold text-orange-800 mb-2"><i class="fas fa-atom mr-2"></i>Characteristics</h4>
+              <ul class="text-gray-700 text-sm space-y-1">
+                <li>• New substance(s) formed</li>
+                <li>• Usually difficult to reverse</li>
+                <li>• Change in chemical composition</li>
+                <li>• Often involves heat, light, or gas</li>
+              </ul>
+            </div>
+            <div class="bg-white p-4 rounded-lg border border-gray-200">
+              <h4 class="font-semibold text-orange-800 mb-2"><i class="fas fa-fire mr-2"></i>Examples</h4>
+              <ul class="text-gray-700 text-sm space-y-1">
+                <li>• Burning wood → ash + gases</li>
+                <li>• Rusting iron → iron oxide</li>
+                <li>• Cooking an egg</li>
+                <li>• Baking a cake</li>
+                <li>• Souring milk</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Evidence of Chemical Change -->
+        <div class="bg-orange-50 p-4 rounded-lg border border-orange-200">
+          <h4 class="font-semibold text-orange-800 mb-3"><i class="fas fa-search mr-2"></i>Evidence of Chemical Change:</h4>
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+            <div class="bg-white p-3 rounded text-center">
+              <i class="fas fa-fire text-orange-500 text-2xl mb-1"></i>
+              <p class="text-sm font-medium">Heat/Light</p>
+              <p class="text-xs text-gray-500">produced</p>
+            </div>
+            <div class="bg-white p-3 rounded text-center">
+              <i class="fas fa-wind text-blue-500 text-2xl mb-1"></i>
+              <p class="text-sm font-medium">Gas</p>
+              <p class="text-xs text-gray-500">bubbles formed</p>
+            </div>
+            <div class="bg-white p-3 rounded text-center">
+              <i class="fas fa-palette text-purple-500 text-2xl mb-1"></i>
+              <p class="text-sm font-medium">Color Change</p>
+              <p class="text-xs text-gray-500">unexpected</p>
+            </div>
+            <div class="bg-white p-3 rounded text-center">
+              <i class="fas fa-cloud text-gray-500 text-2xl mb-1"></i>
+              <p class="text-sm font-medium">Precipitate</p>
+              <p class="text-xs text-gray-500">solid forms</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 3: Comparison Table -->
+      <section id="section-3" class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <span class="bg-rose-100 text-rose-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">3</span>
+          Physical vs Chemical Changes
+        </h2>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm border-collapse border border-gray-300 rounded-lg overflow-hidden">
+            <thead class="bg-rose-600 text-white">
+              <tr>
+                <th class="border border-gray-300 p-3 text-left">Aspect</th>
+                <th class="border border-gray-300 p-3 text-center">Physical Change</th>
+                <th class="border border-gray-300 p-3 text-center">Chemical Change</th>
+              </tr>
+            </thead>
+            <tbody class="bg-white">
+              <tr>
+                <td class="border border-gray-300 p-2 font-medium">New substance</td>
+                <td class="border border-gray-300 p-2 text-center text-blue-600">No</td>
+                <td class="border border-gray-300 p-2 text-center text-orange-600">Yes</td>
+              </tr>
+              <tr class="bg-gray-50">
+                <td class="border border-gray-300 p-2 font-medium">Reversibility</td>
+                <td class="border border-gray-300 p-2 text-center text-blue-600">Usually easy</td>
+                <td class="border border-gray-300 p-2 text-center text-orange-600">Usually difficult</td>
+              </tr>
+              <tr>
+                <td class="border border-gray-300 p-2 font-medium">Chemical composition</td>
+                <td class="border border-gray-300 p-2 text-center text-blue-600">Unchanged</td>
+                <td class="border border-gray-300 p-2 text-center text-orange-600">Changed</td>
+              </tr>
+              <tr class="bg-gray-50">
+                <td class="border border-gray-300 p-2 font-medium">Energy changes</td>
+                <td class="border border-gray-300 p-2 text-center text-blue-600">Minimal</td>
+                <td class="border border-gray-300 p-2 text-center text-orange-600">Often significant</td>
+              </tr>
+              <tr>
+                <td class="border border-gray-300 p-2 font-medium">Examples</td>
+                <td class="border border-gray-300 p-2 text-center text-blue-600">Melting, dissolving</td>
+                <td class="border border-gray-300 p-2 text-center text-orange-600">Burning, rusting</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Section 4: Common Examples -->
+      <section id="section-4" class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <span class="bg-rose-100 text-rose-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">4</span>
+          Classifying Common Changes
+        </h2>
+
+        <div class="grid md:grid-cols-2 gap-4">
+          <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
+            <h4 class="font-semibold text-blue-800 mb-3"><i class="fas fa-check-circle mr-2"></i>Physical Changes</h4>
+            <ul class="text-gray-700 text-sm space-y-2">
+              <li class="flex items-start gap-2">
+                <span class="text-blue-500 mt-0.5">•</span>
+                <span><strong>Melting candle wax</strong> - wax changes from solid to liquid</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-blue-500 mt-0.5">•</span>
+                <span><strong>Dissolving sugar in tea</strong> - sugar disperses but remains sugar</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-blue-500 mt-0.5">•</span>
+                <span><strong>Breaking glass</strong> - smaller pieces, still glass</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-blue-500 mt-0.5">•</span>
+                <span><strong>Freezing water</strong> - liquid becomes solid ice</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-blue-500 mt-0.5">•</span>
+                <span><strong>Magnetizing iron</strong> - magnetic property added</span>
+              </li>
+            </ul>
+          </div>
+          <div class="bg-orange-50 p-4 rounded-lg border border-orange-200">
+            <h4 class="font-semibold text-orange-800 mb-3"><i class="fas fa-times-circle mr-2"></i>Chemical Changes</h4>
+            <ul class="text-gray-700 text-sm space-y-2">
+              <li class="flex items-start gap-2">
+                <span class="text-orange-500 mt-0.5">•</span>
+                <span><strong>Burning candle wax</strong> - wax reacts with oxygen → CO₂ + H₂O</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-orange-500 mt-0.5">•</span>
+                <span><strong>Baking bread</strong> - yeast fermentation produces gas</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-orange-500 mt-0.5">•</span>
+                <span><strong>Rusting iron</strong> - Fe + O₂ + H₂O → Fe₂O₃ (rust)</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-orange-500 mt-0.5">•</span>
+                <span><strong>Cooking egg</strong> - proteins denature, texture changes</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-orange-500 mt-0.5">•</span>
+                <span><strong>Burning paper</strong> - paper → ash + gases</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 5: Tricky Cases -->
+      <section id="section-5" class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <span class="bg-rose-100 text-rose-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">5</span>
+          Tricky Cases Explained
+        </h2>
+
+        <div class="space-y-4">
+          <div class="border border-gray-200 rounded-lg overflow-hidden">
+            <button class="accordion-btn w-full p-4 bg-gray-50 text-left font-semibold text-gray-800 flex justify-between items-center hover:bg-gray-100 transition">
+              <span><i class="fas fa-question-circle mr-2 text-gray-500"></i>Dissolving: Physical or Chemical?</span>
+              <i class="fas fa-chevron-down transform transition-transform"></i>
+            </button>
+            <div class="accordion-content">
+              <div class="p-5">
+                <p class="text-gray-700">Dissolving is generally a <strong class="text-blue-600">physical change</strong>. The solute (like salt) spreads throughout the solvent (water) but no new substance forms. The salt can be recovered by evaporation.</p>
+                <p class="text-gray-700 mt-2">However, dissolving some substances like sodium metal in water IS chemical because hydrogen gas and sodium hydroxide are produced!</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="border border-gray-200 rounded-lg overflow-hidden">
+            <button class="accordion-btn w-full p-4 bg-orange-50 text-left font-semibold text-orange-800 flex justify-between items-center hover:bg-orange-100 transition">
+              <span><i class="fas fa-question-circle mr-2 text-orange-500"></i>Is boiling water a chemical change?</span>
+              <i class="fas fa-chevron-down transform transition-transform"></i>
+            </button>
+            <div class="accordion-content">
+              <div class="p-5">
+                <p class="text-gray-700"><strong class="text-blue-600">No, it's physical!</strong> Boiling water turns liquid H₂O into gaseous H₂O (steam). No new substance forms - it's still water, just in gas form. The steam can condense back to liquid water.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="border border-gray-200 rounded-lg overflow-hidden">
+            <button class="accordion-btn w-full p-4 bg-blue-50 text-left font-semibold text-blue-800 flex justify-between items-center hover:bg-blue-100 transition">
+              <span><i class="fas fa-question-circle mr-2 text-blue-500"></i>Why is a burning candle both physical and chemical?</span>
+              <i class="fas fa-chevron-down transform transition-transform"></i>
+            </button>
+            <div class="accordion-content">
+              <div class="p-5">
+                <ul class="text-gray-700 text-sm space-y-2">
+                  <li><strong class="text-blue-600">Physical part:</strong> The solid wax melts (state change)</li>
+                  <li><strong class="text-orange-600">Chemical part:</strong> The wax vapor burns with oxygen to form CO₂ and H₂O (new substances)</li>
+                </ul>
+                <p class="text-gray-600 text-sm mt-2">The melting is reversible, but the burning is not.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 6: Practice Problems -->
+      <section id="section-6" class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <i class="fas fa-pencil-alt text-rose-600 mr-3"></i>
+          Practice Problems
+        </h2>
+
+        <div class="space-y-4">
+          <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+            <p class="font-medium text-gray-800 mb-2">1. Classify as physical or chemical: (a) Melting ice, (b) Burning wood, (c) Dissolving salt in water, (d) Rusting nail</p>
+            <details class="mt-2">
+              <summary class="text-sm text-blue-600 cursor-pointer hover:text-blue-800">Show Solution</summary>
+              <div class="mt-2 text-sm text-gray-700">
+                <p>(a) Melting ice - <strong class="text-blue-600">Physical</strong> (state change)</p>
+                <p>(b) Burning wood - <strong class="text-orange-600">Chemical</strong> (new substances: ash, CO₂)</p>
+                <p>(c) Dissolving salt - <strong class="text-blue-600">Physical</strong> (no new substance)</p>
+                <p>(d) Rusting nail - <strong class="text-orange-600">Chemical</strong> (iron oxide forms)</p>
+              </div>
+            </details>
+          </div>
+
+          <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+            <p class="font-medium text-gray-800 mb-2">2. Give three pieces of evidence that a chemical change has occurred.</p>
+            <details class="mt-2">
+              <summary class="text-sm text-blue-600 cursor-pointer hover:text-blue-800">Show Solution</summary>
+              <div class="mt-2 text-sm text-gray-700">
+                <p>Any three of:</p>
+                <ul class="list-disc list-inside mt-1">
+                  <li>Color change (unexpected)</li>
+                  <li>Gas produced (bubbles)</li>
+                  <li>Heat or light produced</li>
+                  <li>Precipitate formed</li>
+                  <li>Difficult to reverse</li>
+                </ul>
+              </div>
+            </details>
+          </div>
+
+          <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+            <p class="font-medium text-gray-800 mb-2">3. Explain why cooking an egg is a chemical change.</p>
+            <details class="mt-2">
+              <summary class="text-sm text-blue-600 cursor-pointer hover:text-blue-800">Show Solution</summary>
+              <div class="mt-2 text-sm text-gray-700">
+                <p>Cooking an egg is chemical because:</p>
+                <ul class="list-disc list-inside mt-1">
+                  <li>The proteins in the egg denature and re-form new structures</li>
+                  <li>The texture, color, and taste change permanently</li>
+                  <li>It cannot be reversed - you can't un-cook an egg!</li>
+                  <li>New substances with different properties are formed</li>
+                </ul>
+              </div>
+            </details>
+          </div>
+
+          <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+            <p class="font-medium text-gray-800 mb-2">4. Is boiling an egg physical or chemical? Explain.</p>
+            <details class="mt-2">
+              <summary class="text-sm text-blue-600 cursor-pointer hover:text-blue-800">Show Solution</summary>
+              <div class="mt-2 text-sm text-gray-700">
+                <p>Boiling an egg is a <strong class="text-orange-600">chemical change</strong>. While the boiling water is physical, the egg itself undergoes chemical changes - the proteins denature and the egg becomes solid. This is irreversible.</p>
+              </div>
+            </details>
+          </div>
+        </div>
+      </section>
+
+      <!-- Key Takeaways -->
+      <section id="section-7" class="mb-8">
+        <div class="bg-gradient-to-r from-rose-50 to-pink-50 p-5 rounded-lg border border-rose-200">
+          <h3 class="font-semibold text-rose-800 mb-3"><i class="fas fa-star mr-2"></i>Key Takeaways for WAEC/JAMB/NECO</h3>
+          <ul class="text-rose-700 text-sm space-y-2">
+            <li>• <strong>Physical:</strong> No new substance, reversible, state/shape changes only</li>
+            <li>• <strong>Chemical:</strong> New substance(s) formed, usually irreversible</li>
+            <li>• Evidence of chemical change: color, gas, heat/light, precipitate</li>
+            <li>• Dissolving is usually physical (but check for reactions)</li>
+            <li>• State changes (melting, boiling) are always physical</li>
+            <li>• Burning is always chemical (combustion)</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Complete Topic Button -->
+      <div class="mt-8 pt-6 border-t border-gray-200">
+        <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div class="text-center sm:text-left">
+            <h3 class="font-semibold text-gray-800">Ready to Complete?</h3>
+            <p class="text-sm text-gray-600">View all sections, then take the quiz to mark this topic as complete.</p>
+          </div>
+          <button id="topic-complete-btn" disabled
+                  class="px-6 py-3 rounded-xl bg-gray-300 text-gray-500 cursor-not-allowed opacity-50 flex items-center gap-2 text-lg font-medium">
+            <i class="fas fa-lock mr-2"></i>
+            <span>Complete (0% viewed)</span>
+          </button>
+        </div>
+      </div>
+    </article>
+  </div>
+
+  <script>
+    document.querySelectorAll('.accordion-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const content = btn.nextElementSibling;
+        const icon = btn.querySelector('.fa-chevron-down');
+        content.classList.toggle('open');
+        icon?.classList.toggle('rotate-180');
+      });
+    });
+  </script>
+
+  <script type="module">
+    import { TopicTracker } from '/js/topic-tracker.js';
+    import { TopicQuiz } from '/js/topic-quiz.js';
+
+    const quizQuestions = [
+      {
+        question: "Which is a physical change?",
+        options: ["Burning paper", "Rusting iron", "Melting ice", "Cooking egg"],
+        correct: 2,
+        explanation: "Melting ice is a physical change - only the state changes from solid to liquid. No new substance forms."
+      },
+      {
+        question: "Which indicates a chemical change?",
+        options: ["Change of shape", "Change of state", "Color change with new substance", "Change of size"],
+        correct: 2,
+        explanation: "An unexpected color change that produces a new substance indicates a chemical reaction."
+      },
+      {
+        question: "Dissolving sugar in water is:",
+        options: ["Chemical change", "Physical change", "Both", "Neither"],
+        correct: 1,
+        explanation: "Dissolving sugar is physical - no new substance forms. Sugar can be recovered by evaporation."
+      },
+      {
+        question: "Which is evidence of a chemical reaction?",
+        options: ["Melting", "Freezing", "Gas bubbles forming", "Dissolving"],
+        correct: 2,
+        explanation: "Gas bubbles (effervescence) indicate a new gas is being produced - a sign of chemical change."
+      },
+      {
+        question: "Rusting of iron is a:",
+        options: ["Physical change", "Chemical change", "Reversible change", "Temporary change"],
+        correct: 1,
+        explanation: "Rusting is chemical - iron reacts with oxygen and water to form iron oxide (rust), a new substance."
+      },
+      {
+        question: "Which is reversible?",
+        options: ["Burning wood", "Baking cake", "Melting wax", "Cooking meat"],
+        correct: 2,
+        explanation: "Melting wax is reversible - the wax can solidify again. The others are permanent chemical changes."
+      },
+      {
+        question: "Boiling water is a physical change because:",
+        options: ["Bubbles are formed", "Heat is needed", "No new substance forms", "Steam escapes"],
+        correct: 2,
+        explanation: "Boiling water is physical because H₂O remains H₂O - only the state changes from liquid to gas."
+      },
+      {
+        question: "Which change produces heat and light?",
+        options: ["Melting ice", "Burning candle", "Dissolving salt", "Freezing water"],
+        correct: 1,
+        explanation: "Burning (combustion) produces heat and light - it's always a chemical change."
+      }
+    ];
+
+    const tracker = new TopicTracker({
+      topicId: 'physical-chemical-changes',
+      topicTitle: 'Physical & Chemical Changes',
+      subject: 'chemistry',
+      sections: ['section-1', 'section-2', 'section-3', 'section-4', 'section-5', 'section-6', 'section-7'],
+      quizRequired: true
+    });
+
+    const quiz = new TopicQuiz({
+      topicId: 'physical-chemical-changes',
+      topicTitle: 'Physical & Chemical Changes',
+      subject: 'chemistry',
+      questions: quizQuestions,
+      passingScore: 60,
+      tracker: tracker
+    });
+
+    document.querySelectorAll('.accordion-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const section = btn.closest('section');
+        if (section && section.id) tracker.markSectionViewed(section.id);
+      });
+    });
+
+    document.querySelectorAll('details').forEach(details => {
+      details.addEventListener('toggle', () => {
+        if (details.open) tracker.markSectionViewed('section-6');
+      });
+    });
+  </script>
+</body>
+</html>

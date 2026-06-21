@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Statistical Mechanics - Interactive</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>body{font-family:Inter,system-ui,sans-serif}.step-active{background:#2563eb;color:#fff}.step-inactive{background:#e5e7eb;color:#374151}#smCanvas{background:#f8fafc}</style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+  <nav class="bg-blue-700 p-4 text-white"><div class="max-w-6xl mx-auto">Statistical Mechanics</div></nav>
+  <div class="p-6 max-w-6xl mx-auto">
+    <div class="bg-white p-6 rounded shadow">
+      <h2 class="font-bold mb-4">Maxwell-Boltzmann Distribution Demo</h2>
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm">Temperature (K)</label>
+          <input id="temp" type="range" min="100" max="2000" value="300" class="w-full" />
+          <div class="text-sm text-gray-600 mt-2">T = <span id="tempVal">300</span> K</div>
+          <label class="block text-sm mt-4">Number of particles</label>
+          <input id="nParticles" type="range" min="50" max="1000" value="300" class="w-full" />
+          <div class="text-sm text-gray-600 mt-2">N = <span id="nVal">300</span></div>
+        </div>
+        <div>
+          <canvas id="smCanvas" width="600" height="300" class="w-full border rounded"></canvas>
+        </div>
+      </div>
+
+      <div class="mt-4 grid grid-cols-3 gap-4 text-center">
+        <div class="p-3 bg-blue-50 rounded"><div class="text-sm">Mean speed</div><div id="meanSpeed" class="font-bold text-blue-600">0</div></div>
+        <div class="p-3 bg-green-50 rounded"><div class="text-sm">Most probable</div><div id="mpSpeed" class="font-bold text-green-600">0</div></div>
+        <div class="p-3 bg-yellow-50 rounded"><div class="text-sm">Std dev</div><div id="stdDev" class="font-bold text-yellow-600">0</div></div>
+      </div>
+
+      <div class="mt-6 flex justify-end"><button id="quizBtn" class="px-4 py-2 bg-blue-600 text-white rounded">Quiz</button></div>
+    </div>
+  </div>
+
+  <div id="quizModal" class="hidden fixed inset-0 bg-black bg-opacity-40 items-center justify-center"><div class="bg-white p-6 rounded max-w-lg w-full m-6"><h3 class="font-bold mb-4">Quick Quiz</h3><div id="quizContent"></div><div class="mt-4 flex justify-end gap-2"><button id="closeQuiz" class="px-3 py-2 rounded bg-gray-200">Close</button><button id="submitQuiz" class="px-3 py-2 rounded bg-blue-600 text-white">Submit</button></div></div></div>
+
+  <script>
+    const kB = 1.380649e-23; // not used with real units here; demo scaled
+    const canvas = document.getElementById('smCanvas'); const ctx = canvas.getContext('2d');
+    const tempEl = document.getElementById('temp'); const nEl = document.getElementById('nParticles');
+    const tempVal = document.getElementById('tempVal'); const nVal = document.getElementById('nVal');
+    const meanSpeedEl = document.getElementById('meanSpeed'), mpEl = document.getElementById('mpSpeed'), sdEl = document.getElementById('stdDev');
+
+    function maxwellPDF(v, T){ // scaled demo PDF with m=1
+      const a = 1/Math.sqrt(T);
+      return a * v * Math.exp(-v*v/(2*T));
+    }
+
+    function draw(){ const T = Number(tempEl.value); const N = Number(nEl.value); tempVal.textContent = T; nVal.textContent = N;
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      // draw axes
+      ctx.strokeStyle='#e5e7eb'; ctx.beginPath(); ctx.moveTo(40,260); ctx.lineTo(560,260); ctx.stroke(); ctx.beginPath(); ctx.moveTo(40,20); ctx.lineTo(40,260); ctx.stroke();
+      // compute pdf points
+      let maxY=0; const pts=[]; for(let x=0;x<=520;x++){ const v = x/10; const y = maxwellPDF(v,T); pts.push({v,y}); if(y>maxY) maxY=y; }
+      // plot
+      ctx.beginPath(); ctx.strokeStyle='#2563eb'; for(let i=0;i<pts.length;i++){ const px=40 + i; const py = 260 - (pts[i].y/maxY)*220; if(i===0) ctx.moveTo(px,py); else ctx.lineTo(px,py); } ctx.stroke();
+      // stats (approx)
+      let sum=0,sum2=0,mp=0,mpv=0; for(let i=0;i<pts.length;i++){ const v=pts[i].v, y=pts[i].y; sum += v*y; sum2 += v*v*y; if(y>mp){ mp=y; mpv=v; }}
+      const mean = sum || 0; const variance = (sum2 - mean*mean) || 0; meanSpeedEl.textContent = mean.toFixed(2); mpEl.textContent = mpv.toFixed(2); sdEl.textContent = Math.sqrt(Math.abs(variance)).toFixed(2);
+    }
+
+    tempEl.addEventListener('input', draw); nEl.addEventListener('input', draw);
+    document.getElementById('quizBtn').addEventListener('click', ()=>{ document.getElementById('quizModal').classList.remove('hidden'); const qc=document.getElementById('quizContent'); qc.innerHTML = '<p>What increases the most probable speed in Maxwell distribution?</p><label><input type="radio" name="q0" value="0"> Higher temperature</label><label><input type="radio" name="q0" value="1"> More particles</label>'; });
+    document.getElementById('closeQuiz').addEventListener('click', ()=>document.getElementById('quizModal').classList.add('hidden'));
+    document.getElementById('submitQuiz').addEventListener('click', ()=>{ const sel=document.querySelector('input[name="q0"]:checked'); const qc=document.getElementById('quizContent'); if(sel && sel.value==='0') qc.innerHTML='<div class="text-green-600 font-bold">Correct!</div>'; else qc.innerHTML='<div class="text-red-600 font-bold">Try again.</div>'; });
+
+    window.addEventListener('resize', ()=>{ canvas.width = canvas.offsetWidth; draw(); }); canvas.width = canvas.offsetWidth; draw();
+  </script>
+<!-- Topic Quiz System -->
+<script src="/js/topic-quiz-loader.js"></script>
+<script src="/js/topic-quiz-injector.js"></script>
+</body>
+</html>

@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Equations of Motion | Physics Mechanics</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .content-card {
+            -webkit-backdrop-filter: blur(16px);
+            backdrop-filter: blur(16px);
+            background: rgba(255, 255, 255, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-6">
+    <div class="max-w-6xl mx-auto">
+        <nav class="mb-8">
+            <a href="./" class="text-blue-600 hover:text-blue-700">← Back to Mechanics</a>
+        </nav>
+
+        <div class="content-card rounded-xl p-8">
+            <header class="mb-12">
+                <h1 class="text-3xl font-bold text-gray-800 mb-4">Equations of Motion</h1>
+                <p class="text-lg text-gray-600">Understanding uniform acceleration and motion under gravity</p>
+            </header>
+
+            <div class="grid gap-8">
+                <!-- Key Assumptions -->
+                <section>
+                    <h2 class="text-xl font-semibold text-gray-800 mb-4">Key Assumptions</h2>
+                    <div class="bg-white/50 rounded-lg p-6">
+                        <p class="text-gray-700 mb-4">These equations apply when:</p>
+                        <ul class="space-y-2 text-gray-700">
+                            <li>• Acceleration is constant</li>
+                            <li>• Motion is in a straight line</li>
+                            <li>• Air resistance is negligible</li>
+                            <li>• No external forces (except gravity in free fall)</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- Basic Equations -->
+                <section>
+                    <h2 class="text-xl font-semibold text-gray-800 mb-4">Basic Equations of Motion</h2>
+                    <div class="space-y-6">
+                        <div class="bg-white/50 rounded-lg p-6">
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <div>
+                                    <h3 class="font-medium text-gray-800 mb-3">Variable Definitions</h3>
+                                    <ul class="space-y-2 text-sm text-gray-700">
+                                        <li>v = final velocity (m/s)</li>
+                                        <li>u = initial velocity (m/s)</li>
+                                        <li>a = acceleration (m/s²)</li>
+                                        <li>t = time (s)</li>
+                                        <li>s = displacement (m)</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h3 class="font-medium text-gray-800 mb-3">Four Basic Equations</h3>
+                                    <ul class="space-y-2 text-sm text-gray-700">
+                                        <li>v = u + at</li>
+                                        <li>s = ut + ½at²</li>
+                                        <li>v² = u² + 2as</li>
+                                        <li>s = ½(u + v)t</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Equation Applications -->
+                        <div class="bg-white/50 rounded-lg p-6">
+                            <h3 class="font-medium text-gray-800 mb-3">When to Use Each Equation</h3>
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <div>
+                                    <h4 class="font-medium text-gray-800 mb-2">First Equation (v = u + at)</h4>
+                                    <ul class="space-y-2 text-sm text-gray-700">
+                                        <li>• Finding final velocity</li>
+                                        <li>• Known time period</li>
+                                        <li>• Constant acceleration</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium text-gray-800 mb-2">Second Equation (s = ut + ½at²)</h4>
+                                    <ul class="space-y-2 text-sm text-gray-700">
+                                        <li>• Finding displacement</li>
+                                        <li>• Known time period</li>
+                                        <li>• Initial velocity known</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Motion Under Gravity -->
+                <section>
+                    <h2 class="text-xl font-semibold text-gray-800 mb-4">Motion Under Gravity</h2>
+                    <div class="space-y-6">
+                        <div class="bg-white/50 rounded-lg p-6">
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <div>
+                                    <h3 class="font-medium text-gray-800 mb-3">Free Fall</h3>
+                                    <ul class="space-y-2 text-sm text-gray-700">
+                                        <li>• Acceleration = 9.81 m/s² (g)</li>
+                                        <li>• Downward is positive</li>
+                                        <li>• Upward is negative</li>
+                                        <li>• Same for all masses</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h3 class="font-medium text-gray-800 mb-3">Modified Equations</h3>
+                                    <ul class="space-y-2 text-sm text-gray-700">
+                                        <li>• v = u + gt</li>
+                                        <li>• h = ut - ½gt²</li>
+                                        <li>• v² = u² - 2gh</li>
+                                        <li>• h = height, g = 9.81 m/s²</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Special Cases -->
+                        <div class="bg-white/50 rounded-lg p-6">
+                            <h3 class="font-medium text-gray-800 mb-3">Special Cases</h3>
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <div>
+                                    <h4 class="font-medium text-gray-800 mb-2">Object Thrown Upward</h4>
+                                    <ul class="space-y-2 text-sm text-gray-700">
+                                        <li>• Initial velocity is positive upward</li>
+                                        <li>• Maximum height when v = 0</li>
+                                        <li>• Time up = time down</li>
+                                        <li>• Speed at start = speed at end</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium text-gray-800 mb-2">Object Dropped</h4>
+                                    <ul class="space-y-2 text-sm text-gray-700">
+                                        <li>• Initial velocity = 0</li>
+                                        <li>• s = ½gt²</li>
+                                        <li>• v = gt</li>
+                                        <li>• v² = 2gh</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Problem-Solving Strategy -->
+                <section>
+                    <h2 class="text-xl font-semibold text-gray-800 mb-4">Problem-Solving Strategy</h2>
+                    <div class="bg-white/50 rounded-lg p-6">
+                        <ol class="list-decimal pl-6 space-y-3 text-gray-700">
+                            <li>
+                                <p class="font-medium">List Known Variables</p>
+                                <p class="text-sm">Write down all given values and identify what you need to find</p>
+                            </li>
+                            <li>
+                                <p class="font-medium">Choose Correct Equation</p>
+                                <p class="text-sm">Select equation that contains your unknown and known variables</p>
+                            </li>
+                            <li>
+                                <p class="font-medium">Check Units</p>
+                                <p class="text-sm">Convert all values to SI units before calculation</p>
+                            </li>
+                            <li>
+                                <p class="font-medium">Solve and Check</p>
+                                <p class="text-sm">Solve algebraically and verify if answer is reasonable</p>
+                            </li>
+                        </ol>
+                    </div>
+                </section>
+
+                <!-- Practice Problems -->
+                <section>
+                    <h2 class="text-xl font-semibold text-gray-800 mb-4">Practice Problems</h2>
+                    <div class="bg-white/50 rounded-lg p-6">
+                        <ol class="list-decimal pl-6 space-y-4 text-gray-700">
+                            <li>
+                                <p class="font-medium mb-2">Free Fall</p>
+                                <p>A ball is dropped from a height of 45 meters. Calculate:</p>
+                                <ul class="list-disc pl-6 mt-2 space-y-1 text-sm">
+                                    <li>Time taken to reach ground</li>
+                                    <li>Final velocity on impact</li>
+                                </ul>
+                            </li>
+                            <li>
+                                <p class="font-medium mb-2">Upward Throw</p>
+                                <p>A stone is thrown upward with initial velocity 15 m/s. Find:</p>
+                                <ul class="list-disc pl-6 mt-2 space-y-1 text-sm">
+                                    <li>Maximum height reached</li>
+                                    <li>Total time in air</li>
+                                </ul>
+                            </li>
+                            <li>
+                                <p class="font-medium mb-2">General Motion</p>
+                                <p>A car accelerates uniformly from 10 m/s to 30 m/s in 5 seconds. Calculate:</p>
+                                <ul class="list-disc pl-6 mt-2 space-y-1 text-sm">
+                                    <li>Acceleration</li>
+                                    <li>Distance traveled</li>
+                                </ul>
+                            </li>
+                        </ol>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+<!-- Topic Quiz System -->
+<script src="/js/topic-quiz-loader.js"></script>
+<script src="/js/topic-quiz-injector.js"></script>
+</body>
+</html>

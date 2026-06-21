@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="/assets/images/logo.png" />
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Accounting Topic Explanation - JUANOVA CORTEX</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.9);
+            -webkit-backdrop-filter: blur(8px);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(59, 130, 246, 0.1);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 
+                       0 2px 4px -1px rgba(0, 0, 0, 0.06),
+                       0 0 0 1px rgba(255, 255, 255, 0.2) inset;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .section-title {
+            background: linear-gradient(135deg, #1D4ED8, #60A5FA);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 2.5rem;
+            font-weight: 800;
+            text-align: center;
+            padding: 1rem 0;
+        }
+
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.9);
+            -webkit-backdrop-filter: blur(8px);
+            backdrop-filter: blur(8px);
+        }
+
+        .subtopic-nav {
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            margin-bottom: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .subtopic-nav:hover {
+            background: rgba(59, 130, 246, 0.1);
+        }
+
+        .subtopic-nav.active {
+            background: rgba(59, 130, 246, 0.1);
+            border-left: 3px solid #2563EB;
+        }
+
+        .progress-bar {
+            height: 4px;
+            background: #E5E7EB;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #1D4ED8, #60A5FA);
+            transition: width 0.3s ease;
+        }
+
+        /* Rich text content styling */
+        .prose {
+            max-width: none;
+        }
+
+        .prose h2 {
+            color: #1F2937;
+            font-size: 1.875rem;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .prose h3 {
+            color: #374151;
+            font-size: 1.5rem;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+        }
+
+        .prose p {
+            color: #4B5563;
+            margin-bottom: 1rem;
+            line-height: 1.75;
+        }
+
+        .prose ul {
+            list-style-type: disc;
+            padding-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .prose li {
+            color: #4B5563;
+            margin-bottom: 0.5rem;
+        }
+
+        .key-point {
+            background: rgba(59, 130, 246, 0.1);
+            border-left: 4px solid #2563EB;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0.5rem;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-blue-100 via-white to-blue-50">
+    <!-- Navigation Bar -->
+    <nav class="fixed top-0 left-0 right-0 glass-effect border-b border-blue-100 z-50">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <a href="accounting-topic.html" class="text-blue-600 hover:text-blue-800 transition">
+                        <i class="fas fa-arrow-left"></i>
+                        <span class="ml-2">Back to Topics</span>
+                    </a>
+                </div>
+                <div class="flex items-center gap-4">
+                    <button class="px-4 py-2 rounded-lg border border-green-600 text-green-600 hover:bg-green-50 transition">
+                        <i class="fas fa-bookmark mr-2"></i>
+                        Save Progress
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container mx-auto px-4 pt-20 pb-12">
+        <!-- Topic Header -->
+        <header class="mb-12">
+            <h1 class="section-title mb-4" id="topicTitle">Loading Topic...</h1>
+            <div class="flex items-center justify-center gap-6 text-gray-600">
+                <span class="flex items-center gap-2">
+                    <i class="fas fa-clock"></i>
+                    <span id="duration">20 mins</span>
+                </span>
+                <span class="flex items-center gap-2">
+                    <i class="fas fa-chart-line"></i>
+                    <span id="difficulty">Intermediate</span>
+                </span>
+            </div>
+        </header>
+
+        <!-- Main Content Area -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Left Sidebar - Navigation -->
+            <div class="lg:col-span-1">
+                <div class="card rounded-2xl p-6 sticky top-24">
+                    <h2 class="text-xl font-bold text-gray-900 mb-4">Topic Outline</h2>
+                    <div class="space-y-1" id="topicOutline">
+                        <!-- All topics and sub-topics from the JAMB syllabus -->
+                        <div class="font-bold text-blue-700 mt-2 mb-1">1. Nature and Significance of Accounting</div>
+                        <div class="ml-2">
+                            <div class="subtopic-nav" onclick="loadSubtopic('development')">Development of accounting (including branches of accounting)</div>
+                            <div class="subtopic-nav" onclick="loadSubtopic('objectives')">Objectives of bookkeeping and accounting</div>
+                            <div class="subtopic-nav" onclick="loadSubtopic('users')">Users and characteristics of Accounting information</div>
+                            <div class="subtopic-nav" onclick="loadSubtopic('principles')">Principles, concepts and conventions of accounting</div>
+                            <div class="subtopic-nav" onclick="loadSubtopic('records')">Role of accounting records and information</div>
+                        </div>
+
+                        <div class="font-bold text-blue-700 mt-4 mb-1">2. Principles of Double Entry</div>
+                        <div class="subtopic-nav" onclick="loadSubtopic('source-documents')">Functions of source documents</div>
+                        <div class="subtopic-nav" onclick="loadSubtopic('books-original-entry')">Books of original entry</div>
+                        <div class="subtopic-nav" onclick="loadSubtopic('accounting-equation')">Accounting equation</div>
+                        <div class="subtopic-nav" onclick="loadSubtopic('ledger')">The ledger and its classifications</div>
+                        <div class="subtopic-nav" onclick="loadSubtopic('trial-balance')">Trial balance</div>
+                        <div class="subtopic-nav" onclick="loadSubtopic('errors-suspense')">Types and treatment of errors and uses of suspense account</div>
+
+                        <div class="font-bold text-blue-700 mt-4 mb-1">3. Ethics in Accounting</div>
+                        <div class="subtopic-nav" onclick="loadSubtopic('ethics-objectives')">Objectives</div>
+                        <div class="subtopic-nav" onclick="loadSubtopic('qualities-accountant')">Qualities of an Accountant</div>
+
+                        <div class="font-bold text-blue-700 mt-4 mb-1">4. Cashbook</div>
+                        <div class="subtopic-nav" onclick="loadSubtopic('columnar-cashbooks')">Columnar cashbooks</div>
+                        <div class="subtopic-nav" onclick="loadSubtopic('discounts')">Discounts</div>
+                        <div class="subtopic-nav" onclick="loadSubtopic('petty-cashbook')">Petty cashbook and the imprest system</div>
+
+                        <div class="font-bold text-blue-700 mt-4 mb-1">5. Bank Transactions and Reconciliation Statements</div>
+                        <div class="subtopic-nav" onclick="loadSubtopic('bank-instruments')">Instrument of bank transactions</div>
+                        <div class="subtopic-nav" onclick="loadSubtopic('e-banking')">e-banking system</div>
+                        <div class="subtopic-nav" onclick="loadSubtopic('discrepancies')">Causes of discrepancies between cashbook and bank statement</div>
+                        <div class="subtopic-nav" onclick="loadSubtopic('bank-reconciliation')">Bank reconciliation statement</div>
+
+                        <div class="font-bold text-blue-700 mt-4 mb-1">6. The Final Accounts of a Sole Trader</div>
+                        <div class="subtopic-nav" onclick="loadSubtopic('income-statement')">Income statement (Trading and profit and loss account)</div>
+                        <div class="subtopic-nav" onclick="loadSubtopic('balance-sheet')">Statement of financial position (Balance sheet)</div>
+                        <div class="subtopic-nav" onclick="loadSubtopic('adjustments')">Adjustments (bad/doubtful debts, discounts, depreciation, accruals, prepayments)</div>
+
+                        <div class="font-bold text-blue-700 mt-4 mb-1">7. Stock Valuation</div>
+                        <div class="subtopic-nav" onclick="loadSubtopic('stock-methods')">Methods of cost determination (FIFO, LIFO, average)</div>
+                        <div class="subtopic-nav" onclick="loadSubtopic('stock-advantages')">Advantages and disadvantages of the methods</div>
+                        <div class="subtopic-nav" onclick="loadSubtopic('stock-importance')">Importance of stock valuation</div>
+
+                        <div class="font-bold text-blue-700 mt-4 mb-1">8. Control Accounts and Self-balancing Ledgers</div>
+                        <div class="subtopic-nav" onclick="loadSubtopic('control-importance')">Importance of control accounts</div>
+                        <div class="subtopic-nav" onclick="loadSubtopic('purchases-ledger')">Purchases ledger control account</div>
+                        <div class="subtopic-nav" onclick="loadSubtopic('sales-ledger')">Sales ledger control account</div>
+
+                        <div class="font-bold text-blue-700 mt-4 mb-1">9. Incomplete Records and Single Entry</div>
+                        <div class="subtopic-nav" onclick="loadSubtopic('single-to-double')">Conversion of single entry to double entry</div>
+                        <div class="subtopic-nav" onclick="loadSubtopic('missing-figures')">Determination of missing figures</div>
+                        <div class="subtopic-nav" onclick="loadSubtopic('final-accounts-incomplete')">Preparation of final accounts from incomplete records</div>
+
+                        <div class="font-bold text-blue-700 mt-4 mb-1">10. Manufacturing Accounts</div>
+                        <div class="subtopic-nav" onclick="loadSubtopic('cost-classification')">Cost classification</div>
+                        <div class="subtopic-nav" onclick="loadSubtopic('cost-apportionment')">Cost apportionment</div>
+                        <div class="subtopic-nav" onclick="loadSubtopic('manufacturing-account')">Preparation of manufacturing account</div>
+
+                        <div class="font-bold text-blue-700 mt-4 mb-1">11. Accounts of Not-For-Profit-Making Organizations</div>
+                        <div class="subtopic-nav" onclick="loadSubtopic('nfp-objectives')">Objectives of Not-For-Profit-Making organizations</div>
+                        <div class="subtopic-nav" onclick="loadSubtopic('receipts-payments')">Receipts and payments account</div>
+                        <div class="subtopic-nav" onclick="loadSubtopic('income-expenditure')">Income and expenditure account</div>
+                        <div class="subtopic-nav" onclick="loadSubtopic('nfp-balance-sheet')">Statement of financial position (Balance sheet)</div>
+
+                        <div class="font-bold text-blue-700 mt-4 mb-1">12. Departmental Accounts</div>
+                        <div class="subtopic-nav" onclick="loadSubtopic('departmental-objectives')">Objectives</div>
+                        <div class="subtopic-nav" onclick="loadSubtopic('departmental-expenses')">Apportionment of expenses</div>
+                        <div class="subtopic-nav" onclick="loadSubtopic('departmental-trading')">Departmental trading and profit and loss account</div>
+
+                        <div class="font-bold text-blue-700 mt-4 mb-1">13. Branch Accounts</div>
+                        <div class="subtopic-nav" onclick="loadSubtopic('branch-objectives')">Objectives</div>
+                        <div class="subtopic-nav" onclick="loadSubtopic('branch-accounts')">Branch accounts in the head office books</div>
+                        <div class="subtopic-nav" onclick="loadSubtopic('head-office-account')">Head office account</div>
+                        <div class="subtopic-nav" onclick="loadSubtopic('branch-reconciliation')">Reconciliation of branch and head office books</div>
+
+                        <div class="font-bold text-blue-700 mt-4 mb-1">14. Joint Venture Accounts</div>
+                        <div class="subtopic-nav" onclick="loadSubtopic('jv-objectives')">Objectives</div>
+                        <div class="subtopic-nav" onclick="loadSubtopic('personal-accounts-venturers')">Personal accounts of venturers</div>
+                        <div class="subtopic-nav" onclick="loadSubtopic('memorandum-jv')">Memorandum Joint venture accounts</div>
+
+                        <div class="font-bold text-blue-700 mt-4 mb-1">15. Partnership Accounts</div>
+                        <div class="subtopic-nav" onclick="loadSubtopic('partnership-formation')">Formation of partnership</div>
+                        <div class="subtopic-nav" onclick="loadSubtopic('partnership-profit-loss')">Profit and loss account</div>
+                        <div class="subtopic-nav" onclick="loadSubtopic('appropriation-account')">Appropriation account</div>
+                        <div class="subtopic-nav" onclick="loadSubtopic('partners-accounts')">Partners current and capital accounts</div>
+                        <div class="subtopic-nav" onclick="loadSubtopic('goodwill')">Treatment of goodwill</div>
+                        <div class="subtopic-nav" onclick="loadSubtopic('admission-retirement')">Admission/retirement of a partner</div>
+                        <div class="subtopic-nav" onclick="loadSubtopic('dissolution')">Dissolution of partnership</div>
+                        <div class="subtopic-nav" onclick="loadSubtopic('conversion-company')">Conversion of a partnership to a company</div>
+
+                        <div class="font-bold text-blue-700 mt-4 mb-1">16. Introduction to Company Accounts</div>
+                        <div class="subtopic-nav" onclick="loadSubtopic('company-formation')">Formation and classification of companies</div>
+                        <div class="subtopic-nav" onclick="loadSubtopic('issue-shares')">Issue of shares and debentures</div>
+                        <div class="subtopic-nav" onclick="loadSubtopic('company-final-accounts')">Final accounts of companies</div>
+                        <div class="subtopic-nav" onclick="loadSubtopic('ratios')">Interpretation of accounts using ratios</div>
+                        <div class="subtopic-nav" onclick="loadSubtopic('capital-revenue-reserves')">Distinction between capital and revenue reserves</div>
+
+                        <div class="font-bold text-blue-700 mt-4 mb-1">17. Public Sector Accounting</div>
+                        <div class="subtopic-nav" onclick="loadSubtopic('cash-vs-accrual')">Comparison of cash and accrual basis of accounting</div>
+                        <div class="subtopic-nav" onclick="loadSubtopic('govt-revenue')">Sources of government revenue</div>
+                        <div class="subtopic-nav" onclick="loadSubtopic('capital-recurrent')">Capital and recurrent expenditure</div>
+                        <div class="subtopic-nav" onclick="loadSubtopic('consolidated-fund')">Consolidated revenue fund</div>
+                        <div class="subtopic-nav" onclick="loadSubtopic('assets-liabilities')">Statement of assets and liabilities</div>
+                        <div class="subtopic-nav" onclick="loadSubtopic('accountant-general')">Responsibilities and powers of Accountant General, Auditor General, Minister of Finance, Treasurer of local government</div>
+                        <div class="subtopic-nav" onclick="loadSubtopic('financial-regulation')">Instruments of financial regulation</div>
+
+                        <div class="font-bold text-blue-700 mt-4 mb-1">18. Information Technology in Accounting</div>
+                        <div class="subtopic-nav" onclick="loadSubtopic('manual-vs-computerized')">Manual and computerized accounting processing system</div>
+                        <div class="subtopic-nav" onclick="loadSubtopic('data-processing')">Processes involved in data processing</div>
+                        <div class="subtopic-nav" onclick="loadSubtopic('hardware-software')">Computer hardware and software</div>
+                        <div class="subtopic-nav" onclick="loadSubtopic('advantages-disadvantages')">Advantages and disadvantages of manual and computerized accounting processing system</div>
+                    </div>
+                    
+                    <!-- Learning Progress -->
+                    <div class="mt-6 pt-6 border-t border-gray-200">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-3">Your Progress</h3>
+                        <div class="space-y-3">
+                            <div>
+                                <div class="flex justify-between text-sm text-gray-600 mb-1">
+                                    <span>Sub-topics Progress</span>
+                                    <span id="progressPercent">0%</span>
+                                </div>
+                                <div class="h-2 bg-gray-200 rounded-full">
+                                    <div class="h-full bg-blue-500 rounded-full transition-all duration-500 ease-in-out" style="width: 0%" id="progressBar"></div>
+                                </div>
+                            </div>
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-600">
+                                    <i class="fas fa-check-circle mr-1"></i>
+                                    Completed Sub-topics
+                                </span>
+                                <span class="text-gray-800 font-medium" id="completedSections">0/5</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="lg:col-span-2 space-y-6">
+                <!-- Content Section -->
+                <div class="card rounded-2xl p-8" id="contentSection">
+                    <div class="prose max-w-none">
+                        <!-- Content will be populated by JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Key Points & Examples -->
+                <div class="card rounded-2xl p-8">
+                    <h3 class="text-xl font-bold text-gray-900 mb-6">Key Points & Examples</h3>
+                    <div class="space-y-6" id="keyPoints">
+                        <!-- Key points will be populated by JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Interactive Elements -->
+                <div class="card rounded-2xl p-8">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-xl font-bold text-gray-900">Practice Questions</h3>
+                        <button class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition" onclick="checkAnswers()">
+                            Check Answers
+                        </button>
+                    </div>
+                    <div class="space-y-6" id="practiceQuestions">
+                        <!-- Questions will be populated by JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Resources -->
+                <div class="card rounded-2xl p-8">
+                    <h3 class="text-xl font-bold text-gray-900 mb-6">Learning Resources</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="resources">
+                        <!-- Resources will be populated by JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Next Steps -->
+                <div class="card rounded-2xl p-8 bg-gradient-to-br from-blue-50 to-white">
+                    <h3 class="text-xl font-bold text-gray-900 mb-4">Next Steps</h3>
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-4">
+                            <button id="prevTopicBtn" class="px-4 py-2 border border-blue-600 text-blue-600 rounded-lg hover:bg-blue-50 transition flex items-center gap-2">
+                                <i class="fas fa-arrow-left"></i>
+                                Previous Topic
+                            </button>
+                            <button id="nextTopicBtn" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition flex items-center gap-2">
+                                Next Topic
+                                <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </div>
+                        <button class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition flex items-center gap-2">
+                            <i class="fas fa-check"></i>
+                            Mark as Complete
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+    (() => {
+        // Make functions globally accessible
+        window.loadSubtopic = function(subtopicId) {
+            const newUrl = new URL(window.location);
+            newUrl.searchParams.set('subtopic', subtopicId);
+            window.history.pushState({}, '', newUrl);
+            initializePage();
+        };
+
+        window.checkAnswerSet = function(blockId, correctAnswers) {
+            let allCorrect = true;
+            const feedbackDiv = document.getElementById(`feedback-${blockId}`);
+            
+            // Check each question in the set
+            for (let i = 0; i < correctAnswers.length; i++) {
+                const radios = document.getElementsByName(`qset${blockId}_q${i}`);
+                let selected = null;
+                for (let r of radios) {
+                    if (r.checked) selected = r.value;
+                }
+                if (selected !== correctAnswers[i]) {
+                    allCorrect = false;
+                    break;
+                }
+            }
+
+            // Show appropriate feedback
+            if (allCorrect) {
+                const compliments = [
+                    "Bravo! You're absolutely crushing it! 🌟",
+                    "Excellent work! Keep that momentum going! 🚀",
+                    "Awesome! You're mastering this topic! 💫",
+                    "Outstanding! You're making great progress! ⭐",
+                    "Fantastic job! Your hard work is paying off! 🏆"
+                ];
+                feedbackDiv.innerHTML = `
+                    <div class="p-4 bg-green-100 text-green-700 rounded-lg mt-4">
+                        ${compliments[Math.floor(Math.random() * compliments.length)]}
+                    </div>`;
+            } else {
+                const encouragements = [
+                    "Keep going! Mistakes are stepping stones to success. 🌱",
+                    "Don't give up! Review and try again - you've got this! 💪",
+                    "Learning takes time. Take a breath and give it another shot! 🌟",
+                    "Every attempt makes you stronger. Keep pushing forward! 🚀",
+                    "You're on the right path - review and try once more! 💫"
+                ];
+                feedbackDiv.innerHTML = `
+                    <div class="p-4 bg-yellow-100 text-yellow-700 rounded-lg mt-4">
+                        ${encouragements[Math.floor(Math.random() * encouragements.length)]}
+                    </div>`;
+            }
+        };
+        // Get the topic from URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const unit = urlParams.get('unit') || 'fundamentals';
+        const topic = urlParams.get('topic') || 'nature-significance';
+        const subtopic = urlParams.get('subtopic') || 'development';
+
+        // Topic data structure (this would typically come from an API)
+        const topicData = {
+            fundamentals: {
+                'nature-significance': {
+                    title: "Nature and Significance of Accounting",
+                    duration: "2 hours",
+                    difficulty: "Beginner",
+                    subtopics: [
+                        {
+                            id: 'development',
+                            title: "Development of Accounting",
+                            content: `
+                                <h2>Development of Accounting (including branches of accounting)</h2>
+                                <p><strong>Definition:</strong> Accounting is the systematic process of recording, classifying, summarizing, analyzing, and interpreting financial transactions and information of an organization. It is often called the "language of business."</p>
+
+                                <h4>Questions on Definition</h4>
+                                <ol>
+                                    <li>What is the primary function of accounting?<br>A. Only recording transactions<br>B. Systematic process of recording and interpreting financial information<br>C. Only analyzing financial data<br>D. Managing business operations</li>
+                                    <li>Why is accounting called the "language of business"?<br>A. Because it's complicated<br>B. Because it communicates financial information<br>C. Because only businesses use it<br>D. Because it uses numbers</li>
+                                    <li>Which of the following is NOT a part of the accounting process?<br>A. Recording transactions<br>B. Marketing products<br>C. Analyzing financial information<br>D. Interpreting data</li>
+                                    <li>The process of accounting includes:<br>A. Only classification of data<br>B. Only recording of transactions<br>C. Recording, classifying, summarizing, analyzing, and interpreting<br>D. Only summarizing financial data</li>
+                                    <li>What is the ultimate purpose of accounting?<br>A. To confuse people<br>B. To provide useful financial information<br>C. To only record transactions<br>D. To only calculate profits</li>
+                                </ol>
+                                <p><em>Answers: 1-B, 2-B, 3-B, 4-C, 5-B</em></p>
+
+                                <h3>Historical Development</h3>
+                                <p>Accounting dates back to ancient civilizations, where merchants kept records of their business transactions. The double-entry bookkeeping system, which is the foundation of modern accounting, was first documented by Luca Pacioli in 1494. Over time, accounting has evolved to meet the needs of businesses, governments, and society.</p>
+
+                                <h4>Questions on Historical Development</h4>
+                                <ol>
+                                    <li>Who documented the double-entry bookkeeping system in 1494?<br>A. Adam Smith<br>B. Luca Pacioli<br>C. John Maynard Keynes<br>D. David Ricardo</li>
+                                    <li>When did accounting first originate?<br>A. In 1494<br>B. In modern times<br>C. In ancient civilizations<br>D. In the industrial revolution</li>
+                                    <li>What is considered the foundation of modern accounting?<br>A. Single-entry system<br>B. Double-entry bookkeeping system<br>C. Computerized accounting<br>D. Digital ledgers</li>
+                                    <li>How has accounting evolved over time?<br>A. It has remained exactly the same<br>B. It has become simpler<br>C. It has evolved to meet various needs of businesses and society<br>D. It has become less important</li>
+                                    <li>Why did ancient merchants keep records?<br>A. For entertainment<br>B. To track their business transactions<br>C. Because they were required by law<br>D. To impress others</li>
+                                </ol>
+                                <p><em>Answers: 1-B, 2-C, 3-B, 4-C, 5-B</em></p>
+
+                                <h3>Branches of Accounting</h3>
+                                <ul>
+                                  <li><strong>Financial Accounting:</strong> Focuses on the preparation of financial statements for external users such as investors, creditors, and regulatory agencies.</li>
+                                  <li><strong>Cost Accounting:</strong> Deals with the calculation and control of costs, especially in manufacturing.</li>
+                                  <li><strong>Management Accounting:</strong> Provides information for internal decision-making by managers.</li>
+                                  <li><strong>Tax Accounting:</strong> Involves the preparation of tax returns and planning for future tax obligations.</li>
+                                  <li><strong>Auditing:</strong> The independent examination of financial statements to ensure accuracy and compliance with standards.</li>
+                                  <li><strong>Government Accounting:</strong> Used by public sector organizations to record and report financial activities.</li>
+                                </ul>
+
+                                <h4>Questions on Branches of Accounting</h4>
+                                <ol>
+                                    <li>Which branch of accounting focuses on external users?<br>A. Management Accounting<br>B. Financial Accounting<br>C. Cost Accounting<br>D. Tax Accounting</li>
+                                    <li>What is the main purpose of cost accounting?<br>A. Preparing tax returns<br>B. Making management decisions<br>C. Controlling and calculating costs<br>D. Auditing financial statements</li>
+                                    <li>Which branch helps in internal decision-making?<br>A. Financial Accounting<br>B. Tax Accounting<br>C. Management Accounting<br>D. Government Accounting</li>
+                                    <li>What is the primary focus of auditing?<br>A. Cost control<br>B. Tax planning<br>C. Internal decisions<br>D. Examining financial statements for accuracy</li>
+                                    <li>Government accounting is used by:<br>A. Private companies<br>B. Public sector organizations<br>C. Small businesses<br>D. Individual entrepreneurs</li>
+                                </ol>
+                                <p><em>Answers: 1-B, 2-C, 3-C, 4-D, 5-B</em></p>
+
+                                <h3>Importance of Accounting Development</h3>
+                                <ul>
+                                  <li>Helps in the growth and expansion of businesses.</li>
+                                  <li>Ensures accountability and transparency.</li>
+                                  <li>Facilitates decision-making for management and stakeholders.</li>
+                                  <li>Provides a basis for taxation and regulatory compliance.</li>
+                                </ul>
+
+                                <h4>Questions on Importance of Accounting Development</h4>
+                                <ol>
+                                    <li>How does accounting help businesses?<br>A. By making them more complex<br>B. By supporting growth and expansion<br>C. By increasing taxes<br>D. By reducing transparency</li>
+                                    <li>What role does accounting play in transparency?<br>A. It reduces transparency<br>B. It ensures accountability and transparency<br>C. It has no effect on transparency<br>D. It complicates transparency</li>
+                                    <li>Who benefits from accounting information for decision-making?<br>A. Only managers<br>B. Only stakeholders<br>C. Both management and stakeholders<br>D. Neither management nor stakeholders</li>
+                                    <li>What is the relationship between accounting and taxation?<br>A. They are unrelated<br>B. Accounting provides a basis for taxation<br>C. Accounting prevents taxation<br>D. Taxation determines accounting</li>
+                                    <li>Which is NOT a benefit of accounting development?<br>A. Business growth<br>B. Transparency<br>C. Reduced accountability<br>D. Regulatory compliance</li>
+                                </ol>
+                                <p><em>Answers: 1-B, 2-B, 3-C, 4-B, 5-C</em></p>
+
+                                <h3>Key Points</h3>
+                                <ul>
+                                  <li>Accounting has evolved from simple record-keeping to a complex system serving various users.</li>
+                                  <li>Modern accounting includes several specialized branches.</li>
+                                  <li>The double-entry system is the foundation of modern accounting.</li>
+                                </ul>
+
+                                <h4>Questions on Key Points</h4>
+                                <ol>
+                                    <li>How has accounting evolved over time?<br>A. From complex to simple<br>B. From simple record-keeping to a complex system<br>C. It hasn't evolved<br>D. From digital to manual</li>
+                                    <li>What characterizes modern accounting?<br>A. Single branch only<br>B. Two branches only<br>C. Several specialized branches<br>D. No specialization</li>
+                                    <li>What is the foundation of modern accounting?<br>A. Single-entry system<br>B. Triple-entry system<br>C. Double-entry system<br>D. No entry system</li>
+                                    <li>Who does modern accounting serve?<br>A. Only business owners<br>B. Only investors<br>C. Various users<br>D. Only employees</li>
+                                    <li>What is the main advantage of specialized branches in accounting?<br>A. They make accounting more complicated<br>B. They serve specific needs better<br>C. They reduce efficiency<br>D. They increase costs</li>
+                                </ol>
+                                <p><em>Answers: 1-B, 2-C, 3-C, 4-C, 5-B</em></p>
+                            `,
+                            keyPoints: [
+                                {
+                                    title: "Historical Development",
+                                    content: "Double-entry bookkeeping was first documented by Luca Pacioli in 1494."
+                                },
+                                {
+                                    title: "Modern Evolution",
+                                    content: "Technology has transformed accounting from manual to computerized systems."
+                                }
+                            ]
+                        },
+                        {
+                            id: 'objectives',
+                            title: "Objectives of Bookkeeping and Accounting",
+                            content: `
+                                <h2>Objectives of Bookkeeping and Accounting</h2>
+                                <p>The main objectives of bookkeeping and accounting are to provide systematic and accurate financial information for decision-making and control.</p>
+
+                                <h3>Bookkeeping Objectives</h3>
+                                <ul>
+                                    <li>Recording financial transactions systematically</li>
+                                    <li>Maintaining organized financial records</li>
+                                    <li>Creating a reliable basis for accounting</li>
+                                    <li>Tracking business performance</li>
+                                </ul>
+
+                                <h4>Questions on Bookkeeping Objectives</h4>
+                                <ol>
+                                    <li>What is the primary purpose of bookkeeping?<br>A. Making business decisions<br>B. Recording financial transactions systematically<br>C. Preparing financial statements<br>D. Analyzing business performance</li>
+                                    <li>Why is organized record-keeping important?<br>A. It looks professional<br>B. It's required by law<br>C. It creates a reliable basis for accounting<br>D. It impresses customers</li>
+                                    <li>How does bookkeeping help track business performance?<br>A. By maintaining systematic records<br>B. By making decisions<br>C. By analyzing competitors<br>D. By hiring employees</li>
+                                    <li>What is the relationship between bookkeeping and accounting?<br>A. They are the same thing<br>B. Bookkeeping provides the foundation for accounting<br>C. They are completely unrelated<br>D. Accounting comes before bookkeeping</li>
+                                    <li>Which is NOT a bookkeeping objective?<br>A. Recording transactions<br>B. Making management decisions<br>C. Maintaining records<br>D. Creating a reliable basis for accounting</li>
+                                </ol>
+                                <p><em>Answers: 1-B, 2-C, 3-A, 4-B, 5-B</em></p>
+
+                                <h3>Accounting Objectives</h3>
+                                <ul>
+                                    <li>Providing information for decision-making</li>
+                                    <li>Determining financial position</li>
+                                    <li>Evaluating business performance</li>
+                                    <li>Meeting legal requirements</li>
+                                    <li>Supporting business planning</li>
+                                </ul>
+
+                                <h4>Questions on Accounting Objectives</h4>
+                                <ol>
+                                    <li>What is the primary objective of accounting?<br>A. Just recording transactions<br>B. Providing information for decision-making<br>C. Only calculating profits<br>D. Managing employees</li>
+                                    <li>How does accounting help determine financial position?<br>A. By showing assets and liabilities<br>B. By counting employees<br>C. By tracking sales only<br>D. By monitoring competitors</li>
+                                    <li>Why is meeting legal requirements important?<br>A. To impress others<br>B. To avoid penalties and ensure compliance<br>C. To increase profits<br>D. To attract customers</li>
+                                    <li>How does accounting support business planning?<br>A. By providing historical data and analysis<br>B. By making decisions<br>C. By hiring employees<br>D. By managing inventory</li>
+                                    <li>Which is NOT an accounting objective?<br>A. Decision-making<br>B. Marketing products<br>C. Financial position determination<br>D. Performance evaluation</li>
+                                </ol>
+                                <p><em>Answers: 1-B, 2-A, 3-B, 4-A, 5-B</em></p>
+                            `
+                        },
+                        {
+                            id: 'users',
+                            title: "Users and Characteristics of Accounting Information",
+                            content: `
+                                <h2>Users and Characteristics of Accounting Information</h2>
+                                
+                                <h3>Users of Accounting Information</h3>
+                                <ul>
+                                    <li><strong>Internal Users:</strong>
+                                        <ul>
+                                            <li>Management</li>
+                                            <li>Employees</li>
+                                            <li>Owners/Shareholders</li>
+                                        </ul>
+                                    </li>
+                                    <li><strong>External Users:</strong>
+                                        <ul>
+                                            <li>Investors</li>
+                                            <li>Creditors</li>
+                                            <li>Government agencies</li>
+                                            <li>Customers</li>
+                                            <li>Competitors</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+
+                                <h4>Questions on Users of Accounting Information</h4>
+                                <ol>
+                                    <li>Who are internal users of accounting information?<br>A. Customers<br>B. Management and employees<br>C. Government agencies<br>D. Competitors</li>
+                                    <li>Which group is an external user?<br>A. Management<br>B. Employees<br>C. Investors<br>D. Department heads</li>
+                                    <li>Why do creditors need accounting information?<br>A. To make lending decisions<br>B. To hire employees<br>C. To buy products<br>D. To manage operations</li>
+                                    <li>How do employees use accounting information?<br>A. To assess job security and performance<br>B. To make investments<br>C. To lend money<br>D. To buy products</li>
+                                    <li>Why might competitors be interested in accounting information?<br>A. To copy products<br>B. To assess market position and performance<br>C. To hire employees<br>D. To make loans</li>
+                                </ol>
+                                <p><em>Answers: 1-B, 2-C, 3-A, 4-A, 5-B</em></p>
+
+                                <h3>Characteristics of Accounting Information</h3>
+                                <ul>
+                                    <li><strong>Reliability:</strong> Information must be accurate and verifiable</li>
+                                    <li><strong>Relevance:</strong> Information must be useful for decision-making</li>
+                                    <li><strong>Understandability:</strong> Information should be clear and comprehensible</li>
+                                    <li><strong>Comparability:</strong> Information should allow comparison over time and between entities</li>
+                                    <li><strong>Timeliness:</strong> Information should be available when needed</li>
+                                    <li><strong>Consistency:</strong> Similar transactions should be recorded similarly</li>
+                                </ul>
+
+                                <h4>Questions on Characteristics of Accounting Information</h4>
+                                <ol>
+                                    <li>Why must accounting information be reliable?<br>A. To look professional<br>B. To enable accurate decision-making<br>C. To impress users<br>D. To meet legal requirements only</li>
+                                    <li>What makes information relevant?<br>A. Being old<br>B. Being complex<br>C. Being useful for decision-making<br>D. Being simple</li>
+                                    <li>Why is understandability important?<br>A. To confuse users<br>B. To make information usable by intended users<br>C. To meet legal requirements<br>D. To save time</li>
+                                    <li>What is the purpose of comparability?<br>A. To make information complex<br>B. To allow evaluation of performance over time<br>C. To confuse competitors<br>D. To meet legal requirements</li>
+                                    <li>Why is consistency important in accounting?<br>A. To make work easier<br>B. To enable meaningful comparisons<br>C. To confuse users<br>D. To meet minimum requirements</li>
+                                </ol>
+                                <p><em>Answers: 1-B, 2-C, 3-B, 4-B, 5-B</em></p>
+                            `
+                        },
+                        {
+                            id: 'principles',
+                            title: "Principles, Concepts and Conventions of Accounting",
+                            content: `
+                                <h2>Principles, Concepts and Conventions of Accounting</h2>
+
+                                <h3>Basic Principles</h3>
+                                <ul>
+                                    <li><strong>Going Concern:</strong> Business will continue operations indefinitely</li>
+                                    <li><strong>Consistency:</strong> Same accounting methods used over time</li>
+                                    <li><strong>Accrual:</strong> Recognition of income and expenses when they occur</li>
+                                    <li><strong>Prudence:</strong> Conservative approach to recording transactions</li>
+                                </ul>
+
+                                <h4>Questions on Basic Principles</h4>
+                                <ol>
+                                    <li>What is the going concern principle?<br>A. Business will close soon<br>B. Business will continue indefinitely<br>C. Business will change ownership<br>D. Business will merge</li>
+                                    <li>Why is consistency important?<br>A. To make accounting easier<br>B. To allow meaningful comparisons<br>C. To confuse competitors<br>D. To reduce work</li>
+                                    <li>What does the accrual principle mean?<br>A. Record only cash transactions<br>B. Record when transactions occur<br>C. Record only at year end<br>D. Never record transactions</li>
+                                    <li>What is prudence in accounting?<br>A. Taking risks<br>B. Conservative approach<br>C. Aggressive recording<br>D. Ignoring losses</li>
+                                    <li>Which principle ensures comparable financial statements?<br>A. Going concern<br>B. Consistency<br>C. Prudence<br>D. Accrual</li>
+                                </ol>
+                                <p><em>Answers: 1-B, 2-B, 3-B, 4-B, 5-B</em></p>
+
+                                <h3>Key Concepts</h3>
+                                <ul>
+                                    <li><strong>Business Entity:</strong> Business separate from owner</li>
+                                    <li><strong>Money Measurement:</strong> Transactions recorded in monetary terms</li>
+                                    <li><strong>Double Entry:</strong> Each transaction affects two accounts</li>
+                                    <li><strong>Materiality:</strong> Important items given more attention</li>
+                                </ul>
+
+                                <h4>Questions on Key Concepts</h4>
+                                <ol>
+                                    <li>What is the business entity concept?<br>A. Business and owner are same<br>B. Business is separate from owner<br>C. Business has no owner<br>D. Owner is the business</li>
+                                    <li>Why is money measurement important?<br>A. To make profit<br>B. To provide common measurement unit<br>C. To pay taxes<br>D. To get loans</li>
+                                    <li>What is the double entry system?<br>A. Recording twice<br>B. Each transaction affects two accounts<br>C. Using two books<br>D. Two owners required</li>
+                                    <li>How does materiality affect accounting?<br>A. Everything is equally important<br>B. Important items get more attention<br>C. Nothing is important<br>D. Only small items matter</li>
+                                    <li>Which concept ensures accurate records?<br>A. Business Entity<br>B. Money Measurement<br>C. Double Entry<br>D. Materiality</li>
+                                </ol>
+                                <p><em>Answers: 1-B, 2-B, 3-B, 4-B, 5-C</em></p>
+                            `
+                        },
+                        {
+                            id: 'records',
+                            title: "Role of Accounting Records and Information",
+                            content: `
+                                <h2>Role of Accounting Records and Information</h2>
+
+                                <h3>Primary Roles</h3>
+                                <ul>
+                                    <li>Documentation of business transactions</li>
+                                    <li>Basis for decision making</li>
+                                    <li>Legal compliance and proof</li>
+                                    <li>Performance evaluation</li>
+                                    <li>Planning and control</li>
+                                </ul>
+
+                                <h4>Questions on Primary Roles</h4>
+                                <ol>
+                                    <li>Why is documentation important?<br>A. To waste time<br>B. To provide evidence of transactions<br>C. To confuse auditors<br>D. To increase costs</li>
+                                    <li>How do records help in decision making?<br>A. They don't help<br>B. They provide information for analysis<br>C. They create confusion<br>D. They increase work</li>
+                                    <li>Why are records needed for legal compliance?<br>A. To avoid fines<br>B. To waste time<br>C. To confuse authorities<br>D. To increase costs</li>
+                                    <li>How do records help in performance evaluation?<br>A. They don't help<br>B. They provide basis for comparison<br>C. They create problems<br>D. They waste time</li>
+                                    <li>What role do records play in planning?<br>A. No role<br>B. Provide historical data for future plans<br>C. Create confusion<br>D. Increase costs</li>
+                                </ol>
+                                <p><em>Answers: 1-B, 2-B, 3-A, 4-B, 5-B</em></p>
+
+                                <h3>Types of Records</h3>
+                                <ul>
+                                    <li>Source documents</li>
+                                    <li>Books of accounts</li>
+                                    <li>Financial statements</li>
+                                    <li>Management reports</li>
+                                    <li>Tax records</li>
+                                </ul>
+
+                                <h4>Questions on Types of Records</h4>
+                                <ol>
+                                    <li>What are source documents?<br>A. Final reports<br>B. Original transaction records<br>C. Bank statements<br>D. Tax returns</li>
+                                    <li>Why are books of accounts important?<br>A. They look professional<br>B. They systematically record all transactions<br>C. They are required by law<br>D. They impress customers</li>
+                                    <li>What purpose do financial statements serve?<br>A. No purpose<br>B. Show financial position and performance<br>C. Waste time<br>D. Increase costs</li>
+                                    <li>How do management reports help?<br>A. They don't help<br>B. They aid in decision making<br>C. They waste time<br>D. They increase costs</li>
+                                    <li>Why keep tax records?<br>A. To waste time<br>B. For compliance and planning<br>C. To confuse authorities<br>D. To increase costs</li>
+                                </ol>
+                                <p><em>Answers: 1-B, 2-B, 3-B, 4-B, 5-B</em></p>
+                            `
+                        }
+                    ],
+                    questions: [
+                        {
+                            question: "What was the significant contribution of Luca Pacioli to accounting?",
+                            options: [
+                                "Introduction of calculators",
+                                "Documentation of double-entry bookkeeping",
+                                "Creation of financial statements",
+                                "Development of accounting software"
+                            ],
+                            correct: 1
+                        }
+                    ],
+                    resources: [
+                        {
+                            title: "Video Lecture",
+                            icon: "fas fa-video",
+                            link: "#",
+                            color: "text-red-500"
+                        },
+                        {
+                            title: "Study Notes",
+                            icon: "fas fa-book",
+                            link: "#",
+                            color: "text-blue-500"
+                        }
+                    ]
+                }
+            }
+        };
+
+        // Track completed subtopics
+        let completedSubtopics = new Set();
+
+        // Helper to extract questions and answers from a question block
+        function extractQuestionsAndAnswers(olHtml, answersRaw) {
+            const answers = answersRaw.split(',').map(a => a.trim().split('-')[1]);
+            const liRegex = /<li>([\s\S]*?)(?=<li>|$)/g;
+            let liMatch;
+            const questions = [];
+            while ((liMatch = liRegex.exec(olHtml)) !== null) {
+                const qHtml = liMatch[1].trim();
+                const [qText, ...optsRaw] = qHtml.split('<br>');
+                const options = optsRaw.map(opt => opt.replace(/^[A-D]\.\s*/, '').trim());
+                questions.push({
+                    question: qText.replace(/\d+\./, '').trim(),
+                    options,
+                });
+            }
+            return { questions, answers };
+        }
+
+        // Render a set of questions with a check answer button
+        function renderQuestionSet(questions, answers, blockId) {
+            let html = '<div class="space-y-4 my-4 p-4 bg-gray-50 rounded-lg">';
+            questions.forEach((q, qIdx) => {
+                html += `
+                    <div class="mb-4">
+                        <p class="font-medium text-gray-900">${qIdx + 1}. ${q.question}</p>
+                        <div class="space-y-2">`;
+                q.options.forEach((opt, optIdx) => {
+                    html += `
+                        <label class="flex items-center gap-3 p-3 rounded-lg border border-gray-200 hover:border-blue-400 cursor-pointer transition">
+                            <input type="radio" name="qset${blockId}_q${qIdx}" value="${String.fromCharCode(65 + optIdx)}" class="text-blue-600">
+                            <span class="text-gray-700">${opt}</span>
+                        </label>`;
+                });
+                html += '</div></div>';
+            });
+            html += `
+                <div class="mt-4">
+                    <button onclick="checkAnswerSet('${blockId}', ${JSON.stringify(answers)})" 
+                            class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+                        Check Answers
+                    </button>
+                    <div id="feedback-${blockId}" class="mt-2"></div>
+                </div>
+            </div>`;
+            return html;
+        }
+
+        // Extract and process content sections with questions
+        function processContent(content) {
+            const sections = content.split(/<h[234]>/);
+            let processedContent = sections[0]; // Keep any initial content
+            
+            for (let i = 1; i < sections.length; i++) {
+                const section = sections[i];
+                // Find the closing tag
+                const tagMatch = section.match(/^([^>]*>)([\s\S]*)/);
+                if (!tagMatch) continue;
+                
+                const headerContent = tagMatch[1];
+                const restContent = tagMatch[2];
+                
+                // Find questions block if it exists
+                const questionMatch = restContent.match(/<ol>([\s\S]*?)<\/ol>\s*<p><em>Answers: ([^<]*)<\/em><\/p>/);
+                
+                if (questionMatch) {
+                    // Split content at questions
+                    const [beforeQuestions, ...afterQuestions] = restContent.split(/<ol>[\s\S]*?<\/ol>\s*<p><em>Answers: [^<]*<\/em><\/p>/);
+                    
+                    // Extract and process questions
+                    const { questions, answers } = extractQuestionsAndAnswers(questionMatch[1], questionMatch[2]);
+                    
+                    // Rebuild section with questions as interactive elements
+                    processedContent += '<h' + headerContent + beforeQuestions;
+                    processedContent += renderQuestionSet(questions, answers, 'block-' + i);
+                    processedContent += afterQuestions.join('');
+                } else {
+                    // No questions in this section, keep as is
+                    processedContent += '<h' + headerContent + restContent;
+                }
+            }
+            
+            return processedContent;
+        }
+
+        // Update progress
+        function updateProgress() {
+            const totalSubtopics = topicData[unit][topic].subtopics.length;
+            const completedCount = completedSubtopics.size;
+            const percentage = Math.round((completedCount / totalSubtopics) * 100);
+            
+            document.getElementById('progressPercent').textContent = percentage + '%';
+            document.getElementById('progressBar').style.width = percentage + '%';
+            document.getElementById('completedSections').textContent = 
+                completedCount + '/' + totalSubtopics;
+        }
+
+        function initializePage() {
+            const topicContent = topicData[unit]?.[topic];
+            if (!topicContent) {
+                console.error('Topic not found');
+                return;
+            }
+
+            // Set header information
+            document.getElementById('topicTitle').textContent = topicContent.title;
+            document.getElementById('duration').textContent = topicContent.duration;
+            document.getElementById('difficulty').textContent = topicContent.difficulty;
+
+            // Populate outline
+            const outlineContainer = document.getElementById('topicOutline');
+            outlineContainer.innerHTML = topicContent.subtopics.map(st => `
+                <div class="subtopic-nav ${st.id === subtopic ? 'active' : ''}" 
+                     onclick="loadSubtopic('${st.id}')">
+                    <div class="flex items-center justify-between">
+                        <span class="text-gray-700">${st.title}</span>
+                        <i class="fas fa-check text-blue-500 ${st.completed ? '' : 'opacity-0'}"></i>
+                    </div>
+                </div>
+            `).join('');
+
+            // Load current subtopic content
+            const currentSubtopic = topicContent.subtopics.find(st => st.id === subtopic);
+            if (currentSubtopic) {
+                // Process content and render with interactive questions
+                document.getElementById('contentSection').querySelector('.prose').innerHTML = 
+                    processContent(currentSubtopic.content);
+
+                if (currentSubtopic.keyPoints) {
+                    document.getElementById('keyPoints').innerHTML = currentSubtopic.keyPoints.map(kp => `
+                        <div class="key-point">
+                            <h4 class="font-semibold text-gray-900 mb-2">${kp.title}</h4>
+                            <p class="text-gray-700">${kp.content}</p>
+                        </div>
+                    `).join('');
+                }
+            }
+
+            // Update progress display
+            updateProgress();
+
+            // Populate resources
+            const resourcesContainer = document.getElementById('resources');
+            resourcesContainer.innerHTML = topicContent.resources.map(resource => `
+                <a href="${resource.link}" class="flex items-center gap-4 p-4 rounded-lg border border-gray-200 hover:border-blue-400 transition">
+                    <i class="${resource.icon} ${resource.color} text-2xl"></i>
+                    <span class="text-gray-900 font-medium">${resource.title}</span>
+                </a>
+            `).join('');
+
+            // Button handlers
+            document.getElementById('prevTopicBtn').onclick = function() {
+                // Go to previous subtopic if available
+                const idx = topicContent.subtopics.findIndex(st => st.id === subtopic);
+                if (idx > 0) {
+                    loadSubtopic(topicContent.subtopics[idx - 1].id);
+                } else {
+                    alert('This is the first subtopic.');
+                }
+            };
+            document.getElementById('nextTopicBtn').onclick = function() {
+                // Go to next subtopic if available
+                const idx = topicContent.subtopics.findIndex(st => st.id === subtopic);
+                if (idx < topicContent.subtopics.length - 1) {
+                    loadSubtopic(topicContent.subtopics[idx + 1].id);
+                } else {
+                    alert('This is the last subtopic.');
+                }
+            };
+            // Mark as Complete
+            document.querySelector('button.bg-green-600').onclick = function() {
+                completedSubtopics.add(subtopic);
+                updateProgress();
+                const checkmark = document.querySelector(`.subtopic-nav[onclick="loadSubtopic('${subtopic}')"] .fa-check`);
+                if (checkmark) checkmark.classList.remove('opacity-0');
+                alert('Great job! This sub-topic has been marked as complete.');
+            };
+        }
+
+        function loadSubtopic(subtopicId) {
+            const newUrl = new URL(window.location);
+            newUrl.searchParams.set('subtopic', subtopicId);
+            window.history.pushState({}, '', newUrl);
+            initializePage();
+        }
+
+        // Check answers for a specific question set
+        function checkAnswerSet(blockId, correctAnswers) {
+            let allCorrect = true;
+            const feedbackDiv = document.getElementById(`feedback-${blockId}`);
+            
+            // Check each question in the set
+            for (let i = 0; i < correctAnswers.length; i++) {
+                const radios = document.getElementsByName(`qset${blockId}_q${i}`);
+                let selected = null;
+                for (let r of radios) {
+                    if (r.checked) selected = r.value;
+                }
+                if (selected !== correctAnswers[i]) {
+                    allCorrect = false;
+                    break;
+                }
+            }
+
+            // Show appropriate feedback
+            if (allCorrect) {
+                const compliments = [
+                    "Bravo! You're absolutely crushing it! 🌟",
+                    "Excellent work! Keep that momentum going! 🚀",
+                    "Awesome! You're mastering this topic! 💫",
+                    "Outstanding! You're making great progress! ⭐",
+                    "Fantastic job! Your hard work is paying off! 🏆"
+                ];
+                feedbackDiv.innerHTML = `
+                    <div class="p-4 bg-green-100 text-green-700 rounded-lg mt-4">
+                        ${compliments[Math.floor(Math.random() * compliments.length)]}
+                    </div>`;
+            } else {
+                const encouragements = [
+                    "Keep going! Mistakes are stepping stones to success. 🌱",
+                    "Don't give up! Review and try again - you've got this! 💪",
+                    "Learning takes time. Take a breath and give it another shot! 🌟",
+                    "Every attempt makes you stronger. Keep pushing forward! 🚀",
+                    "You're on the right path - review and try once more! 💫"
+                ];
+                feedbackDiv.innerHTML = `
+                    <div class="p-4 bg-yellow-100 text-yellow-700 rounded-lg mt-4">
+                        ${encouragements[Math.floor(Math.random() * encouragements.length)]}
+                    </div>`;
+            }
+        }
+        }
+
+        // Initialize the page when loaded
+        document.addEventListener('DOMContentLoaded', initializePage);
+    })();
+    </script>
+</body>
+</html>
+

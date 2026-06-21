@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AC Basics - Step-by-Step Learning</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @keyframes fade-in-up {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in-up { animation: fade-in-up 0.6s ease-out forwards; }
+        .step-progress { transition: width 0.3s ease-in-out; }
+        .resource-card { transition: transform 0.2s; }
+        .resource-card:hover { transform: translateY(-4px); }
+        .step-button.active { background-color: #EFF6FF; color: #2563EB; }
+        .quiz-option.selected { border-color: #2563EB; background-color: #EFF6FF; }
+        .quiz-option.correct { border-color: #16A34A; background-color: #F0FDF4; }
+        .quiz-option.incorrect { background-color: #fff5f5; border-color: #e53e3e; }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Top Navigation -->
+    <nav class="bg-white shadow-sm fixed top-0 w-full z-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <a href="../index.html" class="text-gray-600 hover:text-gray-900 mr-4" aria-label="Back to topics">
+                        <i class="fas fa-arrow-left"></i>
+                    </a>
+                    <h1 id="topicTitle" class="text-xl font-semibold text-gray-900">AC Basics</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="text-sm text-gray-600">
+                        Progress: <span id="progressPercent">0%</span>
+                    </div>
+                    <div class="w-32 h-2 bg-gray-200 rounded-full">
+                        <div id="progressBar" class="step-progress h-2 bg-blue-500 rounded-full" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="pt-20 pb-24">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-12 gap-6">
+                <!-- Left Sidebar - Steps -->
+                <div class="md:col-span-3">
+                    <div class="bg-white rounded-lg shadow-sm p-4 sticky top-20">
+                        <h3 class="font-semibold mb-4">Learning Steps</h3>
+                        <ul id="stepsList" class="space-y-2">
+                            <!-- Steps will be dynamically populated -->
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Main Content Area -->
+                <div class="md:col-span-9">
+                    <div id="stepContainer" class="bg-white rounded-lg shadow-sm p-6 mb-6">
+                        <!-- Step content will be dynamically loaded -->
+                    </div>
+
+                    <div id="resourcesContainer" class="bg-white rounded-lg shadow-sm p-6">
+                        <h3 class="text-lg font-semibold mb-4">Resources</h3>
+                        <div id="resourcesGrid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                            <!-- Resource cards will be dynamically populated -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Bottom Navigation -->
+    <div class="fixed bottom-0 w-full bg-white border-t border-gray-200 z-40">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between py-4">
+                <button id="prevStepBtn" class="px-4 py-2 text-gray-600 hover:text-gray-900 disabled:opacity-50 disabled:cursor-not-allowed">
+                    <i class="fas fa-chevron-left mr-2"></i>
+                    Previous
+                </button>
+                <button id="nextStepBtn" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed">
+                    Next
+                    <i class="fas fa-chevron-right ml-2"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Resource Modal -->
+    <div id="resourceModal" class="hidden fixed inset-0 bg-gray-800 bg-opacity-75 overflow-y-auto h-full w-full z-50 flex items-center justify-center">
+        <div class="relative mx-auto p-5 border w-full max-w-4xl shadow-lg rounded-md bg-white">
+            <div class="flex justify-between items-center pb-3 border-b">
+                <h3 id="resourceModalTitle" class="text-xl font-semibold">Resource</h3>
+                <button id="closeResourceModal" class="text-gray-600 hover:text-gray-900 text-2xl font-bold">&times;</button>
+            </div>
+            <div id="resourceModalContent" class="mt-4">
+                <!-- Resource content will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Quiz Modal -->
+    <div id="quizModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
+        <div class="relative top-20 mx-auto p-5 border w-full max-w-2xl shadow-lg rounded-md bg-white">
+            <div id="quizContent" class="p-6">
+                <!-- Quiz content will be dynamically loaded -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize step navigation and content loading
+        let currentStep = 0;
+        
+        function updateProgress() {
+            const progress = Math.round((currentStep + 1) * 100 / topicData.steps.length);
+            document.getElementById('progressPercent').textContent = `${progress}%`;
+            document.getElementById('progressBar').style.width = `${progress}%`;
+        }
+
+        function updateStepsList() {
+            const stepsList = document.getElementById('stepsList');
+            stepsList.innerHTML = '';
+            topicData.steps.forEach((step, index) => {
+                const li = document.createElement('li');
+                li.innerHTML = `
+                    <button class="w-full px-4 py-2 text-left rounded-lg hover:bg-gray-50 ${index === currentStep ? 'active step-button' : ''}"
+                            onclick="goToStep(${index})">
+                        ${index + 1}. ${step.title}
+                    </button>
+                `;
+                stepsList.appendChild(li);
+            });
+        }
+
+        function updateContent() {
+            const step = topicData.steps[currentStep];
+            document.getElementById('topicTitle').textContent = topicData.title;
+            
+            // Update step content
+            const container = document.getElementById('stepContainer');
+            container.innerHTML = step.content.join('\n');
+
+            // Update resources
+            const resourcesGrid = document.getElementById('resourcesGrid');
+            resourcesGrid.innerHTML = '';
+            if (step.resources && step.resources.length > 0) {
+                step.resources.forEach(resource => {
+                    const card = document.createElement('div');
+                    card.className = 'resource-card bg-white p-4 rounded-lg border hover:shadow-md';
+                    card.innerHTML = `
+                        <h4 class="font-semibold mb-2">${resource.title}</h4>
+                        <p class="text-sm text-gray-600 mb-2">${resource.description}</p>
+                        <button onclick="openResource('${resource.url}')" 
+                                class="text-blue-600 hover:text-blue-700 text-sm">
+                            Open ${resource.type === 'video' ? 'Video' : 'Resource'}
+                            <i class="fas fa-external-link-alt ml-1"></i>
+                        </button>
+                    `;
+                    resourcesGrid.appendChild(card);
+                });
+            }
+
+            // Update navigation
+            document.getElementById('prevStepBtn').disabled = currentStep === 0;
+            document.getElementById('nextStepBtn').disabled = currentStep === topicData.steps.length - 1;
+
+            updateProgress();
+            updateStepsList();
+        }
+
+        function goToStep(index) {
+            if (index >= 0 && index < topicData.steps.length) {
+                currentStep = index;
+                updateContent();
+            }
+        }
+
+        function nextStep() {
+            if (currentStep < topicData.steps.length - 1) {
+                currentStep++;
+                updateContent();
+            }
+        }
+
+        function prevStep() {
+            if (currentStep > 0) {
+                currentStep--;
+                updateContent();
+            }
+        }
+
+        function openResource(url) {
+            const modal = document.getElementById('resourceModal');
+            const content = document.getElementById('resourceModalContent');
+            const title = document.getElementById('resourceModalTitle');
+            
+            if (url.includes('youtube.com')) {
+                content.innerHTML = `<iframe src="${url}" class="w-full aspect-video" allowfullscreen></iframe>`;
+                title.textContent = 'Video Resource';
+            } else if (url.includes('phet.colorado.edu')) {
+                content.innerHTML = `<iframe src="${url}" class="w-full h-[600px]" allowfullscreen></iframe>`;
+                title.textContent = 'Interactive Simulation';
+            } else {
+                content.innerHTML = `<iframe src="${url}" class="w-full h-[600px]"></iframe>`;
+                title.textContent = 'Resource';
+            }
+            
+            modal.classList.remove('hidden');
+        }
+
+        document.getElementById('closeResourceModal').onclick = () => {
+            document.getElementById('resourceModal').classList.add('hidden');
+        };
+
+        document.getElementById('nextStepBtn').onclick = nextStep;
+        document.getElementById('prevStepBtn').onclick = prevStep;
+
+        const topicData = {
+            title: "AC Basics",
+            steps: [
+                {
+                    id: "intro",
+                    title: "Introduction to AC",
+                    type: "note",
+                    content: [
+                        `<div class="bg-blue-50 p-4 rounded-lg mb-4">
+                            <p class="text-gray-700"><i class="fas fa-robot mr-2 text-blue-500"></i>Welcome! Let's explore Alternating Current (AC), the type of electricity that powers our homes and most electronic devices.</p>
+                        </div>`,
+                        `<h3 class="text-xl font-semibold mb-2">What is Alternating Current (AC)?</h3>`,
+                        `<p class="text-gray-700 mb-4">Alternating Current is an electric current that periodically reverses direction and changes its magnitude continuously with time. Unlike DC (Direct Current), which flows in one direction, AC oscillates back and forth.</p>`,
+                        `<div class="bg-gray-50 p-4 rounded-lg border mb-4">
+                            <h4 class="font-semibold mb-2">Key Features of AC:</h4>
+                            <ul class="list-disc pl-6 space-y-2 text-gray-700">
+                                <li>Direction of current changes periodically</li>
+                                <li>Voltage varies sinusoidally with time</li>
+                                <li>Can be easily transformed to different voltage levels</li>
+                                <li>Used in power transmission due to lower losses</li>
+                            </ul>
+                        </div>`,
+                        `<div class="mt-4 bg-gray-50 p-6 rounded-lg border">
+                            <h4 class="font-semibold mb-2"><i class="fas fa-play-circle text-blue-500 mr-2"></i>AC vs DC Visualization</h4>
+                            <iframe src="https://www.youtube.com/embed/vN9aR2wKv0U" class="w-full aspect-video" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </div>`
+                    ],
+                    resources: [
+                        { 
+                            type: "video",
+                            title: "AC vs DC Explained",
+                            description: "Clear visual explanation of the differences between AC and DC",
+                            url: "https://www.youtube.com/embed/vN9aR2wKv0U"
+                        }
+                    ],
+                    quiz: {
+                        question: "What is the main characteristic of Alternating Current (AC)?",
+                        options: [
+                            "It flows in one direction only",
+                            "It periodically reverses direction",
+                            "It has constant magnitude",
+                            "It cannot be transformed"
+                        ],
+                        correct: 1,
+                        explanation: "AC periodically reverses direction and changes magnitude, unlike DC which flows in one direction."
+                    }
+                },
+                {
+                    id: "frequency",
+                    title: "Frequency & Period",
+                    type: "note",
+                    content: [
+                        `<h3 class="text-xl font-semibold mb-4">Understanding AC Frequency</h3>`,
+                        `<p class="text-gray-700 mb-4">Frequency is the number of complete cycles an AC signal makes per second, measured in Hertz (Hz). Most countries use either 50 Hz or 60 Hz for their power grids.</p>`,
+                        `<div class="grid md:grid-cols-2 gap-6 mb-6">
+                            <div class="bg-blue-50 p-4 rounded-lg">
+                                <h4 class="font-semibold mb-2">Frequency (f)</h4>
+                                <p>Number of cycles per second</p>
+                                <p class="mt-2">Example: 50 Hz = 50 cycles/second</p>
+                            </div>
+                            <div class="bg-green-50 p-4 rounded-lg">
+                                <h4 class="font-semibold mb-2">Period (T)</h4>
+                                <p>Time for one complete cycle</p>
+                                <p class="mt-2">T = 1/f (e.g., T = 1/50 = 0.02 seconds)</p>
+                            </div>
+                        </div>`,
+                        `<h4 class="font-semibold mb-2">Why Different Frequencies?</h4>
+                        <ul class="list-disc pl-6 space-y-2 text-gray-700 mb-4">
+                            <li>50 Hz: Europe, Africa, Asia, Australia</li>
+                            <li>60 Hz: North America, parts of South America</li>
+                        </ul>`,
+                        `<div class="bg-yellow-50 border-l-4 border-yellow-500 p-4 mt-4">
+                            <h4 class="font-semibold mb-2">Important Note:</h4>
+                            <p>Electronic devices must be designed for the correct frequency to work properly. This is why some devices need voltage/frequency converters when used in different countries.</p>
+                        </div>`
+                    ],
+                    resources: [
+                        {
+                            type: "simulation",
+                            title: "AC Waveform Simulator",
+                            description: "Interactive simulation showing frequency and period",
+                            url: "https://phet.colorado.edu/sims/html/circuit-construction-kit-ac/latest/circuit-construction-kit-ac_en.html"
+                        }
+                    ],
+                    quiz: {
+                        question: "If the AC frequency is 60 Hz, what is the period?",
+                        options: ["1/60 seconds", "60 seconds", "1/50 seconds", "50 seconds"],
+                        correct: 0,
+                        explanation: "Period (T) = 1/frequency. So for 60 Hz, T = 1/60 seconds ≈ 0.0167 seconds."
+                    }
+                },
+                {
+                    id: "rms",
+                    title: "RMS Values",
+                    type: "note",
+                    content: [
+                        `<h3 class="text-xl font-semibold mb-4">RMS (Root Mean Square) Values</h3>`,
+                        `<p class="text-gray-700 mb-4">RMS values are used to describe the effective value of AC voltage and current. It represents the DC value that would produce the same heating effect.</p>`,
+                        `<div class="bg-blue-50 p-4 rounded-lg mb-6">
+                            <h4 class="font-semibold mb-2">Key Formulas:</h4>
+                            <ul class="space-y-2">
+                                <li>V<sub>rms</sub> = V<sub>peak</sub> / √2</li>
+                                <li>I<sub>rms</sub> = I<sub>peak</sub> / √2</li>
+                                <li>Power: P = V<sub>rms</sub> × I<sub>rms</sub> × cos φ</li>
+                            </ul>
+                        </div>`,
+                        `<div class="mb-6">
+                            <h4 class="font-semibold mb-2">Example:</h4>
+                            <p class="text-gray-700">For household electricity rated at 230V AC:</p>
+                            <ul class="list-disc pl-6 space-y-2 text-gray-700">
+                                <li>230V is the RMS value</li>
+                                <li>Peak voltage = 230V × √2 ≈ 325V</li>
+                            </ul>
+                        </div>`,
+                        `<div class="bg-yellow-50 border-l-4 border-yellow-500 p-4">
+                            <h4 class="font-semibold mb-2">Why RMS?</h4>
+                            <p>Since AC voltage constantly changes, we need a way to describe its effective value. RMS provides a meaningful comparison with DC values.</p>
+                        </div>`
+                    ],
+                    quiz: {
+                        question: "If the peak voltage of an AC signal is 311V, what is its RMS value?",
+                        options: ["220V", "311V", "440V", "155.5V"],
+                        correct: 0,
+                        explanation: "V_rms = V_peak / √2 = 311/√2 ≈ 220V"
+                    }
+                },
+                {
+                    id: "transformers",
+                    title: "Transformers",
+                    type: "note",
+                    content: [
+                        `<h3 class="text-xl font-semibold mb-4">Understanding Transformers</h3>`,
+                        `<p class="text-gray-700 mb-4">Transformers are devices that change AC voltage levels. They're crucial for power distribution and electronics.</p>`,
+                        `<div class="grid md:grid-cols-2 gap-6 mb-6">
+                            <div class="bg-blue-50 p-4 rounded-lg">
+                                <h4 class="font-semibold mb-2">Step-Up Transformer</h4>
+                                <p>Increases voltage for power transmission</p>
+                                <p class="mt-2">Secondary coil has more turns than primary</p>
+                            </div>
+                            <div class="bg-green-50 p-4 rounded-lg">
+                                <h4 class="font-semibold mb-2">Step-Down Transformer</h4>
+                                <p>Decreases voltage for household use</p>
+                                <p class="mt-2">Secondary coil has fewer turns than primary</p>
+                            </div>
+                        </div>`,
+                        `<div class="bg-gray-50 p-4 rounded-lg border mb-6">
+                            <h4 class="font-semibold mb-2">Transformer Equation:</h4>
+                            <p class="text-lg text-center mb-2">V<sub>p</sub>/V<sub>s</sub> = N<sub>p</sub>/N<sub>s</sub></p>
+                            <ul class="list-disc pl-6 space-y-2 text-gray-700">
+                                <li>V<sub>p</sub> = Primary voltage</li>
+                                <li>V<sub>s</sub> = Secondary voltage</li>
+                                <li>N<sub>p</sub> = Number of primary turns</li>
+                                <li>N<sub>s</sub> = Number of secondary turns</li>
+                            </ul>
+                        </div>`,
+                        `<div class="mt-4 bg-gray-50 p-6 rounded-lg border">
+                            <h4 class="font-semibold mb-2"><i class="fas fa-play-circle text-blue-500 mr-2"></i>How Transformers Work</h4>
+                            <iframe src="https://www.youtube.com/embed/vh_aCAHThTQ" class="w-full aspect-video" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </div>`
+                    ],
+                    resources: [
+                        {
+                            type: "video",
+                            title: "Transformer Animation",
+                            description: "Visual explanation of transformer operation",
+                            url: "https://www.youtube.com/embed/vh_aCAHThTQ"
+                        }
+                    ],
+                    quiz: {
+                        question: "A transformer has 1000 turns in the primary and 100 turns in the secondary. If the primary voltage is 230V, what is the secondary voltage?",
+                        options: ["23V", "2300V", "130V", "330V"],
+                        correct: 0,
+                        explanation: "Using V₁/V₂ = N₁/N₂: V₂ = V₁ × (N₂/N₁) = 230 × (100/1000) = 23V"
+                    }
+                }
+            ]
+        };
+
+        // Initial setup
+        updateContent();
+    </script>
+<!-- Topic Quiz System -->
+<script src="/js/topic-quiz-loader.js"></script>
+<script src="/js/topic-quiz-injector.js"></script>
+</body>
+</html>

@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Symbols & Formula Writing | Chemistry Foundations</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .content-card {
+      -webkit-backdrop-filter: blur(12px);
+      backdrop-filter: blur(12px);
+      background: rgba(255, 255, 255, 0.95);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    .accordion-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease-out;
+    }
+    .accordion-content.open {
+      max-height: 2000px;
+    }
+    .step-card { transition: all 0.2s ease; }
+    .step-card:hover { transform: translateX(4px); }
+    #topic-complete-btn { transition: all 0.3s ease; }
+    #topic-complete-btn:not(:disabled):hover { transform: scale(1.02); }
+  </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-violet-50 to-purple-100 p-4 md:p-6">
+  <div class="max-w-4xl mx-auto">
+    <!-- Navigation -->
+    <nav class="mb-4 flex items-center justify-between">
+      <a href="index.html" class="text-blue-600 hover:text-blue-800 transition flex items-center">
+        <i class="fas fa-arrow-left mr-2"></i>Back to Foundations
+      </a>
+      <div class="flex items-center gap-3">
+        <div class="text-sm text-gray-600">
+          <span id="topic-progress-text">0% Complete</span>
+        </div>
+        <div class="w-24 h-2 bg-gray-200 rounded-full overflow-hidden">
+          <div id="topic-progress-bar" class="h-full bg-gradient-to-r from-violet-400 to-purple-500 transition-all duration-300" style="width: 0%"></div>
+        </div>
+      </div>
+    </nav>
+
+    <article class="content-card rounded-xl p-6 md:p-8 shadow-lg">
+      <!-- Header -->
+      <div class="border-b pb-4 mb-6">
+        <h1 class="text-2xl md:text-3xl font-bold text-gray-800 mb-2">
+          <i class="fas fa-font text-violet-500 mr-3"></i>Symbols & Formula Writing
+        </h1>
+        <p class="text-gray-600">Understanding chemical symbols, valency, and writing formulas for ionic and covalent compounds.</p>
+      </div>
+
+      <!-- Learning Objectives -->
+      <div class="bg-violet-50 border-l-4 border-violet-500 p-4 rounded-r-lg mb-6">
+        <h3 class="font-semibold text-violet-800 mb-2"><i class="fas fa-bullseye mr-2"></i>Learning Objectives</h3>
+        <ul class="text-violet-700 text-sm space-y-1">
+          <li>• State chemical symbols of common elements</li>
+          <li>• Define valency and know valencies of common elements</li>
+          <li>• Write correct formulas for simple ionic compounds</li>
+          <li>• Write formulas for covalent molecules</li>
+          <li>• Use brackets in formula writing correctly</li>
+        </ul>
+      </div>
+
+      <!-- Section 1: Chemical Symbols -->
+      <section id="section-1" class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <span class="bg-violet-100 text-violet-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">1</span>
+          Chemical Symbols
+        </h2>
+
+        <div class="bg-gray-50 p-5 rounded-lg mb-4">
+          <p class="text-gray-700 mb-4">A <strong class="text-violet-600">chemical symbol</strong> is a shorthand way of representing an element. Most symbols consist of one or two letters from the element's name.</p>
+
+          <div class="bg-gradient-to-r from-violet-100 to-purple-100 p-4 rounded-lg mb-4">
+            <h4 class="font-semibold text-violet-800 mb-2">Rules for Writing Symbols:</h4>
+            <ul class="text-gray-700 text-sm space-y-1">
+              <li>• First letter is always <strong>CAPITAL</strong></li>
+              <li>• Second letter (if any) is always <strong>lowercase</strong></li>
+              <li>• Examples: <strong>C</strong>arbon, <strong>H</strong>ydrogen, <strong>Na</strong>trium (Sodium), <strong>Fe</strong>rrum (Iron)</li>
+            </ul>
+          </div>
+
+          <div class="overflow-x-auto">
+            <table class="w-full text-sm border-collapse border border-gray-300 rounded-lg overflow-hidden">
+              <thead class="bg-violet-600 text-white">
+                <tr>
+                  <th class="border border-gray-300 p-2">Element</th>
+                  <th class="border border-gray-300 p-2">Symbol</th>
+                  <th class="border border-gray-300 p-2">Element</th>
+                  <th class="border border-gray-300 p-2">Symbol</th>
+                </tr>
+              </thead>
+              <tbody class="bg-white">
+                <tr>
+                  <td class="border border-gray-300 p-2">Hydrogen</td><td class="border border-gray-300 p-2 text-center font-mono font-bold text-violet-700">H</td>
+                  <td class="border border-gray-300 p-2">Oxygen</td><td class="border border-gray-300 p-2 text-center font-mono font-bold text-violet-700">O</td>
+                </tr>
+                <tr class="bg-gray-50">
+                  <td class="border border-gray-300 p-2">Carbon</td><td class="border border-gray-300 p-2 text-center font-mono font-bold text-violet-700">C</td>
+                  <td class="border border-gray-300 p-2">Nitrogen</td><td class="border border-gray-300 p-2 text-center font-mono font-bold text-violet-700">N</td>
+                </tr>
+                <tr>
+                  <td class="border border-gray-300 p-2">Sodium</td><td class="border border-gray-300 p-2 text-center font-mono font-bold text-violet-700">Na</td>
+                  <td class="border border-gray-300 p-2">Potassium</td><td class="border border-gray-300 p-2 text-center font-mono font-bold text-violet-700">K</td>
+                </tr>
+                <tr class="bg-gray-50">
+                  <td class="border border-gray-300 p-2">Iron</td><td class="border border-gray-300 p-2 text-center font-mono font-bold text-violet-700">Fe</td>
+                  <td class="border border-gray-300 p-2">Copper</td><td class="border border-gray-300 p-2 text-center font-mono font-bold text-violet-700">Cu</td>
+                </tr>
+                <tr>
+                  <td class="border border-gray-300 p-2">Calcium</td><td class="border border-gray-300 p-2 text-center font-mono font-bold text-violet-700">Ca</td>
+                  <td class="border border-gray-300 p-2">Magnesium</td><td class="border border-gray-300 p-2 text-center font-mono font-bold text-violet-700">Mg</td>
+                </tr>
+                <tr class="bg-gray-50">
+                  <td class="border border-gray-300 p-2">Chlorine</td><td class="border border-gray-300 p-2 text-center font-mono font-bold text-violet-700">Cl</td>
+                  <td class="border border-gray-300 p-2">Sulfur</td><td class="border border-gray-300 p-2 text-center font-mono font-bold text-violet-700">S</td>
+                </tr>
+                <tr>
+                  <td class="border border-gray-300 p-2">Zinc</td><td class="border border-gray-300 p-2 text-center font-mono font-bold text-violet-700">Zn</td>
+                  <td class="border border-gray-300 p-2">Aluminum</td><td class="border border-gray-300 p-2 text-center font-mono font-bold text-violet-700">Al</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-r-lg mt-4">
+            <h4 class="font-semibold text-yellow-800 mb-2"><i class="fas fa-info-circle mr-2"></i>Latin Names</h4>
+            <p class="text-gray-700 text-sm">Some symbols come from Latin names: <strong>Na</strong> (Natrium = Sodium), <strong>K</strong> (Kalium = Potassium), <strong>Fe</strong> (Ferrum = Iron), <strong>Cu</strong> (Cuprum = Copper), <strong>Ag</strong> (Argentum = Silver), <strong>Au</strong> (Aurum = Gold), <strong>Pb</strong> (Plumbum = Lead).</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 2: Valency -->
+      <section id="section-2" class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <span class="bg-violet-100 text-violet-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">2</span>
+          Valency
+        </h2>
+
+        <div class="bg-gray-50 p-5 rounded-lg mb-4">
+          <div class="bg-gradient-to-r from-blue-100 to-cyan-100 p-4 rounded-lg mb-4 border-l-4 border-blue-500">
+            <p class="text-lg font-semibold text-blue-800 mb-1">Definition</p>
+            <p class="text-gray-700"><strong class="text-blue-600">Valency</strong> is the combining power of an element - the number of electrons it can lose, gain, or share to form compounds.</p>
+          </div>
+
+          <div class="overflow-x-auto">
+            <table class="w-full text-sm border-collapse border border-gray-300 rounded-lg overflow-hidden">
+              <thead class="bg-blue-600 text-white">
+                <tr>
+                  <th class="border border-gray-300 p-2">Element</th>
+                  <th class="border border-gray-300 p-2">Symbol</th>
+                  <th class="border border-gray-300 p-2">Valency</th>
+                  <th class="border border-gray-300 p-2">Group</th>
+                </tr>
+              </thead>
+              <tbody class="bg-white">
+                <tr>
+                  <td class="border border-gray-300 p-2">Hydrogen</td>
+                  <td class="border border-gray-300 p-2 text-center">H</td>
+                  <td class="border border-gray-300 p-2 text-center font-bold text-blue-700">1</td>
+                  <td class="border border-gray-300 p-2 text-center">1</td>
+                </tr>
+                <tr class="bg-gray-50">
+                  <td class="border border-gray-300 p-2">Sodium, Potassium</td>
+                  <td class="border border-gray-300 p-2 text-center">Na, K</td>
+                  <td class="border border-gray-300 p-2 text-center font-bold text-blue-700">1</td>
+                  <td class="border border-gray-300 p-2 text-center">1</td>
+                </tr>
+                <tr>
+                  <td class="border border-gray-300 p-2">Magnesium, Calcium</td>
+                  <td class="border border-gray-300 p-2 text-center">Mg, Ca</td>
+                  <td class="border border-gray-300 p-2 text-center font-bold text-green-700">2</td>
+                  <td class="border border-gray-300 p-2 text-center">2</td>
+                </tr>
+                <tr class="bg-gray-50">
+                  <td class="border border-gray-300 p-2">Aluminum</td>
+                  <td class="border border-gray-300 p-2 text-center">Al</td>
+                  <td class="border border-gray-300 p-2 text-center font-bold text-orange-700">3</td>
+                  <td class="border border-gray-300 p-2 text-center">3</td>
+                </tr>
+                <tr>
+                  <td class="border border-gray-300 p-2">Carbon, Silicon</td>
+                  <td class="border border-gray-300 p-2 text-center">C, Si</td>
+                  <td class="border border-gray-300 p-2 text-center font-bold text-purple-700">4</td>
+                  <td class="border border-gray-300 p-2 text-center">4</td>
+                </tr>
+                <tr class="bg-gray-50">
+                  <td class="border border-gray-300 p-2">Nitrogen, Phosphorus</td>
+                  <td class="border border-gray-300 p-2 text-center">N, P</td>
+                  <td class="border border-gray-300 p-2 text-center font-bold text-red-700">3</td>
+                  <td class="border border-gray-300 p-2 text-center">5</td>
+                </tr>
+                <tr>
+                  <td class="border border-gray-300 p-2">Oxygen, Sulfur</td>
+                  <td class="border border-gray-300 p-2 text-center">O, S</td>
+                  <td class="border border-gray-300 p-2 text-center font-bold text-green-700">2</td>
+                  <td class="border border-gray-300 p-2 text-center">6</td>
+                </tr>
+                <tr class="bg-gray-50">
+                  <td class="border border-gray-300 p-2">Chlorine, Fluorine</td>
+                  <td class="border border-gray-300 p-2 text-center">Cl, F</td>
+                  <td class="border border-gray-300 p-2 text-center font-bold text-blue-700">1</td>
+                  <td class="border border-gray-300 p-2 text-center">7</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-r-lg">
+          <h4 class="font-semibold text-yellow-800 mb-2"><i class="fas fa-lightbulb mr-2"></i>Variable Valency</h4>
+          <p class="text-gray-700 text-sm">Some elements have more than one valency:</p>
+          <ul class="text-gray-600 text-sm mt-1 space-y-1">
+            <li>• <strong>Iron (Fe):</strong> Fe²⁺ (ferrous) or Fe³⁺ (ferric)</li>
+            <li>• <strong>Copper (Cu):</strong> Cu⁺ (cuprous) or Cu²⁺ (cupric)</li>
+            <li>• <strong>Lead (Pb):</strong> Pb²⁺ or Pb⁴⁺</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Section 3: Writing Ionic Formulas -->
+      <section id="section-3" class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <span class="bg-violet-100 text-violet-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">3</span>
+          Writing Formulas for Ionic Compounds
+        </h2>
+
+        <div class="bg-gray-50 p-5 rounded-lg mb-4">
+          <p class="text-gray-700 mb-4">Ionic compounds form when metals transfer electrons to non-metals. The formula shows the simplest ratio of ions.</p>
+
+          <div class="bg-white p-4 rounded-lg border border-gray-200 mb-4">
+            <h4 class="font-semibold text-gray-800 mb-3">Steps for Writing Ionic Formulas:</h4>
+            <ol class="text-gray-700 text-sm space-y-2">
+              <li class="flex gap-2"><span class="bg-violet-100 text-violet-700 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">1</span> Write the symbols of the ions (metal first)</li>
+              <li class="flex gap-2"><span class="bg-violet-100 text-violet-700 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">2</span> Write their valencies (charges)</li>
+              <li class="flex gap-2"><span class="bg-violet-100 text-violet-700 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">3</span> Cross over the valencies (swap them)</li>
+              <li class="flex gap-2"><span class="bg-violet-100 text-violet-700 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">4</span> Simplify if needed</li>
+            </ol>
+          </div>
+
+          <div class="bg-green-50 p-4 rounded-lg border border-green-200">
+            <h4 class="font-semibold text-green-800 mb-3">The "Swap and Drop" Method:</h4>
+            <div class="flex items-center justify-center gap-4 text-lg">
+              <div class="text-center">
+                <p class="text-2xl font-bold text-green-700">Na⁺</p>
+                <p class="text-xs text-gray-500">valency 1</p>
+              </div>
+              <div class="text-2xl text-gray-400">+</div>
+              <div class="text-center">
+                <p class="text-2xl font-bold text-red-700">Cl⁻</p>
+                <p class="text-xs text-gray-500">valency 1</p>
+              </div>
+              <div class="text-2xl text-gray-400">→</div>
+              <div class="text-center">
+                <p class="text-2xl font-bold text-violet-700">NaCl</p>
+                <p class="text-xs text-gray-500">1:1 ratio</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Worked Examples -->
+        <div class="border border-gray-200 rounded-lg overflow-hidden">
+          <button class="accordion-btn w-full p-4 bg-violet-50 text-left font-semibold text-violet-800 flex justify-between items-center hover:bg-violet-100 transition">
+            <span><i class="fas fa-calculator mr-2 text-violet-500"></i>Worked Examples: Ionic Formulas</span>
+            <i class="fas fa-chevron-down transform transition-transform"></i>
+          </button>
+          <div class="accordion-content">
+            <div class="p-5 space-y-4">
+              <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-blue-500">
+                <p class="font-medium text-gray-800">1. Magnesium + Chlorine</p>
+                <p class="text-blue-700 text-sm mt-1">Mg²⁺ + Cl⁻ → Cross: Mg₁Cl₂ → <strong>MgCl₂</strong></p>
+              </div>
+              <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-green-500">
+                <p class="font-medium text-gray-800">2. Calcium + Oxygen</p>
+                <p class="text-green-700 text-sm mt-1">Ca²⁺ + O²⁻ → Cross: Ca₂O₂ → Simplify → <strong>CaO</strong></p>
+              </div>
+              <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-purple-500">
+                <p class="font-medium text-gray-800">3. Aluminum + Oxygen</p>
+                <p class="text-purple-700 text-sm mt-1">Al³⁺ + O²⁻ → Cross: Al₂O₃ → <strong>Al₂O₃</strong></p>
+              </div>
+              <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-orange-500">
+                <p class="font-medium text-gray-800">4. Sodium + Sulfate</p>
+                <p class="text-orange-700 text-sm mt-1">Na⁺ + SO₄²⁻ → Cross: Na₂(SO₄)₁ → <strong>Na₂SO₄</strong></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 4: Polyatomic Ions -->
+      <section id="section-4" class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <span class="bg-violet-100 text-violet-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">4</span>
+          Polyatomic Ions (Radicals)
+        </h2>
+
+        <div class="bg-gray-50 p-5 rounded-lg mb-4">
+          <p class="text-gray-700 mb-4"><strong class="text-violet-600">Polyatomic ions</strong> are groups of atoms that carry a charge and act as a single unit. Use brackets when more than one is needed.</p>
+
+          <div class="overflow-x-auto">
+            <table class="w-full text-sm border-collapse border border-gray-300 rounded-lg overflow-hidden">
+              <thead class="bg-violet-600 text-white">
+                <tr>
+                  <th class="border border-gray-300 p-2">Name</th>
+                  <th class="border border-gray-300 p-2">Formula</th>
+                  <th class="border border-gray-300 p-2">Charge</th>
+                </tr>
+              </thead>
+              <tbody class="bg-white">
+                <tr>
+                  <td class="border border-gray-300 p-2">Ammonium</td>
+                  <td class="border border-gray-300 p-2 text-center font-mono font-bold">NH₄⁺</td>
+                  <td class="border border-gray-300 p-2 text-center">+1</td>
+                </tr>
+                <tr class="bg-gray-50">
+                  <td class="border border-gray-300 p-2">Hydroxide</td>
+                  <td class="border border-gray-300 p-2 text-center font-mono font-bold">OH⁻</td>
+                  <td class="border border-gray-300 p-2 text-center">-1</td>
+                </tr>
+                <tr>
+                  <td class="border border-gray-300 p-2">Nitrate</td>
+                  <td class="border border-gray-300 p-2 text-center font-mono font-bold">NO₃⁻</td>
+                  <td class="border border-gray-300 p-2 text-center">-1</td>
+                </tr>
+                <tr class="bg-gray-50">
+                  <td class="border border-gray-300 p-2">Carbonate</td>
+                  <td class="border border-gray-300 p-2 text-center font-mono font-bold">CO₃²⁻</td>
+                  <td class="border border-gray-300 p-2 text-center">-2</td>
+                </tr>
+                <tr>
+                  <td class="border border-gray-300 p-2">Sulfate</td>
+                  <td class="border border-gray-300 p-2 text-center font-mono font-bold">SO₄²⁻</td>
+                  <td class="border border-gray-300 p-2 text-center">-2</td>
+                </tr>
+                <tr class="bg-gray-50">
+                  <td class="border border-gray-300 p-2">Phosphate</td>
+                  <td class="border border-gray-300 p-2 text-center font-mono font-bold">PO₄³⁻</td>
+                  <td class="border border-gray-300 p-2 text-center">-3</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-r-lg mt-4">
+            <h4 class="font-semibold text-yellow-800 mb-2"><i class="fas fa-exclamation-triangle mr-2"></i>Important: Using Brackets</h4>
+            <p class="text-gray-700 text-sm">When more than one polyatomic ion is needed, enclose it in brackets:</p>
+            <ul class="text-gray-600 text-sm mt-1">
+              <li>• Ca²⁺ + (OH)⁻ → <strong>Ca(OH)₂</strong> ✓</li>
+              <li>• Not CaOH₂ ✗ (wrong!)</li>
+              <li>• Al³⁺ + (SO₄)²⁻ → <strong>Al₂(SO₄)₃</strong></li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 5: Covalent Formulas -->
+      <section id="section-5" class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <span class="bg-violet-100 text-violet-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">5</span>
+          Formulas for Covalent Compounds
+        </h2>
+
+        <div class="bg-gray-50 p-5 rounded-lg mb-4">
+          <p class="text-gray-700 mb-4">Covalent compounds form when non-metals share electrons. The formula shows the actual number of atoms in each molecule.</p>
+
+          <div class="grid md:grid-cols-2 gap-4 mb-4">
+            <div class="bg-white p-4 rounded-lg border border-gray-200">
+              <h4 class="font-semibold text-gray-800 mb-2">Common Covalent Molecules</h4>
+              <ul class="text-gray-700 text-sm space-y-1">
+                <li>• Water: <strong>H₂O</strong></li>
+                <li>• Carbon dioxide: <strong>CO₂</strong></li>
+                <li>• Methane: <strong>CH₄</strong></li>
+                <li>• Ammonia: <strong>NH₃</strong></li>
+                <li>• Hydrogen chloride: <strong>HCl</strong></li>
+              </ul>
+            </div>
+            <div class="bg-white p-4 rounded-lg border border-gray-200">
+              <h4 class="font-semibold text-gray-800 mb-2">Diatomic Elements</h4>
+              <ul class="text-gray-700 text-sm space-y-1">
+                <li>• Hydrogen: <strong>H₂</strong></li>
+                <li>• Nitrogen: <strong>N₂</strong></li>
+                <li>• Oxygen: <strong>O₂</strong></li>
+                <li>• Chlorine: <strong>Cl₂</strong></li>
+                <li class="text-xs text-gray-500">Also: F₂, Br₂, I₂</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="bg-purple-50 p-4 rounded-lg border border-purple-200">
+            <h4 class="font-semibold text-purple-800 mb-2"><i class="fas fa-lightbulb mr-2"></i>Remember</h4>
+            <p class="text-gray-700 text-sm">For covalent compounds, use <strong>prefixes</strong> to indicate numbers: mono (1), di (2), tri (3), tetra (4), penta (5). Example: Carbon <em>di</em>oxide (CO₂), Dinitrogen <em>tri</em>oxide (N₂O₃).</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 6: Practice Problems -->
+      <section id="section-6" class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <i class="fas fa-pencil-alt text-violet-600 mr-3"></i>
+          Practice Problems
+        </h2>
+
+        <div class="space-y-4">
+          <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+            <p class="font-medium text-gray-800 mb-2">1. Write the formula for: (a) Sodium oxide, (b) Magnesium chloride, (c) Aluminum chloride</p>
+            <details class="mt-2">
+              <summary class="text-sm text-blue-600 cursor-pointer hover:text-blue-800">Show Solution</summary>
+              <div class="mt-2 text-sm text-gray-700 space-y-1">
+                <p>(a) Na⁺ + O²⁻ → <strong>Na₂O</strong></p>
+                <p>(b) Mg²⁺ + Cl⁻ → <strong>MgCl₂</strong></p>
+                <p>(c) Al³⁺ + Cl⁻ → <strong>AlCl₃</strong></p>
+              </div>
+            </details>
+          </div>
+
+          <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+            <p class="font-medium text-gray-800 mb-2">2. Write formulas for: (a) Calcium hydroxide, (b) Aluminum sulfate, (c) Ammonium nitrate</p>
+            <details class="mt-2">
+              <summary class="text-sm text-blue-600 cursor-pointer hover:text-blue-800">Show Solution</summary>
+              <div class="mt-2 text-sm text-gray-700 space-y-1">
+                <p>(a) Ca²⁺ + OH⁻ → <strong>Ca(OH)₂</strong></p>
+                <p>(b) Al³⁺ + SO₄²⁻ → <strong>Al₂(SO₄)₃</strong></p>
+                <p>(c) NH₄⁺ + NO₃⁻ → <strong>NH₄NO₃</strong></p>
+              </div>
+            </details>
+          </div>
+
+          <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+            <p class="font-medium text-gray-800 mb-2">3. Name these compounds: (a) FeO, (b) Fe₂O₃, (c) CuO, (d) Cu₂O</p>
+            <details class="mt-2">
+              <summary class="text-sm text-blue-600 cursor-pointer hover:text-blue-800">Show Solution</summary>
+              <div class="mt-2 text-sm text-gray-700 space-y-1">
+                <p>(a) FeO → <strong>Iron(II) oxide</strong> (Fe²⁺)</p>
+                <p>(b) Fe₂O₃ → <strong>Iron(III) oxide</strong> (Fe³⁺)</p>
+                <p>(c) CuO → <strong>Copper(II) oxide</strong> (Cu²⁺)</p>
+                <p>(d) Cu₂O → <strong>Copper(I) oxide</strong> (Cu⁺)</p>
+              </div>
+            </details>
+          </div>
+
+          <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+            <p class="font-medium text-gray-800 mb-2">4. What is wrong with these formulas? (a) CaOH₂, (b) Na₂Cl</p>
+            <details class="mt-2">
+              <summary class="text-sm text-blue-600 cursor-pointer hover:text-blue-800">Show Solution</summary>
+              <div class="mt-2 text-sm text-gray-700 space-y-1">
+                <p>(a) CaOH₂ is wrong - should be <strong>Ca(OH)₂</strong> (brackets needed for hydroxide)</p>
+                <p>(b) Na₂Cl is wrong - should be <strong>NaCl</strong> (Na⁺ + Cl⁻ = 1:1 ratio)</p>
+              </div>
+            </details>
+          </div>
+        </div>
+      </section>
+
+      <!-- Key Takeaways -->
+      <section id="section-7" class="mb-8">
+        <div class="bg-gradient-to-r from-violet-50 to-purple-50 p-5 rounded-lg border border-violet-200">
+          <h3 class="font-semibold text-violet-800 mb-3"><i class="fas fa-star mr-2"></i>Key Takeaways for WAEC/JAMB/NECO</h3>
+          <ul class="text-violet-700 text-sm space-y-2">
+            <li>• Know symbols of common elements (especially Latin names: Na, K, Fe, Cu, Ag, Au, Pb)</li>
+            <li>• Memorize valencies: Group 1 = 1, Group 2 = 2, Group 3 = 3, etc.</li>
+            <li>• "Swap and drop" method: cross valencies, simplify if needed</li>
+            <li>• Use brackets for polyatomic ions when more than one is needed</li>
+            <li>• Know common polyatomic ions: OH⁻, NO₃⁻, CO₃²⁻, SO₄²⁻, NH₄⁺</li>
+            <li>• Variable valency elements: Fe (2,3), Cu (1,2), Pb (2,4)</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Complete Topic Button -->
+      <div class="mt-8 pt-6 border-t border-gray-200">
+        <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div class="text-center sm:text-left">
+            <h3 class="font-semibold text-gray-800">Ready to Complete?</h3>
+            <p class="text-sm text-gray-600">View all sections, then take the quiz to mark this topic as complete.</p>
+          </div>
+          <button id="topic-complete-btn" disabled
+                  class="px-6 py-3 rounded-xl bg-gray-300 text-gray-500 cursor-not-allowed opacity-50 flex items-center gap-2 text-lg font-medium">
+            <i class="fas fa-lock mr-2"></i>
+            <span>Complete (0% viewed)</span>
+          </button>
+        </div>
+      </div>
+    </article>
+  </div>
+
+  <script>
+    document.querySelectorAll('.accordion-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const content = btn.nextElementSibling;
+        const icon = btn.querySelector('.fa-chevron-down');
+        content.classList.toggle('open');
+        icon?.classList.toggle('rotate-180');
+      });
+    });
+  </script>
+
+  <script type="module">
+    import { TopicTracker } from '/js/topic-tracker.js';
+    import { TopicQuiz } from '/js/topic-quiz.js';
+
+    const quizQuestions = [
+      {
+        question: "What is the symbol for potassium?",
+        options: ["P", "Po", "K", "Pt"],
+        correct: 2,
+        explanation: "Potassium comes from Latin 'Kalium', so its symbol is K."
+      },
+      {
+        question: "The valency of aluminum is:",
+        options: ["1", "2", "3", "4"],
+        correct: 2,
+        explanation: "Aluminum (Al) is in Group 3 and has valency 3."
+      },
+      {
+        question: "What is the formula of magnesium oxide?",
+        options: ["MgO", "MgO₂", "Mg₂O", "Mg₂O₃"],
+        correct: 0,
+        explanation: "Mg²⁺ + O²⁻ → MgO (valencies cancel out)."
+      },
+      {
+        question: "The formula Ca(OH)₂ represents:",
+        options: ["Calcium oxide", "Calcium hydroxide", "Calcium carbonate", "Calcium sulfate"],
+        correct: 1,
+        explanation: "Ca(OH)₂ is calcium hydroxide (lime water)."
+      },
+      {
+        question: "Why are brackets used in Ca(OH)₂?",
+        options: ["To show it's a compound", "Because OH is a polyatomic ion and 2 are needed", "To make it look nice", "It's optional"],
+        correct: 1,
+        explanation: "Brackets show that the entire hydroxide ion (OH⁻) appears twice."
+      },
+      {
+        question: "What is the formula of sodium sulfate?",
+        options: ["NaSO₄", "Na₂SO₄", "Na(SO₄)₂", "NaSO₄₂"],
+        correct: 1,
+        explanation: "Na⁺ (valency 1) + SO₄²⁻ (valency 2) → Na₂SO₄."
+      },
+      {
+        question: "Iron(III) oxide has the formula:",
+        options: ["FeO", "Fe₂O", "Fe₂O₃", "Fe₃O₂"],
+        correct: 2,
+        explanation: "Iron(III) means Fe³⁺. Fe³⁺ + O²⁻ → Fe₂O₃."
+      },
+      {
+        question: "Which element has variable valency?",
+        options: ["Sodium", "Magnesium", "Iron", "Aluminum"],
+        correct: 2,
+        explanation: "Iron has two valencies: Fe²⁺ (ferrous) and Fe³⁺ (ferric)."
+      }
+    ];
+
+    const tracker = new TopicTracker({
+      topicId: 'symbols-formulas',
+      topicTitle: 'Symbols & Formula Writing',
+      subject: 'chemistry',
+      sections: ['section-1', 'section-2', 'section-3', 'section-4', 'section-5', 'section-6', 'section-7'],
+      quizRequired: true
+    });
+
+    const quiz = new TopicQuiz({
+      topicId: 'symbols-formulas',
+      topicTitle: 'Symbols & Formula Writing',
+      subject: 'chemistry',
+      questions: quizQuestions,
+      passingScore: 60,
+      tracker: tracker
+    });
+
+    document.querySelectorAll('.accordion-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const section = btn.closest('section');
+        if (section && section.id) tracker.markSectionViewed(section.id);
+      });
+    });
+
+    document.querySelectorAll('details').forEach(details => {
+      details.addEventListener('toggle', () => {
+        if (details.open) tracker.markSectionViewed('section-6');
+      });
+    });
+  </script>
+</body>
+</html>

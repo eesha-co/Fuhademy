@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WAEC Chemistry Practical - Titration Simulator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .step-card {
+            background: white;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-left: 4px solid transparent;
+        }
+
+        .step-card.current {
+            border-left-color: #2563eb;
+            background: #f0f9ff;
+        }
+
+        .step-card.completed {
+            border-left-color: #059669;
+        }
+
+        .practical-note {
+            background: #fef3c7;
+            border: 1px solid #f59e0b;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .completion-badge {
+            background: #059669;
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            margin-left: 0.5rem;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 p-4">
+    <div class="max-w-6xl mx-auto">
+        <header class="text-center mb-8">
+            <h1 class="text-3xl font-bold">WAEC Chemistry Practical</h1>
+            <p class="text-gray-600">Titration Practice Simulator</p>
+        </header>
+
+        <div class="grid md:grid-cols-2 gap-8">
+            <!-- Left Column - Steps -->
+            <div class="space-y-4">
+                <div class="bg-white rounded-lg p-4 shadow">
+                    <h2 class="text-xl font-semibold mb-4">Practical Steps</h2>
+                    
+                    <div id="step1" class="step-card current">
+                        <h3 class="font-medium">Step 1: Clean Glassware</h3>
+                        <div class="mt-2 space-y-2">
+                            <button onclick="markTask('clean-burette')" class="w-full text-left px-4 py-2 bg-gray-50 hover:bg-gray-100 rounded">
+                                Clean Burette
+                            </button>
+                            <button onclick="markTask('clean-pipette')" class="w-full text-left px-4 py-2 bg-gray-50 hover:bg-gray-100 rounded">
+                                Clean Pipette
+                            </button>
+                            <button onclick="markTask('clean-flask')" class="w-full text-left px-4 py-2 bg-gray-50 hover:bg-gray-100 rounded">
+                                Clean Conical Flask
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="step2" class="step-card">
+                        <h3 class="font-medium">Step 2: Rinse with Solutions</h3>
+                        <div class="mt-2 space-y-2">
+                            <button onclick="markTask('rinse-burette')" class="w-full text-left px-4 py-2 bg-gray-50 hover:bg-gray-100 rounded">
+                                Rinse Burette with Titrant
+                            </button>
+                            <button onclick="markTask('rinse-pipette')" class="w-full text-left px-4 py-2 bg-gray-50 hover:bg-gray-100 rounded">
+                                Rinse Pipette with Analyte
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="step3" class="step-card">
+                        <h3 class="font-medium">Step 3: Setup and Measurement</h3>
+                        <div class="mt-2 space-y-2">
+                            <button onclick="markTask('setup-apparatus')" class="w-full text-left px-4 py-2 bg-gray-50 hover:bg-gray-100 rounded">
+                                Setup Apparatus
+                            </button>
+                            <button onclick="markTask('fill-burette')" class="w-full text-left px-4 py-2 bg-gray-50 hover:bg-gray-100 rounded">
+                                Fill Burette
+                            </button>
+                            <button onclick="markTask('measure-analyte')" class="w-full text-left px-4 py-2 bg-gray-50 hover:bg-gray-100 rounded">
+                                Measure 25cm³ Analyte
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="step4" class="step-card">
+                        <h3 class="font-medium">Step 4: Titration</h3>
+                        <div class="mt-2 space-y-2">
+                            <button onclick="markTask('add-indicator')" class="w-full text-left px-4 py-2 bg-gray-50 hover:bg-gray-100 rounded">
+                                Add Indicator
+                            </button>
+                            <button onclick="markTask('perform-titration')" class="w-full text-left px-4 py-2 bg-gray-50 hover:bg-gray-100 rounded">
+                                Perform Titration
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column - Practical Information -->
+            <div class="space-y-4">
+                <div class="bg-white rounded-lg p-4 shadow">
+                    <h2 class="text-xl font-semibold mb-4">Practical Information</h2>
+                    <div id="practical-info" class="prose">
+                        <div class="practical-note">
+                            This simulator helps you practice the sequence and understanding of titration practical. 
+                            For each step, you'll receive detailed instructions about what you would do in the actual WAEC practical.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg p-4 shadow">
+                    <h2 class="text-xl font-semibold mb-4">Current Task Details</h2>
+                    <div id="task-details" class="prose">
+                        Select a task to see detailed instructions
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg p-4 shadow">
+                    <h2 class="text-xl font-semibold mb-4">Readings Table</h2>
+                    <table class="w-full">
+                        <thead>
+                            <tr>
+                                <th class="px-4 py-2 text-left">Reading No.</th>
+                                <th class="px-4 py-2 text-left">Initial (cm³)</th>
+                                <th class="px-4 py-2 text-left">Final (cm³)</th>
+                                <th class="px-4 py-2 text-left">Volume Used (cm³)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="readings-table"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const practicalSteps = {
+            'clean-burette': {
+                title: 'Cleaning the Burette',
+                instructions: [
+                    'Rinse the burette thoroughly with distilled water',
+                    'Allow water to flow through the tap to ensure it\'s working properly',
+                    'Check for any blockages or air bubbles in the jet',
+                    'Ensure the tap is properly greased and functioning'
+                ],
+                note: 'In the WAEC practical, proper cleaning ensures accurate readings and prevents contamination.'
+            },
+            'clean-pipette': {
+                title: 'Cleaning the Pipette',
+                instructions: [
+                    'Use a safety pipette filler - never use mouth suction',
+                    'Rinse the pipette thoroughly with distilled water',
+                    'Ensure no water droplets remain inside',
+                    'Check for any cracks or chips'
+                ],
+                note: 'Safety is crucial when handling pipettes. Always use appropriate safety equipment.'
+            },
+            'clean-flask': {
+                title: 'Cleaning the Conical Flask',
+                instructions: [
+                    'Rinse the conical flask with distilled water',
+                    'Swirl the water to ensure all surfaces are cleaned',
+                    'Check for any residue or stains',
+                    'Drain completely'
+                ],
+                note: 'A clean flask ensures no contamination of your analyte solution.'
+            }
+        };
+
+        let completedTasks = new Set();
+        let currentStep = 1;
+
+        function markTask(taskId) {
+            // Show practical instructions
+            const task = practicalSteps[taskId];
+            const taskDetails = document.getElementById('task-details');
+            
+            if (task) {
+                taskDetails.innerHTML = `
+                    <h3 class="font-medium text-lg">${task.title}</h3>
+                    <div class="mt-2">
+                        <h4 class="font-medium">In the actual WAEC practical, you would:</h4>
+                        <ul class="list-disc pl-5 mt-2 space-y-1">
+                            ${task.instructions.map(i => `<li>${i}</li>`).join('')}
+                        </ul>
+                        <div class="practical-note mt-4">
+                            ${task.note}
+                        </div>
+                    </div>
+                `;
+            }
+
+            // Mark task as completed
+            completedTasks.add(taskId);
+            const button = event.target;
+            button.classList.add('bg-green-100');
+            button.innerHTML += ' <span class="completion-badge">✓</span>';
+
+            // Check step completion
+            checkStepCompletion();
+        }
+
+        function checkStepCompletion() {
+            const step1Tasks = ['clean-burette', 'clean-pipette', 'clean-flask'];
+            const step2Tasks = ['rinse-burette', 'rinse-pipette'];
+            const step3Tasks = ['setup-apparatus', 'fill-burette', 'measure-analyte'];
+            const step4Tasks = ['add-indicator', 'perform-titration'];
+
+            if (currentStep === 1 && step1Tasks.every(task => completedTasks.has(task))) {
+                moveToNextStep();
+            } else if (currentStep === 2 && step2Tasks.every(task => completedTasks.has(task))) {
+                moveToNextStep();
+            } else if (currentStep === 3 && step3Tasks.every(task => completedTasks.has(task))) {
+                moveToNextStep();
+            } else if (currentStep === 4 && step4Tasks.every(task => completedTasks.has(task))) {
+                completePractical();
+            }
+        }
+
+        function moveToNextStep() {
+            document.getElementById(`step${currentStep}`).classList.remove('current');
+            document.getElementById(`step${currentStep}`).classList.add('completed');
+            currentStep++;
+            document.getElementById(`step${currentStep}`).classList.add('current');
+        }
+
+        function completePractical() {
+            alert('Congratulations! You have completed all the practical steps in the correct sequence. In a real WAEC practical, you would now calculate your results and write your report.');
+        }
+    </script>
+<!-- Topic Quiz System -->
+<script src="/js/topic-quiz-loader.js"></script>
+<script src="/js/topic-quiz-injector.js"></script>
+</body>
+</html>

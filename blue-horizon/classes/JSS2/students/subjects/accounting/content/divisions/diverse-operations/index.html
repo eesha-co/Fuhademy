@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="/assets/images/logo.png" />
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Diverse Business Operations - JUANOVA CORTEX</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../../../styles/subject-common.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <style>
+        .topic-card { min-height: 180px; }
+        .topic-icon { font-size: 2rem; }
+    </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-blue-100 via-white to-blue-50">
+    <nav class="fixed top-0 left-0 right-0 glass-effect border-b border-blue-100 z-50">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <a href="../../../../chemistry/chemistry.html" class="text-blue-600 hover:text-blue-800 transition">
+                        <i class="fas fa-arrow-left"></i>
+                        <span class="ml-2">Back to Chemistry</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <main class="container mx-auto px-4 pt-20 pb-12">
+        <header class="text-center mb-10">
+            <h1 class="section-title mb-4">Applied & Industrial Chemistry</h1>
+            <p class="text-gray-600 max-w-2xl mx-auto">Applications of chemistry in industry, environmental chemistry and laboratory techniques.</p>
+        </header>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="topicsContainer"></div>
+    </main>
+    <script type="module">
+        import divisionContent from './content.js';
+        function getTopicIcon(topicId) {
+            const icons = {
+                'control-accounts': 'clipboard-list',
+                'incomplete-records': 'file-alt',
+                'manufacturing-accounts': 'industry',
+                'non-profit-accounts': 'hand-holding-heart',
+                'departmental-accounts': 'th-large',
+                'branch-accounts': 'code-branch',
+                'joint-venture': 'handshake',
+            };
+            return icons[topicId] || 'book';
+        }
+        function renderTopics() {
+            const container = document.getElementById('topicsContainer');
+            divisionContent.topics.forEach(topic => {
+                const cleanTitle = topic.title.replace(/^\d+\.\s*/, '');
+                const card = document.createElement('div');
+                card.className = 'card topic-card rounded-2xl p-6 hover:scale-105 transition-transform cursor-pointer';
+                card.onclick = () => {
+                    window.location.href = `./topics/${topic.id}/index.html`;
+                };
+                card.innerHTML = `
+                    <div class="flex flex-col h-full">
+                        <div class="mb-4">
+                            <i class="fas fa-${getTopicIcon(topic.id)} topic-icon icon-gradient"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-gray-900 mb-2">${cleanTitle}</h3>
+                        <ul class="text-gray-600 text-sm mb-4 flex-grow">
+                            ${topic.subtopics.map(sub => `<li>• ${sub}</li>`).join('')}
+                        </ul>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+        document.addEventListener('DOMContentLoaded', renderTopics);
+    </script>
+</body>
+</html>
+

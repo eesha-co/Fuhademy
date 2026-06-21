@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mathematics - Quadratic Equation</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+</head>
+<body class="bg-gray-100 font-inter">
+    <div class="flex flex-col min-h-screen">
+        <!-- Header -->
+        <header class="bg-white shadow-sm sticky top-0 z-40">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
+                <div class="flex items-center justify-between">
+                    <a href="mathematics.html" class="flex items-center gap-3 text-gray-600 hover:text-gray-900">
+                        <i class="fas fa-arrow-left"></i>
+                        <span class="font-semibold text-lg">Mastering Quadratic Equations</span>
+                    </a>
+                    <div class="flex items-center gap-4">
+                        <div class="text-sm text-gray-500">
+                            <span>Progress:</span>
+                            <div class="w-32 bg-gray-200 rounded-full h-2.5 inline-block ml-2">
+                                <div class="bg-blue-600 h-2.5 rounded-full" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        <img src="/assets/images/logo.png" alt="logo" class="h-10 w-auto" />
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
+            <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+                <!-- Left Sidebar: Learning Steps -->
+                <aside class="lg:col-span-1">
+                    <div class="bg-white p-5 rounded-xl shadow-sm sticky top-24">
+                        <h3 class="font-semibold text-lg mb-4">Tools</h3>
+                        <p>Sub-topics</p>
+                        <ul class="space-y-2">
+                            <li><a href="#solving" class="flex items-center gap-3 p-2 rounded-md hover:bg-blue-50 text-gray-700 font-medium"><i class="fas fa-calculator w-5 text-center text-blue-500"></i><span>Solving Equations</span></a></li>
+                            <li><a href="#forming" class="flex items-center gap-3 p-2 rounded-md hover:bg-blue-50 text-gray-700 font-medium"><i class="fas fa-cogs w-5 text-center text-green-500"></i><span>Forming & Applications</span></a></li>
+                            <li><a href="#graphs" class="flex items-center gap-3 p-2 rounded-md hover:bg-blue-50 text-gray-700 font-medium"><i class="fas fa-chart-line w-5 text-center text-purple-500"></i><span>Graphs & Functions</span></a></li>
+                        </ul>
+                        <p>Resources</p>
+                        <ul class="space-y-2">
+                            <li><a href="#resources" class="flex items-center gap-3 p-2 rounded-md hover:bg-blue-50 text-gray-700 font-medium"><i class="fas fa-robot w-5 text-center text-green-500"></i><span>Interactive Solver</span></a></li>
+                            <li><a href="#resources" class="flex items-center gap-3 p-2 rounded-md hover:bg-blue-50 text-gray-700 font-medium"><i class="fas fa-project-diagram w-5 text-center text-purple-500"></i><span>Graph Visualizer</span></a></li>
+                        </ul>
+                    </div>
+                </aside>
+
+                <!-- Right Content Area -->
+                <div class="lg:col-span-3">
+                    <div class="space-y-8" id="learning-content">
+                        <!-- Section 1: Solving Quadratic Equations -->
+                        <div id="solving" data-step="0" class="learning-step bg-white border border-gray-200 rounded-xl shadow-sm p-6 scroll-mt-24">
+                            <h2 class="text-2xl font-semibold text-gray-800 mb-4 flex items-center"><i class="fas fa-calculator text-blue-500 mr-3"></i>Solving Quadratic Equations</h2>
+                            <p class="text-gray-600 mb-6">A quadratic equation is any equation that can be written as <code class="font-mono bg-gray-100 p-1 rounded text-sm">ax² + bx + c = 0</code>. "Solving" it means finding the values of 'x' that make the equation true. Let's explore the common methods.</p>
+                            
+                            <div class="space-y-4" id="solving-methods">
+                                <!-- Accordion sections will be dynamically populated -->
+                            </div>
+                        </div>
+
+                        <!-- Section 2: Forming Equations & Applications -->
+                        <div id="forming" data-step="1" class="learning-step bg-white border border-gray-200 rounded-xl shadow-sm p-6 scroll-mt-24">
+                            <h2 class="text-2xl font-semibold text-gray-800 mb-4 flex items-center"><i class="fas fa-cogs text-green-500 mr-3"></i>Forming & Applying Equations</h2>
+                            <div class="space-y-4">
+                              <div>
+                                <h3 class="font-semibold text-lg text-gray-700">Forming an Equation from Given Roots</h3>
+                                <p class="text-gray-600 text-sm mt-1"><strong>The Big Idea:</strong> This is factorization in reverse. If you know the roots, you can rebuild the equation.</p>
+                                <p class="text-gray-600 text-sm mt-2">If the roots are <code class="font-mono bg-gray-100">α</code> and <code class="font-mono bg-gray-100">β</code>, the equation is <code class="font-mono bg-gray-100">x² - (sum of roots)x + (product of roots) = 0</code>. <br><strong>Example:</strong> If roots are 4 and -5, the Sum = -1 and the Product = -20. The equation is <code class="font-mono bg-gray-100">x² - (-1)x + (-20) = 0</code>, which simplifies to <code class="font-mono bg-gray-100">x² + x - 20 = 0</code>.</p>
+                              </div>
+                              <div class="pt-4 border-t">
+                                <h3 class="font-semibold text-lg text-gray-700">Application in Practical Problems</h3>
+                                <p class="text-gray-600 text-sm mt-1"><strong>The Big Idea:</strong> Translate a real-world word problem into a quadratic equation to solve it.</p>
+                                <div class="mt-2 bg-yellow-50 border-l-4 border-yellow-400 p-3">
+                                  <h4 class="font-semibold">How to Translate Word Problems:</h4>
+                                  <ul class="list-disc list-inside pl-2 mt-1">
+                                    <li><strong>Identify the unknown:</strong> Call it 'x' or another variable (like 'w' for width).</li>
+                                    <li><strong>Formulate the equation:</strong> Use the information given (e.g., area = length × width) to write an equation.</li>
+                                    <li><strong>Solve:</strong> Use one of the methods above to find the value of your unknown.</li>
+                                    <li><strong>Check your answer:</strong> Does the solution make sense in the real world? (e.g., length cannot be negative).</li>
+                                  </ul>
+                                </div>
+                              </div>
+                            </div>
+                        </div>
+
+                        <!-- Section 3: Graphs -->
+                        <div id="graphs" data-step="2" class="learning-step bg-white border border-gray-200 rounded-xl shadow-sm p-6 scroll-mt-24">
+                            <h2 class="text-2xl font-semibold text-gray-800 mb-4 flex items-center"><i class="fas fa-chart-line text-purple-500 mr-3"></i>Graphs of Quadratic Functions</h2>
+                            <p class="text-gray-600 mb-4">Visualizing quadratic equations is a powerful way to understand them. When you plot <code class="font-mono bg-gray-100 text-sm">y = ax² + bx + c</code>, you get a special U-shaped curve.</p>
+                            
+                            <div class="space-y-6">
+                              <div>
+                                <h3 class="font-semibold text-lg text-gray-700">What is a Parabola?</h3>
+                                <p class="text-gray-600 text-sm mt-1">A <strong>parabola</strong> is the name for the symmetrical, U-shaped curve created by a quadratic equation. It can open upwards (like a smile) if 'a' is positive, or downwards (like a frown) if 'a' is negative.</p>
+                              </div>
+
+                              <div>
+                                <h3 class="font-semibold text-lg text-gray-700">Drawing the Graph (Step-by-Step)</h3>
+                                <ol class="list-decimal list-inside space-y-1 text-gray-600 text-sm mt-1">
+                                  <li><strong>Create a Table of Values:</strong> Choose several x-values and plug them into the equation to find the corresponding y-values.</li>
+                                  <li><strong>Plot the Points:</strong> Mark these (x, y) coordinate pairs on your graph paper.</li>
+                                  <li><strong>Draw the Curve:</strong> Connect the points with a smooth, continuous curve to form your parabola.</li>
+                                </ol>
+                              </div>
+
+                              <div>
+                                <h3 class="font-semibold text-lg text-gray-700">Finding Roots from the Graph</h3>
+                                <p class="text-gray-600 text-sm mt-1">The "roots" or "solutions" are simply the x-values where the parabola intersects the x-axis (the horizontal line). Think of it as where the curve hits the ground.</p>
+                                <div class="mt-3 bg-gray-50 p-4 rounded-lg border">
+                                  <div class="mt-4">
+                                    <img src="/assets/images/mathematics/quadratic-roots.svg" 
+                                         alt="Graph showing different types of quadratic roots: two real roots (crosses the x-axis at two points), one real root (touches the x-axis at one point), and no real roots (doesn't cross the x-axis)"
+                                         class="w-full max-w-2xl mx-auto border border-gray-200 rounded-lg">
+                                  </div>
+                                  <p class="text-xs text-gray-500 mt-2">
+                                    <strong>Interactive Demo:</strong> Drag the points A and B to change the equation and see how the roots change. 
+                                    The x-coordinates where the parabola crosses the x-axis are the roots.
+                                  </p>
+                                </div>
+                                <div class="bg-blue-50 p-3 rounded-lg mt-3">
+                                  <p class="text-sm"><strong>Key Points:</strong></p>
+                                  <ul class="list-disc list-inside text-sm space-y-1 mt-1">
+                                    <li>A parabola can cross the x-axis 0, 1, or 2 times</li>
+                                    <li>Two crossings = two real roots (most common)</li>
+                                    <li>One crossing = one repeated root</li>
+                                    <li>No crossing = no real roots (complex roots)</li>
+                                  </ul>
+                                </div>
+                              </div>
+
+                              <div class="mt-6">
+                                <h3 class="font-semibold text-lg text-gray-700">Solving a System of Equations Graphically</h3>
+                                <p class="text-gray-600 text-sm mt-1">To solve a pair of equations like <code class="font-mono bg-gray-100">y = ax² + bx + c</code> (a curve) and <code class="font-mono bg-gray-100">y = mx + k</code> (a straight line), draw both on the same graph. The points where the line and the parabola cross are the solutions.</p>
+                                <div class="mt-3 bg-gray-50 p-4 rounded-lg border">
+                                  <div class="mt-4">
+                                    <img src="/assets/images/mathematics/quadratic-linear-intersection.svg" 
+                                         alt="Graph showing a parabola intersecting with a straight line at two points, demonstrating the solution to a system of equations"
+                                         class="w-full max-w-2xl mx-auto border border-gray-200 rounded-lg">
+                                  </div>
+                                  <p class="text-xs text-gray-500 mt-2">
+                                    <strong>Interactive Demo:</strong> Drag points to modify both the parabola and the line. 
+                                    The intersection points (if any) are the solutions to both equations.
+                                  </p>
+                                </div>
+                                <div class="bg-blue-50 p-3 rounded-lg mt-3">
+                                  <p class="text-sm"><strong>Possible Outcomes:</strong></p>
+                                  <ul class="list-disc list-inside text-sm space-y-1 mt-1">
+                                    <li>Two intersections = two solutions</li>
+                                    <li>One intersection = one solution (line touches the parabola)</li>
+                                    <li>No intersections = no solutions (line doesn't meet the parabola)</li>
+                                  </ul>
+                                </div>
+                              </div>
+
+                              <div class="mt-6">
+                                <h3 class="font-semibold text-lg text-gray-700">Finding the Gradient with a Tangent</h3>
+                                <p class="text-gray-600 text-sm mt-1">A <strong>tangent</strong> is a straight line that "just kisses" the curve at a single point without crossing through it. The slope (or gradient) of this tangent line tells you how steep the curve is at that exact point.</p>
+                                <div class="mt-3 bg-gray-50 p-4 rounded-lg border">
+                                  <div class="mt-4">
+                                    <img src="/assets/images/mathematics/quadratic-features.svg" 
+                                         alt="Graph of a parabola with labeled key features: vertex, axis of symmetry, y-intercept, and direction of opening"
+                                         class="w-full max-w-2xl mx-auto border border-gray-200 rounded-lg">
+                                  </div>
+                                  <p class="text-xs text-gray-500 mt-2">
+                                    <strong>Interactive Demo:</strong> Move point A along the curve to see how the tangent line changes. 
+                                    The slope of this line gives you the gradient of the curve at that point.
+                                  </p>
+                                </div>
+                                <div class="bg-blue-50 p-3 rounded-lg mt-3">
+                                  <p class="text-sm"><strong>How to Find the Gradient:</strong></p>
+                                  <ol class="list-decimal list-inside text-sm space-y-1 mt-1">
+                                    <li>Draw the tangent line at your chosen point</li>
+                                    <li>Pick two points on your tangent line (not too close together)</li>
+                                    <li>Calculate the gradient using: <code class="font-mono bg-gray-100">rise ÷ run</code> or <code class="font-mono bg-gray-100">(y₂-y₁)/(x₂-x₁)</code></li>
+                                  </ol>
+                                </div>
+                              </div>
+                            </div>
+                        </div>
+
+                        <!-- Resources Section -->
+                        <div id="resources" data-step="3" class="learning-step space-y-8 scroll-mt-24">
+                            <h2 class="text-2xl font-semibold text-gray-800 mb-4">Resources</h2>
+                            <!-- Interactive Solver -->
+                            <div class="bg-white border border-gray-200 rounded-xl shadow-sm p-6">
+                                <h3 class="text-xl font-semibold text-gray-800 mb-4">Interactive Solver</h3>
+                                <p class="text-sm text-gray-500 mb-4">Enter the coefficients for <code class="font-mono">ax² + bx + c = 0</code></p>
+                                <div class="grid grid-cols-3 gap-3 mb-4">
+                                    <div>
+                                        <label for="coeff-a" class="font-medium text-sm">a</label>
+                                        <input type="number" id="coeff-a" value="1" class="w-full mt-1 p-2 border rounded-md text-center">
+                                    </div>
+                                    <div>
+                                        <label for="coeff-b" class="font-medium text-sm">b</label>
+                                        <input type="number" id="coeff-b" value="-5" class="w-full mt-1 p-2 border rounded-md text-center">
+                                    </div>
+                                    <div>
+                                        <label for="coeff-c" class="font-medium text-sm">c</label>
+                                        <input type="number" id="coeff-c" value="6" class="w-full mt-1 p-2 border rounded-md text-center">
+                                    </div>
+                                </div>
+                                <button id="solve-btn" class="w-full bg-blue-600 text-white font-semibold py-2 rounded-md hover:bg-blue-700 transition">Solve</button>
+                                <div id="solver-output" class="mt-4 pt-4 border-t">
+                                    <!-- Output will be rendered here -->
+                                </div>
+                            </div>
+                            
+                            <!-- Graph Visualizer -->
+                            <div class="bg-white border border-gray-200 rounded-xl shadow-sm p-6">
+                                <h3 class="text-xl font-semibold text-gray-800 mb-4">Graph Visualizer</h3>
+                                <canvas id="quadratic-chart" height="200"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer Navigation -->
+        <footer class="bg-white/80 backdrop-blur-sm border-t border-gray-200 sticky bottom-0 z-40">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
+                <div class="flex justify-between items-center">
+                    <button id="prev-btn" class="flex items-center gap-2 px-4 py-2 text-gray-600 font-semibold rounded-lg hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed">
+                        <i class="fas fa-arrow-left"></i>
+                        <span>Previous</span>
+                    </button>
+                    <button id="next-btn" class="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed">
+                        <span>Next</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Accordion content data
+            const accordionData = [
+                {
+                    title: "a. Solution by Factorization",
+                    content: `
+                        <p class="mb-2"><strong>The Big Idea:</strong> Rewrite the equation as a product of two simple expressions (factors) that equal zero. If a product of two things is zero, one (or both) of them must be zero.</p>
+                        <p><strong>Example:</strong> Solve <code class="font-mono bg-gray-100">x² - 5x + 6 = 0</code></p>
+                        <ol class="list-decimal list-inside mt-2 space-y-1">
+                            <li><strong>Multiply:</strong> Multiply 6 by the coefficient of x² (coefficient is the number in front of a variable (letter)). In this case the coefficient of x² is 1. Multiplying +6 by 1 we have +6.</li>
+                            <li><strong>Think:</strong> What two numbers can you multiply to give \`+6\` and add to give \`-5\`? The numbers are \`-2\` and \`-3\`.</li>
+                            <li><strong>Rewrite:</strong> Use these numbers to create two factors: <code class="font-mono bg-gray-100">(x - 2)(x - 3) = 0</code>.</li>
+                            <li><strong>Solve:</strong> Now, either <code class="font-mono bg-gray-100">x - 2 = 0</code> or <code class="font-mono bg-gray-100">x - 3 = 0</code>.</li>
+                            <li><strong>Result:</strong> The roots are <code class="font-mono bg-gray-100">x = 2</code> and <code class="font-mono bg-gray-100">x = 3</code>.</li>
+                        </ol>
+
+                        <!-- Interactive Quiz -->
+                        <div class="mt-6 pt-4 border-t border-dashed">
+                            <button id="start-quiz-btn" class="w-full flex justify-center items-center gap-2 p-2 bg-yellow-100 text-yellow-800 font-semibold rounded-md hover:bg-yellow-200 transition">
+                                <i class="fas fa-pencil-alt"></i>
+                                <span>Try a Practice Problem</span>
+                            </button>
+                            <div id="quiz-container" class="hidden mt-4 space-y-4">
+                                <h4 class="font-semibold text-gray-800">Solve by Factorization: <code class="font-mono bg-gray-100">x² + 7x + 10 = 0</code></h4>
+                                
+                                <!-- Step 1 -->
+                                <div class="flex items-center gap-3" data-step="1">
+                                    <input type="text" placeholder="Answer..." class="flex-grow p-2 border rounded-md text-sm">
+                                    <button class="px-3 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 text-sm">Check</button>
+                                    <p class="flex-shrink-0 w-48 text-xs text-gray-500"><strong>Multiply:</strong> Multiply 'c' (10) by the coefficient of x² (1).</p>
+                                    <span class="feedback-icon"></span>
+                                </div>
+                                <!-- Step 2 -->
+                                <div class="flex items-center gap-3" data-step="2">
+                                    <input type="text" placeholder="e.g., 4, 9" class="flex-grow p-2 border rounded-md text-sm">
+                                    <button class="px-3 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 text-sm">Check</button>
+                                    <p class="flex-shrink-0 w-48 text-xs text-gray-500"><strong>Think:</strong> What two numbers multiply to 10 and add to 7?</p>
+                                    <span class="feedback-icon"></span>
+                                </div>
+                                <!-- Step 3 -->
+                                <div class="flex items-center gap-3" data-step="3">
+                                    <input type="text" placeholder="e.g., (x+4)(x+9)=0" class="flex-grow p-2 border rounded-md text-sm">
+                                    <button class="px-3 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 text-sm">Check</button>
+                                    <p class="flex-shrink-0 w-48 text-xs text-gray-500"><strong>Rewrite:</strong> Use the numbers to create two factors.</p>
+                                    <span class="feedback-icon"></span>
+                                </div>
+                                <!-- Step 4 -->
+                                <div class="flex items-center gap-3" data-step="4">
+                                    <input type="text" placeholder="e.g., x+4=0 or x+9=0" class="flex-grow p-2 border rounded-md text-sm">
+                                    <button class="px-3 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 text-sm">Check</button>
+                                    <p class="flex-shrink-0 w-48 text-xs text-gray-500"><strong>Solve:</strong> Set each factor to zero.</p>
+                                    <span class="feedback-icon"></span>
+                                </div>
+                                <!-- Step 5 -->
+                                <div class="flex items-center gap-3" data-step="5">
+                                    <input type="text" placeholder="e.g., x=1, x=-4" class="flex-grow p-2 border rounded-md text-sm">
+                                    <button class="px-3 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 text-sm">Check</button>
+                                    <p class="flex-shrink-0 w-48 text-xs text-gray-500"><strong>Result:</strong> State the final roots.</p>
+                                    <span class="feedback-icon"></span>
+                                </div>
+
+                                <!-- Independent Practice -->
+                                <div class="mt-8 pt-6 border-t border-dashed">
+                                    <h4 class="font-semibold text-gray-800">Independent Practice</h4>
+                                    <p class="text-sm text-gray-600 mb-3">Now, solve this one on your own. Show your steps and provide the final answer.</p>
+                                    <p class="font-semibold">Problem: <code class="font-mono bg-gray-100">x² - 8x + 15 = 0</code></p>
+                                    <div id="independent-quiz" class="mt-4 space-y-3">
+                                        <div>
+                                            <label for="workings" class="block text-sm font-medium text-gray-700">Your Workings</label>
+                                            <textarea id="workings" rows="5" class="w-full mt-1 p-2 border rounded-md text-sm" placeholder="Show your steps here...
+1. Find two numbers that multiply to 15 and add to -8.
+2. Rewrite the equation with factors.
+3. Set each factor to zero.
+4. State the final roots."></textarea>
+                                        </div>
+                                        <div>
+                                            <label for="final-answer" class="block text-sm font-medium text-gray-700">Final Answer</label>
+                                            <input type="text" id="final-answer" placeholder="e.g., x=3, x=5" class="w-full mt-1 p-2 border rounded-md text-sm">
+                                        </div>
+                                        <button id="check-independent-answer" class="w-full bg-blue-600 text-white font-semibold py-2 rounded-md hover:bg-blue-700 transition">Check Final Answer</button>
+                                        <div id="independent-feedback" class="text-sm mt-2"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `
+                },
+                {
+                    title: "b. Solution by Completing the Square",
+                    content: `
+                        <p class="mb-2"><strong>The Big Idea:</strong> Force one side of the equation to become a "perfect square" trinomial, like <code class="font-mono bg-gray-100">(x+p)²</code>. Think of it as adding the "missing piece" to build a perfect square.</p>
+                        <p><strong>Example:</strong> Solve <code class="font-mono bg-gray-100">x² + 6x - 7 = 0</code></p>
+                        <ol class="list-decimal list-inside mt-2 space-y-1">
+                            <li><strong>Isolate:</strong> Move the constant term to the other side: <code class="font-mono bg-gray-100">x² + 6x = 7</code>.</li>
+                            <li><strong>Find the "Missing Piece":</strong> Take half of the 'x' coefficient (6/2 = 3) and square it (3² = 9). This is the piece needed to "complete the square".</li>
+                            <li><strong>Add to Both Sides:</strong> Add 9 to both sides to keep the equation balanced: <code class="font-mono bg-gray-100">x² + 6x + 9 = 7 + 9</code>.</li>
+                            <li><strong>Factor and Simplify:</strong> The left side is now a perfect square: <code class="font-mono bg-gray-100">(x + 3)² = 16</code>.</li>
+                            <li><strong>Solve:</strong> Take the square root of both sides: <code class="font-mono bg-gray-100">x + 3 = ±4</code>. This gives two possibilities: <code class="font-mono bg-gray-100">x+3=4</code> (so x=1) and <code class="font-mono bg-gray-100">x+3=-4</code> (so x=-7).</li>
+                        </ol>
+
+                        <!-- Interactive Quiz -->
+                        <div class="mt-6 pt-4 border-t border-dashed">
+                            <button id="start-quiz-btn-square" class="w-full flex justify-center items-center gap-2 p-2 bg-yellow-100 text-yellow-800 font-semibold rounded-md hover:bg-yellow-200 transition">
+                                <i class="fas fa-pencil-alt"></i>
+                                <span>Try a Practice Problem</span>
+                            </button>
+                            <div id="quiz-container-square" class="hidden mt-4 space-y-4">
+                                <h4 class="font-semibold text-gray-800">Complete the Square: <code class="font-mono bg-gray-100">x² + 4x - 5 = 0</code></h4>
+                                
+                                <!-- Step 1 -->
+                                <div class="flex items-center gap-3" data-step-square="1">
+                                    <input type="text" placeholder="e.g., x² + 4x = 5" class="flex-grow p-2 border rounded-md text-sm">
+                                    <button class="px-3 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 text-sm">Check</button>
+                                    <p class="flex-shrink-0 w-48 text-xs text-gray-500"><strong>Isolate:</strong> Move the constant to the other side.</p>
+                                    <span class="feedback-icon"></span>
+                                </div>
+                                <!-- Step 2 -->
+                                <div class="flex items-center gap-3" data-step-square="2">
+                                    <input type="text" placeholder="e.g., 2² = 4" class="flex-grow p-2 border rounded-md text-sm">
+                                    <button class="px-3 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 text-sm">Check</button>
+                                    <p class="flex-shrink-0 w-48 text-xs text-gray-500"><strong>Find the 'Missing Piece':</strong> (Half of 4, squared)</p>
+                                    <span class="feedback-icon"></span>
+                                </div>
+                                <!-- Step 3 -->
+                                <div class="flex items-center gap-3" data-step-square="3">
+                                    <input type="text" placeholder="e.g., x² + 4x + 4 = 5 + 4" class="flex-grow p-2 border rounded-md text-sm">
+                                    <button class="px-3 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 text-sm">Check</button>
+                                    <p class="flex-shrink-0 w-48 text-xs text-gray-500"><strong>Add to Both Sides:</strong> Add the missing piece to both sides.</p>
+                                    <span class="feedback-icon"></span>
+                                </div>
+                                <!-- Step 4 -->
+                                <div class="flex items-center gap-3" data-step-square="4">
+                                    <input type="text" placeholder="e.g., (x+2)² = 9" class="flex-grow p-2 border rounded-md text-sm">
+                                    <button class="px-3 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 text-sm">Check</button>
+                                    <p class="flex-shrink-0 w-48 text-xs text-gray-500"><strong>Factor and Simplify:</strong> Write as a perfect square.</p>
+                                    <span class="feedback-icon"></span>
+                                </div>
+                                <!-- Step 5 -->
+                                <div class="flex items-center gap-3" data-step-square="5">
+                                    <input type="text" placeholder="e.g., x+2=±3" class="flex-grow p-2 border rounded-md text-sm">
+                                    <button class="px-3 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 text-sm">Check</button>
+                                    <p class="flex-shrink-0 w-48 text-xs text-gray-500"><strong>Solve:</strong> Take the square root of both sides.</p>
+                                    <span class="feedback-icon"></span>
+                                </div>
+                                <!-- Step 6 -->
+                                <div class="flex items-center gap-3" data-step-square="6">
+                                    <input type="text" placeholder="e.g., x=1, x=-5" class="flex-grow p-2 border rounded-md text-sm">
+                                    <button class="px-3 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 text-sm">Check</button>
+                                    <p class="flex-shrink-0 w-48 text-xs text-gray-500"><strong>Result:</strong> State the final roots.</p>
+                                    <span class="feedback-icon"></span>
+                                </div>
+
+                                <!-- Independent Practice -->
+                                <div class="mt-8 pt-6 border-t border-dashed">
+                                    <h4 class="font-semibold text-gray-800">Independent Practice</h4>
+                                    <p class="text-sm text-gray-600 mb-3">Now, solve this one on your own. Show your steps and provide the final answer.</p>
+                                    <p class="font-semibold">Problem: <code class="font-mono bg-gray-100">x² + 10x + 16 = 0</code></p>
+                                    <div id="independent-quiz-square" class="mt-4 space-y-3">
+                                        <div>
+                                            <label for="workings-square" class="block text-sm font-medium text-gray-700">Your Workings</label>
+                                            <textarea id="workings-square" rows="5" class="w-full mt-1 p-2 border rounded-md text-sm" placeholder="Show your steps here...
+1. Move the constant to the other side.
+2. Find the missing piece.
+3. Add to both sides.
+4. Write as a perfect square.
+5. Take the square root.
+6. State the final roots."></textarea>
+                                        </div>
+                                        <div>
+                                            <label for="final-answer-square" class="block text-sm font-medium text-gray-700">Final Answer</label>
+                                            <input type="text" id="final-answer-square" placeholder="e.g., x=-2, x=-8" class="w-full mt-1 p-2 border rounded-md text-sm">
+                                        </div>
+                                        <button id="check-independent-answer-square" class="w-full bg-blue-600 text-white font-semibold py-2 rounded-md hover:bg-blue-700 transition">Check Final Answer</button>
+                                        <div id="independent-feedback-square" class="text-sm mt-2"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `
+                },
+                {
+                    title: "c. Solution by Formula",
+                    content: `
+                        <p class="mb-2"><strong>The Big Idea:</strong> A universal formula that works for any quadratic equation. Just plug in the 'a', 'b', and 'c' values.</p>
+                        <div class="bg-gray-100 p-2 rounded-lg text-center text-md font-mono text-gray-800 mt-2">x = [ -b ± sqrt(b² - 4ac) ] / 2a</div>
+                        <div class="mt-4 bg-blue-50 border-l-4 border-blue-400 p-3">
+                            <h4 class="font-semibold">The Discriminant (b² - 4ac)</h4>
+                            <p>This part of the formula tells you the <strong>nature of the roots</strong> (i.e., how many solutions you'll get):</p>
+                            <ul class="list-disc list-inside pl-2 mt-1">
+                                <li>If it's <strong>positive</strong>, you get <strong>two different real roots</strong>.</li>
+                                <li>If it's <strong>zero</strong>, you get <strong>one repeated real root</strong>.</li>
+                                <li>If it's <strong>negative</strong>, you get <strong>two complex roots</strong> (no real solutions).</li>
+                            </ul>
+                        </div>
+
+                        <!-- Interactive Quiz -->
+                        <div class="mt-6 pt-4 border-t border-dashed">
+                            <button id="start-quiz-btn-formula" class="w-full flex justify-center items-center gap-2 p-2 bg-yellow-100 text-yellow-800 font-semibold rounded-md hover:bg-yellow-200 transition">
+                                <i class="fas fa-pencil-alt"></i>
+                                <span>Try a Practice Problem</span>
+                            </button>
+                            <div id="quiz-container-formula" class="hidden mt-4 space-y-4">
+                                <h4 class="font-semibold text-gray-800">Solve by Formula: <code class="font-mono bg-gray-100">x² - 2x - 8 = 0</code></h4>
+                                
+                                <!-- Step 1 -->
+                                <div class="flex items-center gap-3" data-step-formula="1">
+                                    <input type="text" placeholder="e.g., a=1, b=-2, c=-8" class="flex-grow p-2 border rounded-md text-sm">
+                                    <button class="px-3 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 text-sm">Check</button>
+                                    <p class="flex-shrink-0 w-48 text-xs text-gray-500"><strong>Identify:</strong> State the values of a, b, and c.</p>
+                                    <span class="feedback-icon"></span>
+                                </div>
+                                <!-- Step 2 -->
+                                <div class="flex items-center gap-3" data-step-formula="2">
+                                    <input type="text" placeholder="e.g., (-2)² - 4*1*(-8) = 36" class="flex-grow p-2 border rounded-md text-sm">
+                                    <button class="px-3 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 text-sm">Check</button>
+                                    <p class="flex-shrink-0 w-48 text-xs text-gray-500"><strong>Discriminant:</strong> Calculate b² - 4ac.</p>
+                                    <span class="feedback-icon"></span>
+                                </div>
+                                <!-- Step 3 -->
+                                <div class="flex items-center gap-3" data-step-formula="3">
+                                    <input type="text" placeholder="e.g., x = [2 ± sqrt(36)]/2" class="flex-grow p-2 border rounded-md text-sm">
+                                    <button class="px-3 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 text-sm">Check</button>
+                                    <p class="flex-shrink-0 w-48 text-xs text-gray-500"><strong>Substitute:</strong> Plug into the formula.</p>
+                                    <span class="feedback-icon"></span>
+                                </div>
+                                <!-- Step 4 -->
+                                <div class="flex items-center gap-3" data-step-formula="4">
+                                    <input type="text" placeholder="e.g., x=4, x=-2" class="flex-grow p-2 border rounded-md text-sm">
+                                    <button class="px-3 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 text-sm">Check</button>
+                                    <p class="flex-shrink-0 w-48 text-xs text-gray-500"><strong>Result:</strong> State the final roots.</p>
+                                    <span class="feedback-icon"></span>
+                                </div>
+
+                                <!-- Independent Practice -->
+                                <div class="mt-8 pt-6 border-t border-dashed">
+                                    <h4 class="font-semibold text-gray-800">Independent Practice</h4>
+                                    <p class="text-sm text-gray-600 mb-3">Now, solve this one on your own. Show your steps and provide the final answer.</p>
+                                    <p class="font-semibold">Problem: <code class="font-mono bg-gray-100">x² + 3x - 10 = 0</code></p>
+                                    <div id="independent-quiz-formula" class="mt-4 space-y-3">
+                                        <div>
+                                            <label for="workings-formula" class="block text-sm font-medium text-gray-700">Your Workings</label>
+                                            <textarea id="workings-formula" rows="5" class="w-full mt-1 p-2 border rounded-md text-sm" placeholder="Show your steps here...
+1. State a, b, c.
+2. Calculate the discriminant.
+3. Substitute into the formula.
+4. State the final roots."></textarea>
+                                        </div>
+                                        <div>
+                                            <label for="final-answer-formula" class="block text-sm font-medium text-gray-700">Final Answer</label>
+                                            <input type="text" id="final-answer-formula" placeholder="e.g., x=2, x=-5" class="w-full mt-1 p-2 border rounded-md text-sm">
+                                        </div>
+                                        <button id="check-independent-answer-formula" class="w-full bg-blue-600 text-white font-semibold py-2 rounded-md hover:bg-blue-700 transition">Check Final Answer</button>
+                                        <div id="independent-feedback-formula" class="text-sm mt-2"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `
+                }
+            ];
+
+            // Create and append accordion items
+            const solvingMethods = document.getElementById('solving-methods');
+            accordionData.forEach((section, index) => {
+                const accordionItem = document.createElement('div');
+                accordionItem.className = 'border border-gray-200 rounded-lg';
+                accordionItem.innerHTML = `
+                    <button class="w-full flex justify-between items-center p-4 text-left font-semibold text-gray-700 hover:bg-gray-50">
+                        <span>${section.title}</span>
+                        <i class="fas fa-chevron-down transition-transform"></i>
+                    </button>
+                    <div class="p-4 pt-0 text-gray-600 text-sm ${index === 0 ? '' : 'hidden'}">
+                        ${section.content}
+                    </div>
+                `;
+                solvingMethods.appendChild(accordionItem);
+            });
+
+            // Accordion functionality
+            const accordions = document.querySelectorAll('#solving-methods > .border');
+            
+            accordions.forEach(accordion => {
+                const button = accordion.querySelector('button');
+                const content = accordion.querySelector('div[class^="p-4"]');
+                const icon = button.querySelector('i');
+
+                button.addEventListener('click', () => {
+                    // Close all other accordions
+                    accordions.forEach(otherAccordion => {
+                        if (otherAccordion !== accordion) {
+                            const otherContent = otherAccordion.querySelector('div[class^="p-4"]');
+                            const otherIcon = otherAccordion.querySelector('button i');
+                            otherContent.classList.add('hidden');
+                            otherIcon.classList.remove('rotate-180');
+                        }
+                    });
+
+                    // Toggle current accordion
+                    content.classList.toggle('hidden');
+                    icon.classList.toggle('rotate-180');
+                });
+            });
+
+            // Navigation functionality
+            const stepLinks = document.querySelectorAll('aside ul li a');
+            const steps = document.querySelectorAll('.learning-step');
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            const progressBar = document.querySelector('.bg-blue-600.h-2\\.5.rounded-full');
+            let currentStep = 0;
+
+            function showStep(index) {
+                steps.forEach((step, i) => {
+                    step.classList.toggle('hidden', i !== index);
+                });
+
+                // Update navigation state
+                prevBtn.disabled = index === 0;
+                nextBtn.disabled = index >= steps.length - 1;
+                
+                // Update progress bar
+                const progress = (index / (steps.length - 1)) * 100;
+                progressBar.style.width = `${progress}%`;
+
+                // Scroll to top
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+
+            // Set up navigation event listeners
+            stepLinks.forEach((link, index) => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    currentStep = index;
+                    showStep(currentStep);
+                });
+            });
+
+            prevBtn.addEventListener('click', () => {
+                if (currentStep > 0) {
+                    currentStep--;
+                    showStep(currentStep);
+                }
+            });
+
+            nextBtn.addEventListener('click', () => {
+                if (currentStep < steps.length - 1) {
+                    currentStep++;
+                    showStep(currentStep);
+                }
+            });
+
+            // Initialize first step
+            showStep(0);
+
+            // Quiz functionality for all sections
+            function initializeQuiz(prefix, answers) {
+                const startBtn = document.getElementById(`start-quiz-btn${prefix}`);
+                const quizContainer = document.getElementById(`quiz-container${prefix}`);
+                const steps = quizContainer?.querySelectorAll(`[data-step${prefix}]`);
+                
+                if (startBtn && quizContainer) {
+                    startBtn.addEventListener('click', () => {
+                        quizContainer.classList.remove('hidden');
+                        startBtn.classList.add('hidden');
+                    });
+                }
+
+                if (steps) {
+                    steps.forEach(step => {
+                        const checkBtn = step.querySelector('button');
+                        const input = step.querySelector('input');
+                        const feedbackIcon = step.querySelector('.feedback-icon');
+                        const stepNum = step.dataset[`step${prefix.replace('-', '')}`];
+
+                        checkBtn?.addEventListener('click', () => {
+                            const userAnswer = input.value.trim().replace(/\s+/g, '');
+                            const correctAnswer = answers[stepNum];
+                            let isCorrect = false;
+
+                            if (Array.isArray(correctAnswer)) {
+                                const normalizedCorrectAnswers = correctAnswer.map(ans => ans.replace(/\s+/g, ''));
+                                isCorrect = normalizedCorrectAnswers.includes(userAnswer);
+                            } else {
+                                isCorrect = userAnswer === correctAnswer.replace(/\s+/g, '');
+                            }
+
+                            feedbackIcon.innerHTML = isCorrect 
+                                ? `<i class="fas fa-check-circle text-green-500"></i>` 
+                                : `<i class="fas fa-times-circle text-red-500"></i>`;
+                            
+                            if(isCorrect) {
+                                input.disabled = true;
+                                checkBtn.disabled = true;
+                                input.classList.add('bg-green-50');
+                            } else {
+                                input.classList.add('bg-red-50');
+                            }
+                        });
+                    });
+                }
+            }
+
+            // Initialize factorization quiz
+            initializeQuiz('', {
+                1: "10",
+                2: ["2,5", "5,2"],
+                3: ["(x+2)(x+5)=0", "(x+5)(x+2)=0"],
+                4: ["x+2=0 or x+5=0", "x+5=0 or x+2=0"],
+                5: ["x=-2, x=-5", "x=-5, x=-2", "x=-2,x=-5", "x=-5,x=-2"]
+            });
+
+            // Initialize completing the square quiz
+            initializeQuiz('-square', {
+                1: ["x²+4x=5", "x^2+4x=5"],
+                2: ["2²=4", "2^2=4", "4"],
+                3: ["x²+4x+4=5+4", "x^2+4x+4=5+4"],
+                4: ["(x+2)²=9", "(x+2)^2=9"],
+                5: ["x+2=±3", "x+2=+3", "x+2=-3", "x+2=3orx+2=-3", "x+2=3,x+2=-3"],
+                6: ["x=1,x=-5", "x=-5,x=1"]
+            });
+
+            // Initialize formula quiz
+            initializeQuiz('-formula', {
+                1: ["a=1,b=-2,c=-8", "a=1 b=-2 c=-8", "a=1,b=-2,c=-8"],
+                2: ["(-2)²-4*1*(-8)=36", "(-2)^2-4*1*-8=36", "4-(-32)=36", "4+32=36", "36"],
+                3: ["x=[2±sqrt(36)]/2", "x=[2±6]/2", "x=[2+6]/2,x=[2-6]/2"],
+                4: ["x=4,x=-2", "x=-2,x=4"]
+            });
+
+            // Independent practice functionality
+            function initializeIndependentPractice(prefix, correctAnswers) {
+                const checkBtn = document.getElementById(`check-independent-answer${prefix}`);
+                if (checkBtn) {
+                    checkBtn.addEventListener('click', () => {
+                        const finalAnswerInput = document.getElementById(`final-answer${prefix}`);
+                        const feedbackDiv = document.getElementById(`independent-feedback${prefix}`);
+                        const userAnswer = finalAnswerInput.value.trim().replace(/\s+/g, '');
+                        
+                        const isCorrect = correctAnswers.includes(userAnswer);
+
+                        if (isCorrect) {
+                            feedbackDiv.innerHTML = `<p class="text-green-600 font-semibold"><i class="fas fa-check-circle"></i> Correct! Great work!</p>`;
+                            finalAnswerInput.classList.add('bg-green-50');
+                            finalAnswerInput.disabled = true;
+                        } else {
+                            feedbackDiv.innerHTML = `<p class="text-red-600 font-semibold"><i class="fas fa-times-circle"></i> Not quite. Try again.</p>`;
+                            finalAnswerInput.classList.add('bg-red-50');
+                        }
+                    });
+                }
+            }
+
+            // Initialize independent practice for each section
+            initializeIndependentPractice('', ["x=3,x=5", "x=5,x=3"]);
+            initializeIndependentPractice('-square', ["x=-2,x=-8", "x=-8,x=-2"]);
+            initializeIndependentPractice('-formula', ["x=2,x=-5", "x=-5,x=2"]);
+
+            // Interactive Solver Logic
+            const solverAInput = document.getElementById('coeff-a');
+            const solverBInput = document.getElementById('coeff-b');
+            const solverCInput = document.getElementById('coeff-c');
+            const solveBtn = document.getElementById('solve-btn');
+            const solverOutput = document.getElementById('solver-output');
+            let quadraticChart;
+
+            function solveAndVisualize() {
+                const a = parseFloat(solverAInput.value) || 0;
+                const b = parseFloat(solverBInput.value) || 0;
+                const c = parseFloat(solverCInput.value) || 0;
+
+                if (a === 0) {
+                    solverOutput.innerHTML = `<p class="text-red-600 text-sm">Coefficient 'a' cannot be zero for a quadratic equation.</p>`;
+                    if(quadraticChart) quadraticChart.destroy();
+                    return;
+                }
+
+                // Calculate discriminant
+                const discriminant = b * b - 4 * a * c;
+                let rootsText = '';
+                let discriminantText = `<strong>Discriminant (b²-4ac):</strong> <span class="font-mono">${discriminant.toFixed(2)}</span><br>`;
+
+                // Find roots based on discriminant
+                if (discriminant > 0) {
+                    const root1 = (-b + Math.sqrt(discriminant)) / (2 * a);
+                    const root2 = (-b - Math.sqrt(discriminant)) / (2 * a);
+                    rootsText = `Two distinct real roots:<br><strong>x₁ = ${root1.toFixed(3)}</strong>, <strong>x₂ = ${root2.toFixed(3)}</strong>`;
+                } else if (discriminant === 0) {
+                    const root = -b / (2 * a);
+                    rootsText = `One real root (repeated):<br><strong>x = ${root.toFixed(3)}</strong>`;
+                } else {
+                    const realPart = (-b / (2 * a)).toFixed(3);
+                    const imagPart = (Math.sqrt(-discriminant) / (2 * a)).toFixed(3);
+                    rootsText = `Two complex roots:<br><strong>x₁ = ${realPart} + ${imagPart}i</strong><br><strong>x₂ = ${realPart} - ${imagPart}i</strong>`;
+                }
+                
+                solverOutput.innerHTML = `<div class="text-sm text-gray-700">
+                    ${discriminantText}${rootsText}<br>
+                    <p class="mt-2 text-gray-500"><strong>Nature of roots:</strong> ${
+                        discriminant > 0 ? "Two distinct real roots" :
+                        discriminant === 0 ? "One repeated real root" :
+                        "Two complex conjugate roots"
+                    }</p>
+                </div>`;
+
+                // Update graph
+                updateGraph(a, b, c);
+            }
+
+            function updateGraph(a, b, c) {
+                const ctx = document.getElementById('quadratic-chart').getContext('2d');
+                const vertexX = -b / (2 * a);
+                const vertexY = a * vertexX * vertexX + b * vertexX + c;
+                
+                // Generate points for the graph
+                const points = [];
+                const range = Math.max(Math.abs(vertexX) * 2, 5);
+                const step = range / 50;
+                
+                for (let x = vertexX - range/2; x <= vertexX + range/2; x += step) {
+                    points.push({
+                        x: x,
+                        y: a * x * x + b * x + c
+                    });
+                }
+
+                // Destroy existing chart if it exists
+                if (quadraticChart) {
+                    quadraticChart.destroy();
+                }
+
+                // Create new chart
+                quadraticChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        datasets: [{
+                            label: `y = ${a}x² ${b>=0?'+':''}${b}x ${c>=0?'+':''}${c}`,
+                            data: points,
+                            borderColor: 'rgb(59, 130, 246)',
+                            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                            borderWidth: 2,
+                            fill: false,
+                            tension: 0.4
+                        }, {
+                            label: 'x-axis',
+                            data: [
+                                {x: points[0].x, y: 0},
+                                {x: points[points.length-1].x, y: 0}
+                            ],
+                            borderColor: 'rgb(156, 163, 175)',
+                            borderWidth: 1,
+                            borderDash: [5, 5],
+                            pointRadius: 0
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            x: {
+                                type: 'linear',
+                                position: 'bottom',
+                                grid: {
+                                    color: 'rgba(156, 163, 175, 0.1)'
+                                },
+                                title: {
+                                    display: true,
+                                    text: 'x'
+                                }
+                            },
+                            y: {
+                                grid: {
+                                    color: 'rgba(156, 163, 175, 0.1)'
+                                },
+                                title: {
+                                    display: true,
+                                    text: 'y'
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                position: 'top'
+                            },
+                            tooltip: {
+                                enabled: true,
+                                callbacks: {
+                                    label: function(context) {
+                                        return `(${context.parsed.x.toFixed(2)}, ${context.parsed.y.toFixed(2)})`;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            // Add event listeners for interactive solver
+            if (solveBtn) {
+                solveBtn.addEventListener('click', solveAndVisualize);
+                
+                // Also update when coefficients change
+                [solverAInput, solverBInput, solverCInput].forEach(input => {
+                    input.addEventListener('change', solveAndVisualize);
+                });
+
+                // Initial solve and visualization
+                solveAndVisualize();
+            }
+        });
+    </script>
+<!-- Topic Quiz System -->
+<script src="/js/topic-quiz-loader.js"></script>
+<script src="/js/topic-quiz-injector.js"></script>
+</body>
+</html>

@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Electrolysis Basics | Chemistry</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .content-card {
+      -webkit-backdrop-filter: blur(12px);
+      backdrop-filter: blur(12px);
+      background: rgba(255, 255, 255, 0.95);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    .accordion-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease-out;
+    }
+    .accordion-content.open {
+      max-height: 2000px;
+    }
+    .step-card {
+      transition: all 0.2s ease;
+    }
+    .step-card:hover {
+      transform: translateX(4px);
+    }
+    #topic-complete-btn {
+      transition: all 0.3s ease;
+    }
+    #topic-complete-btn:not(:disabled):hover {
+      transform: scale(1.02);
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-rose-50 to-pink-100 p-4 md:p-6">
+  <div class="max-w-4xl mx-auto">
+    <!-- Navigation -->
+    <nav class="mb-4 flex items-center justify-between">
+      <a href="index.html" class="text-blue-600 hover:text-blue-800 transition flex items-center">
+        <i class="fas fa-arrow-left mr-2"></i>Back to Electrochemistry & Redox
+      </a>
+      <!-- Progress indicator -->
+      <div class="flex items-center gap-3">
+        <div class="text-sm text-gray-600">
+          <span id="topic-progress-text">0% Complete</span>
+        </div>
+        <div class="w-24 h-2 bg-gray-200 rounded-full overflow-hidden">
+          <div id="topic-progress-bar" class="h-full bg-gradient-to-r from-rose-400 to-pink-500 transition-all duration-300" style="width: 0%"></div>
+        </div>
+      </div>
+    </nav>
+    
+    <article class="content-card rounded-xl p-6 md:p-8 shadow-lg">
+      <!-- Header -->
+      <div class="border-b pb-4 mb-6">
+        <h1 class="text-2xl md:text-3xl font-bold text-gray-800 mb-2">
+          <i class="fas fa-bolt text-yellow-500 mr-3"></i>Electrolysis Basics
+        </h1>
+        <p class="text-gray-600">Understanding the principles of electrolysis, electrolytic cells, and industrial applications.</p>
+      </div>
+
+      <!-- Learning Objectives -->
+      <div class="bg-rose-50 border-l-4 border-rose-500 p-4 rounded-r-lg mb-6">
+        <h3 class="font-semibold text-rose-800 mb-2"><i class="fas fa-bullseye mr-2"></i>Learning Objectives</h3>
+        <ul class="text-rose-700 text-sm space-y-1">
+          <li>• Define electrolysis and identify its key components</li>
+          <li>• Distinguish between electrolytic and electrochemical cells</li>
+          <li>• Predict products at the anode and cathode</li>
+          <li>• Explain industrial applications of electrolysis</li>
+        </ul>
+      </div>
+
+      <!-- Section 1: What is Electrolysis? -->
+      <section id="section-1" class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <span class="bg-rose-100 text-rose-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">1</span>
+          What is Electrolysis?
+        </h2>
+        
+        <div class="bg-gray-50 p-5 rounded-lg mb-4">
+          <p class="text-gray-700 mb-3"><strong class="text-rose-600">Electrolysis</strong> is the process of using electrical energy to drive a non-spontaneous chemical reaction. It involves passing an electric current through an electrolyte (molten or aqueous ionic compound) to decompose it into its elements.</p>
+          
+          <div class="bg-white p-4 rounded-lg border border-gray-200 mt-3">
+            <p class="font-semibold text-gray-800 mb-2">Key Components:</p>
+            <ul class="text-gray-700 text-sm space-y-2">
+              <li><strong>Electrolyte:</strong> An ionic compound (molten or in solution) that conducts electricity</li>
+              <li><strong>Anode (+):</strong> Positive electrode where oxidation occurs</li>
+              <li><strong>Cathode (-):</strong> Negative electrode where reduction occurs</li>
+              <li><strong>Power source:</strong> Battery or DC power supply that provides electrical energy</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Diagram -->
+        <div class="bg-white p-4 rounded-lg border border-gray-200 mb-4">
+          <div class="text-center">
+            <svg viewBox="0 0 400 250" class="w-full max-w-md mx-auto">
+              <!-- Battery -->
+              <rect x="170" y="10" width="60" height="30" fill="#4a5568" rx="3"/>
+              <rect x="190" y="5" width="20" height="5" fill="#4a5568"/>
+              <text x="200" y="30" text-anchor="middle" fill="white" font-size="12">Battery</text>
+              <text x="200" y="55" text-anchor="middle" fill="#4a5568" font-size="10">DC Power</text>
+              
+              <!-- Wires -->
+              <line x1="190" y1="40" x2="100" y2="80" stroke="#e53e3e" stroke-width="3"/>
+              <line x1="210" y1="40" x2="300" y2="80" stroke="#3182ce" stroke-width="3"/>
+              
+              <!-- Electrodes -->
+              <rect x="85" y="80" width="30" height="100" fill="#718096" rx="2"/>
+              <rect x="285" y="80" width="30" height="100" fill="#718096" rx="2"/>
+              
+              <!-- Labels for electrodes -->
+              <text x="100" y="195" text-anchor="middle" fill="#e53e3e" font-size="11" font-weight="bold">Cathode (-)</text>
+              <text x="300" y="195" text-anchor="middle" fill="#3182ce" font-size="11" font-weight="bold">Anode (+)</text>
+              
+              <!-- Electrolyte container -->
+              <rect x="60" y="80" width="280" height="100" fill="none" stroke="#4a5568" stroke-width="2" rx="5"/>
+              <rect x="62" y="82" width="276" height="96" fill="#bee3f8" opacity="0.5"/>
+              
+              <!-- Ions in solution -->
+              <circle cx="130" cy="120" r="8" fill="#e53e3e"/>
+              <text x="130" y="124" text-anchor="middle" fill="white" font-size="10">+</text>
+              <circle cx="170" cy="150" r="8" fill="#e53e3e"/>
+              <text x="170" y="154" text-anchor="middle" fill="white" font-size="10">+</text>
+              <circle cx="250" cy="110" r="8" fill="#3182ce"/>
+              <text x="250" y="114" text-anchor="middle" fill="white" font-size="10">-</text>
+              <circle cx="230" cy="145" r="8" fill="#3182ce"/>
+              <text x="230" y="149" text-anchor="middle" fill="white" font-size="10">-</text>
+              
+              <!-- Labels -->
+              <text x="200" y="215" text-anchor="middle" fill="#4a5568" font-size="12">Electrolyte (ions in solution)</text>
+              <text x="130" y="175" text-anchor="middle" fill="#e53e3e" font-size="10">Cations</text>
+              <text x="260" y="175" text-anchor="middle" fill="#3182ce" font-size="10">Anions</text>
+            </svg>
+          </div>
+          <p class="text-center text-xs text-gray-500 mt-2">Schematic diagram of an electrolytic cell</p>
+        </div>
+      </section>
+
+      <!-- Section 2: What Happens at the Electrodes? -->
+      <section id="section-2" class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <span class="bg-rose-100 text-rose-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">2</span>
+          What Happens at the Electrodes?
+        </h2>
+        
+        <div class="grid md:grid-cols-2 gap-4 mb-4">
+          <div class="bg-red-50 p-5 rounded-lg border border-red-200">
+            <h3 class="font-semibold text-red-800 mb-3 flex items-center">
+              <i class="fas fa-minus-circle mr-2"></i>At the Cathode (-)
+            </h3>
+            <ul class="text-red-700 text-sm space-y-2">
+              <li>• <strong>Reduction</strong> occurs (gain of electrons)</li>
+              <li>• Cations migrate here</li>
+              <li>• Cations gain electrons and become neutral</li>
+              <li>• For molten electrolytes: Metal forms</li>
+              <li>• For aqueous solutions: Check electrochemical series</li>
+            </ul>
+            <div class="mt-3 bg-white p-2 rounded text-center">
+              <code class="text-red-600">M<sup>n+</sup> + ne<sup>-</sup> → M</code>
+            </div>
+          </div>
+          
+          <div class="bg-blue-50 p-5 rounded-lg border border-blue-200">
+            <h3 class="font-semibold text-blue-800 mb-3 flex items-center">
+              <i class="fas fa-plus-circle mr-2"></i>At the Anode (+)
+            </h3>
+            <ul class="text-blue-700 text-sm space-y-2">
+              <li>• <strong>Oxidation</strong> occurs (loss of electrons)</li>
+              <li>• Anions migrate here</li>
+              <li>• Anions lose electrons and become neutral</li>
+              <li>• For molten electrolytes: Non-metal forms</li>
+              <li>• For aqueous: Check discharge preference</li>
+            </ul>
+            <div class="mt-3 bg-white p-2 rounded text-center">
+              <code class="text-blue-600">A<sup>n-</sup> → A + ne<sup>-</sup></code>
+            </div>
+          </div>
+        </div>
+
+        <!-- Worked Example 1 -->
+        <div class="border border-gray-200 rounded-lg overflow-hidden mb-4">
+          <button class="accordion-btn w-full p-4 bg-rose-50 text-left font-semibold text-rose-800 flex justify-between items-center hover:bg-rose-100 transition">
+            <span><i class="fas fa-lightbulb mr-2 text-yellow-500"></i>Worked Example: Electrolysis of Molten NaCl</span>
+            <i class="fas fa-chevron-down transform transition-transform"></i>
+          </button>
+          <div class="accordion-content">
+            <div class="p-5">
+              <p class="font-medium text-gray-800 mb-3">Predict the products when molten sodium chloride is electrolyzed.</p>
+              
+              <div class="space-y-3">
+                <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-rose-500">
+                  <p class="text-sm text-gray-600"><strong>Step 1:</strong> Identify the ions present</p>
+                  <p class="text-rose-700 font-mono mt-1">Na<sup>+</sup> (cations) and Cl<sup>-</sup> (anions)</p>
+                </div>
+                
+                <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-red-500">
+                  <p class="text-sm text-gray-600"><strong>Step 2:</strong> At the cathode (reduction)</p>
+                  <p class="text-red-700 font-mono mt-1">Na<sup>+</sup> + e<sup>-</sup> → Na (sodium metal)</p>
+                </div>
+                
+                <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-blue-500">
+                  <p class="text-sm text-gray-600"><strong>Step 3:</strong> At the anode (oxidation)</p>
+                  <p class="text-blue-700 font-mono mt-1">2Cl<sup>-</sup> → Cl<sub>2</sub> + 2e<sup>-</sup> (chlorine gas)</p>
+                </div>
+                
+                <div class="bg-green-100 p-3 rounded-lg">
+                  <p class="text-green-800 font-semibold"><i class="fas fa-check-circle mr-2"></i>Products:</p>
+                  <p class="text-green-700">Cathode: Sodium metal (Na)</p>
+                  <p class="text-green-700">Anode: Chlorine gas (Cl₂)</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 3: Electrolysis of Aqueous Solutions -->
+      <section id="section-3" class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <span class="bg-rose-100 text-rose-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">3</span>
+          Electrolysis of Aqueous Solutions
+        </h2>
+        
+        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-r-lg mb-4">
+          <p class="text-gray-700 text-sm"><strong>Important:</strong> In aqueous solutions, water molecules dissociate into H<sup>+</sup> and OH<sup>-</sup> ions, which compete with the electrolyte ions for discharge.</p>
+        </div>
+
+        <div class="bg-gray-50 p-5 rounded-lg mb-4">
+          <h3 class="font-semibold text-gray-800 mb-3">Discharge Preferences (Selective Discharge)</h3>
+          
+          <div class="grid md:grid-cols-2 gap-4">
+            <div class="bg-white p-4 rounded-lg border">
+              <p class="font-semibold text-red-700 mb-2">At the Cathode:</p>
+              <p class="text-sm text-gray-600 mb-2">The ion lower in the electrochemical series is discharged preferentially.</p>
+              <p class="text-xs text-gray-500">If metal is above Zn: H₂ is produced instead</p>
+              <p class="text-xs text-gray-500">If metal is below Zn: Metal is deposited</p>
+            </div>
+            
+            <div class="bg-white p-4 rounded-lg border">
+              <p class="font-semibold text-blue-700 mb-2">At the Anode:</p>
+              <p class="text-sm text-gray-600 mb-2">Order of discharge preference:</p>
+              <p class="text-xs text-gray-500">1. Halides (Cl⁻, Br⁻, I⁻)</p>
+              <p class="text-xs text-gray-500">2. OH⁻ → O₂</p>
+              <p class="text-xs text-gray-500">3. Other anions (not discharged)</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Worked Example 2 -->
+        <div class="border border-gray-200 rounded-lg overflow-hidden mb-4">
+          <button class="accordion-btn w-full p-4 bg-purple-50 text-left font-semibold text-purple-800 flex justify-between items-center hover:bg-purple-100 transition">
+            <span><i class="fas fa-lightbulb mr-2 text-yellow-500"></i>Worked Example: Electrolysis of Dilute NaCl(aq)</span>
+            <i class="fas fa-chevron-down transform transition-transform"></i>
+          </button>
+          <div class="accordion-content">
+            <div class="p-5">
+              <p class="font-medium text-gray-800 mb-3">Predict the products when dilute sodium chloride solution is electrolyzed.</p>
+              
+              <div class="space-y-3">
+                <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-purple-500">
+                  <p class="text-sm text-gray-600"><strong>Ions present:</strong> Na<sup>+</sup>, H<sup>+</sup> (cations); Cl<sup>-</sup>, OH<sup>-</sup> (anions)</p>
+                </div>
+                
+                <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-red-500">
+                  <p class="text-sm text-gray-600"><strong>At Cathode:</strong> H<sup>+</sup> is discharged (Na is more reactive than H)</p>
+                  <p class="text-red-700 font-mono mt-1">2H<sup>+</sup> + 2e<sup>-</sup> → H<sub>2</sub> (hydrogen gas)</p>
+                </div>
+                
+                <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-blue-500">
+                  <p class="text-sm text-gray-600"><strong>At Anode:</strong> OH<sup>-</sup> is discharged (Cl⁻ concentration is low)</p>
+                  <p class="text-blue-700 font-mono mt-1">4OH<sup>-</sup> → 2H<sub>2</sub>O + O<sub>2</sub> + 4e<sup>-</sup></p>
+                </div>
+                
+                <div class="bg-purple-100 p-3 rounded-lg">
+                  <p class="text-purple-800 font-semibold"><i class="fas fa-check-circle mr-2"></i>Products:</p>
+                  <p class="text-purple-700">Cathode: Hydrogen gas (H₂)</p>
+                  <p class="text-purple-700">Anode: Oxygen gas (O₂)</p>
+                  <p class="text-purple-700 text-sm mt-1">NaOH remains in solution (alkaline)</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 4: Industrial Applications -->
+      <section id="section-4" class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <span class="bg-rose-100 text-rose-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">4</span>
+          Industrial Applications
+        </h2>
+        
+        <div class="grid md:grid-cols-2 gap-4">
+          <div class="bg-white p-4 rounded-lg border border-gray-200">
+            <div class="flex items-center mb-2">
+              <i class="fas fa-industry text-gray-600 mr-2"></i>
+              <h4 class="font-semibold text-gray-800">Extraction of Metals</h4>
+            </div>
+            <p class="text-sm text-gray-600">Aluminium, sodium, and magnesium are extracted by electrolysis of their molten ores.</p>
+          </div>
+          
+          <div class="bg-white p-4 rounded-lg border border-gray-200">
+            <div class="flex items-center mb-2">
+              <i class="fas fa-coins text-yellow-600 mr-2"></i>
+              <h4 class="font-semibold text-gray-800">Electroplating</h4>
+            </div>
+            <p class="text-sm text-gray-600">Coating objects with a thin layer of metal (e.g., silver plating, gold plating) for protection or decoration.</p>
+          </div>
+          
+          <div class="bg-white p-4 rounded-lg border border-gray-200">
+            <div class="flex items-center mb-2">
+              <i class="fas fa-tint text-blue-600 mr-2"></i>
+              <h4 class="font-semibold text-gray-800">Purification of Copper</h4>
+            </div>
+            <p class="text-sm text-gray-600">Impure copper is made the anode; pure copper deposits at the cathode. Impurities fall as anode sludge.</p>
+          </div>
+          
+          <div class="bg-white p-4 rounded-lg border border-gray-200">
+            <div class="flex items-center mb-2">
+              <i class="fas fa-flask text-green-600 mr-2"></i>
+              <h4 class="font-semibold text-gray-800">Manufacturing</h4>
+            </div>
+            <p class="text-sm text-gray-600">Production of chlorine, hydrogen, and sodium hydroxide from brine (chlor-alkali process).</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 5: Practice Problems -->
+      <section id="section-5" class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <i class="fas fa-pencil-alt text-blue-600 mr-3"></i>
+          Practice Problems
+        </h2>
+        
+        <div class="space-y-4">
+          <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+            <p class="font-medium text-gray-800 mb-2">1. What are the products of electrolyzing molten lead(II) bromide, PbBr₂?</p>
+            <details class="mt-2">
+              <summary class="text-sm text-blue-600 cursor-pointer hover:text-blue-800">Show Solution</summary>
+              <div class="mt-2 text-sm text-gray-700">
+                <p>Cathode: Pb²⁺ + 2e⁻ → <strong>Pb</strong> (lead metal)</p>
+                <p>Anode: 2Br⁻ → Br₂ + 2e⁻ → <strong>Br₂</strong> (bromine gas)</p>
+              </div>
+            </details>
+          </div>
+          
+          <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+            <p class="font-medium text-gray-800 mb-2">2. Predict the products when concentrated NaCl(aq) is electrolyzed.</p>
+            <details class="mt-2">
+              <summary class="text-sm text-blue-600 cursor-pointer hover:text-blue-800">Show Solution</summary>
+              <div class="mt-2 text-sm text-gray-700">
+                <p>Cathode: 2H⁺ + 2e⁻ → <strong>H₂</strong> (hydrogen)</p>
+                <p>Anode: 2Cl⁻ → Cl₂ + 2e⁻ → <strong>Cl₂</strong> (chlorine)</p>
+                <p>Note: At high Cl⁻ concentration, chloride is discharged at anode.</p>
+              </div>
+            </details>
+          </div>
+          
+          <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+            <p class="font-medium text-gray-800 mb-2">3. Why is cryolite used in the extraction of aluminium?</p>
+            <details class="mt-2">
+              <summary class="text-sm text-blue-600 cursor-pointer hover:text-blue-800">Show Solution</summary>
+              <div class="mt-2 text-sm text-gray-700">
+                <p>Cryolite (Na₃AlF₆) is used to:</p>
+                <ul class="list-disc list-inside mt-1">
+                  <li>Lower the melting point of Al₂O₃ (from 2050°C to about 950°C)</li>
+                  <li>Reduce energy costs</li>
+                  <li>Improve conductivity of the electrolyte</li>
+                </ul>
+              </div>
+            </details>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 6: Key Takeaways -->
+      <section id="section-6" class="mb-8">
+        <div class="bg-gradient-to-r from-rose-50 to-pink-50 p-5 rounded-lg border border-rose-200">
+          <h3 class="font-semibold text-rose-800 mb-3"><i class="fas fa-star mr-2"></i>Key Takeaways</h3>
+          <ul class="text-rose-700 text-sm space-y-2">
+            <li>• Electrolysis uses electrical energy to decompose compounds</li>
+            <li>• Reduction occurs at cathode (gain electrons); Oxidation at anode (lose electrons)</li>
+            <li>• In aqueous solutions, H⁺ and OH⁻ compete with electrolyte ions</li>
+            <li>• The electrochemical series helps predict discharge products</li>
+            <li>• Applications include metal extraction, electroplating, and chemical manufacturing</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Complete Topic Button -->
+      <div class="mt-8 pt-6 border-t border-gray-200">
+        <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div class="text-center sm:text-left">
+            <h3 class="font-semibold text-gray-800">Ready to Complete?</h3>
+            <p class="text-sm text-gray-600">View all sections, then take the quiz to mark this topic as complete.</p>
+          </div>
+          <button id="topic-complete-btn" disabled
+                  class="px-6 py-3 rounded-xl bg-gray-300 text-gray-500 cursor-not-allowed opacity-50 flex items-center gap-2 text-lg font-medium">
+            <i class="fas fa-lock mr-2"></i>
+            <span>Complete (0% viewed)</span>
+          </button>
+        </div>
+      </div>
+    </article>
+  </div>
+
+  <script>
+    // Accordion functionality
+    document.querySelectorAll('.accordion-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const content = btn.nextElementSibling;
+        const icon = btn.querySelector('.fa-chevron-down');
+        
+        content.classList.toggle('open');
+        icon.classList.toggle('rotate-180');
+      });
+    });
+  </script>
+
+  <!-- Topic Tracking and Quiz System -->
+  <script type="module">
+    import { TopicTracker } from '/js/topic-tracker.js';
+    import { TopicQuiz } from '/js/topic-quiz.js';
+
+    const quizQuestions = [
+      {
+        question: "What is electrolysis?",
+        options: [
+          "Using chemical energy to produce electricity",
+          "Using electrical energy to drive a non-spontaneous reaction",
+          "A spontaneous redox reaction",
+          "The flow of electrons through a wire"
+        ],
+        correct: 1,
+        explanation: "Electrolysis uses electrical energy from an external source to drive a non-spontaneous chemical reaction."
+      },
+      {
+        question: "At which electrode does oxidation occur during electrolysis?",
+        options: [
+          "Cathode",
+          "Anode",
+          "Both electrodes",
+          "Neither electrode"
+        ],
+        correct: 1,
+        explanation: "Oxidation (loss of electrons) always occurs at the anode, which is the positive electrode in electrolysis."
+      },
+      {
+        question: "What happens at the cathode during electrolysis?",
+        options: [
+          "Oxidation",
+          "Electrons are lost",
+          "Reduction",
+          "Anions are attracted"
+        ],
+        correct: 2,
+        explanation: "At the cathode (negative electrode), reduction occurs as cations gain electrons."
+      },
+      {
+        question: "In the electrolysis of molten NaCl, what product forms at the cathode?",
+        options: [
+          "Chlorine gas",
+          "Sodium metal",
+          "Hydrogen gas",
+          "Oxygen gas"
+        ],
+        correct: 1,
+        explanation: "At the cathode: Na⁺ + e⁻ → Na. Sodium ions are reduced to sodium metal."
+      },
+      {
+        question: "Why might H₂ be produced instead of a metal at the cathode during electrolysis of aqueous solutions?",
+        options: [
+          "The metal is less reactive than hydrogen",
+          "Hydrogen is always produced in aqueous solutions",
+          "The metal is more reactive than hydrogen",
+          "Water is a better conductor"
+        ],
+        correct: 2,
+        explanation: "If the metal is more reactive (higher in the electrochemical series) than hydrogen, H⁺ from water is discharged instead, producing H₂."
+      },
+      {
+        question: "What determines which ion is discharged preferentially at the anode?",
+        options: [
+          "The size of the ion",
+          "The color of the ion",
+          "Position in the electrochemical series",
+          "The temperature of the solution"
+        ],
+        correct: 2,
+        explanation: "The electrochemical series determines discharge preference. Halides are discharged before OH⁻, which is discharged before other anions."
+      },
+      {
+        question: "In the chlor-alkali process, what products are obtained from concentrated NaCl solution?",
+        options: [
+          "Na, Cl₂, H₂O",
+          "H₂, Cl₂, NaOH",
+          "O₂, H₂, NaCl",
+          "Na, O₂, HCl"
+        ],
+        correct: 1,
+        explanation: "Electrolysis of concentrated brine produces H₂ at cathode, Cl₂ at anode, and NaOH remains in solution."
+      },
+      {
+        question: "What is the purpose of cryolite in aluminium extraction?",
+        options: [
+          "To increase the melting point of Al₂O₃",
+          "To produce chlorine gas",
+          "To lower the melting point and save energy",
+          "To prevent oxidation of aluminium"
+        ],
+        correct: 2,
+        explanation: "Cryolite (Na₃AlF₆) lowers the melting point of Al₂O₃ from 2050°C to about 950°C, reducing energy costs."
+      }
+    ];
+
+    const tracker = new TopicTracker({
+      topicId: 'electrolysis-basics',
+      topicTitle: 'Electrolysis Basics',
+      subject: 'chemistry',
+      sections: ['section-1', 'section-2', 'section-3', 'section-4', 'section-5', 'section-6'],
+      quizRequired: true
+    });
+
+    const quiz = new TopicQuiz({
+      topicId: 'electrolysis-basics',
+      topicTitle: 'Electrolysis Basics',
+      subject: 'chemistry',
+      questions: quizQuestions,
+      passingScore: 60,
+      tracker: tracker
+    });
+
+    // Track accordion opens
+    document.querySelectorAll('.accordion-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const section = btn.closest('section');
+        if (section && section.id) {
+          tracker.markSectionViewed(section.id);
+        }
+      });
+    });
+
+    // Track practice problem views
+    document.querySelectorAll('details').forEach(details => {
+      details.addEventListener('toggle', () => {
+        if (details.open) {
+          tracker.markSectionViewed('section-5');
+        }
+      });
+    });
+  </script>
+</body>
+</html>

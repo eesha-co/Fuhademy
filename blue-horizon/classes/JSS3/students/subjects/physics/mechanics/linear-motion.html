@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linear Motion | Physics Mechanics</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .content-card {
+            -webkit-backdrop-filter: blur(16px);
+            backdrop-filter: blur(16px);
+            background: rgba(255, 255, 255, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-6">
+    <div class="max-w-6xl mx-auto">
+        <nav class="mb-8">
+            <a href="./" class="text-blue-600 hover:text-blue-700">← Back to Mechanics</a>
+        </nav>
+
+        <div class="content-card rounded-xl p-8">
+            <header class="mb-12">
+                <h1 class="text-3xl font-bold text-gray-800 mb-4">Linear Motion</h1>
+                <p class="text-lg text-gray-600">Understanding motion in a straight line through displacement, velocity, and acceleration</p>
+            </header>
+
+            <div class="grid gap-8">
+                <!-- Basic Concepts -->
+                <section>
+                    <h2 class="text-xl font-semibold text-gray-800 mb-4">Basic Concepts</h2>
+                    <div class="grid md:grid-cols-3 gap-6">
+                        <!-- Position and Distance -->
+                        <div class="bg-white/50 rounded-lg p-6">
+                            <h3 class="font-medium text-gray-800 mb-3">Position & Distance</h3>
+                            <ul class="space-y-2 text-sm text-gray-700">
+                                <li>• Position: Location relative to reference point</li>
+                                <li>• Distance: Length of actual path taken</li>
+                                <li>• Distance is scalar (magnitude only)</li>
+                                <li>• Position is a vector quantity</li>
+                            </ul>
+                        </div>
+
+                        <!-- Displacement -->
+                        <div class="bg-white/50 rounded-lg p-6">
+                            <h3 class="font-medium text-gray-800 mb-3">Displacement</h3>
+                            <ul class="space-y-2 text-sm text-gray-700">
+                                <li>• Vector quantity (has direction)</li>
+                                <li>• Change in position</li>
+                                <li>• Straight line from start to end</li>
+                                <li>• Can be positive or negative</li>
+                            </ul>
+                        </div>
+
+                        <!-- Reference Frame -->
+                        <div class="bg-white/50 rounded-lg p-6">
+                            <h3 class="font-medium text-gray-800 mb-3">Reference Frame</h3>
+                            <ul class="space-y-2 text-sm text-gray-700">
+                                <li>• Origin point (0 position)</li>
+                                <li>• Direction convention (+/-)</li>
+                                <li>• Choice of coordinates</li>
+                                <li>• Motion is relative</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Velocity -->
+                <section>
+                    <h2 class="text-xl font-semibold text-gray-800 mb-4">Velocity</h2>
+                    <div class="space-y-6">
+                        <!-- Types of Velocity -->
+                        <div class="bg-white/50 rounded-lg p-6">
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <div>
+                                    <h3 class="font-medium text-gray-800 mb-3">Average Velocity</h3>
+                                    <ul class="space-y-2 text-sm text-gray-700">
+                                        <li>• Total displacement ÷ total time</li>
+                                        <li>• v̄ = Δx/Δt</li>
+                                        <li>• Vector quantity</li>
+                                        <li>• Units: m/s (SI)</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h3 class="font-medium text-gray-800 mb-3">Instantaneous Velocity</h3>
+                                    <ul class="space-y-2 text-sm text-gray-700">
+                                        <li>• Velocity at specific instant</li>
+                                        <li>• v = lim[Δt→0](Δx/Δt)</li>
+                                        <li>• Tangent to position curve</li>
+                                        <li>• Speed = |velocity|</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Speed -->
+                        <div class="bg-white/50 rounded-lg p-6">
+                            <h3 class="font-medium text-gray-800 mb-3">Speed vs Velocity</h3>
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <div>
+                                    <h4 class="font-medium text-gray-800 mb-2">Speed</h4>
+                                    <ul class="space-y-2 text-sm text-gray-700">
+                                        <li>• Scalar quantity</li>
+                                        <li>• Total distance ÷ time</li>
+                                        <li>• Always positive</li>
+                                        <li>• No direction specified</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium text-gray-800 mb-2">Velocity</h4>
+                                    <ul class="space-y-2 text-sm text-gray-700">
+                                        <li>• Vector quantity</li>
+                                        <li>• Displacement ÷ time</li>
+                                        <li>• Can be positive/negative</li>
+                                        <li>• Direction specified</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Acceleration -->
+                <section>
+                    <h2 class="text-xl font-semibold text-gray-800 mb-4">Acceleration</h2>
+                    <div class="space-y-6">
+                        <!-- Types of Acceleration -->
+                        <div class="bg-white/50 rounded-lg p-6">
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <div>
+                                    <h3 class="font-medium text-gray-800 mb-3">Average Acceleration</h3>
+                                    <ul class="space-y-2 text-sm text-gray-700">
+                                        <li>• Change in velocity ÷ time taken</li>
+                                        <li>• ā = Δv/Δt</li>
+                                        <li>• Vector quantity</li>
+                                        <li>• Units: m/s² (SI)</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h3 class="font-medium text-gray-800 mb-3">Instantaneous Acceleration</h3>
+                                    <ul class="space-y-2 text-sm text-gray-700">
+                                        <li>• Rate of change of velocity</li>
+                                        <li>• a = dv/dt</li>
+                                        <li>• Tangent to velocity curve</li>
+                                        <li>• Direction can vary</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Sign Conventions -->
+                        <div class="bg-white/50 rounded-lg p-6">
+                            <h3 class="font-medium text-gray-800 mb-3">Sign Conventions</h3>
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <div>
+                                    <h4 class="font-medium text-gray-800 mb-2">Positive Acceleration</h4>
+                                    <ul class="space-y-2 text-sm text-gray-700">
+                                        <li>• Speed increasing in +ve direction</li>
+                                        <li>• Speed decreasing in -ve direction</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium text-gray-800 mb-2">Negative Acceleration</h4>
+                                    <ul class="space-y-2 text-sm text-gray-700">
+                                        <li>• Speed decreasing in +ve direction</li>
+                                        <li>• Speed increasing in -ve direction</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Graphical Analysis -->
+                <section>
+                    <h2 class="text-xl font-semibold text-gray-800 mb-4">Graphical Analysis</h2>
+                    <div class="bg-white/50 rounded-lg p-6">
+                        <div class="grid md:grid-cols-3 gap-6">
+                            <div>
+                                <h3 class="font-medium text-gray-800 mb-3">Position-Time Graph</h3>
+                                <ul class="space-y-2 text-sm text-gray-700">
+                                    <li>• Slope = velocity</li>
+                                    <li>• Curved = changing velocity</li>
+                                    <li>• Straight = constant velocity</li>
+                                    <li>• Horizontal = stationary</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h3 class="font-medium text-gray-800 mb-3">Velocity-Time Graph</h3>
+                                <ul class="space-y-2 text-sm text-gray-700">
+                                    <li>• Slope = acceleration</li>
+                                    <li>• Area = displacement</li>
+                                    <li>• Straight = constant acceleration</li>
+                                    <li>• Horizontal = constant velocity</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h3 class="font-medium text-gray-800 mb-3">Acceleration-Time Graph</h3>
+                                <ul class="space-y-2 text-sm text-gray-700">
+                                    <li>• Area = change in velocity</li>
+                                    <li>• Horizontal = constant acceleration</li>
+                                    <li>• Zero line = no acceleration</li>
+                                    <li>• Sign shows direction</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Practice Problems -->
+                <section>
+                    <h2 class="text-xl font-semibold text-gray-800 mb-4">Practice Problems</h2>
+                    <div class="bg-white/50 rounded-lg p-6">
+                        <ol class="list-decimal pl-6 space-y-4 text-gray-700">
+                            <li>
+                                <p class="font-medium mb-2">Distance vs Displacement</p>
+                                <p>A student walks 40 meters east, then 30 meters west. Calculate:</p>
+                                <ul class="list-disc pl-6 mt-2 space-y-1 text-sm">
+                                    <li>Total distance traveled</li>
+                                    <li>Net displacement</li>
+                                </ul>
+                            </li>
+                            <li>
+                                <p class="font-medium mb-2">Average Velocity</p>
+                                <p>A car travels 150 meters east in 10 seconds, then 60 meters west in 5 seconds. Find:</p>
+                                <ul class="list-disc pl-6 mt-2 space-y-1 text-sm">
+                                    <li>Average velocity for each segment</li>
+                                    <li>Overall average velocity</li>
+                                </ul>
+                            </li>
+                            <li>
+                                <p class="font-medium mb-2">Acceleration</p>
+                                <p>A car accelerates from rest to 20 m/s in 5 seconds. Calculate:</p>
+                                <ul class="list-disc pl-6 mt-2 space-y-1 text-sm">
+                                    <li>Average acceleration</li>
+                                    <li>Distance traveled (assuming constant acceleration)</li>
+                                </ul>
+                            </li>
+                        </ol>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+<!-- Topic Quiz System -->
+<script src="/js/topic-quiz-loader.js"></script>
+<script src="/js/topic-quiz-injector.js"></script>
+</body>
+</html>

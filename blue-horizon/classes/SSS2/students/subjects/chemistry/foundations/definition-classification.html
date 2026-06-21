@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Definition & Classification of Matter | Chemistry Foundations</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .content-card {
+      -webkit-backdrop-filter: blur(12px);
+      backdrop-filter: blur(12px);
+      background: rgba(255, 255, 255, 0.95);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    .accordion-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease-out;
+    }
+    .accordion-content.open {
+      max-height: 2000px;
+    }
+    .step-card { transition: all 0.2s ease; }
+    .step-card:hover { transform: translateX(4px); }
+    #topic-complete-btn { transition: all 0.3s ease; }
+    #topic-complete-btn:not(:disabled):hover { transform: scale(1.02); }
+  </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-emerald-50 to-green-100 p-4 md:p-6">
+  <div class="max-w-4xl mx-auto">
+    <!-- Navigation -->
+    <nav class="mb-4 flex items-center justify-between">
+      <a href="index.html" class="text-blue-600 hover:text-blue-800 transition flex items-center">
+        <i class="fas fa-arrow-left mr-2"></i>Back to Foundations
+      </a>
+      <div class="flex items-center gap-3">
+        <div class="text-sm text-gray-600">
+          <span id="topic-progress-text">0% Complete</span>
+        </div>
+        <div class="w-24 h-2 bg-gray-200 rounded-full overflow-hidden">
+          <div id="topic-progress-bar" class="h-full bg-gradient-to-r from-emerald-400 to-green-500 transition-all duration-300" style="width: 0%"></div>
+        </div>
+      </div>
+    </nav>
+
+    <article class="content-card rounded-xl p-6 md:p-8 shadow-lg">
+      <!-- Header -->
+      <div class="border-b pb-4 mb-6">
+        <h1 class="text-2xl md:text-3xl font-bold text-gray-800 mb-2">
+          <i class="fas fa-flask text-emerald-500 mr-3"></i>Definition & Classification of Matter
+        </h1>
+        <p class="text-gray-600">Understanding what chemistry is and how matter is classified into elements, compounds, and mixtures.</p>
+      </div>
+
+      <!-- Learning Objectives -->
+      <div class="bg-emerald-50 border-l-4 border-emerald-500 p-4 rounded-r-lg mb-6">
+        <h3 class="font-semibold text-emerald-800 mb-2"><i class="fas fa-bullseye mr-2"></i>Learning Objectives</h3>
+        <ul class="text-emerald-700 text-sm space-y-1">
+          <li>• Define chemistry and matter</li>
+          <li>• Distinguish between elements, compounds, and mixtures</li>
+          <li>• Classify substances as elements, compounds, or mixtures</li>
+          <li>• Differentiate between homogeneous and heterogeneous mixtures</li>
+          <li>• Understand the difference between metals and non-metals</li>
+        </ul>
+      </div>
+
+      <!-- Section 1: What is Chemistry? -->
+      <section id="section-1" class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <span class="bg-emerald-100 text-emerald-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">1</span>
+          What is Chemistry?
+        </h2>
+
+        <div class="bg-gray-50 p-5 rounded-lg mb-4">
+          <div class="bg-gradient-to-r from-emerald-100 to-green-100 p-5 rounded-lg mb-4 text-center">
+            <p class="text-2xl font-bold text-emerald-700 mb-2">Chemistry</p>
+            <p class="text-gray-700">is the scientific study of the composition, structure, properties, and changes of matter.</p>
+          </div>
+
+          <div class="grid md:grid-cols-2 gap-4">
+            <div class="bg-white p-4 rounded-lg border border-gray-200">
+              <h4 class="font-semibold text-emerald-800 mb-2"><i class="fas fa-atom mr-2"></i>Matter</h4>
+              <p class="text-gray-700 text-sm">Anything that has mass and occupies space. Examples: air, water, rocks, plants, metals.</p>
+            </div>
+            <div class="bg-white p-4 rounded-lg border border-gray-200">
+              <h4 class="font-semibold text-emerald-800 mb-2"><i class="fas fa-cogs mr-2"></i>Energy</h4>
+              <p class="text-gray-700 text-sm">The capacity to do work. Chemistry also studies energy changes during reactions (heat, light, etc.).</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-r-lg">
+          <h4 class="font-semibold text-yellow-800 mb-2"><i class="fas fa-lightbulb mr-2"></i>Branches of Chemistry</h4>
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-2 text-sm">
+            <div class="bg-white p-2 rounded text-center"><strong>Physical</strong><br><span class="text-xs">Energy & reactions</span></div>
+            <div class="bg-white p-2 rounded text-center"><strong>Organic</strong><br><span class="text-xs">Carbon compounds</span></div>
+            <div class="bg-white p-2 rounded text-center"><strong>Inorganic</strong><br><span class="text-xs">Non-carbon</span></div>
+            <div class="bg-white p-2 rounded text-center"><strong>Analytical</strong><br><span class="text-xs">Testing & analysis</span></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 2: Classification of Matter -->
+      <section id="section-2" class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <span class="bg-emerald-100 text-emerald-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">2</span>
+          Classification of Matter
+        </h2>
+
+        <div class="bg-gray-50 p-5 rounded-lg mb-4">
+          <p class="text-gray-700 mb-4">Matter can be classified based on its composition. The main categories are:</p>
+
+          <!-- Classification Diagram -->
+          <div class="bg-white p-4 rounded-lg border border-gray-200 mb-4">
+            <div class="text-center mb-4">
+              <div class="inline-block bg-emerald-600 text-white px-6 py-2 rounded-lg font-bold">MATTER</div>
+              <div class="flex justify-center mt-2">
+                <div class="w-0.5 h-6 bg-gray-400"></div>
+              </div>
+              <div class="flex justify-center gap-8 md:gap-16">
+                <div>
+                  <div class="w-0.5 h-4 bg-gray-400 mx-auto"></div>
+                  <div class="bg-blue-500 text-white px-4 py-1 rounded font-medium text-sm">Pure Substances</div>
+                  <div class="flex justify-center gap-4 mt-2">
+                    <div>
+                      <div class="w-0.5 h-3 bg-gray-400 mx-auto"></div>
+                      <div class="bg-blue-100 text-blue-800 px-3 py-1 rounded text-xs">Elements</div>
+                    </div>
+                    <div>
+                      <div class="w-0.5 h-3 bg-gray-400 mx-auto"></div>
+                      <div class="bg-purple-100 text-purple-800 px-3 py-1 rounded text-xs">Compounds</div>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <div class="w-0.5 h-4 bg-gray-400 mx-auto"></div>
+                  <div class="bg-orange-500 text-white px-4 py-1 rounded font-medium text-sm">Mixtures</div>
+                  <div class="flex justify-center gap-4 mt-2">
+                    <div>
+                      <div class="w-0.5 h-3 bg-gray-400 mx-auto"></div>
+                      <div class="bg-orange-100 text-orange-800 px-3 py-1 rounded text-xs">Homogeneous</div>
+                    </div>
+                    <div>
+                      <div class="w-0.5 h-3 bg-gray-400 mx-auto"></div>
+                      <div class="bg-red-100 text-red-800 px-3 py-1 rounded text-xs">Heterogeneous</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 3: Elements -->
+      <section id="section-3" class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <span class="bg-emerald-100 text-emerald-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">3</span>
+          Elements
+        </h2>
+
+        <div class="bg-gray-50 p-5 rounded-lg mb-4">
+          <div class="bg-gradient-to-r from-blue-50 to-indigo-50 p-4 rounded-lg mb-4 border-l-4 border-blue-500">
+            <p class="text-lg font-semibold text-blue-800 mb-1">Definition</p>
+            <p class="text-gray-700">An <strong class="text-blue-600">element</strong> is a pure substance that cannot be broken down into simpler substances by chemical means. It consists of only one type of atom.</p>
+          </div>
+
+          <div class="grid md:grid-cols-2 gap-4 mb-4">
+            <div class="bg-white p-4 rounded-lg border border-gray-200">
+              <h4 class="font-semibold text-blue-800 mb-2"><i class="fas fa-cube mr-2"></i>Metals</h4>
+              <ul class="text-gray-700 text-sm space-y-1">
+                <li>• Shiny (lustrous)</li>
+                <li>• Good conductors of heat & electricity</li>
+                <li>• Malleable (can be hammered)</li>
+                <li>• Ductile (can be drawn into wires)</li>
+                <li>• High melting points</li>
+              </ul>
+              <p class="text-blue-600 text-sm mt-2"><strong>Examples:</strong> Iron, Copper, Gold, Sodium</p>
+            </div>
+            <div class="bg-white p-4 rounded-lg border border-gray-200">
+              <h4 class="font-semibold text-purple-800 mb-2"><i class="fas fa-cube mr-2"></i>Non-Metals</h4>
+              <ul class="text-gray-700 text-sm space-y-1">
+                <li>• Dull (non-lustrous)</li>
+                <li>• Poor conductors</li>
+                <li>• Brittle (break easily)</li>
+                <li>• Low melting points</li>
+                <li>• Can be solids, liquids, or gases</li>
+              </ul>
+              <p class="text-purple-600 text-sm mt-2"><strong>Examples:</strong> Carbon, Oxygen, Chlorine, Sulfur</p>
+            </div>
+          </div>
+
+          <div class="bg-green-50 p-3 rounded-lg border border-green-200">
+            <h4 class="font-semibold text-green-800 mb-1"><i class="fas fa-star mr-1"></i>Metalloids</h4>
+            <p class="text-gray-700 text-sm">Elements with properties between metals and non-metals. Examples: Silicon, Germanium, Boron. Used in electronics (semiconductors).</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 4: Compounds -->
+      <section id="section-4" class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <span class="bg-emerald-100 text-emerald-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">4</span>
+          Compounds
+        </h2>
+
+        <div class="bg-gray-50 p-5 rounded-lg mb-4">
+          <div class="bg-gradient-to-r from-purple-50 to-pink-50 p-4 rounded-lg mb-4 border-l-4 border-purple-500">
+            <p class="text-lg font-semibold text-purple-800 mb-1">Definition</p>
+            <p class="text-gray-700">A <strong class="text-purple-600">compound</strong> is a pure substance formed when two or more elements combine chemically in fixed proportions.</p>
+          </div>
+
+          <div class="bg-white p-4 rounded-lg border border-gray-200 mb-4">
+            <h4 class="font-semibold text-gray-800 mb-3">Key Characteristics of Compounds:</h4>
+            <ul class="text-gray-700 text-sm space-y-2">
+              <li class="flex items-start gap-2"><i class="fas fa-check text-green-500 mt-1"></i> Elements combine in <strong>fixed ratios</strong> by mass</li>
+              <li class="flex items-start gap-2"><i class="fas fa-check text-green-500 mt-1"></i> Properties are <strong>different</strong> from constituent elements</li>
+              <li class="flex items-start gap-2"><i class="fas fa-check text-green-500 mt-1"></i> Can only be separated by <strong>chemical means</strong></li>
+              <li class="flex items-start gap-2"><i class="fas fa-check text-green-500 mt-1"></i> Components are chemically <strong>bonded</strong></li>
+            </ul>
+          </div>
+
+          <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-r-lg">
+            <h4 class="font-semibold text-yellow-800 mb-2"><i class="fas fa-lightbulb mr-2"></i>Example: Water (H₂O)</h4>
+            <p class="text-gray-700 text-sm">Hydrogen (flammable gas) + Oxygen (supports burning) → Water (extinguishes fire)</p>
+            <p class="text-gray-600 text-sm mt-1">The properties of water are completely different from hydrogen and oxygen!</p>
+          </div>
+        </div>
+
+        <!-- Worked Example -->
+        <div class="border border-gray-200 rounded-lg overflow-hidden">
+          <button class="accordion-btn w-full p-4 bg-purple-50 text-left font-semibold text-purple-800 flex justify-between items-center hover:bg-purple-100 transition">
+            <span><i class="fas fa-calculator mr-2 text-purple-500"></i>Worked Example: Identifying Compounds</span>
+            <i class="fas fa-chevron-down transform transition-transform"></i>
+          </button>
+          <div class="accordion-content">
+            <div class="p-5">
+              <p class="font-medium text-gray-800 mb-3">Classify the following as elements or compounds: H₂O, O₂, NaCl, Fe, CO₂, N₂</p>
+
+              <div class="grid md:grid-cols-2 gap-4">
+                <div class="step-card bg-blue-50 p-3 rounded border-l-4 border-blue-500">
+                  <p class="font-semibold text-blue-800">Elements</p>
+                  <p class="text-blue-700 text-sm">O₂, Fe, N₂ - contain only one type of atom</p>
+                </div>
+                <div class="step-card bg-purple-50 p-3 rounded border-l-4 border-purple-500">
+                  <p class="font-semibold text-purple-800">Compounds</p>
+                  <p class="text-purple-700 text-sm">H₂O, NaCl, CO₂ - contain two or more different atoms chemically combined</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 5: Mixtures -->
+      <section id="section-5" class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <span class="bg-emerald-100 text-emerald-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">5</span>
+          Mixtures
+        </h2>
+
+        <div class="bg-gray-50 p-5 rounded-lg mb-4">
+          <div class="bg-gradient-to-r from-orange-50 to-red-50 p-4 rounded-lg mb-4 border-l-4 border-orange-500">
+            <p class="text-lg font-semibold text-orange-800 mb-1">Definition</p>
+            <p class="text-gray-700">A <strong class="text-orange-600">mixture</strong> consists of two or more substances physically combined. The components can be present in any proportion and can be separated by physical means.</p>
+          </div>
+
+          <div class="grid md:grid-cols-2 gap-4 mb-4">
+            <div class="bg-white p-4 rounded-lg border border-orange-200">
+              <h4 class="font-semibold text-orange-800 mb-2">Homogeneous Mixtures</h4>
+              <p class="text-gray-700 text-sm mb-2">Uniform throughout - cannot see individual components</p>
+              <p class="text-orange-600 text-sm"><strong>Examples:</strong> Salt solution, air, alloys (bronze, steel), soft drinks</p>
+              <p class="text-xs text-gray-500 mt-2">Also called "solutions"</p>
+            </div>
+            <div class="bg-white p-4 rounded-lg border border-red-200">
+              <h4 class="font-semibold text-red-800 mb-2">Heterogeneous Mixtures</h4>
+              <p class="text-gray-700 text-sm mb-2">Non-uniform - can see different components</p>
+              <p class="text-red-600 text-sm"><strong>Examples:</strong> Sand and water, oil and water, salad, rocks</p>
+              <p class="text-xs text-gray-500 mt-2">Components are visibly distinct</p>
+            </div>
+          </div>
+
+          <div class="bg-white p-4 rounded-lg border border-gray-200">
+            <h4 class="font-semibold text-gray-800 mb-2">Key Differences from Compounds:</h4>
+            <ul class="text-gray-700 text-sm space-y-1">
+              <li>• Components can be in <strong>any proportion</strong></li>
+              <li>• Can be separated by <strong>physical means</strong> (filtration, distillation, etc.)</li>
+              <li>• Properties are a <strong>combination</strong> of the components</li>
+              <li>• No <strong>chemical bonds</strong> between components</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 6: Comparison Table -->
+      <section id="section-6" class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <span class="bg-emerald-100 text-emerald-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">6</span>
+          Summary: Elements, Compounds & Mixtures
+        </h2>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm border-collapse border border-gray-300 rounded-lg overflow-hidden">
+            <thead class="bg-emerald-600 text-white">
+              <tr>
+                <th class="border border-gray-300 p-3 text-left">Property</th>
+                <th class="border border-gray-300 p-3 text-center">Element</th>
+                <th class="border border-gray-300 p-3 text-center">Compound</th>
+                <th class="border border-gray-300 p-3 text-center">Mixture</th>
+              </tr>
+            </thead>
+            <tbody class="bg-white">
+              <tr>
+                <td class="border border-gray-300 p-2 font-medium">Composition</td>
+                <td class="border border-gray-300 p-2 text-center">One type of atom</td>
+                <td class="border border-gray-300 p-2 text-center">Two or more elements chemically combined</td>
+                <td class="border border-gray-300 p-2 text-center">Two or more substances physically combined</td>
+              </tr>
+              <tr class="bg-gray-50">
+                <td class="border border-gray-300 p-2 font-medium">Proportion</td>
+                <td class="border border-gray-300 p-2 text-center">N/A</td>
+                <td class="border border-gray-300 p-2 text-center">Fixed ratio</td>
+                <td class="border border-gray-300 p-2 text-center">Variable ratio</td>
+              </tr>
+              <tr>
+                <td class="border border-gray-300 p-2 font-medium">Separation</td>
+                <td class="border border-gray-300 p-2 text-center">Cannot be separated</td>
+                <td class="border border-gray-300 p-2 text-center">Chemical means only</td>
+                <td class="border border-gray-300 p-2 text-center">Physical means</td>
+              </tr>
+              <tr class="bg-gray-50">
+                <td class="border border-gray-300 p-2 font-medium">Properties</td>
+                <td class="border border-gray-300 p-2 text-center">Unique to element</td>
+                <td class="border border-gray-300 p-2 text-center">Different from constituents</td>
+                <td class="border border-gray-300 p-2 text-center">Same as constituents</td>
+              </tr>
+              <tr>
+                <td class="border border-gray-300 p-2 font-medium">Examples</td>
+                <td class="border border-gray-300 p-2 text-center">O₂, Fe, Cu, C</td>
+                <td class="border border-gray-300 p-2 text-center">H₂O, NaCl, CO₂</td>
+                <td class="border border-gray-300 p-2 text-center">Air, salt solution, sand+water</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Section 7: Practice Problems -->
+      <section id="section-7" class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <i class="fas fa-pencil-alt text-emerald-600 mr-3"></i>
+          Practice Problems
+        </h2>
+
+        <div class="space-y-4">
+          <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+            <p class="font-medium text-gray-800 mb-2">1. Classify each as element, compound, or mixture: (a) Air, (b) Gold, (c) Carbon dioxide, (d) Salt solution</p>
+            <details class="mt-2">
+              <summary class="text-sm text-blue-600 cursor-pointer hover:text-blue-800">Show Solution</summary>
+              <div class="mt-2 text-sm text-gray-700 space-y-1">
+                <p>(a) Air - <strong>Mixture</strong> (homogeneous: N₂, O₂, CO₂, etc.)</p>
+                <p>(b) Gold - <strong>Element</strong> (pure substance, one type of atom)</p>
+                <p>(c) Carbon dioxide - <strong>Compound</strong> (C and O chemically combined)</p>
+                <p>(d) Salt solution - <strong>Mixture</strong> (homogeneous: salt dissolved in water)</p>
+              </div>
+            </details>
+          </div>
+
+          <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+            <p class="font-medium text-gray-800 mb-2">2. Why is air classified as a mixture and not a compound?</p>
+            <details class="mt-2">
+              <summary class="text-sm text-blue-600 cursor-pointer hover:text-blue-800">Show Solution</summary>
+              <div class="mt-2 text-sm text-gray-700">
+                <p>Air is a mixture because:</p>
+                <ul class="list-disc list-inside mt-1">
+                  <li>Components can vary in proportion</li>
+                  <li>Components can be separated physically (e.g., fractional distillation)</li>
+                  <li>No chemical bonds between N₂, O₂, etc.</li>
+                  <li>Components retain their individual properties</li>
+                </ul>
+              </div>
+            </details>
+          </div>
+
+          <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+            <p class="font-medium text-gray-800 mb-2">3. Give two differences between a compound and a mixture.</p>
+            <details class="mt-2">
+              <summary class="text-sm text-blue-600 cursor-pointer hover:text-blue-800">Show Solution</summary>
+              <div class="mt-2 text-sm text-gray-700">
+                <table class="w-full border-collapse mt-2 text-sm">
+                  <tr class="bg-gray-100">
+                    <th class="p-2 border text-left">Compound</th>
+                    <th class="p-2 border text-left">Mixture</th>
+                  </tr>
+                  <tr><td class="p-2 border">Fixed composition</td><td class="p-2 border">Variable composition</td></tr>
+                  <tr><td class="p-2 border">Separated by chemical means</td><td class="p-2 border">Separated by physical means</td></tr>
+                </table>
+              </div>
+            </details>
+          </div>
+
+          <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+            <p class="font-medium text-gray-800 mb-2">4. Classify: Copper wire, brass, bronze. Explain your answers.</p>
+            <details class="mt-2">
+              <summary class="text-sm text-blue-600 cursor-pointer hover:text-blue-800">Show Solution</summary>
+              <div class="mt-2 text-sm text-gray-700">
+                <p><strong>Copper wire</strong> - Element (pure copper)</p>
+                <p><strong>Brass</strong> - Mixture (copper + zinc, no chemical bonding)</p>
+                <p><strong>Bronze</strong> - Mixture (copper + tin, no chemical bonding)</p>
+                <p class="text-xs text-gray-500 mt-1">Note: Brass and bronze are alloys - homogeneous mixtures of metals.</p>
+              </div>
+            </details>
+          </div>
+        </div>
+      </section>
+
+      <!-- Key Takeaways -->
+      <section id="section-8" class="mb-8">
+        <div class="bg-gradient-to-r from-emerald-50 to-green-50 p-5 rounded-lg border border-emerald-200">
+          <h3 class="font-semibold text-emerald-800 mb-3"><i class="fas fa-star mr-2"></i>Key Takeaways for WAEC/JAMB/NECO</h3>
+          <ul class="text-emerald-700 text-sm space-y-2">
+            <li>• <strong>Element:</strong> One type of atom, cannot be broken down further</li>
+            <li>• <strong>Compound:</strong> Fixed ratio, chemical bonds, separated chemically only</li>
+            <li>• <strong>Mixture:</strong> Variable ratio, no chemical bonds, separated physically</li>
+            <li>• <strong>Homogeneous:</strong> Uniform throughout (solutions, alloys)</li>
+            <li>• <strong>Heterogeneous:</strong> Non-uniform, visible components</li>
+            <li>• Know the differences between metals, non-metals, and metalloids</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Complete Topic Button -->
+      <div class="mt-8 pt-6 border-t border-gray-200">
+        <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div class="text-center sm:text-left">
+            <h3 class="font-semibold text-gray-800">Ready to Complete?</h3>
+            <p class="text-sm text-gray-600">View all sections, then take the quiz to mark this topic as complete.</p>
+          </div>
+          <button id="topic-complete-btn" disabled
+                  class="px-6 py-3 rounded-xl bg-gray-300 text-gray-500 cursor-not-allowed opacity-50 flex items-center gap-2 text-lg font-medium">
+            <i class="fas fa-lock mr-2"></i>
+            <span>Complete (0% viewed)</span>
+          </button>
+        </div>
+      </div>
+    </article>
+  </div>
+
+  <script>
+    document.querySelectorAll('.accordion-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const content = btn.nextElementSibling;
+        const icon = btn.querySelector('.fa-chevron-down');
+        content.classList.toggle('open');
+        icon?.classList.toggle('rotate-180');
+      });
+    });
+  </script>
+
+  <script type="module">
+    import { TopicTracker } from '/js/topic-tracker.js';
+    import { TopicQuiz } from '/js/topic-quiz.js';
+
+    const quizQuestions = [
+      {
+        question: "Which of the following is an element?",
+        options: ["Water", "Air", "Iron", "Salt"],
+        correct: 2,
+        explanation: "Iron (Fe) is an element - it consists of only one type of atom."
+      },
+      {
+        question: "A compound can be separated by:",
+        options: ["Filtration", "Distillation", "Chemical means only", "Evaporation"],
+        correct: 2,
+        explanation: "Compounds require chemical reactions to separate their components."
+      },
+      {
+        question: "Which is a homogeneous mixture?",
+        options: ["Sand and water", "Oil and water", "Salt solution", "Salad"],
+        correct: 2,
+        explanation: "Salt solution is homogeneous - the salt is evenly dissolved throughout."
+      },
+      {
+        question: "Water (H₂O) is a compound because:",
+        options: ["It is a liquid", "Hydrogen and oxygen are in fixed ratio", "It contains hydrogen", "It is colorless"],
+        correct: 1,
+        explanation: "Compounds have fixed ratios by mass - water always has 2 H : 1 O."
+      },
+      {
+        question: "Which property is typical of metals?",
+        options: ["Poor conductor", "Brittle", "Dull appearance", "Malleable"],
+        correct: 3,
+        explanation: "Metals are malleable - they can be hammered into sheets."
+      },
+      {
+        question: "Air is classified as a mixture because:",
+        options: ["It contains oxygen", "Components can vary in proportion", "It is invisible", "It supports life"],
+        correct: 1,
+        explanation: "Mixtures have variable composition - air composition can change."
+      },
+      {
+        question: "Brass (copper + zinc) is:",
+        options: ["An element", "A compound", "A homogeneous mixture", "A heterogeneous mixture"],
+        correct: 2,
+        explanation: "Brass is an alloy - a homogeneous mixture of metals."
+      },
+      {
+        question: "Which shows properties different from its constituents?",
+        options: ["Salt solution", "Air", "Water", "Sand and water"],
+        correct: 2,
+        explanation: "Compounds have different properties from their elements. Water (extinguishes fire) differs from hydrogen (flammable) and oxygen (supports burning)."
+      }
+    ];
+
+    const tracker = new TopicTracker({
+      topicId: 'definition-classification',
+      topicTitle: 'Definition & Classification of Matter',
+      subject: 'chemistry',
+      sections: ['section-1', 'section-2', 'section-3', 'section-4', 'section-5', 'section-6', 'section-7', 'section-8'],
+      quizRequired: true
+    });
+
+    const quiz = new TopicQuiz({
+      topicId: 'definition-classification',
+      topicTitle: 'Definition & Classification of Matter',
+      subject: 'chemistry',
+      questions: quizQuestions,
+      passingScore: 60,
+      tracker: tracker
+    });
+
+    document.querySelectorAll('.accordion-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const section = btn.closest('section');
+        if (section && section.id) tracker.markSectionViewed(section.id);
+      });
+    });
+
+    document.querySelectorAll('details').forEach(details => {
+      details.addEventListener('toggle', () => {
+        if (details.open) tracker.markSectionViewed('section-7');
+      });
+    });
+  </script>
+</body>
+</html>

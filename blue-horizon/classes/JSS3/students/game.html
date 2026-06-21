@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Game - Prep100</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body class="bg-slate-50 text-slate-800">
+  <div id="main-content" class="flex-1 flex flex-col lg:ml-72">
+    <header class="flex items-center justify-between p-4 bg-white border-b border-slate-200">
+      <div class="flex items-center gap-3">
+        <button id="toggleSidebar" class="p-2 rounded-md hover:bg-slate-100 lg:hidden" title="Toggle sidebar"><i class="fas fa-bars"></i></button>
+        <div class="relative">
+          <input id="globalSearch" type="search" placeholder="Search games..." class="w-[520px] hidden md:inline-block pl-10 pr-4 py-2 rounded-full border border-slate-200 bg-white focus:outline-none focus:ring-2 focus:ring-sky-100">
+        </div>
+      </div>
+      <div class="flex items-center gap-3">
+        <div class="text-right mr-2">
+          <div id="topName" class="font-semibold">Student Name</div>
+          <div id="topLevel" class="text-xs text-slate-400">SS 3</div>
+        </div>
+        <img id="topAvatar" src="/assets/images/unnamed.jpg" alt="avatar" class="h-10 w-10 rounded-full border-2">
+      </div>
+    </header>
+
+    <main class="p-6">
+      <div class="mb-8">
+        <h1 class="text-3xl font-bold text-gray-800 mb-2">Game</h1>
+        <p class="text-gray-600">Launch PhysicsQuest game in a new window or embedded iframe.</p>
+      </div>
+
+      <div class="space-y-4">
+        <a href="../PhysicsQuest/PhysicsQuest/client/index.html" target="_blank" class="inline-block px-6 py-3 bg-sky-600 text-white rounded-md">Open Game in New Tab</a>
+
+        <div class="bg-white rounded-xl shadow p-4">
+          <h2 class="font-semibold mb-2">Play Embedded</h2>
+          <div class="aspect-video bg-black/5 rounded overflow-hidden">
+            <iframe src="../PhysicsQuest/PhysicsQuest/client/index.html" class="w-full h-full border-0" title="PhysicsQuest"></iframe>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script type="module">
+    import { initializeStudentPage } from './js/student-page-shared.js';
+    import '../js/personalize-page.js';
+    initializeStudentPage();
+  </script>
+  <script type="module" src="./js/sidebar-fragment.js"></script>
+</body>
+</html>

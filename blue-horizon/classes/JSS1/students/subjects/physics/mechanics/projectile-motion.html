@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projectile Motion | Physics Mechanics</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .content-card {
+            -webkit-backdrop-filter: blur(16px);
+            backdrop-filter: blur(16px);
+            background: rgba(255, 255, 255, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-6">
+    <div class="max-w-6xl mx-auto">
+        <nav class="mb-8">
+            <a href="./" class="text-blue-600 hover:text-blue-700">← Back to Mechanics</a>
+        </nav>
+
+        <div class="content-card rounded-xl p-8">
+            <header class="mb-12">
+                <h1 class="text-3xl font-bold text-gray-800 mb-4">Projectile Motion</h1>
+                <p class="text-lg text-gray-600">Understanding motion in two dimensions under the influence of gravity</p>
+            </header>
+
+            <div class="grid gap-8">
+                <!-- Introduction -->
+                <section>
+                    <h2 class="text-xl font-semibold text-gray-800 mb-4">Key Concepts</h2>
+                    <div class="bg-white/50 rounded-lg p-6">
+                        <p class="text-gray-700 mb-4">A projectile is any object thrown into space upon which the only force acting is gravity. Key points:</p>
+                        <ul class="space-y-2 text-gray-700">
+                            <li>• Motion can be analyzed in two independent directions (x and y)</li>
+                            <li>• Horizontal motion has constant velocity (no acceleration)</li>
+                            <li>• Vertical motion has constant acceleration due to gravity</li>
+                            <li>• Path followed is a parabola (in absence of air resistance)</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- Motion Analysis -->
+                <section>
+                    <h2 class="text-xl font-semibold text-gray-800 mb-4">Motion Analysis</h2>
+                    <div class="space-y-6">
+                        <!-- Horizontal Motion -->
+                        <div class="bg-white/50 rounded-lg p-6">
+                            <h3 class="font-medium text-gray-800 mb-3">Horizontal Motion (x-direction)</h3>
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <div>
+                                    <h4 class="font-medium text-gray-800 mb-2">Key Equations</h4>
+                                    <ul class="space-y-2 text-sm text-gray-700">
+                                        <li>• vₓ = v₀cosθ (constant)</li>
+                                        <li>• x = (v₀cosθ)t</li>
+                                        <li>• ax = 0</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium text-gray-800 mb-2">Characteristics</h4>
+                                    <ul class="space-y-2 text-sm text-gray-700">
+                                        <li>• No acceleration</li>
+                                        <li>• Constant velocity</li>
+                                        <li>• Uniform motion</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Vertical Motion -->
+                        <div class="bg-white/50 rounded-lg p-6">
+                            <h3 class="font-medium text-gray-800 mb-3">Vertical Motion (y-direction)</h3>
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <div>
+                                    <h4 class="font-medium text-gray-800 mb-2">Key Equations</h4>
+                                    <ul class="space-y-2 text-sm text-gray-700">
+                                        <li>• vy = v₀sinθ - gt</li>
+                                        <li>• y = (v₀sinθ)t - ½gt²</li>
+                                        <li>• ay = -g</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium text-gray-800 mb-2">Characteristics</h4>
+                                    <ul class="space-y-2 text-sm text-gray-700">
+                                        <li>• Constant acceleration (g)</li>
+                                        <li>• Changing velocity</li>
+                                        <li>• Parabolic path</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Important Parameters -->
+                <section>
+                    <h2 class="text-xl font-semibold text-gray-800 mb-4">Important Parameters</h2>
+                    <div class="space-y-6">
+                        <!-- Maximum Height -->
+                        <div class="bg-white/50 rounded-lg p-6">
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <div>
+                                    <h3 class="font-medium text-gray-800 mb-3">Maximum Height</h3>
+                                    <ul class="space-y-2 text-sm text-gray-700">
+                                        <li>• hmax = (v₀sinθ)²/2g</li>
+                                        <li>• Vertical velocity = 0</li>
+                                        <li>• Time to reach = v₀sinθ/g</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h3 class="font-medium text-gray-800 mb-3">Time of Flight</h3>
+                                    <ul class="space-y-2 text-sm text-gray-700">
+                                        <li>• T = 2v₀sinθ/g</li>
+                                        <li>• Double the time to max height</li>
+                                        <li>• Time to return to initial height</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Range -->
+                        <div class="bg-white/50 rounded-lg p-6">
+                            <h3 class="font-medium text-gray-800 mb-3">Range of Projectile</h3>
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <div>
+                                    <h4 class="font-medium text-gray-800 mb-2">Range Formula</h4>
+                                    <ul class="space-y-2 text-sm text-gray-700">
+                                        <li>• R = (v₀²sin2θ)/g</li>
+                                        <li>• Maximum at θ = 45°</li>
+                                        <li>• Same for complementary angles</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium text-gray-800 mb-2">Factors Affecting Range</h4>
+                                    <ul class="space-y-2 text-sm text-gray-700">
+                                        <li>• Initial velocity</li>
+                                        <li>• Launch angle</li>
+                                        <li>• Height difference</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Special Cases -->
+                <section>
+                    <h2 class="text-xl font-semibold text-gray-800 mb-4">Special Cases</h2>
+                    <div class="bg-white/50 rounded-lg p-6">
+                        <div class="grid md:grid-cols-3 gap-6">
+                            <div>
+                                <h3 class="font-medium text-gray-800 mb-3">Horizontal Projection</h3>
+                                <ul class="space-y-2 text-sm text-gray-700">
+                                    <li>• θ = 0°</li>
+                                    <li>• Initial vy = 0</li>
+                                    <li>• Range = v₀√(2h/g)</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h3 class="font-medium text-gray-800 mb-3">Maximum Range</h3>
+                                <ul class="space-y-2 text-sm text-gray-700">
+                                    <li>• θ = 45°</li>
+                                    <li>• R = v₀²/g</li>
+                                    <li>• hmax = v₀²/4g</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h3 class="font-medium text-gray-800 mb-3">Vertical Projection</h3>
+                                <ul class="space-y-2 text-sm text-gray-700">
+                                    <li>• θ = 90°</li>
+                                    <li>• Range = 0</li>
+                                    <li>• hmax = v₀²/2g</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Practice Problems -->
+                <section>
+                    <h2 class="text-xl font-semibold text-gray-800 mb-4">Practice Problems</h2>
+                    <div class="bg-white/50 rounded-lg p-6">
+                        <ol class="list-decimal pl-6 space-y-4 text-gray-700">
+                            <li>
+                                <p class="font-medium mb-2">Basic Projectile</p>
+                                <p>A ball is thrown with initial velocity 20 m/s at 30° to the horizontal. Calculate:</p>
+                                <ul class="list-disc pl-6 mt-2 space-y-1 text-sm">
+                                    <li>Maximum height reached</li>
+                                    <li>Time of flight</li>
+                                    <li>Range of the projectile</li>
+                                </ul>
+                            </li>
+                            <li>
+                                <p class="font-medium mb-2">Horizontal Projection</p>
+                                <p>A stone is thrown horizontally from a cliff 45m high with velocity 15 m/s. Find:</p>
+                                <ul class="list-disc pl-6 mt-2 space-y-1 text-sm">
+                                    <li>Time to reach ground</li>
+                                    <li>Horizontal distance traveled</li>
+                                    <li>Velocity at impact</li>
+                                </ul>
+                            </li>
+                            <li>
+                                <p class="font-medium mb-2">Maximum Range</p>
+                                <p>What initial velocity is needed to achieve a range of 100m when fired at the optimal angle?</p>
+                                <p class="mt-2 text-sm text-blue-600">Hint: Use R = v₀²/g at θ = 45°</p>
+                            </li>
+                        </ol>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+<!-- Topic Quiz System -->
+<script src="/js/topic-quiz-loader.js"></script>
+<script src="/js/topic-quiz-injector.js"></script>
+</body>
+</html>

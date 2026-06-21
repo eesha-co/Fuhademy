@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Substances & Nutrients - Biology</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @keyframes fade-in-up {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in-up { animation: fade-in-up 0.5s ease-out forwards; }
+        .section-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            border: 1px solid #e5e7eb;
+        }
+        .video-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 8px;
+            background: #f9fafb;
+        }
+        .video-container iframe {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Header -->
+    <nav class="bg-white shadow-sm fixed top-0 w-full z-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center">
+                    <a href="index.html" class="text-green-600 hover:text-green-800 mr-4">
+                        <i class="fas fa-arrow-left"></i>
+                    </a>
+                    <h1 class="text-xl font-semibold text-gray-900">Food Substances & Nutrients</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="text-sm text-gray-600 hidden sm:block">
+                        Progress: <span id="progressPercent">0%</span>
+                    </div>
+                    <div class="w-24 sm:w-32 h-2 bg-gray-200 rounded-full">
+                        <div id="progressBar" class="h-2 bg-green-500 rounded-full transition-all duration-300" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="pt-20 pb-8 px-4 max-w-5xl mx-auto">
+        <!-- Learning Objectives -->
+        <div class="bg-green-50 border-l-4 border-green-500 p-4 rounded-r-lg mb-6 animate-fade-in-up">
+            <h3 class="font-semibold text-green-800 mb-2"><i class="fas fa-bullseye mr-2"></i>Learning Objectives</h3>
+            <ul class="text-green-700 text-sm space-y-1">
+                <li>• Identify the main food substances and their sources</li>
+                <li>• Describe the functions of carbohydrates, proteins, and fats</li>
+                <li>• List essential vitamins and minerals and their roles</li>
+                <li>• Explain the importance of a balanced diet</li>
+                <li>• Describe tests for food substances</li>
+            </ul>
+        </div>
+
+        <!-- Section 1: Introduction -->
+        <div class="section-card animate-fade-in-up">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <span class="bg-green-100 text-green-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">1</span>
+                What are Nutrients?
+            </h2>
+            
+            <p class="text-gray-700 mb-4"><strong>Nutrients</strong> are chemical substances in food that provide energy, materials for growth and repair, and help regulate body processes. They are essential for life.</p>
+            
+            <div class="grid md:grid-cols-2 gap-4 mb-4">
+                <div class="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-500">
+                    <h4 class="font-semibold text-blue-700 mb-2"><i class="fas fa-fire mr-2"></i>Macronutrients</h4>
+                    <p class="text-gray-600 text-sm">Needed in large amounts for energy and growth:</p>
+                    <ul class="text-gray-600 text-sm mt-2 space-y-1">
+                        <li>• <strong>Carbohydrates</strong> - main energy source</li>
+                        <li>• <strong>Proteins</strong> - growth and repair</li>
+                        <li>• <strong>Fats (Lipids)</strong> - energy storage, insulation</li>
+                    </ul>
+                </div>
+                <div class="bg-purple-50 p-4 rounded-lg border-l-4 border-purple-500">
+                    <h4 class="font-semibold text-purple-700 mb-2"><i class="fas fa-prescription-bottle mr-2"></i>Micronutrients</h4>
+                    <p class="text-gray-600 text-sm">Needed in small amounts for body regulation:</p>
+                    <ul class="text-gray-600 text-sm mt-2 space-y-1">
+                        <li>• <strong>Vitamins</strong> - regulate body processes</li>
+                        <li>• <strong>Minerals</strong> - build bones, blood, enzymes</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="bg-yellow-50 p-4 rounded-lg border-l-4 border-yellow-500">
+                <h4 class="font-semibold text-yellow-700 mb-2"><i class="fas fa-tint mr-2"></i>Other Essential Substances</h4>
+                <ul class="text-gray-600 text-sm space-y-1">
+                    <li>• <strong>Water</strong> - makes up 70% of body, solvent for reactions</li>
+                    <li>• <strong>Fiber (Roughage)</strong> - aids digestion, prevents constipation</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Section 2: Carbohydrates -->
+        <div class="section-card animate-fade-in-up">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <span class="bg-green-100 text-green-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">2</span>
+                Carbohydrates
+            </h2>
+
+            <div class="bg-yellow-50 p-4 rounded-lg border-l-4 border-yellow-500 mb-4">
+                <p class="text-yellow-800 font-medium"><strong>Carbohydrates</strong> are the body's main source of energy. They contain carbon, hydrogen, and oxygen with the formula Cx(H2O)y.</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-4 mb-4">
+                <div class="bg-orange-50 p-4 rounded-lg border border-orange-200">
+                    <h4 class="font-semibold text-orange-700 mb-2 text-center">Monosaccharides</h4>
+                    <p class="text-xs text-gray-500 text-center mb-2">(Simple sugars)</p>
+                    <ul class="text-gray-600 text-sm space-y-1">
+                        <li>• <strong>Glucose</strong> - blood sugar, product of digestion</li>
+                        <li>• <strong>Fructose</strong> - fruit sugar, sweetest</li>
+                        <li>• <strong>Galactose</strong> - milk sugar component</li>
+                    </ul>
+                    <p class="text-xs text-gray-500 mt-2">Formula: C₆H₁₂O₆</p>
+                </div>
+                <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                    <h4 class="font-semibold text-blue-700 mb-2 text-center">Disaccharides</h4>
+                    <p class="text-xs text-gray-500 text-center mb-2">(Double sugars)</p>
+                    <ul class="text-gray-600 text-sm space-y-1">
+                        <li>• <strong>Sucrose</strong> - glucose + fructose (table sugar)</li>
+                        <li>• <strong>Maltose</strong> - glucose + glucose (malt)</li>
+                        <li>• <strong>Lactose</strong> - glucose + galactose (milk)</li>
+                    </ul>
+                    <p class="text-xs text-gray-500 mt-2">Formula: C₁₂H₂₂O₁₁</p>
+                </div>
+                <div class="bg-green-50 p-4 rounded-lg border border-green-200">
+                    <h4 class="font-semibold text-green-700 mb-2 text-center">Polysaccharides</h4>
+                    <p class="text-xs text-gray-500 text-center mb-2">(Complex carbohydrates)</p>
+                    <ul class="text-gray-600 text-sm space-y-1">
+                        <li>• <strong>Starch</strong> - storage in plants (rice, bread, potatoes)</li>
+                        <li>• <strong>Glycogen</strong> - storage in animals (liver, muscles)</li>
+                        <li>• <strong>Cellulose</strong> - plant cell walls (fiber)</li>
+                    </ul>
+                    <p class="text-xs text-gray-500 mt-2">Long chains of glucose</p>
+                </div>
+            </div>
+
+            <div class="bg-gray-50 p-4 rounded-lg">
+                <h4 class="font-semibold text-gray-700 mb-2">Sources of Carbohydrates:</h4>
+                <p class="text-gray-600 text-sm">Rice, bread, potatoes, yam, cassava, maize, cereals, sugar, honey, fruits</p>
+            </div>
+        </div>
+
+        <!-- Section 3: Proteins -->
+        <div class="section-card animate-fade-in-up">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <span class="bg-green-100 text-green-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">3</span>
+                Proteins
+            </h2>
+
+            <div class="bg-red-50 p-4 rounded-lg border-l-4 border-red-500 mb-4">
+                <p class="text-red-800 font-medium"><strong>Proteins</strong> are made of long chains of amino acids joined by peptide bonds. They contain carbon, hydrogen, oxygen, and nitrogen.</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-4 mb-4">
+                <div class="bg-pink-50 p-4 rounded-lg border border-pink-200">
+                    <h4 class="font-semibold text-pink-700 mb-2"><i class="fas fa-cubes mr-2"></i>Structure</h4>
+                    <ul class="text-gray-600 text-sm space-y-1">
+                        <li>• Made of <strong>amino acids</strong> (20 different types)</li>
+                        <li>• <strong>Essential amino acids</strong> - must be obtained from diet</li>
+                        <li>• <strong>Non-essential amino acids</strong> - body can make them</li>
+                        <li>• Dipeptide = 2 amino acids</li>
+                        <li>• Polypeptide = many amino acids</li>
+                    </ul>
+                </div>
+                <div class="bg-indigo-50 p-4 rounded-lg border border-indigo-200">
+                    <h4 class="font-semibold text-indigo-700 mb-2"><i class="fas fa-cog mr-2"></i>Functions</h4>
+                    <ul class="text-gray-600 text-sm space-y-1">
+                        <li>• <strong>Growth</strong> - building new cells and tissues</li>
+                        <li>• <strong>Repair</strong> - replacing damaged cells</li>
+                        <li>• <strong>Enzymes</strong> - catalyze chemical reactions</li>
+                        <li>• <strong>Hormones</strong> - chemical messengers (insulin)</li>
+                        <li>• <strong>Antibodies</strong> - fight infections</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="bg-gray-50 p-4 rounded-lg">
+                <h4 class="font-semibold text-gray-700 mb-2">Sources of Proteins:</h4>
+                <div class="grid md:grid-cols-2 gap-2 text-sm">
+                    <div>
+                        <p class="font-medium text-green-600">Animal Sources (Complete proteins):</p>
+                        <p class="text-gray-600">Meat, fish, eggs, milk, cheese</p>
+                    </div>
+                    <div>
+                        <p class="font-medium text-green-600">Plant Sources (Incomplete proteins):</p>
+                        <p class="text-gray-600">Beans, peas, lentils, nuts, soya</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 4: Fats (Lipids) -->
+        <div class="section-card animate-fade-in-up">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <span class="bg-green-100 text-green-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">4</span>
+                Fats (Lipids)
+            </h2>
+
+            <div class="bg-amber-50 p-4 rounded-lg border-l-4 border-amber-500 mb-4">
+                <p class="text-amber-800 font-medium"><strong>Fats</strong> are made of glycerol and fatty acids. They contain carbon, hydrogen, and oxygen (less oxygen than carbohydrates).</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-4 mb-4">
+                <div class="bg-orange-50 p-4 rounded-lg border border-orange-200">
+                    <h4 class="font-semibold text-orange-700 mb-2 text-center"><i class="fas fa-oil-can mr-2"></i>Saturated Fats</h4>
+                    <ul class="text-gray-600 text-sm space-y-1">
+                        <li>• Solid at room temperature</li>
+                        <li>• From animal sources</li>
+                        <li>• Butter, lard, meat fat</li>
+                        <li>• Can increase blood cholesterol</li>
+                        <li>• Linked to heart disease</li>
+                    </ul>
+                </div>
+                <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+                    <h4 class="font-semibold text-yellow-700 mb-2 text-center"><i class="fas fa-seedling mr-2"></i>Unsaturated Fats</h4>
+                    <ul class="text-gray-600 text-sm space-y-1">
+                        <li>• Liquid at room temperature (oils)</li>
+                        <li>• From plant sources</li>
+                        <li>• Vegetable oils, fish oils, nuts</li>
+                        <li>• Can help reduce cholesterol</li>
+                        <li>• Better for heart health</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="bg-teal-50 p-4 rounded-lg border-l-4 border-teal-500">
+                <h4 class="font-semibold text-teal-700 mb-2"><i class="fas fa-list-check mr-2"></i>Functions of Fats</h4>
+                <ul class="text-gray-600 text-sm space-y-1">
+                    <li>• <strong>Energy storage</strong> - provide 2× more energy than carbohydrates</li>
+                    <li>• <strong>Insulation</strong> - maintain body temperature</li>
+                    <li>• <strong>Protection</strong> - cushion organs from damage</li>
+                    <li>• <strong>Cell membranes</strong> - phospholipids form membranes</li>
+                    <li>• <strong>Vitamin absorption</strong> - help absorb vitamins A, D, E, K</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Section 5: Vitamins -->
+        <div class="section-card animate-fade-in-up">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <span class="bg-green-100 text-green-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">5</span>
+                Vitamins
+            </h2>
+
+            <p class="text-gray-700 mb-4">Vitamins are organic compounds needed in small amounts for normal metabolism. They cannot be synthesized by the body and must be obtained from the diet.</p>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm border-collapse">
+                    <thead>
+                        <tr class="bg-green-50">
+                            <th class="border border-gray-200 p-3 text-left">Vitamin</th>
+                            <th class="border border-gray-200 p-3 text-left">Sources</th>
+                            <th class="border border-gray-200 p-3 text-left">Function</th>
+                            <th class="border border-gray-200 p-3 text-left">Deficiency</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="border border-gray-200 p-3 font-medium text-orange-600">Vitamin A</td>
+                            <td class="border border-gray-200 p-3">Liver, carrots, dark green vegetables, fish oil</td>
+                            <td class="border border-gray-200 p-3">Making rhodopsin for vision in dim light; healthy skin</td>
+                            <td class="border border-gray-200 p-3 text-red-600">Night blindness, dry skin</td>
+                        </tr>
+                        <tr class="bg-gray-50">
+                            <td class="border border-gray-200 p-3 font-medium text-yellow-600">Vitamin B1 (Thiamine)</td>
+                            <td class="border border-gray-200 p-3">Whole grains, yeast, meat, beans</td>
+                            <td class="border border-gray-200 p-3">Carbohydrate metabolism; nerve function</td>
+                            <td class="border border-gray-200 p-3 text-red-600">Beri-beri (weak muscles, fatigue)</td>
+                        </tr>
+                        <tr>
+                            <td class="border border-gray-200 p-3 font-medium text-yellow-700">Vitamin C</td>
+                            <td class="border border-gray-200 p-3">Citrus fruits, tomatoes, peppers, green vegetables</td>
+                            <td class="border border-gray-200 p-3">Collagen formation; wound healing; immunity</td>
+                            <td class="border border-gray-200 p-3 text-red-600">Scurvy (bleeding gums, slow healing)</td>
+                        </tr>
+                        <tr class="bg-gray-50">
+                            <td class="border border-gray-200 p-3 font-medium text-yellow-500">Vitamin D</td>
+                            <td class="border border-gray-200 p-3">Fish oil, eggs, liver; sunlight on skin</td>
+                            <td class="border border-gray-200 p-3">Calcium absorption; bone formation</td>
+                            <td class="border border-gray-200 p-3 text-red-600">Rickets (soft bones), osteomalacia</td>
+                        </tr>
+                        <tr>
+                            <td class="border border-gray-200 p-3 font-medium text-green-600">Vitamin K</td>
+                            <td class="border border-gray-200 p-3">Green leafy vegetables, liver</td>
+                            <td class="border border-gray-200 p-3">Blood clotting</td>
+                            <td class="border border-gray-200 p-3 text-red-600">Excessive bleeding</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Section 6: Minerals -->
+        <div class="section-card animate-fade-in-up">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <span class="bg-green-100 text-green-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">6</span>
+                Minerals
+            </h2>
+
+            <p class="text-gray-700 mb-4">Minerals are inorganic elements needed in small amounts for various body functions.</p>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm border-collapse">
+                    <thead>
+                        <tr class="bg-blue-50">
+                            <th class="border border-gray-200 p-3 text-left">Mineral</th>
+                            <th class="border border-gray-200 p-3 text-left">Sources</th>
+                            <th class="border border-gray-200 p-3 text-left">Function</th>
+                            <th class="border border-gray-200 p-3 text-left">Deficiency</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="border border-gray-200 p-3 font-medium text-red-600">Iron (Fe)</td>
+                            <td class="border border-gray-200 p-3">Red meat, liver, spinach, beans</td>
+                            <td class="border border-gray-200 p-3">Making hemoglobin in red blood cells</td>
+                            <td class="border border-gray-200 p-3 text-red-600">Anemia (tiredness, pale skin)</td>
+                        </tr>
+                        <tr class="bg-gray-50">
+                            <td class="border border-gray-200 p-3 font-medium text-gray-600">Calcium (Ca)</td>
+                            <td class="border border-gray-200 p-3">Milk, cheese, yogurt, green vegetables</td>
+                            <td class="border border-gray-200 p-3">Strong bones and teeth; blood clotting; muscle contraction</td>
+                            <td class="border border-gray-200 p-3 text-red-600">Rickets, osteoporosis</td>
+                        </tr>
+                        <tr>
+                            <td class="border border-gray-200 p-3 font-medium text-purple-600">Iodine (I)</td>
+                            <td class="border border-gray-200 p-3">Seafood, iodized salt</td>
+                            <td class="border border-gray-200 p-3">Making thyroid hormones</td>
+                            <td class="border border-gray-200 p-3 text-red-600">Goitre (swollen thyroid)</td>
+                        </tr>
+                        <tr class="bg-gray-50">
+                            <td class="border border-gray-200 p-3 font-medium text-pink-600">Phosphorus (P)</td>
+                            <td class="border border-gray-200 p-3">Meat, fish, eggs, dairy</td>
+                            <td class="border border-gray-200 p-3">Bones and teeth; ATP production; DNA</td>
+                            <td class="border border-gray-200 p-3 text-red-600">Weak bones, fatigue</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Section 7: Food Tests -->
+        <div class="section-card animate-fade-in-up">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <span class="bg-green-100 text-green-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">7</span>
+                Food Tests
+            </h2>
+
+            <p class="text-gray-700 mb-4">Chemical tests are used to identify the presence of different food substances.</p>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm border-collapse">
+                    <thead>
+                        <tr class="bg-purple-50">
+                            <th class="border border-gray-200 p-3 text-left">Food Substance</th>
+                            <th class="border border-gray-200 p-3 text-left">Test</th>
+                            <th class="border border-gray-200 p-3 text-left">Procedure</th>
+                            <th class="border border-gray-200 p-3 text-left">Positive Result</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="border border-gray-200 p-3 font-medium">Starch</td>
+                            <td class="border border-gray-200 p-3">Iodine Test</td>
+                            <td class="border border-gray-200 p-3">Add iodine solution to food sample</td>
+                            <td class="border border-gray-200 p-3"><span class="bg-blue-900 text-white px-2 py-1 rounded text-xs">Blue-black</span></td>
+                        </tr>
+                        <tr class="bg-gray-50">
+                            <td class="border border-gray-200 p-3 font-medium">Reducing Sugars</td>
+                            <td class="border border-gray-200 p-3">Benedict's Test</td>
+                            <td class="border border-gray-200 p-3">Add Benedict's solution, heat in water bath</td>
+                            <td class="border border-gray-200 p-3"><span class="bg-orange-500 text-white px-2 py-1 rounded text-xs">Brick-red precipitate</span></td>
+                        </tr>
+                        <tr>
+                            <td class="border border-gray-200 p-3 font-medium">Protein</td>
+                            <td class="border border-gray-200 p-3">Biuret Test</td>
+                            <td class="border border-gray-200 p-3">Add Biuret reagent (NaOH + CuSO₄)</td>
+                            <td class="border border-gray-200 p-3"><span class="bg-purple-500 text-white px-2 py-1 rounded text-xs">Purple/Violet</span></td>
+                        </tr>
+                        <tr class="bg-gray-50">
+                            <td class="border border-gray-200 p-3 font-medium">Fats (Lipids)</td>
+                            <td class="border border-gray-200 p-3">Ethanol Emulsion Test</td>
+                            <td class="border border-gray-200 p-3">Shake with ethanol, add water</td>
+                            <td class="border border-gray-200 p-3"><span class="bg-white border px-2 py-1 rounded text-xs">White emulsion</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Section 8: Video -->
+        <div class="section-card animate-fade-in-up">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <span class="bg-green-100 text-green-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">8</span>
+                Video: Food Groups and Nutrition
+            </h2>
+            
+            <div class="bg-gray-50 p-4 rounded-lg border">
+                <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/4tTP6ZeV-wo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 9: Practice Problems -->
+        <div class="section-card animate-fade-in-up">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-pencil-alt text-green-600 mr-3"></i>
+                Practice Questions
+            </h2>
+
+            <div class="space-y-4">
+                <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+                    <p class="font-medium text-gray-800 mb-2">1. Why do athletes need more carbohydrates in their diet?</p>
+                    <details class="mt-2">
+                        <summary class="text-sm text-blue-600 cursor-pointer hover:text-blue-800">Show Answer</summary>
+                        <div class="mt-2 text-sm text-gray-700">
+                            Athletes need more carbohydrates because they are the <strong>main source of energy</strong> for the body. During exercise, the body breaks down glycogen (stored carbohydrate) to glucose, which is used for respiration to release energy. More carbohydrates ensure sufficient energy reserves for prolonged physical activity.
+                        </div>
+                    </details>
+                </div>
+
+                <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+                    <p class="font-medium text-gray-800 mb-2">2. Describe the test for starch and the expected result.</p>
+                    <details class="mt-2">
+                        <summary class="text-sm text-blue-600 cursor-pointer hover:text-blue-800">Show Answer</summary>
+                        <div class="mt-2 text-sm text-gray-700">
+                            <strong>Test:</strong> Add a few drops of iodine solution to the food sample.<br>
+                            <strong>Positive result:</strong> The iodine solution changes from brown/orange to <strong>blue-black</strong> color.<br>
+                            <strong>Negative result:</strong> The iodine solution remains brown/orange.
+                        </div>
+                    </details>
+                </div>
+
+                <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+                    <p class="font-medium text-gray-800 mb-2">3. Explain why a lack of iron in the diet causes anemia.</p>
+                    <details class="mt-2">
+                        <summary class="text-sm text-blue-600 cursor-pointer hover:text-blue-800">Show Answer</summary>
+                        <div class="mt-2 text-sm text-gray-700">
+                            Iron is essential for making <strong>hemoglobin</strong>, the red pigment in red blood cells that carries oxygen. Without enough iron, the body cannot produce enough hemoglobin or red blood cells. This means less oxygen is transported to tissues, causing symptoms like tiredness, weakness, and pale skin - a condition called <strong>anemia</strong>.
+                        </div>
+                    </details>
+                </div>
+
+                <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+                    <p class="font-medium text-gray-800 mb-2">4. Compare the functions of carbohydrates and proteins in the body.</p>
+                    <details class="mt-2">
+                        <summary class="text-sm text-blue-600 cursor-pointer hover:text-blue-800">Show Answer</summary>
+                        <div class="mt-2 text-sm text-gray-700">
+                            <table class="w-full text-xs">
+                                <tr class="border-b"><th class="text-left py-1">Carbohydrates</th><th class="text-left py-1">Proteins</th></tr>
+                                <tr class="border-b"><td>Main source of energy</td><td>Growth and repair of tissues</td></tr>
+                                <tr class="border-b"><td>Stored as glycogen in liver/muscles</td><td>Make enzymes, hormones, antibodies</td></tr>
+                                <tr><td>Excess stored as fat</td><td>Excess converted to fat or excreted</td></tr>
+                            </table>
+                        </div>
+                    </details>
+                </div>
+            </div>
+        </div>
+
+        <!-- Key Takeaways -->
+        <div class="bg-gradient-to-r from-green-50 to-emerald-50 p-5 rounded-lg border border-green-200 animate-fade-in-up">
+            <h3 class="font-semibold text-green-800 mb-3"><i class="fas fa-star mr-2"></i>Key Takeaways</h3>
+            <ul class="text-green-700 text-sm space-y-2">
+                <li>• Macronutrients: Carbohydrates (energy), Proteins (growth/repair), Fats (energy storage/insulation)</li>
+                <li>• Micronutrients: Vitamins and minerals regulate body processes</li>
+                <li>• Food tests: Iodine (starch), Benedict's (sugars), Biuret (protein), Ethanol emulsion (fats)</li>
+                <li>• Deficiency diseases: Scurvy (vitamin C), Rickets (vitamin D), Anemia (iron), Goitre (iodine)</li>
+                <li>• A balanced diet contains all nutrients in correct proportions</li>
+            </ul>
+        </div>
+
+        <!-- Navigation -->
+        <div class="flex justify-between items-center mt-8">
+            <a href="index.html" class="px-4 py-2 text-gray-600 hover:text-gray-900">
+                <i class="fas fa-chevron-left mr-2"></i>Previous
+            </a>
+            <a href="photosynthesis.html" class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600">
+                Next: Photosynthesis<i class="fas fa-chevron-right ml-2"></i>
+            </a>
+        </div>
+    </main>
+
+    <script>
+        // Progress tracking
+        let progress = 0;
+        const totalSections = 9;
+        
+        function updateProgress() {
+            const percentage = Math.round((progress / totalSections) * 100);
+            document.getElementById('progressPercent').textContent = percentage + '%';
+            document.getElementById('progressBar').style.width = percentage + '%';
+        }
+
+        // Intersection Observer for progress
+        const sections = document.querySelectorAll('.section-card');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    progress = Array.from(sections).indexOf(entry.target) + 1;
+                    updateProgress();
+                }
+            });
+        }, { threshold: 0.5 });
+
+        sections.forEach(section => observer.observe(section));
+    </script>
+
+<!-- Topic Quiz System -->
+<script src="/js/topic-quiz-loader.js"></script>
+<script src="/js/topic-quiz-injector.js"></script>
+</body>
+</html>

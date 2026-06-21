@@ -1,0 +1,1864 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Metallic Bonding - Chemistry | Juanova Cortex</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @keyframes fade-in-up {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in-up { animation: fade-in-up 0.5s ease-out forwards; }
+        .step-progress { transition: width 0.3s ease-in-out; }
+        
+        /* Section cards */
+        .section-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            border: 1px solid #e5e7eb;
+        }
+        
+        /* Click hint button - silver/gray theme */
+        .click-hint {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: linear-gradient(135deg, #e5e7eb 0%, #d1d5db 100%);
+            color: #374151;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 24px;
+            padding: 12px 24px;
+            border-radius: 12px;
+            border: 2px solid #9ca3af;
+            transition: all 0.3s ease;
+            animation: pulse-hint 2s infinite;
+        }
+        .click-hint:hover {
+            background: linear-gradient(135deg, #d1d5db 0%, #9ca3af 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(107, 114, 128, 0.4);
+        }
+        @keyframes pulse-hint {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(107, 114, 128, 0.4); }
+            50% { box-shadow: 0 0 0 8px rgba(107, 114, 128, 0); }
+        }
+        
+        /* Step complete indicator */
+        .step-complete-hint {
+            background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+            border: 2px solid #10b981;
+            color: #065f46;
+            padding: 16px 24px;
+            border-radius: 12px;
+            text-align: center;
+            margin-top: 24px;
+        }
+        
+        /* Prerequisite banner */
+        .prerequisite-banner {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border: 2px solid #f59e0b;
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin-bottom: 24px;
+        }
+        
+        /* Metal cation colors - silver/gray theme */
+        .metal-color { background: linear-gradient(135deg, #9ca3af 0%, #6b7280 100%); }
+        .electron-color { background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%); }
+        
+        /* Sea of electrons animation */
+        @keyframes electron-drift {
+            0% { transform: translate(0, 0); opacity: 0.7; }
+            25% { transform: translate(10px, -5px); opacity: 1; }
+            50% { transform: translate(-5px, 10px); opacity: 0.8; }
+            75% { transform: translate(-10px, -3px); opacity: 1; }
+            100% { transform: translate(0, 0); opacity: 0.7; }
+        }
+        .electron-drift {
+            animation: electron-drift 3s ease-in-out infinite;
+        }
+        
+        /* Electron random movement */
+        @keyframes electron-random {
+            0% { transform: translate(0, 0); }
+            20% { transform: translate(15px, 8px); }
+            40% { transform: translate(-8px, 15px); }
+            60% { transform: translate(12px, -10px); }
+            80% { transform: translate(-10px, -5px); }
+            100% { transform: translate(0, 0); }
+        }
+        
+        /* Atom pulse animation */
+        @keyframes atom-pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        .atom-pulse { animation: atom-pulse 2s ease-in-out infinite; }
+        
+        /* Electron glow animation */
+        @keyframes electron-glow {
+            0%, 100% { box-shadow: 0 0 5px #3b82f6, 0 0 10px #3b82f6; }
+            50% { box-shadow: 0 0 15px #3b82f6, 0 0 25px #3b82f6; }
+        }
+        .electron-glow { animation: electron-glow 1.5s ease-in-out infinite; }
+        
+        /* Lattice 3D effect */
+        .lattice-3d {
+            perspective: 800px;
+        }
+        .lattice-grid {
+            transform-style: preserve-3d;
+            transform: rotateX(15deg) rotateY(-15deg);
+        }
+        
+        /* Metal ion badge styles */
+        .ion-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            font-weight: bold;
+            font-size: 1.2rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        
+        /* Property card hover */
+        .property-card {
+            transition: all 0.3s ease;
+        }
+        .property-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+        }
+        
+        /* Practice question styles */
+        .practice-option {
+            padding: 12px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .practice-option:hover {
+            border-color: #6b7280;
+            background: #f3f4f6;
+        }
+        .practice-option.selected {
+            border-color: #6b7280;
+            background: #e5e7eb;
+        }
+        .practice-option.correct {
+            border-color: #22c55e;
+            background: #dcfce7;
+        }
+        .practice-option.incorrect {
+            border-color: #ef4444;
+            background: #fee2e2;
+        }
+        
+        /* Quiz modal */
+        .quiz-modal {
+            backdrop-filter: blur(8px);
+        }
+        
+        /* Shell visualization */
+        .electron-shell {
+            border: 2px dashed rgba(107, 114, 128, 0.3);
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+        }
+        
+        /* Comparison table */
+        .comparison-table th, .comparison-table td {
+            border: 1px solid #e5e7eb;
+            padding: 12px;
+            text-align: center;
+        }
+        .comparison-table th {
+            background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+        }
+        
+        /* Bonding type cards */
+        .bonding-card {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .bonding-card:hover {
+            transform: scale(1.02);
+        }
+        .bonding-card.active {
+            ring: 2px;
+            ring-color: #6b7280;
+        }
+        
+        /* Mobile responsive */
+        @media (max-width: 768px) {
+            .section-card { padding: 1rem; }
+            .ion-badge { width: 50px; height: 50px; font-size: 1rem; }
+        }
+        
+        /* Sea of electrons container */
+        .sea-container {
+            position: relative;
+            background: linear-gradient(135deg, #1f2937 0%, #374151 100%);
+            border-radius: 12px;
+            padding: 2rem;
+            min-height: 250px;
+            overflow: hidden;
+        }
+        
+        .sea-electron {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background: #60a5fa;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #3b82f6, 0 0 20px #3b82f6;
+        }
+        
+        .metal-ion-3d {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #9ca3af 0%, #6b7280 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 0.8rem;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Top Navigation -->
+    <nav class="bg-white shadow-sm fixed top-0 w-full z-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center">
+                    <button id="mobileMenuBtn" class="text-gray-600 hover:text-gray-900 mr-3 md:hidden" aria-label="Menu">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                    <a href="index.html" class="flex items-center gap-2 text-gray-600 hover:text-gray-900">
+                        <i class="fas fa-arrow-left"></i>
+                        <h1 class="text-lg md:text-xl font-semibold text-gray-900">Metallic Bonding</h1>
+                    </a>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="text-sm text-gray-600 hidden sm:block">
+                        Progress: <span id="progressPercent">0%</span>
+                    </div>
+                    <div class="w-24 sm:w-32 h-2 bg-gray-200 rounded-full">
+                        <div id="progressBar" class="step-progress h-2 bg-gray-500 rounded-full" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Sidebar Overlay -->
+    <div id="sidebarOverlay" class="fixed inset-0 bg-black/50 z-40 hidden"></div>
+
+    <!-- Mobile Sidebar -->
+    <div id="mobileSidebar" class="fixed top-0 left-0 w-72 h-full bg-white z-50 transform -translate-x-full transition-transform">
+        <div class="p-4">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="font-semibold text-lg">Learning Steps</h3>
+                <button id="closeSidebarBtn" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            <ul id="mobileStepsList" class="space-y-2"></ul>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="pt-20 pb-24">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-12 gap-6">
+                <!-- Left Sidebar - Steps (Desktop) -->
+                <div class="md:col-span-3 hidden md:block">
+                    <div class="bg-white rounded-lg shadow-sm p-4 sticky top-20">
+                        <h3 class="font-semibold mb-4">Learning Steps</h3>
+                        <ul id="stepsList" class="space-y-2"></ul>
+                    </div>
+                </div>
+
+                <!-- Main Content Area -->
+                <div class="md:col-span-9">
+                    <!-- Prerequisite Banner -->
+                    <div class="prerequisite-banner">
+                        <div class="flex items-start gap-3">
+                            <div class="text-2xl">📋</div>
+                            <div>
+                                <h4 class="font-semibold text-amber-800 mb-1">Before You Start</h4>
+                                <p class="text-amber-700 text-sm mb-2">This topic builds on Ionic and Covalent Bonding. Make sure you understand:</p>
+                                <ul class="text-amber-700 text-sm list-disc pl-5 space-y-1">
+                                    <li><strong>Ionic bonding</strong> - electron transfer, electrostatic attraction</li>
+                                    <li><strong>Covalent bonding</strong> - electron sharing, molecular structures</li>
+                                    <li><strong>Electron configuration</strong> - valence electrons and shells</li>
+                                </ul>
+                                <a href="covalent-bonding.html" class="inline-flex items-center gap-2 mt-3 text-amber-800 font-medium hover:text-amber-900">
+                                    <i class="fas fa-book-open"></i>
+                                    Review: Covalent Bonding →
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Current Step Content -->
+                    <div id="stepContainer" class="bg-white rounded-lg shadow-sm p-6 mb-6"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Bottom Navigation -->
+    <div class="fixed bottom-0 w-full bg-white border-t border-gray-200 z-40">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between py-4">
+                <button id="prevStepBtn" class="px-4 py-2 text-gray-600 hover:text-gray-900 disabled:opacity-50 disabled:cursor-not-allowed">
+                    <i class="fas fa-chevron-left mr-2"></i>Previous
+                </button>
+                <button id="nextStepBtn" class="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed">
+                    Continue<i class="fas fa-chevron-right ml-2"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quiz Modal -->
+    <div id="quizModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 quiz-modal">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full mx-4 max-h-[90vh] overflow-hidden">
+            <!-- Quiz Header -->
+            <div class="bg-gradient-to-r from-gray-600 to-gray-500 text-white p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h2 class="text-xl font-bold">Metallic Bonding - Quiz</h2>
+                        <p class="text-gray-200 text-sm mt-1">Test your understanding</p>
+                    </div>
+                    <button onclick="closeQuiz()" class="text-white/80 hover:text-white transition">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
+                <div class="mt-4 h-2 bg-white/20 rounded-full overflow-hidden">
+                    <div id="quizProgressBar" class="h-full bg-white transition-all duration-300" style="width: 0%"></div>
+                </div>
+                <div class="flex justify-between text-sm mt-2 text-gray-200">
+                    <span id="quizQuestionCount">Question 1 of 10</span>
+                    <span id="quizScoreDisplay">Score: 0</span>
+                </div>
+            </div>
+            
+            <!-- Quiz Content -->
+            <div id="quizContent" class="p-6 max-h-[60vh] overflow-y-auto"></div>
+            
+            <!-- Quiz Footer -->
+            <div id="quizFooter" class="p-4 border-t bg-gray-50 flex justify-between items-center">
+                <button id="quizPrevBtn" onclick="quizPrev()" class="px-4 py-2 rounded-lg bg-gray-200 text-gray-700 hover:bg-gray-300 transition disabled:opacity-50" disabled>
+                    <i class="fas fa-arrow-left mr-2"></i>Previous
+                </button>
+                <button id="quizNextBtn" onclick="quizNext()" class="px-6 py-2 rounded-lg bg-gray-500 text-white hover:bg-gray-600 transition disabled:opacity-50" disabled>
+                    Next<i class="fas fa-arrow-right ml-2"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Score Display Modal -->
+    <div id="scoreModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full mx-4 p-6 text-center">
+            <div id="scoreIcon" class="text-6xl mb-4">🎉</div>
+            <h2 class="text-2xl font-bold text-gray-800 mb-2">Topic Complete!</h2>
+            <div class="my-6">
+                <div class="grid grid-cols-3 gap-4 text-center">
+                    <div class="bg-gray-100 p-3 rounded-lg">
+                        <p class="text-sm text-gray-600">Practice</p>
+                        <p class="text-2xl font-bold text-gray-600" id="practiceScoreDisplay">--</p>
+                    </div>
+                    <div class="bg-blue-50 p-3 rounded-lg">
+                        <p class="text-sm text-gray-600">Quiz</p>
+                        <p class="text-2xl font-bold text-blue-600" id="quizScoreDisplayFinal">--</p>
+                    </div>
+                    <div class="bg-green-50 p-3 rounded-lg">
+                        <p class="text-sm text-gray-600">Combined</p>
+                        <p class="text-2xl font-bold text-green-600" id="combinedScoreDisplay">--</p>
+                    </div>
+                </div>
+                <p class="text-sm text-gray-500 mt-2">Combined: 40% Practice + 60% Quiz</p>
+            </div>
+            <div class="flex gap-3 justify-center">
+                <button onclick="closeScoreModal()" class="px-6 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300">
+                    Close
+                </button>
+                <a href="index.html" class="px-6 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600">
+                    Back to Topics →
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script src="../subject-quiz-handler.js"></script>
+    <script>
+        // =============================================
+        // METALLIC BONDING - INTERACTIVE LEARNING MODULE
+        // =============================================
+        
+        let currentStepIndex = 0;
+        let currentChunkIndex = 0;
+        let stepsCompleted = [];
+        
+        // Metal data for reference
+        const metalData = {
+            Na: { symbol: 'Na', name: 'Sodium', electrons: 1, ion: 'Na⁺', mp: 98, conductivity: 'good' },
+            Mg: { symbol: 'Mg', name: 'Magnesium', electrons: 2, ion: 'Mg²⁺', mp: 650, conductivity: 'good' },
+            Al: { symbol: 'Al', name: 'Aluminium', electrons: 3, ion: 'Al³⁺', mp: 660, conductivity: 'excellent' },
+            Fe: { symbol: 'Fe', name: 'Iron', electrons: 2, ion: 'Fe²⁺/Fe³⁺', mp: 1538, conductivity: 'good' },
+            Cu: { symbol: 'Cu', name: 'Copper', electrons: 1, ion: 'Cu⁺/Cu²⁺', mp: 1085, conductivity: 'excellent' },
+            Au: { symbol: 'Au', name: 'Gold', electrons: 1, ion: 'Au⁺/Au³⁺', mp: 1064, conductivity: 'excellent' },
+            Zn: { symbol: 'Zn', name: 'Zinc', electrons: 2, ion: 'Zn²⁺', mp: 420, conductivity: 'good' }
+        };
+        
+        // Practice Question Tracker
+        const PracticeTracker = {
+            answers: { guided: [], independent: [], practice: [] },
+            quizScore: null,
+            
+            recordAnswer(category, questionId, isCorrect, details) {
+                if (!this.answers[category]) this.answers[category] = [];
+                this.answers[category].push({ id: questionId, correct: isCorrect, details, timestamp: Date.now() });
+                this.saveToStorage();
+            },
+            
+            recordQuizScore(score, total) {
+                this.quizScore = { score, total, percentage: Math.round((score / total) * 100) };
+                this.saveToStorage();
+            },
+            
+            getCombinedScore() {
+                let practiceCorrect = 0;
+                let practiceTotal = 0;
+                
+                Object.values(this.answers).forEach(arr => {
+                    arr.forEach(a => {
+                        practiceTotal++;
+                        if (a.correct) practiceCorrect++;
+                    });
+                });
+                
+                const practicePercent = practiceTotal > 0 ? Math.round((practiceCorrect / practiceTotal) * 100) : null;
+                const quizPercent = this.quizScore ? this.quizScore.percentage : null;
+                
+                // Combined score: 40% practice, 60% quiz
+                let combined = null;
+                if (practicePercent !== null && quizPercent !== null) {
+                    combined = Math.round((practicePercent * 0.4) + (quizPercent * 0.6));
+                } else if (quizPercent !== null) {
+                    combined = quizPercent;
+                } else if (practicePercent !== null) {
+                    combined = practicePercent;
+                }
+                
+                return { practice: practicePercent, quiz: quizPercent, combined };
+            },
+            
+            saveToStorage() {
+                try {
+                    localStorage.setItem('metallicBonding_progress', JSON.stringify({
+                        answers: this.answers,
+                        quizScore: this.quizScore
+                    }));
+                } catch (e) {}
+            },
+            
+            loadFromStorage() {
+                try {
+                    const saved = localStorage.getItem('metallicBonding_progress');
+                    if (saved) {
+                        const data = JSON.parse(saved);
+                        this.answers = data.answers || { guided: [], independent: [], practice: [] };
+                        this.quizScore = data.quizScore || null;
+                    }
+                } catch (e) {}
+            }
+        };
+        
+        PracticeTracker.loadFromStorage();
+        
+        // Topic data with all content
+        const topicData = {
+            title: "Metallic Bonding",
+            steps: [
+                {
+                    id: "introduction",
+                    title: "Introduction to Metallic Bonding",
+                    type: "note",
+                    chunks: [
+                        {
+                            intro: "Welcome to Metallic Bonding! After learning about ionic and covalent bonds, let's explore how metal atoms bond together to form the materials we use every day!",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-atom text-gray-500 mr-3"></i>What is Metallic Bonding?
+                                    </h3>
+                                    <p class="text-gray-700 leading-relaxed mb-4">
+                                        A <strong class="text-gray-600">metallic bond</strong> is the electrostatic attraction between positive metal ions and a "sea" of delocalized electrons. Unlike ionic or covalent bonds, metallic bonding involves electrons that are free to move throughout the entire metal structure.
+                                    </p>
+                                    
+                                    <div class="bg-gradient-to-r from-gray-100 to-gray-200 p-6 rounded-lg mb-4">
+                                        <div class="flex items-center justify-center gap-6 flex-wrap">
+                                            <div class="text-center">
+                                                <div class="ion-badge metal-color text-white mb-2">M⁺</div>
+                                                <p class="text-sm text-gray-600">Metal Cations</p>
+                                                <p class="text-xs text-gray-500">in fixed positions</p>
+                                            </div>
+                                            <div class="text-3xl">+</div>
+                                            <div class="text-center">
+                                                <div class="ion-badge electron-color text-white mb-2">e⁻</div>
+                                                <p class="text-sm text-gray-600">Delocalized Electrons</p>
+                                                <p class="text-xs text-gray-500">free to move</p>
+                                            </div>
+                                            <div class="text-3xl">=</div>
+                                            <div class="text-center bg-white p-3 rounded-lg border-2 border-gray-300">
+                                                <i class="fas fa-cube text-gray-500 text-2xl mb-2"></i>
+                                                <p class="font-bold text-gray-700">Metallic Bond</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-4">
+                                        <h4 class="font-semibold text-blue-800 mb-2"><i class="fas fa-lightbulb mr-2"></i>Key Difference from Other Bonds</h4>
+                                        <ul class="text-gray-700 space-y-2">
+                                            <li><strong>Ionic:</strong> Electrons transferred, ions fixed in lattice</li>
+                                            <li><strong>Covalent:</strong> Electrons shared between specific atoms</li>
+                                            <li><strong>Metallic:</strong> Electrons shared between ALL atoms - "sea of electrons"</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            `
+                        },
+                        {
+                            intro: "The 'sea of electrons' model explains why metals have their characteristic properties. Let's visualize this!",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-water text-gray-500 mr-3"></i>The Sea of Electrons Model
+                                    </h3>
+                                    <p class="text-gray-700 mb-4">
+                                        In a metal, the valence electrons are <strong class="text-gray-600">delocalized</strong> - they don't belong to any specific atom but move freely throughout the entire metal structure, like water in a sea.
+                                    </p>
+                                    
+                                    <div id="seaOfElectronsViz" class="sea-container mb-4">
+                                        <!-- Sea of electrons animation -->
+                                        <div class="absolute inset-0 flex items-center justify-center">
+                                            <div class="grid grid-cols-4 gap-4 p-4">
+                                                <div class="metal-ion-3d atom-pulse" style="animation-delay: 0s;">Na⁺</div>
+                                                <div class="metal-ion-3d atom-pulse" style="animation-delay: 0.3s;">Na⁺</div>
+                                                <div class="metal-ion-3d atom-pulse" style="animation-delay: 0.6s;">Na⁺</div>
+                                                <div class="metal-ion-3d atom-pulse" style="animation-delay: 0.9s;">Na⁺</div>
+                                                <div class="metal-ion-3d atom-pulse" style="animation-delay: 0.2s;">Na⁺</div>
+                                                <div class="metal-ion-3d atom-pulse" style="animation-delay: 0.5s;">Na⁺</div>
+                                                <div class="metal-ion-3d atom-pulse" style="animation-delay: 0.8s;">Na⁺</div>
+                                                <div class="metal-ion-3d atom-pulse" style="animation-delay: 0.1s;">Na⁺</div>
+                                                <div class="metal-ion-3d atom-pulse" style="animation-delay: 0.4s;">Na⁺</div>
+                                                <div class="metal-ion-3d atom-pulse" style="animation-delay: 0.7s;">Na⁺</div>
+                                                <div class="metal-ion-3d atom-pulse" style="animation-delay: 1s;">Na⁺</div>
+                                                <div class="metal-ion-3d atom-pulse" style="animation-delay: 0.3s;">Na⁺</div>
+                                            </div>
+                                        </div>
+                                        <!-- Animated electrons -->
+                                        <div class="sea-electron electron-drift" style="top: 20%; left: 15%; animation-delay: 0s;"></div>
+                                        <div class="sea-electron electron-drift" style="top: 40%; left: 45%; animation-delay: 0.5s;"></div>
+                                        <div class="sea-electron electron-drift" style="top: 60%; left: 25%; animation-delay: 1s;"></div>
+                                        <div class="sea-electron electron-drift" style="top: 30%; left: 70%; animation-delay: 1.5s;"></div>
+                                        <div class="sea-electron electron-drift" style="top: 70%; left: 60%; animation-delay: 2s;"></div>
+                                        <div class="sea-electron electron-drift" style="top: 50%; left: 85%; animation-delay: 0.3s;"></div>
+                                        <div class="sea-electron electron-drift" style="top: 80%; left: 40%; animation-delay: 0.8s;"></div>
+                                        <div class="sea-electron electron-drift" style="top: 15%; left: 55%; animation-delay: 1.2s;"></div>
+                                    </div>
+                                    
+                                    <div class="flex justify-center gap-4 text-sm mb-4">
+                                        <div class="flex items-center gap-2">
+                                            <div class="w-4 h-4 rounded-full bg-gradient-to-br from-gray-400 to-gray-600"></div>
+                                            <span class="text-gray-600">Metal Cations (Na⁺)</span>
+                                        </div>
+                                        <div class="flex items-center gap-2">
+                                            <div class="w-4 h-4 rounded-full bg-blue-400 shadow-lg shadow-blue-400/50"></div>
+                                            <span class="text-gray-600">Delocalized Electrons</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="bg-gray-100 p-4 rounded-lg">
+                                        <h4 class="font-semibold text-gray-800 mb-2">How It Forms:</h4>
+                                        <ol class="list-decimal pl-5 text-gray-700 space-y-1">
+                                            <li>Metal atoms have low ionization energies</li>
+                                            <li>They easily lose their valence electrons</li>
+                                            <li>Electrons become delocalized (free to move)</li>
+                                            <li>Positive metal ions are held together by the electron sea</li>
+                                        </ol>
+                                    </div>
+                                    
+                                    <button class="click-hint" onclick="nextChunk()">
+                                        <i class="fas fa-arrow-right"></i>
+                                        <span>Continue →</span>
+                                    </button>
+                                </div>
+                            `
+                        }
+                    ]
+                },
+                {
+                    id: "metallic-bond",
+                    title: "The Metallic Bond",
+                    type: "simulation",
+                    chunks: [
+                        {
+                            intro: "Let's explore what makes metallic bonds unique - the delocalized electrons and how they hold metal ions together!",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-magnet text-gray-500 mr-3"></i>Delocalized Electrons
+                                    </h3>
+                                    <p class="text-gray-700 mb-4">
+                                        The key feature of metallic bonding is that the valence electrons are <strong class="text-gray-600">not attached to any particular atom</strong>. They are "delocalized" - free to wander throughout the entire metal structure.
+                                    </p>
+                                    
+                                    <div class="grid md:grid-cols-2 gap-4 mb-4">
+                                        <div class="bg-gray-50 p-4 rounded-lg border-l-4 border-gray-500">
+                                            <h4 class="font-semibold text-gray-800 mb-2">Metal Atoms</h4>
+                                            <ul class="text-gray-700 text-sm space-y-1">
+                                                <li>• Have 1-3 valence electrons</li>
+                                                <li>• Low ionization energy</li>
+                                                <li>• Lose electrons easily</li>
+                                                <li>• Become positive ions (cations)</li>
+                                            </ul>
+                                        </div>
+                                        <div class="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-500">
+                                            <h4 class="font-semibold text-blue-800 mb-2">Delocalized Electrons</h4>
+                                            <ul class="text-gray-700 text-sm space-y-1">
+                                                <li>• Free to move throughout metal</li>
+                                                <li>• Not bound to any atom</li>
+                                                <li>• Hold cations together</li>
+                                                <li>• Responsible for conductivity</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="bg-amber-50 border-l-4 border-amber-500 p-4">
+                                        <h4 class="font-semibold text-amber-800 mb-2"><i class="fas fa-star mr-2"></i>Important Concept</h4>
+                                        <p class="text-gray-700">The metallic bond is <strong>non-directional</strong> - the attraction occurs in all directions. This is different from covalent bonds which have specific directions!</p>
+                                    </div>
+                                </div>
+                            `
+                        },
+                        {
+                            intro: "Different metals have different numbers of delocalized electrons. Let's see how this affects bond strength!",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-chart-line text-gray-500 mr-3"></i>Bond Strength & Electron Count
+                                    </h3>
+                                    <p class="text-gray-700 mb-4">
+                                        The strength of metallic bonding depends on the <strong class="text-gray-600">number of delocalized electrons</strong> and the <strong>charge on the metal ions</strong>.
+                                    </p>
+                                    
+                                    <div class="bg-gray-50 p-4 rounded-lg mb-4">
+                                        <p class="font-medium text-gray-700 mb-3">Compare these metals:</p>
+                                        <div class="grid md:grid-cols-3 gap-4">
+                                            <div class="bg-white p-4 rounded-lg border-2 border-gray-200 text-center">
+                                                <div class="text-3xl mb-2">Na</div>
+                                                <p class="text-sm text-gray-600">Sodium</p>
+                                                <p class="text-gray-800 font-mono mt-2">1 delocalized e⁻</p>
+                                                <p class="text-gray-800 font-mono">Na⁺ ions</p>
+                                                <div class="mt-2 p-2 bg-gray-100 rounded">
+                                                    <p class="text-xs text-gray-600">Melting Point</p>
+                                                    <p class="font-bold text-gray-700">98°C</p>
+                                                </div>
+                                            </div>
+                                            <div class="bg-white p-4 rounded-lg border-2 border-gray-300 text-center">
+                                                <div class="text-3xl mb-2">Mg</div>
+                                                <p class="text-sm text-gray-600">Magnesium</p>
+                                                <p class="text-gray-800 font-mono mt-2">2 delocalized e⁻</p>
+                                                <p class="text-gray-800 font-mono">Mg²⁺ ions</p>
+                                                <div class="mt-2 p-2 bg-gray-100 rounded">
+                                                    <p class="text-xs text-gray-600">Melting Point</p>
+                                                    <p class="font-bold text-gray-700">650°C</p>
+                                                </div>
+                                            </div>
+                                            <div class="bg-white p-4 rounded-lg border-2 border-gray-400 text-center">
+                                                <div class="text-3xl mb-2">Al</div>
+                                                <p class="text-sm text-gray-600">Aluminium</p>
+                                                <p class="text-gray-800 font-mono mt-2">3 delocalized e⁻</p>
+                                                <p class="text-gray-800 font-mono">Al³⁺ ions</p>
+                                                <div class="mt-2 p-2 bg-gray-100 rounded">
+                                                    <p class="text-xs text-gray-600">Melting Point</p>
+                                                    <p class="font-bold text-gray-700">660°C</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="bg-green-50 p-4 rounded-lg">
+                                        <p class="text-green-800"><i class="fas fa-lightbulb mr-2"></i><strong>General Rule:</strong> More delocalized electrons = stronger metallic bonding = higher melting point!</p>
+                                    </div>
+                                    
+                                    <button class="click-hint" onclick="nextChunk()">
+                                        <i class="fas fa-arrow-right"></i>
+                                        <span>Continue to Properties →</span>
+                                    </button>
+                                </div>
+                            `
+                        }
+                    ]
+                },
+                {
+                    id: "properties",
+                    title: "Properties of Metals",
+                    type: "note",
+                    chunks: [
+                        {
+                            intro: "The sea of electrons model explains all the characteristic properties of metals. Let's explore each one!",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-flask text-gray-500 mr-3"></i>Key Properties of Metals
+                                    </h3>
+                                    <p class="text-gray-700 mb-4">The metallic structure with delocalized electrons gives metals their unique properties.</p>
+                                    
+                                    <div class="grid md:grid-cols-2 gap-4 mb-4">
+                                        <div class="property-card bg-yellow-50 p-4 rounded-lg border-l-4 border-yellow-500">
+                                            <div class="flex items-center gap-3 mb-2">
+                                                <i class="fas fa-bolt text-yellow-500 text-2xl"></i>
+                                                <h4 class="font-semibold text-yellow-800">Electrical Conductivity</h4>
+                                            </div>
+                                            <p class="text-gray-700 text-sm">Delocalized electrons can carry electric current through the metal.</p>
+                                            <div class="mt-2 p-2 bg-white rounded text-sm">
+                                                <p class="text-yellow-600">Best conductors: Ag, Cu, Au</p>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="property-card bg-blue-50 p-4 rounded-lg border-l-4 border-blue-500">
+                                            <div class="flex items-center gap-3 mb-2">
+                                                <i class="fas fa-fire text-blue-500 text-2xl"></i>
+                                                <h4 class="font-semibold text-blue-800">Thermal Conductivity</h4>
+                                            </div>
+                                            <p class="text-gray-700 text-sm">Electrons transfer kinetic energy efficiently throughout the metal.</p>
+                                            <div class="mt-2 p-2 bg-white rounded text-sm">
+                                                <p>Heat spreads quickly in metals</p>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="property-card bg-green-50 p-4 rounded-lg border-l-4 border-green-500">
+                                            <div class="flex items-center gap-3 mb-2">
+                                                <i class="fas fa-hammer text-green-500 text-2xl"></i>
+                                                <h4 class="font-semibold text-green-800">Malleable</h4>
+                                            </div>
+                                            <p class="text-gray-700 text-sm">Layers can slide over each other without breaking bonds.</p>
+                                            <div class="mt-2 p-2 bg-white rounded text-sm">
+                                                <p>Can be hammered into sheets</p>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="property-card bg-purple-50 p-4 rounded-lg border-l-4 border-purple-500">
+                                            <div class="flex items-center gap-3 mb-2">
+                                                <i class="fas fa-arrows-alt text-purple-500 text-2xl"></i>
+                                                <h4 class="font-semibold text-purple-800">Ductile</h4>
+                                            </div>
+                                            <p class="text-gray-700 text-sm">Metal ions can slide past each other while staying bonded.</p>
+                                            <div class="mt-2 p-2 bg-white rounded text-sm">
+                                                <p>Can be drawn into wires</p>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="property-card bg-amber-50 p-4 rounded-lg border-l-4 border-amber-500 md:col-span-2">
+                                            <div class="flex items-center gap-3 mb-2">
+                                                <i class="fas fa-sun text-amber-500 text-2xl"></i>
+                                                <h4 class="font-semibold text-amber-800">Lustrous (Shiny)</h4>
+                                            </div>
+                                            <p class="text-gray-700 text-sm">Delocalized electrons reflect light, giving metals their characteristic shine.</p>
+                                            <div class="mt-2 p-2 bg-white rounded text-sm">
+                                                <p>Metals have a metallic luster when freshly cut or polished</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            `
+                        },
+                        {
+                            intro: "Let's understand WHY metals are malleable while ionic compounds are brittle!",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-exchange-alt text-gray-500 mr-3"></i>Malleability vs Brittleness
+                                    </h3>
+                                    <p class="text-gray-700 mb-4">This is a key difference between metallic and ionic structures!</p>
+                                    
+                                    <div class="grid md:grid-cols-2 gap-4 mb-4">
+                                        <div class="bg-gray-100 p-4 rounded-lg">
+                                            <h4 class="font-semibold text-gray-800 mb-3 text-center">Metallic Structure</h4>
+                                            <div class="bg-white p-3 rounded mb-3">
+                                                <svg viewBox="0 0 150 80" class="w-full">
+                                                    <!-- Metal ions in rows -->
+                                                    <circle cx="30" cy="20" r="10" fill="#9ca3af"/>
+                                                    <circle cx="60" cy="20" r="10" fill="#9ca3af"/>
+                                                    <circle cx="90" cy="20" r="10" fill="#9ca3af"/>
+                                                    <circle cx="120" cy="20" r="10" fill="#9ca3af"/>
+                                                    <circle cx="30" cy="50" r="10" fill="#9ca3af"/>
+                                                    <circle cx="60" cy="50" r="10" fill="#9ca3af"/>
+                                                    <circle cx="90" cy="50" r="10" fill="#9ca3af"/>
+                                                    <circle cx="120" cy="50" r="10" fill="#9ca3af"/>
+                                                    <!-- Electron sea -->
+                                                    <text x="75" y="40" text-anchor="middle" fill="#3b82f6" font-size="8">e⁻ e⁻ e⁻</text>
+                                                </svg>
+                                            </div>
+                                            <p class="text-sm text-gray-600 text-center">When layers slide, the electron sea maintains bonding</p>
+                                            <div class="mt-2 text-center">
+                                                <span class="text-green-600 font-bold">✓ MALLEABLE</span>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="bg-orange-50 p-4 rounded-lg">
+                                            <h4 class="font-semibold text-orange-800 mb-3 text-center">Ionic Structure</h4>
+                                            <div class="bg-white p-3 rounded mb-3">
+                                                <svg viewBox="0 0 150 80" class="w-full">
+                                                    <!-- Ionic lattice -->
+                                                    <circle cx="30" cy="20" r="10" fill="#f97316"/>
+                                                    <circle cx="60" cy="20" r="8" fill="#3b82f6"/>
+                                                    <circle cx="90" cy="20" r="10" fill="#f97316"/>
+                                                    <circle cx="120" cy="20" r="8" fill="#3b82f6"/>
+                                                    <circle cx="30" cy="50" r="8" fill="#3b82f6"/>
+                                                    <circle cx="60" cy="50" r="10" fill="#f97316"/>
+                                                    <circle cx="90" cy="50" r="8" fill="#3b82f6"/>
+                                                    <circle cx="120" cy="50" r="10" fill="#f97316"/>
+                                                </svg>
+                                            </div>
+                                            <p class="text-sm text-gray-600 text-center">When layers slide, like charges align and repel!</p>
+                                            <div class="mt-2 text-center">
+                                                <span class="text-red-600 font-bold">✗ BRITTLE</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="bg-blue-50 p-4 rounded-lg">
+                                        <p class="text-blue-800"><i class="fas fa-lightbulb mr-2"></i><strong>Key Point:</strong> The non-directional nature of metallic bonding means the electron sea can "roll" with the ions, maintaining bonds even when the structure deforms!</p>
+                                    </div>
+                                    
+                                    <button class="click-hint" onclick="nextChunk()">
+                                        <i class="fas fa-arrow-right"></i>
+                                        <span>Continue to Lattice Structure →</span>
+                                    </button>
+                                </div>
+                            `
+                        }
+                    ]
+                },
+                {
+                    id: "lattice-structure",
+                    title: "Metallic Lattice Structure",
+                    type: "simulation",
+                    chunks: [
+                        {
+                            intro: "Metals form giant lattice structures where metal ions are arranged in regular patterns, held together by the sea of delocalized electrons!",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-cubes text-gray-500 mr-3"></i>Metallic Lattice
+                                    </h3>
+                                    <p class="text-gray-700 mb-4">
+                                        In a metallic lattice, metal ions are arranged in regular patterns. The structure extends in all three dimensions, creating a giant lattice.
+                                    </p>
+                                    
+                                    <div class="lattice-3d mb-4">
+                                        <div id="latticeViz" class="lattice-grid bg-gradient-to-br from-gray-100 to-gray-200 rounded-lg p-6 min-h-[250px] flex items-center justify-center">
+                                            <svg viewBox="0 0 200 200" class="w-full max-w-[300px]">
+                                                <!-- Row 1 -->
+                                                <circle cx="30" cy="30" r="15" fill="#9ca3af" class="atom-pulse"/>
+                                                <circle cx="80" cy="30" r="15" fill="#9ca3af" class="atom-pulse" style="animation-delay: 0.2s"/>
+                                                <circle cx="130" cy="30" r="15" fill="#9ca3af" class="atom-pulse" style="animation-delay: 0.4s"/>
+                                                <circle cx="180" cy="30" r="15" fill="#9ca3af" class="atom-pulse" style="animation-delay: 0.6s"/>
+                                                
+                                                <!-- Row 2 -->
+                                                <circle cx="55" cy="70" r="15" fill="#6b7280" class="atom-pulse" style="animation-delay: 0.1s"/>
+                                                <circle cx="105" cy="70" r="15" fill="#6b7280" class="atom-pulse" style="animation-delay: 0.3s"/>
+                                                <circle cx="155" cy="70" r="15" fill="#6b7280" class="atom-pulse" style="animation-delay: 0.5s"/>
+                                                
+                                                <!-- Row 3 -->
+                                                <circle cx="30" cy="110" r="15" fill="#9ca3af" class="atom-pulse" style="animation-delay: 0.7s"/>
+                                                <circle cx="80" cy="110" r="15" fill="#9ca3af" class="atom-pulse" style="animation-delay: 0.9s"/>
+                                                <circle cx="130" cy="110" r="15" fill="#9ca3af" class="atom-pulse" style="animation-delay: 1.1s"/>
+                                                <circle cx="180" cy="110" r="15" fill="#9ca3af" class="atom-pulse" style="animation-delay: 1.3s"/>
+                                                
+                                                <!-- Row 4 -->
+                                                <circle cx="55" cy="150" r="15" fill="#6b7280" class="atom-pulse" style="animation-delay: 0.8s"/>
+                                                <circle cx="105" cy="150" r="15" fill="#6b7280" class="atom-pulse" style="animation-delay: 1s"/>
+                                                <circle cx="155" cy="150" r="15" fill="#6b7280" class="atom-pulse" style="animation-delay: 1.2s"/>
+                                                
+                                                <!-- Row 5 -->
+                                                <circle cx="30" cy="190" r="15" fill="#9ca3af" class="atom-pulse" style="animation-delay: 1.4s"/>
+                                                <circle cx="80" cy="190" r="15" fill="#9ca3af" class="atom-pulse" style="animation-delay: 1.6s"/>
+                                                <circle cx="130" cy="190" r="15" fill="#9ca3af" class="atom-pulse" style="animation-delay: 1.8s"/>
+                                                <circle cx="180" cy="190" r="15" fill="#9ca3af" class="atom-pulse" style="animation-delay: 2s"/>
+                                                
+                                                <!-- Delocalized electrons -->
+                                                <circle cx="55" cy="50" r="4" fill="#60a5fa" class="electron-glow"/>
+                                                <circle cx="130" cy="90" r="4" fill="#60a5fa" class="electron-glow" style="animation-delay: 0.3s"/>
+                                                <circle cx="55" cy="130" r="4" fill="#60a5fa" class="electron-glow" style="animation-delay: 0.6s"/>
+                                                <circle cx="155" cy="170" r="4" fill="#60a5fa" class="electron-glow" style="animation-delay: 0.9s"/>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="flex justify-center gap-6 text-sm mb-4">
+                                        <div class="flex items-center gap-2">
+                                            <div class="w-6 h-6 rounded-full bg-gradient-to-br from-gray-400 to-gray-600"></div>
+                                            <span>Metal Cations</span>
+                                        </div>
+                                        <div class="flex items-center gap-2">
+                                            <div class="w-4 h-4 rounded-full bg-blue-400 shadow-lg shadow-blue-400/50"></div>
+                                            <span>Delocalized e⁻</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="bg-green-50 border-l-4 border-green-500 p-4">
+                                        <h4 class="font-semibold text-green-800 mb-2">Key Features:</h4>
+                                        <ul class="text-gray-700 space-y-1">
+                                            <li>• Regular arrangement of metal ions</li>
+                                            <li>• Electrons move freely throughout</li>
+                                            <li>• Strong, non-directional bonding</li>
+                                            <li>• No individual molecules - giant structure</li>
+                                            <li>• High melting points (except mercury)</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            `
+                        },
+                        {
+                            intro: "Metals can have different packing arrangements. The two most common are close-packed structures!",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-layer-group text-gray-500 mr-3"></i>Metal Packing Structures
+                                    </h3>
+                                    <p class="text-gray-700 mb-4">Metal ions pack together in efficient arrangements to maximize bonding.</p>
+                                    
+                                    <div class="grid md:grid-cols-2 gap-4 mb-4">
+                                        <div class="bg-white border-2 border-gray-200 p-4 rounded-lg">
+                                            <h4 class="font-semibold text-gray-700 mb-2">Body-Centered Cubic (BCC)</h4>
+                                            <div class="text-center mb-3">
+                                                <svg viewBox="0 0 100 100" class="w-24 h-24 mx-auto">
+                                                    <rect x="10" y="10" width="80" height="80" fill="none" stroke="#9ca3af" stroke-width="2"/>
+                                                    <circle cx="10" cy="10" r="10" fill="#9ca3af"/>
+                                                    <circle cx="90" cy="10" r="10" fill="#9ca3af"/>
+                                                    <circle cx="10" cy="90" r="10" fill="#9ca3af"/>
+                                                    <circle cx="90" cy="90" r="10" fill="#9ca3af"/>
+                                                    <circle cx="50" cy="50" r="12" fill="#6b7280"/>
+                                                </svg>
+                                            </div>
+                                            <p class="text-sm text-gray-600">Corner atoms + center atom</p>
+                                            <p class="text-xs text-gray-500 mt-1">Examples: Fe, Cr, W</p>
+                                        </div>
+                                        
+                                        <div class="bg-white border-2 border-gray-300 p-4 rounded-lg">
+                                            <h4 class="font-semibold text-gray-700 mb-2">Face-Centered Cubic (FCC)</h4>
+                                            <div class="text-center mb-3">
+                                                <svg viewBox="0 0 100 100" class="w-24 h-24 mx-auto">
+                                                    <rect x="10" y="10" width="80" height="80" fill="none" stroke="#9ca3af" stroke-width="2"/>
+                                                    <circle cx="10" cy="10" r="8" fill="#9ca3af"/>
+                                                    <circle cx="90" cy="10" r="8" fill="#9ca3af"/>
+                                                    <circle cx="10" cy="90" r="8" fill="#9ca3af"/>
+                                                    <circle cx="90" cy="90" r="8" fill="#9ca3af"/>
+                                                    <circle cx="50" cy="10" r="8" fill="#6b7280"/>
+                                                    <circle cx="50" cy="90" r="8" fill="#6b7280"/>
+                                                    <circle cx="10" cy="50" r="8" fill="#6b7280"/>
+                                                    <circle cx="90" cy="50" r="8" fill="#6b7280"/>
+                                                </svg>
+                                            </div>
+                                            <p class="text-sm text-gray-600">Corner atoms + face centers</p>
+                                            <p class="text-xs text-gray-500 mt-1">Examples: Cu, Al, Au, Ag</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="bg-amber-50 p-4 rounded-lg">
+                                        <p class="text-amber-800"><i class="fas fa-lightbulb mr-2"></i><strong>Note:</strong> FCC is more closely packed (74% efficiency) than BCC (68% efficiency), which affects properties like density and malleability.</p>
+                                    </div>
+                                    
+                                    <button class="click-hint" onclick="nextChunk()">
+                                        <i class="fas fa-arrow-right"></i>
+                                        <span>Continue to Bonding Comparison →</span>
+                                    </button>
+                                </div>
+                            `
+                        }
+                    ]
+                },
+                {
+                    id: "comparison",
+                    title: "Comparison of Bonding Types",
+                    type: "note",
+                    chunks: [
+                        {
+                            intro: "Now that we've learned about all three types of bonding, let's compare them side by side!",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-balance-scale text-gray-500 mr-3"></i>Bonding Types Comparison
+                                    </h3>
+                                    
+                                    <div class="overflow-x-auto mb-4">
+                                        <table class="comparison-table w-full text-sm">
+                                            <thead>
+                                                <tr>
+                                                    <th class="bg-gray-100">Property</th>
+                                                    <th class="bg-orange-100">Ionic</th>
+                                                    <th class="bg-blue-100">Covalent</th>
+                                                    <th class="bg-gray-200">Metallic</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td class="font-semibold bg-gray-50">Bond Formation</td>
+                                                    <td>Electron transfer</td>
+                                                    <td>Electron sharing</td>
+                                                    <td>Delocalized electrons</td>
+                                                </tr>
+                                                <tr class="bg-gray-50">
+                                                    <td class="font-semibold">Particles Involved</td>
+                                                    <td>Metal + Non-metal</td>
+                                                    <td>Non-metal + Non-metal</td>
+                                                    <td>Metal + Metal</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="font-semibold bg-gray-50">Structure</td>
+                                                    <td>Giant ionic lattice</td>
+                                                    <td>Molecules or giant covalent</td>
+                                                    <td>Giant metallic lattice</td>
+                                                </tr>
+                                                <tr class="bg-gray-50">
+                                                    <td class="font-semibold">Melting Point</td>
+                                                    <td>High</td>
+                                                    <td>Low (molecular) / High (giant)</td>
+                                                    <td>High (most)</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="font-semibold bg-gray-50">Electrical Conductivity</td>
+                                                    <td>Only when molten/aqueous</td>
+                                                    <td>Generally poor</td>
+                                                    <td class="text-green-600 font-semibold">Good conductors</td>
+                                                </tr>
+                                                <tr class="bg-gray-50">
+                                                    <td class="font-semibold">Malleability</td>
+                                                    <td class="text-red-600">Brittle</td>
+                                                    <td>Variable</td>
+                                                    <td class="text-green-600 font-semibold">Malleable & Ductile</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="font-semibold bg-gray-50">Example</td>
+                                                    <td>NaCl, MgO</td>
+                                                    <td>H₂O, CO₂, SiO₂</td>
+                                                    <td>Fe, Cu, Au</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            `
+                        },
+                        {
+                            intro: "Let's practice identifying bonding types from properties!",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-question-circle text-gray-500 mr-3"></i>Identify the Bonding Type
+                                    </h3>
+                                    <p class="text-gray-700 mb-4">Click on a card to reveal the bonding type:</p>
+                                    
+                                    <div class="grid md:grid-cols-3 gap-4 mb-4">
+                                        <div class="bonding-card bg-orange-50 p-4 rounded-lg border-2 border-orange-200 cursor-pointer" onclick="this.querySelector('.answer').classList.toggle('hidden')">
+                                            <h4 class="font-semibold text-orange-800 mb-2">High MP, Brittle, Conducts when molten</h4>
+                                            <p class="text-sm text-gray-600">Click to reveal →</p>
+                                            <p class="answer hidden mt-2 font-bold text-orange-600 text-lg">IONIC</p>
+                                        </div>
+                                        
+                                        <div class="bonding-card bg-blue-50 p-4 rounded-lg border-2 border-blue-200 cursor-pointer" onclick="this.querySelector('.answer').classList.toggle('hidden')">
+                                            <h4 class="font-semibold text-blue-800 mb-2">Low MP, Poor conductor, Exists as molecules</h4>
+                                            <p class="text-sm text-gray-600">Click to reveal →</p>
+                                            <p class="answer hidden mt-2 font-bold text-blue-600 text-lg">COVALENT (Simple)</p>
+                                        </div>
+                                        
+                                        <div class="bonding-card bg-gray-100 p-4 rounded-lg border-2 border-gray-300 cursor-pointer" onclick="this.querySelector('.answer').classList.toggle('hidden')">
+                                            <h4 class="font-semibold text-gray-800 mb-2">High MP, Malleable, Good conductor</h4>
+                                            <p class="text-sm text-gray-600">Click to reveal →</p>
+                                            <p class="answer hidden mt-2 font-bold text-gray-600 text-lg">METALLIC</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="bg-indigo-50 p-4 rounded-lg mb-4">
+                                        <h4 class="font-semibold text-indigo-800 mb-2">Summary - Quick Identification:</h4>
+                                        <ul class="text-gray-700 space-y-1">
+                                            <li>• <strong>Metal + Non-metal</strong> → Usually Ionic</li>
+                                            <li>• <strong>Non-metal + Non-metal</strong> → Usually Covalent</li>
+                                            <li>• <strong>Metal only</strong> → Metallic bonding</li>
+                                            <li>• <strong>Conducts as solid</strong> → Metallic (or graphite)</li>
+                                            <li>• <strong>Malleable</strong> → Metallic</li>
+                                            <li>• <strong>Brittle</strong> → Ionic</li>
+                                        </ul>
+                                    </div>
+                                    
+                                    <button class="click-hint" onclick="nextChunk()">
+                                        <i class="fas fa-arrow-right"></i>
+                                        <span>Continue to Practice →</span>
+                                    </button>
+                                </div>
+                            `
+                        }
+                    ]
+                },
+                {
+                    id: "practice",
+                    title: "Practice Questions",
+                    type: "practice",
+                    chunks: [
+                        {
+                            intro: "Let's practice what you've learned! First, some guided questions with feedback.",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-graduation-cap text-gray-500 mr-3"></i>Guided Practice
+                                    </h3>
+                                    <p class="text-gray-700 mb-4">Test your understanding of metallic bonding:</p>
+                                    
+                                    <div class="space-y-4" id="guidedPracticeContainer">
+                                        <!-- Question 1 -->
+                                        <div class="bg-gray-50 p-4 rounded-lg" id="guidedQ1">
+                                            <p class="font-medium text-gray-800 mb-2">1. What are delocalized electrons?</p>
+                                            <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                                                <button onclick="checkGuidedAnswer(1, 'Electrons that are shared between two specific atoms', this)" class="practice-option text-sm text-left">Electrons that are shared between two specific atoms</button>
+                                                <button onclick="checkGuidedAnswer(1, 'Electrons that are free to move throughout the metal structure', this)" class="practice-option text-sm text-left">Electrons that are free to move throughout the metal structure</button>
+                                                <button onclick="checkGuidedAnswer(1, 'Electrons that have been transferred to another atom', this)" class="practice-option text-sm text-left">Electrons that have been transferred to another atom</button>
+                                                <button onclick="checkGuidedAnswer(1, 'Electrons in the inner shells of atoms', this)" class="practice-option text-sm text-left">Electrons in the inner shells of atoms</button>
+                                            </div>
+                                            <p class="text-sm mt-2 hidden" id="guidedFeedback1"></p>
+                                        </div>
+                                        
+                                        <!-- Question 2 -->
+                                        <div class="bg-gray-50 p-4 rounded-lg" id="guidedQ2">
+                                            <p class="font-medium text-gray-800 mb-2">2. Why are metals good conductors of electricity?</p>
+                                            <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                                                <button onclick="checkGuidedAnswer(2, 'They have free-moving delocalized electrons', this)" class="practice-option text-sm text-left">They have free-moving delocalized electrons</button>
+                                                <button onclick="checkGuidedAnswer(2, 'They have ions that can carry charge', this)" class="practice-option text-sm text-left">They have ions that can carry charge</button>
+                                                <button onclick="checkGuidedAnswer(2, 'They have a regular lattice structure', this)" class="practice-option text-sm text-left">They have a regular lattice structure</button>
+                                                <button onclick="checkGuidedAnswer(2, 'They have many valence electrons', this)" class="practice-option text-sm text-left">They have many valence electrons</button>
+                                            </div>
+                                            <p class="text-sm mt-2 hidden" id="guidedFeedback2"></p>
+                                        </div>
+                                        
+                                        <!-- Question 3 -->
+                                        <div class="bg-gray-50 p-4 rounded-lg" id="guidedQ3">
+                                            <p class="font-medium text-gray-800 mb-2">3. Why are metals malleable while ionic compounds are brittle?</p>
+                                            <div class="grid grid-cols-1 gap-2">
+                                                <button onclick="checkGuidedAnswer(3, 'Metals have softer bonds', this)" class="practice-option text-sm text-left">Metals have softer bonds</button>
+                                                <button onclick="checkGuidedAnswer(3, 'The electron sea maintains bonding when layers slide', this)" class="practice-option text-sm text-left">The electron sea maintains bonding when layers slide</button>
+                                                <button onclick="checkGuidedAnswer(3, 'Metals have smaller atoms', this)" class="practice-option text-sm text-left">Metals have smaller atoms</button>
+                                                <button onclick="checkGuidedAnswer(3, 'Ionic compounds have stronger bonds', this)" class="practice-option text-sm text-left">Ionic compounds have stronger bonds</button>
+                                            </div>
+                                            <p class="text-sm mt-2 hidden" id="guidedFeedback3"></p>
+                                        </div>
+                                        
+                                        <!-- Question 4 -->
+                                        <div class="bg-gray-50 p-4 rounded-lg" id="guidedQ4">
+                                            <p class="font-medium text-gray-800 mb-2">4. Which metal would have the highest melting point?</p>
+                                            <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+                                                <button onclick="checkGuidedAnswer(4, 'Na (1 delocalized e⁻)', this)" class="practice-option text-sm">Na (1 e⁻)</button>
+                                                <button onclick="checkGuidedAnswer(4, 'Mg (2 delocalized e⁻)', this)" class="practice-option text-sm">Mg (2 e⁻)</button>
+                                                <button onclick="checkGuidedAnswer(4, 'Al (3 delocalized e⁻)', this)" class="practice-option text-sm">Al (3 e⁻)</button>
+                                                <button onclick="checkGuidedAnswer(4, 'K (1 delocalized e⁻)', this)" class="practice-option text-sm">K (1 e⁻)</button>
+                                            </div>
+                                            <p class="text-sm mt-2 hidden" id="guidedFeedback4"></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            `
+                        },
+                        {
+                            intro: "Now try some independent practice - identify bonding types and explain properties!",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-pen text-gray-500 mr-3"></i>Independent Practice
+                                    </h3>
+                                    <p class="text-gray-700 mb-4">Apply your knowledge:</p>
+                                    
+                                    <div class="space-y-4" id="independentPracticeContainer">
+                                        <!-- Question 1 -->
+                                        <div class="bg-gray-50 p-4 rounded-lg" id="independentQ1">
+                                            <p class="font-medium text-gray-800 mb-2">1. What type of bonding exists in copper wire?</p>
+                                            <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
+                                                <button onclick="checkIndependentAnswer(1, 'Ionic', this)" class="practice-option text-sm">Ionic</button>
+                                                <button onclick="checkIndependentAnswer(1, 'Covalent', this)" class="practice-option text-sm">Covalent</button>
+                                                <button onclick="checkIndependentAnswer(1, 'Metallic', this)" class="practice-option text-sm">Metallic</button>
+                                            </div>
+                                            <p class="text-sm mt-2 hidden" id="independentFeedback1"></p>
+                                        </div>
+                                        
+                                        <!-- Question 2 -->
+                                        <div class="bg-gray-50 p-4 rounded-lg" id="independentQ2">
+                                            <p class="font-medium text-gray-800 mb-2">2. A substance has high melting point, conducts electricity, and can be hammered into sheets. What type of bonding does it have?</p>
+                                            <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
+                                                <button onclick="checkIndependentAnswer(2, 'Ionic', this)" class="practice-option text-sm">Ionic</button>
+                                                <button onclick="checkIndependentAnswer(2, 'Covalent', this)" class="practice-option text-sm">Covalent</button>
+                                                <button onclick="checkIndependentAnswer(2, 'Metallic', this)" class="practice-option text-sm">Metallic</button>
+                                            </div>
+                                            <p class="text-sm mt-2 hidden" id="independentFeedback2"></p>
+                                        </div>
+                                        
+                                        <!-- Question 3 -->
+                                        <div class="bg-gray-50 p-4 rounded-lg" id="independentQ3">
+                                            <p class="font-medium text-gray-800 mb-2">3. Which statement explains why metals are shiny (lustrous)?</p>
+                                            <div class="grid grid-cols-1 gap-2">
+                                                <button onclick="checkIndependentAnswer(3, 'Metal ions reflect light', this)" class="practice-option text-sm text-left">Metal ions reflect light</button>
+                                                <button onclick="checkIndependentAnswer(3, 'Delocalized electrons reflect light', this)" class="practice-option text-sm text-left">Delocalized electrons reflect light</button>
+                                                <button onclick="checkIndependentAnswer(3, 'Metals have smooth surfaces', this)" class="practice-option text-sm text-left">Metals have smooth surfaces</button>
+                                                <button onclick="checkIndependentAnswer(3, 'Metals absorb all light', this)" class="practice-option text-sm text-left">Metals absorb all light</button>
+                                            </div>
+                                            <p class="text-sm mt-2 hidden" id="independentFeedback3"></p>
+                                        </div>
+                                        
+                                        <!-- Question 4 -->
+                                        <div class="bg-gray-50 p-4 rounded-lg" id="independentQ4">
+                                            <p class="font-medium text-gray-800 mb-2">4. Compare: Why can copper be drawn into wires but sodium chloride cannot?</p>
+                                            <div class="grid grid-cols-1 gap-2">
+                                                <button onclick="checkIndependentAnswer(4, 'Copper has stronger bonds', this)" class="practice-option text-sm text-left">Copper has stronger bonds</button>
+                                                <button onclick="checkIndependentAnswer(4, 'Copper has delocalized electrons that maintain bonding when layers slide', this)" class="practice-option text-sm text-left">Copper has delocalized electrons that maintain bonding when layers slide</button>
+                                                <button onclick="checkIndependentAnswer(4, 'Sodium chloride is too soft', this)" class="practice-option text-sm text-left">Sodium chloride is too soft</button>
+                                                <button onclick="checkIndependentAnswer(4, 'Copper is a pure element', this)" class="practice-option text-sm text-left">Copper is a pure element</button>
+                                            </div>
+                                            <p class="text-sm mt-2 hidden" id="independentFeedback4"></p>
+                                        </div>
+                                        
+                                        <!-- Question 5 -->
+                                        <div class="bg-gray-50 p-4 rounded-lg" id="independentQ5">
+                                            <p class="font-medium text-gray-800 mb-2">5. What holds metal ions together in a metallic lattice?</p>
+                                            <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                                                <button onclick="checkIndependentAnswer(5, 'Covalent bonds', this)" class="practice-option text-sm">Covalent bonds</button>
+                                                <button onclick="checkIndependentAnswer(5, 'Electrostatic attraction to delocalized electrons', this)" class="practice-option text-sm text-left">Electrostatic attraction to delocalized electrons</button>
+                                                <button onclick="checkIndependentAnswer(5, 'Ionic bonds', this)" class="practice-option text-sm">Ionic bonds</button>
+                                                <button onclick="checkIndependentAnswer(5, 'Van der Waals forces', this)" class="practice-option text-sm">Van der Waals forces</button>
+                                            </div>
+                                            <p class="text-sm mt-2 hidden" id="independentFeedback5"></p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div id="practiceComplete" class="hidden mt-6">
+                                        <div class="step-complete-hint">
+                                            <i class="fas fa-check-circle text-green-500 text-2xl mb-2"></i>
+                                            <p class="font-semibold">Practice Complete!</p>
+                                            <p class="text-sm">You've answered all practice questions. Take the quiz to test your knowledge!</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <button class="click-hint" onclick="nextChunk()">
+                                        <i class="fas fa-arrow-right"></i>
+                                        <span>Continue to Summary →</span>
+                                    </button>
+                                </div>
+                            `
+                        }
+                    ]
+                },
+                {
+                    id: "summary",
+                    title: "Summary & Quiz",
+                    type: "note",
+                    chunks: [
+                        {
+                            intro: "Let's summarize what you've learned about metallic bonding!",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-clipboard-check text-gray-500 mr-3"></i>Key Takeaways
+                                    </h3>
+                                    
+                                    <div class="space-y-3 mb-4">
+                                        <div class="bg-gray-100 p-3 rounded-lg border-l-4 border-gray-500">
+                                            <p class="text-gray-800"><strong>1. Metallic Bond Definition:</strong> Electrostatic attraction between metal cations and delocalized electrons (sea of electrons).</p>
+                                        </div>
+                                        
+                                        <div class="bg-blue-50 p-3 rounded-lg border-l-4 border-blue-500">
+                                            <p class="text-gray-800"><strong>2. Delocalized Electrons:</strong> Free to move throughout the metal, responsible for conductivity.</p>
+                                        </div>
+                                        
+                                        <div class="bg-green-50 p-3 rounded-lg border-l-4 border-green-500">
+                                            <p class="text-gray-800"><strong>3. Properties:</strong> Malleable, ductile, good conductors, lustrous, high melting points.</p>
+                                        </div>
+                                        
+                                        <div class="bg-purple-50 p-3 rounded-lg border-l-4 border-purple-500">
+                                            <p class="text-gray-800"><strong>4. Bond Strength:</strong> More delocalized electrons = stronger bonding = higher melting point.</p>
+                                        </div>
+                                        
+                                        <div class="bg-amber-50 p-3 rounded-lg border-l-4 border-amber-500">
+                                            <p class="text-gray-800"><strong>5. Malleability:</strong> Electron sea maintains bonding when layers slide (unlike ionic compounds).</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="bg-gradient-to-r from-gray-100 to-gray-200 p-4 rounded-lg mb-4">
+                                        <h4 class="font-semibold text-gray-800 mb-2">WAEC Exam Tips:</h4>
+                                        <ul class="text-gray-700 space-y-1">
+                                            <li>• Understand the sea of electrons model</li>
+                                            <li>• Know why metals conduct electricity</li>
+                                            <li>• Explain malleability using the model</li>
+                                            <li>• Compare ionic, covalent, and metallic bonding</li>
+                                            <li>• Link properties to structure!</li>
+                                        </ul>
+                                    </div>
+                                    
+                                    <a href="index.html" class="inline-flex items-center gap-2 text-gray-600 font-medium hover:text-gray-700 mb-4">
+                                        <i class="fas fa-arrow-right"></i>
+                                        Back to: Periodicity & Bonding Index →
+                                    </a>
+                                </div>
+                            `
+                        },
+                        {
+                            intro: "Ready to test your knowledge? Take the quiz!",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-question-circle text-gray-500 mr-3"></i>Topic Quiz
+                                    </h3>
+                                    <p class="text-gray-700 mb-4">Test your understanding of metallic bonding with 10 questions!</p>
+                                    
+                                    <div class="bg-gradient-to-r from-gray-100 to-gray-200 p-6 rounded-lg text-center">
+                                        <i class="fas fa-clipboard-list text-gray-500 text-4xl mb-4"></i>
+                                        <h4 class="font-semibold text-gray-800 mb-2">Metallic Bonding Quiz</h4>
+                                        <p class="text-gray-600 mb-4">10 questions covering metallic bonding, properties, and bonding comparisons</p>
+                                        <button onclick="startQuiz()" class="px-8 py-3 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition font-semibold">
+                                            <i class="fas fa-play mr-2"></i>Start Quiz
+                                        </button>
+                                    </div>
+                                    
+                                    <div class="mt-4 grid md:grid-cols-2 gap-4">
+                                        <div class="bg-blue-50 p-4 rounded-lg">
+                                            <h4 class="font-semibold text-blue-800 mb-2">Practice Score</h4>
+                                            <p class="text-2xl font-bold text-blue-600" id="finalPracticeScore">--</p>
+                                        </div>
+                                        <div class="bg-green-50 p-4 rounded-lg">
+                                            <h4 class="font-semibold text-green-800 mb-2">Combined Score</h4>
+                                            <p class="text-2xl font-bold text-green-600" id="finalCombinedScore">--</p>
+                                            <p class="text-xs text-gray-500">40% Practice + 60% Quiz</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            `
+                        }
+                    ]
+                }
+            ]
+        };
+        
+        // Quiz questions
+        const quizQuestions = [
+            {
+                question: "What is the 'sea of electrons' in metallic bonding?",
+                options: ["Electrons floating on the surface of metals", "Delocalized electrons that move freely throughout the metal", "Electrons that are shared between two atoms", "Electrons in the outer shell of metal atoms"],
+                correct: 1,
+                explanation: "The 'sea of electrons' refers to delocalized electrons that are free to move throughout the entire metal structure, not attached to any specific atom."
+            },
+            {
+                question: "Why are metals good conductors of electricity?",
+                options: ["They have free-moving ions", "They have delocalized electrons that can carry charge", "They have a regular lattice structure", "They have many atoms"],
+                correct: 1,
+                explanation: "Delocalized electrons in metals are free to move and can carry electrical charge throughout the metal, making metals good conductors."
+            },
+            {
+                question: "Which property of metals is explained by the delocalized electrons reflecting light?",
+                options: ["Malleability", "Ductility", "Lustrous appearance", "High melting point"],
+                correct: 2,
+                explanation: "The metallic luster (shiny appearance) is caused by delocalized electrons reflecting light from the metal surface."
+            },
+            {
+                question: "Why are metals malleable?",
+                options: ["They have weak bonds", "The electron sea maintains bonding when layers slide", "They have soft atoms", "They have a simple structure"],
+                correct: 1,
+                explanation: "When metal layers slide, the delocalized electrons move with them, maintaining the metallic bonding. This allows metals to be hammered into shape."
+            },
+            {
+                question: "Which metal would have stronger metallic bonding: Na or Mg?",
+                options: ["Na - it has a larger atomic radius", "Mg - it has 2 delocalized electrons per atom", "Na - it has lower ionization energy", "Both have equal bonding strength"],
+                correct: 1,
+                explanation: "Mg has 2 delocalized electrons per atom (compared to 1 for Na) and Mg²⁺ ions have higher charge than Na⁺, resulting in stronger metallic bonding."
+            },
+            {
+                question: "What is the main difference between metallic and ionic bonding?",
+                options: ["Metallic bonding involves electron transfer, ionic involves sharing", "Ionic bonding involves delocalized electrons", "Metallic bonding has delocalized electrons, ionic has fixed ions", "There is no significant difference"],
+                correct: 2,
+                explanation: "In metallic bonding, electrons are delocalized (free to move). In ionic bonding, electrons have been transferred and ions are fixed in the lattice."
+            },
+            {
+                question: "Why does magnesium (Mg) have a higher melting point than sodium (Na)?",
+                options: ["Mg atoms are smaller", "Mg has more delocalized electrons and higher ion charge", "Mg has stronger covalent bonds", "Na is more reactive"],
+                correct: 1,
+                explanation: "Mg has 2 delocalized electrons per atom and Mg²⁺ ions, creating stronger electrostatic attraction than Na with only 1 delocalized electron and Na⁺ ions."
+            },
+            {
+                question: "Which of the following is NOT a property of metals?",
+                options: ["Good electrical conductor", "Brittle", "Malleable", "Lustrous"],
+                correct: 1,
+                explanation: "Metals are malleable, not brittle. Brittleness is a property of ionic compounds - when layers slide, like charges repel and the crystal breaks."
+            },
+            {
+                question: "What holds the metal ions together in a metallic lattice?",
+                options: ["Covalent bonds between atoms", "Electrostatic attraction to the sea of delocalized electrons", "Ionic bonds", "Hydrogen bonds"],
+                correct: 1,
+                explanation: "Metal cations are held together by their electrostatic attraction to the delocalized electrons that surround them in the metallic lattice."
+            },
+            {
+                question: "A substance conducts electricity in both solid and molten states. What type of bonding does it have?",
+                options: ["Ionic bonding", "Covalent bonding", "Metallic bonding", "Cannot be determined"],
+                correct: 2,
+                explanation: "Only metallic substances conduct electricity in both solid and molten states. Ionic compounds only conduct when molten or dissolved (ions free to move)."
+            }
+        ];
+        
+        let currentQuizIndex = 0;
+        let quizScore = 0;
+        let quizAnswers = [];
+        let practiceQuestionsAnswered = 0;
+        const totalPracticeQuestions = 9;
+        
+        // Initialize the page
+        function init() {
+            renderStepsList();
+            loadProgress();
+            renderCurrentStep();
+            setupEventListeners();
+            updateScores();
+        }
+        
+        // Render steps list
+        function renderStepsList() {
+            const stepsList = document.getElementById('stepsList');
+            const mobileStepsList = document.getElementById('mobileStepsList');
+            
+            let html = '';
+            topicData.steps.forEach((step, index) => {
+                const isComplete = stepsCompleted.includes(index);
+                const isCurrent = index === currentStepIndex;
+                
+                html += `
+                    <li class="step-item ${isCurrent ? 'bg-gray-100 border-l-2 border-gray-500 -ml-1 pl-1' : ''}" data-step="${index}">
+                        <button onclick="goToStep(${index})" class="w-full text-left px-3 py-2 rounded flex items-center gap-2 ${isCurrent ? 'font-semibold text-gray-700' : 'text-gray-600 hover:bg-gray-100'}">
+                            <span class="w-6 h-6 rounded-full flex items-center justify-center text-xs ${isComplete ? 'bg-green-500 text-white' : isCurrent ? 'bg-gray-500 text-white' : 'bg-gray-200 text-gray-600'}">
+                                ${isComplete ? '<i class="fas fa-check"></i>' : index + 1}
+                            </span>
+                            <span class="text-sm truncate">${step.title}</span>
+                        </button>
+                    </li>
+                `;
+            });
+            
+            stepsList.innerHTML = html;
+            mobileStepsList.innerHTML = html;
+        }
+        
+        // Render current step
+        function renderCurrentStep() {
+            const step = topicData.steps[currentStepIndex];
+            const chunk = step.chunks[currentChunkIndex];
+            const container = document.getElementById('stepContainer');
+            
+            // Animate in
+            container.classList.remove('animate-fade-in-up');
+            void container.offsetWidth; // Trigger reflow
+            container.classList.add('animate-fade-in-up');
+            
+            let html = `
+                <div class="mb-4 text-sm text-gray-500">
+                    Step ${currentStepIndex + 1} of ${topicData.steps.length}: <span class="font-medium text-gray-700">${step.title}</span>
+                </div>
+            `;
+            
+            if (chunk.intro) {
+                html += `<p class="text-gray-600 mb-4 bg-gray-100 p-3 rounded-lg border-l-4 border-gray-400">${chunk.intro}</p>`;
+            }
+            
+            html += chunk.content;
+            
+            container.innerHTML = html;
+            
+            updateProgress();
+            updateNavigationButtons();
+        }
+        
+        // Navigation
+        function nextChunk() {
+            const step = topicData.steps[currentStepIndex];
+            if (currentChunkIndex < step.chunks.length - 1) {
+                currentChunkIndex++;
+                renderCurrentStep();
+            } else {
+                // Mark step as complete
+                if (!stepsCompleted.includes(currentStepIndex)) {
+                    stepsCompleted.push(currentStepIndex);
+                    saveProgress();
+                    renderStepsList();
+                }
+                
+                // Go to next step
+                if (currentStepIndex < topicData.steps.length - 1) {
+                    currentStepIndex++;
+                    currentChunkIndex = 0;
+                    renderCurrentStep();
+                    renderStepsList();
+                }
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        function goToStep(index) {
+            currentStepIndex = index;
+            currentChunkIndex = 0;
+            renderCurrentStep();
+            renderStepsList();
+            closeMobileSidebar();
+        }
+        
+        function updateNavigationButtons() {
+            const prevBtn = document.getElementById('prevStepBtn');
+            const nextBtn = document.getElementById('nextStepBtn');
+            
+            prevBtn.disabled = currentStepIndex === 0 && currentChunkIndex === 0;
+            
+            const isLastStep = currentStepIndex === topicData.steps.length - 1;
+            const isLastChunk = currentChunkIndex === topicData.steps[currentStepIndex].chunks.length - 1;
+            nextBtn.disabled = isLastStep && isLastChunk;
+        }
+        
+        // Progress management
+        function updateProgress() {
+            const totalChunks = topicData.steps.reduce((sum, step) => sum + step.chunks.length, 0);
+            let completedChunks = 0;
+            
+            for (let i = 0; i < currentStepIndex; i++) {
+                completedChunks += topicData.steps[i].chunks.length;
+            }
+            completedChunks += currentChunkIndex;
+            
+            const percent = Math.round((completedChunks / totalChunks) * 100);
+            document.getElementById('progressPercent').textContent = percent + '%';
+            document.getElementById('progressBar').style.width = percent + '%';
+        }
+        
+        function saveProgress() {
+            try {
+                localStorage.setItem('metallicBonding_stepProgress', JSON.stringify({
+                    currentStepIndex,
+                    currentChunkIndex,
+                    stepsCompleted
+                }));
+            } catch (e) {}
+        }
+        
+        function loadProgress() {
+            try {
+                const saved = localStorage.getItem('metallicBonding_stepProgress');
+                if (saved) {
+                    const data = JSON.parse(saved);
+                    currentStepIndex = data.currentStepIndex || 0;
+                    currentChunkIndex = data.currentChunkIndex || 0;
+                    stepsCompleted = data.stepsCompleted || [];
+                }
+            } catch (e) {}
+        }
+        
+        // Practice Question Handlers
+        function checkGuidedAnswer(questionNum, answer, btn) {
+            const correctAnswers = {
+                1: 'Electrons that are free to move throughout the metal structure',
+                2: 'They have free-moving delocalized electrons',
+                3: 'The electron sea maintains bonding when layers slide',
+                4: 'Al (3 delocalized e⁻)'
+            };
+            
+            const feedbacks = {
+                1: { correct: 'Correct! Delocalized electrons are free to move throughout the entire metal structure.', incorrect: 'Incorrect. Delocalized electrons are free to move throughout the metal, not attached to any specific atom.' },
+                2: { correct: 'Correct! Delocalized electrons can move freely and carry electric charge.', incorrect: 'Incorrect. Metals conduct because delocalized electrons can carry charge through the structure.' },
+                3: { correct: 'Correct! The electron sea maintains bonding even when layers slide, making metals malleable.', incorrect: 'Incorrect. When metal layers slide, the delocalized electrons move with them and maintain the bonding.' },
+                4: { correct: 'Correct! Al has 3 delocalized electrons per atom, giving it stronger metallic bonding.', incorrect: 'Incorrect. Al has 3 delocalized electrons (more than Na, Mg, or K), resulting in stronger bonding and higher melting point.' }
+            };
+            
+            const isCorrect = answer === correctAnswers[questionNum];
+            
+            // Update button styles
+            const container = document.getElementById(`guidedQ${questionNum}`);
+            container.querySelectorAll('.practice-option').forEach(b => {
+                b.classList.remove('selected', 'correct', 'incorrect');
+                if (b.textContent.trim() === correctAnswers[questionNum]) {
+                    b.classList.add('correct');
+                }
+            });
+            btn.classList.add(isCorrect ? 'correct' : 'incorrect');
+            
+            // Show feedback
+            const feedback = document.getElementById(`guidedFeedback${questionNum}`);
+            feedback.textContent = isCorrect ? feedbacks[questionNum].correct : feedbacks[questionNum].incorrect;
+            feedback.className = `text-sm mt-2 ${isCorrect ? 'text-green-600' : 'text-red-600'}`;
+            feedback.classList.remove('hidden');
+            
+            // Record answer
+            PracticeTracker.recordAnswer('guided', questionNum, isCorrect, { answer });
+            practiceQuestionsAnswered++;
+            checkPracticeComplete();
+        }
+        
+        function checkIndependentAnswer(questionNum, answer, btn) {
+            const correctAnswers = {
+                1: 'Metallic',
+                2: 'Metallic',
+                3: 'Delocalized electrons reflect light',
+                4: 'Copper has delocalized electrons that maintain bonding when layers slide',
+                5: 'Electrostatic attraction to delocalized electrons'
+            };
+            
+            const feedbacks = {
+                1: { correct: 'Correct! Copper is a metal with metallic bonding.', incorrect: 'Incorrect. Copper is a pure metal, so it has metallic bonding with delocalized electrons.' },
+                2: { correct: 'Correct! These properties (conductivity + malleability) are characteristic of metals.', incorrect: 'Incorrect. High MP, conductivity, and malleability together indicate metallic bonding.' },
+                3: { correct: 'Correct! Delocalized electrons at the surface reflect light, giving metals their shine.', incorrect: 'Incorrect. The metallic luster is due to delocalized electrons reflecting light.' },
+                4: { correct: 'Correct! The electron sea allows layers to slide without breaking bonds.', incorrect: 'Incorrect. Copper is ductile because delocalized electrons maintain bonding when layers slide.' },
+                5: { correct: 'Correct! The electrostatic attraction between cations and delocalized electrons is the metallic bond.', incorrect: 'Incorrect. Metal ions are held together by electrostatic attraction to the delocalized electrons.' }
+            };
+            
+            const isCorrect = answer === correctAnswers[questionNum];
+            
+            // Update button styles
+            const container = document.getElementById(`independentQ${questionNum}`);
+            container.querySelectorAll('.practice-option').forEach(b => {
+                b.classList.remove('selected', 'correct', 'incorrect');
+                if (b.textContent.trim() === correctAnswers[questionNum]) {
+                    b.classList.add('correct');
+                }
+            });
+            btn.classList.add(isCorrect ? 'correct' : 'incorrect');
+            
+            // Show feedback
+            const feedback = document.getElementById(`independentFeedback${questionNum}`);
+            feedback.textContent = isCorrect ? feedbacks[questionNum].correct : feedbacks[questionNum].incorrect;
+            feedback.className = `text-sm mt-2 ${isCorrect ? 'text-green-600' : 'text-red-600'}`;
+            feedback.classList.remove('hidden');
+            
+            // Record answer
+            PracticeTracker.recordAnswer('independent', questionNum, isCorrect, { answer });
+            practiceQuestionsAnswered++;
+            checkPracticeComplete();
+        }
+        
+        function checkPracticeComplete() {
+            if (practiceQuestionsAnswered >= totalPracticeQuestions) {
+                document.getElementById('practiceComplete').classList.remove('hidden');
+                updateScores();
+            }
+        }
+        
+        function updateScores() {
+            const scores = PracticeTracker.getCombinedScore();
+            if (scores.practice !== null) {
+                document.getElementById('finalPracticeScore').textContent = scores.practice + '%';
+            }
+            if (scores.combined !== null) {
+                document.getElementById('finalCombinedScore').textContent = scores.combined + '%';
+            }
+        }
+        
+        // Quiz Functions
+        function startQuiz() {
+            currentQuizIndex = 0;
+            quizScore = 0;
+            quizAnswers = [];
+            document.getElementById('quizModal').classList.remove('hidden');
+            document.getElementById('quizModal').classList.add('flex');
+            renderQuizQuestion();
+        }
+        
+        function closeQuiz() {
+            document.getElementById('quizModal').classList.add('hidden');
+            document.getElementById('quizModal').classList.remove('flex');
+        }
+        
+        function renderQuizQuestion() {
+            const q = quizQuestions[currentQuizIndex];
+            const total = quizQuestions.length;
+            
+            document.getElementById('quizQuestionCount').textContent = `Question ${currentQuizIndex + 1} of ${total}`;
+            document.getElementById('quizScoreDisplay').textContent = `Score: ${quizScore}`;
+            document.getElementById('quizProgressBar').style.width = `${((currentQuizIndex + 1) / total) * 100}%`;
+            
+            let html = `
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">${q.question}</h3>
+                <div class="space-y-3">
+            `;
+            
+            q.options.forEach((opt, i) => {
+                html += `
+                    <button onclick="selectQuizAnswer(${i})" class="quiz-option w-full text-left p-4 rounded-lg border-2 border-gray-200 hover:border-gray-400 hover:bg-gray-50 transition" id="quizOpt${i}">
+                        <span class="font-medium mr-2">${String.fromCharCode(65 + i)}.</span>${opt}
+                    </button>
+                `;
+            });
+            
+            html += `
+                </div>
+                <div id="quizExplanation" class="mt-4 p-4 rounded-lg hidden"></div>
+            `;
+            
+            document.getElementById('quizContent').innerHTML = html;
+            document.getElementById('quizPrevBtn').disabled = currentQuizIndex === 0;
+            document.getElementById('quizNextBtn').disabled = true;
+        }
+        
+        function selectQuizAnswer(index) {
+            const q = quizQuestions[currentQuizIndex];
+            const isCorrect = index === q.correct;
+            
+            // Record answer
+            quizAnswers.push({ questionIndex: currentQuizIndex, selected: index, correct: isCorrect });
+            
+            if (isCorrect) quizScore++;
+            
+            // Show result
+            document.querySelectorAll('.quiz-option').forEach((opt, i) => {
+                opt.classList.remove('border-gray-500', 'bg-gray-50');
+                if (i === q.correct) {
+                    opt.classList.add('border-green-500', 'bg-green-50');
+                } else if (i === index && !isCorrect) {
+                    opt.classList.add('border-red-500', 'bg-red-50');
+                }
+                opt.disabled = true;
+            });
+            
+            // Show explanation
+            const explanation = document.getElementById('quizExplanation');
+            explanation.innerHTML = `
+                <div class="${isCorrect ? 'bg-green-50 text-green-800' : 'bg-red-50 text-red-800'}">
+                    <p class="font-semibold mb-1">${isCorrect ? '✓ Correct!' : '✗ Incorrect'}</p>
+                    <p class="text-sm">${q.explanation}</p>
+                </div>
+            `;
+            explanation.classList.remove('hidden');
+            
+            document.getElementById('quizNextBtn').disabled = false;
+        }
+        
+        function quizNext() {
+            if (currentQuizIndex < quizQuestions.length - 1) {
+                currentQuizIndex++;
+                renderQuizQuestion();
+            } else {
+                // Quiz complete
+                finishQuiz();
+            }
+        }
+        
+        function quizPrev() {
+            if (currentQuizIndex > 0) {
+                currentQuizIndex--;
+                renderQuizQuestion();
+            }
+        }
+        
+        function finishQuiz() {
+            // Record quiz score
+            PracticeTracker.recordQuizScore(quizScore, quizQuestions.length);
+            
+            // Save to ChemistryQuiz
+            if (window.ChemistryQuiz) {
+                ChemistryQuiz.saveQuizResult({
+                    topicId: 'metallic-bonding',
+                    topicTitle: 'Metallic Bonding',
+                    score: quizScore,
+                    totalQuestions: quizQuestions.length,
+                    percentage: Math.round((quizScore / quizQuestions.length) * 100),
+                    passed: quizScore >= 6,
+                    answers: quizAnswers
+                });
+            }
+            
+            closeQuiz();
+            showScoreModal();
+        }
+        
+        function showScoreModal() {
+            const scores = PracticeTracker.getCombinedScore();
+            
+            document.getElementById('practiceScoreDisplay').textContent = scores.practice !== null ? scores.practice + '%' : '--';
+            document.getElementById('quizScoreDisplayFinal').textContent = scores.quiz !== null ? scores.quiz + '%' : '--';
+            document.getElementById('combinedScoreDisplay').textContent = scores.combined !== null ? scores.combined + '%' : '--';
+            
+            // Set icon based on score
+            const icon = document.getElementById('scoreIcon');
+            if (scores.combined >= 80) {
+                icon.textContent = '🎉';
+            } else if (scores.combined >= 60) {
+                icon.textContent = '👍';
+            } else {
+                icon.textContent = '📚';
+            }
+            
+            document.getElementById('scoreModal').classList.remove('hidden');
+            document.getElementById('scoreModal').classList.add('flex');
+            updateScores();
+        }
+        
+        function closeScoreModal() {
+            document.getElementById('scoreModal').classList.add('hidden');
+            document.getElementById('scoreModal').classList.remove('flex');
+        }
+        
+        // Event Listeners
+        function setupEventListeners() {
+            document.getElementById('mobileMenuBtn').addEventListener('click', () => {
+                document.getElementById('mobileSidebar').classList.remove('-translate-x-full');
+                document.getElementById('sidebarOverlay').classList.remove('hidden');
+            });
+            
+            document.getElementById('closeSidebarBtn').addEventListener('click', closeMobileSidebar);
+            document.getElementById('sidebarOverlay').addEventListener('click', closeMobileSidebar);
+            
+            document.getElementById('prevStepBtn').addEventListener('click', () => {
+                if (currentChunkIndex > 0) {
+                    currentChunkIndex--;
+                    renderCurrentStep();
+                } else if (currentStepIndex > 0) {
+                    currentStepIndex--;
+                    currentChunkIndex = topicData.steps[currentStepIndex].chunks.length - 1;
+                    renderCurrentStep();
+                    renderStepsList();
+                }
+            });
+            
+            document.getElementById('nextStepBtn').addEventListener('click', nextChunk);
+        }
+        
+        function closeMobileSidebar() {
+            document.getElementById('mobileSidebar').classList.add('-translate-x-full');
+            document.getElementById('sidebarOverlay').classList.add('hidden');
+        }
+        
+        // Initialize
+        init();
+    </script>
+</body>
+</html>

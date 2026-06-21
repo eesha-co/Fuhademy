@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chemistry Titration Simulator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .apparatus {
+            width: 100px;
+            height: 100px;
+            border: 2px solid #ccc;
+            cursor: pointer;
+            transition: all 0.3s;
+            user-select: none;
+        }
+
+        .apparatus.selected {
+            border-color: #2563eb;
+            background-color: #dbeafe;
+        }
+
+        .apparatus img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .workspace {
+            background-color: #8b5e3c;
+            min-height: 400px;
+            position: relative;
+            border-radius: 8px;
+        }
+
+        .burette {
+            width: 40px;
+            height: 300px;
+            background: #f0f9ff;
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 2px solid #93c5fd;
+            border-radius: 8px 8px 0 0;
+            display: none;
+        }
+
+        .burette.placed {
+            display: block;
+        }
+
+        .burette-liquid {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #fcd34d;
+            height: 100%;
+            transition: height 0.5s;
+            border-radius: 6px 6px 0 0;
+        }
+
+        .stand {
+            width: 200px;
+            height: 350px;
+            background: #4b5563;
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: none;
+        }
+
+        .stand.placed {
+            display: block;
+        }
+
+        .flask {
+            width: 120px;
+            height: 150px;
+            background: transparent;
+            border: 2px solid #93c5fd;
+            border-radius: 0 0 60px 60px;
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: none;
+        }
+
+        .flask.placed {
+            display: block;
+        }
+
+        .flask-liquid {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: #93c5fd;
+            border-radius: 0 0 58px 58px;
+            transition: background-color 0.5s;
+        }
+
+        .droplet {
+            width: 8px;
+            height: 8px;
+            background: #fcd34d;
+            border-radius: 50%;
+            position: absolute;
+            animation: drop 1s linear;
+        }
+
+        @keyframes drop {
+            from {
+                transform: translateY(0);
+            }
+            to {
+                transform: translateY(200px);
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 p-8">
+    <div class="max-w-6xl mx-auto">
+        <h1 class="text-3xl font-bold text-center mb-8">Chemistry Titration Simulator</h1>
+
+        <!-- Main Content -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Equipment Selection -->
+            <div class="bg-white p-6 rounded-lg shadow">
+                <h2 class="text-xl font-semibold mb-4">Equipment</h2>
+                <div class="grid grid-cols-2 gap-4">
+                    <button class="apparatus" onclick="placeEquipment('stand')" data-type="stand">
+                        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAYAAABw4pVUAAAABmJLR0QA/wD/AP+gvaeTAAAB1klEQVR4nO3dP07DMBiG8ddQWJiBG3AFzsEAxwCJI7ByA07ACEcAiQUWzgPcgBlGUFWJ0jQk/mz/ST5+3qkS7VfZ+mQrdhIBAAAAAAAAaMdS0p2kN0mzpKOkZ0nXkvoG4/aSTiV9xLGPJT1Jukl/yX7tJB0kfamY+EnSbYPxh0hvzPhfkp4lnTf4Dt1aSboviPAkaZB0IWlXMf5G0rXq3jF7pZ9ShjHGRtK7yqM8K/2scvi3okgzSW+SthV/07WB/L2yh3IYO7VhyobxL+mh4feoNpJtFJOkYzR2X3E+f0uQ8TM2CuXEvz5IGqNjk1rGSNFDSs4g6U3lo5yofAVWOv66ZPw3lT9nppSiXCp9OB4qxj9IOk8wPkokRHkpOP+QYHx0IEnHRiqNJgkWICFAQoCEAAkBEgIkBEgIkBAgIUBCgIQACQESAiQESAiQECAhQEKAhAAJARICJARICJAQICFAQoCEAAkBEgIkBEgIkBAgIUBCgIQACQESAiQESAiQECAhQEKAhAAJARICJARICJAQICFAQoCEAAkBEgIkBEgI5E7IpvH4KfcPSaF0QnYJxkepvxugJEzJ9+r+PsxPrOSHvUaKHlKcEcaw0RiiJTwAAAAAAAAAAIv0DZqnkK6gghgvAAAAAElFTkSuQmCC">
+                        <p class="text-center mt-2">Stand</p>
+                    </button>
+                    <button class="apparatus" onclick="placeEquipment('burette')" data-type="burette">
+                        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAYAAABw4pVUAAAABmJLR0QA/wD/AP+gvaeTAAACKklEQVR4nO3cwU7UUBSH8e8wggtdGt25MfEJeA+fwgcwcW3iY7h1ozs3mBAXLl0aE0x8A3wHH8AYE1caZopzp/R27r3t/5d0AY3T9nznlDJ3BiRJkiRJkiRJkiRJkiRJklq1C7wG3gNfgAvgFDgGHgJjg/PvAi+Az8B34Bw4AR4D9w3OX9Uu8Ar4CfwC3gGPgAPgEbAP3AHGiee/D7wEfgB/Yn4HwMOY/13gduI1VG8MvCH8xX8EDoCbFZ5nG3gGfIn5T4H7FZ6nOWPgFPgNvAU2K8+nCm+Rv8CzmvMptUk4yP8Az2vOp9QEOAd+E66mtW0C74h7iBVur+YESouPmhMoLRtN3WnH9Qb4Vuh7H2c6z2zhsS3gI/AU+JZpTUW1kpAJcLfQ935Zc9abwHvgSaY1NVFCE/qjxjW1dkJ6CNwqtJZW90tVSgjvAXAD+J5hLc31kNwJGQF3gIeEW8Ec2zWp9nq9hfBQtUa6oflcU/eJ9RXpgjmv+JxzpPsb/OjxXMuyvmNgCnwlvGrRdOrmbw7C1PM8Izwnlg5gyaCwzQDPNwLeESLZ04iLS7W3Fa4zBY6IP/2VJEmSVMo24en2GfCJ8Dp4bguv4l8AZ4TX8nOuqS19DiIlT2PBdRVuuEteL8j8mBHC5VbT7clw/QR+MazdeBV7LfuzYxOgG+HG3oQcsdeHDqAr21nFeY0CDzFC+Gl27nPQKcbYElwsBEmSJEmSJEmSJEmSJEnStfwFN404uIwrPmwAAAAASUVORK5CYII=">
+                        <p class="text-center mt-2">Burette</p>
+                    </button>
+                    <button class="apparatus" onclick="placeEquipment('flask')" data-type="flask">
+                        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAYAAABw4pVUAAAABmJLR0QA/wD/AP+gvaeTAAADJ0lEQVR4nO3dT2hcVRTH8e+ZadM0ExubxJi0jeafVWmhFGuh4M6/C3UhKLhyIbhQcOFSENSFWhFEBTfiRsFFRUHBlQsVurAU/7RYW2ubNjZtkml+Lm4GJm1n3nvz7n33vHd/H8hiyLtz7z3n3Zm57953wczMzMzMzMzMzMzMzMzMzMyKrQQ8An7/578PgD3ATuA0cAU4D7wH7CY7KevXJ8Ax4BxwGvgQeAa4FzhAdv6vAmeBT4HHgdEuY1oXI8DTwHfADWp/uduZDvAV2ZvXx6rHfwe8AGxNH/7wKwGPAV8CN7n9pIcyA7wLPJDsCIbMJPApMEecEx3KPPAe2SXQOtgNfAj8TZqTe6tpAXgD2Jrg2AbePcBZsp+c1Cd1OdPAC+R87FUgJeAp4AJxT1y3cwV4HhiJdKyFNw58RPyT1OtcBp6LcsBFtgn4gvgnptf5A3g2wjEX0jbgPPFPRq/zL3AGGA49+KIZJXvwFvsk9DILwNvAWMDxF84I8DHxT0BMnwFbAo2/UMYY7JvxbuYbYHOA4yyMEbLH3LFPeGzzCbA+wPEWwjBwhvgnOZX3GcLnJcPAu8Q/uSnNAk/2eaz9YQg4RfyTmto88GSPx9v3SsAJ4p/MfvEy2RPZoVACjhP/BPaTOeDhHo65L5WAY8Q/ef1oBng44zEPnBJwlPgnrZ/NAA/d5bgHSgk4QvyT1e9mGOBvDKXYAXShDngTWFnugAfpG7IM7AcmgR3Ek7qgdcDRDuuKLvUbsgbYBzxH9ieq3cC6iOMF7S/SaF0xBKwmu0yPA3eSXaI2A+vJkngj4vNfBB4EFiM+R1SpE7IBOHmL/98ge22Ry8D3wE/A78CPwG/A5QTjz3U57kJYIvulbg74O3YwvXA15ECmgEng19iBdOMfYDJ2EL2YAn6JHUSXpoCrsYPoxdQQ1LgQO4BeTKV+UBjZtdhB9GJ6CGpcjB1AL6aHoEbhL1nThL9hxOJL1hDU+Cl2AL2YGoIa38YOoBdTQ1DjfOwAejE1BDUuxA6gF1NDUOPb2AH0YmoIalwkQ2sIs/4wRfYW7KnYgXRrifxetszMzMzMzMzMzMzMzMzMzMzMzMzMzMysG/8D0LAomYA7Ra4AAAAASUVORK5CYII=">
+                        <p class="text-center mt-2">Flask</p>
+                    </button>
+                </div>
+
+                <h2 class="text-xl font-semibold mt-6 mb-4">Solutions</h2>
+                <div class="grid grid-cols-2 gap-4">
+                    <button class="apparatus" onclick="addSolution('hno3')" data-type="hno3">
+                        <div class="h-full bg-yellow-100 flex items-center justify-center">
+                            <p class="text-center">HNO₃</p>
+                        </div>
+                    </button>
+                    <button class="apparatus" onclick="addSolution('naoh')" data-type="naoh">
+                        <div class="h-full bg-blue-100 flex items-center justify-center">
+                            <p class="text-center">NaOH</p>
+                        </div>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Workspace -->
+            <div class="col-span-2">
+                <div class="workspace p-4 rounded-lg">
+                    <div class="stand" id="stand"></div>
+                    <div class="burette" id="burette">
+                        <div class="burette-liquid" id="burette-liquid"></div>
+                    </div>
+                    <div class="flask" id="flask">
+                        <div class="flask-liquid" id="flask-liquid"></div>
+                    </div>
+                </div>
+
+                <!-- Controls -->
+                <div class="bg-white p-4 rounded-lg mt-4">
+                    <div class="flex justify-between items-center">
+                        <button onclick="addDrop()" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                            Add Drop
+                        </button>
+                        <div class="flex items-center space-x-4">
+                            <span>Volume: </span>
+                            <span id="volume-reading" class="font-mono">50.00 mL</span>
+                        </div>
+                        <button onclick="resetExperiment()" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">
+                            Reset
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Readings Table -->
+                <div class="bg-white p-4 rounded-lg mt-4">
+                    <h2 class="text-xl font-semibold mb-4">Readings</h2>
+                    <table class="w-full">
+                        <thead>
+                            <tr>
+                                <th class="px-4 py-2">Reading No.</th>
+                                <th class="px-4 py-2">Initial (mL)</th>
+                                <th class="px-4 py-2">Final (mL)</th>
+                                <th class="px-4 py-2">Volume Used (mL)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="readings-table">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let equipment = {
+            stand: false,
+            burette: false,
+            flask: false,
+            hno3: false,
+            naoh: false
+        };
+
+        let currentVolume = 50.00;
+        let readings = [];
+
+        function placeEquipment(type) {
+            const element = document.getElementById(type);
+            
+            if (type === 'burette' && !equipment.stand) {
+                alert('Please place the stand first');
+                return;
+            }
+
+            element.classList.add('placed');
+            equipment[type] = true;
+
+            // Update status
+            checkSetup();
+        }
+
+        function addSolution(type) {
+            if (!equipment.burette || !equipment.flask) {
+                alert('Please set up the apparatus first');
+                return;
+            }
+
+            if (type === 'hno3') {
+                document.getElementById('burette-liquid').style.backgroundColor = '#fcd34d';
+                equipment.hno3 = true;
+            } else {
+                document.getElementById('flask-liquid').style.backgroundColor = '#93c5fd';
+                equipment.naoh = true;
+            }
+
+            checkSetup();
+        }
+
+        function addDrop() {
+            if (!isSetupComplete()) {
+                alert('Please complete the setup first');
+                return;
+            }
+
+            currentVolume = Math.max(0, currentVolume - 0.1);
+            updateVolumeDisplay();
+
+            // Create droplet animation
+            const droplet = document.createElement('div');
+            droplet.className = 'droplet';
+            droplet.style.left = '50%';
+            droplet.style.top = '320px'; // Below burette
+            document.querySelector('.workspace').appendChild(droplet);
+
+            // Remove droplet after animation
+            setTimeout(() => droplet.remove(), 1000);
+
+            // Change flask color gradually
+            if (currentVolume < 25) {
+                document.getElementById('flask-liquid').style.backgroundColor = '#34d399';
+            }
+
+            if (currentVolume === 0) {
+                addReading(50.00, 0.00);
+            }
+        }
+
+        function updateVolumeDisplay() {
+            document.getElementById('volume-reading').textContent = 
+                currentVolume.toFixed(2) + ' mL';
+        }
+
+        function addReading(initial, final) {
+            const volume = initial - final;
+            readings.push(volume);
+            
+            const table = document.getElementById('readings-table');
+            const row = table.insertRow();
+            row.innerHTML = `
+                <td class="px-4 py-2 text-center">${readings.length}</td>
+                <td class="px-4 py-2 text-center">${initial.toFixed(2)}</td>
+                <td class="px-4 py-2 text-center">${final.toFixed(2)}</td>
+                <td class="px-4 py-2 text-center">${volume.toFixed(2)}</td>
+            `;
+        }
+
+        function resetExperiment() {
+            currentVolume = 50.00;
+            updateVolumeDisplay();
+            document.getElementById('burette-liquid').style.height = '100%';
+            document.getElementById('flask-liquid').style.backgroundColor = '#93c5fd';
+        }
+
+        function isSetupComplete() {
+            return Object.values(equipment).every(v => v);
+        }
+
+        function checkSetup() {
+            if (isSetupComplete()) {
+                document.querySelector('.workspace').classList.add('ready');
+            }
+        }
+    </script>
+<!-- Topic Quiz System -->
+<script src="/js/topic-quiz-loader.js"></script>
+<script src="/js/topic-quiz-injector.js"></script>
+</body>
+</html>

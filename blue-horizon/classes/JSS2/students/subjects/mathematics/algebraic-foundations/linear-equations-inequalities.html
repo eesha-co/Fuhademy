@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mathematics - Linear Equations & Inequalities</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    @keyframes fadeIn { from { opacity: 0 } to { opacity: 1 } }
+    .card-glow { box-shadow: 0 6px 18px rgba(99,102,241,0.06); animation: fadeIn 0.45s ease; }
+    .accent-gradient { background: linear-gradient(90deg,#6366f1,#06b6d4); }
+    .step-badge { background: rgba(99,102,241,0.08); color:#3730a3; padding:.25rem .5rem; border-radius:.5rem; font-weight:600; display:inline-block; width:24px; height:24px; text-align:center; font-size:.75rem }
+    .accordion-content { max-height:0; overflow:hidden; transition: max-height .28s ease }
+    .accordion-content.open { max-height:900px }
+  </style>
+</head>
+<body class="bg-gray-100 font-sans">
+  <header class="accent-gradient text-white sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
+      <a href="../algebraic-foundations.html" class="flex items-center gap-4">
+        <div class="p-2 bg-white/20 rounded-lg"><i class="fas fa-equals"></i></div>
+        <div>
+          <div class="font-semibold text-lg">Linear Equations & Inequalities</div>
+          <div class="text-xs opacity-80">Solving, graphing, and understanding inequalities</div>
+        </div>
+      </a>
+      <div class="flex items-center gap-4">
+        <div class="text-sm opacity-90">Progress: <span id="progress">0%</span></div>
+        <a href="../mathematics.html" class="text-white/90 hover:text-white text-sm">Back to Math</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-4 py-8">
+    <div class="grid lg:grid-cols-4 gap-8">
+      <aside class="lg:col-span-1">
+        <div class="bg-white p-5 rounded-xl card-glow sticky top-24">
+          <h3 class="font-semibold mb-3">Contents</h3>
+          <ul class="space-y-2 text-sm">
+            <li><a href="#definition" class="hover:text-indigo-600 flex items-center gap-2"><span class="step-badge">1</span>Definition</a></li>
+            <li><a href="#methods" class="hover:text-indigo-600 flex items-center gap-2"><span class="step-badge">2</span>Key Methods</a></li>
+            <li><a href="#examples" class="hover:text-indigo-600 flex items-center gap-2"><span class="step-badge">3</span>Examples</a></li>
+            <li><a href="#practice" class="hover:text-indigo-600 flex items-center gap-2"><span class="step-badge">4</span>Practice</a></li>
+          </ul>
+        </div>
+      </aside>
+
+      <section class="lg:col-span-3 space-y-6">
+        <article id="definition" class="bg-white p-6 rounded-xl card-glow">
+          <div class="flex items-start gap-4">
+            <div class="text-3xl text-indigo-600 mt-1"><i class="fas fa-info-circle"></i></div>
+            <div>
+              <h2 class="text-2xl font-semibold mb-2">What are Linear Equations & Inequalities?</h2>
+              <p class="text-gray-700">A <strong>linear equation</strong> is an equation where the variable (like x) has no exponent higher than 1. It graphs as a straight line. Example: 2x + 3 = 7.<br><br>
+                An <strong>inequality</strong> compares two values using &lt;, &gt;, ≤, or ≥ instead of =. Example: x + 4 &gt; 10.</p>
+              <div class="mt-3 text-sm bg-blue-50 p-2 rounded border-l-4 border-blue-400">
+                <strong>Tip:</strong> Solving means finding the value of x that makes the equation or inequality true.
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article id="methods" class="bg-white p-6 rounded-xl card-glow">
+          <div class="flex items-start gap-4">
+            <div class="text-3xl text-indigo-600 mt-1"><i class="fas fa-tools"></i></div>
+            <div class="w-full">
+              <h2 class="text-2xl font-semibold mb-3">Key Methods</h2>
+
+              <!-- Accordion: Solving Linear Equations -->
+              <div class="border rounded-lg mb-3">
+                <button class="accordion-btn w-full text-left p-4 font-semibold flex justify-between items-center hover:bg-gray-50" data-accordion="m1">
+                  <span>1. Solving Linear Equations</span>
+                  <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="accordion-content" id="m1">
+                  <div class="p-4 pt-0 text-gray-700 bg-gray-50">
+                    <p class="mb-2">Isolate x by undoing addition/subtraction and then multiplication/division.</p>
+                    <p class="mb-2">Example: Solve 2x + 3 = 7<br>
+                      <ol class="list-decimal ml-4">
+                        <li>Subtract 3 from both sides: 2x = 4</li>
+                        <li>Divide both sides by 2: x = 2</li>
+                      </ol>
+                    </p>
+                    <div class="mt-2 text-sm bg-blue-50 p-2 rounded border-l-4 border-blue-400">Tip: Always do the same thing to both sides to keep the equation balanced.</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Accordion: Graphing Linear Equations -->
+              <div class="border rounded-lg mb-3">
+                <button class="accordion-btn w-full text-left p-4 font-semibold flex justify-between items-center hover:bg-gray-50" data-accordion="m2">
+                  <span>2. Graphing Linear Equations</span>
+                  <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="accordion-content" id="m2">
+                  <div class="p-4 pt-0 text-gray-700 bg-gray-50">
+                    <p class="mb-2">A linear equation like y = mx + b graphs as a straight line. m is the slope, b is the y-intercept.</p>
+                    <p class="mb-2">Example: y = 2x + 1 has slope 2 and crosses y-axis at 1.</p>
+                    <div class="mt-2 text-sm bg-blue-50 p-2 rounded border-l-4 border-blue-400">Tip: Plot two points and draw a line through them.</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Accordion: Solving Inequalities -->
+              <div class="border rounded-lg mb-3">
+                <button class="accordion-btn w-full text-left p-4 font-semibold flex justify-between items-center hover:bg-gray-50" data-accordion="m3">
+                  <span>3. Solving Inequalities</span>
+                  <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="accordion-content" id="m3">
+                  <div class="p-4 pt-0 text-gray-700 bg-gray-50">
+                    <p class="mb-2">Solve just like equations, but remember: if you multiply or divide by a negative, flip the inequality sign.</p>
+                    <p class="mb-2">Example: Solve -2x &lt; 6<br>
+                      <ol class="list-decimal ml-4">
+                        <li>Divide both sides by -2: x &gt; -3 (sign flips!)</li>
+                      </ol>
+                    </p>
+                    <div class="mt-2 text-sm bg-blue-50 p-2 rounded border-l-4 border-blue-400">Tip: Always flip the sign when multiplying/dividing by a negative.</div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </article>
+
+        <article id="examples" class="bg-white p-6 rounded-xl card-glow">
+          <div class="flex items-start gap-4">
+            <div class="text-3xl text-indigo-600 mt-1"><i class="fas fa-lightbulb"></i></div>
+            <div>
+              <h2 class="text-2xl font-semibold mb-3">Worked Examples (step-by-step)</h2>
+              <div class="grid sm:grid-cols-2 gap-4 text-gray-700">
+
+                <div class="p-4 bg-gray-50 rounded">
+                  <div class="font-semibold">Example 1: Solve 3x - 5 = 10</div>
+                  <div class="mt-2 text-sm">
+                    <ol class="list-decimal list-inside ml-3 space-y-1">
+                      <li>Add 5 to both sides: 3x = 15</li>
+                      <li>Divide both sides by 3: x = 5</li>
+                      <li>Final answer: <span class="bg-green-50 px-2 py-1 rounded">x = 5</span></li>
+                    </ol>
+                  </div>
+                </div>
+
+                <div class="p-4 bg-gray-50 rounded">
+                  <div class="font-semibold">Example 2: Graph y = -x + 2</div>
+                  <div class="mt-2 text-sm">
+                    <ol class="list-decimal list-inside ml-3 space-y-1">
+                      <li>Slope is -1, y-intercept is 2</li>
+                      <li>Plot (0,2) and (1,1)</li>
+                      <li>Draw a straight line through the points</li>
+                    </ol>
+                  </div>
+                </div>
+
+                <div class="p-4 bg-gray-50 rounded">
+                  <div class="font-semibold">Example 3: Solve 2x + 4 &ge; 10</div>
+                  <div class="mt-2 text-sm">
+                    <ol class="list-decimal list-inside ml-3 space-y-1">
+                      <li>Subtract 4: 2x &ge; 6</li>
+                      <li>Divide by 2: x &ge; 3</li>
+                      <li>Final answer: <span class="bg-green-50 px-2 py-1 rounded">x &ge; 3</span></li>
+                    </ol>
+                  </div>
+                </div>
+
+                <div class="p-4 bg-gray-50 rounded">
+                  <div class="font-semibold">Example 4: Solve -x &lt; 7</div>
+                  <div class="mt-2 text-sm">
+                    <ol class="list-decimal list-inside ml-3 space-y-1">
+                      <li>Divide by -1 (flip sign): x &gt; -7</li>
+                      <li>Final answer: <span class="bg-green-50 px-2 py-1 rounded">x &gt; -7</span></li>
+                    </ol>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article id="practice" class="bg-white p-6 rounded-xl card-glow">
+          <div class="flex items-start gap-4">
+            <div class="text-3xl text-indigo-600 mt-1"><i class="fas fa-pencil-alt"></i></div>
+            <div class="w-full">
+              <h2 class="text-2xl font-semibold mb-3">Practice Problems</h2>
+              <p class="text-gray-700 mb-4">Type answers and press Check. Hints available.</p>
+
+              <div class="grid md:grid-cols-2 gap-4">
+                <div class="p-4 border rounded-md bg-gray-50">
+                  <div class="font-semibold">1) Solve for x</div>
+                  <div class="font-mono text-indigo-700">x + 7 = 12</div>
+                  <input id="p1" class="mt-3 p-2 border rounded w-full" placeholder="e.g., x=5" />
+                  <div class="mt-2 flex gap-2"><button id="c1" class="px-3 py-1 bg-indigo-600 text-white rounded text-sm">Check</button><button id="h1" class="px-3 py-1 text-xs bg-white border rounded">Hint</button></div>
+                  <div id="fb1" class="mt-3 text-sm"></div>
+                </div>
+
+                <div class="p-4 border rounded-md bg-gray-50">
+                  <div class="font-semibold">2) Solve for x</div>
+                  <div class="font-mono text-indigo-700">2x - 3 = 9</div>
+                  <input id="p2" class="mt-3 p-2 border rounded w-full" placeholder="e.g., x=6" />
+                  <div class="mt-2 flex gap-2"><button id="c2" class="px-3 py-1 bg-indigo-600 text-white rounded text-sm">Check</button><button id="h2" class="px-3 py-1 text-xs bg-white border rounded">Hint</button></div>
+                  <div id="fb2" class="mt-3 text-sm"></div>
+                </div>
+
+                <div class="p-4 border rounded-md bg-gray-50">
+                  <div class="font-semibold">3) Solve the inequality</div>
+                  <div class="font-mono text-indigo-700">x - 2 &lt; 5</div>
+                  <input id="p3" class="mt-3 p-2 border rounded w-full" placeholder="e.g., x&lt;7" />
+                  <div class="mt-2 flex gap-2"><button id="c3" class="px-3 py-1 bg-indigo-600 text-white rounded text-sm">Check</button><button id="h3" class="px-3 py-1 text-xs bg-white border rounded">Hint</button></div>
+                  <div id="fb3" class="mt-3 text-sm"></div>
+                </div>
+
+                <div class="p-4 border rounded-md bg-gray-50">
+                  <div class="font-semibold">4) Solve the inequality</div>
+                  <div class="font-mono text-indigo-700">-3x &ge; 9</div>
+                  <input id="p4" class="mt-3 p-2 border rounded w-full" placeholder="e.g., x&lt;=-3" />
+                  <div class="mt-2 flex gap-2"><button id="c4" class="px-3 py-1 bg-indigo-600 text-white rounded text-sm">Check</button><button id="h4" class="px-3 py-1 text-xs bg-white border rounded">Hint</button></div>
+                  <div id="fb4" class="mt-3 text-sm"></div>
+                </div>
+              </div>
+
+              <div class="mt-6 pt-4 border-t">
+                <h3 class="font-semibold mb-2">Independent Practice</h3>
+                <p class="text-sm text-gray-600 mb-2">Try this challenge:</p>
+                <label class="block text-sm">Problem: <code class="font-mono">2(x - 3) &lt; 8</code></label>
+                <div class="mt-2 flex gap-3">
+                  <input id="ind" class="p-2 border rounded w-60" placeholder="Final answer" />
+                  <button id="checkInd" class="px-4 py-2 bg-green-600 text-white rounded">Check</button>
+                </div>
+                <div id="fbInd" class="mt-3 text-sm"></div>
+                <button id="showIndSol" class="text-xs mt-2 text-indigo-600 hover:text-indigo-700">Show solution</button>
+                <div id="indSol" class="mt-3 hidden p-3 bg-gray-50 rounded text-sm"></div>
+              </div>
+
+            </div>
+          </div>
+        </article>
+      </section>
+    </div>
+  </main>
+
+  <button id="quizBtn" class="fixed bottom-8 right-8 z-50 bg-indigo-600 text-white px-5 py-3 rounded-full shadow-lg hover:bg-indigo-700 flex items-center gap-2"><i class="fas fa-bolt"></i> Quiz</button>
+
+  <div id="quizModal" class="hidden fixed inset-0 bg-black/40 z-50 flex items-center justify-center">
+    <div class="bg-white rounded-xl shadow-2xl max-w-lg w-full p-6 relative">
+      <button id="closeQuiz" class="absolute top-3 right-4 text-gray-400 hover:text-gray-700 text-2xl">&times;</button>
+      <div id="quizContent"></div>
+    </div>
+  </div>
+
+  <footer class="max-w-7xl mx-auto px-4 py-6 text-sm text-gray-500">Linear Equations & Inequalities — interactive lesson</footer>
+
+  <script>
+    // Accordion
+    document.querySelectorAll('.accordion-btn').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const id = btn.dataset.accordion;
+        const el = document.getElementById(id);
+        el.classList.toggle('open');
+      });
+    });
+
+    // Progress tracking
+    const progressEl = document.getElementById('progress');
+    const done = {p1:false,p2:false,p3:false,p4:false,ind:false};
+    function setDone(k){ if(!done[k]){ done[k]=true; const total=Object.keys(done).length; const c=Object.values(done).filter(Boolean).length; progressEl.textContent = Math.round((c/total)*100)+'%'; }}
+
+    function norm(s){ return (s||'').toString().trim().replace(/\s+/g,'').toLowerCase(); }
+
+    // Problem checks
+    document.getElementById('c1').addEventListener('click', ()=>{
+      const v = norm(document.getElementById('p1').value);
+      const fb = document.getElementById('fb1');
+      if(v==='x=5' || v==='5') { fb.innerHTML = '<span style="color:#16a34a">Correct — x = 5</span>'; setDone('p1'); } else { fb.innerHTML = '<span style="color:#e11d48">Try again — subtract 7</span>'; }
+    });
+    document.getElementById('h1').addEventListener('click', ()=> alert('Hint: Subtract 7 from both sides.'));
+
+    document.getElementById('c2').addEventListener('click', ()=>{
+      const v = norm(document.getElementById('p2').value);
+      const fb = document.getElementById('fb2');
+      if(v==='x=6' || v==='6') { fb.innerHTML = '<span style="color:#16a34a">Correct — x = 6</span>'; setDone('p2'); } else { fb.innerHTML = '<span style="color:#e11d48">Try again — add 3, then divide by 2</span>'; }
+    });
+    document.getElementById('h2').addEventListener('click', ()=> alert('Hint: Add 3 to both sides, then divide by 2.'));
+
+    document.getElementById('c3').addEventListener('click', ()=>{
+      const v = norm(document.getElementById('p3').value);
+      const fb = document.getElementById('fb3');
+      if(v==='x<7' || v==='x&lt;7' || v==='<7') { fb.innerHTML = '<span style="color:#16a34a">Correct — x < 7</span>'; setDone('p3'); } else { fb.innerHTML = '<span style="color:#e11d48">Try again — add 2</span>'; }
+    });
+    document.getElementById('h3').addEventListener('click', ()=> alert('Hint: Add 2 to both sides.'));
+
+    document.getElementById('c4').addEventListener('click', ()=>{
+      const v = norm(document.getElementById('p4').value);
+      const fb = document.getElementById('fb4');
+      if(v==='x<=-3' || v==='x&lt;=-3' || v==='<=-3') { fb.innerHTML = '<span style="color:#16a34a">Correct — x <= -3</span>'; setDone('p4'); } else { fb.innerHTML = '<span style="color:#e11d48">Try again — divide by -3 and flip sign</span>'; }
+    });
+    document.getElementById('h4').addEventListener('click', ()=> alert('Hint: Divide by -3 and flip the sign.'));
+
+    // Independent
+    document.getElementById('checkInd').addEventListener('click', ()=>{
+      const v = norm(document.getElementById('ind').value);
+      const fb = document.getElementById('fbInd');
+      if(v==='x<7' || v==='x&lt;7' || v==='<7') { fb.innerHTML = '<span style="color:#16a34a">Correct — x < 7</span>'; setDone('ind'); } else { fb.innerHTML = '<span style="color:#e11d48">Try again — expand, add 3, divide by 2</span>'; }
+    });
+    document.getElementById('showIndSol').addEventListener('click', ()=>{
+      const sol = document.getElementById('indSol'); sol.classList.remove('hidden'); sol.innerHTML = '<strong>Solution:</strong> 2(x-3)<8 → 2x-6<8 → 2x<14 → x<7';
+    });
+
+    // Quiz questions
+    const quizPool = [
+      {q:'Solve: x+4=9', a:['x=5','5']},
+      {q:'Solve: 2x=10', a:['x=5','5']},
+      {q:'Solve: x-3>2', a:['x>5','>5']},
+      {q:'Solve: -x<8', a:['x>-8','>-8']},
+      {q:'Graph: y=3x+1, what is the slope?', a:['3']},
+      {q:'Solve: 4x+2=18', a:['x=4','4']},
+      {q:'Solve: 2x-6<=10', a:['x<=8','<=8']},
+      {q:'Solve: -2x>=4', a:['x<=-2','<=-2']}
+    ];
+
+    let quizState = null;
+    function startQuiz(){
+      const pool = [...quizPool]; const sel=[]; for(let i=0;i<3;i++){ const idx=Math.floor(Math.random()*pool.length); sel.push(pool.splice(idx,1)[0]); }
+      quizState={q:sel, i:0, score:0, timer:20, id:null}; showQ(); document.getElementById('quizModal').classList.remove('hidden');
+    }
+    function showQ(){
+      const current = quizState.q[quizState.i];
+      document.getElementById('quizContent').innerHTML = `<div class="text-lg font-semibold mb-2">Question ${quizState.i+1} of ${quizState.q.length}</div><div class="mb-4">${current.q}</div><input id="qa" class="w-full p-3 border rounded mb-3" placeholder="Your answer"><button id="subq" class="w-full bg-indigo-600 text-white py-2 rounded">Submit</button><div id="qfb" class="mt-3"></div>`;
+      document.getElementById('subq').onclick = submitQ; quizState.timer=20; updateTimer(); quizState.id=setInterval(()=>{ quizState.timer--; updateTimer(); if(quizState.timer<=0){ clearInterval(quizState.id); submitQ(true); } },1000);
+    }
+    function updateTimer(){ const t=document.getElementById('qfb'); if(t) t.innerHTML = `<div class="text-xs text-gray-500">Time: ${quizState.timer}s</div>`; }
+    function submitQ(timeout){ clearInterval(quizState.id); const ans = norm(document.getElementById('qa').value||''); const cur = quizState.q[quizState.i]; const ok = cur.a.map(x=>norm(x)); let correct = ok.includes(ans); if(timeout) correct=false; const qfb=document.getElementById('qfb'); if(correct){ qfb.innerHTML = '<span style="color:#16a34a">Correct!</span>'; quizState.score++; } else { qfb.innerHTML = `<span style="color:#e11d48">Wrong — Answer: ${cur.a[0]}</span>`; } setTimeout(()=>{ quizState.i++; if(quizState.i<quizState.q.length) showQ(); else finishQuiz(); },1200); }
+    function finishQuiz(){ document.getElementById('quizContent').innerHTML = `<div class="text-2xl font-bold">Quiz complete</div><div class="mt-2">Score: ${quizState.score}/${quizState.q.length}</div><button id="tryQ" class="mt-4 w-full bg-indigo-600 text-white py-2 rounded">Try Again</button><button id="closeQ" class="mt-2 w-full bg-gray-200 py-2 rounded">Close</button>`; document.getElementById('tryQ').onclick = ()=>{ startQuiz(); }; document.getElementById('closeQ').onclick = ()=>{ document.getElementById('quizModal').classList.add('hidden'); } }
+
+    document.getElementById('quizBtn').addEventListener('click', startQuiz);
+    document.getElementById('closeQuiz').addEventListener('click', ()=> document.getElementById('quizModal').classList.add('hidden'));
+
+    // Enter key support for practice
+    ['p1','p2','p3','p4','ind'].forEach(id=>{ const el=document.getElementById(id); el&&el.addEventListener('keypress', e=>{ if(e.key==='Enter'){ if(id==='ind') document.getElementById('checkInd').click(); else document.getElementById('c'+id.slice(1)).click(); } }); });
+  </script>
+<!-- Topic Quiz System -->
+<script src="/js/topic-quiz-loader.js"></script>
+<script src="/js/topic-quiz-injector.js"></script>
+</body>
+</html><!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Linear Equations & Inequalities | Mathematics</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style> body{font-family:Inter, sans-serif}.content-card{-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);background:rgba(255,255,255,0.95);border:1px solid rgba(255,255,255,0.2);} </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-indigo-50 to-purple-100 p-6">
+  <div class="max-w-3xl mx-auto">
+    <nav class="mb-4"><a href="index.html" class="text-blue-600">← Back to Algebraic Foundations</a></nav>
+    <article class="content-card rounded-lg p-6">
+      <h1 class="text-xl font-bold mb-2">Linear Equations & Inequalities</h1>
+      <p class="text-gray-700 mb-4">Solving single-variable linear equations and simple inequalities; graphical interpretation of solutions.</p>
+
+      <h3 class="mt-4 font-semibold">Worked example</h3>
+      <p class="text-gray-700">Solve: 3x - 5 = 16 → 3x = 21 → x = 7.</p>
+
+      <h3 class="mt-4 font-semibold">Practice</h3>
+      <ol class="list-decimal list-inside text-gray-700">
+        <li>Solve: 2x + 3 = 11.</li>
+        <li>Solve inequality: 5 - 2x > 1.</li>
+      </ol>
+
+      <h3 class="mt-3 font-semibold">Brief solutions</h3>
+      <ol class="list-decimal list-inside text-gray-700">
+        <li>x = 4.</li>
+        <li>5 - 2x > 1 → -2x > -4 → x < 2.</li>
+      </ol>
+    </article>
+  </div>
+<!-- Topic Quiz System -->
+<script src="/js/topic-quiz-loader.js"></script>
+<script src="/js/topic-quiz-injector.js"></script>
+</body>
+</html>

@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Favicon -->
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+  
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plants Topics</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: #f7f8fa;
+      color: #1e293b;
+    }
+    .main-content {
+      max-width: 900px;
+      margin: 40px auto 0 auto;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 2px 8px rgba(30,41,59,0.07);
+      padding: 2.5rem 2rem 2rem 2rem;
+      min-height: 80vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: #f1f5f9;
+      color: #1e293b;
+      border: none;
+      border-radius: 8px;
+      padding: 0.5rem 1.2rem;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      margin-bottom: 2rem;
+      box-shadow: 0 1px 4px rgba(30,41,59,0.05);
+      transition: background 0.2s, color 0.2s;
+      text-decoration: none;
+    }
+    .back-btn:hover {
+      background: #e0e7ef;
+      color: #38bdf8;
+    }
+    h1 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #1e3a8a;
+      margin-bottom: 1.5rem;
+    }
+    .topic-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.3rem;
+    }
+    .topic-card {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(30,41,59,0.07);
+      padding: 1.5rem 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.7rem;
+      font-size: 1.05rem;
+      color: #1e293b;
+      font-weight: 500;
+      cursor: pointer;
+      text-decoration: none;
+      transition: box-shadow 0.2s;
+    }
+    .topic-card:hover {
+      box-shadow: 0 4px 16px rgba(26,115,232,0.08);
+      color: #1a73e8;
+    }
+    .topic-title {
+      font-weight: 600;
+      font-size: 1.1rem;
+      color: #1e3a8a;
+    }
+    @media (max-width: 600px) {
+      .main-content {
+        padding: 1rem 0.5rem;
+      }
+      .topic-list {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="main-content">
+    <a href="biology.html" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Biology</a>
+    <h1>Plants</h1>
+    <div class="topic-list">
+      <a class="topic-card" href="#" onclick="openModal('Classification of Plants')">
+        <div class="topic-title">Classification of Plants</div>
+      </a>
+      <a class="topic-card" href="#" onclick="openModal('Plant Nutrition')">
+        <div class="topic-title">Plant Nutrition</div>
+      </a>
+      <a class="topic-card" href="#" onclick="openModal('Supporting Tissues in Plants')">
+        <div class="topic-title">Supporting Tissues in Plants</div>
+      </a>
+      <a class="topic-card" href="#" onclick="openModal('Mechanism of transportation in Plants')">
+        <div class="topic-title">Mechanism of transportation in Plants</div>
+      </a>
+      <a class="topic-card" href="#" onclick="openModal('Respiratory Systems in Plants')">
+        <div class="topic-title">Respiratory Systems in Plants</div>
+      </a>
+      <a class="topic-card" href="#" onclick="openModal('Excretion in flowering plants')">
+        <div class="topic-title">Excretion in flowering plants</div>
+      </a>
+      <a class="topic-card" href="#" onclick="openModal('Reproductive Systems in Plants')">
+        <div class="topic-title">Reproductive Systems in Plants</div>
+      </a>
+      <a class="topic-card" href="#" onclick="openModal('Pollination')">
+        <div class="topic-title">Pollination</div>
+      </a>
+      <a class="topic-card" href="#" onclick="openModal('Development of New seeds')">
+        <div class="topic-title">Development of New seeds</div>
+      </a>
+      <a class="topic-card" href="#" onclick="openModal('Fruits')">
+        <div class="topic-title">Fruits</div>
+      </a>
+      <a class="topic-card" href="#" onclick="openModal('Plant Hormones')">
+        <div class="topic-title">Plant Hormones</div>
+      </a>
+      <a class="topic-card" href="#" onclick="openModal('Heredity')">
+        <div class="topic-title">Heredity</div>
+      </a>
+    </div>
+  </main>
+  <div id="modal" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(30,41,59,0.25);z-index:1000;align-items:center;justify-content:center;">
+    <div style="background:#fff;border-radius:12px;max-width:400px;width:90vw;padding:2rem;box-shadow:0 2px 16px rgba(30,41,59,0.15);position:relative;">
+      <button onclick="closeModal()" style="position:absolute;top:12px;right:12px;background:none;border:none;font-size:1.2rem;cursor:pointer;color:#888;"><i class="fas fa-times"></i></button>
+      <h2 id="modalTitle" style="margin-top:0;font-size:1.2rem;color:#1e3a8a;">Sub-topics:</h2>
+      <div id="modalContent"></div>
+    </div>
+  </div>
+  <script>
+    const subtopics = {
+      'Classification of Plants': [
+        { name: 'Monera, Protista, Fungi, Plantae, Animalia', link: 'biology-explanation.html?topic=Monera%2C%20Protista%2C%20Fungi%2C%20Plantae%2C%20Animalia' },
+        { name: 'analyze features and characteristics of listed organisms', link: 'biology-explanation.html?topic=analyze%20features%20and%20characteristics%20of%20listed%20organisms' }
+      ],
+      'Plant Nutrition': [
+        { name: 'Modes (autotrophic, heterotrophic), types', link: 'biology-explanation.html?topic=Modes%20(autotrophic%2C%20heterotrophic)%2C%20types' },
+        { name: 'analyze photosynthesis, macro/micro-nutrients', link: 'biology-explanation.html?topic=analyze%20photosynthesis%2C%20macro%2Fmicro-nutrients' }
+      ],
+      'Supporting Tissues in Plants': [
+        { name: 'Plant and animal support tissues, skeleton types, movement, tropism, joints', link: 'biology-explanation.html?topic=Plant%20and%20animal%20support%20tissues%2C%20skeleton%20types%2C%20movement%2C%20tropism%2C%20joints' },
+        { name: 'determine need for support/movement, identify tissues, describe skeletons and joints', link: 'biology-explanation.html?topic=determine%20need%20for%20support%2Fmovement%2C%20identify%20tissues%2C%20describe%20skeletons%20and%20joints' }
+      ],
+      'Mechanism of transportation in Plants': [
+        { name: 'Need, materials, channels (circulatory and vascular systems)', link: 'biology-explanation.html?topic=Need%2C%20materials%2C%20channels%20(circulatory%20and%20vascular%20systems)' },
+        { name: 'media and processes (diffusion, osmosis, transpiration, root pressure, active transport)', link: 'biology-explanation.html?topic=media%20and%20processes%20(diffusion%2C%20osmosis%2C%20transpiration%2C%20root%20pressure%2C%20active%20transport)' },
+        { name: 'describe media and mechanisms of transport', link: 'biology-explanation.html?topic=describe%20media%20and%20mechanisms%20of%20transport' }
+      ],
+      'Respiratory Systems in Plants': [
+        { name: 'Respiratory organs, mechanisms, aerobic/anaerobic respiration', link: 'biology-explanation.html?topic=Respiratory%20organs%2C%20mechanisms%2C%20aerobic%2Fanaerobic%20respiration' },
+        { name: 'examine significance and chemical process of respiration', link: 'biology-explanation.html?topic=examine%20significance%20and%20chemical%20process%20of%20respiration' }
+      ],
+      'Excretion in flowering plants': [
+        { name: 'Excretory structures and mechanisms, excretory products of plants', link: 'biology-explanation.html?topic=Excretory%20structures%20and%20mechanisms%2C%20excretory%20products%20of%20plants' },
+        { name: 'define and relate excretion to structure and function', link: 'biology-explanation.html?topic=define%20and%20relate%20excretion%20to%20structure%20and%20function' }
+      ],
+      'Reproductive Systems in Plants': [
+        { name: 'Asexual and sexual reproduction, plant and mammal reproduction, fertilization, development, birth control', link: 'biology-explanation.html?topic=Asexual%20and%20sexual%20reproduction%2C%20plant%20and%20mammal%20reproduction%2C%20fertilization%2C%20development%2C%20birth%20control' },
+        { name: 'differentiate reproduction types, relate structure to function, describe fertilization and development', link: 'biology-explanation.html?topic=differentiate%20reproduction%20types%2C%20relate%20structure%20to%20function%2C%20describe%20fertilization%20and%20development' }
+      ],
+      'Pollination': [
+        { name: 'Pollination and fertilization in plants', link: 'biology-explanation.html?topic=Pollination%20and%20fertilization%20in%20plants' },
+        { name: 'describe pollination mechanisms', link: 'biology-explanation.html?topic=describe%20pollination%20mechanisms' }
+      ],
+      'Development of New seeds': [
+        { name: 'Seed formation and dispersal', link: 'biology-explanation.html?topic=Seed%20formation%20and%20dispersal' },
+        { name: 'describe seed development', link: 'biology-explanation.html?topic=describe%20seed%20development' }
+      ],
+      'Fruits': [
+        { name: 'Fruit types and functions', link: 'biology-explanation.html?topic=Fruit%20types%20and%20functions' },
+        { name: 'describe fruit development', link: 'biology-explanation.html?topic=describe%20fruit%20development' }
+      ],
+      'Plant Hormones': [
+        { name: 'Hormones in plant growth and development', link: 'biology-explanation.html?topic=Hormones%20in%20plant%20growth%20and%20development' },
+        { name: 'analyze effects of plant hormones', link: 'biology-explanation.html?topic=analyze%20effects%20of%20plant%20hormones' }
+      ],
+      'Heredity': [
+        { name: 'Inheritance, chromosomes, probability, sex determination, application in agriculture/medicine, sex-linked characters', link: 'biology-explanation.html?topic=Inheritance%2C%20chromosomes%2C%20probability%2C%20sex%20determination%2C%20application%20in%20agriculture%2Fmedicine%2C%20sex-linked%20characters' },
+        { name: 'determine heritable characters, analyze inheritance, apply principles in real life, identify sex-linked traits', link: 'biology-explanation.html?topic=determine%20heritable%20characters%2C%20analyze%20inheritance%2C%20apply%20principles%20in%20real%20life%2C%20identify%20sex-linked%20traits' }
+      ]
+    };
+    function openModal(topic) {
+      document.getElementById('modal').style.display = 'flex';
+      document.getElementById('modalTitle').textContent = 'Sub-topics: ' + topic;
+      const content = subtopics[topic] || [];
+      document.getElementById('modalContent').innerHTML = content.map(s => `<div style='display:flex;align-items:center;justify-content:space-between;margin-bottom:0.7rem;'><span>${s.name}</span><a href='${s.link}' class='back-btn' style='margin:0 0 0 1rem;padding:0.3rem 0.8rem;font-size:0.95rem;'>Start Learning</a></div>`).join('');
+    }
+    function closeModal() {
+      document.getElementById('modal').style.display = 'none';
+    }
+    window.onclick = function(event) {
+      const modal = document.getElementById('modal');
+      if(event.target === modal) closeModal();
+    }
+  </script>
+<!-- Topic Quiz System -->
+<script src="/js/topic-quiz-loader.js"></script>
+<script src="/js/topic-quiz-injector.js"></script>
+</body>
+</html>
+

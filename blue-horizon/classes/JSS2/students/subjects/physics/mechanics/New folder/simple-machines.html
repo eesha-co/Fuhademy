@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simple Machines - Step-by-Step Interactive Module</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    .step-active { background-color: #2563eb; color: white; }
+    .step-inactive { background-color: #e5e7eb; color: #374151; }
+  </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+  <nav class="bg-blue-700 p-4 text-white text-xl font-bold">Simple Machines: Interactive Learning</nav>
+  <div class="flex">
+    <!-- Sidebar Steps -->
+    <aside class="w-64 bg-white shadow-md p-4 min-h-screen">
+      <h2 class="text-lg font-semibold mb-4">Steps</h2>
+      <ul id="stepsList" class="space-y-2"></ul>
+    </aside>
+    <!-- Main Content -->
+    <main class="flex-1 p-8">
+      <div id="progressBar" class="mb-6 h-3 bg-gray-200 rounded-full overflow-hidden">
+        <div id="progress" class="h-full bg-blue-600 transition-all" style="width: 0%"></div>
+      </div>
+      <div id="stepContent" class="bg-white rounded shadow p-6 min-h-[300px]"></div>
+      <div class="flex justify-between mt-8">
+        <button id="prevBtn" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400" disabled>Previous</button>
+        <button id="nextBtn" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Next</button>
+      </div>
+    </main>
+  </div>
+
+  <!-- Quiz Modal -->
+  <div id="quizModal" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center hidden">
+    <div class="bg-white p-8 rounded shadow-lg max-w-lg w-full">
+      <h3 class="text-xl font-bold mb-4">Quiz Time!</h3>
+      <div id="quizContent"></div>
+      <button id="closeQuiz" class="mt-6 px-4 py-2 bg-blue-600 text-white rounded">Close</button>
+    </div>
+  </div>
+
+  <!-- Simulation Modal -->
+  <div id="simModal" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center hidden">
+    <div class="bg-white p-8 rounded shadow-lg max-w-2xl w-full">
+      <h3 class="text-xl font-bold mb-4">Simple Machines Simulation</h3>
+      <div id="simContent" class="mb-4"></div>
+      <button id="closeSim" class="px-4 py-2 bg-blue-600 text-white rounded">Close</button>
+    </div>
+  </div>
+
+  <script>
+    // Step-by-step data for Simple Machines
+    const topicData = {
+      title: "Simple Machines",
+      steps: [
+        {
+          title: "Introduction to Simple Machines",
+          content: `<p>Simple machines are basic mechanical devices that help us do work by changing the direction or magnitude of a force. The six classic simple machines are: lever, wheel and axle, pulley, inclined plane, wedge, and screw.</p><img src='https://upload.wikimedia.org/wikipedia/commons/6/6b/Simple_machines.png' alt='Simple Machines' class='my-4 rounded shadow' width='300'>`
+        },
+        {
+          title: "The Lever",
+          content: `<p>A lever is a rigid bar that rotates around a fixed point called the fulcrum. Levers help us lift heavy objects with less effort.</p><button onclick='showSimulation("lever")' class='mt-2 px-3 py-1 bg-blue-500 text-white rounded'>Try Lever Simulation</button>`
+        },
+        {
+          title: "Wheel and Axle",
+          content: `<p>The wheel and axle is a simple machine that reduces friction and makes it easier to move objects over a distance.</p>`
+        },
+        {
+          title: "Pulley",
+          content: `<p>A pulley is a wheel with a groove for a rope. It changes the direction of a force and can make lifting easier.</p>`
+        },
+        {
+          title: "Inclined Plane, Wedge, and Screw",
+          content: `<p>An inclined plane is a flat surface set at an angle, used to help raise or lower objects. A wedge is a double inclined plane, and a screw is an inclined plane wrapped around a cylinder.</p>`
+        },
+        {
+          title: "Quiz: Test Your Knowledge!",
+          content: `<button onclick='showQuiz()' class='px-4 py-2 bg-green-600 text-white rounded'>Start Quiz</button>`
+        }
+      ],
+      quiz: [
+        {
+          question: "Which of the following is NOT a simple machine?",
+          options: ["Lever", "Pulley", "Engine", "Wedge"],
+          answer: 2
+        },
+        {
+          question: "What is the function of a lever?",
+          options: ["To rotate objects", "To lift or move loads with less effort", "To reduce friction", "To change electrical energy"],
+          answer: 1
+        },
+        {
+          question: "A screw is a type of...",
+          options: ["Pulley", "Inclined Plane", "Wheel and Axle", "Lever"],
+          answer: 1
+        }
+      ]
+    };
+
+    // Step navigation logic
+    let currentStep = 0;
+    function renderSteps() {
+      const stepsList = document.getElementById('stepsList');
+      stepsList.innerHTML = '';
+      topicData.steps.forEach((step, idx) => {
+        const li = document.createElement('li');
+        li.textContent = `${idx + 1}. ${step.title}`;
+        li.className = 'cursor-pointer px-3 py-2 rounded ' + (idx === currentStep ? 'step-active' : 'step-inactive');
+        li.onclick = () => showStep(idx);
+        stepsList.appendChild(li);
+      });
+    }
+    function showStep(idx) {
+      currentStep = idx;
+      document.getElementById('stepContent').innerHTML = topicData.steps[idx].content;
+      renderSteps();
+      updateProgress();
+      document.getElementById('prevBtn').disabled = idx === 0;
+      document.getElementById('nextBtn').disabled = idx === topicData.steps.length - 1;
+    }
+    function updateProgress() {
+      const percent = ((currentStep + 1) / topicData.steps.length) * 100;
+      document.getElementById('progress').style.width = percent + '%';
+    }
+    document.getElementById('prevBtn').onclick = () => {
+      if (currentStep > 0) showStep(currentStep - 1);
+    };
+    document.getElementById('nextBtn').onclick = () => {
+      if (currentStep < topicData.steps.length - 1) showStep(currentStep + 1);
+    };
+
+    // Quiz logic
+    function showQuiz() {
+      document.getElementById('quizModal').classList.remove('hidden');
+      initializeQuiz();
+    }
+    function initializeQuiz() {
+      const quizContent = document.getElementById('quizContent');
+      quizContent.innerHTML = '';
+      let score = 0;
+      let qIdx = 0;
+      function renderQuestion() {
+        const q = topicData.quiz[qIdx];
+        quizContent.innerHTML = `<div class='mb-4'><b>Q${qIdx + 1}:</b> ${q.question}</div>` +
+          q.options.map((opt, i) => `<button class='block w-full text-left px-3 py-2 mb-2 rounded border hover:bg-blue-100' onclick='window.answerQuiz(${i})'>${opt}</button>`).join('');
+      }
+      window.answerQuiz = (selected) => {
+        const q = topicData.quiz[qIdx];
+        if (selected === q.answer) score++;
+        qIdx++;
+        if (qIdx < topicData.quiz.length) {
+          renderQuestion();
+        } else {
+          quizContent.innerHTML = `<div class='text-lg font-bold mb-2'>Quiz Complete!</div><div>Your score: ${score} / ${topicData.quiz.length}</div>`;
+        }
+      };
+      renderQuestion();
+    }
+    document.getElementById('closeQuiz').onclick = () => {
+      document.getElementById('quizModal').classList.add('hidden');
+    };
+
+    // Simulation logic
+    function showSimulation(type) {
+      document.getElementById('simModal').classList.remove('hidden');
+      const simContent = document.getElementById('simContent');
+      if (type === 'lever') {
+        simContent.innerHTML = `
+          <div class='mb-2'>
+            <b>Lever Simulation:</b> Drag the load or effort to see how the fulcrum position affects lifting!</div>
+          <svg id='leverSim' width='400' height='120' class='bg-gray-100 rounded'>
+            <rect x='50' y='80' width='300' height='10' fill='#a3a3a3'/>
+            <rect id='fulcrum' x='190' y='90' width='20' height='20' fill='#f59e42'/>
+            <circle id='load' cx='80' cy='75' r='15' fill='#ef4444' cursor='pointer'/>
+            <circle id='effort' cx='320' cy='75' r='15' fill='#3b82f6' cursor='pointer'/>
+          </svg>
+          <div class='mt-2 text-sm text-gray-600'>Try dragging the red (load) or blue (effort) circles!</div>
+        `;
+        // Simple drag logic for demo
+        setTimeout(() => {
+          const svg = document.getElementById('leverSim');
+          let dragTarget = null;
+          svg.onmousedown = (e) => {
+            if (e.target.id === 'load' || e.target.id === 'effort') dragTarget = e.target;
+          };
+          svg.onmouseup = () => { dragTarget = null; };
+          svg.onmousemove = (e) => {
+            if (dragTarget) {
+              const rect = svg.getBoundingClientRect();
+              let x = e.clientX - rect.left;
+              if (dragTarget.id === 'load') x = Math.max(65, Math.min(x, 190));
+              if (dragTarget.id === 'effort') x = Math.max(210, Math.min(x, 335));
+              dragTarget.setAttribute('cx', x);
+            }
+          };
+        }, 100);
+      }
+    }
+    document.getElementById('closeSim').onclick = () => {
+      document.getElementById('simModal').classList.add('hidden');
+    };
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', () => {
+      renderSteps();
+      showStep(0);
+    });
+  </script>
+</body>
+</html>

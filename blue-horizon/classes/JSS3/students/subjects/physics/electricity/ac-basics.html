@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AC Concepts | Physics</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style> body { font-family: 'Inter', sans-serif; } .content-card { -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); background: rgba(255,255,255,0.75); border:1px solid rgba(255,255,255,0.2); box-shadow:0 8px 32px rgba(0,0,0,0.06);} </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-6">
+  <div class="max-w-4xl mx-auto">
+    <nav class="mb-6"><a href="index.html" class="text-blue-600 hover:text-blue-700">← Back to Electricity</a></nav>
+    <article class="content-card rounded-xl p-8">
+      <header class="mb-6">
+        <h1 class="text-2xl font-bold text-gray-800 mb-2">AC Concepts</h1>
+        <p class="text-gray-600">Alternating current basics, frequency, RMS values and a mention of transformers and reactance.</p>
+      </header>
+      <section class="mb-6">
+        <h2 class="text-lg font-semibold mb-2">RMS values</h2>
+        <p class="text-gray-700">For a sinusoidal voltage V_peak, V_rms = V_peak / √2. Power using RMS values: P = V_rms I_rms cosφ.</p>
+      </section>
+      <section class="mb-6">
+        <h2 class="text-lg font-semibold mb-2">Transformers (qualitative)</h2>
+        <p class="text-gray-700">Step-up and step-down transformers, turns ratio and ideal transformer relation: Vp/Vs = Np/Ns.</p>
+      </section>
+      <section>
+        <h2 class="text-lg font-semibold mb-2">Practice</h2>
+        <ol class="list-decimal list-inside text-gray-700 space-y-1">
+          <li>Compute Vrms for 311 V peak (mains in some countries).</li>
+          <li>Given Vp/Vs = Np/Ns, if a transformer has 1000 turns primary and 100 turns secondary with 230 V primary, find secondary voltage.</li>
+        </ol>
+      </section>
+
+      <section>
+        <h2 class="text-lg font-semibold mb-2">Solutions (brief)</h2>
+        <ol class="list-decimal list-inside text-gray-700 space-y-1">
+          <li>Vrms = 311/√2 ≈ 220 V.</li>
+          <li>Vs = Vp × (Ns/Np) = 230 × (100/1000) = 23 V.</li>
+        </ol>
+      </section>
+    </article>
+  </div>
+<!-- Topic Quiz System -->
+<script src="/js/topic-quiz-loader.js"></script>
+<script src="/js/topic-quiz-injector.js"></script>
+</body>
+</html>

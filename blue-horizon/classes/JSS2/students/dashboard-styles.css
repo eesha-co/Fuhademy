@@ -1,0 +1,116 @@
+/* Base styles */
+.min-h-screen {
+    min-height: 100vh;
+}
+
+/* Mobile (Portrait): up to 480px */
+@media screen and (max-width: 480px) {
+
+    
+    /* Search bar */
+    #globalSearch {
+        width: 100%;
+        max-width: calc(100vw - 120px);
+    }
+    
+    /* Grid adjustments */
+    .grid.grid-cols-2.sm\:grid-cols-3.lg\:grid-cols-6 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    /* Stats grid */
+    .grid.grid-cols-1.lg\:grid-cols-3 {
+        gap: 1rem;
+    }
+    
+    /* Floating buttons */
+    .fixed.bottom-8.right-8 {
+        bottom: 1rem;
+        right: 1rem;
+    }
+}
+
+/* Mobile (Landscape) and Small Tablets: 481px to 768px */
+@media screen and (min-width: 481px) and (max-width: 768px) {
+
+    
+    /* Search bar */
+    #globalSearch {
+        width: 320px;
+    }
+    
+    /* Grid adjustments */
+    .grid.grid-cols-2.sm\:grid-cols-3.lg\:grid-cols-6 {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* Tablets (Portrait): 768px to 1024px */
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+
+    
+    /* Search bar */
+    #globalSearch {
+        width: 400px;
+    }
+    
+    /* Grid adjustments */
+    .grid.grid-cols-2.sm\:grid-cols-3.lg\:grid-cols-6 {
+        grid-template-columns: repeat(4, 1fr);
+    }
+    
+    /* Two column layout adjustments */
+    .grid.grid-cols-1.lg\:grid-cols-3 {
+        grid-template-columns: 2fr 1fr;
+        gap: 1.5rem;
+    }
+}
+
+/* Tablets (Landscape) and Laptops: 769px to 1024px */
+@media screen and (min-width: 769px) and (max-width: 1024px) and (orientation: landscape) {
+
+    
+    /* Search bar */
+    #globalSearch {
+        width: 480px;
+    }
+    
+    /* Grid adjustments */
+    .grid.grid-cols-2.sm\:grid-cols-3.lg\:grid-cols-6 {
+        grid-template-columns: repeat(5, 1fr);
+    }
+}
+
+/* Shared responsive utilities */
+.show-mobile {
+    display: none !important;
+}
+
+@media screen and (max-width: 768px) {
+    .hide-mobile {
+        display: none !important;
+    }
+    
+    .show-mobile {
+        display: block !important;
+    }
+    
+    /* Card and container padding adjustments */
+    .p-6 {
+        padding: 1rem;
+    }
+    
+    .gap-6 {
+        gap: 1rem;
+    }
+    
+    /* Text size adjustments */
+    .text-2xl {
+        font-size: 1.5rem;
+    }
+    
+    /* Button size adjustments */
+    .px-4.py-3 {
+        padding: 0.5rem 1rem;
+    }
+}

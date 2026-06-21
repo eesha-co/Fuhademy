@@ -1,0 +1,1762 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Periodic Trends - Chemistry | Juanova Cortex</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @keyframes fade-in-up {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in-up { animation: fade-in-up 0.5s ease-out forwards; }
+        .step-progress { transition: width 0.3s ease-in-out; }
+        
+        /* Section cards */
+        .section-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            border: 1px solid #e5e7eb;
+        }
+        
+        /* Click hint button */
+        .click-hint {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            color: #92400e;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 24px;
+            padding: 12px 24px;
+            border-radius: 12px;
+            border: 2px solid #f59e0b;
+            transition: all 0.3s ease;
+            animation: pulse-hint 2s infinite;
+        }
+        .click-hint:hover {
+            background: linear-gradient(135deg, #fde68a 0%, #fcd34d 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4);
+        }
+        @keyframes pulse-hint {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.4); }
+            50% { box-shadow: 0 0 0 8px rgba(245, 158, 11, 0); }
+        }
+        
+        /* Step complete indicator */
+        .step-complete-hint {
+            background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+            border: 2px solid #10b981;
+            color: #065f46;
+            padding: 16px 24px;
+            border-radius: 12px;
+            text-align: center;
+            margin-top: 24px;
+        }
+        
+        /* Prerequisite banner */
+        .prerequisite-banner {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border: 2px solid #f59e0b;
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin-bottom: 24px;
+        }
+        
+        /* Trend cards */
+        .trend-card-blue {
+            background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+            border-left: 4px solid #3b82f6;
+        }
+        .trend-card-green {
+            background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+            border-left: 4px solid #22c55e;
+        }
+        
+        /* Atomic radius visualization */
+        .atom-viz {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+        
+        /* Electronegativity heatmap */
+        .heatmap-cell {
+            transition: all 0.2s ease;
+        }
+        .heatmap-cell:hover {
+            transform: scale(1.1);
+            z-index: 10;
+        }
+        
+        /* Chart bars */
+        .chart-bar {
+            transition: all 0.3s ease;
+        }
+        .chart-bar:hover {
+            filter: brightness(1.1);
+        }
+        
+        /* Practice question styles */
+        .practice-option {
+            padding: 12px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .practice-option:hover {
+            border-color: #6366f1;
+            background: #eef2ff;
+        }
+        .practice-option.selected {
+            border-color: #6366f1;
+            background: #eef2ff;
+        }
+        .practice-option.correct {
+            border-color: #22c55e;
+            background: #dcfce7;
+        }
+        .practice-option.incorrect {
+            border-color: #ef4444;
+            background: #fee2e2;
+        }
+        
+        /* Quiz modal */
+        .quiz-modal {
+            backdrop-filter: blur(8px);
+        }
+        
+        @media (max-width: 768px) {
+            .section-card { padding: 1rem; }
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Top Navigation -->
+    <nav class="bg-white shadow-sm fixed top-0 w-full z-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center">
+                    <button id="mobileMenuBtn" class="text-gray-600 hover:text-gray-900 mr-3 md:hidden" aria-label="Menu">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                    <a href="index.html" class="flex items-center gap-2 text-gray-600 hover:text-gray-900">
+                        <i class="fas fa-arrow-left"></i>
+                        <h1 class="text-lg md:text-xl font-semibold text-gray-900">Periodic Trends</h1>
+                    </a>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="text-sm text-gray-600 hidden sm:block">
+                        Progress: <span id="progressPercent">0%</span>
+                    </div>
+                    <div class="w-24 sm:w-32 h-2 bg-gray-200 rounded-full">
+                        <div id="progressBar" class="step-progress h-2 bg-amber-500 rounded-full" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Sidebar Overlay -->
+    <div id="sidebarOverlay" class="fixed inset-0 bg-black/50 z-40 hidden"></div>
+
+    <!-- Mobile Sidebar -->
+    <div id="mobileSidebar" class="fixed top-0 left-0 w-72 h-full bg-white z-50 transform -translate-x-full transition-transform">
+        <div class="p-4">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="font-semibold text-lg">Learning Steps</h3>
+                <button id="closeSidebarBtn" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            <ul id="mobileStepsList" class="space-y-2"></ul>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="pt-20 pb-24">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-12 gap-6">
+                <!-- Left Sidebar - Steps (Desktop) -->
+                <div class="md:col-span-3 hidden md:block">
+                    <div class="bg-white rounded-lg shadow-sm p-4 sticky top-20">
+                        <h3 class="font-semibold mb-4">Learning Steps</h3>
+                        <ul id="stepsList" class="space-y-2"></ul>
+                    </div>
+                </div>
+
+                <!-- Main Content Area -->
+                <div class="md:col-span-9">
+                    <!-- Prerequisite Banner -->
+                    <div class="prerequisite-banner">
+                        <div class="flex items-start gap-3">
+                            <div class="text-2xl">📋</div>
+                            <div>
+                                <h4 class="font-semibold text-amber-800 mb-1">Before You Start</h4>
+                                <p class="text-amber-700 text-sm mb-2">This topic builds on Electron Configuration. Make sure you understand:</p>
+                                <ul class="text-amber-700 text-sm list-disc pl-5 space-y-1">
+                                    <li>How electrons are arranged in shells and orbitals</li>
+                                    <li>The Aufbau principle and electron filling order</li>
+                                    <li>Valence electrons and their importance</li>
+                                </ul>
+                                <a href="electron-configuration.html" class="inline-flex items-center gap-2 mt-3 text-amber-800 font-medium hover:text-amber-900">
+                                    <i class="fas fa-book-open"></i>
+                                    Review: Electron Configuration →
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Current Step Content -->
+                    <div id="stepContainer" class="bg-white rounded-lg shadow-sm p-6 mb-6"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Bottom Navigation -->
+    <div class="fixed bottom-0 w-full bg-white border-t border-gray-200 z-40">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between py-4">
+                <button id="prevStepBtn" class="px-4 py-2 text-gray-600 hover:text-gray-900 disabled:opacity-50 disabled:cursor-not-allowed">
+                    <i class="fas fa-chevron-left mr-2"></i>Previous
+                </button>
+                <button id="nextStepBtn" class="px-4 py-2 bg-amber-500 text-white rounded-lg hover:bg-amber-600 disabled:opacity-50 disabled:cursor-not-allowed">
+                    Continue<i class="fas fa-chevron-right ml-2"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quiz Modal -->
+    <div id="quizModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 quiz-modal">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full mx-4 max-h-[90vh] overflow-hidden">
+            <!-- Quiz Header -->
+            <div class="bg-gradient-to-r from-amber-500 to-orange-500 text-white p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h2 class="text-xl font-bold">Periodic Trends - Quiz</h2>
+                        <p class="text-amber-100 text-sm mt-1">Test your understanding</p>
+                    </div>
+                    <button onclick="closeQuiz()" class="text-white/80 hover:text-white transition">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
+                <div class="mt-4 h-2 bg-white/20 rounded-full overflow-hidden">
+                    <div id="quizProgressBar" class="h-full bg-white transition-all duration-300" style="width: 0%"></div>
+                </div>
+                <div class="flex justify-between text-sm mt-2 text-amber-100">
+                    <span id="quizQuestionCount">Question 1 of 8</span>
+                    <span id="quizScoreDisplay">Score: 0</span>
+                </div>
+            </div>
+            
+            <!-- Quiz Content -->
+            <div id="quizContent" class="p-6 max-h-[60vh] overflow-y-auto"></div>
+            
+            <!-- Quiz Footer -->
+            <div id="quizFooter" class="p-4 border-t bg-gray-50 flex justify-between items-center">
+                <button id="quizPrevBtn" onclick="quizPrev()" class="px-4 py-2 rounded-lg bg-gray-200 text-gray-700 hover:bg-gray-300 transition disabled:opacity-50" disabled>
+                    <i class="fas fa-arrow-left mr-2"></i>Previous
+                </button>
+                <button id="quizNextBtn" onclick="quizNext()" class="px-6 py-2 rounded-lg bg-amber-500 text-white hover:bg-amber-600 transition disabled:opacity-50" disabled>
+                    Next<i class="fas fa-arrow-right ml-2"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../subject-quiz-handler.js"></script>
+    <script>
+        // =============================================
+        // PERIODIC TRENDS - INTERACTIVE LEARNING MODULE
+        // =============================================
+        
+        let currentStepIndex = 0;
+        let currentChunkIndex = 0;
+        let stepsCompleted = [];
+        
+        // Element data for visualizations
+        const elementData = {
+            // Period 2
+            Li: { symbol: 'Li', name: 'Lithium', z: 3, radius: 152, ie: 520, en: 1.0, ea: 60, group: 1, period: 2 },
+            Be: { symbol: 'Be', name: 'Beryllium', z: 4, radius: 112, ie: 899, en: 1.5, ea: -48, group: 2, period: 2 },
+            B: { symbol: 'B', name: 'Boron', z: 5, radius: 85, ie: 801, en: 2.0, ea: 27, group: 13, period: 2 },
+            C: { symbol: 'C', name: 'Carbon', z: 6, radius: 77, ie: 1086, en: 2.5, ea: -122, group: 14, period: 2 },
+            N: { symbol: 'N', name: 'Nitrogen', z: 7, radius: 75, ie: 1402, en: 3.0, ea: 7, group: 15, period: 2 },
+            O: { symbol: 'O', name: 'Oxygen', z: 8, radius: 73, ie: 1314, en: 3.5, ea: -141, group: 16, period: 2 },
+            F: { symbol: 'F', name: 'Fluorine', z: 9, radius: 71, ie: 1681, en: 4.0, ea: -328, group: 17, period: 2 },
+            Ne: { symbol: 'Ne', name: 'Neon', z: 10, radius: 69, ie: 2081, en: 0, ea: 0, group: 18, period: 2 },
+            // Period 3
+            Na: { symbol: 'Na', name: 'Sodium', z: 11, radius: 186, ie: 496, en: 0.9, ea: 53, group: 1, period: 3 },
+            Mg: { symbol: 'Mg', name: 'Magnesium', z: 12, radius: 160, ie: 738, en: 1.2, ea: -40, group: 2, period: 3 },
+            Al: { symbol: 'Al', name: 'Aluminium', z: 13, radius: 143, ie: 577, en: 1.5, ea: 50, group: 13, period: 3 },
+            Si: { symbol: 'Si', name: 'Silicon', z: 14, radius: 118, ie: 786, en: 1.8, ea: -134, group: 14, period: 3 },
+            P: { symbol: 'P', name: 'Phosphorus', z: 15, radius: 110, ie: 1012, en: 2.1, ea: -72, group: 15, period: 3 },
+            S: { symbol: 'S', name: 'Sulfur', z: 16, radius: 103, ie: 1000, en: 2.5, ea: -200, group: 16, period: 3 },
+            Cl: { symbol: 'Cl', name: 'Chlorine', z: 17, radius: 99, ie: 1251, en: 3.0, ea: -349, group: 17, period: 3 },
+            Ar: { symbol: 'Ar', name: 'Argon', z: 18, radius: 95, ie: 1521, en: 0, ea: 0, group: 18, period: 3 },
+            // Group 1 for comparison
+            K: { symbol: 'K', name: 'Potassium', z: 19, radius: 227, ie: 419, en: 0.8, ea: 48, group: 1, period: 4 },
+            Rb: { symbol: 'Rb', name: 'Rubidium', z: 37, radius: 248, ie: 403, en: 0.8, ea: 47, group: 1, period: 5 },
+            // Group 17 for comparison
+            Br: { symbol: 'Br', name: 'Bromine', z: 35, radius: 114, ie: 1140, en: 2.8, ea: -325, group: 17, period: 4 },
+            I: { symbol: 'I', name: 'Iodine', z: 53, radius: 133, ie: 1008, en: 2.5, ea: -295, group: 17, period: 5 }
+        };
+        
+        // Practice Question Tracker
+        const PracticeTracker = {
+            answers: { practice: [], guided: [] },
+            quizScore: null,
+            
+            recordAnswer(category, questionId, isCorrect, details) {
+                if (!this.answers[category]) this.answers[category] = [];
+                this.answers[category].push({ id: questionId, correct: isCorrect, details, timestamp: Date.now() });
+                this.saveToStorage();
+            },
+            
+            recordQuizScore(score, total) {
+                this.quizScore = { score, total, percentage: Math.round((score / total) * 100) };
+                this.saveToStorage();
+            },
+            
+            getCombinedScore() {
+                let practiceCorrect = 0;
+                let practiceTotal = 0;
+                
+                Object.values(this.answers).forEach(arr => {
+                    arr.forEach(a => {
+                        practiceTotal++;
+                        if (a.correct) practiceCorrect++;
+                    });
+                });
+                
+                const practicePercent = practiceTotal > 0 ? Math.round((practiceCorrect / practiceTotal) * 100) : null;
+                const quizPercent = this.quizScore ? this.quizScore.percentage : null;
+                
+                // Combined score: 40% practice, 60% quiz
+                let combined = null;
+                if (practicePercent !== null && quizPercent !== null) {
+                    combined = Math.round((practicePercent * 0.4) + (quizPercent * 0.6));
+                } else if (quizPercent !== null) {
+                    combined = quizPercent;
+                } else if (practicePercent !== null) {
+                    combined = practicePercent;
+                }
+                
+                return { practice: practicePercent, quiz: quizPercent, combined };
+            },
+            
+            saveToStorage() {
+                try {
+                    localStorage.setItem('periodicTrends_progress', JSON.stringify({
+                        answers: this.answers,
+                        quizScore: this.quizScore
+                    }));
+                } catch (e) {}
+            },
+            
+            loadFromStorage() {
+                try {
+                    const saved = localStorage.getItem('periodicTrends_progress');
+                    if (saved) {
+                        const data = JSON.parse(saved);
+                        this.answers = data.answers || { practice: [], guided: [] };
+                        this.quizScore = data.quizScore || null;
+                    }
+                } catch (e) {}
+            }
+        };
+        
+        PracticeTracker.loadFromStorage();
+        
+        // Topic data with all content
+        const topicData = {
+            title: "Periodic Trends",
+            steps: [
+                {
+                    id: "introduction",
+                    title: "Introduction to Periodic Trends",
+                    type: "note",
+                    chunks: [
+                        {
+                            intro: "Welcome to Periodic Trends! After learning about electron configuration, we'll now discover how electron arrangement leads to predictable patterns in element properties.",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-chart-line text-amber-500 mr-3"></i>What Are Periodic Trends?
+                                    </h3>
+                                    <p class="text-gray-700 leading-relaxed mb-4">
+                                        <strong class="text-amber-600">Periodic trends</strong> are patterns in the periodic table that show how certain properties of elements change predictably as you move across periods (rows) or down groups (columns).
+                                    </p>
+                                    
+                                    <div class="bg-gradient-to-r from-amber-50 to-orange-50 p-4 rounded-lg border border-amber-200 mb-4">
+                                        <p class="text-amber-800 font-medium text-center">
+                                            <i class="fas fa-lightbulb mr-2"></i>These trends exist because elements in the same group have the same number of valence electrons, while elements in the same period have the same number of electron shells!
+                                        </p>
+                                    </div>
+                                    
+                                    <div class="grid md:grid-cols-2 gap-4">
+                                        <div class="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-500">
+                                            <h4 class="font-semibold text-blue-700 mb-2">Across a Period (→)</h4>
+                                            <p class="text-sm text-gray-700">Moving left to right, atomic number increases while electron shells stay the same.</p>
+                                        </div>
+                                        <div class="bg-green-50 p-4 rounded-lg border-l-4 border-green-500">
+                                            <h4 class="font-semibold text-green-700 mb-2">Down a Group (↓)</h4>
+                                            <p class="text-sm text-gray-700">Moving down, electron shells are added while valence electrons stay the same.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            `
+                        },
+                        {
+                            intro: "Let's look at the main periodic trends we'll study in this topic:",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-list-check text-amber-500 mr-3"></i>Key Trends We'll Explore
+                                    </h3>
+                                    
+                                    <div class="space-y-3">
+                                        <div class="flex items-center gap-4 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition">
+                                            <div class="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center text-purple-600 font-bold">1</div>
+                                            <div>
+                                                <h4 class="font-semibold text-gray-800">Atomic Radius</h4>
+                                                <p class="text-sm text-gray-600">The size of an atom - how it changes across periods and groups</p>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="flex items-center gap-4 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition">
+                                            <div class="w-10 h-10 bg-indigo-100 rounded-full flex items-center justify-center text-indigo-600 font-bold">2</div>
+                                            <div>
+                                                <h4 class="font-semibold text-gray-800">Ionization Energy</h4>
+                                                <p class="text-sm text-gray-600">Energy needed to remove an electron - with important exceptions!</p>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="flex items-center gap-4 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition">
+                                            <div class="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center text-orange-600 font-bold">3</div>
+                                            <div>
+                                                <h4 class="font-semibold text-gray-800">Electronegativity</h4>
+                                                <p class="text-sm text-gray-600">How strongly atoms attract bonding electrons</p>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="flex items-center gap-4 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition">
+                                            <div class="w-10 h-10 bg-teal-100 rounded-full flex items-center justify-center text-teal-600 font-bold">4</div>
+                                            <div>
+                                                <h4 class="font-semibold text-gray-800">Electron Affinity</h4>
+                                                <p class="text-sm text-gray-600">Energy change when an atom gains an electron</p>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="flex items-center gap-4 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition">
+                                            <div class="w-10 h-10 bg-pink-100 rounded-full flex items-center justify-center text-pink-600 font-bold">5</div>
+                                            <div>
+                                                <h4 class="font-semibold text-gray-800">Shielding Effect</h4>
+                                                <p class="text-sm text-gray-600">How inner electrons shield outer electrons from the nucleus</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <button class="click-hint" onclick="nextChunk()">
+                                        <i class="fas fa-arrow-right"></i>
+                                        <span>Continue to Atomic Radius →</span>
+                                    </button>
+                                </div>
+                            `
+                        }
+                    ]
+                },
+                {
+                    id: "atomic-radius",
+                    title: "Atomic Radius",
+                    type: "note",
+                    chunks: [
+                        {
+                            intro: "The atomic radius is the distance from the nucleus to the outermost electrons. Let's explore how it changes!",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-expand-arrows-alt text-amber-500 mr-3"></i>What is Atomic Radius?
+                                    </h3>
+                                    <p class="text-gray-700 mb-4">
+                                        <strong class="text-amber-600">Atomic radius</strong> is a measure of the size of an atom. It's typically defined as half the distance between the nuclei of two bonded atoms of the same element.
+                                    </p>
+                                    
+                                    <div class="bg-blue-50 p-4 rounded-lg mb-4 text-center">
+                                        <p class="text-blue-800 font-mono">Atomic Radius = Distance from nucleus to valence shell</p>
+                                    </div>
+                                    
+                                    <div class="grid md:grid-cols-2 gap-4 mb-4">
+                                        <div class="trend-card-blue p-4 rounded-lg">
+                                            <h4 class="font-semibold text-blue-700 mb-2 flex items-center">
+                                                <i class="fas fa-arrow-right mr-2"></i>Across a Period
+                                            </h4>
+                                            <p class="text-gray-700 mb-2"><strong class="text-red-600">DECREASES</strong></p>
+                                            <ul class="text-sm text-gray-600 space-y-1">
+                                                <li>• Nuclear charge increases (more protons)</li>
+                                                <li>• Same number of electron shells</li>
+                                                <li>• Stronger attraction pulls electrons closer</li>
+                                            </ul>
+                                        </div>
+                                        
+                                        <div class="trend-card-green p-4 rounded-lg">
+                                            <h4 class="font-semibold text-green-700 mb-2 flex items-center">
+                                                <i class="fas fa-arrow-down mr-2"></i>Down a Group
+                                            </h4>
+                                            <p class="text-gray-700 mb-2"><strong class="text-green-600">INCREASES</strong></p>
+                                            <ul class="text-sm text-gray-600 space-y-1">
+                                                <li>• More electron shells are added</li>
+                                                <li>• Outer electrons further from nucleus</li>
+                                                <li>• Inner shells shield outer electrons</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            `
+                        },
+                        {
+                            intro: "Let's see an interactive visualization of atomic radius changes across Period 2:",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-eye text-amber-500 mr-3"></i>Interactive Atomic Radius Visualization
+                                    </h3>
+                                    <p class="text-gray-700 mb-4">Use the slider to compare atomic radii across Period 2. Watch how atoms shrink as you move right!</p>
+                                    
+                                    <div class="bg-gray-50 p-4 rounded-lg mb-4">
+                                        <div class="flex items-center gap-4 mb-4">
+                                            <label class="font-medium text-gray-700 w-32">Compare Elements:</label>
+                                            <select id="radiusElement1" class="border rounded px-3 py-2" onchange="updateRadiusComparison()">
+                                                <option value="Li">Lithium (Li)</option>
+                                                <option value="Na">Sodium (Na)</option>
+                                                <option value="K">Potassium (K)</option>
+                                            </select>
+                                            <span class="text-gray-500">vs</span>
+                                            <select id="radiusElement2" class="border rounded px-3 py-2" onchange="updateRadiusComparison()">
+                                                <option value="F">Fluorine (F)</option>
+                                                <option value="Cl">Chlorine (Cl)</option>
+                                                <option value="Br">Bromine (Br)</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    
+                                    <div id="radiusComparison" class="flex items-center justify-center gap-8 py-8 bg-white rounded-lg border">
+                                        <!-- Will be populated by JS -->
+                                    </div>
+                                    
+                                    <div id="radiusExplanation" class="mt-4 p-4 bg-amber-50 rounded-lg">
+                                        <!-- Explanation will be populated by JS -->
+                                    </div>
+                                    
+                                    <button class="click-hint" onclick="nextChunk()">
+                                        <i class="fas fa-arrow-right"></i>
+                                        <span>Continue →</span>
+                                    </button>
+                                </div>
+                            `
+                        }
+                    ]
+                },
+                {
+                    id: "ionization-energy",
+                    title: "Ionization Energy",
+                    type: "note",
+                    chunks: [
+                        {
+                            intro: "Ionization energy tells us how easily an atom loses electrons. This is crucial for understanding chemical reactivity!",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-bolt text-amber-500 mr-3"></i>What is Ionization Energy?
+                                    </h3>
+                                    <p class="text-gray-700 mb-4">
+                                        <strong class="text-amber-600">Ionization energy</strong> is the minimum energy required to remove the most loosely bound electron from a gaseous atom.
+                                    </p>
+                                    
+                                    <div class="bg-indigo-50 p-4 rounded-lg mb-4 text-center">
+                                        <p class="font-mono text-indigo-800">X(g) → X⁺(g) + e⁻</p>
+                                        <p class="text-sm text-indigo-600 mt-1">First Ionization Energy</p>
+                                    </div>
+                                    
+                                    <div class="grid md:grid-cols-2 gap-4 mb-4">
+                                        <div class="trend-card-blue p-4 rounded-lg">
+                                            <h4 class="font-semibold text-blue-700 mb-2 flex items-center">
+                                                <i class="fas fa-arrow-right mr-2"></i>Across a Period
+                                            </h4>
+                                            <p class="text-gray-700 mb-2"><strong class="text-green-600">INCREASES</strong></p>
+                                            <ul class="text-sm text-gray-600 space-y-1">
+                                                <li>• Nuclear charge increases</li>
+                                                <li>• Atomic radius decreases</li>
+                                                <li>• Electrons held more tightly</li>
+                                                <li>• Harder to remove electrons</li>
+                                            </ul>
+                                        </div>
+                                        
+                                        <div class="trend-card-green p-4 rounded-lg">
+                                            <h4 class="font-semibold text-green-700 mb-2 flex items-center">
+                                                <i class="fas fa-arrow-down mr-2"></i>Down a Group
+                                            </h4>
+                                            <p class="text-gray-700 mb-2"><strong class="text-red-600">DECREASES</strong></p>
+                                            <ul class="text-sm text-gray-600 space-y-1">
+                                                <li>• Atomic radius increases</li>
+                                                <li>• Outer electrons further from nucleus</li>
+                                                <li>• Shielding effect increases</li>
+                                                <li>• Easier to remove electrons</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            `
+                        },
+                        {
+                            intro: "There are important exceptions to the ionization energy trend. Let's explore them!",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-exclamation-triangle text-amber-500 mr-3"></i>Important Exceptions!
+                                    </h3>
+                                    
+                                    <div class="bg-red-50 border-l-4 border-red-500 p-4 mb-4">
+                                        <h4 class="font-semibold text-red-800 mb-3">There are small drops in ionization energy between:</h4>
+                                        
+                                        <div class="grid md:grid-cols-2 gap-4">
+                                            <div class="bg-white p-3 rounded-lg">
+                                                <h5 class="font-medium text-red-700 mb-2">Group 2 → Group 3 (Be → B)</h5>
+                                                <p class="text-sm text-gray-700">Electron removed from higher energy p-orbital (less stable)</p>
+                                                <div class="mt-2 text-xs bg-red-100 p-2 rounded">
+                                                    Be: 899 kJ/mol → B: 801 kJ/mol
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="bg-white p-3 rounded-lg">
+                                                <h5 class="font-medium text-red-700 mb-2">Group 5 → Group 6 (N → O)</h5>
+                                                <p class="text-sm text-gray-700">Electron removed from paired electron (more repulsion)</p>
+                                                <div class="mt-2 text-xs bg-red-100 p-2 rounded">
+                                                    N: 1402 kJ/mol → O: 1314 kJ/mol
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="bg-amber-50 p-4 rounded-lg border border-amber-200">
+                                        <p class="text-amber-800">
+                                            <i class="fas fa-lightbulb mr-2"></i>
+                                            <strong>Remember:</strong> These exceptions occur because of subshell stability (s is more stable than p) and electron pairing repulsion in p-orbitals.
+                                        </p>
+                                    </div>
+                                </div>
+                            `
+                        },
+                        {
+                            intro: "Let's visualize ionization energy with an interactive chart:",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-chart-bar text-amber-500 mr-3"></i>Ionization Energy Chart
+                                    </h3>
+                                    <p class="text-gray-700 mb-4">Select a period to see ionization energies across elements. Notice the general increase and the exceptions!</p>
+                                    
+                                    <div class="flex gap-4 mb-4">
+                                        <button onclick="showIEChart(2)" class="px-4 py-2 rounded-lg bg-amber-100 text-amber-700 hover:bg-amber-200 transition period-btn" data-period="2">
+                                            Period 2
+                                        </button>
+                                        <button onclick="showIEChart(3)" class="px-4 py-2 rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 transition period-btn" data-period="3">
+                                            Period 3
+                                        </button>
+                                    </div>
+                                    
+                                    <div id="ieChartContainer" class="bg-white rounded-lg border p-4">
+                                        <!-- Chart will be rendered here -->
+                                    </div>
+                                    
+                                    <div id="ieNote" class="mt-4 p-3 bg-blue-50 rounded-lg text-sm text-blue-800">
+                                        <i class="fas fa-info-circle mr-2"></i>
+                                        Hover over bars to see exact values. Red highlighted bars show exceptions to the trend.
+                                    </div>
+                                    
+                                    <button class="click-hint" onclick="nextChunk()">
+                                        <i class="fas fa-arrow-right"></i>
+                                        <span>Continue to Electronegativity →</span>
+                                    </button>
+                                </div>
+                            `
+                        }
+                    ]
+                },
+                {
+                    id: "electronegativity",
+                    title: "Electronegativity",
+                    type: "note",
+                    chunks: [
+                        {
+                            intro: "Electronegativity determines how atoms share electrons in bonds. This is essential for understanding chemical bonding!",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-magnet text-amber-500 mr-3"></i>What is Electronegativity?
+                                    </h3>
+                                    <p class="text-gray-700 mb-4">
+                                        <strong class="text-amber-600">Electronegativity</strong> is a measure of the tendency of an atom to attract a bonding pair of electrons. It's measured on the <strong>Pauling scale</strong> (0 to 4).
+                                    </p>
+                                    
+                                    <div class="bg-gradient-to-r from-orange-50 to-red-50 p-4 rounded-lg mb-4 border border-orange-200">
+                                        <div class="flex items-center gap-4 justify-center">
+                                            <div class="text-center">
+                                                <p class="text-sm text-gray-600 mb-1">Least Electronegative</p>
+                                                <p class="text-2xl font-bold text-gray-400">Fr (0.7)</p>
+                                            </div>
+                                            <i class="fas fa-arrows-alt-h text-3xl text-gray-400"></i>
+                                            <div class="text-center">
+                                                <p class="text-sm text-gray-600 mb-1">Most Electronegative</p>
+                                                <p class="text-2xl font-bold text-red-500">F (4.0)</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="grid md:grid-cols-2 gap-4 mb-4">
+                                        <div class="trend-card-blue p-4 rounded-lg">
+                                            <h4 class="font-semibold text-blue-700 mb-2 flex items-center">
+                                                <i class="fas fa-arrow-right mr-2"></i>Across a Period
+                                            </h4>
+                                            <p class="text-gray-700 mb-2"><strong class="text-green-600">INCREASES</strong></p>
+                                            <ul class="text-sm text-gray-600 space-y-1">
+                                                <li>• Nuclear charge increases</li>
+                                                <li>• Atomic radius decreases</li>
+                                                <li>• Stronger attraction for electrons</li>
+                                            </ul>
+                                        </div>
+                                        
+                                        <div class="trend-card-green p-4 rounded-lg">
+                                            <h4 class="font-semibold text-green-700 mb-2 flex items-center">
+                                                <i class="fas fa-arrow-down mr-2"></i>Down a Group
+                                            </h4>
+                                            <p class="text-gray-700 mb-2"><strong class="text-red-600">DECREASES</strong></p>
+                                            <ul class="text-sm text-gray-600 space-y-1">
+                                                <li>• Atomic radius increases</li>
+                                                <li>• Bonding electrons further from nucleus</li>
+                                                <li>• Increased shielding effect</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            `
+                        },
+                        {
+                            intro: "Let's explore electronegativity with an interactive periodic table heatmap!",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-th text-amber-500 mr-3"></i>Electronegativity Heatmap
+                                    </h3>
+                                    <p class="text-gray-700 mb-4">Hover over elements to see their electronegativity values. Darker colors indicate higher electronegativity.</p>
+                                    
+                                    <div id="enHeatmap" class="overflow-x-auto">
+                                        <!-- Heatmap will be rendered here -->
+                                    </div>
+                                    
+                                    <div class="mt-4 flex items-center justify-center gap-2">
+                                        <div class="flex items-center gap-1">
+                                            <div class="w-4 h-4 rounded" style="background: #fef3c7"></div>
+                                            <span class="text-xs text-gray-600">Low (0-1)</span>
+                                        </div>
+                                        <div class="flex items-center gap-1">
+                                            <div class="w-4 h-4 rounded" style="background: #fde68a"></div>
+                                            <span class="text-xs text-gray-600">1-2</span>
+                                        </div>
+                                        <div class="flex items-center gap-1">
+                                            <div class="w-4 h-4 rounded" style="background: #fbbf24"></div>
+                                            <span class="text-xs text-gray-600">2-3</span>
+                                        </div>
+                                        <div class="flex items-center gap-1">
+                                            <div class="w-4 h-4 rounded" style="background: #f97316"></div>
+                                            <span class="text-xs text-gray-600">3-3.5</span>
+                                        </div>
+                                        <div class="flex items-center gap-1">
+                                            <div class="w-4 h-4 rounded" style="background: #dc2626"></div>
+                                            <span class="text-xs text-gray-600">High (3.5-4)</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <button class="click-hint" onclick="nextChunk()">
+                                        <i class="fas fa-arrow-right"></i>
+                                        <span>Continue to Electron Affinity →</span>
+                                    </button>
+                                </div>
+                            `
+                        }
+                    ]
+                },
+                {
+                    id: "electron-affinity",
+                    title: "Electron Affinity",
+                    type: "note",
+                    chunks: [
+                        {
+                            intro: "Electron affinity describes what happens when atoms gain electrons. Let's explore this important property!",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-plus-circle text-amber-500 mr-3"></i>What is Electron Affinity?
+                                    </h3>
+                                    <p class="text-gray-700 mb-4">
+                                        <strong class="text-amber-600">Electron affinity</strong> is the energy change when an electron is added to a neutral gaseous atom to form a negative ion.
+                                    </p>
+                                    
+                                    <div class="bg-indigo-50 p-4 rounded-lg mb-4 text-center">
+                                        <p class="font-mono text-indigo-800">X(g) + e⁻ → X⁻(g) + Energy</p>
+                                        <p class="text-sm text-indigo-600 mt-1">Energy released = Electron Affinity (usually negative values)</p>
+                                    </div>
+                                    
+                                    <div class="bg-amber-50 p-4 rounded-lg mb-4 border border-amber-200">
+                                        <p class="text-amber-800">
+                                            <i class="fas fa-info-circle mr-2"></i>
+                                            <strong>Note:</strong> More negative values mean MORE energy is released when gaining an electron = the atom "wants" the electron more!
+                                        </p>
+                                    </div>
+                                    
+                                    <div class="grid md:grid-cols-2 gap-4 mb-4">
+                                        <div class="trend-card-blue p-4 rounded-lg">
+                                            <h4 class="font-semibold text-blue-700 mb-2 flex items-center">
+                                                <i class="fas fa-arrow-right mr-2"></i>Across a Period
+                                            </h4>
+                                            <p class="text-gray-700 mb-2"><strong class="text-green-600">More Negative</strong></p>
+                                            <p class="text-sm text-gray-600">Atoms more eager to gain electrons to achieve stable octet.</p>
+                                        </div>
+                                        
+                                        <div class="trend-card-green p-4 rounded-lg">
+                                            <h4 class="font-semibold text-green-700 mb-2 flex items-center">
+                                                <i class="fas fa-arrow-down mr-2"></i>Down a Group
+                                            </h4>
+                                            <p class="text-gray-700 mb-2"><strong class="text-red-600">Less Negative</strong></p>
+                                            <p class="text-sm text-gray-600">Larger atomic radius means added electron is further from nucleus.</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <button class="click-hint" onclick="nextChunk()">
+                                        <i class="fas fa-arrow-right"></i>
+                                        <span>Continue to Shielding Effect →</span>
+                                    </button>
+                                </div>
+                            `
+                        }
+                    ]
+                },
+                {
+                    id: "shielding-effect",
+                    title: "Shielding Effect & Effective Nuclear Charge",
+                    type: "note",
+                    chunks: [
+                        {
+                            intro: "The shielding effect explains WHY many periodic trends occur. This is a key concept for understanding chemistry!",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-shield-alt text-amber-500 mr-3"></i>What is the Shielding Effect?
+                                    </h3>
+                                    <p class="text-gray-700 mb-4">
+                                        The <strong class="text-amber-600">shielding effect</strong> (or screening effect) is the reduction in the effective nuclear charge experienced by outer electrons due to repulsion by inner shell electrons.
+                                    </p>
+                                    
+                                    <div class="bg-blue-50 p-4 rounded-lg mb-4">
+                                        <h4 class="font-semibold text-blue-800 mb-3">Effective Nuclear Charge (Z<sub>eff</sub>)</h4>
+                                        <p class="text-gray-700 mb-3">The effective nuclear charge is the net positive charge experienced by an electron:</p>
+                                        <div class="bg-white p-4 rounded text-center">
+                                            <p class="text-2xl font-mono text-blue-700">Z<sub>eff</sub> = Z − S</p>
+                                        </div>
+                                        <div class="mt-3 grid md:grid-cols-2 gap-2 text-sm">
+                                            <div class="bg-blue-100 p-2 rounded">
+                                                <strong>Z</strong> = Atomic number (total protons)
+                                            </div>
+                                            <div class="bg-blue-100 p-2 rounded">
+                                                <strong>S</strong> = Shielding constant (inner electrons)
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="bg-gradient-to-r from-purple-50 to-pink-50 p-4 rounded-lg mb-4 border border-purple-200">
+                                        <h4 class="font-semibold text-purple-800 mb-2">Impact on Trends</h4>
+                                        <ul class="text-gray-700 space-y-2">
+                                            <li class="flex items-start gap-2">
+                                                <i class="fas fa-check-circle text-purple-500 mt-1"></i>
+                                                <span>Shielding <strong>increases</strong> down a group (more inner shells)</span>
+                                            </li>
+                                            <li class="flex items-start gap-2">
+                                                <i class="fas fa-check-circle text-purple-500 mt-1"></i>
+                                                <span>Shielding stays <strong>relatively constant</strong> across a period (same shells)</span>
+                                            </li>
+                                            <li class="flex items-start gap-2">
+                                                <i class="fas fa-check-circle text-purple-500 mt-1"></i>
+                                                <span>Greater shielding → outer electrons held <strong>less tightly</strong></span>
+                                            </li>
+                                            <li class="flex items-start gap-2">
+                                                <i class="fas fa-check-circle text-purple-500 mt-1"></i>
+                                                <span>This explains why ionization energy <strong>decreases</strong> down groups</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    
+                                    <button class="click-hint" onclick="nextChunk()">
+                                        <i class="fas fa-arrow-right"></i>
+                                        <span>Continue to Practice →</span>
+                                    </button>
+                                </div>
+                            `
+                        }
+                    ]
+                },
+                {
+                    id: "practice",
+                    title: "Practice Questions",
+                    type: "practice",
+                    chunks: [
+                        {
+                            intro: "Let's practice what you've learned! Answer these questions to test your understanding.",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-pencil-alt text-amber-500 mr-3"></i>Guided Practice
+                                    </h3>
+                                    
+                                    <div id="practiceQuestion1" class="mb-6">
+                                        <div class="bg-gray-50 p-4 rounded-lg mb-3">
+                                            <p class="font-medium text-gray-800">
+                                                <span class="text-amber-600 font-bold">Q1.</span> 
+                                                Which element has the largest atomic radius: Na, K, or Li? Explain your answer.
+                                            </p>
+                                        </div>
+                                        
+                                        <div class="space-y-2" id="q1Options">
+                                            <div class="practice-option" onclick="selectPracticeOption(1, 'Li')">
+                                                <span class="font-medium">A.</span> Lithium (Li)
+                                            </div>
+                                            <div class="practice-option" onclick="selectPracticeOption(1, 'Na')">
+                                                <span class="font-medium">B.</span> Sodium (Na)
+                                            </div>
+                                            <div class="practice-option" onclick="selectPracticeOption(1, 'K')">
+                                                <span class="font-medium">C.</span> Potassium (K)
+                                            </div>
+                                        </div>
+                                        
+                                        <div id="q1Feedback" class="mt-3 hidden"></div>
+                                    </div>
+                                    
+                                    <div id="practiceQuestion2" class="mb-6">
+                                        <div class="bg-gray-50 p-4 rounded-lg mb-3">
+                                            <p class="font-medium text-gray-800">
+                                                <span class="text-amber-600 font-bold">Q2.</span> 
+                                                Why does ionization energy decrease from nitrogen to oxygen?
+                                            </p>
+                                        </div>
+                                        
+                                        <div class="space-y-2" id="q2Options">
+                                            <div class="practice-option" onclick="selectPracticeOption(2, 'size')">
+                                                <span class="font-medium">A.</span> Oxygen has a larger atomic radius
+                                            </div>
+                                            <div class="practice-option" onclick="selectPracticeOption(2, 'pairing')">
+                                                <span class="font-medium">B.</span> The electron removed from oxygen is paired, causing repulsion
+                                            </div>
+                                            <div class="practice-option" onclick="selectPracticeOption(2, 'nuclear')">
+                                                <span class="font-medium">C.</span> Oxygen has lower nuclear charge
+                                            </div>
+                                        </div>
+                                        
+                                        <div id="q2Feedback" class="mt-3 hidden"></div>
+                                    </div>
+                                    
+                                    <div id="practiceQuestion3" class="mb-6">
+                                        <div class="bg-gray-50 p-4 rounded-lg mb-3">
+                                            <p class="font-medium text-gray-800">
+                                                <span class="text-amber-600 font-bold">Q3.</span> 
+                                                Arrange in order of increasing electronegativity: Cl, Br, I, F
+                                            </p>
+                                        </div>
+                                        
+                                        <div class="space-y-2" id="q3Options">
+                                            <div class="practice-option" onclick="selectPracticeOption(3, 'IClBrF')">
+                                                <span class="font-medium">A.</span> I < Cl < Br < F
+                                            </div>
+                                            <div class="practice-option" onclick="selectPracticeOption(3, 'IBrClF')">
+                                                <span class="font-medium">B.</span> I < Br < Cl < F
+                                            </div>
+                                            <div class="practice-option" onclick="selectPracticeOption(3, 'FClBrI')">
+                                                <span class="font-medium">C.</span> F < Cl < Br < I
+                                            </div>
+                                        </div>
+                                        
+                                        <div id="q3Feedback" class="mt-3 hidden"></div>
+                                    </div>
+                                    
+                                    <div id="practiceQuestion4" class="mb-6">
+                                        <div class="bg-gray-50 p-4 rounded-lg mb-3">
+                                            <p class="font-medium text-gray-800">
+                                                <span class="text-amber-600 font-bold">Q4.</span> 
+                                                Why is the ionization energy of aluminum lower than that of magnesium?
+                                            </p>
+                                        </div>
+                                        
+                                        <div class="space-y-2" id="q4Options">
+                                            <div class="practice-option" onclick="selectPracticeOption(4, 'orbital')">
+                                                <span class="font-medium">A.</span> Al's outer electron is in a higher energy 3p orbital
+                                            </div>
+                                            <div class="practice-option" onclick="selectPracticeOption(4, 'size')">
+                                                <span class="font-medium">B.</span> Aluminum has a larger atomic radius
+                                            </div>
+                                            <div class="practice-option" onclick="selectPracticeOption(4, 'charge')">
+                                                <span class="font-medium">C.</span> Magnesium has a higher nuclear charge
+                                            </div>
+                                        </div>
+                                        
+                                        <div id="q4Feedback" class="mt-3 hidden"></div>
+                                    </div>
+                                    
+                                    <button class="click-hint" onclick="nextChunk()">
+                                        <i class="fas fa-arrow-right"></i>
+                                        <span>Continue to Summary →</span>
+                                    </button>
+                                </div>
+                            `
+                        }
+                    ]
+                },
+                {
+                    id: "summary",
+                    title: "Summary & Next Steps",
+                    type: "summary",
+                    chunks: [
+                        {
+                            intro: "Great work! Let's summarize what you've learned about periodic trends.",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-clipboard-check text-amber-500 mr-3"></i>Key Takeaways
+                                    </h3>
+                                    
+                                    <div class="overflow-x-auto mb-4">
+                                        <table class="w-full border-collapse text-sm">
+                                            <thead class="bg-amber-500 text-white">
+                                                <tr>
+                                                    <th class="border p-3">Property</th>
+                                                    <th class="border p-3">Across Period (→)</th>
+                                                    <th class="border p-3">Down Group (↓)</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr class="bg-white">
+                                                    <td class="border p-3 font-medium">Atomic Radius</td>
+                                                    <td class="border p-3 text-red-600">Decreases ↓</td>
+                                                    <td class="border p-3 text-green-600">Increases ↑</td>
+                                                </tr>
+                                                <tr class="bg-amber-50">
+                                                    <td class="border p-3 font-medium">Ionization Energy</td>
+                                                    <td class="border p-3 text-green-600">Increases ↑</td>
+                                                    <td class="border p-3 text-red-600">Decreases ↓</td>
+                                                </tr>
+                                                <tr class="bg-white">
+                                                    <td class="border p-3 font-medium">Electronegativity</td>
+                                                    <td class="border p-3 text-green-600">Increases ↑</td>
+                                                    <td class="border p-3 text-red-600">Decreases ↓</td>
+                                                </tr>
+                                                <tr class="bg-amber-50">
+                                                    <td class="border p-3 font-medium">Electron Affinity</td>
+                                                    <td class="border p-3 text-green-600">More negative ↑</td>
+                                                    <td class="border p-3 text-red-600">Less negative ↓</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    
+                                    <div class="bg-gradient-to-r from-amber-50 to-orange-50 p-4 rounded-lg mb-4 border border-amber-200">
+                                        <h4 class="font-semibold text-amber-800 mb-2">Remember for WAEC!</h4>
+                                        <ul class="text-amber-700 space-y-1 text-sm">
+                                            <li>• Know all four trends and WHY they occur</li>
+                                            <li>• Remember the ionization energy exceptions (Groups 2→3 and 5→6)</li>
+                                            <li>• Fluorine is most electronegative; Francium is least</li>
+                                            <li>• Understand Zeff and shielding effect</li>
+                                        </ul>
+                                    </div>
+                                    
+                                    <div class="bg-green-50 p-4 rounded-lg mb-4 border border-green-200">
+                                        <h4 class="font-semibold text-green-800 mb-3">Your Progress</h4>
+                                        <div id="progressSummary" class="text-sm text-green-700">
+                                            <!-- Will be populated by JS -->
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="flex flex-col sm:flex-row gap-4 mt-6">
+                                        <button onclick="startQuiz()" class="flex-1 px-6 py-3 bg-amber-500 text-white rounded-lg hover:bg-amber-600 transition font-medium">
+                                            <i class="fas fa-clipboard-check mr-2"></i>Take Quiz
+                                        </button>
+                                        <a href="ionic-bonding.html" class="flex-1 px-6 py-3 bg-green-500 text-white rounded-lg hover:bg-green-600 transition font-medium text-center">
+                                            Next Topic: Ionic Bonding<i class="fas fa-arrow-right ml-2"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            `
+                        }
+                    ]
+                }
+            ]
+        };
+
+        // Quiz questions
+        const quizQuestions = [
+            {
+                question: "Which element has the smallest atomic radius?",
+                options: ["Lithium", "Fluorine", "Sodium", "Chlorine"],
+                correct: 1,
+                explanation: "Fluorine has the smallest atomic radius because it's furthest right in Period 2, where atomic radius decreases across the period."
+            },
+            {
+                question: "What happens to ionization energy as you move down Group 1?",
+                options: ["Increases", "Decreases", "Stays the same", "Increases then decreases"],
+                correct: 1,
+                explanation: "Ionization energy decreases down a group because the outer electrons are further from the nucleus and experience more shielding."
+            },
+            {
+                question: "Which element is the most electronegative?",
+                options: ["Oxygen", "Chlorine", "Fluorine", "Nitrogen"],
+                correct: 2,
+                explanation: "Fluorine is the most electronegative element with a value of 4.0 on the Pauling scale."
+            },
+            {
+                question: "Why is the ionization energy of beryllium higher than boron?",
+                options: [
+                    "Boron has more protons",
+                    "Be's electron is removed from a more stable s-orbital",
+                    "Boron has a smaller atomic radius",
+                    "Be has fewer electron shells"
+                ],
+                correct: 1,
+                explanation: "Beryllium's outer electron is in the 2s orbital which is more stable than boron's 2p orbital, so more energy is needed to remove it."
+            },
+            {
+                question: "What is the formula for effective nuclear charge?",
+                options: ["Zeff = Z + S", "Zeff = Z × S", "Zeff = Z − S", "Zeff = Z ÷ S"],
+                correct: 2,
+                explanation: "Effective nuclear charge (Zeff) = Atomic number (Z) − Shielding constant (S)."
+            },
+            {
+                question: "Which trend is correctly stated?",
+                options: [
+                    "Atomic radius increases across a period",
+                    "Electronegativity decreases down a group",
+                    "Ionization energy decreases across a period",
+                    "Electron affinity becomes less negative down a group"
+                ],
+                correct: 1,
+                explanation: "Electronegativity decreases down a group because the atomic radius increases and bonding electrons are further from the nucleus."
+            },
+            {
+                question: "Between nitrogen and oxygen, which has lower ionization energy and why?",
+                options: [
+                    "Nitrogen - has fewer protons",
+                    "Oxygen - electron pairing causes repulsion",
+                    "Nitrogen - smaller atomic radius",
+                    "Oxygen - larger atomic radius"
+                ],
+                correct: 1,
+                explanation: "Oxygen has lower ionization energy because the electron being removed comes from a paired orbital, experiencing electron-electron repulsion."
+            },
+            {
+                question: "What causes atomic radius to decrease across a period?",
+                options: [
+                    "Decreasing nuclear charge",
+                    "Increasing number of electron shells",
+                    "Increasing nuclear charge with same shells",
+                    "Decreasing shielding effect"
+                ],
+                correct: 2,
+                explanation: "Nuclear charge increases across a period while electron shells stay the same, pulling electrons closer to the nucleus."
+            }
+        ];
+
+        // Quiz state
+        let quizState = {
+            currentIndex: 0,
+            score: 0,
+            answers: [],
+            started: false
+        };
+
+        // Initialize the page
+        function init() {
+            renderStepsList();
+            renderStep();
+            setupEventListeners();
+            updateProgress();
+            
+            // Initialize visualizations
+            setTimeout(() => {
+                updateRadiusComparison();
+                showIEChart(2);
+                renderENHeatmap();
+                updateProgressSummary();
+            }, 100);
+        }
+
+        function setupEventListeners() {
+            // Mobile menu
+            document.getElementById('mobileMenuBtn').addEventListener('click', () => {
+                document.getElementById('mobileSidebar').classList.remove('-translate-x-full');
+                document.getElementById('sidebarOverlay').classList.remove('hidden');
+            });
+
+            document.getElementById('closeSidebarBtn').addEventListener('click', closeMobileSidebar);
+            document.getElementById('sidebarOverlay').addEventListener('click', closeMobileSidebar);
+
+            // Navigation buttons
+            document.getElementById('prevStepBtn').addEventListener('click', prevStep);
+            document.getElementById('nextStepBtn').addEventListener('click', nextStep);
+        }
+
+        function closeMobileSidebar() {
+            document.getElementById('mobileSidebar').classList.add('-translate-x-full');
+            document.getElementById('sidebarOverlay').classList.add('hidden');
+        }
+
+        function renderStepsList() {
+            const stepsListHTML = topicData.steps.map((step, index) => `
+                <li>
+                    <button onclick="goToStep(${index})" 
+                            class="w-full text-left px-3 py-2 rounded-lg transition ${index === currentStepIndex ? 'bg-amber-100 text-amber-700' : 'hover:bg-gray-100'}"
+                            id="stepBtn${index}">
+                        <div class="flex items-center gap-2">
+                            <span class="w-6 h-6 rounded-full flex items-center justify-center text-xs font-medium
+                                ${stepsCompleted.includes(index) ? 'bg-green-500 text-white' : index === currentStepIndex ? 'bg-amber-500 text-white' : 'bg-gray-200 text-gray-600'}">
+                                ${stepsCompleted.includes(index) ? '✓' : index + 1}
+                            </span>
+                            <span class="text-sm truncate">${step.title}</span>
+                        </div>
+                    </button>
+                </li>
+            `).join('');
+            
+            document.getElementById('stepsList').innerHTML = stepsListHTML;
+            document.getElementById('mobileStepsList').innerHTML = stepsListHTML;
+        }
+
+        function renderStep() {
+            const step = topicData.steps[currentStepIndex];
+            const chunk = step.chunks[currentChunkIndex];
+            
+            let content = '';
+            if (chunk.intro) {
+                content += `<div class="text-gray-600 mb-4 italic">${chunk.intro}</div>`;
+            }
+            content += chunk.content;
+            
+            document.getElementById('stepContainer').innerHTML = content;
+            
+            // Update navigation buttons
+            document.getElementById('prevStepBtn').disabled = currentStepIndex === 0 && currentChunkIndex === 0;
+            
+            const isLastStep = currentStepIndex === topicData.steps.length - 1;
+            const isLastChunk = currentChunkIndex === step.chunks.length - 1;
+            
+            if (isLastStep && isLastChunk) {
+                document.getElementById('nextStepBtn').innerHTML = 'Complete<i class="fas fa-check ml-2"></i>';
+            } else {
+                document.getElementById('nextStepBtn').innerHTML = 'Continue<i class="fas fa-chevron-right ml-2"></i>';
+            }
+            
+            // Re-initialize visualizations if needed
+            setTimeout(() => {
+                if (currentStepIndex === 1) updateRadiusComparison();
+                if (currentStepIndex === 2) showIEChart(2);
+                if (currentStepIndex === 3) renderENHeatmap();
+                if (currentStepIndex === 6) updateProgressSummary();
+            }, 50);
+            
+            renderStepsList();
+        }
+
+        function nextChunk() {
+            const step = topicData.steps[currentStepIndex];
+            
+            if (currentChunkIndex < step.chunks.length - 1) {
+                currentChunkIndex++;
+            } else if (currentStepIndex < topicData.steps.length - 1) {
+                stepsCompleted.push(currentStepIndex);
+                currentStepIndex++;
+                currentChunkIndex = 0;
+            }
+            
+            renderStep();
+            updateProgress();
+        }
+
+        function prevStep() {
+            if (currentChunkIndex > 0) {
+                currentChunkIndex--;
+            } else if (currentStepIndex > 0) {
+                currentStepIndex--;
+                currentChunkIndex = 0;
+            }
+            
+            renderStep();
+            updateProgress();
+        }
+
+        function nextStep() {
+            const step = topicData.steps[currentStepIndex];
+            const isLastStep = currentStepIndex === topicData.steps.length - 1;
+            const isLastChunk = currentChunkIndex === step.chunks.length - 1;
+            
+            if (isLastStep && isLastChunk) {
+                // Complete - show quiz
+                startQuiz();
+                return;
+            }
+            
+            nextChunk();
+        }
+
+        function goToStep(index) {
+            if (index <= currentStepIndex || stepsCompleted.includes(index)) {
+                currentStepIndex = index;
+                currentChunkIndex = 0;
+                renderStep();
+                updateProgress();
+            }
+            closeMobileSidebar();
+        }
+
+        function updateProgress() {
+            const totalChunks = topicData.steps.reduce((acc, step) => acc + step.chunks.length, 0);
+            let completedChunks = 0;
+            
+            for (let i = 0; i < currentStepIndex; i++) {
+                completedChunks += topicData.steps[i].chunks.length;
+            }
+            completedChunks += currentChunkIndex;
+            
+            const progress = Math.round((completedChunks / totalChunks) * 100);
+            
+            document.getElementById('progressBar').style.width = `${progress}%`;
+            document.getElementById('progressPercent').textContent = `${progress}%`;
+        }
+
+        // Atomic Radius Visualization
+        function updateRadiusComparison() {
+            const el1 = document.getElementById('radiusElement1');
+            const el2 = document.getElementById('radiusElement2');
+            
+            if (!el1 || !el2) return;
+            
+            const elem1 = elementData[el1.value];
+            const elem2 = elementData[el2.value];
+            
+            const maxSize = 200;
+            const minSize = 40;
+            const maxRadius = 250;
+            
+            const size1 = Math.max(minSize, Math.min(maxSize, (elem1.radius / maxRadius) * maxSize));
+            const size2 = Math.max(minSize, Math.min(maxSize, (elem2.radius / maxRadius) * maxSize));
+            
+            document.getElementById('radiusComparison').innerHTML = `
+                <div class="text-center">
+                    <div class="atom-viz bg-blue-200 text-blue-800 font-bold" 
+                         style="width: ${size1}px; height: ${size1}px; font-size: ${size1/4}px;">
+                        ${elem1.symbol}
+                    </div>
+                    <p class="mt-2 font-medium">${elem1.name}</p>
+                    <p class="text-sm text-gray-600">Radius: ${elem1.radius} pm</p>
+                </div>
+                <div class="text-center">
+                    <div class="atom-viz bg-red-200 text-red-800 font-bold" 
+                         style="width: ${size2}px; height: ${size2}px; font-size: ${size2/4}px;">
+                        ${elem2.symbol}
+                    </div>
+                    <p class="mt-2 font-medium">${elem2.name}</p>
+                    <p class="text-sm text-gray-600">Radius: ${elem2.radius} pm</p>
+                </div>
+            `;
+            
+            const explanation = elem1.radius > elem2.radius 
+                ? `<p><strong>${elem1.name}</strong> has a larger atomic radius (${elem1.radius} pm) than <strong>${elem2.name}</strong> (${elem2.radius} pm).</p>
+                   <p class="mt-2">This is because ${elem1.name} is in Group ${elem1.group}, Period ${elem1.period}, while ${elem2.name} is in Group ${elem2.group}, Period ${elem2.period}. Atomic radius decreases across a period (due to increasing nuclear charge) and increases down a group (due to more electron shells).</p>`
+                : `<p><strong>${elem2.name}</strong> has a larger atomic radius (${elem2.radius} pm) than <strong>${elem1.name}</strong> (${elem1.radius} pm).</p>
+                   <p class="mt-2">This follows the periodic trend: atomic radius increases down a group and decreases across a period.</p>`;
+            
+            document.getElementById('radiusExplanation').innerHTML = explanation;
+        }
+
+        // Ionization Energy Chart
+        function showIEChart(period) {
+            // Update button styles
+            document.querySelectorAll('.period-btn').forEach(btn => {
+                btn.classList.remove('bg-amber-100', 'text-amber-700');
+                btn.classList.add('bg-gray-100', 'text-gray-700');
+            });
+            document.querySelector(`.period-btn[data-period="${period}"]`).classList.remove('bg-gray-100', 'text-gray-700');
+            document.querySelector(`.period-btn[data-period="${period}"]`).classList.add('bg-amber-100', 'text-amber-700');
+            
+            const elements = period === 2 
+                ? ['Li', 'Be', 'B', 'C', 'N', 'O', 'F', 'Ne']
+                : ['Na', 'Mg', 'Al', 'Si', 'P', 'S', 'Cl', 'Ar'];
+            
+            const maxIE = Math.max(...elements.map(e => elementData[e].ie));
+            
+            const chartHTML = `
+                <div class="flex items-end justify-between gap-1 h-48 px-2">
+                    ${elements.map((el, i) => {
+                        const elem = elementData[el];
+                        const height = (elem.ie / maxIE) * 100;
+                        const isException = (period === 2 && (el === 'B' || el === 'O')) ||
+                                           (period === 3 && (el === 'Al' || el === 'S'));
+                        return `
+                            <div class="flex flex-col items-center flex-1">
+                                <div class="text-xs text-gray-600 mb-1">${elem.ie}</div>
+                                <div class="chart-bar w-full rounded-t cursor-pointer ${isException ? 'bg-red-400' : 'bg-amber-400'}"
+                                     style="height: ${height}%"
+                                     title="${elem.name}: ${elem.ie} kJ/mol">
+                                </div>
+                                <div class="text-xs font-medium mt-1 ${isException ? 'text-red-600' : 'text-gray-700'}">${el}</div>
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+            `;
+            
+            document.getElementById('ieChartContainer').innerHTML = chartHTML;
+        }
+
+        // Electronegativity Heatmap
+        function renderENHeatmap() {
+            const heatmapData = [
+                ['H', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 'He'],
+                ['Li', 'Be', '', '', '', '', '', '', '', '', '', '', 'B', 'C', 'N', 'O', 'F', 'Ne'],
+                ['Na', 'Mg', '', '', '', '', '', '', '', '', '', '', 'Al', 'Si', 'P', 'S', 'Cl', 'Ar'],
+                ['K', 'Ca', 'Sc', 'Ti', 'V', 'Cr', 'Mn', 'Fe', 'Co', 'Ni', 'Cu', 'Zn', 'Ga', 'Ge', 'As', 'Se', 'Br', 'Kr']
+            ];
+            
+            const enValues = {
+                H: 2.1, He: 0, Li: 1.0, Be: 1.5, B: 2.0, C: 2.5, N: 3.0, O: 3.5, F: 4.0, Ne: 0,
+                Na: 0.9, Mg: 1.2, Al: 1.5, Si: 1.8, P: 2.1, S: 2.5, Cl: 3.0, Ar: 0,
+                K: 0.8, Ca: 1.0, Sc: 1.3, Ti: 1.5, V: 1.6, Cr: 1.6, Mn: 1.5, Fe: 1.8, Co: 1.9, Ni: 1.9,
+                Cu: 1.9, Zn: 1.6, Ga: 1.6, Ge: 1.8, As: 2.0, Se: 2.4, Br: 2.8, Kr: 0
+            };
+            
+            function getENColor(en) {
+                if (en === 0) return '#f3f4f6';
+                if (en < 1) return '#fef3c7';
+                if (en < 2) return '#fde68a';
+                if (en < 3) return '#fbbf24';
+                if (en < 3.5) return '#f97316';
+                return '#dc2626';
+            }
+            
+            const heatmapHTML = `
+                <div class="space-y-1">
+                    ${heatmapData.map(row => `
+                        <div class="flex gap-1 justify-center">
+                            ${row.map(el => {
+                                if (el === '') return '<div class="w-8 h-8"></div>';
+                                const en = enValues[el];
+                                return `
+                                    <div class="heatmap-cell w-8 h-8 rounded flex items-center justify-center text-xs font-medium cursor-pointer"
+                                         style="background: ${getENColor(en)}"
+                                         title="${el}: EN = ${en}">
+                                        ${el}
+                                    </div>
+                                `;
+                            }).join('')}
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+            
+            document.getElementById('enHeatmap').innerHTML = heatmapHTML;
+        }
+
+        // Practice Questions
+        const practiceAnswers = {
+            1: { correct: 'K', explanation: '<strong>Potassium (K)</strong> has the largest atomic radius (227 pm). All three are in Group 1. Going down the group, more electron shells are added, making the atom larger. K has more shells than Na, which has more than Li.' },
+            2: { correct: 'pairing', explanation: 'The electron removed from oxygen is from a paired orbital (2p⁴), experiencing electron-electron repulsion. This makes it easier to remove than nitrogen\'s unpaired 2p³ electron.' },
+            3: { correct: 'IBrClF', explanation: '<strong>I < Br < Cl < F</strong> is correct. These are Group 17 elements (halogens). Electronegativity increases up the group (smaller atomic radius, stronger nuclear attraction). Values: I (2.5) < Br (2.8) < Cl (3.0) < F (4.0)' },
+            4: { correct: 'orbital', explanation: 'Al\'s outer electron is in the 3p orbital which is higher in energy than Mg\'s 3s orbital. The 3p electron is also shielded by the 3s² electrons, making it easier to remove.' }
+        };
+
+        function selectPracticeOption(questionNum, answer) {
+            const options = document.querySelectorAll(`#q${questionNum}Options .practice-option`);
+            options.forEach(opt => opt.classList.remove('selected'));
+            event.target.closest('.practice-option').classList.add('selected');
+            
+            const isCorrect = answer === practiceAnswers[questionNum].correct;
+            const feedback = document.getElementById(`q${questionNum}Feedback`);
+            feedback.classList.remove('hidden');
+            feedback.className = `mt-3 p-3 rounded-lg ${isCorrect ? 'bg-green-50 border border-green-200' : 'bg-red-50 border border-red-200'}`;
+            feedback.innerHTML = `
+                <p class="${isCorrect ? 'text-green-700' : 'text-red-700'}">
+                    <i class="fas ${isCorrect ? 'fa-check-circle' : 'fa-times-circle'} mr-2"></i>
+                    ${isCorrect ? 'Correct!' : 'Not quite right.'}
+                </p>
+                <p class="text-gray-700 mt-2">${practiceAnswers[questionNum].explanation}</p>
+            `;
+            
+            PracticeTracker.recordAnswer('guided', questionNum, isCorrect, { answer });
+        }
+
+        // Quiz Functions
+        function startQuiz() {
+            quizState = {
+                currentIndex: 0,
+                score: 0,
+                answers: [],
+                started: true
+            };
+            
+            document.getElementById('quizModal').classList.remove('hidden');
+            document.getElementById('quizModal').classList.add('flex');
+            document.body.classList.add('overflow-hidden');
+            
+            showQuizQuestion();
+        }
+
+        function closeQuiz() {
+            document.getElementById('quizModal').classList.add('hidden');
+            document.getElementById('quizModal').classList.remove('flex');
+            document.body.classList.remove('overflow-hidden');
+        }
+
+        function showQuizQuestion() {
+            const question = quizQuestions[quizState.currentIndex];
+            const previousAnswer = quizState.answers[quizState.currentIndex];
+            
+            // Update progress
+            const progress = ((quizState.currentIndex + 1) / quizQuestions.length) * 100;
+            document.getElementById('quizProgressBar').style.width = `${progress}%`;
+            document.getElementById('quizQuestionCount').textContent = 
+                `Question ${quizState.currentIndex + 1} of ${quizQuestions.length}`;
+            
+            const contentHTML = `
+                <div class="animate-fade-in-up">
+                    <div class="mb-6">
+                        <span class="inline-block px-3 py-1 bg-amber-100 text-amber-700 rounded-full text-sm font-medium mb-3">
+                            Multiple Choice
+                        </span>
+                        <h3 class="text-lg font-semibold text-gray-800">${question.question}</h3>
+                    </div>
+                    
+                    <div class="space-y-3">
+                        ${question.options.map((option, index) => {
+                            let classes = 'p-4 rounded-xl border-2 cursor-pointer transition-all';
+                            let isSelected = previousAnswer !== undefined && previousAnswer.selected === index;
+                            let isCorrect = index === question.correct;
+                            
+                            if (previousAnswer !== undefined) {
+                                if (isSelected && isCorrect) {
+                                    classes += ' bg-green-50 border-green-500 text-green-700';
+                                } else if (isSelected && !isCorrect) {
+                                    classes += ' bg-red-50 border-red-500 text-red-700';
+                                } else if (isCorrect) {
+                                    classes += ' bg-green-50 border-green-300';
+                                } else {
+                                    classes += ' border-gray-200 text-gray-500';
+                                }
+                            } else {
+                                classes += ' border-gray-200 hover:border-amber-300 hover:bg-amber-50';
+                            }
+                            
+                            return `
+                                <div class="${classes}" 
+                                     onclick="selectQuizAnswer(${index})"
+                                     data-option="${index}">
+                                    <div class="flex items-center">
+                                        <span class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center font-semibold text-gray-600 mr-3">
+                                            ${String.fromCharCode(65 + index)}
+                                        </span>
+                                        <span>${option}</span>
+                                        ${previousAnswer !== undefined && isCorrect ? '<i class="fas fa-check-circle text-green-500 ml-auto"></i>' : ''}
+                                        ${previousAnswer !== undefined && isSelected && !isCorrect ? '<i class="fas fa-times-circle text-red-500 ml-auto"></i>' : ''}
+                                    </div>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                    
+                    ${previousAnswer !== undefined && question.explanation ? `
+                        <div class="mt-6 p-4 rounded-lg ${previousAnswer.correct ? 'bg-green-50 border border-green-200' : 'bg-amber-50 border border-amber-200'}">
+                            <p class="font-semibold ${previousAnswer.correct ? 'text-green-700' : 'text-amber-700'} mb-2">
+                                <i class="fas fa-lightbulb mr-2"></i>Explanation
+                            </p>
+                            <p class="text-gray-700">${question.explanation}</p>
+                        </div>
+                    ` : ''}
+                </div>
+            `;
+            
+            document.getElementById('quizContent').innerHTML = contentHTML;
+            
+            // Update buttons
+            const prevBtn = document.getElementById('quizPrevBtn');
+            const nextBtn = document.getElementById('quizNextBtn');
+            
+            prevBtn.disabled = quizState.currentIndex === 0;
+            
+            if (previousAnswer !== undefined) {
+                nextBtn.disabled = false;
+                nextBtn.innerHTML = quizState.currentIndex === quizQuestions.length - 1 
+                    ? 'See Results<i class="fas fa-trophy ml-2"></i>'
+                    : 'Next<i class="fas fa-arrow-right ml-2"></i>';
+            } else {
+                nextBtn.disabled = true;
+                nextBtn.innerHTML = 'Select an answer<i class="fas fa-arrow-right ml-2"></i>';
+            }
+        }
+
+        function selectQuizAnswer(index) {
+            const question = quizQuestions[quizState.currentIndex];
+            const previousAnswer = quizState.answers[quizState.currentIndex];
+            
+            if (previousAnswer !== undefined) return;
+            
+            const isCorrect = index === question.correct;
+            
+            quizState.answers[quizState.currentIndex] = {
+                selected: index,
+                correct: isCorrect
+            };
+            
+            if (isCorrect) {
+                quizState.score++;
+            }
+            
+            document.getElementById('quizScoreDisplay').textContent = `Score: ${quizState.score}/${quizQuestions.length}`;
+            
+            showQuizQuestion();
+        }
+
+        function quizPrev() {
+            if (quizState.currentIndex > 0) {
+                quizState.currentIndex--;
+                showQuizQuestion();
+            }
+        }
+
+        function quizNext() {
+            if (quizState.currentIndex < quizQuestions.length - 1) {
+                quizState.currentIndex++;
+                showQuizQuestion();
+            } else {
+                showQuizResults();
+            }
+        }
+
+        async function showQuizResults() {
+            const percentage = Math.round((quizState.score / quizQuestions.length) * 100);
+            const passed = percentage >= 60;
+            
+            // Record score
+            PracticeTracker.recordQuizScore(quizState.score, quizQuestions.length);
+            
+            // Save to ChemistryQuiz if available
+            if (window.ChemistryQuiz) {
+                await window.ChemistryQuiz.saveQuizResult({
+                    topicId: 'periodic-trends',
+                    topicTitle: 'Periodic Trends',
+                    score: quizState.score,
+                    totalQuestions: quizQuestions.length,
+                    percentage: percentage,
+                    passed: passed,
+                    answers: quizState.answers
+                });
+            }
+            
+            const combinedScore = PracticeTracker.getCombinedScore();
+            
+            const contentHTML = `
+                <div class="text-center py-8 animate-fade-in-up">
+                    <div class="w-24 h-24 mx-auto rounded-full flex items-center justify-center mb-6 ${passed ? 'bg-green-100' : 'bg-amber-100'}">
+                        <i class="fas ${passed ? 'fa-trophy' : 'fa-star'} text-4xl ${passed ? 'text-green-500' : 'text-amber-500'}"></i>
+                    </div>
+                    
+                    <h3 class="text-2xl font-bold text-gray-800 mb-2">
+                        ${passed ? 'Congratulations!' : 'Keep Learning!'}
+                    </h3>
+                    <p class="text-gray-600 mb-6">
+                        ${passed ? 'You passed the quiz!' : 'You need 60% to pass. Try again!'}
+                    </p>
+                    
+                    <div class="bg-gray-50 rounded-xl p-6 mb-4 max-w-sm mx-auto">
+                        <div class="text-4xl font-bold ${passed ? 'text-green-500' : 'text-amber-500'} mb-2">
+                            ${percentage}%
+                        </div>
+                        <p class="text-gray-600">You got ${quizState.score} out of ${quizQuestions.length} questions correct</p>
+                    </div>
+                    
+                    ${combinedScore.combined ? `
+                        <div class="bg-blue-50 rounded-xl p-4 mb-6 max-w-sm mx-auto">
+                            <p class="text-sm text-blue-600 mb-2">Combined Score (40% practice, 60% quiz)</p>
+                            <p class="text-2xl font-bold text-blue-700">${combinedScore.combined}%</p>
+                        </div>
+                    ` : ''}
+                    
+                    <div class="flex justify-center gap-4">
+                        <button onclick="startQuiz()" 
+                                class="px-6 py-3 rounded-lg bg-gray-200 text-gray-700 hover:bg-gray-300 transition">
+                            <i class="fas fa-redo mr-2"></i>Retake Quiz
+                        </button>
+                        <button onclick="closeQuiz()" 
+                                class="px-6 py-3 rounded-lg ${passed ? 'bg-green-500 hover:bg-green-600' : 'bg-amber-500 hover:bg-amber-600'} text-white transition">
+                            ${passed ? '<i class="fas fa-check mr-2"></i>Complete' : '<i class="fas fa-times mr-2"></i>Close'}
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('quizContent').innerHTML = contentHTML;
+            document.getElementById('quizFooter').classList.add('hidden');
+        }
+
+        function updateProgressSummary() {
+            const scores = PracticeTracker.getCombinedScore();
+            let summaryHTML = '<p class="mb-2">Complete the practice questions and quiz to see your combined score.</p>';
+            
+            if (scores.practice !== null || scores.quiz !== null) {
+                summaryHTML = `
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-white p-3 rounded-lg">
+                            <p class="text-xs text-green-600">Practice Score</p>
+                            <p class="text-xl font-bold">${scores.practice !== null ? scores.practice + '%' : '---'}</p>
+                        </div>
+                        <div class="bg-white p-3 rounded-lg">
+                            <p class="text-xs text-green-600">Quiz Score</p>
+                            <p class="text-xl font-bold">${scores.quiz !== null ? scores.quiz + '%' : '---'}</p>
+                        </div>
+                    </div>
+                    ${scores.combined ? `
+                        <div class="mt-3 bg-white p-3 rounded-lg text-center">
+                            <p class="text-xs text-green-600">Combined Score</p>
+                            <p class="text-2xl font-bold text-green-700">${scores.combined}%</p>
+                            <p class="text-xs text-gray-500 mt-1">40% practice + 60% quiz</p>
+                        </div>
+                    ` : ''}
+                `;
+            }
+            
+            const summaryEl = document.getElementById('progressSummary');
+            if (summaryEl) {
+                summaryEl.innerHTML = summaryHTML;
+            }
+        }
+
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>

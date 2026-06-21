@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Vapour Density & Relative Molecular Mass | Chemistry Foundations</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .content-card {
+      -webkit-backdrop-filter: blur(12px);
+      backdrop-filter: blur(12px);
+      background: rgba(255, 255, 255, 0.95);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    .accordion-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease-out;
+    }
+    .accordion-content.open {
+      max-height: 2000px;
+    }
+    .step-card { transition: all 0.2s ease; }
+    .step-card:hover { transform: translateX(4px); }
+    #topic-complete-btn { transition: all 0.3s ease; }
+    #topic-complete-btn:not(:disabled):hover { transform: scale(1.02); }
+  </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-amber-50 to-orange-100 p-4 md:p-6">
+  <div class="max-w-4xl mx-auto">
+    <!-- Navigation -->
+    <nav class="mb-4 flex items-center justify-between">
+      <a href="index.html" class="text-blue-600 hover:text-blue-800 transition flex items-center">
+        <i class="fas fa-arrow-left mr-2"></i>Back to Foundations
+      </a>
+      <div class="flex items-center gap-3">
+        <div class="text-sm text-gray-600">
+          <span id="topic-progress-text">0% Complete</span>
+        </div>
+        <div class="w-24 h-2 bg-gray-200 rounded-full overflow-hidden">
+          <div id="topic-progress-bar" class="h-full bg-gradient-to-r from-amber-400 to-orange-500 transition-all duration-300" style="width: 0%"></div>
+        </div>
+      </div>
+    </nav>
+
+    <article class="content-card rounded-xl p-6 md:p-8 shadow-lg">
+      <!-- Header -->
+      <div class="border-b pb-4 mb-6">
+        <h1 class="text-2xl md:text-3xl font-bold text-gray-800 mb-2">
+          <i class="fas fa-weight-hanging text-amber-500 mr-3"></i>Vapour Density & Relative Molecular Mass
+        </h1>
+        <p class="text-gray-600">Understanding the relationship between vapour density and molecular mass, and how to calculate them.</p>
+      </div>
+
+      <!-- Learning Objectives -->
+      <div class="bg-amber-50 border-l-4 border-amber-500 p-4 rounded-r-lg mb-6">
+        <h3 class="font-semibold text-amber-800 mb-2"><i class="fas fa-bullseye mr-2"></i>Learning Objectives</h3>
+        <ul class="text-amber-700 text-sm space-y-1">
+          <li>• Define vapour density and relative molecular mass</li>
+          <li>• State the relationship between VD and RMM</li>
+          <li>• Calculate RMM from vapour density</li>
+          <li>• Determine molecular formula from empirical formula and VD</li>
+          <li>• Solve problems involving vapour density</li>
+        </ul>
+      </div>
+
+      <!-- Section 1: Definitions -->
+      <section id="section-1" class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <span class="bg-amber-100 text-amber-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">1</span>
+          Definitions
+        </h2>
+
+        <div class="bg-gray-50 p-5 rounded-lg mb-4">
+          <div class="grid md:grid-cols-2 gap-4">
+            <div class="bg-gradient-to-r from-amber-100 to-orange-100 p-4 rounded-lg border-l-4 border-amber-500">
+              <h4 class="font-semibold text-amber-800 mb-2">Vapour Density (VD)</h4>
+              <p class="text-gray-700 text-sm mb-2">The vapour density of a gas is the ratio of the mass of a certain volume of the gas to the mass of an equal volume of hydrogen gas under the same conditions of temperature and pressure.</p>
+              <div class="bg-white p-2 rounded font-mono text-center text-sm mt-2">
+                VD = Mass of V volume of gas / Mass of V volume of H₂
+              </div>
+            </div>
+            <div class="bg-gradient-to-r from-blue-100 to-indigo-100 p-4 rounded-lg border-l-4 border-blue-500">
+              <h4 class="font-semibold text-blue-800 mb-2">Relative Molecular Mass (Mᵣ)</h4>
+              <p class="text-gray-700 text-sm mb-2">The relative molecular mass is the mass of one molecule of a substance compared to 1/12th the mass of a carbon-12 atom. It has no units.</p>
+              <div class="bg-white p-2 rounded font-mono text-center text-sm mt-2">
+                Mᵣ = Sum of relative atomic masses in formula
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-r-lg">
+          <h4 class="font-semibold text-yellow-800 mb-2"><i class="fas fa-info-circle mr-2"></i>Important Note</h4>
+          <p class="text-gray-700 text-sm">Vapour density is only defined for gases or substances that can be vaporized. It is a ratio and has no units.</p>
+        </div>
+      </section>
+
+      <!-- Section 2: The Key Relationship -->
+      <section id="section-2" class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <span class="bg-amber-100 text-amber-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">2</span>
+          The Key Relationship
+        </h2>
+
+        <div class="bg-gray-50 p-5 rounded-lg mb-4">
+          <div class="bg-gradient-to-r from-green-100 to-teal-100 p-6 rounded-lg text-center mb-4 border-2 border-green-300">
+            <p class="text-lg text-gray-800 mb-2">The Relationship</p>
+            <p class="text-4xl font-bold text-green-700 mb-2">Mᵣ = 2 × VD</p>
+            <p class="text-gray-600 text-sm">or equivalently: VD = Mᵣ / 2</p>
+          </div>
+
+          <div class="bg-white p-4 rounded-lg border border-gray-200">
+            <h4 class="font-semibold text-gray-800 mb-3">Why is this relationship true?</h4>
+            <ol class="text-gray-700 text-sm space-y-2">
+              <li class="flex gap-2">
+                <span class="bg-green-100 text-green-700 w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">1</span>
+                <span>By Avogadro's Law, equal volumes of gases contain equal numbers of molecules</span>
+              </li>
+              <li class="flex gap-2">
+                <span class="bg-green-100 text-green-700 w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">2</span>
+                <span>VD = Mass of n molecules of gas / Mass of n molecules of H₂</span>
+              </li>
+              <li class="flex gap-2">
+                <span class="bg-green-100 text-green-700 w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">3</span>
+                <span>VD = Mass of 1 molecule / Mass of 1 H₂ molecule</span>
+              </li>
+              <li class="flex gap-2">
+                <span class="bg-green-100 text-green-700 w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">4</span>
+                <span>VD = Mᵣ / 2 (since H₂ has Mᵣ = 2)</span>
+              </li>
+            </ol>
+          </div>
+        </div>
+
+        <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
+          <h4 class="font-semibold text-blue-800 mb-2"><i class="fas fa-lightbulb mr-2"></i>Remember</h4>
+          <p class="text-gray-700 text-sm">Hydrogen (H₂) has a relative molecular mass of 2. This is why we multiply VD by 2 to get Mᵣ.</p>
+        </div>
+      </section>
+
+      <!-- Section 3: Worked Examples -->
+      <section id="section-3" class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <span class="bg-amber-100 text-amber-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">3</span>
+          Worked Examples
+        </h2>
+
+        <div class="space-y-4">
+          <div class="border border-gray-200 rounded-lg overflow-hidden">
+            <button class="accordion-btn w-full p-4 bg-amber-50 text-left font-semibold text-amber-800 flex justify-between items-center hover:bg-amber-100 transition">
+              <span><i class="fas fa-calculator mr-2 text-amber-500"></i>Example 1: Calculate Mᵣ from VD</span>
+              <i class="fas fa-chevron-down transform transition-transform"></i>
+            </button>
+            <div class="accordion-content">
+              <div class="p-5">
+                <p class="font-medium text-gray-800 mb-3">A gas has vapour density of 16. Calculate its relative molecular mass.</p>
+
+                <div class="space-y-3">
+                  <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-amber-500">
+                    <p class="text-sm text-gray-600"><strong>Formula:</strong> Mᵣ = 2 × VD</p>
+                  </div>
+                  <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-green-500">
+                    <p class="text-sm text-gray-600"><strong>Substitute:</strong> Mᵣ = 2 × 16</p>
+                  </div>
+                  <div class="bg-green-100 p-3 rounded-lg">
+                    <p class="text-green-800 font-semibold">Answer: Mᵣ = 32 (This is O₂)</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="border border-gray-200 rounded-lg overflow-hidden">
+            <button class="accordion-btn w-full p-4 bg-blue-50 text-left font-semibold text-blue-800 flex justify-between items-center hover:bg-blue-100 transition">
+              <span><i class="fas fa-calculator mr-2 text-blue-500"></i>Example 2: Calculate VD from Mᵣ</span>
+              <i class="fas fa-chevron-down transform transition-transform"></i>
+            </button>
+            <div class="accordion-content">
+              <div class="p-5">
+                <p class="font-medium text-gray-800 mb-3">Calculate the vapour density of carbon dioxide (CO₂).</p>
+
+                <div class="space-y-3">
+                  <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-blue-500">
+                    <p class="text-sm text-gray-600"><strong>Find Mᵣ:</strong> Mᵣ(CO₂) = 12 + (2×16) = 44</p>
+                  </div>
+                  <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-indigo-500">
+                    <p class="text-sm text-gray-600"><strong>Formula:</strong> VD = Mᵣ / 2</p>
+                  </div>
+                  <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-purple-500">
+                    <p class="text-sm text-gray-600"><strong>Substitute:</strong> VD = 44 / 2 = 22</p>
+                  </div>
+                  <div class="bg-blue-100 p-3 rounded-lg">
+                    <p class="text-blue-800 font-semibold">Answer: VD = 22</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="border border-gray-200 rounded-lg overflow-hidden">
+            <button class="accordion-btn w-full p-4 bg-green-50 text-left font-semibold text-green-800 flex justify-between items-center hover:bg-green-100 transition">
+              <span><i class="fas fa-calculator mr-2 text-green-500"></i>Example 3: Find Molecular Formula</span>
+              <i class="fas fa-chevron-down transform transition-transform"></i>
+            </button>
+            <div class="accordion-content">
+              <div class="p-5">
+                <p class="font-medium text-gray-800 mb-3">A compound has empirical formula CH₂O and vapour density 30. Find its molecular formula.</p>
+
+                <div class="space-y-3">
+                  <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-green-500">
+                    <p class="text-sm text-gray-600"><strong>Step 1:</strong> Find Mᵣ</p>
+                    <p class="text-green-700 mt-1">Mᵣ = 2 × VD = 2 × 30 = 60</p>
+                  </div>
+                  <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-blue-500">
+                    <p class="text-sm text-gray-600"><strong>Step 2:</strong> Find empirical formula mass</p>
+                    <p class="text-blue-700 mt-1">CH₂O = 12 + (2×1) + 16 = 30</p>
+                  </div>
+                  <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-purple-500">
+                    <p class="text-sm text-gray-600"><strong>Step 3:</strong> Find n</p>
+                    <p class="text-purple-700 mt-1">n = Mᵣ / empirical mass = 60 / 30 = 2</p>
+                  </div>
+                  <div class="bg-green-100 p-3 rounded-lg">
+                    <p class="text-green-800 font-semibold">Molecular formula = (CH₂O)₂ = C₂H₄O₂</p>
+                    <p class="text-green-700 text-sm">This is ethanoic acid (acetic acid)</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 4: Common VD Values -->
+      <section id="section-4" class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <span class="bg-amber-100 text-amber-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">4</span>
+          VD Values of Common Gases
+        </h2>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm border-collapse border border-gray-300 rounded-lg overflow-hidden">
+            <thead class="bg-amber-600 text-white">
+              <tr>
+                <th class="border border-gray-300 p-3 text-left">Gas</th>
+                <th class="border border-gray-300 p-3 text-center">Formula</th>
+                <th class="border border-gray-300 p-3 text-center">Mᵣ</th>
+                <th class="border border-gray-300 p-3 text-center">VD</th>
+              </tr>
+            </thead>
+            <tbody class="bg-white">
+              <tr>
+                <td class="border border-gray-300 p-2">Hydrogen</td>
+                <td class="border border-gray-300 p-2 text-center font-mono">H₂</td>
+                <td class="border border-gray-300 p-2 text-center">2</td>
+                <td class="border border-gray-300 p-2 text-center font-bold text-amber-700">1</td>
+              </tr>
+              <tr class="bg-gray-50">
+                <td class="border border-gray-300 p-2">Oxygen</td>
+                <td class="border border-gray-300 p-2 text-center font-mono">O₂</td>
+                <td class="border border-gray-300 p-2 text-center">32</td>
+                <td class="border border-gray-300 p-2 text-center font-bold text-amber-700">16</td>
+              </tr>
+              <tr>
+                <td class="border border-gray-300 p-2">Nitrogen</td>
+                <td class="border border-gray-300 p-2 text-center font-mono">N₂</td>
+                <td class="border border-gray-300 p-2 text-center">28</td>
+                <td class="border border-gray-300 p-2 text-center font-bold text-amber-700">14</td>
+              </tr>
+              <tr class="bg-gray-50">
+                <td class="border border-gray-300 p-2">Carbon dioxide</td>
+                <td class="border border-gray-300 p-2 text-center font-mono">CO₂</td>
+                <td class="border border-gray-300 p-2 text-center">44</td>
+                <td class="border border-gray-300 p-2 text-center font-bold text-amber-700">22</td>
+              </tr>
+              <tr>
+                <td class="border border-gray-300 p-2">Ammonia</td>
+                <td class="border border-gray-300 p-2 text-center font-mono">NH₃</td>
+                <td class="border border-gray-300 p-2 text-center">17</td>
+                <td class="border border-gray-300 p-2 text-center font-bold text-amber-700">8.5</td>
+              </tr>
+              <tr class="bg-gray-50">
+                <td class="border border-gray-300 p-2">Chlorine</td>
+                <td class="border border-gray-300 p-2 text-center font-mono">Cl₂</td>
+                <td class="border border-gray-300 p-2 text-center">71</td>
+                <td class="border border-gray-300 p-2 text-center font-bold text-amber-700">35.5</td>
+              </tr>
+              <tr>
+                <td class="border border-gray-300 p-2">Methane</td>
+                <td class="border border-gray-300 p-2 text-center font-mono">CH₄</td>
+                <td class="border border-gray-300 p-2 text-center">16</td>
+                <td class="border border-gray-300 p-2 text-center font-bold text-amber-700">8</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Section 5: Practice Problems -->
+      <section id="section-5" class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <i class="fas fa-pencil-alt text-amber-600 mr-3"></i>
+          Practice Problems
+        </h2>
+
+        <div class="space-y-4">
+          <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+            <p class="font-medium text-gray-800 mb-2">1. A gas has vapour density of 8. Calculate its relative molecular mass and identify the gas.</p>
+            <details class="mt-2">
+              <summary class="text-sm text-blue-600 cursor-pointer hover:text-blue-800">Show Solution</summary>
+              <div class="mt-2 text-sm text-gray-700">
+                <p>Mᵣ = 2 × VD = 2 × 8 = <strong>16</strong></p>
+                <p>A gas with Mᵣ = 16 is <strong>methane (CH₄)</strong></p>
+              </div>
+            </details>
+          </div>
+
+          <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+            <p class="font-medium text-gray-800 mb-2">2. Calculate the vapour density of SO₂.</p>
+            <details class="mt-2">
+              <summary class="text-sm text-blue-600 cursor-pointer hover:text-blue-800">Show Solution</summary>
+              <div class="mt-2 text-sm text-gray-700">
+                <p>Mᵣ(SO₂) = 32 + (2×16) = 64</p>
+                <p>VD = Mᵣ / 2 = 64 / 2 = <strong>32</strong></p>
+              </div>
+            </details>
+          </div>
+
+          <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+            <p class="font-medium text-gray-800 mb-2">3. A hydrocarbon has empirical formula CH and vapour density 39. Find its molecular formula.</p>
+            <details class="mt-2">
+              <summary class="text-sm text-blue-600 cursor-pointer hover:text-blue-800">Show Solution</summary>
+              <div class="mt-2 text-sm text-gray-700">
+                <p>Mᵣ = 2 × 39 = 78</p>
+                <p>Empirical mass = 12 + 1 = 13</p>
+                <p>n = 78 / 13 = 6</p>
+                <p>Molecular formula = <strong>C₆H₆</strong> (benzene)</p>
+              </div>
+            </details>
+          </div>
+
+          <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+            <p class="font-medium text-gray-800 mb-2">4. State the relationship between vapour density and relative molecular mass.</p>
+            <details class="mt-2">
+              <summary class="text-sm text-blue-600 cursor-pointer hover:text-blue-800">Show Solution</summary>
+              <div class="mt-2 text-sm text-gray-700">
+                <p><strong>Mᵣ = 2 × VD</strong> or <strong>VD = Mᵣ / 2</strong></p>
+                <p class="mt-1">The relative molecular mass is twice the vapour density.</p>
+              </div>
+            </details>
+          </div>
+
+          <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+            <p class="font-medium text-gray-800 mb-2">5. Why is VD compared to hydrogen and not oxygen?</p>
+            <details class="mt-2">
+              <summary class="text-sm text-blue-600 cursor-pointer hover:text-blue-800">Show Solution</summary>
+              <div class="mt-2 text-sm text-gray-700">
+                <p>Hydrogen is the lightest gas (Mᵣ = 2), making calculations simple. The factor of 2 in the relationship Mᵣ = 2 × VD comes from the molecular mass of H₂ being 2.</p>
+              </div>
+            </details>
+          </div>
+        </div>
+      </section>
+
+      <!-- Key Takeaways -->
+      <section id="section-6" class="mb-8">
+        <div class="bg-gradient-to-r from-amber-50 to-orange-50 p-5 rounded-lg border border-amber-200">
+          <h3 class="font-semibold text-amber-800 mb-3"><i class="fas fa-star mr-2"></i>Key Takeaways for WAEC/JAMB/NECO</h3>
+          <ul class="text-amber-700 text-sm space-y-2">
+            <li>• <strong>VD = Mᵣ / 2</strong> and <strong>Mᵣ = 2 × VD</strong></li>
+            <li>• Vapour density is defined relative to hydrogen</li>
+            <li>• Hydrogen has Mᵣ = 2, so VD = 1</li>
+            <li>• Use VD to find Mᵣ, then determine molecular formula</li>
+            <li>• VD = (mass of gas) / (mass of equal volume of H₂)</li>
+            <li>• Remember: VD is a ratio, has no units</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Complete Topic Button -->
+      <div class="mt-8 pt-6 border-t border-gray-200">
+        <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div class="text-center sm:text-left">
+            <h3 class="font-semibold text-gray-800">Ready to Complete?</h3>
+            <p class="text-sm text-gray-600">View all sections, then take the quiz to mark this topic as complete.</p>
+          </div>
+          <button id="topic-complete-btn" disabled
+                  class="px-6 py-3 rounded-xl bg-gray-300 text-gray-500 cursor-not-allowed opacity-50 flex items-center gap-2 text-lg font-medium">
+            <i class="fas fa-lock mr-2"></i>
+            <span>Complete (0% viewed)</span>
+          </button>
+        </div>
+      </div>
+    </article>
+  </div>
+
+  <script>
+    document.querySelectorAll('.accordion-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const content = btn.nextElementSibling;
+        const icon = btn.querySelector('.fa-chevron-down');
+        content.classList.toggle('open');
+        icon?.classList.toggle('rotate-180');
+      });
+    });
+  </script>
+
+  <script type="module">
+    import { TopicTracker } from '/js/topic-tracker.js';
+    import { TopicQuiz } from '/js/topic-quiz.js';
+
+    const quizQuestions = [
+      {
+        question: "The relationship between vapour density (VD) and relative molecular mass (Mᵣ) is:",
+        options: ["Mᵣ = VD", "Mᵣ = 2 × VD", "Mᵣ = VD / 2", "Mᵣ = VD²"],
+        correct: 1,
+        explanation: "Mᵣ = 2 × VD. The molecular mass is twice the vapour density."
+      },
+      {
+        question: "What is the vapour density of oxygen (O₂)?",
+        options: ["8", "16", "32", "14"],
+        correct: 1,
+        explanation: "Mᵣ(O₂) = 32. VD = Mᵣ/2 = 32/2 = 16"
+      },
+      {
+        question: "A gas has VD = 22. What is its Mᵣ?",
+        options: ["11", "22", "44", "88"],
+        correct: 2,
+        explanation: "Mᵣ = 2 × VD = 2 × 22 = 44 (This is CO₂)"
+      },
+      {
+        question: "Vapour density is defined with reference to:",
+        options: ["Oxygen", "Nitrogen", "Hydrogen", "Air"],
+        correct: 2,
+        explanation: "VD is the ratio of mass of gas to mass of equal volume of hydrogen."
+      },
+      {
+        question: "The vapour density of hydrogen gas is:",
+        options: ["1", "2", "0.5", "4"],
+        correct: 0,
+        explanation: "H₂ has Mᵣ = 2. VD = Mᵣ/2 = 2/2 = 1"
+      },
+      {
+        question: "A compound has empirical formula CH₂ and VD = 14. Its molecular formula is:",
+        options: ["CH₂", "C₂H₄", "C₃H₆", "C₄H₈"],
+        correct: 1,
+        explanation: "Mᵣ = 2 × 14 = 28. Empirical mass = 14. n = 28/14 = 2. Formula = C₂H₄"
+      },
+      {
+        question: "Which gas has VD = 8?",
+        options: ["O₂", "N₂", "CH₄", "CO₂"],
+        correct: 2,
+        explanation: "VD = 8 means Mᵣ = 16. CH₄ has Mᵣ = 12 + 4(1) = 16"
+      },
+      {
+        question: "Vapour density has:",
+        options: ["Units of g/cm³", "Units of g/mol", "No units", "Units of kg/m³"],
+        correct: 2,
+        explanation: "VD is a ratio of two masses, so it has no units."
+      }
+    ];
+
+    const tracker = new TopicTracker({
+      topicId: 'vapour-density-rmm',
+      topicTitle: 'Vapour Density & Relative Molecular Mass',
+      subject: 'chemistry',
+      sections: ['section-1', 'section-2', 'section-3', 'section-4', 'section-5', 'section-6'],
+      quizRequired: true
+    });
+
+    const quiz = new TopicQuiz({
+      topicId: 'vapour-density-rmm',
+      topicTitle: 'Vapour Density & Relative Molecular Mass',
+      subject: 'chemistry',
+      questions: quizQuestions,
+      passingScore: 60,
+      tracker: tracker
+    });
+
+    document.querySelectorAll('.accordion-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const section = btn.closest('section');
+        if (section && section.id) tracker.markSectionViewed(section.id);
+      });
+    });
+
+    document.querySelectorAll('details').forEach(details => {
+      details.addEventListener('toggle', () => {
+        if (details.open) tracker.markSectionViewed('section-5');
+      });
+    });
+  </script>
+</body>
+</html>

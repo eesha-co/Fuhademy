@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Special Relativity - Interactive</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body{font-family:Inter, system-ui, sans-serif}
+    .step-active{background:#2563eb;color:#fff}
+    .step-inactive{background:#e5e7eb;color:#374151}
+    #relCanvas{background:#f8fafc}
+    .clock{width:40px;height:40px;border-radius:50%;background:#fff;border:2px solid #111;display:flex;align-items:center;justify-content:center;font-weight:600}
+  </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+  <nav class="bg-blue-700 p-4 text-white"><div class="max-w-6xl mx-auto flex justify-between"><a href="../index.html">← Back</a><h1 class="font-bold">Special Relativity</h1></div></nav>
+
+  <div class="flex">
+    <aside class="w-64 bg-white p-4 border-r">
+      <h2 class="font-semibold mb-4">Steps</h2>
+      <ul id="stepsList" class="space-y-2"></ul>
+    </aside>
+
+    <main class="flex-1 p-6">
+      <div id="progressBar" class="h-3 bg-gray-200 rounded-full overflow-hidden mb-6"><div id="progress" class="h-full bg-blue-600" style="width:0%"></div></div>
+      <div id="stepContent" class="bg-white p-6 rounded shadow min-h-[180px]"></div>
+
+      <section class="mt-6 bg-white p-6 rounded shadow">
+        <div class="grid grid-cols-2 gap-4 mb-4">
+          <div>
+            <label class="block text-sm">Velocity (as fraction of c)</label>
+            <input id="vel" type="range" min="0" max="99" value="50" class="w-full" />
+            <div class="text-sm text-gray-600 mt-2">v = <span id="vval">0.50</span> c</div>
+          </div>
+
+          <div>
+            <label class="block text-sm">Observer</label>
+            <select id="observer" class="w-full p-2 border rounded"><option value="stationary">Stationary</option><option value="moving">Moving</option></select>
+          </div>
+        </div>
+
+        <div class="relative w-full h-[360px] border rounded p-4">
+          <canvas id="relCanvas" class="absolute inset-0 w-full h-full"></canvas>
+          <div id="entities" class="absolute inset-0 pointer-events-none"></div>
+        </div>
+
+        <div class="mt-4 grid grid-cols-3 gap-4 text-center">
+          <div class="p-3 bg-blue-50 rounded"><div class="text-sm">Gamma (γ)</div><div id="gamma" class="font-bold text-blue-600">1.15</div></div>
+          <div class="p-3 bg-green-50 rounded"><div class="text-sm">Time Dilation</div><div id="timeDil" class="font-bold text-green-600">0.87×</div></div>
+          <div class="p-3 bg-yellow-50 rounded"><div class="text-sm">Length Contraction</div><div id="lenCon" class="font-bold text-yellow-600">0.87×</div></div>
+        </div>
+      </section>
+
+      <div class="flex justify-between mt-6"><button id="prevBtn" class="px-4 py-2 bg-gray-300 rounded" disabled>Previous</button><button id="nextBtn" class="px-4 py-2 bg-blue-600 text-white rounded">Next</button></div>
+    </main>
+  </div>
+
+  <div id="quizModal" class="hidden fixed inset-0 bg-black bg-opacity-40 items-center justify-center"><div class="bg-white p-6 rounded max-w-lg w-full m-6"><h3 class="text-xl font-bold mb-4">Quick Quiz</h3><div id="quizContent"></div><div class="mt-4 flex justify-end gap-2"><button id="closeQuiz" class="px-3 py-2 rounded bg-gray-200">Close</button><button id="submitQuiz" class="px-3 py-2 rounded bg-blue-600 text-white">Submit</button></div></div></div>
+
+  <script>
+    const topicData = { steps:[ {title:'Relativity Basics', content:'<h3 class="font-bold">Postulates</h3><ul><li>Laws of physics same in all inertial frames</li><li>Speed of light constant c</li></ul>'},{title:'Time Dilation', content:'<p>Δt = γ Δt₀ where γ = 1 / sqrt(1 - v²/c²)</p>'},{title:'Length Contraction', content:'<p>L = L₀ / γ</p>'}], quiz:[{question:'What happens to moving clocks as seen by a stationary observer?', options:['Run faster','Run slower','Stay same','Stop'], correct:1}] };
+
+    let currentStep=0; function renderSteps(){ const ul=document.getElementById('stepsList'); ul.innerHTML=''; topicData.steps.forEach((s,i)=>{ const li=document.createElement('li'); li.className=`p-2 rounded ${i===currentStep?'step-active':'step-inactive'}`; li.textContent=s.title; li.onclick=()=>showStep(i); ul.appendChild(li); }); }
+    function showStep(i){ currentStep=i; document.getElementById('stepContent').innerHTML=topicData.steps[i].content; renderSteps(); document.getElementById('prevBtn').disabled=i===0; document.getElementById('nextBtn').disabled = i===topicData.steps.length-1; updateProgress(); }
+    function updateProgress(){ const pct = ((currentStep+1)/topicData.steps.length)*100; document.getElementById('progress').style.width = pct+'%'; }
+
+    // Canvas visuals
+    const canvas = document.getElementById('relCanvas'); const ctx = canvas.getContext('2d'); canvas.width = canvas.offsetWidth; canvas.height = 360;
+    const ent = document.getElementById('entities');
+
+    function drawScene(vFraction){ ctx.clearRect(0,0,canvas.width,canvas.height); // draw axes
+      ctx.strokeStyle='#cbd5e1'; ctx.beginPath(); ctx.moveTo(40, canvas.height/2); ctx.lineTo(canvas.width-40, canvas.height/2); ctx.stroke();
+      // stationary clock
+      ctx.fillStyle='#111'; ctx.fillRect(80, canvas.height/2 - 40, 6, 80); ctx.fillStyle='#fff'; ctx.fillRect(94, canvas.height/2 - 20, 60, 40); ctx.fillStyle='#111'; ctx.fillText('Stationary clock', 100, canvas.height/2 - 26);
+
+      // moving object visual
+      const vx = vFraction * 200; const boxX = canvas.width/2 + vx * Math.sin(Date.now()/600);
+      ctx.fillStyle='#ef4444'; ctx.fillRect(boxX, canvas.height/2 - 15, 40, 30); ctx.fillStyle='#111'; ctx.fillText('Moving object', boxX, canvas.height/2 - 20);
+    }
+
+    let anim=null; function animate(vFraction){ if(anim) cancelAnimationFrame(anim); function step(){ drawScene(vFraction); anim = requestAnimationFrame(step); } step(); }
+
+    // sliders and calculations
+    const vel = document.getElementById('vel'); const vval = document.getElementById('vval'); const gammaEl = document.getElementById('gamma'); const timeEl = document.getElementById('timeDil'); const lenEl = document.getElementById('lenCon');
+    function updateValues(){ const v = parseInt(vel.value)/100; vval.textContent = v.toFixed(2); const gamma = 1/Math.sqrt(1 - v*v); gammaEl.textContent = gamma.toFixed(3); timeEl.textContent = (1/gamma).toFixed(3)+'× (moving clock slower)'; lenEl.textContent = (1/gamma).toFixed(3)+'×'; animate(v); }
+    vel.addEventListener('input', updateValues);
+
+    window.addEventListener('resize', ()=>{ canvas.width = canvas.offsetWidth; canvas.height = 360; updateValues(); });
+
+    document.getElementById('prevBtn').onclick = ()=>{ if(currentStep>0) showStep(currentStep-1); };
+    document.getElementById('nextBtn').onclick = ()=>{ if(currentStep < topicData.steps.length-1) { showQuiz(); } };
+
+    function showQuiz(){ const modal = document.getElementById('quizModal'); modal.classList.remove('hidden'); const qc = document.getElementById('quizContent'); qc.innerHTML = topicData.quiz.map((q,i)=>`<div class="mb-4"><p class="font-semibold">${i+1}. ${q.question}</p>${q.options.map((o,oi)=>`<label class="block"><input type="radio" name="q${i}" value="${oi}"> ${o}</label>`).join('')}</div>`).join(''); }
+    document.getElementById('closeQuiz').onclick = ()=>{ document.getElementById('quizModal').classList.add('hidden'); };
+    document.getElementById('submitQuiz').onclick = ()=>{ let score=0; topicData.quiz.forEach((q,i)=>{ const sel = document.querySelector(`input[name="q${i}"]:checked`); if(sel && parseInt(sel.value)===q.correct) score++; }); const pct = (score/topicData.quiz.length)*100; document.getElementById('quizContent').innerHTML = `<div class="text-center"><p class="font-bold text-2xl">${score}/${topicData.quiz.length}</p><p class="mt-2">${pct>=70?'Well done!':'Try again.'}</p></div>`; };
+
+    // init
+    renderSteps(); showStep(0); updateValues();
+  </script>
+<!-- Topic Quiz System -->
+<script src="/js/topic-quiz-loader.js"></script>
+<script src="/js/topic-quiz-injector.js"></script>
+</body>
+</html>

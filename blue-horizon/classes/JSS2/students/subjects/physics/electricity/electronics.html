@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fundamentals of Electronics | Physics</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style> body { font-family: 'Inter', sans-serif; } .content-card { -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); background: rgba(255,255,255,0.75); border:1px solid rgba(255,255,255,0.2); box-shadow:0 8px 32px rgba(0,0,0,0.06);} .diagram { max-width:100%; height:auto; }
+  </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-6">
+  <div class="max-w-4xl mx-auto">
+    <nav class="mb-6"><a href="index.html" class="text-blue-600 hover:text-blue-700">← Back to Electricity</a></nav>
+    <article class="content-card rounded-xl p-8">
+      <header class="mb-6">
+        <h1 class="text-2xl font-bold text-gray-800 mb-2">Fundamentals of Electronics</h1>
+        <p class="text-gray-600">Introductory concepts: diodes, transistors, logic gates and a basic amplifier idea.</p>
+      </header>
+      <section class="mb-6">
+        <h2 class="text-lg font-semibold mb-2">Diodes & Transistors (qualitative)</h2>
+        <p class="text-gray-700">Diode: allows current one way; forward/reverse bias. Transistor: basic amplifier/switch; NPN/PNP operation qualitatively explained.</p>
+      </section>
+      <section class="mb-6">
+        <h2 class="text-lg font-semibold mb-2">Simple circuit diagram</h2>
+        <img src="../assets/simple-circuit.svg" alt="Simple circuit" class="diagram border rounded p-2 bg-white/60">
+        <p class="text-sm text-gray-600 mt-2">Figure: Series circuit with a resistor and battery.</p>
+      </section>
+
+      <section>
+        <h2 class="text-lg font-semibold mb-2">Practice</h2>
+        <ol class="list-decimal list-inside text-gray-700 space-y-1">
+          <li>Explain diode forward/reverse bias behavior.</li>
+          <li>Sketch how a single-transistor amplifier changes small input voltage to larger output swing (qualitative).</li>
+        </ol>
+      </section>
+
+      <section>
+        <h2 class="text-lg font-semibold mb-2">Solutions (brief)</h2>
+        <ol class="list-decimal list-inside text-gray-700 space-y-1">
+          <li>Diode conducts when forward biased (barrier lowered) and blocks when reverse biased (barrier high); avalanche breakdown if voltage too large.</li>
+          <li>Transistor in common-emitter amplifies: small base-emitter voltage changes large collector current, producing larger voltage swing across a load resistor.</li>
+        </ol>
+      </section>
+      <section>
+        <h2 class="text-lg font-semibold mb-2">Practice</h2>
+        <ol class="list-decimal list-inside text-gray-700 space-y-1">
+          <li>Explain why a diode conducts in forward bias but blocks in reverse bias.</li>
+        </ol>
+      </section>
+    </article>
+  </div>
+<!-- Topic Quiz System -->
+<script src="/js/topic-quiz-loader.js"></script>
+<script src="/js/topic-quiz-injector.js"></script>
+</body>
+</html>

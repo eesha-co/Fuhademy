@@ -1,0 +1,1206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Study Plan - JUANOVA CORTEX</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#0ea5e9',
+            secondary: '#6366f1',
+            accent: '#f43f5e',
+            success: '#22c55e',
+            warning: '#f59e0b'
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    #sidebar { transition: transform 0.3s ease-in-out; }
+    #sidebar.hide { transform: translateX(-100%); }
+    @media (min-width: 1024px) { #sidebar { transform: translateX(0) !important; } }
+    
+    .step-card { transition: all 0.3s ease; }
+    .step-card:hover { transform: translateY(-2px); }
+    .step-card.active { border-color: #0ea5e9; background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); }
+    .step-card.selected { border-color: #22c55e; background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); }
+    
+    .subject-card { transition: all 0.2s ease; }
+    .subject-card:hover { transform: scale(1.02); }
+    .subject-card.selected { border-color: #22c55e; background: #f0fdf4; box-shadow: 0 0 0 2px #22c55e; }
+    
+    .task-item { transition: all 0.2s ease; }
+    .task-item:hover { background: #f8fafc; }
+    .task-item.completed { opacity: 0.7; background: #f0fdf4; }
+    
+    .progress-ring { transition: stroke-dashoffset 0.5s ease; }
+    
+    .fade-in { animation: fadeIn 0.3s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    
+    .slide-up { animation: slideUp 0.4s ease; }
+    @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+    
+    .pulse-dot { animation: pulse 2s infinite; }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+    
+    .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+    .custom-scrollbar::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 3px; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+  </style>
+</head>
+<body class="bg-slate-50 min-h-screen">
+  <div class="min-h-screen flex">
+    <!-- Sidebar -->
+    <aside id="sidebar" class="w-64 md:w-72 lg:w-80 fixed left-0 top-0 h-full bg-white border-r border-slate-200 p-5 flex flex-col gap-6 overflow-auto z-40">
+      <div class="flex items-center gap-3">
+        <img src="/assets/images/logo.png" alt="logo" class="h-12 w-12 rounded-full shadow-sm">
+        <div>
+          <div class="text-lg font-bold text-sky-700">JUANOVA CORTEX</div>
+          <div class="text-xs text-slate-500">Student Dashboard</div>
+        </div>
+      </div>
+      <nav class="flex-1 overflow-auto">
+        <ul class="space-y-1">
+          <li><a href="student-dashboard-supabase.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-home text-sky-600"></i> Home</a></li>
+          <li><a href="news-feed-supabase.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-newspaper text-pink-500"></i> News Feed</a></li>
+          <li><a href="notes-supabase.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-note-sticky text-yellow-500"></i> Study Notes</a></li>
+          <li><a href="textbooks-supabase.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-book text-indigo-500"></i> Textbooks</a></li>
+          <li><a href="formula-bank-supabase.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-book-open text-teal-600"></i> All Formula</a></li>
+          <li><a href="study-plan-supabase.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50 bg-sky-50"><i class="fas fa-calendar-check text-green-500"></i> Study Plan</a></li>
+          <li><a href="video-library-supabase.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-photo-video text-cyan-600"></i> Video Library</a></li>
+          <li><a href="digital-library-supabase.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-book text-indigo-500"></i> Digital Library</a></li>
+          <li><a href="mock-exams-supabase.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-pencil-alt text-orange-500"></i> Mock Exams</a></li>
+          <li><a href="notifications-supabase.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-bell text-pink-600"></i> Notifications</a></li>
+          <li><a href="student-live-session-supabase.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-chalkboard-teacher text-blue-400"></i> Live Sessions</a></li>
+          <li><a href="nobel-laureate-supabase.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-award text-yellow-600"></i> Nobel Laureate</a></li>
+        </ul>
+      </nav>
+      <div class="text-sm text-slate-500 border-t pt-4">
+        <div class="mb-2">Account</div>
+        <div class="flex items-center gap-3">
+          <img id="avatar-sm" src="../assets/images/unnamed.jpg" alt="avatar" class="h-10 w-10 rounded-full border">
+          <div>
+            <div id="userName" class="font-semibold">Student</div>
+            <div id="userLevel" class="text-xs text-slate-400"></div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <div id="main-content" class="flex-1 flex flex-col ml-64 md:ml-72 lg:ml-80">
+      <!-- Header -->
+      <header class="flex items-center justify-between p-4 bg-white border-b border-slate-200 sticky top-0 z-30">
+        <div class="flex items-center gap-3">
+          <button id="toggleSidebar" class="p-2 rounded-md hover:bg-slate-100 lg:hidden">
+            <i class="fas fa-bars"></i>
+          </button>
+          <h1 class="text-xl font-semibold">Study Plan</h1>
+        </div>
+        <div class="flex items-center gap-4">
+          <div class="relative">
+            <button id="notifBtn" class="p-2 rounded-full hover:bg-slate-50">
+              <i class="fas fa-bell text-sky-600"></i>
+            </button>
+            <span id="notifCount" class="absolute -top-1 -right-1 bg-pink-500 text-white rounded-full w-5 h-5 text-xs flex items-center justify-center">0</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <div class="text-right mr-2">
+              <div id="topName" class="font-semibold">Student Name</div>
+              <div id="topLevel" class="text-xs text-slate-400">SS 3</div>
+            </div>
+            <img id="topAvatar" src="../assets/images/unnamed.jpg" alt="avatar" class="h-10 w-10 rounded-full border-2">
+          </div>
+        </div>
+      </header>
+
+      <!-- Main Content Area -->
+      <main class="flex-1 p-6 overflow-auto">
+        <!-- Plan Creation Wizard (shown when no active plan) -->
+        <div id="planWizard" class="max-w-4xl mx-auto">
+          <!-- Progress Steps -->
+          <div class="flex items-center justify-center mb-8">
+            <div class="flex items-center gap-2">
+              <div id="step1-indicator" class="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center font-semibold">1</div>
+              <div class="w-16 h-1 bg-slate-200" id="progress1"><div class="h-full bg-primary transition-all duration-500" style="width: 0%"></div></div>
+              <div id="step2-indicator" class="w-10 h-10 rounded-full bg-slate-200 text-slate-500 flex items-center justify-center font-semibold">2</div>
+              <div class="w-16 h-1 bg-slate-200" id="progress2"><div class="h-full bg-primary transition-all duration-500" style="width: 0%"></div></div>
+              <div id="step3-indicator" class="w-10 h-10 rounded-full bg-slate-200 text-slate-500 flex items-center justify-center font-semibold">3</div>
+              <div class="w-16 h-1 bg-slate-200" id="progress3"><div class="h-full bg-primary transition-all duration-500" style="width: 0%"></div></div>
+              <div id="step4-indicator" class="w-10 h-10 rounded-full bg-slate-200 text-slate-500 flex items-center justify-center font-semibold">4</div>
+            </div>
+          </div>
+
+          <!-- Step 1: Exam Selection -->
+          <div id="step1" class="step-content fade-in">
+            <div class="text-center mb-8">
+              <h2 class="text-2xl font-bold text-slate-800 mb-2">Which exam are you preparing for?</h2>
+              <p class="text-slate-500">Select the exam type to customize your study plan</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <button onclick="selectExam('JAMB')" class="step-card p-6 rounded-xl border-2 border-slate-200 bg-white text-center hover:border-primary cursor-pointer">
+                <div class="w-16 h-16 mx-auto mb-4 bg-green-100 rounded-full flex items-center justify-center">
+                  <i class="fas fa-graduation-cap text-3xl text-green-600"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-slate-800">JAMB</h3>
+                <p class="text-sm text-slate-500 mt-2">4 Subjects (English compulsory)</p>
+              </button>
+              <button onclick="selectExam('WAEC')" class="step-card p-6 rounded-xl border-2 border-slate-200 bg-white text-center hover:border-primary cursor-pointer">
+                <div class="w-16 h-16 mx-auto mb-4 bg-blue-100 rounded-full flex items-center justify-center">
+                  <i class="fas fa-certificate text-3xl text-blue-600"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-slate-800">WAEC</h3>
+                <p class="text-sm text-slate-500 mt-2">Select 9 subjects</p>
+              </button>
+              <button onclick="selectExam('NECO')" class="step-card p-6 rounded-xl border-2 border-slate-200 bg-white text-center hover:border-primary cursor-pointer">
+                <div class="w-16 h-16 mx-auto mb-4 bg-purple-100 rounded-full flex items-center justify-center">
+                  <i class="fas fa-award text-3xl text-purple-600"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-slate-800">NECO</h3>
+                <p class="text-sm text-slate-500 mt-2">Select 9 subjects</p>
+              </button>
+            </div>
+          </div>
+
+          <!-- Step 2: Subject Selection -->
+          <div id="step2" class="step-content hidden fade-in">
+            <div class="text-center mb-6">
+              <h2 class="text-2xl font-bold text-slate-800 mb-2">Select Your Subjects</h2>
+              <p id="subjectInstruction" class="text-slate-500">Choose your subjects for the exam</p>
+            </div>
+            
+            <!-- Selected Subjects Counter -->
+            <div class="bg-primary/10 rounded-lg p-4 mb-6 flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <i class="fas fa-check-circle text-primary text-xl"></i>
+                <span id="selectedCount" class="font-semibold text-slate-700">0 subjects selected</span>
+              </div>
+              <span id="subjectLimit" class="text-sm text-slate-500">Select at least 3 subjects</span>
+            </div>
+
+            <!-- Subjects Grid -->
+            <div id="subjectsGrid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-6 max-h-96 overflow-y-auto custom-scrollbar p-2">
+              <!-- Subjects will be loaded here -->
+            </div>
+
+            <div class="flex justify-between mt-6">
+              <button onclick="goToStep(1)" class="px-6 py-3 rounded-lg border border-slate-300 text-slate-600 hover:bg-slate-50">
+                <i class="fas fa-arrow-left mr-2"></i> Back
+              </button>
+              <button id="nextToStep3" onclick="goToStep(3)" disabled class="px-6 py-3 rounded-lg bg-primary text-white hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed">
+                Continue <i class="fas fa-arrow-right ml-2"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Step 3: Study Preferences -->
+          <div id="step3" class="step-content hidden fade-in">
+            <div class="text-center mb-8">
+              <h2 class="text-2xl font-bold text-slate-800 mb-2">Study Preferences</h2>
+              <p class="text-slate-500">Help us create the perfect plan for you</p>
+            </div>
+
+            <div class="space-y-8 max-w-2xl mx-auto">
+              <!-- Time to Exam -->
+              <div>
+                <label class="block text-lg font-semibold text-slate-700 mb-3">
+                  <i class="fas fa-calendar-alt text-primary mr-2"></i>
+                  How long until your exam?
+                </label>
+                <div class="grid grid-cols-3 md:grid-cols-6 gap-3">
+                  <button onclick="selectMonths(1)" class="month-btn py-3 px-4 rounded-lg border-2 border-slate-200 hover:border-primary text-center" data-months="1">1 mo</button>
+                  <button onclick="selectMonths(2)" class="month-btn py-3 px-4 rounded-lg border-2 border-slate-200 hover:border-primary text-center" data-months="2">2 mo</button>
+                  <button onclick="selectMonths(3)" class="month-btn py-3 px-4 rounded-lg border-2 border-slate-200 hover:border-primary text-center" data-months="3">3 mo</button>
+                  <button onclick="selectMonths(6)" class="month-btn py-3 px-4 rounded-lg border-2 border-slate-200 hover:border-primary text-center" data-months="6">6 mo</button>
+                  <button onclick="selectMonths(12)" class="month-btn py-3 px-4 rounded-lg border-2 border-slate-200 hover:border-primary text-center" data-months="12">12 mo</button>
+                  <button onclick="selectMonths(24)" class="month-btn py-3 px-4 rounded-lg border-2 border-slate-200 hover:border-primary text-center" data-months="24">24+ mo</button>
+                </div>
+              </div>
+
+              <!-- Learner Type -->
+              <div>
+                <label class="block text-lg font-semibold text-slate-700 mb-3">
+                  <i class="fas fa-brain text-secondary mr-2"></i>
+                  What type of learner are you?
+                </label>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <button onclick="selectLearnerType('Fast')" class="learner-btn p-4 rounded-xl border-2 border-slate-200 hover:border-primary text-center">
+                    <i class="fas fa-bolt text-2xl text-yellow-500 mb-2"></i>
+                    <h4 class="font-semibold">Fast Learner</h4>
+                    <p class="text-xs text-slate-500">Quick grasp, minimal repetition</p>
+                  </button>
+                  <button onclick="selectLearnerType('Average')" class="learner-btn p-4 rounded-xl border-2 border-slate-200 hover:border-primary text-center">
+                    <i class="fas fa-balance-scale text-2xl text-blue-500 mb-2"></i>
+                    <h4 class="font-semibold">Average Learner</h4>
+                    <p class="text-xs text-slate-500">Moderate pace, some repetition</p>
+                  </button>
+                  <button onclick="selectLearnerType('Slow')" class="learner-btn p-4 rounded-xl border-2 border-slate-200 hover:border-primary text-center">
+                    <i class="fas fa-turtle text-2xl text-green-500 mb-2"></i>
+                    <h4 class="font-semibold">Slow Learner</h4>
+                    <p class="text-xs text-slate-500">Thorough, needs more practice</p>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Daily Study Time -->
+              <div>
+                <label class="block text-lg font-semibold text-slate-700 mb-3">
+                  <i class="fas fa-clock text-accent mr-2"></i>
+                  How much time daily for studying?
+                </label>
+                <div class="grid grid-cols-4 md:grid-cols-7 gap-3">
+                  <button onclick="selectDailyHours(1)" class="hours-btn py-3 px-2 rounded-lg border-2 border-slate-200 hover:border-primary text-center text-sm" data-hours="1">1 hr</button>
+                  <button onclick="selectDailyHours(2)" class="hours-btn py-3 px-2 rounded-lg border-2 border-slate-200 hover:border-primary text-center text-sm" data-hours="2">2 hrs</button>
+                  <button onclick="selectDailyHours(3)" class="hours-btn py-3 px-2 rounded-lg border-2 border-slate-200 hover:border-primary text-center text-sm" data-hours="3">3 hrs</button>
+                  <button onclick="selectDailyHours(4)" class="hours-btn py-3 px-2 rounded-lg border-2 border-slate-200 hover:border-primary text-center text-sm" data-hours="4">4 hrs</button>
+                  <button onclick="selectDailyHours(6)" class="hours-btn py-3 px-2 rounded-lg border-2 border-slate-200 hover:border-primary text-center text-sm" data-hours="6">6 hrs</button>
+                  <button onclick="selectDailyHours(8)" class="hours-btn py-3 px-2 rounded-lg border-2 border-slate-200 hover:border-primary text-center text-sm" data-hours="8">8 hrs</button>
+                  <button onclick="selectDailyHours(0)" class="hours-btn py-3 px-2 rounded-lg border-2 border-slate-200 hover:border-primary text-center text-sm" data-hours="0">Always free</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="flex justify-between mt-8">
+              <button onclick="goToStep(2)" class="px-6 py-3 rounded-lg border border-slate-300 text-slate-600 hover:bg-slate-50">
+                <i class="fas fa-arrow-left mr-2"></i> Back
+              </button>
+              <button id="nextToStep4" onclick="goToStep(4)" disabled class="px-6 py-3 rounded-lg bg-primary text-white hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed">
+                Continue <i class="fas fa-arrow-right ml-2"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Step 4: Review & Create -->
+          <div id="step4" class="step-content hidden fade-in">
+            <div class="text-center mb-8">
+              <h2 class="text-2xl font-bold text-slate-800 mb-2">Review Your Plan</h2>
+              <p class="text-slate-500">Confirm your settings and create your personalized study plan</p>
+            </div>
+
+            <div class="max-w-2xl mx-auto">
+              <!-- Summary Card -->
+              <div class="bg-white rounded-2xl shadow-lg border border-slate-200 overflow-hidden">
+                <div class="bg-gradient-to-r from-primary to-secondary p-6 text-white">
+                  <div class="flex items-center gap-4">
+                    <div class="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center">
+                      <i class="fas fa-graduation-cap text-3xl"></i>
+                    </div>
+                    <div>
+                      <h3 id="reviewExamType" class="text-2xl font-bold">JAMB</h3>
+                      <p class="text-white/80">Exam Preparation Plan</p>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="p-6 space-y-4">
+                  <div class="flex justify-between items-center py-3 border-b border-slate-100">
+                    <span class="text-slate-600"><i class="fas fa-book mr-2 text-primary"></i>Subjects</span>
+                    <span id="reviewSubjects" class="font-semibold text-slate-800">-</span>
+                  </div>
+                  <div class="flex justify-between items-center py-3 border-b border-slate-100">
+                    <span class="text-slate-600"><i class="fas fa-calendar mr-2 text-primary"></i>Time to Exam</span>
+                    <span id="reviewMonths" class="font-semibold text-slate-800">-</span>
+                  </div>
+                  <div class="flex justify-between items-center py-3 border-b border-slate-100">
+                    <span class="text-slate-600"><i class="fas fa-brain mr-2 text-primary"></i>Learner Type</span>
+                    <span id="reviewLearnerType" class="font-semibold text-slate-800">-</span>
+                  </div>
+                  <div class="flex justify-between items-center py-3">
+                    <span class="text-slate-600"><i class="fas fa-clock mr-2 text-primary"></i>Daily Study Time</span>
+                    <span id="reviewDailyHours" class="font-semibold text-slate-800">-</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- AI Notice -->
+              <div class="mt-6 bg-amber-50 border border-amber-200 rounded-xl p-4">
+                <div class="flex gap-3">
+                  <i class="fas fa-lightbulb text-amber-500 text-xl"></i>
+                  <div>
+                    <h4 class="font-semibold text-amber-800">AI-Powered Planning</h4>
+                    <p class="text-sm text-amber-700">Our AI will create a personalized day-by-day study plan with prerequisites properly ordered. Topics that build on each other will be arranged in the optimal learning sequence.</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="flex justify-between mt-8">
+                <button onclick="goToStep(3)" class="px-6 py-3 rounded-lg border border-slate-300 text-slate-600 hover:bg-slate-50">
+                  <i class="fas fa-arrow-left mr-2"></i> Back
+                </button>
+                <button id="createPlanBtn" onclick="createStudyPlan()" class="px-8 py-3 rounded-lg bg-gradient-to-r from-primary to-secondary text-white font-semibold hover:opacity-90 transition-opacity">
+                  <i class="fas fa-magic mr-2"></i> Create My Study Plan
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Loading State -->
+          <div id="loadingState" class="hidden text-center py-16">
+            <div class="w-20 h-20 mx-auto mb-6 rounded-full bg-primary/10 flex items-center justify-center">
+              <i class="fas fa-cog fa-spin text-4xl text-primary"></i>
+            </div>
+            <h3 class="text-xl font-semibold text-slate-800 mb-2">Creating Your Study Plan...</h3>
+            <p class="text-slate-500">Our AI is designing the optimal learning path for you</p>
+            <div class="mt-6 max-w-md mx-auto">
+              <div class="h-2 bg-slate-200 rounded-full overflow-hidden">
+                <div id="loadingProgress" class="h-full bg-primary rounded-full transition-all duration-500" style="width: 0%"></div>
+              </div>
+              <p id="loadingStatus" class="text-sm text-slate-500 mt-2">Analyzing your subjects...</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Active Plan View (shown when plan exists) -->
+        <div id="activePlanView" class="hidden">
+          <!-- Plan Header -->
+          <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 mb-6">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+              <div>
+                <div class="flex items-center gap-3 mb-2">
+                  <span class="px-3 py-1 rounded-full bg-green-100 text-green-700 text-sm font-medium">
+                    <i class="fas fa-check-circle mr-1"></i> Active Plan
+                  </span>
+                  <span id="planExamBadge" class="px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium">JAMB</span>
+                </div>
+                <h2 class="text-2xl font-bold text-slate-800">Your Study Plan</h2>
+                <p id="planExamDate" class="text-slate-500 mt-1">
+                  <i class="fas fa-calendar mr-2"></i>Exam date: <span class="font-medium">Not set</span>
+                </p>
+              </div>
+              <div class="flex items-center gap-3">
+                <button onclick="resetPlan()" class="px-4 py-2 rounded-lg border border-slate-300 text-slate-600 hover:bg-slate-50">
+                  <i class="fas fa-redo mr-2"></i> Reset Plan
+                </button>
+              </div>
+            </div>
+
+            <!-- Progress Overview -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
+              <div class="bg-slate-50 rounded-xl p-4 text-center">
+                <div class="text-3xl font-bold text-primary" id="totalDays">0</div>
+                <div class="text-sm text-slate-500">Total Days</div>
+              </div>
+              <div class="bg-slate-50 rounded-xl p-4 text-center">
+                <div class="text-3xl font-bold text-green-500" id="completedDays">0</div>
+                <div class="text-sm text-slate-500">Completed</div>
+              </div>
+              <div class="bg-slate-50 rounded-xl p-4 text-center">
+                <div class="text-3xl font-bold text-amber-500" id="currentStreak">0</div>
+                <div class="text-sm text-slate-500">Day Streak</div>
+              </div>
+              <div class="bg-slate-50 rounded-xl p-4 text-center">
+                <div class="text-3xl font-bold text-secondary" id="overallProgress">0%</div>
+                <div class="text-sm text-slate-500">Progress</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Day-by-Day Plan -->
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Calendar/Schedule View -->
+            <div class="lg:col-span-2">
+              <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+                <div class="p-4 border-b border-slate-200 flex items-center justify-between">
+                  <h3 class="font-semibold text-slate-800">
+                    <i class="fas fa-calendar-alt text-primary mr-2"></i>Study Schedule
+                  </h3>
+                  <div class="flex gap-2">
+                    <button onclick="filterTasks('all')" class="task-filter px-3 py-1 rounded-lg text-sm bg-primary text-white" data-filter="all">All</button>
+                    <button onclick="filterTasks('pending')" class="task-filter px-3 py-1 rounded-lg text-sm bg-slate-100 text-slate-600 hover:bg-slate-200" data-filter="pending">Pending</button>
+                    <button onclick="filterTasks('completed')" class="task-filter px-3 py-1 rounded-lg text-sm bg-slate-100 text-slate-600 hover:bg-slate-200" data-filter="completed">Completed</button>
+                  </div>
+                </div>
+                <div id="daysContainer" class="max-h-[600px] overflow-y-auto custom-scrollbar">
+                  <!-- Days will be loaded here -->
+                </div>
+              </div>
+            </div>
+
+            <!-- Today's Tasks Sidebar -->
+            <div>
+              <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden sticky top-24">
+                <div class="bg-gradient-to-r from-primary to-secondary p-4 text-white">
+                  <h3 class="font-semibold">
+                    <i class="fas fa-tasks mr-2"></i>Today's Tasks
+                  </h3>
+                  <p id="todayDate" class="text-sm text-white/80 mt-1"></p>
+                </div>
+                <div id="todayTasks" class="p-4 max-h-96 overflow-y-auto custom-scrollbar">
+                  <!-- Today's tasks will be loaded here -->
+                </div>
+                <div class="p-4 border-t border-slate-100">
+                  <div class="flex items-center justify-between text-sm">
+                    <span class="text-slate-500">Today's Progress</span>
+                    <span id="todayProgress" class="font-semibold text-primary">0%</span>
+                  </div>
+                  <div class="h-2 bg-slate-100 rounded-full mt-2 overflow-hidden">
+                    <div id="todayProgressBar" class="h-full bg-primary rounded-full transition-all duration-500" style="width: 0%"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Task Completion Modal -->
+  <div id="taskModal" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 hidden">
+    <div class="bg-white rounded-2xl max-w-md w-full mx-4 overflow-hidden">
+      <div class="p-6">
+        <h3 id="modalTaskTitle" class="text-xl font-bold text-slate-800 mb-2">Task Title</h3>
+        <p id="modalTaskSubject" class="text-sm text-slate-500 mb-4">
+          <i class="fas fa-book mr-1"></i> Subject
+        </p>
+        
+        <div id="modalPrerequisites" class="mb-4">
+          <h4 class="text-sm font-semibold text-slate-600 mb-2">Prerequisites:</h4>
+          <div id="prereqList" class="text-sm text-slate-500"></div>
+        </div>
+
+        <div class="mb-4">
+          <label class="block text-sm font-semibold text-slate-600 mb-2">Notes (optional):</label>
+          <textarea id="taskNotes" rows="3" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="Add any notes about this topic..."></textarea>
+        </div>
+      </div>
+      <div class="flex border-t border-slate-200">
+        <button onclick="closeTaskModal()" class="flex-1 py-3 text-slate-600 hover:bg-slate-50">Cancel</button>
+        <button onclick="markTaskComplete()" class="flex-1 py-3 bg-green-500 text-white hover:bg-green-600 font-semibold">Mark Complete</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { config } from '../js/config.js';
+    import { initSupabase } from '../js/supabase-client.js';
+
+    const supabase = initSupabase(config.supabase.url, config.supabase.anonKey);
+    
+    // State
+    let currentUser = null;
+    let planConfig = {
+      examType: null,
+      subjects: [],
+      months: null,
+      learnerType: null,
+      dailyHours: null
+    };
+    let currentPlan = null;
+    let currentTaskId = null;
+    let currentFilter = 'all';
+
+    // Available subjects
+    const allSubjects = [
+      { name: 'English Language', icon: '📚', color: 'blue', category: 'Arts', compulsory: true },
+      { name: 'Mathematics', icon: '📐', color: 'red', category: 'Science', compulsory: false },
+      { name: 'Physics', icon: '⚛️', color: 'green', category: 'Science', compulsory: false },
+      { name: 'Chemistry', icon: '🧪', color: 'yellow', category: 'Science', compulsory: false },
+      { name: 'Biology', icon: '🧬', color: 'purple', category: 'Science', compulsory: false },
+      { name: 'Economics', icon: '💰', color: 'lime', category: 'Social Science', compulsory: false },
+      { name: 'Government', icon: '🏛️', color: 'red', category: 'Social Science', compulsory: false },
+      { name: 'Commerce', icon: '📊', color: 'teal', category: 'Social Science', compulsory: false },
+      { name: 'Accounting', icon: '📈', color: 'emerald', category: 'Social Science', compulsory: false },
+      { name: 'Literature in English', icon: '📖', color: 'indigo', category: 'Arts', compulsory: false },
+      { name: 'Geography', icon: '🌍', color: 'cyan', category: 'Arts', compulsory: false },
+      { name: 'History', icon: '🏛️', color: 'pink', category: 'Arts', compulsory: false },
+      { name: 'Agricultural Science', icon: '🌾', color: 'lime', category: 'Science', compulsory: false },
+      { name: 'Computer Science', icon: '💻', color: 'orange', category: 'Science', compulsory: false },
+      { name: 'Civic Education', icon: '⚖️', color: 'cyan', category: 'Social Science', compulsory: false },
+      { name: 'Further Mathematics', icon: '🔢', color: 'purple', category: 'Science', compulsory: false }
+    ];
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', async () => {
+      await checkAuth();
+      setupSidebarToggle();
+    });
+
+    async function checkAuth() {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session || !session.user) {
+        window.location.href = '../general/login.html';
+        return;
+      }
+      
+      if (!session.user.email_confirmed_at) {
+        alert('Please verify your email first.');
+        await supabase.auth.signOut();
+        window.location.href = '../general/login.html';
+        return;
+      }
+
+      currentUser = session.user;
+      await loadUserProfile();
+      await checkExistingPlan();
+    }
+
+    async function loadUserProfile() {
+      const { data: profile } = await supabase.from('profiles').select('*').eq('id', currentUser.id).single();
+      if (profile) {
+        const displayName = profile.full_name || currentUser.email?.split('@')[0] || 'Student';
+        setText('userName', displayName.split(' ')[0]);
+        setText('topName', displayName);
+        if (profile.avatar_url) {
+          setImage('avatar-sm', profile.avatar_url);
+          setImage('topAvatar', profile.avatar_url);
+        }
+        if (profile.level) {
+          setText('userLevel', profile.level);
+          setText('topLevel', profile.level);
+        }
+      }
+    }
+
+    async function checkExistingPlan() {
+      const { data: plan } = await supabase
+        .from('study_plans')
+        .select('*')
+        .eq('user_id', currentUser.id)
+        .eq('status', 'active')
+        .single();
+
+      if (plan) {
+        currentPlan = plan;
+        await loadActivePlan();
+      } else {
+        showWizard();
+      }
+    }
+
+    function showWizard() {
+      document.getElementById('planWizard').classList.remove('hidden');
+      document.getElementById('activePlanView').classList.add('hidden');
+    }
+
+    function showActivePlan() {
+      document.getElementById('planWizard').classList.add('hidden');
+      document.getElementById('activePlanView').classList.remove('hidden');
+    }
+
+    // Step navigation
+    window.goToStep = function(step) {
+      // Hide all steps
+      document.querySelectorAll('.step-content').forEach(el => el.classList.add('hidden'));
+      
+      // Show target step
+      document.getElementById(`step${step}`).classList.remove('hidden');
+      
+      // Update indicators
+      for (let i = 1; i <= 4; i++) {
+        const indicator = document.getElementById(`step${i}-indicator`);
+        if (i < step) {
+          indicator.classList.remove('bg-slate-200', 'text-slate-500');
+          indicator.classList.add('bg-green-500', 'text-white');
+        } else if (i === step) {
+          indicator.classList.remove('bg-slate-200', 'text-slate-500', 'bg-green-500');
+          indicator.classList.add('bg-primary', 'text-white');
+        } else {
+          indicator.classList.remove('bg-primary', 'text-white', 'bg-green-500');
+          indicator.classList.add('bg-slate-200', 'text-slate-500');
+        }
+      }
+
+      // Update progress bars
+      for (let i = 1; i <= 3; i++) {
+        const progressBar = document.querySelector(`#progress${i} > div`);
+        if (i < step) {
+          progressBar.style.width = '100%';
+        } else {
+          progressBar.style.width = '0%';
+        }
+      }
+
+      // Update review if on step 4
+      if (step === 4) {
+        updateReview();
+      }
+    };
+
+    // Exam selection
+    window.selectExam = function(exam) {
+      planConfig.examType = exam;
+      
+      // Update UI
+      document.querySelectorAll('#step1 .step-card').forEach(card => card.classList.remove('selected'));
+      event.currentTarget.classList.add('selected');
+      
+      // Auto-select English for JAMB
+      if (exam === 'JAMB') {
+        planConfig.subjects = ['English Language'];
+      } else {
+        planConfig.subjects = [];
+      }
+      
+      // Load subjects for step 2
+      loadSubjectsForSelection();
+      
+      // Move to step 2
+      setTimeout(() => goToStep(2), 300);
+    };
+
+    // Subject selection
+    function loadSubjectsForSelection() {
+      const grid = document.getElementById('subjectsGrid');
+      const exam = planConfig.examType;
+      const maxSubjects = exam === 'JAMB' ? 4 : 9;
+      const minSubjects = exam === 'JAMB' ? 4 : 9;
+      
+      document.getElementById('subjectInstruction').textContent = 
+        exam === 'JAMB' 
+          ? `Select ${minSubjects} subjects (English is compulsory)` 
+          : `Select ${minSubjects} subjects for your exam`;
+      document.getElementById('subjectLimit').textContent = 
+        `Select exactly ${minSubjects} subjects`;
+
+      grid.innerHTML = allSubjects.map(subject => {
+        const isSelected = planConfig.subjects.includes(subject.name);
+        const isCompulsory = exam === 'JAMB' && subject.name === 'English Language';
+        
+        return `
+          <button 
+            onclick="toggleSubject('${subject.name}')"
+            class="subject-card p-4 rounded-xl border-2 ${isSelected ? 'selected border-green-500' : 'border-slate-200'} bg-white text-left ${isCompulsory ? 'ring-2 ring-amber-400' : ''}"
+            ${isCompulsory ? 'disabled' : ''}
+          >
+            <div class="flex items-center gap-3">
+              <span class="text-2xl">${subject.icon}</span>
+              <div class="flex-1 min-w-0">
+                <div class="font-semibold text-slate-800 truncate">${subject.name}</div>
+                <div class="text-xs text-slate-500">${subject.category}</div>
+              </div>
+              ${isCompulsory ? '<span class="text-xs bg-amber-100 text-amber-700 px-2 py-0.5 rounded">Compulsory</span>' : ''}
+              ${isSelected && !isCompulsory ? '<i class="fas fa-check-circle text-green-500"></i>' : ''}
+            </div>
+          </button>
+        `;
+      }).join('');
+
+      updateSubjectCount();
+    }
+
+    window.toggleSubject = function(subjectName) {
+      const exam = planConfig.examType;
+      const maxSubjects = exam === 'JAMB' ? 4 : 9;
+      
+      if (planConfig.subjects.includes(subjectName)) {
+        // Don't allow deselecting English for JAMB
+        if (exam === 'JAMB' && subjectName === 'English Language') return;
+        planConfig.subjects = planConfig.subjects.filter(s => s !== subjectName);
+      } else {
+        if (planConfig.subjects.length < maxSubjects) {
+          planConfig.subjects.push(subjectName);
+        }
+      }
+      
+      loadSubjectsForSelection();
+    };
+
+    function updateSubjectCount() {
+      const exam = planConfig.examType;
+      const required = exam === 'JAMB' ? 4 : 9;
+      const count = planConfig.subjects.length;
+      
+      document.getElementById('selectedCount').textContent = `${count} of ${required} subjects selected`;
+      document.getElementById('nextToStep3').disabled = count !== required;
+    }
+
+    // Months selection
+    window.selectMonths = function(months) {
+      planConfig.months = months;
+      document.querySelectorAll('.month-btn').forEach(btn => {
+        btn.classList.remove('border-primary', 'bg-primary/10', 'text-primary');
+        btn.classList.add('border-slate-200');
+        if (parseInt(btn.dataset.months) === months) {
+          btn.classList.add('border-primary', 'bg-primary/10', 'text-primary');
+          btn.classList.remove('border-slate-200');
+        }
+      });
+      checkStep3Complete();
+    };
+
+    // Learner type selection
+    window.selectLearnerType = function(type) {
+      planConfig.learnerType = type;
+      document.querySelectorAll('.learner-btn').forEach(btn => {
+        btn.classList.remove('border-primary', 'bg-primary/5');
+        if (btn.textContent.includes(type)) {
+          btn.classList.add('border-primary', 'bg-primary/5');
+        }
+      });
+      checkStep3Complete();
+    };
+
+    // Daily hours selection
+    window.selectDailyHours = function(hours) {
+      planConfig.dailyHours = hours;
+      document.querySelectorAll('.hours-btn').forEach(btn => {
+        btn.classList.remove('border-primary', 'bg-primary/10', 'text-primary');
+        btn.classList.add('border-slate-200');
+        if (parseInt(btn.dataset.hours) === hours) {
+          btn.classList.add('border-primary', 'bg-primary/10', 'text-primary');
+          btn.classList.remove('border-slate-200');
+        }
+      });
+      checkStep3Complete();
+    };
+
+    function checkStep3Complete() {
+      const complete = planConfig.months && planConfig.learnerType && planConfig.dailyHours !== null;
+      document.getElementById('nextToStep4').disabled = !complete;
+    }
+
+    // Update review
+    function updateReview() {
+      document.getElementById('reviewExamType').textContent = planConfig.examType;
+      document.getElementById('reviewSubjects').textContent = planConfig.subjects.join(', ');
+      document.getElementById('reviewMonths').textContent = planConfig.months === 24 ? '24+ months' : `${planConfig.months} month${planConfig.months > 1 ? 's' : ''}`;
+      document.getElementById('reviewLearnerType').textContent = planConfig.learnerType + ' Learner';
+      document.getElementById('reviewDailyHours').textContent = planConfig.dailyHours === 0 ? 'Always free' : `${planConfig.dailyHours} hour${planConfig.dailyHours > 1 ? 's' : ''}/day`;
+    }
+
+    // Create study plan
+    window.createStudyPlan = async function() {
+      // Show loading state
+      document.querySelectorAll('.step-content').forEach(el => el.classList.add('hidden'));
+      document.getElementById('loadingState').classList.remove('hidden');
+
+      const progressBar = document.getElementById('loadingProgress');
+      const statusText = document.getElementById('loadingStatus');
+
+      try {
+        // Step 1: Save plan configuration
+        progressBar.style.width = '20%';
+        statusText.textContent = 'Saving your preferences...';
+
+        const { data: plan, error: planError } = await supabase
+          .from('study_plans')
+          .upsert({
+            user_id: currentUser.id,
+            exam_type: planConfig.examType,
+            subjects: planConfig.subjects,
+            months_to_exam: planConfig.months,
+            learner_type: planConfig.learnerType,
+            daily_hours: planConfig.dailyHours,
+            exam_date: calculateExamDate(planConfig.months),
+            status: 'active'
+          }, { onConflict: 'user_id' })
+          .select()
+          .single();
+
+        if (planError) throw planError;
+        currentPlan = plan;
+
+        // Step 2: Generate AI plan
+        progressBar.style.width = '40%';
+        statusText.textContent = 'AI is analyzing your subjects...';
+
+        const aiPlan = await generateAIStudyPlan();
+
+        // Step 3: Save days and tasks
+        progressBar.style.width = '60%';
+        statusText.textContent = 'Creating your daily schedule...';
+
+        await savePlanDays(aiPlan);
+
+        // Step 4: Complete
+        progressBar.style.width = '100%';
+        statusText.textContent = 'Your study plan is ready!';
+
+        setTimeout(() => {
+          loadActivePlan();
+        }, 1000);
+
+      } catch (error) {
+        console.error('Error creating plan:', error);
+        alert('Failed to create study plan. Please try again.');
+        goToStep(4);
+        document.getElementById('loadingState').classList.add('hidden');
+      }
+    };
+
+    function calculateExamDate(months) {
+      const date = new Date();
+      date.setMonth(date.getMonth() + months);
+      return date.toISOString().split('T')[0];
+    }
+
+    async function generateAIStudyPlan() {
+      const response = await fetch('/api/study-plan/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          examType: planConfig.examType,
+          subjects: planConfig.subjects,
+          monthsToExam: planConfig.months,
+          learnerType: planConfig.learnerType,
+          dailyHours: planConfig.dailyHours,
+          planId: currentPlan.id
+        })
+      });
+
+      if (!response.ok) throw new Error('Failed to generate AI plan');
+      return await response.json();
+    }
+
+    async function savePlanDays(aiPlan) {
+      const days = aiPlan.days || [];
+      
+      for (let i = 0; i < days.length; i++) {
+        const day = days[i];
+        const dayDate = new Date();
+        dayDate.setDate(dayDate.getDate() + i);
+
+        const { data: dayRecord } = await supabase
+          .from('study_plan_days')
+          .insert({
+            plan_id: currentPlan.id,
+            day_number: i + 1,
+            date: dayDate.toISOString().split('T')[0],
+            title: day.title || `Day ${i + 1}`,
+            description: day.description
+          })
+          .select()
+          .single();
+
+        if (dayRecord && day.tasks) {
+          for (let j = 0; j < day.tasks.length; j++) {
+            const task = day.tasks[j];
+            await supabase
+              .from('study_plan_tasks')
+              .insert({
+                day_id: dayRecord.id,
+                subject: task.subject,
+                topic: task.topic,
+                topic_id: task.topicId,
+                description: task.description,
+                prerequisites: task.prerequisites || [],
+                order_index: j,
+                estimated_minutes: task.estimatedMinutes || 30,
+                task_type: task.type || 'study'
+              });
+          }
+        }
+      }
+
+      // Update total topics count
+      await supabase
+        .from('study_plans')
+        .update({ total_topics: aiPlan.totalTopics || days.length })
+        .eq('id', currentPlan.id);
+    }
+
+    async function loadActivePlan() {
+      showActivePlan();
+
+      // Load plan details
+      const { data: plan } = await supabase
+        .from('study_plans')
+        .select('*')
+        .eq('id', currentPlan.id)
+        .single();
+
+      if (plan) {
+        document.getElementById('planExamBadge').textContent = plan.exam_type;
+        document.getElementById('planExamDate').innerHTML = `<i class="fas fa-calendar mr-2"></i>Exam date: <span class="font-medium">${new Date(plan.exam_date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</span>`;
+      }
+
+      // Load days with tasks
+      const { data: days } = await supabase
+        .from('study_plan_days')
+        .select(`
+          *,
+          tasks:study_plan_tasks(*)
+        `)
+        .eq('plan_id', currentPlan.id)
+        .order('day_number');
+
+      if (days) {
+        renderDays(days);
+        calculateStats(days);
+      }
+    }
+
+    function renderDays(days) {
+      const container = document.getElementById('daysContainer');
+      const today = new Date().toISOString().split('T')[0];
+      
+      container.innerHTML = days.map(day => {
+        const isToday = day.date === today;
+        const isPast = day.date < today;
+        const tasks = day.tasks || [];
+        const completedTasks = tasks.filter(t => t.status === 'completed').length;
+        const progress = tasks.length > 0 ? Math.round((completedTasks / tasks.length) * 100) : 0;
+
+        return `
+          <div class="day-item border-b border-slate-100 ${isToday ? 'bg-primary/5' : ''}" data-day="${day.day_number}" data-status="${day.status}">
+            <button onclick="toggleDay(${day.day_number})" class="w-full p-4 text-left hover:bg-slate-50">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                  <div class="w-10 h-10 rounded-full ${day.status === 'completed' ? 'bg-green-100 text-green-600' : isToday ? 'bg-primary text-white' : 'bg-slate-100 text-slate-600'} flex items-center justify-center font-semibold">
+                    ${day.status === 'completed' ? '<i class="fas fa-check"></i>' : day.day_number}
+                  </div>
+                  <div>
+                    <h4 class="font-semibold text-slate-800">${day.title}</h4>
+                    <p class="text-sm text-slate-500">${new Date(day.date).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })} ${isToday ? '<span class="text-primary font-medium">(Today)</span>' : ''}</p>
+                  </div>
+                </div>
+                <div class="flex items-center gap-3">
+                  <span class="text-sm text-slate-500">${completedTasks}/${tasks.length} tasks</span>
+                  <div class="w-20 h-2 bg-slate-100 rounded-full overflow-hidden">
+                    <div class="h-full ${progress === 100 ? 'bg-green-500' : 'bg-primary'} rounded-full transition-all" style="width: ${progress}%"></div>
+                  </div>
+                  <i class="fas fa-chevron-down text-slate-400 transition-transform" id="chevron-${day.day_number}"></i>
+                </div>
+              </div>
+            </button>
+            <div id="tasks-${day.day_number}" class="hidden px-4 pb-4">
+              ${renderTasks(tasks, day.day_number)}
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      // Load today's tasks in sidebar
+      loadTodayTasks(days);
+    }
+
+    function renderTasks(tasks, dayNumber) {
+      return tasks.map(task => `
+        <div class="task-item flex items-center gap-3 p-3 rounded-lg ${task.status === 'completed' ? 'completed bg-green-50' : ''}" data-status="${task.status}">
+          <button onclick="openTaskModal('${task.id}', '${task.topic}', '${task.subject}', '${task.estimated_minutes}')" class="w-6 h-6 rounded-full border-2 ${task.status === 'completed' ? 'border-green-500 bg-green-500 text-white' : 'border-slate-300 hover:border-primary'} flex items-center justify-center">
+            ${task.status === 'completed' ? '<i class="fas fa-check text-xs"></i>' : ''}
+          </button>
+          <div class="flex-1">
+            <div class="flex items-center gap-2">
+              <span class="font-medium ${task.status === 'completed' ? 'line-through text-slate-400' : 'text-slate-800'}">${task.topic}</span>
+              <span class="text-xs px-2 py-0.5 rounded-full ${getSubjectColor(task.subject)}">${task.subject}</span>
+            </div>
+            <p class="text-sm text-slate-500 mt-1">
+              <i class="fas fa-clock mr-1"></i>${task.estimated_minutes} min
+              ${task.task_type !== 'study' ? `<span class="ml-2 px-2 py-0.5 rounded bg-slate-100 text-xs">${task.task_type}</span>` : ''}
+            </p>
+          </div>
+          ${task.prerequisites && task.prerequisites.length > 0 ? `
+            <div class="text-xs text-slate-400">
+              <i class="fas fa-info-circle" title="Has prerequisites"></i>
+            </div>
+          ` : ''}
+        </div>
+      `).join('');
+    }
+
+    function getSubjectColor(subject) {
+      const colors = {
+        'Mathematics': 'bg-red-100 text-red-700',
+        'English Language': 'bg-blue-100 text-blue-700',
+        'Physics': 'bg-green-100 text-green-700',
+        'Chemistry': 'bg-yellow-100 text-yellow-700',
+        'Biology': 'bg-purple-100 text-purple-700',
+        'Economics': 'bg-lime-100 text-lime-700',
+        'Government': 'bg-pink-100 text-pink-700',
+        'Commerce': 'bg-teal-100 text-teal-700',
+        'Accounting': 'bg-emerald-100 text-emerald-700',
+        'Literature in English': 'bg-indigo-100 text-indigo-700'
+      };
+      return colors[subject] || 'bg-slate-100 text-slate-700';
+    }
+
+    window.toggleDay = function(dayNumber) {
+      const tasksDiv = document.getElementById(`tasks-${dayNumber}`);
+      const chevron = document.getElementById(`chevron-${dayNumber}`);
+      
+      tasksDiv.classList.toggle('hidden');
+      chevron.classList.toggle('rotate-180');
+    };
+
+    function loadTodayTasks(days) {
+      const today = new Date().toISOString().split('T')[0];
+      const todayDay = days.find(d => d.date === today);
+      
+      const container = document.getElementById('todayTasks');
+      document.getElementById('todayDate').textContent = new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+
+      if (!todayDay || !todayDay.tasks || todayDay.tasks.length === 0) {
+        container.innerHTML = '<p class="text-slate-500 text-center py-4">No tasks scheduled for today</p>';
+        return;
+      }
+
+      const tasks = todayDay.tasks;
+      const completed = tasks.filter(t => t.status === 'completed').length;
+      const progress = Math.round((completed / tasks.length) * 100);
+
+      container.innerHTML = tasks.map(task => `
+        <div class="task-item flex items-center gap-3 p-2 rounded-lg mb-2 ${task.status === 'completed' ? 'completed' : ''}">
+          <button onclick="openTaskModal('${task.id}', '${task.topic}', '${task.subject}', '${task.estimated_minutes}')" class="w-5 h-5 rounded-full border-2 ${task.status === 'completed' ? 'border-green-500 bg-green-500 text-white' : 'border-slate-300 hover:border-primary'} flex items-center justify-center flex-shrink-0">
+            ${task.status === 'completed' ? '<i class="fas fa-check text-xs"></i>' : ''}
+          </button>
+          <div class="flex-1 min-w-0">
+            <p class="text-sm ${task.status === 'completed' ? 'line-through text-slate-400' : 'text-slate-700'} truncate">${task.topic}</p>
+            <p class="text-xs text-slate-400">${task.subject}</p>
+          </div>
+        </div>
+      `).join('');
+
+      document.getElementById('todayProgress').textContent = `${progress}%`;
+      document.getElementById('todayProgressBar').style.width = `${progress}%`;
+    }
+
+    function calculateStats(days) {
+      const totalDays = days.length;
+      const completedDays = days.filter(d => d.status === 'completed').length;
+      
+      // Calculate streak
+      let streak = 0;
+      const today = new Date();
+      for (let i = days.length - 1; i >= 0; i--) {
+        const dayDate = new Date(days[i].date);
+        if (days[i].status === 'completed' && dayDate <= today) {
+          streak++;
+        } else if (dayDate < today) {
+          break;
+        }
+      }
+
+      const totalTasks = days.reduce((sum, d) => sum + (d.tasks?.length || 0), 0);
+      const completedTasks = days.reduce((sum, d) => sum + (d.tasks?.filter(t => t.status === 'completed').length || 0), 0);
+      const progress = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
+
+      document.getElementById('totalDays').textContent = totalDays;
+      document.getElementById('completedDays').textContent = completedDays;
+      document.getElementById('currentStreak').textContent = streak;
+      document.getElementById('overallProgress').textContent = `${progress}%`;
+    }
+
+    // Task Modal
+    window.openTaskModal = function(taskId, topic, subject, minutes) {
+      currentTaskId = taskId;
+      document.getElementById('modalTaskTitle').textContent = topic;
+      document.getElementById('modalTaskSubject').innerHTML = `<i class="fas fa-book mr-1"></i>${subject} • ${minutes} min`;
+      document.getElementById('taskNotes').value = '';
+      document.getElementById('taskModal').classList.remove('hidden');
+    };
+
+    window.closeTaskModal = function() {
+      document.getElementById('taskModal').classList.add('hidden');
+      currentTaskId = null;
+    };
+
+    window.markTaskComplete = async function() {
+      if (!currentTaskId) return;
+
+      const notes = document.getElementById('taskNotes').value;
+
+      const { error } = await supabase
+        .from('study_plan_tasks')
+        .update({
+          status: 'completed',
+          completed_at: new Date().toISOString(),
+          notes: notes
+        })
+        .eq('id', currentTaskId);
+
+      if (!error) {
+        closeTaskModal();
+        await loadActivePlan();
+      }
+    };
+
+    // Filter tasks
+    window.filterTasks = function(filter) {
+      currentFilter = filter;
+      document.querySelectorAll('.task-filter').forEach(btn => {
+        btn.classList.remove('bg-primary', 'text-white');
+        btn.classList.add('bg-slate-100', 'text-slate-600');
+        if (btn.dataset.filter === filter) {
+          btn.classList.add('bg-primary', 'text-white');
+          btn.classList.remove('bg-slate-100', 'text-slate-600');
+        }
+      });
+
+      document.querySelectorAll('.day-item').forEach(dayItem => {
+        const tasks = dayItem.querySelectorAll('.task-item');
+        let hasVisibleTasks = false;
+        
+        tasks.forEach(task => {
+          const status = task.dataset.status;
+          const shouldShow = filter === 'all' || 
+            (filter === 'completed' && status === 'completed') ||
+            (filter === 'pending' && status === 'pending');
+          
+          task.style.display = shouldShow ? 'flex' : 'none';
+          if (shouldShow) hasVisibleTasks = true;
+        });
+
+        dayItem.style.display = hasVisibleTasks || filter === 'all' ? 'block' : 'none';
+      });
+    };
+
+    // Reset plan
+    window.resetPlan = async function() {
+      if (!confirm('Are you sure you want to reset your study plan? This action cannot be undone.')) return;
+
+      await supabase.from('study_plans').delete().eq('id', currentPlan.id);
+      currentPlan = null;
+      planConfig = { examType: null, subjects: [], months: null, learnerType: null, dailyHours: null };
+      showWizard();
+      goToStep(1);
+    };
+
+    // Sidebar toggle
+    function setupSidebarToggle() {
+      const sidebar = document.getElementById('sidebar');
+      const mainContent = document.getElementById('main-content');
+      const toggleBtn = document.getElementById('toggleSidebar');
+      const marginClasses = ['ml-64', 'md:ml-72', 'lg:ml-80'];
+
+      if (window.innerWidth < 1024) {
+        sidebar.classList.add('hide');
+        mainContent.classList.remove(...marginClasses);
+      }
+
+      if (toggleBtn) {
+        toggleBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          sidebar.classList.toggle('hide');
+          if (sidebar.classList.contains('hide')) {
+            mainContent.classList.remove(...marginClasses);
+          } else {
+            mainContent.classList.add(...marginClasses);
+          }
+        });
+      }
+
+      window.addEventListener('resize', () => {
+        const isDesktop = window.innerWidth >= 1024;
+        if (isDesktop) {
+          sidebar.classList.remove('hide');
+          mainContent.classList.add(...marginClasses);
+        } else {
+          sidebar.classList.add('hide');
+          mainContent.classList.remove(...marginClasses);
+        }
+      });
+    }
+
+    // Helpers
+    function setText(id, text) {
+      const el = document.getElementById(id);
+      if (el) el.textContent = text;
+    }
+
+    function setImage(id, url) {
+      const el = document.getElementById(id);
+      if (el) el.src = url;
+    }
+  </script>
+</body>
+</html>

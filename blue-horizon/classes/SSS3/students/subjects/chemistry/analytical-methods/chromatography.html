@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Chromatography | Chemistry</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <style> 
+    body{font-family:Inter, sans-serif}
+    .content-card{-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);background:rgba(255,255,255,0.95);border:1px solid rgba(255,255,255,0.2);} 
+    .accordion-content{max-height:0;overflow:hidden;transition:max-height 0.3s ease-out;}
+    .accordion-content.open{max-height:2000px;}
+    .video-container{position:relative;width:100%;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;background:#f9fafb;}
+    .video-container iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:none;}
+  </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-rose-50 to-pink-100 p-4 md:p-6">
+  <div class="max-w-4xl mx-auto">
+    <nav class="mb-4"><a href="index.html" class="text-blue-600 hover:text-blue-800 transition"><i class="fas fa-arrow-left mr-2"></i>Back to Analytical Methods</a></nav>
+    
+    <article class="content-card rounded-xl p-6 md:p-8 shadow-lg">
+      <div class="border-b pb-4 mb-6">
+        <h1 class="text-2xl md:text-3xl font-bold text-gray-800 mb-2">
+          <i class="fas fa-flask text-purple-500 mr-3"></i>Chromatography
+        </h1>
+        <p class="text-gray-600">A separation technique used to separate and analyze mixtures based on their different affinities for a stationary and mobile phase.</p>
+      </div>
+
+      <div class="bg-purple-50 border-l-4 border-purple-500 p-4 rounded-r-lg mb-6">
+        <h3 class="font-semibold text-purple-800 mb-2"><i class="fas fa-bullseye mr-2"></i>Learning Objectives</h3>
+        <ul class="text-purple-700 text-sm space-y-1">
+          <li>• Explain the principles of chromatography</li>
+          <li>• Describe paper chromatography and thin-layer chromatography (TLC)</li>
+          <li>• Calculate Rf values and interpret chromatograms</li>
+          <li>• Explain applications of chromatography in analysis</li>
+        </ul>
+      </div>
+
+      <!-- Section 1 -->
+      <section class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <span class="bg-purple-100 text-purple-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">1</span>
+          What is Chromatography?
+        </h2>
+        
+        <div class="bg-gray-50 p-5 rounded-lg mb-4">
+          <p class="text-gray-700 mb-3"><strong class="text-purple-600">Chromatography</strong> is a technique used to separate the components of a mixture based on their different rates of movement through a stationary phase under the influence of a mobile phase.</p>
+          
+          <div class="grid md:grid-cols-2 gap-4">
+            <div class="bg-white p-4 rounded-lg border border-purple-200">
+              <h4 class="font-semibold text-purple-700 mb-2"><i class="fas fa-stop mr-2"></i>Stationary Phase</h4>
+              <p class="text-gray-600 text-sm">The phase that doesn't move. Components can adsorb (stick) to this phase.</p>
+              <p class="text-xs text-gray-500 mt-2">Examples: Paper, silica gel, alumina</p>
+            </div>
+            <div class="bg-white p-4 rounded-lg border border-blue-200">
+              <h4 class="font-semibold text-blue-700 mb-2"><i class="fas fa-water mr-2"></i>Mobile Phase</h4>
+              <p class="text-gray-600 text-sm">The phase that moves through/over the stationary phase, carrying components.</p>
+              <p class="text-xs text-gray-500 mt-2">Examples: Solvents like water, ethanol, propanone</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-r-lg">
+          <h4 class="font-semibold text-yellow-800 mb-2"><i class="fas fa-lightbulb mr-2"></i>Key Principle</h4>
+          <p class="text-gray-700 text-sm">Components with <strong>higher affinity</strong> for the stationary phase move <strong>slower</strong>. Components with <strong>higher solubility</strong> in the mobile phase move <strong>faster</strong>.</p>
+        </div>
+      </section>
+
+      <!-- Section 2 -->
+      <section class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <span class="bg-purple-100 text-purple-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">2</span>
+          Paper Chromatography
+        </h2>
+
+        <div class="bg-white p-4 rounded-lg border border-gray-200 mb-4">
+          <h4 class="font-semibold text-gray-800 mb-3">Procedure:</h4>
+          <ol class="list-decimal list-inside space-y-2 text-gray-700 text-sm">
+            <li>Draw a pencil <strong>baseline</strong> near the bottom of the chromatography paper</li>
+            <li>Place a small <strong>spot of the mixture</strong> on the baseline and let it dry</li>
+            <li>Suspend the paper in a beaker with <strong>solvent below the baseline</strong></li>
+            <li>Cover with a lid to keep the atmosphere saturated with solvent vapour</li>
+            <li>Allow the solvent to rise by <strong>capillary action</strong></li>
+            <li>Remove the paper when the solvent front nears the top</li>
+            <li>Mark the <strong>solvent front</strong> and let the paper dry</li>
+            <li>If spots are colorless, use <strong>locating agents</strong> (e.g., ninhydrin for amino acids, UV light)</li>
+          </ol>
+        </div>
+
+        <div class="bg-red-50 border-l-4 border-red-400 p-4 rounded-r-lg">
+          <h4 class="font-semibold text-red-800 mb-2"><i class="fas fa-exclamation-triangle mr-2"></i>Important Points</h4>
+          <ul class="text-gray-700 text-sm space-y-1">
+            <li>• Use pencil for the baseline - ink would dissolve and interfere!</li>
+            <li>• The spot must be above the solvent level initially</li>
+            <li>• A concentrated spot (small) gives better separation</li>
+            <li>• Different solvents give different separations</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Section 3: Rf Values -->
+      <section class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <span class="bg-purple-100 text-purple-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">3</span>
+          Rf Values (Retention Factor)
+        </h2>
+
+        <div class="bg-green-50 p-4 rounded-lg border border-green-200 mb-4">
+          <p class="text-gray-700 mb-2">The Rf value identifies components by comparing how far they travel relative to the solvent front.</p>
+          <div class="bg-white p-4 rounded-lg text-center">
+            <p class="text-2xl font-bold text-green-700 font-serif">Rf = distance traveled by substance / distance traveled by solvent</p>
+          </div>
+        </div>
+
+        <!-- Diagram -->
+        <div class="bg-white p-4 rounded-lg border border-gray-200 mb-4">
+          <svg viewBox="0 0 300 280" class="w-full max-w-xs mx-auto">
+            <!-- Paper outline -->
+            <rect x="50" y="20" width="200" height="240" fill="none" stroke="#9ca3af" stroke-width="2"/>
+            
+            <!-- Baseline -->
+            <line x1="50" y1="220" x2="250" y2="220" stroke="#374151" stroke-width="2"/>
+            <text x="30" y="225" fill="#374151" font-size="10">Baseline</text>
+            
+            <!-- Solvent front -->
+            <line x1="50" y1="50" x2="250" y2="50" stroke="#3b82f6" stroke-width="2" stroke-dasharray="5,3"/>
+            <text x="255" y="55" fill="#3b82f6" font-size="10">Solvent front</text>
+            
+            <!-- Spots -->
+            <circle cx="100" cy="220" r="4" fill="#ef4444"/>
+            <circle cx="150" cy="220" r="4" fill="#ef4444"/>
+            
+            <!-- Moved spots -->
+            <circle cx="100" cy="150" r="6" fill="#ef4444"/>
+            <circle cx="150" cy="100" r="6" fill="#22c55e"/>
+            
+            <!-- Distance arrows -->
+            <line x1="270" y1="220" x2="270" y2="50" stroke="#374151" stroke-width="1"/>
+            <line x1="265" y1="220" x2="275" y2="220" stroke="#374151" stroke-width="1"/>
+            <line x1="265" y1="50" x2="275" y2="50" stroke="#374151" stroke-width="1"/>
+            <text x="280" y="140" fill="#374151" font-size="9" transform="rotate(90, 280, 140)">Solvent distance</text>
+            
+            <!-- Component distances -->
+            <line x1="20" y1="220" x2="20" y2="150" stroke="#ef4444" stroke-width="1"/>
+            <text x="5" y="185" fill="#ef4444" font-size="8">d₁</text>
+            <line x1="20" y1="220" x2="20" y2="100" stroke="#22c55e" stroke-width="1"/>
+            <text x="5" y="160" fill="#22c55e" font-size="8">d₂</text>
+          </svg>
+        </div>
+
+        <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
+          <h4 class="font-semibold text-blue-800 mb-2"><i class="fas fa-info-circle mr-2"></i>About Rf Values</h4>
+          <ul class="text-gray-700 text-sm space-y-1">
+            <li>• Rf values are always between <strong>0 and 1</strong></li>
+            <li>• Rf value is <strong>characteristic</strong> for a substance in a given solvent</li>
+            <li>• Compare Rf values with known substances to identify components</li>
+            <li>• Rf depends on the solvent used - always specify the solvent!</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Section 4: Types of Chromatography -->
+      <section class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <span class="bg-purple-100 text-purple-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">4</span>
+          Types of Chromatography
+        </h2>
+
+        <div class="space-y-4">
+          <div class="bg-green-50 p-4 rounded-lg border-l-4 border-green-500">
+            <h4 class="font-semibold text-green-800 mb-2">Paper Chromatography</h4>
+            <p class="text-gray-700 text-sm"><strong>Stationary phase:</strong> Paper (cellulose)<br>
+            <strong>Mobile phase:</strong> Solvent<br>
+            <strong>Use:</strong> Separating dyes, amino acids, sugars</p>
+          </div>
+
+          <div class="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-500">
+            <h4 class="font-semibold text-blue-800 mb-2">Thin Layer Chromatography (TLC)</h4>
+            <p class="text-gray-700 text-sm"><strong>Stationary phase:</strong> Silica gel or alumina on glass/plastic plate<br>
+            <strong>Mobile phase:</strong> Solvent<br>
+            <strong>Use:</strong> Faster than paper, better separation</p>
+          </div>
+
+          <div class="bg-purple-50 p-4 rounded-lg border-l-4 border-purple-500">
+            <h4 class="font-semibold text-purple-800 mb-2">Gas Chromatography (GC)</h4>
+            <p class="text-gray-700 text-sm"><strong>Stationary phase:</strong> Liquid coated on solid support in column<br>
+            <strong>Mobile phase:</strong> Inert gas (He, N₂)<br>
+            <strong>Use:</strong> Separating volatile compounds, forensic analysis</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 5: Video -->
+      <section class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <span class="bg-purple-100 text-purple-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">5</span>
+          Video: Chromatography Explained
+        </h2>
+        <div class="video-container">
+          <iframe src="https://www.youtube.com/embed/S4Qw5tD1xQM" frameborder="0" allowfullscreen></iframe>
+        </div>
+      </section>
+
+      <!-- Practice -->
+      <section class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <i class="fas fa-pencil-alt text-purple-600 mr-3"></i>Practice Questions
+        </h2>
+        
+        <div class="space-y-4">
+          <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+            <p class="font-medium text-gray-800 mb-2">1. A substance travels 4.2 cm while the solvent travels 6.0 cm. Calculate the Rf value.</p>
+            <details class="mt-2">
+              <summary class="text-sm text-blue-600 cursor-pointer">Show Solution</summary>
+              <div class="mt-2 text-sm text-gray-700">
+                <p>Rf = distance of substance / distance of solvent</p>
+                <p>Rf = 4.2 cm / 6.0 cm = <strong>0.70</strong></p>
+              </div>
+            </details>
+          </div>
+          
+          <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+            <p class="font-medium text-gray-800 mb-2">2. Why is it important that the starting spot is above the solvent level?</p>
+            <details class="mt-2">
+              <summary class="text-sm text-blue-600 cursor-pointer">Show Solution</summary>
+              <div class="mt-2 text-sm text-gray-700">
+                If the spot were below the solvent level, the sample would <strong>dissolve directly into the solvent</strong> at the bottom instead of being carried up the paper by capillary action. This would ruin the separation.
+              </div>
+            </details>
+          </div>
+          
+          <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+            <p class="font-medium text-gray-800 mb-2">3. State two applications of chromatography.</p>
+            <details class="mt-2">
+              <summary class="text-sm text-blue-600 cursor-pointer">Show Solution</summary>
+              <div class="mt-2 text-sm text-gray-700">
+                <ul class="list-disc list-inside">
+                  <li>Forensic analysis - identifying inks, drugs, poisons</li>
+                  <li>Food industry - detecting additives and contaminants</li>
+                  <li>Medicine - analyzing blood/urine samples</li>
+                  <li>Environmental testing - detecting pollutants</li>
+                </ul>
+              </div>
+            </details>
+          </div>
+        </div>
+      </section>
+
+      <!-- Key Takeaways -->
+      <div class="bg-gradient-to-r from-purple-50 to-pink-50 p-5 rounded-lg border border-purple-200">
+        <h3 class="font-semibold text-purple-800 mb-3"><i class="fas fa-star mr-2"></i>Key Takeaways</h3>
+        <ul class="text-purple-700 text-sm space-y-2">
+          <li>• Chromatography separates mixtures based on different affinities for stationary/mobile phases</li>
+          <li>• Rf = distance of substance ÷ distance of solvent (always between 0-1)</li>
+          <li>• Components with higher solubility in mobile phase move faster</li>
+          <li>• Used in forensics, food testing, medicine, and environmental analysis</li>
+        </ul>
+      </div>
+    </article>
+  </div>
+
+  <script>
+    document.querySelectorAll('.accordion-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const content = btn.nextElementSibling;
+        const icon = btn.querySelector('.fa-chevron-down');
+        content.classList.toggle('open');
+        icon.classList.toggle('rotate-180');
+      });
+    });
+  </script>
+
+  <script src="/js/topic-quiz-loader.js"></script>
+  <script src="/js/topic-quiz-injector.js"></script>
+</body>
+</html>

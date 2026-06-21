@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chemistry Titration Practical Simulator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./css/styles.css">
+    <link rel="stylesheet" href="./css/clamp-improvements.css">
+    <link rel="stylesheet" href="./css/animations.css">
+        <link rel="stylesheet" href="./css/scroll-improvements.css">
+        <link rel="stylesheet" href="./css/burette-controls.css">
+        <link rel="stylesheet" href="./css/burette-anim.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <div class="header-content">
+                <h1 class="app-title">Chemistry Titration Practical</h1>
+                <div class="header-info">
+                    <span class="question-counter" data-testid="text-question-number">Question: <span id="currentQuestionNumber">1</span></span>
+                    <button class="help-btn" data-testid="button-help">?</button>
+                </div>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressBar"></div>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <div class="question-panel" data-testid="container-question">
+                <div class="question-content" id="questionContent">
+                    <p class="loading">Loading question...</p>
+                </div>
+            </div>
+
+            <div class="workspace-container">
+                <div class="lab-workspace" id="labWorkspace" data-testid="container-lab-workspace">
+                    <div class="lab-canvas" id="labCanvas">
+                        <div class="retort-stand" id="retortStand">
+                            <div class="stand-base"></div>
+                            <div class="stand-rod"></div>
+                            <div class="clamp" id="buretteClamp"></div>
+                        </div>
+                        
+                        <div class="work-surface" id="workSurface"></div>
+                    </div>
+
+                    <div class="apparatus-shelf" data-testid="container-apparatus-shelf">
+                        <h3>Apparatus</h3>
+                        <div class="apparatus-grid">
+                            <div class="apparatus-item" draggable="true" data-apparatus="burette" data-testid="apparatus-burette">
+                                <div class="apparatus-icon burette-icon"></div>
+                                <span>Burette</span>
+                            </div>
+                            <div class="apparatus-item" draggable="true" data-apparatus="pipette" data-testid="apparatus-pipette">
+                                <div class="apparatus-icon pipette-icon"></div>
+                                <span>Pipette</span>
+                            </div>
+                            <div class="apparatus-item" draggable="true" data-apparatus="flask" data-testid="apparatus-flask">
+                                <div class="apparatus-icon flask-icon"></div>
+                                <span>Conical Flask</span>
+                            </div>
+                            <div class="apparatus-item" draggable="true" data-apparatus="beaker" data-testid="apparatus-beaker">
+                                <div class="apparatus-icon beaker-icon"></div>
+                                <span>Beaker</span>
+                            </div>
+                            <div class="apparatus-item" draggable="true" data-apparatus="funnel" data-testid="apparatus-funnel">
+                                <div class="apparatus-icon funnel-icon"></div>
+                                <span>Funnel</span>
+                            </div>
+                            <div class="apparatus-item" draggable="true" data-apparatus="indicator" data-testid="apparatus-indicator">
+                                <div class="apparatus-icon indicator-icon"></div>
+                                <span>Indicator</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="data-panel" id="dataPanel" data-testid="container-data-panel">
+                    <div class="procedure-steps" data-testid="container-procedure-steps">
+                        <h3>Procedure</h3>
+                        <div class="step-list" id="stepList">
+                            <div class="step" data-step="1">
+                                <span class="step-icon">○</span>
+                                <span class="step-text">Fix burette to retort stand</span>
+                            </div>
+                            <div class="step" data-step="2">
+                                <span class="step-icon">○</span>
+                                <span class="step-text">Rinse burette with acid</span>
+                            </div>
+                            <div class="step" data-step="3">
+                                <span class="step-icon">○</span>
+                                <span class="step-text">Fill burette to 0.00 cm³ mark</span>
+                            </div>
+                            <div class="step" data-step="4">
+                                <span class="step-icon">○</span>
+                                <span class="step-text">Pipette base into flask</span>
+                            </div>
+                            <div class="step" data-step="5">
+                                <span class="step-icon">○</span>
+                                <span class="step-text">Add 3 drops of indicator</span>
+                            </div>
+                            <div class="step" data-step="6">
+                                <span class="step-icon">○</span>
+                                <span class="step-text">Perform titrations</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="titration-table" data-testid="container-titration-table">
+                        <h3>Titration Results</h3>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Titration</th>
+                                    <th>Rough</th>
+                                    <th>1st</th>
+                                    <th>2nd</th>
+                                    <th>3rd</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Final (cm³)</td>
+                                    <td><input type="number" step="0.05" id="finalRough" data-testid="input-final-rough" /></td>
+                                    <td><input type="number" step="0.05" id="final1st" data-testid="input-final-1st" /></td>
+                                    <td><input type="number" step="0.05" id="final2nd" data-testid="input-final-2nd" /></td>
+                                    <td><input type="number" step="0.05" id="final3rd" data-testid="input-final-3rd" /></td>
+                                </tr>
+                                <tr>
+                                    <td>Initial (cm³)</td>
+                                    <td><input type="number" step="0.05" id="initialRough" data-testid="input-initial-rough" value="0.00" /></td>
+                                    <td><input type="number" step="0.05" id="initial1st" data-testid="input-initial-1st" value="0.00" /></td>
+                                    <td><input type="number" step="0.05" id="initial2nd" data-testid="input-initial-2nd" value="0.00" /></td>
+                                    <td><input type="number" step="0.05" id="initial3rd" data-testid="input-initial-3rd" value="0.00" /></td>
+                                </tr>
+                                <tr>
+                                    <td>Volume Used (cm³)</td>
+                                    <td><span class="calc-value" id="volumeRough">0.00</span></td>
+                                    <td><span class="calc-value" id="volume1st">0.00</span></td>
+                                    <td><span class="calc-value" id="volume2nd">0.00</span></td>
+                                    <td><span class="calc-value" id="volume3rd">0.00</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="average-result">
+                            <strong>Average Volume: </strong>
+                            <span id="averageVolume" data-testid="text-average-volume">0.00 cm³</span>
+                        </div>
+                    </div>
+
+                    <div class="reagents-section" id="reagentsSection">
+                        <h3>Reagents</h3>
+                        <div style="display:flex; gap:12px; flex-direction:column;">
+                            <label for="acidSelect">Acid in burette:</label>
+                            <select id="acidSelect">
+                                <!-- populated by JS -->
+                            </select>
+
+                            <label for="baseSelect">Base for pipetting:</label>
+                            <select id="baseSelect">
+                                <!-- populated by JS -->
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="calculations-section" data-testid="container-calculations">
+                        <h3>Calculations</h3>
+                        <div class="calc-inputs" id="calculationsInputs">
+                            <p>Complete the titration to enter calculations</p>
+                        </div>
+                    </div>
+
+                    <button class="submit-btn" id="submitBtn" data-testid="button-submit" disabled>Submit Practical</button>
+                </div>
+            </div>
+        </main>
+
+        <div class="burette-control-panel" id="buretteControlPanel">
+            <div class="burette-controls">
+                <h3>Burette Controls</h3>
+                <div class="burette-display">
+                    <div class="burette-scale">
+                        <div class="burette-tube">
+                            <div class="liquid-level" id="liquidLevel"></div>
+                            <div class="meniscus" id="meniscus"></div>
+                        </div>
+                        <div class="scale-marks" id="scaleMarks"></div>
+                    </div>
+                </div>
+                <div class="burette-reading">
+                    <strong>Reading: </strong>
+                    <span id="buretteReading" data-testid="text-burette-reading">0.00 cm³</span>
+                </div>
+                <div class="control-buttons">
+                    <button class="control-btn" id="rinseBtn" data-testid="button-rinse">Rinse with Acid</button>
+                    <button class="control-btn" id="fillBtn" data-testid="button-fill">Fill to 0.00 cm³</button>
+                    <button class="control-btn" id="releaseBtn" data-testid="button-release">Release Acid (Hold)</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal" id="resultModal">
+            <div class="modal-content result-content">
+                <h2>Practical Results</h2>
+                <div class="result-score" data-testid="container-result-score">
+                    <div class="score-circle">
+                        <span class="score-value" id="scoreValue" data-testid="text-score">0</span>
+                        <span class="score-total">/100</span>
+                    </div>
+                </div>
+                <div class="result-feedback" id="resultFeedback" data-testid="container-feedback">
+                    <h3>Feedback</h3>
+                    <div id="feedbackContent"></div>
+                </div>
+                <div class="result-actions">
+                    <button class="action-btn" id="nextQuestionBtn" data-testid="button-next-question">Next Question</button>
+                    <button class="action-btn secondary" id="retryBtn" data-testid="button-retry">Try Again</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal" id="helpModal">
+            <div class="modal-content">
+                <h2>How to Use the Simulator</h2>
+                <div class="help-content">
+                    <h3>Getting Started</h3>
+                    <ol>
+                        <li>Read the question carefully at the top of the page</li>
+                        <li>Drag apparatus from the shelf onto the work surface</li>
+                        <li>Click on the burette to access controls for rinsing, filling, and titration</li>
+                        <li>Follow the procedure steps shown on the right panel</li>
+                        <li>Record your burette readings in the titration table</li>
+                        <li>Complete the calculations as required</li>
+                        <li>Submit your practical for grading</li>
+                    </ol>
+                    <h3>Controls</h3>
+                    <ul>
+                        <li><strong>Drag & Drop:</strong> Move apparatus onto the workspace</li>
+                        <li><strong>Burette Controls:</strong> Click burette to rinse, fill, and release acid</li>
+                        <li><strong>Flask Shake:</strong> Automatically shakes when acid is added</li>
+                        <li><strong>Color Change:</strong> Watch for indicator color change at endpoint</li>
+                    </ul>
+                </div>
+                <button class="close-modal-btn" id="closeHelpModal">Got it!</button>
+            </div>
+        </div>
+    </div>
+
+    <script src=".//js/app.js" type="module"></script>
+</body>
+</html>

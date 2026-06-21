@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug Goals Data</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: system-ui, sans-serif; padding: 20px; background: #f5f5f5; }
+        .card { background: white; border-radius: 8px; padding: 16px; margin: 16px 0; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        pre { background: #1e1e1e; color: #d4d4d4; padding: 12px; border-radius: 4px; overflow-x: auto; font-size: 12px; }
+        .error { color: #dc2626; }
+        .success { color: #16a34a; }
+        table { width: 100%; border-collapse: collapse; font-size: 14px; }
+        th, td { border: 1px solid #e5e7eb; padding: 8px; text-align: left; }
+        th { background: #f9fafb; }
+    </style>
+</head>
+<body>
+    <h1 class="text-2xl font-bold mb-4">🔍 Goals Debug Page</h1>
+    
+    <script>
+        window.SUPABASE_URL = 'https://kruwfhzfqieuiuhqlutt.supabase.co';
+        window.SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtydXdmaHpmcWlldWl1aHFsdXR0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjIxOTk0OTAsImV4cCI6MjA3Nzc3NTQ5MH0.XD3-PDjDtKwCVsBILYgVrHF7Yc9tHkzpvpN2b7ojvB4';
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js/dist/umd/supabase.js"></script>
+    
+    <div id="status" class="card">Loading...</div>
+    
+    <div id="userGoals" class="card">
+        <h2 class="text-lg font-semibold mb-2">User Goals</h2>
+        <div id="userGoalsContent">Loading...</div>
+    </div>
+    
+    <div id="topicProgress" class="card">
+        <h2 class="text-lg font-semibold mb-2">Topic Progress</h2>
+        <div id="topicProgressContent">Loading...</div>
+    </div>
+    
+    <div id="quizResults" class="card">
+        <h2 class="text-lg font-semibold mb-2">Quiz Results</h2>
+        <div id="quizResultsContent">Loading...</div>
+    </div>
+    
+    <div id="syncTest" class="card">
+        <h2 class="text-lg font-semibold mb-2">Sync Test</h2>
+        <button onclick="runSync()" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Run Goals Sync</button>
+        <div id="syncResult" class="mt-4"></div>
+    </div>
+
+    <script>
+        let supabaseClient = null;
+        
+        async function init() {
+            try {
+                supabaseClient = supabase.createClient(window.SUPABASE_URL, window.SUPABASE_ANON_KEY);
+                
+                const { data: { user }, error } = await supabaseClient.auth.getUser();
+                
+                if (error || !user) {
+                    document.getElementById('status').innerHTML = `<p class="error">❌ Not authenticated. Please log in first.</p>
+                        <a href="login.html" class="text-blue-500 underline">Go to Login</a>`;
+                    return;
+                }
+                
+                document.getElementById('status').innerHTML = `<p class="success">✅ Authenticated as: ${user.email}</p>
+                    <p>User ID: <code>${user.id}</code></p>`;
+                
+                await loadUserGoals(user.id);
+                await loadTopicProgress(user.id);
+                await loadQuizResults(user.id);
+                
+            } catch (err) {
+                document.getElementById('status').innerHTML = `<p class="error">❌ Error: ${err.message}</p>`;
+                console.error(err);
+            }
+        }
+        
+        async function loadUserGoals(userId) {
+            try {
+                const { data, error } = await supabaseClient
+                    .from('user_goals')
+                    .select('*')
+                    .eq('user_id', userId);
+                
+                if (error) throw error;
+                
+                const container = document.getElementById('userGoalsContent');
+                
+                if (!data || data.length === 0) {
+                    container.innerHTML = '<p>No goals found.</p>';
+                    return;
+                }
+                
+                let html = `<p class="mb-2">Found ${data.length} goals:</p>`;
+                html += '<table><thead><tr><th>ID</th><th>Type</th><th>Title</th><th>Subject</th><th>Target</th><th>Current</th><th>Status</th></tr></thead><tbody>';
+                
+                data.forEach(goal => {
+                    const isMastery = goal.goal_type === 'subject_mastery';
+                    const goalId = String(goal.id || '');
+                    html += `<tr ${isMastery ? 'style="background:#fef3c7"' : ''}>
+                        <td>${goalId.substring(0,8)}...</td>
+                        <td>${goal.goal_type}</td>
+                        <td>${goal.title}</td>
+                        <td><strong>${goal.subject || 'N/A'}</strong></td>
+                        <td>${goal.target_value}</td>
+                        <td><strong>${goal.current_value}</strong></td>
+                        <td>${goal.status}</td>
+                    </tr>`;
+                });
+                
+                html += '</tbody></table>';
+                html += '<pre>' + JSON.stringify(data, null, 2) + '</pre>';
+                container.innerHTML = html;
+                
+            } catch (err) {
+                document.getElementById('userGoalsContent').innerHTML = `<p class="error">Error: ${err.message}</p>`;
+            }
+        }
+        
+        async function loadTopicProgress(userId) {
+            try {
+                const { data, error } = await supabaseClient
+                    .from('topic_progress')
+                    .select('*')
+                    .eq('user_id', userId);
+                
+                if (error) throw error;
+                
+                const container = document.getElementById('topicProgressContent');
+                
+                if (!data || data.length === 0) {
+                    container.innerHTML = '<p>No topic progress found.</p>';
+                    return;
+                }
+                
+                // Group by subject
+                const bySubject = {};
+                data.forEach(tp => {
+                    const subj = tp.subject || 'unknown';
+                    if (!bySubject[subj]) bySubject[subj] = [];
+                    bySubject[subj].push(tp);
+                });
+                
+                let html = `<p class="mb-2">Found ${data.length} records:</p>`;
+                
+                Object.keys(bySubject).forEach(subj => {
+                    const items = bySubject[subj];
+                    const avgProgress = items.reduce((sum, tp) => sum + (tp.progress_percent || 0), 0) / items.length;
+                    html += `<div class="mb-4 p-3 bg-gray-50 rounded">
+                        <h3 class="font-semibold">Subject: <span class="text-blue-600">${subj}</span></h3>
+                        <p>Topics: ${items.length} | Avg Progress: ${avgProgress.toFixed(1)}%</p>
+                        <table class="mt-2"><thead><tr><th>Topic</th><th>Progress</th><th>Quiz Passed</th><th>Time Spent</th></tr></thead><tbody>`;
+                    items.forEach(tp => {
+                        html += `<tr>
+                            <td>${tp.topic_title || tp.topic_id}</td>
+                            <td>${tp.progress_percent}%</td>
+                            <td>${tp.quiz_passed ? '✅' : '❌'}</td>
+                            <td>${Math.round((tp.time_spent || 0) / 1000)}s</td>
+                        </tr>`;
+                    });
+                    html += '</tbody></table></div>';
+                });
+                
+                container.innerHTML = html;
+                
+            } catch (err) {
+                document.getElementById('topicProgressContent').innerHTML = `<p class="error">Error: ${err.message}</p>`;
+            }
+        }
+        
+        async function loadQuizResults(userId) {
+            try {
+                const { data, error } = await supabaseClient
+                    .from('topic_quiz_results')
+                    .select('*')
+                    .eq('user_id', userId)
+                    .order('completed_at', { ascending: false });
+                
+                if (error) throw error;
+                
+                const container = document.getElementById('quizResultsContent');
+                
+                if (!data || data.length === 0) {
+                    container.innerHTML = '<p>No quiz results found.</p>';
+                    return;
+                }
+                
+                // Group by subject
+                const bySubject = {};
+                data.forEach(q => {
+                    const subj = q.subject || 'unknown';
+                    if (!bySubject[subj]) bySubject[subj] = [];
+                    bySubject[subj].push(q);
+                });
+                
+                let html = `<p class="mb-2">Found ${data.length} quiz results:</p>`;
+                
+                Object.keys(bySubject).forEach(subj => {
+                    const items = bySubject[subj];
+                    const avgScore = items.reduce((sum, q) => sum + (q.percentage || 0), 0) / items.length;
+                    html += `<div class="mb-4 p-3 bg-gray-50 rounded">
+                        <h3 class="font-semibold">Subject: <span class="text-green-600">${subj}</span></h3>
+                        <p>Quizzes: ${items.length} | Avg Score: ${avgScore.toFixed(1)}%</p>
+                        <table class="mt-2"><thead><tr><th>Topic</th><th>Score</th><th>Percentage</th><th>Passed</th><th>Date</th></tr></thead><tbody>`;
+                    items.forEach(q => {
+                        html += `<tr>
+                            <td>${q.topic_title || q.topic_id}</td>
+                            <td>${q.score}/${q.total_questions}</td>
+                            <td><strong>${q.percentage}%</strong></td>
+                            <td>${q.passed ? '✅' : '❌'}</td>
+                            <td>${new Date(q.completed_at).toLocaleDateString()}</td>
+                        </tr>`;
+                    });
+                    html += '</tbody></table></div>';
+                });
+                
+                container.innerHTML = html;
+                
+            } catch (err) {
+                document.getElementById('quizResultsContent').innerHTML = `<p class="error">Error: ${err.message}</p>`;
+            }
+        }
+        
+        async function runSync() {
+            const resultDiv = document.getElementById('syncResult');
+            resultDiv.innerHTML = '<p>Running sync...</p>';
+            
+            try {
+                const { data: { user } } = await supabaseClient.auth.getUser();
+                if (!user) {
+                    resultDiv.innerHTML = '<p class="error">Not authenticated</p>';
+                    return;
+                }
+                
+                // Get goals
+                const { data: goals, error: goalsError } = await supabaseClient
+                    .from('user_goals')
+                    .select('*')
+                    .eq('user_id', user.id)
+                    .eq('status', 'active');
+                
+                if (goalsError) throw goalsError;
+                
+                // Get topic progress
+                const { data: topicProgress } = await supabaseClient
+                    .from('topic_progress')
+                    .select('*')
+                    .eq('user_id', user.id);
+                
+                // Get quiz results
+                const { data: quizResults } = await supabaseClient
+                    .from('topic_quiz_results')
+                    .select('*')
+                    .eq('user_id', user.id);
+                
+                let html = `<p>Found ${goals?.length || 0} active goals</p>`;
+                html += `<p>Topic progress records: ${topicProgress?.length || 0}</p>`;
+                html += `<p>Quiz results: ${quizResults?.length || 0}</p>`;
+                
+                // Process each goal
+                for (const goal of goals || []) {
+                    if (goal.goal_type === 'subject_mastery') {
+                        html += `<div class="mt-4 p-3 bg-yellow-50 rounded border">
+                            <h4 class="font-semibold">Testing: ${goal.title}</h4>
+                            <p>Goal subject: <strong>"${goal.subject}"</strong></p>`;
+                        
+                        // Check topic progress for this subject
+                        const matchingTP = (topicProgress || []).filter(tp => {
+                            const match = tp.subject?.toLowerCase() === goal.subject?.toLowerCase();
+                            html += `<p class="text-sm">TP: "${tp.subject}" vs "${goal.subject}" → ${match ? 'MATCH' : 'NO MATCH'}</p>`;
+                            return match;
+                        });
+                        
+                        // Check quiz results for this subject
+                        const matchingQR = (quizResults || []).filter(q => {
+                            const match = q.subject?.toLowerCase() === goal.subject?.toLowerCase();
+                            html += `<p class="text-sm">Quiz: "${q.subject}" vs "${goal.subject}" → ${match ? 'MATCH' : 'NO MATCH'}</p>`;
+                            return match;
+                        });
+                        
+                        html += `<p class="mt-2">Matching topic progress: ${matchingTP.length}</p>`;
+                        html += `<p>Matching quiz results: ${matchingQR.length}</p>`;
+                        
+                        // Calculate
+                        let progressFromTopics = 0;
+                        if (matchingTP.length > 0) {
+                            progressFromTopics = matchingTP.reduce((sum, tp) => sum + (tp.progress_percent || 0), 0) / matchingTP.length;
+                        }
+                        
+                        let progressFromQuizzes = 0;
+                        if (matchingQR.length > 0) {
+                            progressFromQuizzes = matchingQR.reduce((sum, q) => sum + (q.percentage || 0), 0) / matchingQR.length;
+                        }
+                        
+                        html += `<p>Progress from topics: ${progressFromTopics.toFixed(1)}%</p>`;
+                        html += `<p>Progress from quizzes: ${progressFromQuizzes.toFixed(1)}%</p>`;
+                        
+                        let masteryScore = 0;
+                        if (matchingTP.length > 0 && matchingQR.length > 0) {
+                            masteryScore = (progressFromTopics * 0.5) + (progressFromQuizzes * 0.5);
+                        } else if (matchingTP.length > 0) {
+                            masteryScore = progressFromTopics;
+                        } else if (matchingQR.length > 0) {
+                            masteryScore = progressFromQuizzes;
+                        }
+                        
+                        html += `<p class="font-bold text-lg mt-2">Calculated mastery: ${masteryScore.toFixed(1)}%</p>`;
+                        html += `<p>Current value in DB: ${goal.current_value}</p>`;
+                        
+                        // Update if different
+                        if (Math.round(masteryScore) !== goal.current_value) {
+                            const { error: updateError } = await supabaseClient
+                                .from('user_goals')
+                                .update({ current_value: Math.round(masteryScore), updated_at: new Date().toISOString() })
+                                .eq('id', goal.id);
+                            
+                            if (updateError) {
+                                html += `<p class="error">❌ Update failed: ${updateError.message}</p>`;
+                            } else {
+                                html += `<p class="success">✅ Updated goal to ${Math.round(masteryScore)}</p>`;
+                            }
+                        } else {
+                            html += `<p>Already up to date</p>`;
+                        }
+                        
+                        html += '</div>';
+                    }
+                }
+                
+                resultDiv.innerHTML = html;
+                
+            } catch (err) {
+                resultDiv.innerHTML = `<p class="error">Error: ${err.message}</p><pre>${err.stack}</pre>`;
+            }
+        }
+        
+        // Initialize on load
+        init();
+    </script>
+</body>
+</html>

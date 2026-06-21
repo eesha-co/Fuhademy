@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Digital Library - Prep100</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>#sidebar { transition: transform 0.3s ease-in-out; } #sidebar.hide { transform: translateX(-100%); } @media (min-width: 1024px) { #sidebar { transform: translateX(0) !important; } }</style>
+    <script src="digital-library.js"></script>
+
+  <style>
+    /* PDF Viewer styles */
+    #pdfViewer {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.9);
+      z-index: 1000;
+      padding: 2rem;
+      color: white;
+      overflow-y: auto;
+    }
+
+    #pdfClose {
+      position: absolute;
+      right: 2rem;
+      top: 2rem;
+      background: none;
+      border: none;
+      color: white;
+      font-size: 2rem;
+      cursor: pointer;
+    }
+
+    #pdfTitle {
+      margin-bottom: 2rem;
+      padding-right: 3rem;
+    }
+
+    .pdf-pages {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      align-items: center;
+    }
+
+    .pdf-page {
+      background: white;
+      padding: 1rem;
+      border-radius: 4px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .page-number {
+      text-align: center;
+      margin-top: 0.5rem;
+      color: #fff;
+    }
+
+    .pdf-loading {
+      text-align: center;
+      padding: 2rem;
+    }
+
+    .pdf-loading-progress {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(0, 0, 0, 0.8);
+      color: white;
+      padding: 1rem 2rem;
+      border-radius: 4px;
+      z-index: 1100;
+    }
+
+    .more-pages {
+      text-align: center;
+      padding: 1rem;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 4px;
+      margin-top: 1rem;
+    }
+
+    /* Page-specific styles */
+    .library-container {
+      padding: 2rem;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    /* Subject Cards */
+    .subject-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    .subject-card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+      overflow: hidden;
+      position: relative;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .subject-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+    }
+
+    .subject-banner {
+      height: 140px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      position: relative;
+    }
+
+    .subject-banner i {
+      font-size: 3.5rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .subject-banner--math {
+      background: linear-gradient(45deg, #2563eb, #3b82f6);
+    }
+
+    .subject-banner--physics {
+      background: linear-gradient(45deg, #7c3aed, #a855f7);
+    }
+
+    .subject-banner--chemistry {
+      background: linear-gradient(45deg, #059669, #10b981);
+    }
+
+    .subject-banner--biology {
+      background: linear-gradient(45deg, #0ea5e9, #38bdf8);
+    }
+
+    .subject-banner--english {
+      background: linear-gradient(45deg, #f97316, #fb923c);
+    }
+
+    .subject-content {
+      padding: 1.5rem;
+    }
+
+    .subject-name {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #1e3a8a;
+      margin: 0 0 0.5rem 0;
+    }
+
+    .subject-info {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      color: #64748b;
+      font-size: 0.9rem;
+    }
+
+    /* Subject Sections */
+    .subject-section {
+      display: none;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+      overflow: hidden;
+      padding: 2rem;
+      margin-top: 2rem;
+    }
+
+    .subject-section.active {
+      display: block;
+    }
+
+    .subject-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+
+    .subject-header-left {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .subject-meta {
+      color: #64748b;
+      font-size: 0.9rem;
+      margin-top: 0.25rem;
+    }
+
+    .resources-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.5rem;
+      margin-top: 1rem;
+    }
+
+    .back-button {
+      background: none;
+      border: none;
+      color: #64748b;
+      font-size: 0.9rem;
+      padding: 0.5rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: color 0.2s;
+    }
+
+    .back-button:hover {
+      color: #2563eb;
+    }
+
+    /* Resource Items */
+    .resource-item {
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 1.5rem;
+      transition: all 0.2s ease;
+    }
+
+    .resource-item:hover {
+      border-color: #2563eb;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.1);
+    }
+
+    .resource-item h3 {
+      color: #1e3a8a;
+      font-size: 1.125rem;
+      margin: 0 0 0.5rem 0;
+    }
+
+    .resource-item p {
+      color: #64748b;
+      font-size: 0.875rem;
+      margin: 0 0 1rem 0;
+    }
+
+    .resource-item button {
+      background: #2563eb;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      font-size: 0.875rem;
+      cursor: pointer;
+      transition: background-color 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .resource-item button:hover {
+      background: #1d4ed8;
+    }
+
+    /* PDF Viewer */
+    #pdfViewer {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.95);
+      z-index: 1000;
+      display: none;
+      padding: 2rem;
+    }
+
+    #pdfContainer {
+      max-width: 1000px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      overflow: auto;
+      height: calc(100vh - 8rem);
+      padding: 2rem;
+    }
+
+    .pdf-pages {
+      padding: 2rem;
+    }
+
+    .pdf-page {
+      margin-bottom: 2rem;
+      position: relative;
+    }
+
+    .pdf-page canvas {
+      width: 100%;
+      height: auto;
+      display: block;
+      border: 1px solid #e5e7eb;
+      border-radius: 4px;
+    }
+
+    .page-number {
+      position: absolute;
+      bottom: 0.5rem;
+      right: 0.5rem;
+      background: rgba(0, 0, 0, 0.6);
+      color: white;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.875rem;
+    }
+
+    .more-pages {
+      text-align: center;
+      padding: 1rem;
+      background: #f9fafb;
+      border-radius: 4px;
+      margin-top: 1rem;
+      color: #4b5563;
+    }
+
+    .pdf-loading {
+      text-align: center;
+      padding: 2rem;
+    }
+
+    .pdf-loading i {
+      margin-bottom: 1rem;
+    }
+
+    #pdfTitle {
+      color: white;
+      text-align: center;
+      padding: 1rem;
+      margin: 0;
+      font-size: 1.25rem;
+    }
+
+    #pdfClose {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: none;
+      border: none;
+      color: white;
+      font-size: 1.5rem;
+      cursor: pointer;
+      padding: 0.5rem;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      transition: background-color 0.2s;
+    }
+
+    #pdfClose:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .pdf-error {
+      color: #dc2626;
+    }
+
+    .pdf-error-message {
+      font-size: 0.8em;
+      margin-top: 0.5em;
+    }
+  </style>
+</head>
+<body class="bg-slate-50">
+  <div class="min-h-screen flex">
+    <aside id="sidebar" class="w-64 md:w-72 lg:w-80 fixed left-0 top-0 h-full bg-white border-r border-slate-200 p-5 flex flex-col gap-6 overflow-auto z-40">
+      <div class="flex items-center gap-3"><img src="/assets/images/logo.png" alt="logo" class="h-12 w-12 rounded-full shadow-sm"><div><div class="text-lg font-bold text-sky-700">JUANOVA CORTEX</div><div class="text-xs text-slate-500">Student Dashboard</div></div></div>
+      <nav class="flex-1 overflow-auto"><ul class="space-y-1">
+        <li><a href="student-dashboard-supabase.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-home text-sky-600"></i> Home</a></li>
+        <li><a href="news-feed-supabase.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-newspaper text-pink-500"></i> News Feed</a></li>
+        <li><a href="notes-supabase.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-note-sticky text-yellow-500"></i> Study Notes</a></li>
+        <li><a href="textbooks-supabase.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-book text-indigo-500"></i> Textbooks</a></li>
+        <li><a href="formula-bank-supabase.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-book-open text-teal-600"></i> All Formula</a></li>
+        <li><a href="study-plan-supabase.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-calendar-check text-green-500"></i> Study Plan</a></li>
+        <li><a href="video-library-supabase.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-photo-video text-cyan-600"></i> Video Library</a></li>
+        <li><a href="digital-library-supabase.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50 bg-sky-50"><i class="fas fa-book text-indigo-500"></i> Digital Library</a></li>
+        <li><a href="game-supabase.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-puzzle-piece text-purple-500"></i> Game</a></li>
+        <li><a href="mock-exams-supabase.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-pencil-alt text-orange-500"></i> Mock Exams</a></li>
+        <li><a href="cbt/cbt.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-computer text-red-500"></i> JAMB CBT</a></li>
+        <li><a href="notifications-supabase.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-bell text-pink-600"></i> Notifications</a></li>
+        <li><a href="student-live-session-supabase.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-chalkboard-teacher text-blue-400"></i> Live Sessions</a></li>
+        <li><a href="nobel-laureate-supabase.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-award text-yellow-600"></i> Nobel Laureate</a></li>
+      </ul></nav>
+      <div class="text-sm text-slate-500 border-t pt-4"><div class="mb-2">Account</div><div class="flex items-center gap-3"><img id="avatar-sm" src="../assets/images/unnamed.jpg" alt="avatar" class="h-10 w-10 rounded-full border"><div><div id="userName" class="font-semibold">Student</div><div id="userLevel" class="text-xs text-slate-400"></div></div></div></div>
+    </aside>
+<main class="main-content" style="margin-left: 18rem; padding-top: 5rem;">
+      <div class="library-container">
+        <div class="library-header">
+          <h1>Digital Library</h1>
+          <div class="search-filters">
+            <input type="search" placeholder="Search resources..." />
+            <label for="type-filter" class="visually-hidden">Filter by resource type</label>
+            <select id="type-filter" title="Filter by resource type">
+              <option value="all">All Types</option>
+              <option value="pdf">PDF Books</option>
+              <option value="video">Video Lessons</option>
+              <option value="practice">Practice Sets</option>
+            </select>
+            <label for="subject-filter" class="visually-hidden">Filter by subject</label>
+            <select id="subject-filter" title="Filter by subject">
+              <option value="all">All Subjects</option>
+              <option value="mathematics">Mathematics</option>
+              <option value="physics">Physics</option>
+              <option value="chemistry">Chemistry</option>
+              <option value="biology">Biology</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Subject Cards Grid -->
+        <div class="subject-grid">
+          <!-- Mathematics Card -->
+          <div class="subject-card" data-subject="mathematics">
+            <div class="subject-banner">
+              <i class="fa fa-square-root-alt"></i>
+            </div>
+            <div class="subject-content">
+              <h2 class="subject-name">Mathematics</h2>
+              <div class="subject-info">
+                <span><i class="fa fa-book"></i> 5 Resources</span>
+                <span><i class="fa fa-clock"></i> Updated 2 days ago</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Physics Card -->
+          <div class="subject-card" data-subject="physics">
+            <div class="subject-banner subject-banner--physics">
+              <i class="fa fa-atom"></i>
+            </div>
+            <div class="subject-content">
+              <h2 class="subject-name">Physics</h2>
+              <div class="subject-info">
+                <span><i class="fa fa-book"></i> 2 Resources</span>
+                <span><i class="fa fa-clock"></i> Updated 1 week ago</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Chemistry Card -->
+          <div class="subject-card" data-subject="chemistry">
+            <div class="subject-banner subject-banner--chemistry">
+              <i class="fa fa-flask"></i>
+            </div>
+            <div class="subject-content">
+              <h2 class="subject-name">Chemistry</h2>
+              <div class="subject-info">
+                <span><i class="fa fa-book"></i> 2 Resources</span>
+                <span><i class="fa fa-clock"></i> Updated 3 days ago</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Biology Card -->
+          <div class="subject-card" data-subject="biology">
+            <div class="subject-banner subject-banner--biology">
+              <i class="fa fa-dna"></i>
+            </div>
+            <div class="subject-content">
+              <h2 class="subject-name">Biology</h2>
+              <div class="subject-info">
+                <span><i class="fa fa-book"></i> 2 Resources</span>
+                <span><i class="fa fa-clock"></i> Updated 5 days ago</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- English Card -->
+          <div class="subject-card" data-subject="english">
+            <div class="subject-banner subject-banner--english">
+              <i class="fa fa-book-open"></i>
+            </div>
+            <div class="subject-content">
+              <h2 class="subject-name">English Language</h2>
+              <div class="subject-info">
+                <span><i class="fa fa-book"></i> 1 Resource</span>
+                <span><i class="fa fa-clock"></i> Updated 1 week ago</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Subject Content Sections -->
+        <div id="subject-sections">
+          <!-- Mathematics Section -->
+          <div class="subject-section" id="mathematics-section">
+            <div class="subject-header">
+              <div class="subject-header-left">
+                <i class="fa fa-square-root-alt"></i>
+                <div>
+                  <h2>Mathematics</h2>
+                  <div class="subject-meta">5 Resources • Last updated 2 days ago</div>
+                </div>
+              </div>
+              <button class="btn-access back-button">
+                <i class="fa fa-arrow-left"></i> Back to Subjects
+              </button>
+            </div>
+            <div class="resources-list">
+              <div class="resource-item">
+                <h3>New General Mathematics 1</h3>
+                <p>Complete textbook for SS1 Mathematics</p>
+                <button class="home-btn" onclick="window.location.href='./my books/Mathematics (Published)/index.html'">View Book</button>
+              </div>
+              <div class="resource-item">
+                <h3>New General Mathematics 2</h3>
+                <p>Complete textbook for SS2 Mathematics</p>
+                <button class="home-btn" onclick="window.location.href='./my books/Mathematics SS2 (Published)/index.html'">View Book</button>
+              </div>
+              <div class="resource-item">
+                <h3>New General Mathematics 3</h3>
+                <p>Complete textbook for SS3 Mathematics</p>
+                <button class="home-btn" onclick="window.location.href='./my books/Mathematics SS3 (Published)/index.html'">View Book</button>
+              </div>
+              <div class="resource-item">
+                <h3>Mathematics Grade 10-12</h3>
+                <p>Comprehensive Mathematics guide</p>
+                <button class="home-btn" onclick="window.location.href='./my books/Mathematics Advanced (Published)/index.html'">View Book</button>
+              </div>
+              <div class="resource-item">
+                <h3>Algebra and Trigonometry</h3>
+                <p>Advanced Mathematics concepts</p>
+                <button class="home-btn" onclick="window.location.href='./my books/Mathematics Ext (Published)/index.html'">View Book</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Physics Section -->
+          <div class="subject-section" id="physics-section">
+            <div class="subject-header">
+              <div class="subject-header-left">
+                <i class="fa fa-atom"></i>
+                <div>
+                  <h2>Physics</h2>
+                  <div class="subject-meta">2 Resources • Last updated 1 week ago</div>
+                </div>
+              </div>
+              <button class="btn-access back-button">
+                <i class="fa fa-arrow-left"></i> Back to Subjects
+              </button>
+            </div>
+            <div class="resources-list">
+              <div class="resource-item">
+                <h3>Basic Physics</h3>
+                <p>Fundamentals of Physics for Secondary Schools</p>
+                <button class="home-btn" onclick="window.location.href='./textbook/Physics (Published)/index.html'">View Book</button>
+              </div>
+              <div class="resource-item">
+                <h3>Physics Grade 10-12</h3>
+                <p>Complete Physics guide for Senior Secondary</p>
+                <button class="home-btn" onclick="window.location.href='./textbook/Physics SS2 (Published)/index.html'">View Book</button>
+              </div>
+              <div class="resource-item">
+                <h3>Physics Formula Sheet</h3>
+                <p>Quick reference for all important formulas</p>
+                <button class="home-btn" onclick="window.location.href='./textbook/Physics SS3 (Published)/index.html'">View Book</button>
+              </div>
+              <div class="resource-item">
+                <h3>Physics Theory Notes</h3>
+                <p>Comprehensive theory and concepts</p>
+                <button class="home-btn" onclick="window.location.href='./textbook/Physics Advanced (Published)/index.html'">View Book</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Chemistry Section -->
+          <div class="subject-section" id="chemistry-section">
+            <div class="subject-header">
+              <div class="subject-header-left">
+                <i class="fa fa-flask"></i>
+                <div>
+                  <h2>Chemistry</h2>
+                  <div class="subject-meta">2 Resources • Last updated 3 days ago</div>
+                </div>
+              </div>
+              <button class="btn-access back-button">
+                <i class="fa fa-arrow-left"></i> Back to Subjects
+              </button>
+            </div>
+            <div class="resources-list">
+              <div class="resource-item">
+                <h3>Model Chemistry Textbook</h3>
+                <p>Complete Chemistry guide for Senior Secondary</p>
+                <button class="home-btn" onclick="window.location.href='./textbook/Chemistry (Published)/index.html'">View Book</button>
+              </div>
+              <div class="resource-item">
+                <h3>Secondary Chemistry 3</h3>
+                <p>SS3 Chemistry Student Textbook</p>
+                <button class="home-btn" onclick="window.location.href='./textbook/Chemistry SS3 (Published)/index.html'">View Book</button>
+              </div>
+              <div class="resource-item">
+                <h3>Chemistry Lecture Reference</h3>
+                <p>Comprehensive Chemistry guide</p>
+                <button class="home-btn" onclick="window.location.href='./textbook/Chemistry Advanced (Published)/index.html'">View Book</button>
+              </div>
+            </div>
+          </div>
+<a href=""
+          <!-- Biology Section -->
+          <div class="subject-section" id="biology-section">
+            <div class="subject-header">
+              <div class="subject-header-left">
+                <i class="fa fa-dna"></i>
+                <div>
+                  <h2>Biology</h2>
+                  <div class="subject-meta">2 Resources • Last updated 5 days ago</div>
+                </div>
+              </div>
+              <button class="btn-access back-button">
+                <i class="fa fa-arrow-left"></i> Back to Subjects
+              </button>
+            </div>
+            <div class="resources-list">
+              <div class="resource-item">
+                <h3>Basic Biology</h3>
+                <p>Fundamentals of Biology for Secondary Schools</p>
+                <button class="home-btn" onclick="window.location.href='./textbook/Biology (Published)/index.html'">View Book</button>
+              </div>
+              <div class="resource-item">
+                <h3>Biology Advanced Topics</h3>
+                <p>Complete Biology guide for Senior Secondary</p>
+                <button class="home-btn" onclick="window.location.href='./textbook/Biology Advanced (Published)/index.html'">View Book</button>
+              </div>
+              <div class="resource-item">
+                <h3>Biology SS3</h3>
+                <p>SS3 Biology Student Textbook</p>
+                <button class="home-btn" onclick="window.location.href='./textbook/Biology SS3 (Published)/index.html'">View Book</button>
+              </div>
+          </div>
+
+          <!-- English Section -->
+          <div class="subject-section" id="english-section">
+            <div class="subject-header">
+              <div class="subject-header-left">
+                <i class="fa fa-book-open"></i>
+                <div>
+                  <h2>English Language</h2>
+                  <div class="subject-meta">1 Resource • Last updated 1 week ago</div>
+                </div>
+              </div>
+              <button class="btn-access back-button">
+                <i class="fa fa-arrow-left"></i> Back to Subjects
+              </button>
+            </div>
+            <div class="resources-list">
+              <div class="resource-item">
+                <h3>English Language</h3>
+                <p>Complete English Language guide</p>
+                <button class="home-btn" onclick="window.location.href='./textbook/English (Published)/index.html'">View Book</button>
+              </div>
+              <div class="resource-item">
+                <h3>Advanced English</h3>
+                <p>Advanced English Language Topics</p>
+                <button class="home-btn" onclick="window.location.href='./textbook/English Advanced (Published)/index.html'">View Book</button>
+              </div>
+              <div class="resource-item">
+                <h3>English SS3</h3>
+                <p>SS3 English Language Student Textbook</p>
+                <button class="home-btn" onclick="window.location.href='./textbook/English SS3 (Published)/index.html'">View Book</button>
+              </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- PDF Viewer -->
+  <div id="pdfViewer">
+    <button id="pdfClose" onclick="app.closePdfViewer()">
+      <i class="fa fa-times"></i>
+    </button>
+    <h2 id="pdfTitle"></h2>
+    <div id="pdfContainer"></div>
+  </div>
+   </div>
+  <!-- Scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+  
+  <!-- App Scripts -->
+  <script type="module">
+    import { onUserChange } from '../js/firebase-user.js';
+    import { getGlobalUserData } from '../js/user-cache.js';
+    import { initializeSharedNavigation } from '../js/shared-nav.js';
+    import { initializeSharedHeader } from '../js/shared-header.js';
+
+    // Initialize with cached data immediately if available
+    const cachedUser = getGlobalUserData();
+    if (cachedUser) {
+      updateUserInterface(cachedUser);
+    }
+
+    // Update UI when user data changes
+    onUserChange((user) => {
+      if (user) {
+        updateUserInterface(user);
+      } else {
+        // Handle not logged in state
+        document.getElementById('userName').textContent = 'Guest';
+        document.getElementById('userLevel').textContent = '';
+        document.getElementById('topName').textContent = 'Guest';
+        document.getElementById('topLevel').textContent = '';
+      }
+    });
+
+    function updateUserInterface(user) {
+      const fullName = user.displayName || 'Student';
+      const name = fullName.split(' ')[0];
+      const level = (user.profile?.level || '').startsWith('SS') ? user.profile.level : 'SS 3';
+      
+      // Update sidebar elements
+      document.getElementById('userName').textContent = name;
+      document.getElementById('userLevel').textContent = level;
+      
+      // Update topbar elements
+      document.getElementById('topName').textContent = fullName;
+      document.getElementById('topLevel').textContent = level;
+      
+      // Update avatar
+      const avatarUrl = user.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(getInitials(fullName))}&background=2563eb&color=fff&size=128`;
+      ['avatar-sm', 'topAvatar'].forEach(id => {
+        const avatar = document.getElementById(id);
+        if (avatar) avatar.src = avatarUrl;
+      });
+
+      // Update notification count if available
+      if (user.unreadNotifications) {
+        const notifCount = document.getElementById('notifCount');
+        if (notifCount) notifCount.textContent = user.unreadNotifications.length;
+      }
+
+      // Log to console that we updated the UI
+      console.log('Updated UI with user data:', { name, level });
+    }
+
+    function getInitials(fullName) {
+      return fullName.split(' ')
+        .slice(0, 2)
+        .map(name => name.charAt(0))
+        .join('')
+        .toUpperCase();
+    }
+
+    // Initialize app features
+    document.addEventListener('DOMContentLoaded', () => {
+      // Initialize shared components
+      initializeSharedNavigation();
+      initializeSharedHeader();
+      
+      // Mobile menu toggle
+      const menuToggle = document.getElementById('menu-toggle');
+      const sidebar = document.getElementById('sidebar');
+      
+      if (menuToggle && sidebar) {
+        menuToggle.addEventListener('click', () => {
+          sidebar.classList.toggle('-translate-x-full');
+        });
+      }
+
+      // Initialize PDF viewer and other features
+      if (typeof app !== 'undefined' && app.init) {
+        app.init();
+      }
+    });
+  </script>
+ 
+  <script type="module">
+    import { config } from '../js/config.js';
+    import { initSupabase } from '../js/supabase-client.js';
+    const supabase = initSupabase(config.supabase.url, config.supabase.anonKey);
+    function setText(id, text) { const el = document.getElementById(id); if (el) el.textContent = text; }
+    function setImage(id, url) { const el = document.getElementById(id); if (el) el.src = url; }
+    const sidebar = document.getElementById('sidebar');
+    const mainContent = document.getElementById('main-content');
+    const toggleBtn = document.getElementById('toggleSidebar');
+    const marginClasses = ['ml-64', 'md:ml-72', 'lg:ml-80'];
+    if (window.innerWidth < 1024) { sidebar.classList.add('hide'); mainContent.classList.remove(...marginClasses); } else { sidebar.classList.remove('hide'); mainContent.classList.add(...marginClasses); }
+    if (toggleBtn) toggleBtn.addEventListener('click', (e) => { e.stopPropagation(); sidebar.classList.toggle('hide'); if (sidebar.classList.contains('hide')) { mainContent.classList.remove(...marginClasses); } else { mainContent.classList.add(...marginClasses); } });
+    let lastIsDesktop = window.innerWidth >= 1024;
+    window.addEventListener('resize', () => { const isDesktop = window.innerWidth >= 1024; if (isDesktop !== lastIsDesktop) { lastIsDesktop = isDesktop; if (isDesktop) { sidebar.classList.remove('hide'); mainContent.classList.add(...marginClasses); } else { sidebar.classList.add('hide'); mainContent.classList.remove(...marginClasses); } } });
+    supabase.auth.onAuthStateChange(async (event, session) => {
+      if (!session || !session.user) { window.location.href = '../general/login.html'; return; }
+      if (!session.user.email_confirmed_at) { alert('Please verify your email first.'); await supabase.auth.signOut(); window.location.href = '../general/login.html'; return; }
+      const { data: profile } = await supabase.from('profiles').select('*').eq('id', session.user.id).single();
+      if (profile) { const displayName = profile.full_name || session.user.email?.split('@')[0] || 'Student'; setText('userName', displayName.split(' ')[0]); setText('topName', displayName); if (profile.avatar_url) { setImage('avatar-sm', profile.avatar_url); setImage('topAvatar', profile.avatar_url); } if (profile.level) { setText('userLevel', profile.level); setText('topLevel', profile.level); } }
+    });
+  </script>
+</body>
+</html>

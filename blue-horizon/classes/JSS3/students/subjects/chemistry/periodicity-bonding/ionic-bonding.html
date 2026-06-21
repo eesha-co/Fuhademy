@@ -1,0 +1,1986 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ionic Bonding - Chemistry | Juanova Cortex</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @keyframes fade-in-up {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in-up { animation: fade-in-up 0.5s ease-out forwards; }
+        .step-progress { transition: width 0.3s ease-in-out; }
+        
+        /* Section cards */
+        .section-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            border: 1px solid #e5e7eb;
+        }
+        
+        /* Click hint button */
+        .click-hint {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: linear-gradient(135deg, #ffedd5 0%, #fed7aa 100%);
+            color: #9a3412;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 24px;
+            padding: 12px 24px;
+            border-radius: 12px;
+            border: 2px solid #f97316;
+            transition: all 0.3s ease;
+            animation: pulse-hint 2s infinite;
+        }
+        .click-hint:hover {
+            background: linear-gradient(135deg, #fed7aa 0%, #fdba74 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(249, 115, 22, 0.4);
+        }
+        @keyframes pulse-hint {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(249, 115, 22, 0.4); }
+            50% { box-shadow: 0 0 0 8px rgba(249, 115, 22, 0); }
+        }
+        
+        /* Step complete indicator */
+        .step-complete-hint {
+            background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+            border: 2px solid #10b981;
+            color: #065f46;
+            padding: 16px 24px;
+            border-radius: 12px;
+            text-align: center;
+            margin-top: 24px;
+        }
+        
+        /* Prerequisite banner */
+        .prerequisite-banner {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border: 2px solid #f59e0b;
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin-bottom: 24px;
+        }
+        
+        /* Ion colors - orange for cations, blue for anions */
+        .cation-color { background: linear-gradient(135deg, #fb923c 0%, #f97316 100%); }
+        .anion-color { background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%); }
+        
+        /* Electron transfer animation */
+        @keyframes electron-transfer {
+            0% { transform: translateX(0); opacity: 1; }
+            50% { transform: translateX(50px); opacity: 0.8; }
+            100% { transform: translateX(100px); opacity: 1; }
+        }
+        .electron-transfer-anim {
+            animation: electron-transfer 1.5s ease-in-out infinite;
+        }
+        
+        /* Atom pulse animation */
+        @keyframes atom-pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        .atom-pulse { animation: atom-pulse 2s ease-in-out infinite; }
+        
+        /* Electron orbit animation */
+        @keyframes electron-orbit {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .electron-orbit { animation: electron-orbit 3s linear infinite; }
+        
+        /* Lattice 3D effect */
+        .lattice-3d {
+            perspective: 800px;
+        }
+        .lattice-grid {
+            transform-style: preserve-3d;
+            transform: rotateX(15deg) rotateY(-15deg);
+        }
+        
+        /* Dot and cross diagram styles */
+        .dot-cross-canvas {
+            background: linear-gradient(135deg, #fafafa 0%, #f5f5f5 100%);
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+        }
+        
+        /* Ion badge styles */
+        .ion-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            font-weight: bold;
+            font-size: 1.2rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        
+        /* Property card hover */
+        .property-card {
+            transition: all 0.3s ease;
+        }
+        .property-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+        }
+        
+        /* Practice question styles */
+        .practice-option {
+            padding: 12px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .practice-option:hover {
+            border-color: #f97316;
+            background: #fff7ed;
+        }
+        .practice-option.selected {
+            border-color: #f97316;
+            background: #ffedd5;
+        }
+        .practice-option.correct {
+            border-color: #22c55e;
+            background: #dcfce7;
+        }
+        .practice-option.incorrect {
+            border-color: #ef4444;
+            background: #fee2e2;
+        }
+        
+        /* Quiz modal */
+        .quiz-modal {
+            backdrop-filter: blur(8px);
+        }
+        
+        /* Shell visualization */
+        .electron-shell {
+            border: 2px dashed rgba(59, 130, 246, 0.3);
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+        }
+        
+        /* Mobile responsive */
+        @media (max-width: 768px) {
+            .section-card { padding: 1rem; }
+            .ion-badge { width: 50px; height: 50px; font-size: 1rem; }
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Top Navigation -->
+    <nav class="bg-white shadow-sm fixed top-0 w-full z-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center">
+                    <button id="mobileMenuBtn" class="text-gray-600 hover:text-gray-900 mr-3 md:hidden" aria-label="Menu">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                    <a href="index.html" class="flex items-center gap-2 text-gray-600 hover:text-gray-900">
+                        <i class="fas fa-arrow-left"></i>
+                        <h1 class="text-lg md:text-xl font-semibold text-gray-900">Ionic Bonding</h1>
+                    </a>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="text-sm text-gray-600 hidden sm:block">
+                        Progress: <span id="progressPercent">0%</span>
+                    </div>
+                    <div class="w-24 sm:w-32 h-2 bg-gray-200 rounded-full">
+                        <div id="progressBar" class="step-progress h-2 bg-orange-500 rounded-full" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Sidebar Overlay -->
+    <div id="sidebarOverlay" class="fixed inset-0 bg-black/50 z-40 hidden"></div>
+
+    <!-- Mobile Sidebar -->
+    <div id="mobileSidebar" class="fixed top-0 left-0 w-72 h-full bg-white z-50 transform -translate-x-full transition-transform">
+        <div class="p-4">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="font-semibold text-lg">Learning Steps</h3>
+                <button id="closeSidebarBtn" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            <ul id="mobileStepsList" class="space-y-2"></ul>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="pt-20 pb-24">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-12 gap-6">
+                <!-- Left Sidebar - Steps (Desktop) -->
+                <div class="md:col-span-3 hidden md:block">
+                    <div class="bg-white rounded-lg shadow-sm p-4 sticky top-20">
+                        <h3 class="font-semibold mb-4">Learning Steps</h3>
+                        <ul id="stepsList" class="space-y-2"></ul>
+                    </div>
+                </div>
+
+                <!-- Main Content Area -->
+                <div class="md:col-span-9">
+                    <!-- Prerequisite Banner -->
+                    <div class="prerequisite-banner">
+                        <div class="flex items-start gap-3">
+                            <div class="text-2xl">📋</div>
+                            <div>
+                                <h4 class="font-semibold text-amber-800 mb-1">Before You Start</h4>
+                                <p class="text-amber-700 text-sm mb-2">This topic builds on Periodic Trends. Make sure you understand:</p>
+                                <ul class="text-amber-700 text-sm list-disc pl-5 space-y-1">
+                                    <li><strong>Ionization energy</strong> - metals lose electrons easily (low IE)</li>
+                                    <li><strong>Electronegativity</strong> - non-metals gain electrons easily (high EN)</li>
+                                    <li><strong>Electron configuration</strong> - to predict ion formation</li>
+                                </ul>
+                                <a href="periodic-trends.html" class="inline-flex items-center gap-2 mt-3 text-amber-800 font-medium hover:text-amber-900">
+                                    <i class="fas fa-book-open"></i>
+                                    Review: Periodic Trends →
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Current Step Content -->
+                    <div id="stepContainer" class="bg-white rounded-lg shadow-sm p-6 mb-6"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Bottom Navigation -->
+    <div class="fixed bottom-0 w-full bg-white border-t border-gray-200 z-40">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between py-4">
+                <button id="prevStepBtn" class="px-4 py-2 text-gray-600 hover:text-gray-900 disabled:opacity-50 disabled:cursor-not-allowed">
+                    <i class="fas fa-chevron-left mr-2"></i>Previous
+                </button>
+                <button id="nextStepBtn" class="px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 disabled:opacity-50 disabled:cursor-not-allowed">
+                    Continue<i class="fas fa-chevron-right ml-2"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quiz Modal -->
+    <div id="quizModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 quiz-modal">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full mx-4 max-h-[90vh] overflow-hidden">
+            <!-- Quiz Header -->
+            <div class="bg-gradient-to-r from-orange-500 to-amber-500 text-white p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h2 class="text-xl font-bold">Ionic Bonding - Quiz</h2>
+                        <p class="text-orange-100 text-sm mt-1">Test your understanding</p>
+                    </div>
+                    <button onclick="closeQuiz()" class="text-white/80 hover:text-white transition">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
+                <div class="mt-4 h-2 bg-white/20 rounded-full overflow-hidden">
+                    <div id="quizProgressBar" class="h-full bg-white transition-all duration-300" style="width: 0%"></div>
+                </div>
+                <div class="flex justify-between text-sm mt-2 text-orange-100">
+                    <span id="quizQuestionCount">Question 1 of 10</span>
+                    <span id="quizScoreDisplay">Score: 0</span>
+                </div>
+            </div>
+            
+            <!-- Quiz Content -->
+            <div id="quizContent" class="p-6 max-h-[60vh] overflow-y-auto"></div>
+            
+            <!-- Quiz Footer -->
+            <div id="quizFooter" class="p-4 border-t bg-gray-50 flex justify-between items-center">
+                <button id="quizPrevBtn" onclick="quizPrev()" class="px-4 py-2 rounded-lg bg-gray-200 text-gray-700 hover:bg-gray-300 transition disabled:opacity-50" disabled>
+                    <i class="fas fa-arrow-left mr-2"></i>Previous
+                </button>
+                <button id="quizNextBtn" onclick="quizNext()" class="px-6 py-2 rounded-lg bg-orange-500 text-white hover:bg-orange-600 transition disabled:opacity-50" disabled>
+                    Next<i class="fas fa-arrow-right ml-2"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Score Display Modal -->
+    <div id="scoreModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full mx-4 p-6 text-center">
+            <div id="scoreIcon" class="text-6xl mb-4">🎉</div>
+            <h2 class="text-2xl font-bold text-gray-800 mb-2">Topic Complete!</h2>
+            <div class="my-6">
+                <div class="grid grid-cols-3 gap-4 text-center">
+                    <div class="bg-orange-50 p-3 rounded-lg">
+                        <p class="text-sm text-gray-600">Practice</p>
+                        <p class="text-2xl font-bold text-orange-600" id="practiceScoreDisplay">--</p>
+                    </div>
+                    <div class="bg-blue-50 p-3 rounded-lg">
+                        <p class="text-sm text-gray-600">Quiz</p>
+                        <p class="text-2xl font-bold text-blue-600" id="quizScoreDisplayFinal">--</p>
+                    </div>
+                    <div class="bg-green-50 p-3 rounded-lg">
+                        <p class="text-sm text-gray-600">Combined</p>
+                        <p class="text-2xl font-bold text-green-600" id="combinedScoreDisplay">--</p>
+                    </div>
+                </div>
+                <p class="text-sm text-gray-500 mt-2">Combined: 40% Practice + 60% Quiz</p>
+            </div>
+            <div class="flex gap-3 justify-center">
+                <button onclick="closeScoreModal()" class="px-6 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300">
+                    Close
+                </button>
+                <a href="covalent-bonding.html" class="px-6 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600">
+                    Next: Covalent Bonding →
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script src="../subject-quiz-handler.js"></script>
+    <script>
+        // =============================================
+        // IONIC BONDING - INTERACTIVE LEARNING MODULE
+        // =============================================
+        
+        let currentStepIndex = 0;
+        let currentChunkIndex = 0;
+        let stepsCompleted = [];
+        
+        // Element data for ion formation
+        const elementData = {
+            H: { z: 1, symbol: 'H', name: 'Hydrogen', config: '1s¹', shells: [1], group: 1, ion: 'H⁺', ionConfig: '1s⁰' },
+            Li: { z: 3, symbol: 'Li', name: 'Lithium', config: '1s² 2s¹', shells: [2, 1], group: 1, ion: 'Li⁺', ionConfig: '1s²' },
+            Na: { z: 11, symbol: 'Na', name: 'Sodium', config: '1s² 2s² 2p⁶ 3s¹', shells: [2, 8, 1], group: 1, ion: 'Na⁺', ionConfig: '[Ne]' },
+            K: { z: 19, symbol: 'K', name: 'Potassium', config: '[Ar] 4s¹', shells: [2, 8, 8, 1], group: 1, ion: 'K⁺', ionConfig: '[Ar]' },
+            Mg: { z: 12, symbol: 'Mg', name: 'Magnesium', config: '1s² 2s² 2p⁶ 3s²', shells: [2, 8, 2], group: 2, ion: 'Mg²⁺', ionConfig: '[Ne]' },
+            Ca: { z: 20, symbol: 'Ca', name: 'Calcium', config: '[Ar] 4s²', shells: [2, 8, 8, 2], group: 2, ion: 'Ca²⁺', ionConfig: '[Ar]' },
+            Al: { z: 13, symbol: 'Al', name: 'Aluminium', config: '1s² 2s² 2p⁶ 3s² 3p¹', shells: [2, 8, 3], group: 3, ion: 'Al³⁺', ionConfig: '[Ne]' },
+            F: { z: 9, symbol: 'F', name: 'Fluorine', config: '1s² 2s² 2p⁵', shells: [2, 7], group: 7, ion: 'F⁻', ionConfig: '[Ne]' },
+            Cl: { z: 17, symbol: 'Cl', name: 'Chlorine', config: '[Ne] 3s² 3p⁵', shells: [2, 8, 7], group: 7, ion: 'Cl⁻', ionConfig: '[Ar]' },
+            Br: { z: 35, symbol: 'Br', name: 'Bromine', config: '[Ar] 4s² 3d¹⁰ 4p⁵', shells: [2, 8, 18, 7], group: 7, ion: 'Br⁻', ionConfig: '[Kr]' },
+            O: { z: 8, symbol: 'O', name: 'Oxygen', config: '1s² 2s² 2p⁴', shells: [2, 6], group: 6, ion: 'O²⁻', ionConfig: '[Ne]' },
+            S: { z: 16, symbol: 'S', name: 'Sulfur', config: '[Ne] 3s² 3p⁴', shells: [2, 8, 6], group: 6, ion: 'S²⁻', ionConfig: '[Ar]' },
+            N: { z: 7, symbol: 'N', name: 'Nitrogen', config: '1s² 2s² 2p³', shells: [2, 5], group: 5, ion: 'N³⁻', ionConfig: '[Ne]' }
+        };
+        
+        // Practice Question Tracker
+        const PracticeTracker = {
+            answers: { guided: [], independent: [], practice: [] },
+            quizScore: null,
+            
+            recordAnswer(category, questionId, isCorrect, details) {
+                if (!this.answers[category]) this.answers[category] = [];
+                this.answers[category].push({ id: questionId, correct: isCorrect, details, timestamp: Date.now() });
+                this.saveToStorage();
+            },
+            
+            recordQuizScore(score, total) {
+                this.quizScore = { score, total, percentage: Math.round((score / total) * 100) };
+                this.saveToStorage();
+            },
+            
+            getCombinedScore() {
+                let practiceCorrect = 0;
+                let practiceTotal = 0;
+                
+                Object.values(this.answers).forEach(arr => {
+                    arr.forEach(a => {
+                        practiceTotal++;
+                        if (a.correct) practiceCorrect++;
+                    });
+                });
+                
+                const practicePercent = practiceTotal > 0 ? Math.round((practiceCorrect / practiceTotal) * 100) : null;
+                const quizPercent = this.quizScore ? this.quizScore.percentage : null;
+                
+                // Combined score: 40% practice, 60% quiz
+                let combined = null;
+                if (practicePercent !== null && quizPercent !== null) {
+                    combined = Math.round((practicePercent * 0.4) + (quizPercent * 0.6));
+                } else if (quizPercent !== null) {
+                    combined = quizPercent;
+                } else if (practicePercent !== null) {
+                    combined = practicePercent;
+                }
+                
+                return { practice: practicePercent, quiz: quizPercent, combined };
+            },
+            
+            saveToStorage() {
+                try {
+                    localStorage.setItem('ionicBonding_progress', JSON.stringify({
+                        answers: this.answers,
+                        quizScore: this.quizScore
+                    }));
+                } catch (e) {}
+            },
+            
+            loadFromStorage() {
+                try {
+                    const saved = localStorage.getItem('ionicBonding_progress');
+                    if (saved) {
+                        const data = JSON.parse(saved);
+                        this.answers = data.answers || { guided: [], independent: [], practice: [] };
+                        this.quizScore = data.quizScore || null;
+                    }
+                } catch (e) {}
+            }
+        };
+        
+        PracticeTracker.loadFromStorage();
+        
+        // Topic data with all content
+        const topicData = {
+            title: "Ionic Bonding",
+            steps: [
+                {
+                    id: "introduction",
+                    title: "Introduction to Ionic Bonding",
+                    type: "note",
+                    chunks: [
+                        {
+                            intro: "Welcome to Ionic Bonding! After learning about periodic trends, you now understand why metals lose electrons and non-metals gain them. Let's see how this leads to ionic bonds!",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-atom text-orange-500 mr-3"></i>What is Ionic Bonding?
+                                    </h3>
+                                    <p class="text-gray-700 leading-relaxed mb-4">
+                                        An <strong class="text-orange-600">ionic bond</strong> is the electrostatic attraction between oppositely charged ions. It forms when electrons are <strong>transferred</strong> from a metal atom to a non-metal atom.
+                                    </p>
+                                    
+                                    <div class="bg-gradient-to-r from-orange-100 to-blue-100 p-6 rounded-lg mb-4">
+                                        <div class="flex items-center justify-center gap-4 flex-wrap">
+                                            <div class="text-center">
+                                                <div class="ion-badge cation-color text-white mb-2">Metal</div>
+                                                <p class="text-sm text-gray-600">Loses e⁻</p>
+                                                <p class="text-lg font-bold text-orange-600">→ Cation (+)</p>
+                                            </div>
+                                            <div class="text-3xl">+</div>
+                                            <div class="text-center">
+                                                <div class="ion-badge anion-color text-white mb-2">Non-metal</div>
+                                                <p class="text-sm text-gray-600">Gains e⁻</p>
+                                                <p class="text-lg font-bold text-blue-600">→ Anion (−)</p>
+                                            </div>
+                                            <div class="text-3xl">=</div>
+                                            <div class="text-center bg-white p-3 rounded-lg border-2 border-green-300">
+                                                <i class="fas fa-link text-green-500 text-2xl mb-2"></i>
+                                                <p class="font-bold text-green-700">Ionic Bond</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="bg-amber-50 border-l-4 border-amber-500 p-4 mb-4">
+                                        <h4 class="font-semibold text-amber-800 mb-2"><i class="fas fa-lightbulb mr-2"></i>Key Insight from Periodic Trends</h4>
+                                        <ul class="text-gray-700 space-y-2">
+                                            <li><strong>Metals (Groups 1-3):</strong> Low ionization energy → lose electrons easily → form cations</li>
+                                            <li><strong>Non-metals (Groups 5-7):</strong> High electronegativity → gain electrons easily → form anions</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            `
+                        },
+                        {
+                            intro: "The driving force behind ionic bonding is the octet rule - atoms want to achieve a stable electron configuration like noble gases!",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-bullseye text-orange-500 mr-3"></i>The Octet Rule
+                                    </h3>
+                                    <p class="text-gray-700 mb-4">
+                                        Atoms tend to gain, lose, or share electrons to achieve a <strong class="text-orange-600">full outer shell of 8 electrons</strong> (like noble gases). This stable arrangement is called an <strong>octet</strong>.
+                                    </p>
+                                    
+                                    <div class="grid md:grid-cols-2 gap-4 mb-4">
+                                        <div class="bg-orange-50 p-4 rounded-lg border-l-4 border-orange-500">
+                                            <h4 class="font-semibold text-orange-800 mb-2">Metals Achieve Octet By:</h4>
+                                            <ul class="text-gray-700 space-y-1">
+                                                <li>• Losing valence electrons</li>
+                                                <li>• Exposing the full shell beneath</li>
+                                                <li>• Becoming positively charged</li>
+                                            </ul>
+                                            <div class="mt-3 p-2 bg-white rounded text-center">
+                                                <span class="text-orange-600 font-mono">Na (2,8,1) → Na⁺ (2,8)</span>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-500">
+                                            <h4 class="font-semibold text-blue-800 mb-2">Non-metals Achieve Octet By:</h4>
+                                            <ul class="text-gray-700 space-y-1">
+                                                <li>• Gaining electrons</li>
+                                                <li>• Completing their outer shell</li>
+                                                <li>• Becoming negatively charged</li>
+                                            </ul>
+                                            <div class="mt-3 p-2 bg-white rounded text-center">
+                                                <span class="text-blue-600 font-mono">Cl (2,8,7) → Cl⁻ (2,8,8)</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <button class="click-hint" onclick="nextChunk()">
+                                        <i class="fas fa-arrow-right"></i>
+                                        <span>Continue to Ion Formation →</span>
+                                    </button>
+                                </div>
+                            `
+                        }
+                    ]
+                },
+                {
+                    id: "ion-formation",
+                    title: "Ion Formation",
+                    type: "simulation",
+                    chunks: [
+                        {
+                            intro: "Let's explore how ions are formed! We'll see exactly what happens to electron configuration when atoms become ions.",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-exchange-alt text-orange-500 mr-3"></i>Ion Formation Simulator
+                                    </h3>
+                                    <p class="text-gray-700 mb-4">Select an element to see how it forms an ion. Watch the electron transfer animation!</p>
+                                    
+                                    <div class="bg-gray-50 p-4 rounded-lg mb-4">
+                                        <div class="flex flex-wrap gap-2 mb-4">
+                                            <p class="w-full font-medium text-gray-700 mb-2">Select Element:</p>
+                                            <button onclick="showIonFormation('Na')" class="px-4 py-2 bg-orange-100 text-orange-700 rounded-lg hover:bg-orange-200 transition ion-btn active" data-element="Na">Na (Sodium)</button>
+                                            <button onclick="showIonFormation('Mg')" class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition ion-btn" data-element="Mg">Mg (Magnesium)</button>
+                                            <button onclick="showIonFormation('Cl')" class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition ion-btn" data-element="Cl">Cl (Chlorine)</button>
+                                            <button onclick="showIonFormation('O')" class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition ion-btn" data-element="O">O (Oxygen)</button>
+                                            <button onclick="showIonFormation('Al')" class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition ion-btn" data-element="Al">Al (Aluminium)</button>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Ion Formation Visualization -->
+                                    <div id="ionFormationViz" class="bg-white border-2 border-gray-200 rounded-lg p-6">
+                                        <!-- Will be populated by JS -->
+                                    </div>
+                                    
+                                    <div class="mt-4 grid md:grid-cols-2 gap-4">
+                                        <div class="bg-orange-50 p-4 rounded-lg">
+                                            <h4 class="font-semibold text-orange-800 mb-2"><i class="fas fa-plus-circle mr-2"></i>Cations (Positive Ions)</h4>
+                                            <ul class="text-gray-700 text-sm space-y-1">
+                                                <li>• Formed by losing electrons</li>
+                                                <li>• Fewer electrons than protons</li>
+                                                <li>• Metals typically form cations</li>
+                                                <li>• Named same as the atom (Na⁺ = sodium ion)</li>
+                                            </ul>
+                                        </div>
+                                        <div class="bg-blue-50 p-4 rounded-lg">
+                                            <h4 class="font-semibold text-blue-800 mb-2"><i class="fas fa-minus-circle mr-2"></i>Anions (Negative Ions)</h4>
+                                            <ul class="text-gray-700 text-sm space-y-1">
+                                                <li>• Formed by gaining electrons</li>
+                                                <li>• More electrons than protons</li>
+                                                <li>• Non-metals typically form anions</li>
+                                                <li>• Named with "-ide" suffix (Cl⁻ = chloride ion)</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    
+                                    <button class="click-hint" onclick="nextChunk()">
+                                        <i class="fas fa-arrow-right"></i>
+                                        <span>Continue →</span>
+                                    </button>
+                                </div>
+                            `
+                        }
+                    ]
+                },
+                {
+                    id: "ionic-bond-formation",
+                    title: "Ionic Bond Formation",
+                    type: "simulation",
+                    chunks: [
+                        {
+                            intro: "Now let's see how a cation and anion come together to form an ionic bond through electrostatic attraction!",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-magnet text-orange-500 mr-3"></i>Electrostatic Attraction
+                                    </h3>
+                                    <p class="text-gray-700 mb-4">When a metal loses electrons and a non-metal gains them, the resulting oppositely charged ions are attracted to each other. This attraction is the <strong class="text-orange-600">ionic bond</strong>.</p>
+                                    
+                                    <div class="bg-gradient-to-r from-orange-50 to-blue-50 p-6 rounded-lg mb-4">
+                                        <div id="bondFormationAnim" class="flex items-center justify-center gap-4">
+                                            <!-- Animated bond formation -->
+                                            <div class="text-center">
+                                                <div class="ion-badge cation-color text-white text-xl atom-pulse">Na⁺</div>
+                                                <p class="text-xs text-gray-600 mt-2">Cation</p>
+                                            </div>
+                                            <div class="flex flex-col items-center">
+                                                <i class="fas fa-bolt text-yellow-500 text-2xl electron-transfer-anim"></i>
+                                                <p class="text-xs text-gray-500">Attraction</p>
+                                            </div>
+                                            <div class="text-center">
+                                                <div class="ion-badge anion-color text-white text-xl atom-pulse">Cl⁻</div>
+                                                <p class="text-xs text-gray-600 mt-2">Anion</p>
+                                            </div>
+                                            <div class="text-3xl">=</div>
+                                            <div class="text-center bg-white p-3 rounded-lg border-2 border-green-300">
+                                                <p class="font-bold text-gray-800">NaCl</p>
+                                                <p class="text-xs text-green-600">Ionic Compound</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-4">
+                                        <h4 class="font-semibold text-yellow-800 mb-2"><i class="fas fa-info-circle mr-2"></i>Important Point</h4>
+                                        <p class="text-gray-700">The ionic bond is <strong>non-directional</strong> - ions attract each other from all directions. This is why ionic compounds form lattice structures, not individual molecules!</p>
+                                    </div>
+                                </div>
+                            `
+                        },
+                        {
+                            intro: "Let's learn to draw dot and cross diagrams - these show how electrons are transferred in ionic bonding!",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-draw-polygon text-orange-500 mr-3"></i>Dot and Cross Diagrams
+                                    </h3>
+                                    <p class="text-gray-700 mb-4">
+                                        Dot and cross diagrams show how electrons are transferred. <span class="text-orange-600 font-bold">Dots (•)</span> represent electrons from one atom, 
+                                        <span class="text-blue-600 font-bold">Crosses (×)</span> represent electrons from another.
+                                    </p>
+                                    
+                                    <div class="bg-gray-50 p-4 rounded-lg mb-4">
+                                        <div class="flex flex-wrap gap-2 mb-4">
+                                            <p class="w-full font-medium text-gray-700">View Diagram For:</p>
+                                            <button onclick="showDotCross('NaCl')" class="px-4 py-2 bg-orange-100 text-orange-700 rounded-lg hover:bg-orange-200 transition dotcross-btn active">NaCl</button>
+                                            <button onclick="showDotCross('MgO')" class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition dotcross-btn">MgO</button>
+                                            <button onclick="showDotCross('CaCl2')" class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition dotcross-btn">CaCl₂</button>
+                                            <button onclick="showDotCross('MgCl2')" class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition dotcross-btn">MgCl₂</button>
+                                        </div>
+                                    </div>
+                                    
+                                    <div id="dotCrossDiagram" class="bg-white border-2 border-gray-200 rounded-lg p-6 min-h-[300px]">
+                                        <!-- Will be populated by JS -->
+                                    </div>
+                                    
+                                    <div class="mt-4 bg-indigo-50 p-4 rounded-lg">
+                                        <h4 class="font-semibold text-indigo-800 mb-2">How to Draw Dot-Cross Diagrams:</h4>
+                                        <ol class="list-decimal pl-5 text-gray-700 space-y-1">
+                                            <li>Draw the electron shells for each atom</li>
+                                            <li>Use dots for metal electrons, crosses for non-metal</li>
+                                            <li>Show electrons transferring from metal to non-metal</li>
+                                            <li>Write the ion symbols with charges</li>
+                                            <li>Show both ions have stable octets</li>
+                                        </ol>
+                                    </div>
+                                    
+                                    <button class="click-hint" onclick="nextChunk()">
+                                        <i class="fas fa-arrow-right"></i>
+                                        <span>Continue to Properties →</span>
+                                    </button>
+                                </div>
+                            `
+                        }
+                    ]
+                },
+                {
+                    id: "properties",
+                    title: "Properties of Ionic Compounds",
+                    type: "note",
+                    chunks: [
+                        {
+                            intro: "The structure of ionic compounds gives them very characteristic properties. Let's explore each one!",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-flask text-orange-500 mr-3"></i>Key Properties of Ionic Compounds
+                                    </h3>
+                                    <p class="text-gray-700 mb-4">The giant ionic lattice structure and strong electrostatic forces determine all the properties of ionic compounds.</p>
+                                    
+                                    <div class="grid md:grid-cols-2 gap-4 mb-4">
+                                        <div class="property-card bg-red-50 p-4 rounded-lg border-l-4 border-red-500">
+                                            <div class="flex items-center gap-3 mb-2">
+                                                <i class="fas fa-temperature-high text-red-500 text-2xl"></i>
+                                                <h4 class="font-semibold text-red-800">High Melting Points</h4>
+                                            </div>
+                                            <p class="text-gray-700 text-sm">Strong electrostatic forces need lots of energy to break.</p>
+                                            <div class="mt-2 p-2 bg-white rounded text-sm">
+                                                <p>NaCl: <strong>801°C</strong></p>
+                                                <p>MgO: <strong>2852°C</strong></p>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="property-card bg-blue-50 p-4 rounded-lg border-l-4 border-blue-500">
+                                            <div class="flex items-center gap-3 mb-2">
+                                                <i class="fas fa-water text-blue-500 text-2xl"></i>
+                                                <h4 class="font-semibold text-blue-800">Soluble in Water</h4>
+                                            </div>
+                                            <p class="text-gray-700 text-sm">Water molecules surround and separate ions, breaking down the lattice.</p>
+                                            <div class="mt-2 p-2 bg-white rounded text-sm">
+                                                <p>Most ionic compounds dissolve</p>
+                                                <p class="text-gray-500">Exception: AgCl, BaSO₄</p>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="property-card bg-green-50 p-4 rounded-lg border-l-4 border-green-500">
+                                            <div class="flex items-center gap-3 mb-2">
+                                                <i class="fas fa-bolt text-green-500 text-2xl"></i>
+                                                <h4 class="font-semibold text-green-800">Conduct When Molten/Aqueous</h4>
+                                            </div>
+                                            <p class="text-gray-700 text-sm">Ions must be free to move to conduct electricity.</p>
+                                            <div class="mt-2 p-2 bg-white rounded text-sm">
+                                                <p class="text-green-600">✓ Molten NaCl</p>
+                                                <p class="text-green-600">✓ NaCl solution</p>
+                                                <p class="text-red-600">✗ Solid NaCl</p>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="property-card bg-purple-50 p-4 rounded-lg border-l-4 border-purple-500">
+                                            <div class="flex items-center gap-3 mb-2">
+                                                <i class="fas fa-hammer text-purple-500 text-2xl"></i>
+                                                <h4 class="font-semibold text-purple-800">Brittle</h4>
+                                            </div>
+                                            <p class="text-gray-700 text-sm">If layers shift, like charges align and repel, cracking the crystal.</p>
+                                            <div class="mt-2 p-2 bg-white rounded text-sm">
+                                                <p>Hit salt → it shatters!</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            `
+                        },
+                        {
+                            intro: "Let's compare ionic compounds with different charges to understand how charge affects properties!",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-balance-scale text-orange-500 mr-3"></i>Charge Effects on Properties
+                                    </h3>
+                                    
+                                    <div class="bg-amber-50 border-l-4 border-amber-500 p-4 mb-4">
+                                        <h4 class="font-semibold text-amber-800 mb-2">Why Does MgO Have Higher MP Than NaCl?</h4>
+                                        <div class="grid md:grid-cols-2 gap-4 mt-3">
+                                            <div class="bg-white p-3 rounded">
+                                                <p class="font-bold text-orange-600">NaCl</p>
+                                                <p class="text-sm">Na⁺ (1+) + Cl⁻ (1−)</p>
+                                                <p class="text-sm text-gray-600">Single charges = weaker attraction</p>
+                                                <p class="text-sm font-bold mt-2">m.p. 801°C</p>
+                                            </div>
+                                            <div class="bg-white p-3 rounded">
+                                                <p class="font-bold text-red-600">MgO</p>
+                                                <p class="text-sm">Mg²⁺ (2+) + O²⁻ (2−)</p>
+                                                <p class="text-sm text-gray-600">Double charges = stronger attraction</p>
+                                                <p class="text-sm font-bold mt-2">m.p. 2852°C</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="bg-blue-50 p-4 rounded-lg">
+                                        <p class="text-blue-800"><i class="fas fa-lightbulb mr-2"></i><strong>General Rule:</strong> The higher the charges on the ions, the stronger the electrostatic attraction, and the higher the melting point!</p>
+                                    </div>
+                                    
+                                    <button class="click-hint" onclick="nextChunk()">
+                                        <i class="fas fa-arrow-right"></i>
+                                        <span>Continue to Lattice Structure →</span>
+                                    </button>
+                                </div>
+                            `
+                        }
+                    ]
+                },
+                {
+                    id: "lattice-structure",
+                    title: "Ionic Lattice Structure",
+                    type: "simulation",
+                    chunks: [
+                        {
+                            intro: "Ionic compounds don't exist as individual molecules - they form giant 3D lattice structures!",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-cubes text-orange-500 mr-3"></i>Giant Ionic Lattice
+                                    </h3>
+                                    <p class="text-gray-700 mb-4">
+                                        In an ionic lattice, each ion is surrounded by ions of <strong>opposite charge</strong>. The pattern repeats in all three dimensions, creating a giant structure.
+                                    </p>
+                                    
+                                    <div class="lattice-3d mb-4">
+                                        <div id="latticeViz" class="lattice-grid bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg p-6 min-h-[250px] flex items-center justify-center">
+                                            <!-- Lattice visualization -->
+                                            <svg viewBox="0 0 200 200" class="w-full max-w-[300px]">
+                                                <!-- Row 1 -->
+                                                <circle cx="30" cy="30" r="12" fill="#f97316" class="atom-pulse"/>
+                                                <circle cx="80" cy="30" r="10" fill="#3b82f6"/>
+                                                <circle cx="130" cy="30" r="12" fill="#f97316" class="atom-pulse"/>
+                                                <circle cx="180" cy="30" r="10" fill="#3b82f6"/>
+                                                
+                                                <!-- Row 2 -->
+                                                <circle cx="55" cy="70" r="10" fill="#3b82f6"/>
+                                                <circle cx="105" cy="70" r="12" fill="#f97316" class="atom-pulse"/>
+                                                <circle cx="155" cy="70" r="10" fill="#3b82f6"/>
+                                                
+                                                <!-- Row 3 -->
+                                                <circle cx="30" cy="110" r="10" fill="#3b82f6"/>
+                                                <circle cx="80" cy="110" r="12" fill="#f97316" class="atom-pulse"/>
+                                                <circle cx="130" cy="110" r="10" fill="#3b82f6"/>
+                                                <circle cx="180" cy="110" r="12" fill="#f97316" class="atom-pulse"/>
+                                                
+                                                <!-- Row 4 -->
+                                                <circle cx="55" cy="150" r="12" fill="#f97316" class="atom-pulse"/>
+                                                <circle cx="105" cy="150" r="10" fill="#3b82f6"/>
+                                                <circle cx="155" cy="150" r="12" fill="#f97316" class="atom-pulse"/>
+                                                
+                                                <!-- Row 5 -->
+                                                <circle cx="30" cy="190" r="10" fill="#3b82f6"/>
+                                                <circle cx="80" cy="190" r="12" fill="#f97316" class="atom-pulse"/>
+                                                <circle cx="130" cy="190" r="10" fill="#3b82f6"/>
+                                                <circle cx="180" cy="190" r="12" fill="#f97316" class="atom-pulse"/>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="flex justify-center gap-6 text-sm mb-4">
+                                        <div class="flex items-center gap-2">
+                                            <div class="w-6 h-6 rounded-full bg-orange-500"></div>
+                                            <span>Cation (+)</span>
+                                        </div>
+                                        <div class="flex items-center gap-2">
+                                            <div class="w-6 h-6 rounded-full bg-blue-500"></div>
+                                            <span>Anion (−)</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="bg-green-50 border-l-4 border-green-500 p-4">
+                                        <h4 class="font-semibold text-green-800 mb-2">Key Features of Ionic Lattices:</h4>
+                                        <ul class="text-gray-700 space-y-1">
+                                            <li>• Each ion surrounded by ions of opposite charge</li>
+                                            <li>• Strong electrostatic forces in <strong>all directions</strong></li>
+                                            <li>• Large amounts of energy needed to break the lattice</li>
+                                            <li>• No individual molecules - one giant structure</li>
+                                            <li>• <strong>Coordination number</strong> = number of ions touching each ion</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            `
+                        },
+                        {
+                            intro: "Let's see how the coordination number relates to ion sizes!",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-arrows-alt text-orange-500 mr-3"></i>Coordination Numbers
+                                    </h3>
+                                    <p class="text-gray-700 mb-4">The coordination number depends on the relative sizes of the ions. Smaller ions can fit around larger ones in different ways.</p>
+                                    
+                                    <div class="grid md:grid-cols-2 gap-4 mb-4">
+                                        <div class="bg-white border-2 border-orange-200 p-4 rounded-lg">
+                                            <h4 class="font-semibold text-orange-700 mb-2">NaCl Structure (6:6)</h4>
+                                            <div class="text-center mb-3">
+                                                <svg viewBox="0 0 120 120" class="w-24 h-24 mx-auto">
+                                                    <circle cx="60" cy="60" r="25" fill="#f97316"/>
+                                                    <circle cx="60" cy="15" r="8" fill="#3b82f6"/>
+                                                    <circle cx="60" cy="105" r="8" fill="#3b82f6"/>
+                                                    <circle cx="15" cy="60" r="8" fill="#3b82f6"/>
+                                                    <circle cx="105" cy="60" r="8" fill="#3b82f6"/>
+                                                </svg>
+                                            </div>
+                                            <p class="text-sm text-gray-600">Each Na⁺ touches 6 Cl⁻<br>Each Cl⁻ touches 6 Na⁺</p>
+                                        </div>
+                                        
+                                        <div class="bg-white border-2 border-blue-200 p-4 rounded-lg">
+                                            <h4 class="font-semibold text-blue-700 mb-2">CsCl Structure (8:8)</h4>
+                                            <div class="text-center mb-3">
+                                                <svg viewBox="0 0 120 120" class="w-24 h-24 mx-auto">
+                                                    <circle cx="60" cy="60" r="20" fill="#f97316"/>
+                                                    <circle cx="20" cy="20" r="10" fill="#3b82f6"/>
+                                                    <circle cx="100" cy="20" r="10" fill="#3b82f6"/>
+                                                    <circle cx="20" cy="100" r="10" fill="#3b82f6"/>
+                                                    <circle cx="100" cy="100" r="10" fill="#3b82f6"/>
+                                                </svg>
+                                            </div>
+                                            <p class="text-sm text-gray-600">Each Cs⁺ touches 8 Cl⁻<br>Each Cl⁻ touches 8 Cs⁺</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="bg-amber-50 p-4 rounded-lg">
+                                        <p class="text-amber-800"><i class="fas fa-lightbulb mr-2"></i><strong>Why the difference?</strong> Cs⁺ is larger than Na⁺, so more Cl⁻ ions can fit around it!</p>
+                                    </div>
+                                    
+                                    <button class="click-hint" onclick="nextChunk()">
+                                        <i class="fas fa-arrow-right"></i>
+                                        <span>Continue to Common Compounds →</span>
+                                    </button>
+                                </div>
+                            `
+                        }
+                    ]
+                },
+                {
+                    id: "common-compounds",
+                    title: "Common Ionic Compounds",
+                    type: "note",
+                    chunks: [
+                        {
+                            intro: "Let's learn to write formulas for common ionic compounds using the cross-multiply method!",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-calculator text-orange-500 mr-3"></i>Writing Ionic Formulae
+                                    </h3>
+                                    <p class="text-gray-700 mb-4">The formula shows the <strong>simplest ratio</strong> of ions that gives a net charge of zero.</p>
+                                    
+                                    <div class="bg-indigo-50 p-4 rounded-lg mb-4">
+                                        <h4 class="font-semibold text-indigo-800 mb-2">The Cross-Multiply Method:</h4>
+                                        <ol class="list-decimal pl-5 text-gray-700 space-y-1">
+                                            <li>Write symbols with charges: <span class="font-mono">Na⁺ + Cl⁻</span></li>
+                                            <li>Swap the charges (drop signs): <span class="font-mono">Na₁Cl₁</span></li>
+                                            <li>Simplify if needed: <span class="font-mono">NaCl</span></li>
+                                            <li>Use brackets for polyatomic ions with subscript > 1</li>
+                                        </ol>
+                                    </div>
+                                    
+                                    <div class="space-y-3">
+                                        <div class="bg-gray-50 p-4 rounded-lg border-l-4 border-green-500">
+                                            <p class="font-medium text-green-800">Sodium Chloride (NaCl)</p>
+                                            <p class="text-gray-700 font-mono">Na⁺ + Cl⁻ → NaCl</p>
+                                            <p class="text-sm text-gray-500">1:1 ratio - charges balance</p>
+                                        </div>
+                                        
+                                        <div class="bg-gray-50 p-4 rounded-lg border-l-4 border-blue-500">
+                                            <p class="font-medium text-blue-800">Magnesium Oxide (MgO)</p>
+                                            <p class="text-gray-700 font-mono">Mg²⁺ + O²⁻ → MgO</p>
+                                            <p class="text-sm text-gray-500">1:1 ratio - 2+ balances 2−</p>
+                                        </div>
+                                        
+                                        <div class="bg-gray-50 p-4 rounded-lg border-l-4 border-orange-500">
+                                            <p class="font-medium text-orange-800">Calcium Chloride (CaCl₂)</p>
+                                            <p class="text-gray-700 font-mono">Ca²⁺ + Cl⁻ → CaCl₂</p>
+                                            <p class="text-sm text-gray-500">Need 2 Cl⁻ to balance Ca²⁺</p>
+                                        </div>
+                                        
+                                        <div class="bg-gray-50 p-4 rounded-lg border-l-4 border-purple-500">
+                                            <p class="font-medium text-purple-800">Aluminium Oxide (Al₂O₃)</p>
+                                            <p class="text-gray-700 font-mono">Al³⁺ + O²⁻ → Al₂O₃</p>
+                                            <p class="text-sm text-gray-500">Cross-multiply: 2×3 = 6, 3×2 = 6</p>
+                                        </div>
+                                        
+                                        <div class="bg-gray-50 p-4 rounded-lg border-l-4 border-red-500">
+                                            <p class="font-medium text-red-800">Calcium Hydroxide (Ca(OH)₂)</p>
+                                            <p class="text-gray-700 font-mono">Ca²⁺ + OH⁻ → Ca(OH)₂</p>
+                                            <p class="text-sm text-gray-500">Brackets needed for polyatomic ion!</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            `
+                        },
+                        {
+                            intro: "Here are some important polyatomic ions you need to know:",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-atom text-orange-500 mr-3"></i>Polyatomic Ions
+                                    </h3>
+                                    <p class="text-gray-700 mb-4">These are groups of atoms that stay together and act as a single ion.</p>
+                                    
+                                    <div class="overflow-x-auto mb-4">
+                                        <table class="w-full border-collapse text-center">
+                                            <thead class="bg-orange-100">
+                                                <tr>
+                                                    <th class="border p-3">Ion</th>
+                                                    <th class="border p-3">Name</th>
+                                                    <th class="border p-3">Charge</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr class="bg-white">
+                                                    <td class="border p-3 font-mono font-bold">NH₄⁺</td>
+                                                    <td class="border p-3">Ammonium</td>
+                                                    <td class="border p-3 text-orange-600">+1</td>
+                                                </tr>
+                                                <tr class="bg-blue-50">
+                                                    <td class="border p-3 font-mono font-bold">OH⁻</td>
+                                                    <td class="border p-3">Hydroxide</td>
+                                                    <td class="border p-3 text-blue-600">−1</td>
+                                                </tr>
+                                                <tr class="bg-white">
+                                                    <td class="border p-3 font-mono font-bold">NO₃⁻</td>
+                                                    <td class="border p-3">Nitrate</td>
+                                                    <td class="border p-3 text-blue-600">−1</td>
+                                                </tr>
+                                                <tr class="bg-blue-50">
+                                                    <td class="border p-3 font-mono font-bold">CO₃²⁻</td>
+                                                    <td class="border p-3">Carbonate</td>
+                                                    <td class="border p-3 text-blue-600">−2</td>
+                                                </tr>
+                                                <tr class="bg-white">
+                                                    <td class="border p-3 font-mono font-bold">SO₄²⁻</td>
+                                                    <td class="border p-3">Sulfate</td>
+                                                    <td class="border p-3 text-blue-600">−2</td>
+                                                </tr>
+                                                <tr class="bg-blue-50">
+                                                    <td class="border p-3 font-mono font-bold">PO₄³⁻</td>
+                                                    <td class="border p-3">Phosphate</td>
+                                                    <td class="border p-3 text-blue-600">−3</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    
+                                    <button class="click-hint" onclick="nextChunk()">
+                                        <i class="fas fa-arrow-right"></i>
+                                        <span>Continue to Practice →</span>
+                                    </button>
+                                </div>
+                            `
+                        }
+                    ]
+                },
+                {
+                    id: "practice",
+                    title: "Practice Questions",
+                    type: "practice",
+                    chunks: [
+                        {
+                            intro: "Let's practice what you've learned! First, some guided questions with feedback.",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-graduation-cap text-orange-500 mr-3"></i>Guided Practice
+                                    </h3>
+                                    <p class="text-gray-700 mb-4">Write the electron configuration for these ions:</p>
+                                    
+                                    <div class="space-y-4" id="guidedPracticeContainer">
+                                        <!-- Question 1 -->
+                                        <div class="bg-gray-50 p-4 rounded-lg" id="guidedQ1">
+                                            <p class="font-medium text-gray-800 mb-2">1. What is the electron configuration of Na⁺?</p>
+                                            <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+                                                <button onclick="checkGuidedAnswer(1, '1s² 2s² 2p⁶', this)" class="practice-option text-sm">1s² 2s² 2p⁶</button>
+                                                <button onclick="checkGuidedAnswer(1, '1s² 2s² 2p⁶ 3s¹', this)" class="practice-option text-sm">1s² 2s² 2p⁶ 3s¹</button>
+                                                <button onclick="checkGuidedAnswer(1, '1s² 2s² 2p⁵', this)" class="practice-option text-sm">1s² 2s² 2p⁵</button>
+                                                <button onclick="checkGuidedAnswer(1, '[Ne]', this)" class="practice-option text-sm">[Ne]</button>
+                                            </div>
+                                            <p class="text-sm mt-2 hidden" id="guidedFeedback1"></p>
+                                        </div>
+                                        
+                                        <!-- Question 2 -->
+                                        <div class="bg-gray-50 p-4 rounded-lg" id="guidedQ2">
+                                            <p class="font-medium text-gray-800 mb-2">2. What is the electron configuration of Cl⁻?</p>
+                                            <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+                                                <button onclick="checkGuidedAnswer(2, '[Ar]', this)" class="practice-option text-sm">[Ar]</button>
+                                                <button onclick="checkGuidedAnswer(2, '[Ne] 3s² 3p⁵', this)" class="practice-option text-sm">[Ne] 3s² 3p⁵</button>
+                                                <button onclick="checkGuidedAnswer(2, '[Ne] 3s² 3p⁶', this)" class="practice-option text-sm">[Ne] 3s² 3p⁶</button>
+                                                <button onclick="checkGuidedAnswer(2, '[Kr]', this)" class="practice-option text-sm">[Kr]</button>
+                                            </div>
+                                            <p class="text-sm mt-2 hidden" id="guidedFeedback2"></p>
+                                        </div>
+                                        
+                                        <!-- Question 3 -->
+                                        <div class="bg-gray-50 p-4 rounded-lg" id="guidedQ3">
+                                            <p class="font-medium text-gray-800 mb-2">3. What is the electron configuration of Mg²⁺?</p>
+                                            <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+                                                <button onclick="checkGuidedAnswer(3, '[Ne]', this)" class="practice-option text-sm">[Ne]</button>
+                                                <button onclick="checkGuidedAnswer(3, '[Ar]', this)" class="practice-option text-sm">[Ar]</button>
+                                                <button onclick="checkGuidedAnswer(3, '1s² 2s² 2p⁶ 3s²', this)" class="practice-option text-sm">1s² 2s² 2p⁶ 3s²</button>
+                                                <button onclick="checkGuidedAnswer(3, '1s² 2s² 2p⁴', this)" class="practice-option text-sm">1s² 2s² 2p⁴</button>
+                                            </div>
+                                            <p class="text-sm mt-2 hidden" id="guidedFeedback3"></p>
+                                        </div>
+                                        
+                                        <!-- Question 4 -->
+                                        <div class="bg-gray-50 p-4 rounded-lg" id="guidedQ4">
+                                            <p class="font-medium text-gray-800 mb-2">4. What is the electron configuration of O²⁻?</p>
+                                            <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+                                                <button onclick="checkGuidedAnswer(4, '[He]', this)" class="practice-option text-sm">[He]</button>
+                                                <button onclick="checkGuidedAnswer(4, '[Ne]', this)" class="practice-option text-sm">[Ne]</button>
+                                                <button onclick="checkGuidedAnswer(4, '1s² 2s² 2p⁴', this)" class="practice-option text-sm">1s² 2s² 2p⁴</button>
+                                                <button onclick="checkGuidedAnswer(4, '[Ar]', this)" class="practice-option text-sm">[Ar]</button>
+                                            </div>
+                                            <p class="text-sm mt-2 hidden" id="guidedFeedback4"></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            `
+                        },
+                        {
+                            intro: "Now try some independent practice - predict ion charges and write formulas!",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-pen text-orange-500 mr-3"></i>Independent Practice
+                                    </h3>
+                                    <p class="text-gray-700 mb-4">Predict the ion charges and write formulas:</p>
+                                    
+                                    <div class="space-y-4" id="independentPracticeContainer">
+                                        <!-- Question 1 -->
+                                        <div class="bg-gray-50 p-4 rounded-lg" id="independentQ1">
+                                            <p class="font-medium text-gray-800 mb-2">1. What ion does Calcium (Group 2) form?</p>
+                                            <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+                                                <button onclick="checkIndependentAnswer(1, 'Ca⁺', this)" class="practice-option text-sm">Ca⁺</button>
+                                                <button onclick="checkIndependentAnswer(1, 'Ca²⁺', this)" class="practice-option text-sm">Ca²⁺</button>
+                                                <button onclick="checkIndependentAnswer(1, 'Ca³⁺', this)" class="practice-option text-sm">Ca³⁺</button>
+                                                <button onclick="checkIndependentAnswer(1, 'Ca²⁻', this)" class="practice-option text-sm">Ca²⁻</button>
+                                            </div>
+                                            <p class="text-sm mt-2 hidden" id="independentFeedback1"></p>
+                                        </div>
+                                        
+                                        <!-- Question 2 -->
+                                        <div class="bg-gray-50 p-4 rounded-lg" id="independentQ2">
+                                            <p class="font-medium text-gray-800 mb-2">2. What is the formula for aluminium oxide?</p>
+                                            <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+                                                <button onclick="checkIndependentAnswer(2, 'AlO', this)" class="practice-option text-sm">AlO</button>
+                                                <button onclick="checkIndependentAnswer(2, 'AlO₂', this)" class="practice-option text-sm">AlO₂</button>
+                                                <button onclick="checkIndependentAnswer(2, 'Al₂O₃', this)" class="practice-option text-sm">Al₂O₃</button>
+                                                <button onclick="checkIndependentAnswer(2, 'Al₃O₂', this)" class="practice-option text-sm">Al₃O₂</button>
+                                            </div>
+                                            <p class="text-sm mt-2 hidden" id="independentFeedback2"></p>
+                                        </div>
+                                        
+                                        <!-- Question 3 -->
+                                        <div class="bg-gray-50 p-4 rounded-lg" id="independentQ3">
+                                            <p class="font-medium text-gray-800 mb-2">3. What is the formula for magnesium chloride?</p>
+                                            <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+                                                <button onclick="checkIndependentAnswer(3, 'MgCl', this)" class="practice-option text-sm">MgCl</button>
+                                                <button onclick="checkIndependentAnswer(3, 'MgCl₂', this)" class="practice-option text-sm">MgCl₂</button>
+                                                <button onclick="checkIndependentAnswer(3, 'Mg₂Cl', this)" class="practice-option text-sm">Mg₂Cl</button>
+                                                <button onclick="checkIndependentAnswer(3, 'Mg₂Cl₂', this)" class="practice-option text-sm">Mg₂Cl₂</button>
+                                            </div>
+                                            <p class="text-sm mt-2 hidden" id="independentFeedback3"></p>
+                                        </div>
+                                        
+                                        <!-- Question 4 -->
+                                        <div class="bg-gray-50 p-4 rounded-lg" id="independentQ4">
+                                            <p class="font-medium text-gray-800 mb-2">4. What ion does Sulfur (Group 6) form?</p>
+                                            <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+                                                <button onclick="checkIndependentAnswer(4, 'S⁺', this)" class="practice-option text-sm">S⁺</button>
+                                                <button onclick="checkIndependentAnswer(4, 'S²⁺', this)" class="practice-option text-sm">S²⁺</button>
+                                                <button onclick="checkIndependentAnswer(4, 'S⁻', this)" class="practice-option text-sm">S⁻</button>
+                                                <button onclick="checkIndependentAnswer(4, 'S²⁻', this)" class="practice-option text-sm">S²⁻</button>
+                                            </div>
+                                            <p class="text-sm mt-2 hidden" id="independentFeedback4"></p>
+                                        </div>
+                                        
+                                        <!-- Question 5 -->
+                                        <div class="bg-gray-50 p-4 rounded-lg" id="independentQ5">
+                                            <p class="font-medium text-gray-800 mb-2">5. What is the formula for sodium sulfate?</p>
+                                            <div class="grid grid-cols-2 gap-2">
+                                                <button onclick="checkIndependentAnswer(5, 'NaSO₄', this)" class="practice-option text-sm">NaSO₄</button>
+                                                <button onclick="checkIndependentAnswer(5, 'Na₂SO₄', this)" class="practice-option text-sm">Na₂SO₄</button>
+                                                <button onclick="checkIndependentAnswer(5, 'Na(SO₄)₂', this)" class="practice-option text-sm">Na(SO₄)₂</button>
+                                                <button onclick="checkIndependentAnswer(5, 'NaSO₄₂', this)" class="practice-option text-sm">NaSO₄₂</button>
+                                            </div>
+                                            <p class="text-sm mt-2 hidden" id="independentFeedback5"></p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div id="practiceComplete" class="hidden mt-6">
+                                        <div class="step-complete-hint">
+                                            <i class="fas fa-check-circle text-green-500 text-2xl mb-2"></i>
+                                            <p class="font-semibold">Practice Complete!</p>
+                                            <p class="text-sm">You've answered all practice questions. Take the quiz to test your knowledge!</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <button class="click-hint" onclick="nextChunk()">
+                                        <i class="fas fa-arrow-right"></i>
+                                        <span>Continue to Summary →</span>
+                                    </button>
+                                </div>
+                            `
+                        }
+                    ]
+                },
+                {
+                    id: "summary",
+                    title: "Summary & Quiz",
+                    type: "note",
+                    chunks: [
+                        {
+                            intro: "Let's summarize what you've learned about ionic bonding!",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-clipboard-check text-orange-500 mr-3"></i>Key Takeaways
+                                    </h3>
+                                    
+                                    <div class="space-y-3 mb-4">
+                                        <div class="bg-orange-50 p-3 rounded-lg border-l-4 border-orange-500">
+                                            <p class="text-gray-800"><strong>1. Ionic Bond Definition:</strong> Electrostatic attraction between oppositely charged ions formed by electron transfer.</p>
+                                        </div>
+                                        
+                                        <div class="bg-blue-50 p-3 rounded-lg border-l-4 border-blue-500">
+                                            <p class="text-gray-800"><strong>2. Ion Formation:</strong> Metals lose electrons (cation +), Non-metals gain electrons (anion −)</p>
+                                        </div>
+                                        
+                                        <div class="bg-green-50 p-3 rounded-lg border-l-4 border-green-500">
+                                            <p class="text-gray-800"><strong>3. Formula Writing:</strong> Use cross-multiply method to balance charges</p>
+                                        </div>
+                                        
+                                        <div class="bg-purple-50 p-3 rounded-lg border-l-4 border-purple-500">
+                                            <p class="text-gray-800"><strong>4. Properties:</strong> High MP, soluble in water, conduct when molten/aqueous, brittle</p>
+                                        </div>
+                                        
+                                        <div class="bg-red-50 p-3 rounded-lg border-l-4 border-red-500">
+                                            <p class="text-gray-800"><strong>5. Structure:</strong> Giant ionic lattice with ions arranged in 3D pattern</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="bg-gradient-to-r from-orange-100 to-amber-100 p-4 rounded-lg mb-4">
+                                        <h4 class="font-semibold text-orange-800 mb-2">WAEC Exam Tips:</h4>
+                                        <ul class="text-gray-700 space-y-1">
+                                            <li>• Know common ions and charges by heart</li>
+                                            <li>• Practice drawing dot-cross diagrams</li>
+                                            <li>• Understand why ionic compounds have high MP</li>
+                                            <li>• Remember: conduct ONLY when molten or dissolved!</li>
+                                        </ul>
+                                    </div>
+                                    
+                                    <a href="covalent-bonding.html" class="inline-flex items-center gap-2 text-orange-600 font-medium hover:text-orange-700 mb-4">
+                                        <i class="fas fa-arrow-right"></i>
+                                        Continue to: Covalent Bonding →
+                                    </a>
+                                </div>
+                            `
+                        },
+                        {
+                            intro: "Ready to test your knowledge? Take the quiz!",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-question-circle text-orange-500 mr-3"></i>Topic Quiz
+                                    </h3>
+                                    <p class="text-gray-700 mb-4">Test your understanding of ionic bonding with 10 questions!</p>
+                                    
+                                    <div class="bg-gradient-to-r from-orange-50 to-amber-50 p-6 rounded-lg text-center">
+                                        <i class="fas fa-clipboard-list text-orange-500 text-4xl mb-4"></i>
+                                        <h4 class="font-semibold text-gray-800 mb-2">Ionic Bonding Quiz</h4>
+                                        <p class="text-gray-600 mb-4">10 questions covering ion formation, formulas, properties, and dot-cross diagrams</p>
+                                        <button onclick="startQuiz()" class="px-8 py-3 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition font-semibold">
+                                            <i class="fas fa-play mr-2"></i>Start Quiz
+                                        </button>
+                                    </div>
+                                    
+                                    <div class="mt-4 grid md:grid-cols-2 gap-4">
+                                        <div class="bg-blue-50 p-4 rounded-lg">
+                                            <h4 class="font-semibold text-blue-800 mb-2">Practice Score</h4>
+                                            <p class="text-2xl font-bold text-blue-600" id="finalPracticeScore">--</p>
+                                        </div>
+                                        <div class="bg-green-50 p-4 rounded-lg">
+                                            <h4 class="font-semibold text-green-800 mb-2">Combined Score</h4>
+                                            <p class="text-2xl font-bold text-green-600" id="finalCombinedScore">--</p>
+                                            <p class="text-xs text-gray-500">40% Practice + 60% Quiz</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            `
+                        }
+                    ]
+                }
+            ]
+        };
+        
+        // Quiz questions
+        const quizQuestions = [
+            {
+                question: "What type of elements typically form cations?",
+                options: ["Non-metals", "Metals", "Noble gases", "Metalloids"],
+                correct: 1,
+                explanation: "Metals have low ionization energies and lose electrons easily to form cations."
+            },
+            {
+                question: "What is the electron configuration of Na⁺?",
+                options: ["1s² 2s² 2p⁶ 3s¹", "1s² 2s² 2p⁶", "[Ne] 3s¹", "[Ar]"],
+                correct: 1,
+                explanation: "Na⁺ has lost its 3s¹ electron, leaving it with the electron configuration of neon: 1s² 2s² 2p⁶."
+            },
+            {
+                question: "What is the formula for calcium chloride?",
+                options: ["CaCl", "CaCl₂", "Ca₂Cl", "Ca₂Cl₂"],
+                correct: 1,
+                explanation: "Ca²⁺ needs two Cl⁻ ions to balance the charge: Ca²⁺ + 2Cl⁻ → CaCl₂"
+            },
+            {
+                question: "Why do ionic compounds have high melting points?",
+                options: ["They have weak bonds", "They have strong covalent bonds", "Strong electrostatic forces require lots of energy to break", "They are molecular compounds"],
+                correct: 2,
+                explanation: "The strong electrostatic attraction between oppositely charged ions in the lattice requires large amounts of energy to overcome."
+            },
+            {
+                question: "When can solid ionic compounds conduct electricity?",
+                options: ["Always", "Never", "When heated", "Only when molten or dissolved"],
+                correct: 1,
+                explanation: "Solid ionic compounds cannot conduct because ions are locked in fixed positions. They conduct only when molten or dissolved, when ions are free to move."
+            },
+            {
+                question: "What charge does an aluminium ion have?",
+                options: ["Al⁺", "Al²⁺", "Al³⁺", "Al³⁻"],
+                correct: 2,
+                explanation: "Aluminium is in Group 3 and loses 3 electrons to achieve an octet, forming Al³⁺."
+            },
+            {
+                question: "What is the formula for aluminium oxide?",
+                options: ["AlO", "AlO₂", "Al₂O₃", "Al₃O₂"],
+                correct: 2,
+                explanation: "Al³⁺ and O²⁻: cross-multiply charges to get Al₂O₃ (2×3 = 6, 3×2 = 6)"
+            },
+            {
+                question: "What happens when a chlorine atom becomes a chloride ion?",
+                options: ["It loses 1 electron", "It gains 1 electron", "It loses 7 electrons", "It gains 7 electrons"],
+                correct: 1,
+                explanation: "Chlorine (2,8,7) gains 1 electron to achieve an octet, becoming Cl⁻ (2,8,8)."
+            },
+            {
+                question: "Why are ionic compounds brittle?",
+                options: ["They have weak bonds", "Like charges repel when layers shift", "They are soft", "They contain water molecules"],
+                correct: 1,
+                explanation: "When layers in the lattice shift, like-charged ions align and repel each other, causing the crystal to crack."
+            },
+            {
+                question: "What is the coordination number in NaCl structure?",
+                options: ["4", "6", "8", "12"],
+                correct: 1,
+                explanation: "In NaCl, each Na⁺ ion is surrounded by 6 Cl⁻ ions, and each Cl⁻ is surrounded by 6 Na⁺ ions."
+            }
+        ];
+        
+        let currentQuizIndex = 0;
+        let quizScore = 0;
+        let quizAnswers = [];
+        let practiceQuestionsAnswered = 0;
+        const totalPracticeQuestions = 9;
+        
+        // Initialize the page
+        function init() {
+            renderStepsList();
+            loadProgress();
+            renderCurrentStep();
+            setupEventListeners();
+            updateScores();
+        }
+        
+        // Render steps list
+        function renderStepsList() {
+            const stepsList = document.getElementById('stepsList');
+            const mobileStepsList = document.getElementById('mobileStepsList');
+            
+            let html = '';
+            topicData.steps.forEach((step, index) => {
+                const isComplete = stepsCompleted.includes(index);
+                const isCurrent = index === currentStepIndex;
+                
+                html += `
+                    <li class="step-item ${isCurrent ? 'bg-orange-50 border-l-2 border-orange-500 -ml-1 pl-1' : ''}" data-step="${index}">
+                        <button onclick="goToStep(${index})" class="w-full text-left px-3 py-2 rounded flex items-center gap-2 ${isCurrent ? 'font-semibold text-orange-700' : 'text-gray-600 hover:bg-gray-100'}">
+                            <span class="w-6 h-6 rounded-full flex items-center justify-center text-xs ${isComplete ? 'bg-green-500 text-white' : isCurrent ? 'bg-orange-500 text-white' : 'bg-gray-200 text-gray-600'}">
+                                ${isComplete ? '<i class="fas fa-check"></i>' : index + 1}
+                            </span>
+                            <span class="text-sm truncate">${step.title}</span>
+                        </button>
+                    </li>
+                `;
+            });
+            
+            stepsList.innerHTML = html;
+            mobileStepsList.innerHTML = html;
+        }
+        
+        // Render current step
+        function renderCurrentStep() {
+            const step = topicData.steps[currentStepIndex];
+            const chunk = step.chunks[currentChunkIndex];
+            const container = document.getElementById('stepContainer');
+            
+            // Animate in
+            container.classList.remove('animate-fade-in-up');
+            void container.offsetWidth; // Trigger reflow
+            container.classList.add('animate-fade-in-up');
+            
+            let html = `
+                <div class="mb-4 text-sm text-gray-500">
+                    Step ${currentStepIndex + 1} of ${topicData.steps.length}: <span class="font-medium text-gray-700">${step.title}</span>
+                </div>
+            `;
+            
+            if (chunk.intro) {
+                html += `<p class="text-gray-600 mb-4 bg-orange-50 p-3 rounded-lg border-l-4 border-orange-300">${chunk.intro}</p>`;
+            }
+            
+            html += chunk.content;
+            
+            container.innerHTML = html;
+            
+            // Initialize any interactive elements
+            if (currentStepIndex === 1) {
+                setTimeout(() => showIonFormation('Na'), 100);
+            } else if (currentStepIndex === 2 && currentChunkIndex === 1) {
+                setTimeout(() => showDotCross('NaCl'), 100);
+            }
+            
+            updateProgress();
+            updateNavigationButtons();
+        }
+        
+        // Navigation
+        function nextChunk() {
+            const step = topicData.steps[currentStepIndex];
+            if (currentChunkIndex < step.chunks.length - 1) {
+                currentChunkIndex++;
+                renderCurrentStep();
+            } else {
+                // Mark step as complete
+                if (!stepsCompleted.includes(currentStepIndex)) {
+                    stepsCompleted.push(currentStepIndex);
+                    saveProgress();
+                    renderStepsList();
+                }
+                
+                // Go to next step
+                if (currentStepIndex < topicData.steps.length - 1) {
+                    currentStepIndex++;
+                    currentChunkIndex = 0;
+                    renderCurrentStep();
+                    renderStepsList();
+                }
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        function goToStep(index) {
+            currentStepIndex = index;
+            currentChunkIndex = 0;
+            renderCurrentStep();
+            renderStepsList();
+            closeMobileSidebar();
+        }
+        
+        function updateNavigationButtons() {
+            const prevBtn = document.getElementById('prevStepBtn');
+            const nextBtn = document.getElementById('nextStepBtn');
+            
+            prevBtn.disabled = currentStepIndex === 0 && currentChunkIndex === 0;
+            
+            const isLastStep = currentStepIndex === topicData.steps.length - 1;
+            const isLastChunk = currentChunkIndex === topicData.steps[currentStepIndex].chunks.length - 1;
+            nextBtn.disabled = isLastStep && isLastChunk;
+        }
+        
+        // Progress management
+        function updateProgress() {
+            const totalChunks = topicData.steps.reduce((sum, step) => sum + step.chunks.length, 0);
+            let completedChunks = 0;
+            
+            for (let i = 0; i < currentStepIndex; i++) {
+                completedChunks += topicData.steps[i].chunks.length;
+            }
+            completedChunks += currentChunkIndex;
+            
+            const percent = Math.round((completedChunks / totalChunks) * 100);
+            document.getElementById('progressPercent').textContent = percent + '%';
+            document.getElementById('progressBar').style.width = percent + '%';
+        }
+        
+        function saveProgress() {
+            try {
+                localStorage.setItem('ionicBonding_stepProgress', JSON.stringify({
+                    currentStepIndex,
+                    currentChunkIndex,
+                    stepsCompleted
+                }));
+            } catch (e) {}
+        }
+        
+        function loadProgress() {
+            try {
+                const saved = localStorage.getItem('ionicBonding_stepProgress');
+                if (saved) {
+                    const data = JSON.parse(saved);
+                    currentStepIndex = data.currentStepIndex || 0;
+                    currentChunkIndex = data.currentChunkIndex || 0;
+                    stepsCompleted = data.stepsCompleted || [];
+                }
+            } catch (e) {}
+        }
+        
+        // Ion Formation Visualization
+        function showIonFormation(element) {
+            const data = elementData[element];
+            if (!data) return;
+            
+            // Update button states
+            document.querySelectorAll('.ion-btn').forEach(btn => {
+                btn.classList.remove('bg-orange-100', 'text-orange-700', 'active');
+                btn.classList.add('bg-gray-100', 'text-gray-700');
+            });
+            document.querySelector(`.ion-btn[data-element="${element}"]`).classList.remove('bg-gray-100', 'text-gray-700');
+            document.querySelector(`.ion-btn[data-element="${element}"]`).classList.add('bg-orange-100', 'text-orange-700', 'active');
+            
+            const isCation = data.group <= 3;
+            const electronChange = isCation ? 
+                (data.group === 1 ? 'loses 1 e⁻' : data.group === 2 ? 'loses 2 e⁻' : 'loses 3 e⁻') :
+                (data.group === 7 ? 'gains 1 e⁻' : data.group === 6 ? 'gains 2 e⁻' : 'gains 3 e⁻');
+            
+            const viz = document.getElementById('ionFormationViz');
+            viz.innerHTML = `
+                <div class="grid md:grid-cols-3 gap-4 items-center">
+                    <div class="text-center bg-${isCation ? 'orange' : 'blue'}-50 p-4 rounded-lg">
+                        <div class="ion-badge ${isCation ? 'cation-color' : 'anion-color'} text-white text-xl mb-2 mx-auto">${data.symbol}</div>
+                        <p class="font-bold text-gray-800">${data.name} Atom</p>
+                        <p class="text-sm text-gray-600">Electron config: ${data.config}</p>
+                        <p class="text-sm text-gray-600">Shells: ${data.shells.join(',')}</p>
+                        <p class="text-xs text-gray-500 mt-1">${data.z} protons, ${data.z} electrons</p>
+                    </div>
+                    
+                    <div class="text-center">
+                        <div class="text-3xl mb-2">${isCation ? '→' : '←'}</div>
+                        <p class="font-bold text-${isCation ? 'orange' : 'blue'}-600">${electronChange}</p>
+                        <div class="mt-2">
+                            <i class="fas fa-electron text-yellow-500 text-2xl electron-transfer-anim"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="text-center bg-green-50 p-4 rounded-lg border-2 border-green-300">
+                        <div class="ion-badge ${isCation ? 'cation-color' : 'anion-color'} text-white text-xl mb-2 mx-auto">${data.ion}</div>
+                        <p class="font-bold text-gray-800">${data.name}${isCation ? '' : 'ide'} Ion</p>
+                        <p class="text-sm text-gray-600">Electron config: ${data.ionConfig}</p>
+                        <p class="text-sm text-green-600 font-semibold">Stable octet!</p>
+                        <p class="text-xs text-gray-500 mt-1">${data.z} protons, ${data.z + (isCation ? -data.group : (8-data.group) % 8 || -1)} electrons</p>
+                    </div>
+                </div>
+            `;
+        }
+        
+        // Dot and Cross Diagram
+        function showDotCross(compound) {
+            // Update button states
+            document.querySelectorAll('.dotcross-btn').forEach(btn => {
+                btn.classList.remove('bg-orange-100', 'text-orange-700', 'active');
+                btn.classList.add('bg-gray-100', 'text-gray-700');
+            });
+            event.target.classList.remove('bg-gray-100', 'text-gray-700');
+            event.target.classList.add('bg-orange-100', 'text-orange-700', 'active');
+            
+            const container = document.getElementById('dotCrossDiagram');
+            
+            const diagrams = {
+                'NaCl': `
+                    <div class="text-center">
+                        <h4 class="font-semibold text-gray-800 mb-4">Formation of Sodium Chloride (NaCl)</h4>
+                        <div class="flex items-center justify-center gap-4 flex-wrap">
+                            <div class="text-center bg-orange-50 p-4 rounded-lg">
+                                <p class="font-bold text-orange-700 mb-2">Na</p>
+                                <div class="relative w-20 h-20 mx-auto">
+                                    <div class="absolute inset-0 border-2 border-dashed border-orange-300 rounded-full"></div>
+                                    <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-orange-500 font-bold">•</div>
+                                </div>
+                                <p class="text-xs text-gray-600 mt-2">2,8,1</p>
+                            </div>
+                            <div class="text-2xl">+</div>
+                            <div class="text-center bg-blue-50 p-4 rounded-lg">
+                                <p class="font-bold text-blue-700 mb-2">Cl</p>
+                                <div class="relative w-24 h-24 mx-auto">
+                                    <div class="absolute inset-0 border-2 border-dashed border-blue-300 rounded-full"></div>
+                                    <div class="absolute top-2 left-1/2 transform -translate-x-1/2 text-blue-500 text-xs">×</div>
+                                    <div class="absolute top-1/2 left-1 text-blue-500 text-xs">×</div>
+                                    <div class="absolute top-1/2 right-1 text-blue-500 text-xs">×</div>
+                                    <div class="absolute bottom-2 left-1/2 transform -translate-x-1/2 text-blue-500 text-xs">×</div>
+                                    <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-blue-500 text-lg">××</div>
+                                </div>
+                                <p class="text-xs text-gray-600 mt-2">2,8,7</p>
+                            </div>
+                            <div class="text-2xl">→</div>
+                            <div class="text-center bg-green-50 p-3 rounded-lg border-2 border-green-300">
+                                <p class="font-bold text-orange-600">Na⁺</p>
+                                <p class="text-xs">[2,8]⁺</p>
+                            </div>
+                            <div class="text-2xl">+</div>
+                            <div class="text-center bg-green-50 p-3 rounded-lg border-2 border-green-300">
+                                <p class="font-bold text-blue-600">Cl⁻</p>
+                                <p class="text-xs">[2,8,8]⁻</p>
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-600 mt-4">The • electron from Na transfers to Cl, giving both ions stable octets</p>
+                    </div>
+                `,
+                'MgO': `
+                    <div class="text-center">
+                        <h4 class="font-semibold text-gray-800 mb-4">Formation of Magnesium Oxide (MgO)</h4>
+                        <div class="flex items-center justify-center gap-4 flex-wrap">
+                            <div class="text-center bg-orange-50 p-4 rounded-lg">
+                                <p class="font-bold text-orange-700 mb-2">Mg</p>
+                                <div class="relative w-24 h-24 mx-auto">
+                                    <div class="absolute inset-0 border-2 border-dashed border-orange-300 rounded-full"></div>
+                                    <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-orange-500 font-bold">••</div>
+                                </div>
+                                <p class="text-xs text-gray-600 mt-2">2,8,2</p>
+                            </div>
+                            <div class="text-2xl">+</div>
+                            <div class="text-center bg-blue-50 p-4 rounded-lg">
+                                <p class="font-bold text-blue-700 mb-2">O</p>
+                                <div class="relative w-20 h-20 mx-auto">
+                                    <div class="absolute inset-0 border-2 border-dashed border-blue-300 rounded-full"></div>
+                                    <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-blue-500">××</div>
+                                </div>
+                                <p class="text-xs text-gray-600 mt-2">2,6</p>
+                            </div>
+                            <div class="text-2xl">→</div>
+                            <div class="text-center bg-green-50 p-3 rounded-lg border-2 border-green-300">
+                                <p class="font-bold text-orange-600">Mg²⁺</p>
+                                <p class="text-xs">[2,8]²⁺</p>
+                            </div>
+                            <div class="text-2xl">+</div>
+                            <div class="text-center bg-green-50 p-3 rounded-lg border-2 border-green-300">
+                                <p class="font-bold text-blue-600">O²⁻</p>
+                                <p class="text-xs">[2,8]²⁻</p>
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-600 mt-4">Mg loses 2 electrons, O gains 2 electrons - both achieve stable octets</p>
+                    </div>
+                `,
+                'CaCl2': `
+                    <div class="text-center">
+                        <h4 class="font-semibold text-gray-800 mb-4">Formation of Calcium Chloride (CaCl₂)</h4>
+                        <div class="flex items-center justify-center gap-4 flex-wrap">
+                            <div class="text-center bg-orange-50 p-4 rounded-lg">
+                                <p class="font-bold text-orange-700 mb-2">Ca</p>
+                                <p class="text-xs text-gray-600">2,8,8,2</p>
+                                <p class="text-sm text-orange-600">loses 2 e⁻</p>
+                            </div>
+                            <div class="text-2xl">+</div>
+                            <div class="text-center bg-blue-50 p-4 rounded-lg">
+                                <p class="font-bold text-blue-700 mb-2">2Cl</p>
+                                <p class="text-xs text-gray-600">each 2,8,7</p>
+                                <p class="text-sm text-blue-600">each gains 1 e⁻</p>
+                            </div>
+                            <div class="text-2xl">→</div>
+                            <div class="text-center bg-green-50 p-3 rounded-lg border-2 border-green-300">
+                                <p class="font-bold text-orange-600">Ca²⁺</p>
+                                <p class="text-xs">[Ar]²⁺</p>
+                            </div>
+                            <div class="text-2xl">+</div>
+                            <div class="text-center bg-green-50 p-3 rounded-lg border-2 border-green-300">
+                                <p class="font-bold text-blue-600">2Cl⁻</p>
+                                <p class="text-xs">each [Ar]⁻</p>
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-600 mt-4">One Ca²⁺ needs two Cl⁻ ions to balance the charge</p>
+                    </div>
+                `,
+                'MgCl2': `
+                    <div class="text-center">
+                        <h4 class="font-semibold text-gray-800 mb-4">Formation of Magnesium Chloride (MgCl₂)</h4>
+                        <div class="flex items-center justify-center gap-4 flex-wrap">
+                            <div class="text-center bg-orange-50 p-4 rounded-lg">
+                                <p class="font-bold text-orange-700 mb-2">Mg</p>
+                                <p class="text-xs text-gray-600">2,8,2</p>
+                                <p class="text-sm text-orange-600">loses 2 e⁻</p>
+                            </div>
+                            <div class="text-2xl">+</div>
+                            <div class="text-center bg-blue-50 p-4 rounded-lg">
+                                <p class="font-bold text-blue-700 mb-2">2Cl</p>
+                                <p class="text-xs text-gray-600">each 2,8,7</p>
+                                <p class="text-sm text-blue-600">each gains 1 e⁻</p>
+                            </div>
+                            <div class="text-2xl">→</div>
+                            <div class="text-center bg-green-50 p-3 rounded-lg border-2 border-green-300">
+                                <p class="font-bold text-orange-600">Mg²⁺</p>
+                                <p class="text-xs">[Ne]²⁺</p>
+                            </div>
+                            <div class="text-2xl">+</div>
+                            <div class="text-center bg-green-50 p-3 rounded-lg border-2 border-green-300">
+                                <p class="font-bold text-blue-600">2Cl⁻</p>
+                                <p class="text-xs">each [Ar]⁻</p>
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-600 mt-4">Mg²⁺ needs two Cl⁻ to balance - formula MgCl₂</p>
+                    </div>
+                `
+            };
+            
+            container.innerHTML = diagrams[compound] || '';
+        }
+        
+        // Practice Question Handlers
+        function checkGuidedAnswer(questionNum, answer, btn) {
+            const correctAnswers = {
+                1: ['1s² 2s² 2p⁶', '[Ne]'],
+                2: ['[Ar]', '[Ne] 3s² 3p⁶'],
+                3: ['[Ne]'],
+                4: ['[Ne]']
+            };
+            
+            const feedbacks = {
+                1: { correct: 'Correct! Na⁺ has lost its 3s¹ electron, leaving [Ne] configuration.', incorrect: 'Incorrect. Na loses its 3s¹ electron to form Na⁺ with [Ne] configuration.' },
+                2: { correct: 'Correct! Cl⁻ gains 1 electron to achieve [Ar] configuration.', incorrect: 'Incorrect. Cl gains 1 electron to form Cl⁻ with [Ar] configuration.' },
+                3: { correct: 'Correct! Mg²⁺ loses 2 electrons to achieve [Ne] configuration.', incorrect: 'Incorrect. Mg loses 2 electrons to form Mg²⁺ with [Ne] configuration.' },
+                4: { correct: 'Correct! O²⁻ gains 2 electrons to achieve [Ne] configuration.', incorrect: 'Incorrect. O gains 2 electrons to form O²⁻ with [Ne] configuration.' }
+            };
+            
+            const isCorrect = correctAnswers[questionNum].includes(answer);
+            
+            // Update button styles
+            const container = document.getElementById(`guidedQ${questionNum}`);
+            container.querySelectorAll('.practice-option').forEach(b => {
+                b.classList.remove('selected', 'correct', 'incorrect');
+                if (correctAnswers[questionNum].includes(b.textContent)) {
+                    b.classList.add('correct');
+                }
+            });
+            btn.classList.add(isCorrect ? 'correct' : 'incorrect');
+            
+            // Show feedback
+            const feedback = document.getElementById(`guidedFeedback${questionNum}`);
+            feedback.textContent = isCorrect ? feedbacks[questionNum].correct : feedbacks[questionNum].incorrect;
+            feedback.className = `text-sm mt-2 ${isCorrect ? 'text-green-600' : 'text-red-600'}`;
+            feedback.classList.remove('hidden');
+            
+            // Record answer
+            PracticeTracker.recordAnswer('guided', questionNum, isCorrect, { answer });
+            practiceQuestionsAnswered++;
+            checkPracticeComplete();
+        }
+        
+        function checkIndependentAnswer(questionNum, answer, btn) {
+            const correctAnswers = {
+                1: 'Ca²⁺',
+                2: 'Al₂O₃',
+                3: 'MgCl₂',
+                4: 'S²⁻',
+                5: 'Na₂SO₄'
+            };
+            
+            const feedbacks = {
+                1: { correct: 'Correct! Group 2 elements lose 2 electrons to form 2+ ions.', incorrect: 'Incorrect. Group 2 elements have 2 valence electrons and lose both to form 2+ ions.' },
+                2: { correct: 'Correct! Al³⁺ and O²⁻ cross-multiply to give Al₂O₃.', incorrect: 'Incorrect. Al³⁺ and O²⁻ need to balance: Al₂O₃.' },
+                3: { correct: 'Correct! Mg²⁺ needs 2 Cl⁻ ions to balance the charge.', incorrect: 'Incorrect. Mg²⁺ + 2Cl⁻ → MgCl₂.' },
+                4: { correct: 'Correct! Group 6 elements gain 2 electrons to form 2- ions.', incorrect: 'Incorrect. Group 6 elements gain 2 electrons to achieve octet.' },
+                5: { correct: 'Correct! Na⁺ and SO₄²⁻ give Na₂SO₄.', incorrect: 'Incorrect. 2 Na⁺ are needed for each SO₄²⁻: Na₂SO₄.' }
+            };
+            
+            const isCorrect = answer === correctAnswers[questionNum];
+            
+            // Update button styles
+            const container = document.getElementById(`independentQ${questionNum}`);
+            container.querySelectorAll('.practice-option').forEach(b => {
+                b.classList.remove('selected', 'correct', 'incorrect');
+                if (b.textContent === correctAnswers[questionNum]) {
+                    b.classList.add('correct');
+                }
+            });
+            btn.classList.add(isCorrect ? 'correct' : 'incorrect');
+            
+            // Show feedback
+            const feedback = document.getElementById(`independentFeedback${questionNum}`);
+            feedback.textContent = isCorrect ? feedbacks[questionNum].correct : feedbacks[questionNum].incorrect;
+            feedback.className = `text-sm mt-2 ${isCorrect ? 'text-green-600' : 'text-red-600'}`;
+            feedback.classList.remove('hidden');
+            
+            // Record answer
+            PracticeTracker.recordAnswer('independent', questionNum, isCorrect, { answer });
+            practiceQuestionsAnswered++;
+            checkPracticeComplete();
+        }
+        
+        function checkPracticeComplete() {
+            if (practiceQuestionsAnswered >= totalPracticeQuestions) {
+                document.getElementById('practiceComplete').classList.remove('hidden');
+                updateScores();
+            }
+        }
+        
+        function updateScores() {
+            const scores = PracticeTracker.getCombinedScore();
+            if (scores.practice !== null) {
+                document.getElementById('finalPracticeScore').textContent = scores.practice + '%';
+            }
+            if (scores.combined !== null) {
+                document.getElementById('finalCombinedScore').textContent = scores.combined + '%';
+            }
+        }
+        
+        // Quiz Functions
+        function startQuiz() {
+            currentQuizIndex = 0;
+            quizScore = 0;
+            quizAnswers = [];
+            document.getElementById('quizModal').classList.remove('hidden');
+            document.getElementById('quizModal').classList.add('flex');
+            renderQuizQuestion();
+        }
+        
+        function closeQuiz() {
+            document.getElementById('quizModal').classList.add('hidden');
+            document.getElementById('quizModal').classList.remove('flex');
+        }
+        
+        function renderQuizQuestion() {
+            const q = quizQuestions[currentQuizIndex];
+            const total = quizQuestions.length;
+            
+            document.getElementById('quizQuestionCount').textContent = `Question ${currentQuizIndex + 1} of ${total}`;
+            document.getElementById('quizScoreDisplay').textContent = `Score: ${quizScore}`;
+            document.getElementById('quizProgressBar').style.width = `${((currentQuizIndex + 1) / total) * 100}%`;
+            
+            let html = `
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">${q.question}</h3>
+                <div class="space-y-3">
+            `;
+            
+            q.options.forEach((opt, i) => {
+                html += `
+                    <button onclick="selectQuizAnswer(${i})" class="quiz-option w-full text-left p-4 rounded-lg border-2 border-gray-200 hover:border-orange-300 hover:bg-orange-50 transition" id="quizOpt${i}">
+                        <span class="font-medium mr-2">${String.fromCharCode(65 + i)}.</span>${opt}
+                    </button>
+                `;
+            });
+            
+            html += `
+                </div>
+                <div id="quizExplanation" class="mt-4 p-4 rounded-lg hidden"></div>
+            `;
+            
+            document.getElementById('quizContent').innerHTML = html;
+            document.getElementById('quizPrevBtn').disabled = currentQuizIndex === 0;
+            document.getElementById('quizNextBtn').disabled = true;
+        }
+        
+        function selectQuizAnswer(index) {
+            const q = quizQuestions[currentQuizIndex];
+            const isCorrect = index === q.correct;
+            
+            // Record answer
+            quizAnswers.push({ questionIndex: currentQuizIndex, selected: index, correct: isCorrect });
+            
+            if (isCorrect) quizScore++;
+            
+            // Show result
+            document.querySelectorAll('.quiz-option').forEach((opt, i) => {
+                opt.classList.remove('border-orange-500', 'bg-orange-50');
+                if (i === q.correct) {
+                    opt.classList.add('border-green-500', 'bg-green-50');
+                } else if (i === index && !isCorrect) {
+                    opt.classList.add('border-red-500', 'bg-red-50');
+                }
+                opt.disabled = true;
+            });
+            
+            // Show explanation
+            const explanation = document.getElementById('quizExplanation');
+            explanation.innerHTML = `
+                <div class="${isCorrect ? 'bg-green-50 text-green-800' : 'bg-red-50 text-red-800'}">
+                    <p class="font-semibold mb-1">${isCorrect ? '✓ Correct!' : '✗ Incorrect'}</p>
+                    <p class="text-sm">${q.explanation}</p>
+                </div>
+            `;
+            explanation.classList.remove('hidden');
+            
+            document.getElementById('quizNextBtn').disabled = false;
+        }
+        
+        function quizNext() {
+            if (currentQuizIndex < quizQuestions.length - 1) {
+                currentQuizIndex++;
+                renderQuizQuestion();
+            } else {
+                // Quiz complete
+                finishQuiz();
+            }
+        }
+        
+        function quizPrev() {
+            if (currentQuizIndex > 0) {
+                currentQuizIndex--;
+                renderQuizQuestion();
+            }
+        }
+        
+        function finishQuiz() {
+            // Record quiz score
+            PracticeTracker.recordQuizScore(quizScore, quizQuestions.length);
+            
+            // Save to ChemistryQuiz
+            if (window.ChemistryQuiz) {
+                ChemistryQuiz.saveQuizResult({
+                    topicId: 'ionic-bonding',
+                    topicTitle: 'Ionic Bonding',
+                    score: quizScore,
+                    totalQuestions: quizQuestions.length,
+                    percentage: Math.round((quizScore / quizQuestions.length) * 100),
+                    passed: quizScore >= 6,
+                    answers: quizAnswers
+                });
+            }
+            
+            closeQuiz();
+            showScoreModal();
+        }
+        
+        function showScoreModal() {
+            const scores = PracticeTracker.getCombinedScore();
+            
+            document.getElementById('practiceScoreDisplay').textContent = scores.practice !== null ? scores.practice + '%' : '--';
+            document.getElementById('quizScoreDisplayFinal').textContent = scores.quiz !== null ? scores.quiz + '%' : '--';
+            document.getElementById('combinedScoreDisplay').textContent = scores.combined !== null ? scores.combined + '%' : '--';
+            
+            // Set icon based on score
+            const icon = document.getElementById('scoreIcon');
+            if (scores.combined >= 80) {
+                icon.textContent = '🎉';
+            } else if (scores.combined >= 60) {
+                icon.textContent = '👍';
+            } else {
+                icon.textContent = '📚';
+            }
+            
+            document.getElementById('scoreModal').classList.remove('hidden');
+            document.getElementById('scoreModal').classList.add('flex');
+            updateScores();
+        }
+        
+        function closeScoreModal() {
+            document.getElementById('scoreModal').classList.add('hidden');
+            document.getElementById('scoreModal').classList.remove('flex');
+        }
+        
+        // Event Listeners
+        function setupEventListeners() {
+            document.getElementById('mobileMenuBtn').addEventListener('click', () => {
+                document.getElementById('mobileSidebar').classList.remove('-translate-x-full');
+                document.getElementById('sidebarOverlay').classList.remove('hidden');
+            });
+            
+            document.getElementById('closeSidebarBtn').addEventListener('click', closeMobileSidebar);
+            document.getElementById('sidebarOverlay').addEventListener('click', closeMobileSidebar);
+            
+            document.getElementById('prevStepBtn').addEventListener('click', () => {
+                if (currentChunkIndex > 0) {
+                    currentChunkIndex--;
+                    renderCurrentStep();
+                } else if (currentStepIndex > 0) {
+                    currentStepIndex--;
+                    currentChunkIndex = topicData.steps[currentStepIndex].chunks.length - 1;
+                    renderCurrentStep();
+                    renderStepsList();
+                }
+            });
+            
+            document.getElementById('nextStepBtn').addEventListener('click', nextChunk);
+        }
+        
+        function closeMobileSidebar() {
+            document.getElementById('mobileSidebar').classList.add('-translate-x-full');
+            document.getElementById('sidebarOverlay').classList.add('hidden');
+        }
+        
+        // Initialize
+        init();
+    </script>
+</body>
+</html>

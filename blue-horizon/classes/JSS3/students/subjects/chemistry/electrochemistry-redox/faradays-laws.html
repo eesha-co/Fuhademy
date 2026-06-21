@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Faraday's Laws of Electrolysis | Chemistry</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .content-card {
+      -webkit-backdrop-filter: blur(12px);
+      backdrop-filter: blur(12px);
+      background: rgba(255, 255, 255, 0.95);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    .accordion-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease-out;
+    }
+    .accordion-content.open {
+      max-height: 2000px;
+    }
+    .step-card {
+      transition: all 0.2s ease;
+    }
+    .step-card:hover {
+      transform: translateX(4px);
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fade-in {
+      animation: fadeIn 0.3s ease-out;
+    }
+    .formula-box {
+      background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+      border: 2px solid #f59e0b;
+    }
+    .viewed-indicator {
+      display: inline-flex;
+      align-items: center;
+    }
+    #topic-complete-btn {
+      transition: all 0.3s ease;
+    }
+    #topic-complete-btn:not(:disabled):hover {
+      transform: scale(1.02);
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-amber-50 to-orange-100 p-4 md:p-6">
+  <div class="max-w-4xl mx-auto">
+    <!-- Navigation -->
+    <nav class="mb-4 flex items-center justify-between">
+      <a href="index.html" class="text-blue-600 hover:text-blue-800 transition flex items-center">
+        <i class="fas fa-arrow-left mr-2"></i>Back to Electrochemistry & Redox
+      </a>
+      <!-- Progress indicator -->
+      <div class="flex items-center gap-3">
+        <div class="text-sm text-gray-600">
+          <span id="topic-progress-text">0% Complete</span>
+        </div>
+        <div class="w-24 h-2 bg-gray-200 rounded-full overflow-hidden">
+          <div id="topic-progress-bar" class="h-full bg-gradient-to-r from-amber-400 to-orange-500 transition-all duration-300" style="width: 0%"></div>
+        </div>
+      </div>
+    </nav>
+    
+    <article class="content-card rounded-xl p-6 md:p-8 shadow-lg">
+      <!-- Header -->
+      <div class="border-b pb-4 mb-6">
+        <div class="flex items-start justify-between">
+          <div>
+            <h1 class="text-2xl md:text-3xl font-bold text-gray-800 mb-2">
+              <i class="fas fa-bolt text-amber-500 mr-3"></i>Faraday's Laws of Electrolysis
+            </h1>
+            <p class="text-gray-600">Understanding the quantitative relationship between electricity and chemical change in electrolysis.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Learning Objectives -->
+      <div id="objectives" class="bg-amber-50 border-l-4 border-amber-500 p-4 rounded-r-lg mb-6">
+        <h3 class="font-semibold text-amber-800 mb-2"><i class="fas fa-bullseye mr-2"></i>Learning Objectives</h3>
+        <ul class="text-amber-700 text-sm space-y-1">
+          <li>• State Faraday's First and Second Laws of Electrolysis</li>
+          <li>• Calculate the mass of substances deposited during electrolysis</li>
+          <li>• Use the Faraday constant (F = 96,500 C mol⁻¹) in calculations</li>
+          <li>• Solve problems involving charge, current, time, and mass</li>
+        </ul>
+      </div>
+
+      <!-- Section 1: Introduction -->
+      <section id="section-1" class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <span class="bg-amber-100 text-amber-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">1</span>
+          What are Faraday's Laws?
+        </h2>
+        
+        <div class="bg-gray-50 p-5 rounded-lg mb-4">
+          <p class="text-gray-700 mb-4">
+            <strong class="text-amber-600">Michael Faraday</strong> (1791-1867) was an English scientist who discovered the fundamental laws governing electrolysis. His laws establish the quantitative relationship between the amount of electricity passed through an electrolyte and the amount of substance deposited or liberated at the electrodes.
+          </p>
+          
+          <div class="bg-white p-4 rounded-lg border border-gray-200">
+            <p class="font-semibold text-gray-800 mb-2">Key Concept:</p>
+            <p class="text-gray-700 text-sm">
+              Faraday's laws allow us to predict exactly how much of a substance will be produced during electrolysis if we know the current and time, or to calculate how much current is needed to produce a specific amount of substance.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 2: Faraday's First Law -->
+      <section id="section-2" class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <span class="bg-amber-100 text-amber-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">2</span>
+          Faraday's First Law
+        </h2>
+        
+        <div class="formula-box p-5 rounded-lg mb-4">
+          <h3 class="font-bold text-amber-800 mb-3"><i class="fas fa-flask mr-2"></i>First Law Statement</h3>
+          <p class="text-amber-900 mb-4">
+            The mass of a substance deposited or liberated at an electrode during electrolysis is directly proportional to the quantity of electricity (charge) passed through the electrolyte.
+          </p>
+          <div class="bg-white/50 p-4 rounded-lg text-center">
+            <p class="text-lg font-mono text-amber-800">m ∝ Q</p>
+            <p class="text-lg font-mono text-amber-800 mt-2">m = Z × Q</p>
+            <p class="text-sm text-amber-700 mt-2">Where: m = mass (g), Q = charge (C), Z = electrochemical equivalent</p>
+          </div>
+        </div>
+
+        <div class="bg-gray-50 p-5 rounded-lg mb-4">
+          <h3 class="font-semibold text-gray-800 mb-3">Since Q = I × t (Charge = Current × Time):</h3>
+          <div class="bg-white p-4 rounded-lg border border-gray-200 text-center">
+            <p class="text-2xl font-mono text-amber-700 font-bold">m = Z × I × t</p>
+            <div class="mt-3 text-sm text-gray-600">
+              <p><strong>m</strong> = mass deposited (grams)</p>
+              <p><strong>Z</strong> = electrochemical equivalent (g C⁻¹)</p>
+              <p><strong>I</strong> = current (amperes)</p>
+              <p><strong>t</strong> = time (seconds)</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Electrochemical Equivalent -->
+        <div class="bg-blue-50 border-l-4 border-blue-500 p-4 rounded-r-lg mb-4">
+          <h4 class="font-semibold text-blue-800 mb-2"><i class="fas fa-info-circle mr-2"></i>Electrochemical Equivalent (Z)</h4>
+          <p class="text-blue-700 text-sm mb-2">
+            The electrochemical equivalent is the mass of a substance deposited by 1 coulomb of electricity.
+          </p>
+          <div class="bg-white p-3 rounded-lg font-mono text-center">
+            <p class="text-blue-800">Z = M / (n × F)</p>
+          </div>
+          <p class="text-blue-700 text-sm mt-2">
+            Where M = molar mass, n = number of electrons transferred, F = Faraday constant (96,500 C mol⁻¹)
+          </p>
+        </div>
+      </section>
+
+      <!-- Section 3: Faraday's Second Law -->
+      <section id="section-3" class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <span class="bg-amber-100 text-amber-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">3</span>
+          Faraday's Second Law
+        </h2>
+        
+        <div class="formula-box p-5 rounded-lg mb-4">
+          <h3 class="font-bold text-amber-800 mb-3"><i class="fas fa-balance-scale mr-2"></i>Second Law Statement</h3>
+          <p class="text-amber-900 mb-4">
+            When the same quantity of electricity is passed through different electrolytes, the masses of substances deposited are proportional to their chemical equivalents (equivalent weights).
+          </p>
+          <div class="bg-white/50 p-4 rounded-lg text-center">
+            <p class="text-lg font-mono text-amber-800">m₁/m₂ = E₁/E₂</p>
+            <p class="text-sm text-amber-700 mt-2">Where E = equivalent weight = M/n (molar mass ÷ valence)</p>
+          </div>
+        </div>
+
+        <div class="bg-gray-50 p-5 rounded-lg mb-4">
+          <h3 class="font-semibold text-gray-800 mb-3">Combined Formula:</h3>
+          <div class="bg-white p-4 rounded-lg border border-gray-200 text-center">
+            <p class="text-2xl font-mono text-amber-700 font-bold">m = (M × I × t) / (n × F)</p>
+            <div class="mt-3 text-sm text-gray-600 grid grid-cols-2 md:grid-cols-3 gap-2">
+              <p><strong>m</strong> = mass (g)</p>
+              <p><strong>M</strong> = molar mass (g/mol)</p>
+              <p><strong>I</strong> = current (A)</p>
+              <p><strong>t</strong> = time (s)</p>
+              <p><strong>n</strong> = electrons transferred</p>
+              <p><strong>F</strong> = 96,500 C/mol</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Important Values Table -->
+        <div class="bg-white border border-gray-200 rounded-lg overflow-hidden mb-4">
+          <table class="w-full text-sm">
+            <thead class="bg-amber-50">
+              <tr>
+                <th class="p-3 text-left font-semibold text-amber-800">Ion</th>
+                <th class="p-3 text-left font-semibold text-amber-800">Molar Mass (g/mol)</th>
+                <th class="p-3 text-left font-semibold text-amber-800">n (electrons)</th>
+                <th class="p-3 text-left font-semibold text-amber-800">Z (g/C)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="border-t">
+                <td class="p-3 font-medium text-gray-700">Cu²⁺</td>
+                <td class="p-3 text-gray-600">63.5</td>
+                <td class="p-3 text-gray-600">2</td>
+                <td class="p-3 text-gray-600">3.29 × 10⁻⁴</td>
+              </tr>
+              <tr class="border-t bg-gray-50">
+                <td class="p-3 font-medium text-gray-700">Ag⁺</td>
+                <td class="p-3 text-gray-600">108</td>
+                <td class="p-3 text-gray-600">1</td>
+                <td class="p-3 text-gray-600">1.12 × 10⁻³</td>
+              </tr>
+              <tr class="border-t">
+                <td class="p-3 font-medium text-gray-700">Al³⁺</td>
+                <td class="p-3 text-gray-600">27</td>
+                <td class="p-3 text-gray-600">3</td>
+                <td class="p-3 text-gray-600">9.33 × 10⁻⁵</td>
+              </tr>
+              <tr class="border-t bg-gray-50">
+                <td class="p-3 font-medium text-gray-700">Zn²⁺</td>
+                <td class="p-3 text-gray-600">65.4</td>
+                <td class="p-3 text-gray-600">2</td>
+                <td class="p-3 text-gray-600">3.39 × 10⁻⁴</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Section 4: Worked Examples -->
+      <section id="section-4" class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <span class="bg-amber-100 text-amber-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">4</span>
+          Worked Examples
+        </h2>
+        
+        <!-- Example 1 -->
+        <div class="border border-gray-200 rounded-lg overflow-hidden mb-4">
+          <button class="accordion-btn w-full p-4 bg-amber-50 text-left font-semibold text-amber-800 flex justify-between items-center hover:bg-amber-100 transition">
+            <span><i class="fas fa-calculator mr-2 text-amber-500"></i>Example 1: Calculate mass of copper deposited</span>
+            <i class="fas fa-chevron-down transform transition-transform"></i>
+          </button>
+          <div class="accordion-content">
+            <div class="p-5">
+              <p class="font-medium text-gray-800 mb-3">
+                Calculate the mass of copper deposited when a current of 2 A flows through copper(II) sulfate solution for 30 minutes.
+              </p>
+              
+              <div class="space-y-3">
+                <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-amber-500">
+                  <p class="text-sm text-gray-600"><strong>Step 1:</strong> Identify the given values</p>
+                  <p class="text-amber-700 mt-1">
+                    I = 2 A, t = 30 min = 30 × 60 = 1800 s<br>
+                    M(Cu) = 63.5 g/mol, n = 2, F = 96,500 C/mol
+                  </p>
+                </div>
+                
+                <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-blue-500">
+                  <p class="text-sm text-gray-600"><strong>Step 2:</strong> Apply the formula</p>
+                  <p class="text-blue-700 font-mono mt-1">m = (M × I × t) / (n × F)</p>
+                </div>
+                
+                <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-green-500">
+                  <p class="text-sm text-gray-600"><strong>Step 3:</strong> Substitute and calculate</p>
+                  <p class="text-green-700 font-mono mt-1">
+                    m = (63.5 × 2 × 1800) / (2 × 96,500)<br>
+                    m = 228,600 / 193,000<br>
+                    m = <strong>1.18 g</strong>
+                  </p>
+                </div>
+                
+                <div class="bg-green-100 p-3 rounded-lg">
+                  <p class="text-green-800 font-semibold"><i class="fas fa-check-circle mr-2"></i>Answer: 1.18 g of copper is deposited</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Example 2 -->
+        <div class="border border-gray-200 rounded-lg overflow-hidden mb-4">
+          <button class="accordion-btn w-full p-4 bg-rose-50 text-left font-semibold text-rose-800 flex justify-between items-center hover:bg-rose-100 transition">
+            <span><i class="fas fa-clock mr-2 text-rose-500"></i>Example 2: Calculate time required</span>
+            <i class="fas fa-chevron-down transform transition-transform"></i>
+          </button>
+          <div class="accordion-content">
+            <div class="p-5">
+              <p class="font-medium text-gray-800 mb-3">
+                How long must a current of 5 A be passed through molten silver chloride to deposit 10.8 g of silver?
+              </p>
+              
+              <div class="space-y-3">
+                <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-rose-500">
+                  <p class="text-sm text-gray-600"><strong>Step 1:</strong> Identify values</p>
+                  <p class="text-rose-700 mt-1">
+                    m = 10.8 g, I = 5 A<br>
+                    M(Ag) = 108 g/mol, n = 1, F = 96,500 C/mol
+                  </p>
+                </div>
+                
+                <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-blue-500">
+                  <p class="text-sm text-gray-600"><strong>Step 2:</strong> Rearrange formula for time</p>
+                  <p class="text-blue-700 font-mono mt-1">t = (m × n × F) / (M × I)</p>
+                </div>
+                
+                <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-green-500">
+                  <p class="text-sm text-gray-600"><strong>Step 3:</strong> Calculate</p>
+                  <p class="text-green-700 font-mono mt-1">
+                    t = (10.8 × 1 × 96,500) / (108 × 5)<br>
+                    t = 1,042,200 / 540<br>
+                    t = 1930 seconds = <strong>32.2 minutes</strong>
+                  </p>
+                </div>
+                
+                <div class="bg-green-100 p-3 rounded-lg">
+                  <p class="text-green-800 font-semibold"><i class="fas fa-check-circle mr-2"></i>Answer: 32.2 minutes (or 1930 seconds)</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Example 3 -->
+        <div class="border border-gray-200 rounded-lg overflow-hidden mb-4">
+          <button class="accordion-btn w-full p-4 bg-purple-50 text-left font-semibold text-purple-800 flex justify-between items-center hover:bg-purple-100 transition">
+            <span><i class="fas fa-balance-scale mr-2 text-purple-500"></i>Example 3: Second Law Application</span>
+            <i class="fas fa-chevron-down transform transition-transform"></i>
+          </button>
+          <div class="accordion-content">
+            <div class="p-5">
+              <p class="font-medium text-gray-800 mb-3">
+                The same current is passed through solutions of CuSO₄ and AgNO₃ connected in series. If 1.27 g of copper is deposited, what mass of silver is deposited?
+              </p>
+              
+              <div class="space-y-3">
+                <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-purple-500">
+                  <p class="text-sm text-gray-600"><strong>Step 1:</strong> Apply Second Law</p>
+                  <p class="text-purple-700 mt-1">
+                    m(Ag)/m(Cu) = E(Ag)/E(Cu)
+                  </p>
+                </div>
+                
+                <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-blue-500">
+                  <p class="text-sm text-gray-600"><strong>Step 2:</strong> Calculate equivalent weights</p>
+                  <p class="text-blue-700 font-mono mt-1">
+                    E(Ag) = M/n = 108/1 = 108 g/equiv<br>
+                    E(Cu) = M/n = 63.5/2 = 31.75 g/equiv
+                  </p>
+                </div>
+                
+                <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-green-500">
+                  <p class="text-sm text-gray-600"><strong>Step 3:</strong> Calculate mass of silver</p>
+                  <p class="text-green-700 font-mono mt-1">
+                    m(Ag)/1.27 = 108/31.75<br>
+                    m(Ag) = 1.27 × (108/31.75)<br>
+                    m(Ag) = <strong>4.32 g</strong>
+                  </p>
+                </div>
+                
+                <div class="bg-green-100 p-3 rounded-lg">
+                  <p class="text-green-800 font-semibold"><i class="fas fa-check-circle mr-2"></i>Answer: 4.32 g of silver is deposited</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 5: Interactive Calculator -->
+      <section id="section-5" class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <span class="bg-amber-100 text-amber-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">5</span>
+          Interactive Calculator
+        </h2>
+        
+        <div class="bg-gradient-to-r from-blue-50 to-cyan-50 p-5 rounded-lg border border-blue-200">
+          <div class="grid md:grid-cols-2 gap-6">
+            <!-- Input Section -->
+            <div>
+              <h3 class="font-semibold text-gray-800 mb-4">Calculate Mass Deposited</h3>
+              <div class="space-y-4">
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1">Current (A)</label>
+                  <input type="number" id="calc-current" value="2" step="0.1" class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1">Time (minutes)</label>
+                  <input type="number" id="calc-time" value="30" step="1" class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1">Element</label>
+                  <select id="calc-element" class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                    <option value='{"M":63.5,"n":2,"name":"Copper (Cu²⁺)"}'>Copper (Cu²⁺)</option>
+                    <option value='{"M":108,"n":1,"name":"Silver (Ag⁺)"}'>Silver (Ag⁺)</option>
+                    <option value='{"M":27,"n":3,"name":"Aluminium (Al³⁺)"}'>Aluminium (Al³⁺)</option>
+                    <option value='{"M":65.4,"n":2,"name":"Zinc (Zn²⁺)"}'>Zinc (Zn²⁺)</option>
+                    <option value='{"M":58.7,"n":2,"name":"Nickel (Ni²⁺)"}'>Nickel (Ni²⁺)</option>
+                    <option value='{"M":40.1,"n":2,"name":"Calcium (Ca²⁺)"}'>Calcium (Ca²⁺)</option>
+                  </select>
+                </div>
+                <button onclick="calculateMass()" class="w-full py-2 px-4 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition font-medium">
+                  <i class="fas fa-calculator mr-2"></i>Calculate
+                </button>
+              </div>
+            </div>
+            
+            <!-- Result Section -->
+            <div>
+              <h3 class="font-semibold text-gray-800 mb-4">Result</h3>
+              <div id="calc-result" class="bg-white p-4 rounded-lg border border-gray-200 min-h-[200px]">
+                <p class="text-gray-500 text-center">Enter values and click Calculate</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 6: Practice Problems -->
+      <section id="section-6" class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <i class="fas fa-pencil-alt text-amber-600 mr-3"></i>
+          Practice Problems
+        </h2>
+        
+        <div class="space-y-4">
+          <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+            <p class="font-medium text-gray-800 mb-2">1. Calculate the mass of silver deposited when a current of 0.5 A flows through silver nitrate solution for 1 hour.</p>
+            <details class="mt-2">
+              <summary class="text-sm text-blue-600 cursor-pointer hover:text-blue-800">Show Solution</summary>
+              <div class="mt-2 text-sm text-gray-700">
+                <p>m = (108 × 0.5 × 3600) / (1 × 96,500)</p>
+                <p>m = 194,400 / 96,500</p>
+                <p><strong>Answer: 2.01 g</strong></p>
+              </div>
+            </details>
+          </div>
+          
+          <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+            <p class="font-medium text-gray-800 mb-2">2. What current is needed to deposit 5 g of copper from CuSO₄ solution in 2 hours?</p>
+            <details class="mt-2">
+              <summary class="text-sm text-blue-600 cursor-pointer hover:text-blue-800">Show Solution</summary>
+              <div class="mt-2 text-sm text-gray-700">
+                <p>I = (m × n × F) / (M × t)</p>
+                <p>I = (5 × 2 × 96,500) / (63.5 × 7200)</p>
+                <p>I = 965,000 / 457,200</p>
+                <p><strong>Answer: 2.11 A</strong></p>
+              </div>
+            </details>
+          </div>
+          
+          <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+            <p class="font-medium text-gray-800 mb-2">3. How many Faradays are required to deposit 54 g of aluminium from molten Al₂O₃?</p>
+            <details class="mt-2">
+              <summary class="text-sm text-blue-600 cursor-pointer hover:text-blue-800">Show Solution</summary>
+              <div class="mt-2 text-sm text-gray-700">
+                <p>Moles of Al = 54/27 = 2 mol</p>
+                <p>Al³⁺ + 3e⁻ → Al</p>
+                <p>Each mole of Al needs 3 Faradays</p>
+                <p>Faradays = 2 × 3 = <strong>6 F</strong></p>
+              </div>
+            </details>
+          </div>
+          
+          <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+            <p class="font-medium text-gray-800 mb-2">4. When 2 A was passed through CuSO₄ solution for 45 minutes, 1.77 g of copper was deposited. Calculate the value of the Faraday constant.</p>
+            <details class="mt-2">
+              <summary class="text-sm text-blue-600 cursor-pointer hover:text-blue-800">Show Solution</summary>
+              <div class="mt-2 text-sm text-gray-700">
+                <p>F = (M × I × t) / (m × n)</p>
+                <p>F = (63.5 × 2 × 2700) / (1.77 × 2)</p>
+                <p>F = 342,900 / 3.54</p>
+                <p><strong>Answer: F ≈ 96,864 C/mol</strong> (close to the accepted value of 96,500)</p>
+              </div>
+            </details>
+          </div>
+        </div>
+      </section>
+
+      <!-- Key Takeaways -->
+      <section id="section-7" class="mb-8">
+        <div class="bg-gradient-to-r from-amber-50 to-orange-50 p-5 rounded-lg border border-amber-200">
+          <h3 class="font-semibold text-amber-800 mb-3"><i class="fas fa-star mr-2"></i>Key Takeaways</h3>
+          <ul class="text-amber-700 text-sm space-y-2">
+            <li>• <strong>First Law:</strong> Mass deposited ∝ Charge passed (m = Z × Q)</li>
+            <li>• <strong>Second Law:</strong> Same charge gives masses proportional to equivalent weights</li>
+            <li>• <strong>Master Formula:</strong> m = (M × I × t) / (n × F)</li>
+            <li>• <strong>Faraday Constant:</strong> F = 96,500 C mol⁻¹ (charge of 1 mole of electrons)</li>
+            <li>• 1 Faraday deposits 1 equivalent of any substance</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Complete Topic Button -->
+      <div class="mt-8 pt-6 border-t border-gray-200">
+        <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div class="text-center sm:text-left">
+            <h3 class="font-semibold text-gray-800">Ready to Complete?</h3>
+            <p class="text-sm text-gray-600">View all sections, then take the quiz to mark this topic as complete.</p>
+          </div>
+          <button id="topic-complete-btn" disabled
+                  class="px-6 py-3 rounded-xl bg-gray-300 text-gray-500 cursor-not-allowed opacity-50 flex items-center gap-2 text-lg font-medium">
+            <i class="fas fa-lock mr-2"></i>
+            <span>Complete (0% viewed)</span>
+          </button>
+        </div>
+      </div>
+    </article>
+  </div>
+
+  <!-- Scripts -->
+  <script>
+    // Accordion functionality
+    document.querySelectorAll('.accordion-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const content = btn.nextElementSibling;
+        const icon = btn.querySelector('.fa-chevron-down');
+        content.classList.toggle('open');
+        icon.classList.toggle('rotate-180');
+      });
+    });
+
+    // Calculator function
+    function calculateMass() {
+      const current = parseFloat(document.getElementById('calc-current').value);
+      const time = parseFloat(document.getElementById('calc-time').value) * 60; // Convert to seconds
+      const elementData = JSON.parse(document.getElementById('calc-element').value);
+      const F = 96500;
+
+      const mass = (elementData.M * current * time) / (elementData.n * F);
+      const charge = current * time;
+      const faradays = charge / F;
+
+      const resultDiv = document.getElementById('calc-result');
+      resultDiv.innerHTML = `
+        <div class="animate-fade-in">
+          <div class="text-center mb-4">
+            <p class="text-4xl font-bold text-blue-600">${mass.toFixed(4)} g</p>
+            <p class="text-gray-600">of ${elementData.name}</p>
+          </div>
+          <div class="border-t pt-4 space-y-2 text-sm">
+            <div class="flex justify-between">
+              <span class="text-gray-600">Charge passed:</span>
+              <span class="font-medium">${charge.toLocaleString()} C</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-gray-600">Faradays:</span>
+              <span class="font-medium">${faradays.toFixed(4)} F</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-gray-600">Moles deposited:</span>
+              <span class="font-medium">${(mass / elementData.M).toFixed(4)} mol</span>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+  </script>
+
+  <!-- Topic Tracking and Quiz System -->
+  <script type="module">
+    import { TopicTracker } from '/js/topic-tracker.js';
+    import { TopicQuiz } from '/js/topic-quiz.js';
+
+    // Quiz questions for Faraday's Laws
+    const quizQuestions = [
+      {
+        question: "What does Faraday's First Law state?",
+        options: [
+          "Mass deposited is inversely proportional to charge",
+          "Mass deposited is directly proportional to charge passed",
+          "Mass deposited is independent of current",
+          "Mass deposited depends only on temperature"
+        ],
+        correct: 1,
+        explanation: "Faraday's First Law states that the mass of a substance deposited is directly proportional to the quantity of electricity (charge) passed through the electrolyte."
+      },
+      {
+        question: "What is the value of the Faraday constant?",
+        options: [
+          "96,500 C mol⁻¹",
+          "9,650 C mol⁻¹",
+          "965,000 C mol⁻¹",
+          "96.5 C mol⁻¹"
+        ],
+        correct: 0,
+        explanation: "The Faraday constant F = 96,500 C mol⁻¹, representing the charge carried by 1 mole of electrons."
+      },
+      {
+        question: "Calculate the mass of copper deposited when 2 A flows for 30 minutes. (Cu = 63.5, n = 2)",
+        options: [
+          "0.59 g",
+          "1.18 g",
+          "2.36 g",
+          "5.90 g"
+        ],
+        correct: 1,
+        explanation: "m = (M × I × t) / (n × F) = (63.5 × 2 × 1800) / (2 × 96,500) = 1.18 g"
+      },
+      {
+        question: "According to Faraday's Second Law, when the same current passes through CuSO₄ and AgNO₃ in series, what determines the ratio of masses deposited?",
+        options: [
+          "Their atomic numbers",
+          "Their densities",
+          "Their equivalent weights",
+          "Their melting points"
+        ],
+        correct: 2,
+        explanation: "Faraday's Second Law states that masses deposited are proportional to their equivalent weights (M/n)."
+      },
+      {
+        question: "How many Faradays are needed to deposit 54 g of aluminium? (Al = 27, n = 3)",
+        options: [
+          "2 F",
+          "3 F",
+          "6 F",
+          "9 F"
+        ],
+        correct: 2,
+        explanation: "Moles of Al = 54/27 = 2. Each mole needs 3 Faradays. Total = 2 × 3 = 6 F"
+      },
+      {
+        question: "What is the electrochemical equivalent (Z) of a substance?",
+        options: [
+          "Mass deposited per volt",
+          "Mass deposited per ampere",
+          "Mass deposited per coulomb",
+          "Mass deposited per second"
+        ],
+        correct: 2,
+        explanation: "Electrochemical equivalent Z is the mass of substance deposited by 1 coulomb of electricity."
+      },
+      {
+        question: "If 3.2 g of copper (Cu²⁺, 63.5) is deposited, how much silver (Ag⁺, 108) would be deposited by the same current?",
+        options: [
+          "5.44 g",
+          "10.88 g",
+          "2.72 g",
+          "21.76 g"
+        ],
+        correct: 1,
+        explanation: "Using Second Law: m(Ag)/m(Cu) = E(Ag)/E(Cu) = 108/31.75. m(Ag) = 3.2 × (108/31.75) = 10.88 g"
+      },
+      {
+        question: "What current is needed to deposit 2 g of silver in 20 minutes? (Ag = 108, n = 1)",
+        options: [
+          "0.89 A",
+          "1.49 A",
+          "2.98 A",
+          "4.47 A"
+        ],
+        correct: 1,
+        explanation: "I = (m × n × F) / (M × t) = (2 × 1 × 96,500) / (108 × 1200) = 1.49 A"
+      }
+    ];
+
+    // Initialize tracker
+    const tracker = new TopicTracker({
+      topicId: 'faradays-laws',
+      topicTitle: "Faraday's Laws of Electrolysis",
+      subject: 'chemistry',
+      sections: ['section-1', 'section-2', 'section-3', 'section-4', 'section-5', 'section-6', 'section-7'],
+      quizRequired: true
+    });
+
+    // Initialize quiz
+    const quiz = new TopicQuiz({
+      topicId: 'faradays-laws',
+      topicTitle: "Faraday's Laws of Electrolysis",
+      subject: 'chemistry',
+      questions: quizQuestions,
+      passingScore: 60,
+      tracker: tracker
+    });
+
+    // Track accordions being opened
+    document.querySelectorAll('.accordion-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const section = btn.closest('section');
+        if (section && section.id) {
+          tracker.markSectionViewed(section.id);
+        }
+      });
+    });
+
+    // Track calculator usage
+    document.querySelector('button[onclick="calculateMass()"]')?.addEventListener('click', () => {
+      tracker.markSectionViewed('section-5');
+    });
+
+    // Track practice problem views
+    document.querySelectorAll('details').forEach(details => {
+      details.addEventListener('toggle', () => {
+        if (details.open) {
+          tracker.markSectionViewed('section-6');
+        }
+      });
+    });
+  </script>
+</body>
+</html>

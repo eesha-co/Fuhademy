@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biology | Subject Overview</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .division-card {
+            backdrop-filter: blur(16px);
+            background: rgba(255, 255, 255, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-emerald-50 to-teal-100 p-3 sm:p-4 md:p-6">
+      
+  <nav class="bg-white/90 backdrop-blur border-b border-slate-200 sticky top-0 z-50">
+    <div class="max-w-6xl mx-auto px-2 sm:px-4 lg:px-8">
+      <!-- Mobile Layout -->
+      <div class="flex flex-col sm:hidden py-2">
+        <!-- Top row: Dashboard and All Subjects -->
+        <div class="flex justify-between items-center gap-2 mb-2">
+          <a href="../../student-dashboard.html" class="inline-flex items-center px-2 py-1.5 border border-slate-200 rounded-lg text-xs font-medium text-slate-700 bg-white hover:bg-slate-50 transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4 mr-1">
+              <path fill-rule="evenodd" d="M17 10a.75.75 0 01-.75.75H5.612l4.158 3.96a.75.75 0 11-1.04 1.08l-5.5-5.25a.75.75 0 010-1.08l5.5-5.25a.75.75 0 111.04 1.08L5.612 9.25H16.25A.75.75 0 0117 10z" clip-rule="evenodd" />
+            </svg>
+            Dashboard
+          </a>
+          <a href="../" class="inline-flex items-center px-2 py-1.5 border border-slate-200 rounded-lg text-xs font-medium text-slate-700 bg-white hover:bg-slate-50 transition-colors">
+            All Subjects
+          </a>
+        </div>
+        <!-- Bottom row: Current Subject centered -->
+        <div class="flex justify-center">
+          <div class="flex items-center px-3 py-1.5 rounded-lg bg-blue-50 text-blue-700">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4 mr-1.5">
+              <path fill-rule="evenodd" d="M10 2c.12 0 .24.028.345.083L17.5 5.5a.75.75 0 010 1.32l-7.155 3.417a.75.75 0 01-.69 0L2.5 6.82a.75.75 0 010-1.32l7.155-3.417A.75.75 0 0110 2z" clip-rule="evenodd" />
+              <path fill-rule="evenodd" d="M10.5 6.94L17 3.78v7.44a.75.75 0 01-.415.672L10 15.314V6.94zM3.415 11.892A.75.75 0 013 11.22V3.78l6.5 3.16v8.374l-6.085-3.422z" clip-rule="evenodd" />
+            </svg>
+            <span class="text-sm font-medium">Biology</span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Desktop/Tablet Layout -->
+      <div class="hidden sm:flex justify-between h-16">
+        <!-- Left side - Back to Dashboard -->
+        <div class="flex items-center">
+          <a href="../../student-dashboard.html" class="inline-flex items-center px-3 py-2 border border-slate-200 rounded-lg text-sm font-medium text-slate-700 bg-white hover:bg-slate-50 transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 mr-2">
+              <path fill-rule="evenodd" d="M17 10a.75.75 0 01-.75.75H5.612l4.158 3.96a.75.75 0 11-1.04 1.08l-5.5-5.25a.75.75 0 010-1.08l5.5-5.25a.75.75 0 111.04 1.08L5.612 9.25H16.25A.75.75 0 0117 10z" clip-rule="evenodd" />
+            </svg>
+            Dashboard
+          </a>
+        </div>
+
+        <!-- Center - Current Subject -->
+        <div class="flex items-center">
+          <div class="flex items-center px-3 py-2 rounded-lg bg-blue-50 text-blue-700">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 mr-2">
+              <path fill-rule="evenodd" d="M10 2c.12 0 .24.028.345.083L17.5 5.5a.75.75 0 010 1.32l-7.155 3.417a.75.75 0 01-.69 0L2.5 6.82a.75.75 0 010-1.32l7.155-3.417A.75.75 0 0110 2z" clip-rule="evenodd" />
+              <path fill-rule="evenodd" d="M10.5 6.94L17 3.78v7.44a.75.75 0 01-.415.672L10 15.314V6.94zM3.415 11.892A.75.75 0 013 11.22V3.78l6.5 3.16v8.374l-6.085-3.422z" clip-rule="evenodd" />
+            </svg>
+            Biology
+          </div>
+        </div>
+
+        <!-- Right side - Quick Actions -->
+        <div class="flex items-center space-x-4">
+          <a href="../" class="inline-flex items-center px-3 py-2 border border-slate-200 rounded-lg text-sm font-medium text-slate-700 bg-white hover:bg-slate-50 transition-colors">
+            All Subjects
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+  
+  <div class="max-w-6xl mx-auto">
+    <header class="mb-6 sm:mb-8 md:mb-12 text-center pt-4 sm:pt-6">
+        <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-800 mb-2 sm:mb-4">Biology</h1>
+        <p class="text-sm sm:text-base md:text-lg text-gray-600 px-2">A structured approach to understanding life and living systems</p>
+    </header>
+
+    <div class="grid grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-4 md:gap-6">
+        <!-- Division 1: Foundations -->
+        <div class="division-card p-2.5 sm:p-5 md:p-6 rounded-lg sm:rounded-xl">
+            <h2 class="text-sm sm:text-lg md:text-xl font-semibold text-gray-800 mb-1.5 sm:mb-3 leading-tight">
+                <a href="foundations/" class="hover:text-emerald-600">1. Foundations — Classification & Cell Biology</a>
+            </h2>
+            <p class="text-gray-600 mb-2 sm:mb-4 text-[11px] sm:text-sm hidden sm:block">The fundamental building blocks and organization of life</p>
+            <ul class="space-y-1 sm:space-y-2 text-[11px] sm:text-sm text-gray-700">
+                <li>• Classification & Organisation of Life</li>
+                <li>• Cell Structure & Ultrastructure</li>
+                <li>• Cell Properties & Functions</li>
+                <li>• Supporting Systems</li>
+            </ul>
+        </div>
+
+        <!-- Division 2: Nutrition -->
+        <div class="division-card p-2.5 sm:p-5 md:p-6 rounded-lg sm:rounded-xl">
+            <h2 class="text-sm sm:text-lg md:text-xl font-semibold text-gray-800 mb-1.5 sm:mb-3 leading-tight">
+                <a href="nutrition/" class="hover:text-emerald-600">2. Nutrition, Digestion & Energy</a>
+            </h2>
+            <p class="text-gray-600 mb-2 sm:mb-4 text-[11px] sm:text-sm hidden sm:block">How organisms obtain and process nutrients</p>
+            <ul class="space-y-1 sm:space-y-2 text-[11px] sm:text-sm text-gray-700">
+                <li>• Food Substances & Nutrition</li>
+                <li>• Photosynthesis</li>
+                <li>• Feeding & Digestive Systems</li>
+            </ul>
+        </div>
+
+        <!-- Division 3: Transport -->
+        <div class="division-card p-2.5 sm:p-5 md:p-6 rounded-lg sm:rounded-xl">
+            <h2 class="text-sm sm:text-lg md:text-xl font-semibold text-gray-800 mb-1.5 sm:mb-3 leading-tight">
+                <a href="transport/" class="hover:text-emerald-600">3. Transport Systems</a>
+            </h2>
+            <p class="text-gray-600 mb-2 sm:mb-4 text-[11px] sm:text-sm hidden sm:block">Internal distribution and exchange systems</p>
+            <ul class="space-y-1 sm:space-y-2 text-[11px] sm:text-sm text-gray-700">
+                <li>• Transport Mechanisms</li>
+                <li>• Gaseous Exchange</li>
+                <li>• Excretory Systems</li>
+            </ul>
+        </div>
+
+        <!-- Division 4: Regulation -->
+        <div class="division-card p-2.5 sm:p-5 md:p-6 rounded-lg sm:rounded-xl">
+            <h2 class="text-sm sm:text-lg md:text-xl font-semibold text-gray-800 mb-1.5 sm:mb-3 leading-tight">
+                <a href="regulation/" class="hover:text-emerald-600">4. Regulation & Coordination</a>
+            </h2>
+            <p class="text-gray-600 mb-2 sm:mb-4 text-[11px] sm:text-sm hidden sm:block">Control systems and homeostasis</p>
+            <ul class="space-y-1 sm:space-y-2 text-[11px] sm:text-sm text-gray-700">
+                <li>• Homeostasis</li>
+                <li>• Nervous Coordination</li>
+                <li>• Sensory Systems</li>
+                <li>• Hormonal Control</li>
+            </ul>
+        </div>
+
+        <!-- Division 5: Reproduction -->
+        <div class="division-card p-2.5 sm:p-5 md:p-6 rounded-lg sm:rounded-xl">
+            <h2 class="text-sm sm:text-lg md:text-xl font-semibold text-gray-800 mb-1.5 sm:mb-3 leading-tight">
+                <a href="reproduction/" class="hover:text-emerald-600">5. Reproduction & Development</a>
+            </h2>
+            <p class="text-gray-600 mb-2 sm:mb-4 text-[11px] sm:text-sm hidden sm:block">Life cycles and organism development</p>
+            <ul class="space-y-1 sm:space-y-2 text-[11px] sm:text-sm text-gray-700">
+                <li>• Sexual Reproduction</li>
+                <li>• Development & Growth</li>
+                <li>• Life Cycles</li>
+            </ul>
+        </div>
+
+        <!-- Division 6: Genetics -->
+        <div class="division-card p-2.5 sm:p-5 md:p-6 rounded-lg sm:rounded-xl">
+            <h2 class="text-sm sm:text-lg md:text-xl font-semibold text-gray-800 mb-1.5 sm:mb-3 leading-tight">
+                <a href="genetics/" class="hover:text-emerald-600">6. Genetics & Evolution</a>
+            </h2>
+            <p class="text-gray-600 mb-2 sm:mb-4 text-[11px] sm:text-sm hidden sm:block">Inheritance and biological change</p>
+            <ul class="space-y-1 sm:space-y-2 text-[11px] sm:text-sm text-gray-700">
+                <li>• Mendelian Genetics</li>
+                <li>• Variation & Adaptation</li>
+                <li>• Basic Molecular Genetics</li>
+            </ul>
+        </div>
+
+        <!-- Division 7: Ecology -->
+        <div class="division-card p-2.5 sm:p-5 md:p-6 rounded-lg sm:rounded-xl">
+            <h2 class="text-sm sm:text-lg md:text-xl font-semibold text-gray-800 mb-1.5 sm:mb-3 leading-tight">
+                <a href="ecology/" class="hover:text-emerald-600">7. Ecology & Ecosystems</a>
+            </h2>
+            <p class="text-gray-600 mb-2 sm:mb-4 text-[11px] sm:text-sm hidden sm:block">Environmental interactions and systems</p>
+            <ul class="space-y-1 sm:space-y-2 text-[11px] sm:text-sm text-gray-700">
+                <li>• Ecological Concepts</li>
+                <li>• Ecosystem Function</li>
+                <li>• Population Ecology</li>
+                <li>• Habitat Studies</li>
+            </ul>
+        </div>
+
+        <!-- Division 8: Micro-organisms -->
+        <div class="division-card p-2.5 sm:p-5 md:p-6 rounded-lg sm:rounded-xl">
+            <h2 class="text-sm sm:text-lg md:text-xl font-semibold text-gray-800 mb-1.5 sm:mb-3 leading-tight">
+                <a href="micro-health/" class="hover:text-emerald-600">8. Micro-organisms & Health</a>
+            </h2>
+            <p class="text-gray-600 mb-2 sm:mb-4 text-[11px] sm:text-sm hidden sm:block">Microscopic life and disease</p>
+            <ul class="space-y-1 sm:space-y-2 text-[11px] sm:text-sm text-gray-700">
+                <li>• Types of Micro-organisms</li>
+                <li>• Disease & Immunity</li>
+                <li>• Applications</li>
+            </ul>
+        </div>
+
+        <!-- Division 9: Applied Biology -->
+        <div class="division-card p-2.5 sm:p-5 md:p-6 rounded-lg sm:rounded-xl">
+            <h2 class="text-sm sm:text-lg md:text-xl font-semibold text-gray-800 mb-1.5 sm:mb-3 leading-tight">
+                <a href="comparative/" class="hover:text-emerald-600">9. Comparative & Applied Biology</a>
+            </h2>
+            <p class="text-gray-600 mb-2 sm:mb-4 text-[11px] sm:text-sm hidden sm:block">Practical applications and comparative studies</p>
+            <ul class="space-y-1 sm:space-y-2 text-[11px] sm:text-sm text-gray-700">
+                <li>• Comparative Anatomy</li>
+                <li>• Adaptations</li>
+                <li>• Applied Biology</li>
+            </ul>
+        </div>
+    </div>
+  </div>
+
+    <!-- PhET attribution modal -->
+    <div id="phet-attribution-modal" class="phet-modal" role="dialog" aria-hidden="true" aria-labelledby="phet-title">
+        <div class="panel">
+            <h3 id="phet-title" style="margin:0 0 .5rem; font-size:1.1rem;">Simulation attribution</h3>
+            <div style="color:#0f172a;font-size:0.95rem;line-height:1.35;">
+                This site may include interactive simulations provided by <strong>PhET Interactive Simulations</strong> (University of Colorado Boulder). 
+                Simulation content is provided by PhET and is available under a <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC‑BY‑4.0</a> license. 
+                Visit <a href="https://phet.colorado.edu" target="_blank" rel="noopener">phet.colorado.edu</a> for details.
+            </div>
+            <div class="modal-footer">
+                <label class="dontshow-label">
+                    <input id="phet-attribution-dontshow" type="checkbox" />
+                    <span>Don't show again</span>
+                </label>
+                <div class="modal-buttons">
+                    <button id="phet-attribution-close" class="btn-ghost">Close</button>
+                    <button id="phet-attribution-ok" class="btn-primary">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .phet-modal{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(2,6,23,0.45);z-index:1200;opacity:0;pointer-events:none;transition:opacity 180ms ease}
+        .phet-modal.show{opacity:1;pointer-events:auto}
+        .phet-modal .panel{background:#fff;padding:1rem;border-radius:10px;max-width:560px;width:calc(100% - 32px);box-shadow:0 12px 40px rgba(2,6,23,0.14);margin:16px}
+        .modal-footer{margin-top:.75rem; display:flex; flex-direction:column; gap:.75rem;}
+        .dontshow-label{font-size:0.85rem;color:#6b7280;display:flex;align-items:center;gap:.5rem;}
+        .modal-buttons{display:flex;gap:.5rem;justify-content:flex-end;}
+        .btn-ghost{background:#f3f4f6;border-radius:6px;padding:.45rem .7rem;border:1px solid #e5e7eb;}
+        .btn-primary{background:#0ea5a4;color:#fff;border-radius:6px;padding:.45rem .7rem;border:none;}
+        
+        @media (min-width: 480px) {
+            .modal-footer{flex-direction:row;align-items:center;justify-content:space-between;}
+        }
+    </style>
+
+    <script>
+        (function(){
+            try{
+                if (localStorage.getItem('phet_attribution_dismissed') === '1') return;
+                var modal = document.getElementById('phet-attribution-modal');
+                if (!modal) return;
+                var chk = document.getElementById('phet-attribution-dontshow');
+                var btnClose = document.getElementById('phet-attribution-close');
+                var btnOk = document.getElementById('phet-attribution-ok');
+                function show(){ modal.classList.add('show'); modal.setAttribute('aria-hidden','false'); }
+                function hide(){ modal.classList.remove('show'); modal.setAttribute('aria-hidden','true'); }
+                if (btnClose) btnClose.addEventListener('click', hide);
+                if (btnOk) btnOk.addEventListener('click', hide);
+                if (chk) chk.addEventListener('change', function(e){ if (e.target.checked) localStorage.setItem('phet_attribution_dismissed','1'); else localStorage.removeItem('phet_attribution_dismissed'); });
+                document.addEventListener('DOMContentLoaded', function(){ setTimeout(show, 200); });
+            }catch(e){ console.warn('phet modal error', e); }
+        })();
+    </script>
+
+    </body>
+</html>

@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learning Report - Juanova Cortex</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        /* Custom styles */
+        .score-circle {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .score-circle::before {
+            content: '';
+            position: absolute;
+            inset: 8px;
+            background: white;
+            border-radius: 50%;
+        }
+        
+        .score-circle span {
+            position: relative;
+            z-index: 1;
+            font-size: 2rem;
+            font-weight: 700;
+        }
+        
+        /* Skeleton loading animation */
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+        
+        .skeleton {
+            background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+            border-radius: 8px;
+        }
+        
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #c1c1c1;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #a1a1a1;
+        }
+        
+        /* Date range button active state */
+        .date-range-btn.active {
+            background-color: #0ea5e9;
+            color: white;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 min-h-screen">
+    <!-- Navigation Bar -->
+    <nav class="bg-white border-b border-slate-200 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <!-- Logo -->
+                <div class="flex items-center">
+                    <a href="../student-dashboard.html" class="flex items-center gap-2">
+                        <span class="text-2xl">🧠</span>
+                        <span class="text-xl font-bold bg-gradient-to-r from-sky-600 to-blue-600 bg-clip-text text-transparent">
+                            Juanova Cortex
+                        </span>
+                    </a>
+                </div>
+                
+                <!-- Navigation Links -->
+                <div class="hidden md:flex items-center gap-6">
+                    <a href="../student-dashboard.html" class="text-slate-600 hover:text-sky-600 transition-colors">Dashboard</a>
+                    <a href="../cbt/cbt.html" class="text-slate-600 hover:text-sky-600 transition-colors">Take Quiz</a>
+                    <a href="#" class="text-sky-600 font-medium">Learning Report</a>
+                </div>
+                
+                <!-- User Menu -->
+                <div class="flex items-center gap-4">
+                    <button onclick="window.LearningReport.refresh()" class="p-2 text-slate-400 hover:text-sky-600 transition-colors" title="Refresh">
+                        <i class="fas fa-sync-alt"></i>
+                    </button>
+                    <a href="../student-dashboard.html" class="px-4 py-2 bg-slate-100 text-slate-600 rounded-lg hover:bg-slate-200 transition-colors text-sm font-medium">
+                        <i class="fas fa-arrow-left mr-2"></i>Back
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Error Container -->
+        <div id="errorContainer" class="hidden mb-6"></div>
+
+        <!-- Page Header -->
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
+            <div>
+                <h1 class="text-3xl font-bold text-slate-800">📊 Learning Report</h1>
+                <p class="text-slate-500 mt-1">Track your progress and identify areas for improvement</p>
+            </div>
+            
+            <!-- Date Range Filter -->
+            <div class="flex items-center gap-2 bg-white rounded-xl p-1 shadow-sm border border-slate-200">
+                <button onclick="changeDateRange('week')" class="date-range-btn px-4 py-2 rounded-lg text-sm font-medium bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors" data-range="week">Week</button>
+                <button onclick="changeDateRange('month')" class="date-range-btn px-4 py-2 rounded-lg text-sm font-medium bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors" data-range="month">Month</button>
+                <button onclick="changeDateRange('year')" class="date-range-btn px-4 py-2 rounded-lg text-sm font-medium bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors" data-range="year">Year</button>
+                <button onclick="changeDateRange('all')" class="date-range-btn px-4 py-2 rounded-lg text-sm font-medium bg-sky-600 text-white transition-colors" data-range="all">All Time</button>
+            </div>
+        </div>
+
+        <!-- Overview Cards -->
+        <section class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+            <!-- Average Score Card -->
+            <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
+                <div class="flex items-center justify-between mb-4">
+                    <span class="text-sm text-slate-500">Average Score</span>
+                    <span class="text-2xl">📊</span>
+                </div>
+                <div class="flex items-center justify-center">
+                    <div class="score-circle" id="avgScoreCircle" style="background: conic-gradient(#e5e7eb 0%, #e5e7eb 100%)">
+                        <span id="avgScoreValue" class="text-slate-800">--%</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Quizzes Taken -->
+            <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
+                <div class="flex items-center justify-between mb-4">
+                    <span class="text-sm text-slate-500">Quizzes Taken</span>
+                    <span class="text-2xl">📝</span>
+                </div>
+                <div class="text-4xl font-bold text-slate-800" id="quizzesTaken">--</div>
+                <div class="text-sm text-slate-500 mt-1">total attempts</div>
+            </div>
+            
+            <!-- Study Hours -->
+            <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
+                <div class="flex items-center justify-between mb-4">
+                    <span class="text-sm text-slate-500">Study Time</span>
+                    <span class="text-2xl">⏰</span>
+                </div>
+                <div class="text-4xl font-bold text-slate-800" id="studyHours">--</div>
+                <div class="text-sm text-slate-500 mt-1">hours total</div>
+            </div>
+            
+            <!-- Streak -->
+            <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
+                <div class="flex items-center justify-between mb-4">
+                    <span class="text-sm text-slate-500">Current Streak</span>
+                    <span class="text-2xl">🔥</span>
+                </div>
+                <div class="text-4xl font-bold text-slate-800"><span id="streakDays">--</span></div>
+                <div class="text-sm text-slate-500 mt-1">days in a row</div>
+            </div>
+        </section>
+
+        <!-- Main Content Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Left Column -->
+            <div class="lg:col-span-2 space-y-6">
+                <!-- Performance Trend Chart -->
+                <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-lg font-semibold text-slate-800">Performance Trend</h2>
+                        <span class="text-sm text-slate-500">Recent quiz scores</span>
+                    </div>
+                    
+                    <!-- Skeleton Loader -->
+                    <div class="skeleton-loader h-64 skeleton"></div>
+                    
+                    <!-- Chart -->
+                    <div class="data-content h-64" style="display: none;">
+                        <canvas id="performanceChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Subject Breakdown -->
+                <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-lg font-semibold text-slate-800">Subject Breakdown</h2>
+                        <a href="../cbt/cbt.html" class="text-sm text-sky-600 hover:underline">Practice more</a>
+                    </div>
+                    
+                    <!-- Skeleton Loader -->
+                    <div class="skeleton-loader space-y-4">
+                        <div class="h-16 skeleton"></div>
+                        <div class="h-16 skeleton"></div>
+                        <div class="h-16 skeleton"></div>
+                    </div>
+                    
+                    <!-- Content -->
+                    <div id="subjectBreakdown" class="data-content space-y-4" style="display: none;">
+                        <!-- Subject progress bars will be rendered here -->
+                    </div>
+                </div>
+
+                <!-- Recent Activity -->
+                <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-lg font-semibold text-slate-800">Recent Activity</h2>
+                        <span class="text-sm text-slate-500">Latest quiz results</span>
+                    </div>
+                    
+                    <!-- Skeleton Loader -->
+                    <div class="skeleton-loader space-y-3">
+                        <div class="h-14 skeleton"></div>
+                        <div class="h-14 skeleton"></div>
+                        <div class="h-14 skeleton"></div>
+                        <div class="h-14 skeleton"></div>
+                    </div>
+                    
+                    <!-- Content -->
+                    <div id="recentActivity" class="data-content space-y-3" style="display: none;">
+                        <!-- Recent quiz results will be rendered here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column -->
+            <div class="space-y-6">
+                <!-- Strengths -->
+                <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
+                    <div class="flex items-center gap-2 mb-4">
+                        <span class="text-xl">💪</span>
+                        <h2 class="text-lg font-semibold text-slate-800">Your Strengths</h2>
+                    </div>
+                    
+                    <!-- Skeleton Loader -->
+                    <div class="skeleton-loader space-y-3">
+                        <div class="h-14 skeleton"></div>
+                        <div class="h-14 skeleton"></div>
+                    </div>
+                    
+                    <!-- Content -->
+                    <div id="strengthsList" class="data-content space-y-3" style="display: none;">
+                        <!-- Strengths will be rendered here -->
+                    </div>
+                </div>
+
+                <!-- Weaknesses -->
+                <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
+                    <div class="flex items-center gap-2 mb-4">
+                        <span class="text-xl">⚠️</span>
+                        <h2 class="text-lg font-semibold text-slate-800">Needs Improvement</h2>
+                    </div>
+                    
+                    <!-- Skeleton Loader -->
+                    <div class="skeleton-loader space-y-3">
+                        <div class="h-14 skeleton"></div>
+                        <div class="h-14 skeleton"></div>
+                    </div>
+                    
+                    <!-- Content -->
+                    <div id="weaknessesList" class="data-content space-y-3" style="display: none;">
+                        <!-- Weaknesses will be rendered here -->
+                    </div>
+                </div>
+
+                <!-- Goals Progress -->
+                <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center gap-2">
+                            <span class="text-xl">🎯</span>
+                            <h2 class="text-lg font-semibold text-slate-800">Goals Progress</h2>
+                        </div>
+                    </div>
+                    
+                    <!-- Skeleton Loader -->
+                    <div class="skeleton-loader space-y-3">
+                        <div class="h-20 skeleton"></div>
+                        <div class="h-20 skeleton"></div>
+                    </div>
+                    
+                    <!-- Content -->
+                    <div id="goalsProgress" class="data-content space-y-4" style="display: none;">
+                        <!-- Goals will be rendered here -->
+                    </div>
+                </div>
+
+                <!-- Improvement Insights -->
+                <div class="bg-gradient-to-br from-sky-50 to-blue-50 rounded-2xl p-6 border border-sky-100">
+                    <div class="flex items-center gap-2 mb-4">
+                        <span class="text-xl">💡</span>
+                        <h2 class="text-lg font-semibold text-slate-800">Insights</h2>
+                    </div>
+                    
+                    <!-- Skeleton Loader -->
+                    <div class="skeleton-loader space-y-3">
+                        <div class="h-16 skeleton"></div>
+                        <div class="h-16 skeleton"></div>
+                    </div>
+                    
+                    <!-- Content -->
+                    <div id="improvementInsights" class="data-content space-y-3" style="display: none;">
+                        <!-- Insights will be rendered here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <section class="mt-8 bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
+            <h2 class="text-lg font-semibold text-slate-800 mb-4">Quick Actions</h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <a href="../cbt/cbt.html" class="flex items-center gap-3 p-4 bg-sky-50 rounded-xl hover:bg-sky-100 transition-colors">
+                    <span class="text-2xl">📝</span>
+                    <div>
+                        <div class="font-medium text-slate-700">Take a Quiz</div>
+                        <div class="text-sm text-slate-500">Practice now</div>
+                    </div>
+                </a>
+                <a href="../student-dashboard.html" class="flex items-center gap-3 p-4 bg-emerald-50 rounded-xl hover:bg-emerald-100 transition-colors">
+                    <span class="text-2xl">🎯</span>
+                    <div>
+                        <div class="font-medium text-slate-700">Set Goals</div>
+                        <div class="text-sm text-slate-500">Update targets</div>
+                    </div>
+                </a>
+                <a href="../cbt/cbt.html" class="flex items-center gap-3 p-4 bg-amber-50 rounded-xl hover:bg-amber-100 transition-colors">
+                    <span class="text-2xl">📚</span>
+                    <div>
+                        <div class="font-medium text-slate-700">Study Materials</div>
+                        <div class="text-sm text-slate-500">Browse resources</div>
+                    </div>
+                </a>
+                <button onclick="window.LearningReport.refresh()" class="flex items-center gap-3 p-4 bg-purple-50 rounded-xl hover:bg-purple-100 transition-colors text-left">
+                    <span class="text-2xl">🔄</span>
+                    <div>
+                        <div class="font-medium text-slate-700">Refresh Data</div>
+                        <div class="text-sm text-slate-500">Update report</div>
+                    </div>
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+                <div class="text-slate-500 text-sm">
+                    © 2024 Juanova Cortex. All rights reserved.
+                </div>
+                <div class="flex gap-6">
+                    <a href="#" class="text-slate-500 hover:text-sky-600 text-sm">Privacy Policy</a>
+                    <a href="#" class="text-slate-500 hover:text-sky-600 text-sm">Terms of Service</a>
+                    <a href="#" class="text-slate-500 hover:text-sky-600 text-sm">Help</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Load Learning Report JS -->
+    <script src="learning-report.js"></script>
+    
+    <script>
+        // Initialize date range buttons
+        document.querySelectorAll('.date-range-btn').forEach(btn => {
+            if (btn.dataset.range === 'all') {
+                btn.classList.add('bg-sky-600', 'text-white');
+                btn.classList.remove('bg-slate-100', 'text-slate-600');
+            }
+        });
+    </script>
+</body>
+</html>

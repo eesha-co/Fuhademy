@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mole Concept & Stoichiometry | Chemistry Foundations</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .content-card {
+      -webkit-backdrop-filter: blur(12px);
+      backdrop-filter: blur(12px);
+      background: rgba(255, 255, 255, 0.95);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    .accordion-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease-out;
+    }
+    .accordion-content.open {
+      max-height: 2000px;
+    }
+    .step-card {
+      transition: all 0.2s ease;
+    }
+    .step-card:hover {
+      transform: translateX(4px);
+    }
+    #topic-complete-btn {
+      transition: all 0.3s ease;
+    }
+    #topic-complete-btn:not(:disabled):hover {
+      transform: scale(1.02);
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-teal-50 to-cyan-100 p-4 md:p-6">
+  <div class="max-w-4xl mx-auto">
+    <!-- Navigation -->
+    <nav class="mb-4 flex items-center justify-between">
+      <a href="index.html" class="text-blue-600 hover:text-blue-800 transition flex items-center">
+        <i class="fas fa-arrow-left mr-2"></i>Back to Foundations
+      </a>
+      <!-- Progress indicator -->
+      <div class="flex items-center gap-3">
+        <div class="text-sm text-gray-600">
+          <span id="topic-progress-text">0% Complete</span>
+        </div>
+        <div class="w-24 h-2 bg-gray-200 rounded-full overflow-hidden">
+          <div id="topic-progress-bar" class="h-full bg-gradient-to-r from-teal-400 to-cyan-500 transition-all duration-300" style="width: 0%"></div>
+        </div>
+      </div>
+    </nav>
+    
+    <article class="content-card rounded-xl p-6 md:p-8 shadow-lg">
+      <!-- Header -->
+      <div class="border-b pb-4 mb-6">
+        <h1 class="text-2xl md:text-3xl font-bold text-gray-800 mb-2">
+          <i class="fas fa-calculator text-teal-500 mr-3"></i>The Mole Concept & Stoichiometry
+        </h1>
+        <p class="text-gray-600">Understanding moles, molar mass, Avogadro's number, and stoichiometric calculations.</p>
+      </div>
+
+      <!-- Learning Objectives -->
+      <div class="bg-teal-50 border-l-4 border-teal-500 p-4 rounded-r-lg mb-6">
+        <h3 class="font-semibold text-teal-800 mb-2"><i class="fas fa-bullseye mr-2"></i>Learning Objectives</h3>
+        <ul class="text-teal-700 text-sm space-y-1">
+          <li>• Define the mole and state Avogadro's number</li>
+          <li>• Calculate molar mass of elements and compounds</li>
+          <li>• Convert between moles, mass, and number of particles</li>
+          <li>• Apply stoichiometry to calculate reacting masses</li>
+          <li>• Calculate percentage composition and empirical formulae</li>
+        </ul>
+      </div>
+
+      <!-- Section 1: What is a Mole? -->
+      <section id="section-1" class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <span class="bg-teal-100 text-teal-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">1</span>
+          What is a Mole?
+        </h2>
+        
+        <div class="bg-gray-50 p-5 rounded-lg mb-4">
+          <p class="text-gray-700 mb-4">The <strong class="text-teal-600">mole</strong> is the SI unit for amount of substance. Just as we count eggs in dozens (12) or paper in reams (500), chemists count particles in moles.</p>
+          
+          <div class="bg-gradient-to-r from-teal-100 to-cyan-100 p-6 rounded-lg text-center">
+            <p class="text-lg text-gray-800 mb-2">One mole contains exactly:</p>
+            <p class="text-4xl font-bold text-teal-700 mb-2">6.02 × 10²³</p>
+            <p class="text-lg text-gray-800">particles (atoms, molecules, ions, or electrons)</p>
+            <p class="text-sm text-gray-600 mt-2">This number is called <strong>Avogadro's constant</strong> (L or N<sub>A</sub>)</p>
+          </div>
+        </div>
+
+        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-r-lg">
+          <h4 class="font-semibold text-yellow-800 mb-2"><i class="fas fa-lightbulb mr-2"></i>Why 6.02 × 10²³?</h4>
+          <p class="text-gray-700 text-sm">This number was chosen so that one mole of any element has a mass in grams equal to its relative atomic mass. For example:</p>
+          <ul class="text-gray-700 text-sm mt-2 space-y-1">
+            <li>• 1 mole of carbon-12 atoms = 12 g</li>
+            <li>• 1 mole of hydrogen atoms ≈ 1 g</li>
+            <li>• 1 mole of oxygen atoms ≈ 16 g</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Section 2: Molar Mass -->
+      <section id="section-2" class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <span class="bg-teal-100 text-teal-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">2</span>
+          Molar Mass
+        </h2>
+        
+        <div class="bg-gray-50 p-5 rounded-lg mb-4">
+          <p class="text-gray-700 mb-4">The <strong class="text-teal-600">molar mass</strong> (M) is the mass of one mole of a substance, expressed in grams per mole (g/mol).</p>
+          
+          <div class="grid md:grid-cols-2 gap-4">
+            <div class="bg-green-50 p-4 rounded-lg border border-green-200">
+              <h4 class="font-semibold text-green-800 mb-2"><i class="fas fa-atom mr-2"></i>Elements</h4>
+              <p class="text-gray-700 text-sm mb-2">Molar mass = Relative atomic mass (Aᵣ) in g/mol</p>
+              <div class="bg-white p-2 rounded text-sm space-y-1">
+                <p>M(Na) = 23 g/mol</p>
+                <p>M(C) = 12 g/mol</p>
+                <p>M(Ca) = 40 g/mol</p>
+              </div>
+            </div>
+            
+            <div class="bg-purple-50 p-4 rounded-lg border border-purple-200">
+              <h4 class="font-semibold text-purple-800 mb-2"><i class="fas fa-flask mr-2"></i>Compounds</h4>
+              <p class="text-gray-700 text-sm mb-2">Molar mass = Sum of atomic masses</p>
+              <div class="bg-white p-2 rounded text-sm space-y-1">
+                <p>M(H₂O) = (2×1) + 16 = 18 g/mol</p>
+                <p>M(NaCl) = 23 + 35.5 = 58.5 g/mol</p>
+                <p>M(H₂SO₄) = 2+32+64 = 98 g/mol</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 3: The Mole Triangle -->
+      <section id="section-3" class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <span class="bg-teal-100 text-teal-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">3</span>
+          The Mole Triangle
+        </h2>
+        
+        <div class="bg-white p-5 rounded-lg border border-gray-200 mb-4">
+          <div class="text-center mb-4">
+            <svg viewBox="0 0 300 240" class="max-w-xs mx-auto">
+              <!-- Triangle -->
+              <polygon points="150,20 280,200 20,200" fill="none" stroke="#0d9488" stroke-width="3"/>
+              
+              <!-- Mass at top -->
+              <text x="150" y="60" text-anchor="middle" font-size="18" font-weight="bold" fill="#0d9488">Mass (m)</text>
+              <text x="150" y="78" text-anchor="middle" font-size="12" fill="#666">grams</text>
+              
+              <!-- Moles at bottom left -->
+              <text x="70" y="180" text-anchor="middle" font-size="18" font-weight="bold" fill="#0d9488">Moles (n)</text>
+              <text x="70" y="198" text-anchor="middle" font-size="12" fill="#666">mol</text>
+              
+              <!-- Molar Mass at bottom right -->
+              <text x="230" y="180" text-anchor="middle" font-size="16" font-weight="bold" fill="#0d9488">Molar Mass</text>
+              <text x="230" y="198" text-anchor="middle" font-size="14" font-weight="bold" fill="#0d9488">(M)</text>
+              
+              <!-- Operators -->
+              <text x="100" y="120" text-anchor="middle" font-size="16" fill="#666">÷</text>
+              <text x="200" y="120" text-anchor="middle" font-size="16" fill="#666">×</text>
+            </svg>
+          </div>
+          
+          <div class="grid grid-cols-3 gap-3 text-center">
+            <div class="bg-teal-50 p-3 rounded-lg">
+              <p class="font-mono text-lg text-teal-700">n = m/M</p>
+              <p class="text-xs text-gray-500">moles = mass ÷ molar mass</p>
+            </div>
+            <div class="bg-cyan-50 p-3 rounded-lg">
+              <p class="font-mono text-lg text-cyan-700">m = n × M</p>
+              <p class="text-xs text-gray-500">mass = moles × molar mass</p>
+            </div>
+            <div class="bg-green-50 p-3 rounded-lg">
+              <p class="font-mono text-lg text-green-700">M = m/n</p>
+              <p class="text-xs text-gray-500">molar mass = mass ÷ moles</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 4: Moles and Particles -->
+      <section id="section-4" class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <span class="bg-teal-100 text-teal-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">4</span>
+          Moles and Particles
+        </h2>
+        
+        <div class="bg-gray-50 p-5 rounded-lg mb-4">
+          <div class="grid md:grid-cols-2 gap-4 mb-4 text-center">
+            <div class="bg-white p-4 rounded-lg border">
+              <p class="font-mono text-lg mb-2">Number of particles = n × L</p>
+              <p class="text-sm text-gray-600">where L = 6.02 × 10²³</p>
+            </div>
+            <div class="bg-white p-4 rounded-lg border">
+              <p class="font-mono text-lg mb-2">n = Particles ÷ L</p>
+              <p class="text-sm text-gray-600">to find moles from particles</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Worked Example -->
+        <div class="border border-gray-200 rounded-lg overflow-hidden">
+          <button class="accordion-btn w-full p-4 bg-orange-50 text-left font-semibold text-orange-800 flex justify-between items-center hover:bg-orange-100 transition">
+            <span><i class="fas fa-calculator mr-2 text-orange-500"></i>Worked Example: Converting Mass to Particles</span>
+            <i class="fas fa-chevron-down transform transition-transform"></i>
+          </button>
+          <div class="accordion-content">
+            <div class="p-5">
+              <p class="font-medium text-gray-800 mb-3">Calculate the number of atoms in 4 g of hydrogen gas (H₂).</p>
+              
+              <div class="space-y-3">
+                <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-orange-500">
+                  <p class="text-sm text-gray-600"><strong>Step 1:</strong> Find molar mass of H₂</p>
+                  <p class="text-orange-700 mt-1">M(H₂) = 2 × 1 = 2 g/mol</p>
+                </div>
+                
+                <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-blue-500">
+                  <p class="text-sm text-gray-600"><strong>Step 2:</strong> Calculate moles of H₂</p>
+                  <p class="text-blue-700 mt-1">n(H₂) = 4 g ÷ 2 g/mol = 2 mol</p>
+                </div>
+                
+                <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-teal-500">
+                  <p class="text-sm text-gray-600"><strong>Step 3:</strong> Calculate H₂ molecules</p>
+                  <p class="text-teal-700 mt-1">Molecules = 2 × 6.02 × 10²³ = 1.204 × 10²⁴</p>
+                </div>
+                
+                <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-green-500">
+                  <p class="text-sm text-gray-600"><strong>Step 4:</strong> Calculate H atoms</p>
+                  <p class="text-green-700 mt-1">Each H₂ molecule has 2 H atoms</p>
+                  <p class="text-green-700">Atoms = 1.204 × 10²⁴ × 2 = 2.408 × 10²⁴ atoms</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 5: Stoichiometry -->
+      <section id="section-5" class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <span class="bg-teal-100 text-teal-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">5</span>
+          Stoichiometry: Reacting Masses
+        </h2>
+        
+        <div class="bg-gray-50 p-5 rounded-lg mb-4">
+          <p class="text-gray-700 mb-4"><strong class="text-teal-600">Stoichiometry</strong> is the calculation of quantities of reactants and products in a chemical reaction. The mole ratios from balanced equations allow us to convert between substances.</p>
+          
+          <div class="bg-white p-4 rounded-lg border border-gray-200">
+            <h4 class="font-semibold text-gray-800 mb-3">Steps for Stoichiometric Calculations:</h4>
+            <ol class="text-gray-700 text-sm space-y-2">
+              <li><span class="bg-teal-100 text-teal-700 w-6 h-6 rounded-full inline-flex items-center justify-center mr-2 text-xs font-bold">1</span>Write the balanced chemical equation</li>
+              <li><span class="bg-teal-100 text-teal-700 w-6 h-6 rounded-full inline-flex items-center justify-center mr-2 text-xs font-bold">2</span>Identify the mole ratio from the equation</li>
+              <li><span class="bg-teal-100 text-teal-700 w-6 h-6 rounded-full inline-flex items-center justify-center mr-2 text-xs font-bold">3</span>Convert given quantity to moles</li>
+              <li><span class="bg-teal-100 text-teal-700 w-6 h-6 rounded-full inline-flex items-center justify-center mr-2 text-xs font-bold">4</span>Use mole ratio to find moles of unknown</li>
+              <li><span class="bg-teal-100 text-teal-700 w-6 h-6 rounded-full inline-flex items-center justify-center mr-2 text-xs font-bold">5</span>Convert moles to required quantity</li>
+            </ol>
+          </div>
+        </div>
+
+        <!-- Worked Example 1 -->
+        <div class="border border-gray-200 rounded-lg overflow-hidden mb-4">
+          <button class="accordion-btn w-full p-4 bg-blue-50 text-left font-semibold text-blue-800 flex justify-between items-center hover:bg-blue-100 transition">
+            <span><i class="fas fa-fire mr-2 text-red-500"></i>Worked Example: Burning Carbon</span>
+            <i class="fas fa-chevron-down transform transition-transform"></i>
+          </button>
+          <div class="accordion-content">
+            <div class="p-5">
+              <p class="font-medium text-gray-800 mb-3">Calculate the mass of CO₂ produced when 6 g of carbon burns completely.</p>
+              
+              <div class="space-y-3">
+                <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-blue-500">
+                  <p class="text-sm text-gray-600"><strong>Step 1:</strong> Balanced equation</p>
+                  <p class="text-blue-700 font-mono mt-1">C + O₂ → CO₂</p>
+                </div>
+                
+                <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-indigo-500">
+                  <p class="text-sm text-gray-600"><strong>Step 2:</strong> Mole ratio: 1 mol C : 1 mol CO₂</p>
+                </div>
+                
+                <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-purple-500">
+                  <p class="text-sm text-gray-600"><strong>Step 3:</strong> Moles of C</p>
+                  <p class="text-purple-700 mt-1">n(C) = 6 ÷ 12 = 0.5 mol</p>
+                </div>
+                
+                <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-teal-500">
+                  <p class="text-sm text-gray-600"><strong>Step 4:</strong> Moles of CO₂ = 0.5 mol (same ratio)</p>
+                </div>
+                
+                <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-green-500">
+                  <p class="text-sm text-gray-600"><strong>Step 5:</strong> Mass of CO₂</p>
+                  <p class="text-green-700 mt-1">M(CO₂) = 12 + 32 = 44 g/mol</p>
+                  <p class="text-green-700">m(CO₂) = 0.5 × 44 = <strong>22 g</strong></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Worked Example 2 -->
+        <div class="border border-gray-200 rounded-lg overflow-hidden">
+          <button class="accordion-btn w-full p-4 bg-green-50 text-left font-semibold text-green-800 flex justify-between items-center hover:bg-green-100 transition">
+            <span><i class="fas fa-fire-alt mr-2 text-orange-500"></i>Worked Example: Burning Magnesium</span>
+            <i class="fas fa-chevron-down transform transition-transform"></i>
+          </button>
+          <div class="accordion-content">
+            <div class="p-5">
+              <p class="font-medium text-gray-800 mb-3">What mass of magnesium oxide forms when 12 g of magnesium burns?</p>
+              
+              <div class="space-y-3">
+                <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-green-500">
+                  <p class="text-sm text-gray-600"><strong>Step 1:</strong> Balanced equation</p>
+                  <p class="text-green-700 font-mono mt-1">2Mg + O₂ → 2MgO</p>
+                </div>
+                
+                <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-blue-500">
+                  <p class="text-sm text-gray-600"><strong>Step 2:</strong> Mole ratio: 2 mol Mg : 2 mol MgO = 1:1</p>
+                </div>
+                
+                <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-purple-500">
+                  <p class="text-sm text-gray-600"><strong>Step 3:</strong> Moles of Mg</p>
+                  <p class="text-purple-700 mt-1">n(Mg) = 12 ÷ 24 = 0.5 mol</p>
+                </div>
+                
+                <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-teal-500">
+                  <p class="text-sm text-gray-600"><strong>Step 4:</strong> Moles of MgO = 0.5 mol</p>
+                </div>
+                
+                <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-orange-500">
+                  <p class="text-sm text-gray-600"><strong>Step 5:</strong> Mass of MgO</p>
+                  <p class="text-orange-700 mt-1">M(MgO) = 24 + 16 = 40 g/mol</p>
+                  <p class="text-orange-700">m(MgO) = 0.5 × 40 = <strong>20 g</strong></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 6: Percentage Composition -->
+      <section id="section-6" class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <span class="bg-teal-100 text-teal-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">6</span>
+          Percentage Composition
+        </h2>
+        
+        <div class="bg-gray-50 p-5 rounded-lg mb-4">
+          <p class="text-gray-700 mb-4">The percentage composition shows what percentage of the total mass of a compound is contributed by each element.</p>
+          
+          <div class="bg-white p-4 rounded-lg border border-gray-200 text-center mb-4">
+            <p class="font-mono text-lg">% by mass = (mass of element / Mᵣ of compound) × 100</p>
+          </div>
+
+          <!-- Worked Example -->
+          <div class="border border-gray-200 rounded-lg overflow-hidden">
+            <button class="accordion-btn w-full p-4 bg-purple-50 text-left font-semibold text-purple-800 flex justify-between items-center hover:bg-purple-100 transition">
+              <span><i class="fas fa-calculator mr-2 text-purple-500"></i>Worked Example: % Composition of Glucose</span>
+              <i class="fas fa-chevron-down transform transition-transform"></i>
+            </button>
+            <div class="accordion-content">
+              <div class="p-5">
+                <p class="font-medium text-gray-800 mb-3">Calculate the % carbon in glucose (C₆H₁₂O₆).</p>
+                
+                <div class="space-y-3">
+                  <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-purple-500">
+                    <p class="text-sm text-gray-600"><strong>Step 1:</strong> Find Mᵣ</p>
+                    <p class="text-purple-700 mt-1">Mᵣ(C₆H₁₂O₆) = (6×12) + (12×1) + (6×16) = 180</p>
+                  </div>
+                  
+                  <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-blue-500">
+                    <p class="text-sm text-gray-600"><strong>Step 2:</strong> Mass of carbon</p>
+                    <p class="text-blue-700 mt-1">Mass of C = 6 × 12 = 72</p>
+                  </div>
+                  
+                  <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-green-500">
+                    <p class="text-sm text-gray-600"><strong>Step 3:</strong> Calculate %</p>
+                    <p class="text-green-700 mt-1">%C = (72/180) × 100 = <strong>40%</strong></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 7: Empirical & Molecular Formulae -->
+      <section id="section-7" class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <span class="bg-teal-100 text-teal-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">7</span>
+          Empirical and Molecular Formulae
+        </h2>
+        
+        <div class="grid md:grid-cols-2 gap-4 mb-4">
+          <div class="bg-orange-50 p-4 rounded-lg border border-orange-200">
+            <h4 class="font-semibold text-orange-800 mb-2">Empirical Formula</h4>
+            <p class="text-gray-700 text-sm">The simplest whole number ratio of atoms.</p>
+            <p class="text-orange-600 text-sm mt-2">Example: CH₂O (for glucose)</p>
+          </div>
+          <div class="bg-teal-50 p-4 rounded-lg border border-teal-200">
+            <h4 class="font-semibold text-teal-800 mb-2">Molecular Formula</h4>
+            <p class="text-gray-700 text-sm">The actual number of atoms in a molecule.</p>
+            <p class="text-teal-600 text-sm mt-2">Example: C₆H₁₂O₆ (for glucose)</p>
+          </div>
+        </div>
+
+        <!-- Worked Example -->
+        <div class="border border-gray-200 rounded-lg overflow-hidden mb-4">
+          <button class="accordion-btn w-full p-4 bg-indigo-50 text-left font-semibold text-indigo-800 flex justify-between items-center hover:bg-indigo-100 transition">
+            <span><i class="fas fa-flask mr-2 text-indigo-500"></i>Worked Example: Finding Empirical Formula</span>
+            <i class="fas fa-chevron-down transform transition-transform"></i>
+          </button>
+          <div class="accordion-content">
+            <div class="p-5">
+              <p class="font-medium text-gray-800 mb-3">A compound contains 40% C, 6.7% H, and 53.3% O. Find its empirical formula.</p>
+              
+              <div class="overflow-x-auto">
+                <table class="w-full text-sm mb-3">
+                  <thead class="bg-indigo-100">
+                    <tr>
+                      <th class="p-2 text-left">Element</th>
+                      <th class="p-2">%</th>
+                      <th class="p-2">÷ Aᵣ</th>
+                      <th class="p-2">Moles</th>
+                      <th class="p-2">÷ smallest</th>
+                      <th class="p-2">Ratio</th>
+                    </tr>
+                  </thead>
+                  <tbody class="bg-white">
+                    <tr><td class="p-2 border">C</td><td class="p-2 border">40</td><td class="p-2 border">40÷12</td><td class="p-2 border">3.33</td><td class="p-2 border">÷3.33</td><td class="p-2 border font-bold">1</td></tr>
+                    <tr><td class="p-2 border">H</td><td class="p-2 border">6.7</td><td class="p-2 border">6.7÷1</td><td class="p-2 border">6.7</td><td class="p-2 border">÷3.33</td><td class="p-2 border font-bold">2</td></tr>
+                    <tr><td class="p-2 border">O</td><td class="p-2 border">53.3</td><td class="p-2 border">53.3÷16</td><td class="p-2 border">3.33</td><td class="p-2 border">÷3.33</td><td class="p-2 border font-bold">1</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <p class="text-green-700 font-bold">Empirical formula: CH₂O</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Molecular Formula Example -->
+        <div class="border border-gray-200 rounded-lg overflow-hidden">
+          <button class="accordion-btn w-full p-4 bg-pink-50 text-left font-semibold text-pink-800 flex justify-between items-center hover:bg-pink-100 transition">
+            <span><i class="fas fa-molecule mr-2 text-pink-500"></i>Finding Molecular Formula</span>
+            <i class="fas fa-chevron-down transform transition-transform"></i>
+          </button>
+          <div class="accordion-content">
+            <div class="p-5">
+              <p class="font-medium text-gray-800 mb-3">A compound has empirical formula CH₂O and Mᵣ = 180. Find its molecular formula.</p>
+              
+              <div class="space-y-3">
+                <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-pink-500">
+                  <p class="text-sm text-gray-600"><strong>Step 1:</strong> Empirical formula mass</p>
+                  <p class="text-pink-700 mt-1">= 12 + (2×1) + 16 = 30</p>
+                </div>
+                
+                <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-purple-500">
+                  <p class="text-sm text-gray-600"><strong>Step 2:</strong> Find n</p>
+                  <p class="text-purple-700 mt-1">n = Mᵣ ÷ empirical mass = 180 ÷ 30 = 6</p>
+                </div>
+                
+                <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-green-500">
+                  <p class="text-sm text-gray-600"><strong>Step 3:</strong> Multiply empirical formula</p>
+                  <p class="text-green-700 mt-1">Molecular formula = (CH₂O)₆ = <strong>C₆H₁₂O₆</strong></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 8: Practice Problems -->
+      <section id="section-8" class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <i class="fas fa-pencil-alt text-teal-600 mr-3"></i>
+          Practice Problems
+        </h2>
+        
+        <div class="space-y-4">
+          <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+            <p class="font-medium text-gray-800 mb-2">1. How many moles are in 88 g of CO₂?</p>
+            <details class="mt-2">
+              <summary class="text-sm text-blue-600 cursor-pointer hover:text-blue-800">Show Solution</summary>
+              <div class="mt-2 text-sm text-gray-700">
+                <p>M(CO₂) = 12 + 32 = 44 g/mol</p>
+                <p>n = 88 ÷ 44 = <strong>2 mol</strong></p>
+              </div>
+            </details>
+          </div>
+          
+          <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+            <p class="font-medium text-gray-800 mb-2">2. Calculate the number of molecules in 0.5 mol of water.</p>
+            <details class="mt-2">
+              <summary class="text-sm text-blue-600 cursor-pointer hover:text-blue-800">Show Solution</summary>
+              <div class="mt-2 text-sm text-gray-700">
+                <p>Molecules = n × L = 0.5 × 6.02 × 10²³</p>
+                <p>= <strong>3.01 × 10²³ molecules</strong></p>
+              </div>
+            </details>
+          </div>
+          
+          <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+            <p class="font-medium text-gray-800 mb-2">3. What mass of CaCO₃ contains 0.2 mol?</p>
+            <details class="mt-2">
+              <summary class="text-sm text-blue-600 cursor-pointer hover:text-blue-800">Show Solution</summary>
+              <div class="mt-2 text-sm text-gray-700">
+                <p>M(CaCO₃) = 40 + 12 + 48 = 100 g/mol</p>
+                <p>m = 0.2 × 100 = <strong>20 g</strong></p>
+              </div>
+            </details>
+          </div>
+          
+          <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+            <p class="font-medium text-gray-800 mb-2">4. Fe + Cl₂ → FeCl₃. What mass of FeCl₃ forms from 5.6 g of Fe?</p>
+            <details class="mt-2">
+              <summary class="text-sm text-blue-600 cursor-pointer hover:text-blue-800">Show Solution</summary>
+              <div class="mt-2 text-sm text-gray-700">
+                <p>Balanced: 2Fe + 3Cl₂ → 2FeCl₃</p>
+                <p>n(Fe) = 5.6 ÷ 56 = 0.1 mol</p>
+                <p>n(FeCl₃) = 0.1 mol (ratio 1:1)</p>
+                <p>M(FeCl₃) = 56 + 106.5 = 162.5 g/mol</p>
+                <p>m(FeCl₃) = 0.1 × 162.5 = <strong>16.25 g</strong></p>
+              </div>
+            </details>
+          </div>
+        </div>
+      </section>
+
+      <!-- Key Takeaways -->
+      <section id="section-9" class="mb-8">
+        <div class="bg-gradient-to-r from-teal-50 to-cyan-50 p-5 rounded-lg border border-teal-200">
+          <h3 class="font-semibold text-teal-800 mb-3"><i class="fas fa-star mr-2"></i>Key Takeaways for WAEC/JAMB/NECO</h3>
+          <ul class="text-teal-700 text-sm space-y-2">
+            <li>• <strong>Avogadro's number:</strong> L = 6.02 × 10²³ particles/mol</li>
+            <li>• <strong>Mole triangle:</strong> n = m/M, m = n × M, M = m/n</li>
+            <li>• Always use balanced equations for stoichiometry</li>
+            <li>• Mole ratios come from balanced equations</li>
+            <li>• <strong>Empirical formula:</strong> Convert % to moles, find simplest ratio</li>
+            <li>• <strong>Molecular formula:</strong> (Empirical formula)ₙ where n = Mᵣ ÷ empirical mass</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Complete Topic Button -->
+      <div class="mt-8 pt-6 border-t border-gray-200">
+        <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div class="text-center sm:text-left">
+            <h3 class="font-semibold text-gray-800">Ready to Complete?</h3>
+            <p class="text-sm text-gray-600">View all sections, then take the quiz to mark this topic as complete.</p>
+          </div>
+          <button id="topic-complete-btn" disabled
+                  class="px-6 py-3 rounded-xl bg-gray-300 text-gray-500 cursor-not-allowed opacity-50 flex items-center gap-2 text-lg font-medium">
+            <i class="fas fa-lock mr-2"></i>
+            <span>Complete (0% viewed)</span>
+          </button>
+        </div>
+      </div>
+    </article>
+  </div>
+
+  <script>
+    // Accordion functionality
+    document.querySelectorAll('.accordion-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const content = btn.nextElementSibling;
+        const icon = btn.querySelector('.fa-chevron-down');
+        content.classList.toggle('open');
+        icon?.classList.toggle('rotate-180');
+      });
+    });
+  </script>
+
+  <!-- Topic Tracking and Quiz System -->
+  <script type="module">
+    import { TopicTracker } from '/js/topic-tracker.js';
+    import { TopicQuiz } from '/js/topic-quiz.js';
+
+    const quizQuestions = [
+      {
+        question: "What is Avogadro's number?",
+        options: ["6.02 × 10²²", "6.02 × 10²³", "6.02 × 10²⁴", "6.02 × 10²⁵"],
+        correct: 1,
+        explanation: "Avogadro's number (L) = 6.02 × 10²³ particles per mole."
+      },
+      {
+        question: "What is the molar mass of H₂O?",
+        options: ["16 g/mol", "17 g/mol", "18 g/mol", "20 g/mol"],
+        correct: 2,
+        explanation: "M(H₂O) = (2×1) + 16 = 18 g/mol"
+      },
+      {
+        question: "How many moles are in 44 g of CO₂?",
+        options: ["0.5 mol", "1 mol", "2 mol", "4 mol"],
+        correct: 1,
+        explanation: "n = m/M = 44 ÷ 44 = 1 mol"
+      },
+      {
+        question: "In the equation 2H₂ + O₂ → 2H₂O, what is the mole ratio of H₂ to H₂O?",
+        options: ["1:1", "2:1", "1:2", "2:2"],
+        correct: 0,
+        explanation: "From the equation: 2H₂ : 2H₂O = 1:1"
+      },
+      {
+        question: "What mass of NaCl contains 0.5 mol? (Na=23, Cl=35.5)",
+        options: ["29.25 g", "58.5 g", "11.75 g", "23 g"],
+        correct: 0,
+        explanation: "M(NaCl) = 23 + 35.5 = 58.5 g/mol. m = 0.5 × 58.5 = 29.25 g"
+      },
+      {
+        question: "A compound has % composition C=40%, H=6.7%, O=53.3%. What is the empirical formula?",
+        options: ["CHO", "CH₂O", "C₂H₂O", "C₂H₄O₂"],
+        correct: 1,
+        explanation: "C: 40/12=3.33, H: 6.7/1=6.7, O: 53.3/16=3.33. Divide by 3.33: C=1, H=2, O=1 → CH₂O"
+      },
+      {
+        question: "If empirical formula is CH₂ and Mᵣ=28, what is the molecular formula?",
+        options: ["CH₂", "C₂H₄", "C₃H₆", "C₄H₈"],
+        correct: 1,
+        explanation: "Empirical mass = 14. n = 28/14 = 2. Molecular formula = (CH₂)₂ = C₂H₄"
+      },
+      {
+        question: "Calculate the % carbon in CO₂.",
+        options: ["27.3%", "33.3%", "72.7%", "66.7%"],
+        correct: 0,
+        explanation: "M(CO₂) = 44. Mass of C = 12. %C = (12/44) × 100 = 27.3%"
+      }
+    ];
+
+    const tracker = new TopicTracker({
+      topicId: 'mole-concept',
+      topicTitle: 'Mole Concept & Stoichiometry',
+      subject: 'chemistry',
+      sections: ['section-1', 'section-2', 'section-3', 'section-4', 'section-5', 'section-6', 'section-7', 'section-8', 'section-9'],
+      quizRequired: true
+    });
+
+    const quiz = new TopicQuiz({
+      topicId: 'mole-concept',
+      topicTitle: 'Mole Concept & Stoichiometry',
+      subject: 'chemistry',
+      questions: quizQuestions,
+      passingScore: 60,
+      tracker: tracker
+    });
+
+    // Track accordion opens
+    document.querySelectorAll('.accordion-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const section = btn.closest('section');
+        if (section && section.id) {
+          tracker.markSectionViewed(section.id);
+        }
+      });
+    });
+
+    // Track practice problem views
+    document.querySelectorAll('details').forEach(details => {
+      details.addEventListener('toggle', () => {
+        if (details.open) {
+          tracker.markSectionViewed('section-8');
+        }
+      });
+    });
+  </script>
+</body>
+</html>

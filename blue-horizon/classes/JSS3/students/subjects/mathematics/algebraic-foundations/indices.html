@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mathematics - Indices</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * { transition: color 0.2s; }
+    
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    
+    @keyframes pulse-glow {
+      0%, 100% { box-shadow: 0 6px 18px rgba(99,102,241,0.08); }
+      50% { box-shadow: 0 6px 28px rgba(99,102,241,0.15); }
+    }
+    
+    .feedback-correct { 
+      color: #16a34a; 
+      animation: slideIn 0.3s ease-out;
+      font-weight: 500;
+    }
+    .feedback-wrong { 
+      color: #e11d48; 
+      animation: slideIn 0.3s ease-out;
+      font-weight: 500;
+    }
+    .card-glow { 
+      box-shadow: 0 6px 18px rgba(99,102,241,0.08); 
+      animation: fadeIn 0.5s ease-out;
+    }
+    .card-glow:hover {
+      box-shadow: 0 8px 24px rgba(99,102,241,0.12);
+      transform: translateY(-2px);
+      transition: all 0.3s ease;
+    }
+    .accent-gradient { 
+      background: linear-gradient(90deg,#6366f1,#06b6d4); 
+    }
+    .step-badge { 
+      background: rgba(99,102,241,0.08); 
+      color: #3730a3; 
+      padding: .25rem .5rem; 
+      border-radius: .5rem; 
+      font-weight:600;
+      display: inline-block;
+      width: 24px;
+      height: 24px;
+      text-align: center;
+      line-height: 1;
+      font-size: 0.75rem;
+    }
+    
+    button {
+      transition: all 0.2s ease;
+    }
+    
+    button:hover:not(:disabled) {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    
+    button:active:not(:disabled) {
+      transform: translateY(0);
+    }
+    
+    input {
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    
+    input:focus {
+      outline: none;
+      border-color: #6366f1;
+      box-shadow: 0 0 0 3px rgba(99,102,241,0.1);
+    }
+    
+    .problem-card {
+      animation: slideIn 0.4s ease-out;
+    }
+    
+    article {
+      animation: fadeIn 0.6s ease-out;
+    }
+  </style>
+</head>
+<body class="bg-gray-100 font-sans">
+  <header class="accent-gradient text-white sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
+      <a href="../algebraic-foundations.html" class="flex items-center gap-4">
+        <div class="p-2 bg-white/20 rounded-lg"><i class="fas fa-superscript"></i></div>
+        <div>
+          <div class="font-semibold text-lg">Indices</div>
+          <div class="text-xs opacity-80">Laws of Indices • Simplify powers & roots</div>
+        </div>
+      </a>
+      <div class="flex items-center gap-4">
+        <div class="text-sm opacity-90">Progress: <span id="progress">0%</span></div>
+        <a href="../mathematics.html" class="text-white/90 hover:text-white text-sm">Back to Math</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-4 py-8">
+    <div class="grid lg:grid-cols-4 gap-8">
+      <aside class="lg:col-span-1">
+        <div class="bg-white p-5 rounded-xl card-glow sticky top-24">
+          <h3 class="font-semibold mb-3">Contents</h3>
+          <ul class="space-y-2 text-sm">
+            <li><a href="#definition" class="hover:text-indigo-600 flex items-center gap-2"><span class="step-badge">1</span>Definition</a></li>
+            <li><a href="#laws" class="hover:text-indigo-600 flex items-center gap-2"><span class="step-badge">2</span>Laws</a></li>
+            <li><a href="#neg-fractional" class="hover:text-indigo-600 flex items-center gap-2"><span class="step-badge">3</span>Negative & Fractional</a></li>
+            <li><a href="#examples" class="hover:text-indigo-600 flex items-center gap-2"><span class="step-badge">4</span>Examples</a></li>
+            <li><a href="#practice" class="hover:text-indigo-600 flex items-center gap-2"><span class="step-badge">5</span>Practice</a></li>
+          </ul>
+          <div class="mt-6 text-xs text-gray-500">Tip: Use the hints if you get stuck, then check your answer.</div>
+        </div>
+      </aside>
+
+      <section class="lg:col-span-3 space-y-6">
+        <article id="definition" class="bg-white p-6 rounded-xl card-glow">
+          <div class="flex items-start gap-4">
+            <div class="text-3xl text-indigo-600 mt-1"><i class="fas fa-info-circle"></i></div>
+            <div>
+              <h2 class="text-2xl font-semibold mb-2">What are Indices?</h2>
+              <p class="text-gray-700">An <strong>index</strong> (plural: indices) shows how many times a base is multiplied by itself. We write <code class="bg-gray-100 px-1 rounded">a^n</code> to mean <code class="font-mono">a × a × ... × a</code> (n times).</p>
+              <div class="mt-4 inline-flex items-center gap-3 bg-indigo-50 text-indigo-700 px-4 py-2 rounded-lg">
+                <div class="font-mono">2^3</div>
+                <div class="opacity-70">=&gt;</div>
+                <div class="font-semibold">8</div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article id="laws" class="bg-white p-6 rounded-xl card-glow">
+          <div class="flex items-start gap-4">
+            <div class="text-3xl text-indigo-600 mt-1"><i class="fas fa-book-open"></i></div>
+            <div>
+              <h2 class="text-2xl font-semibold mb-3">Basic Laws of Indices</h2>
+              <div class="grid sm:grid-cols-2 gap-4">
+                <div class="p-3 bg-gray-50 rounded">
+                  <h4 class="font-semibold">Product of powers</h4>
+                  <div class="mt-2 font-mono bg-white p-2 rounded">a^m × a^n = a^{m+n}</div>
+                </div>
+                <div class="p-3 bg-gray-50 rounded">
+                  <h4 class="font-semibold">Quotient of powers</h4>
+                  <div class="mt-2 font-mono bg-white p-2 rounded">a^m ÷ a^n = a^{m-n} (a ≠ 0)</div>
+                </div>
+                <div class="p-3 bg-gray-50 rounded">
+                  <h4 class="font-semibold">Power of a power</h4>
+                  <div class="mt-2 font-mono bg-white p-2 rounded">(a^m)^n = a^{m·n}</div>
+                </div>
+                <div class="p-3 bg-gray-50 rounded">
+                  <h4 class="font-semibold">Power of a product</h4>
+                  <div class="mt-2 font-mono bg-white p-2 rounded">(ab)^n = a^n b^n</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article id="neg-fractional" class="bg-white p-6 rounded-xl card-glow">
+          <div class="flex items-start gap-4">
+            <div class="text-3xl text-indigo-600 mt-1"><i class="fas fa-exchange-alt"></i></div>
+            <div>
+              <h2 class="text-2xl font-semibold mb-3">Negative and Fractional Indices</h2>
+              <p class="text-gray-700 mb-2"><strong>Negative index:</strong> <code class="font-mono">a^{-n} = 1 / a^n</code> (a ≠ 0).</p>
+              <p class="text-gray-700 mb-2"><strong>Fractional index:</strong> <code class="font-mono">a^{1/n} = n√a</code>. More generally, <code class="font-mono">a^{m/n} = (n√a)^m</code>.</p>
+              <div class="mt-3 bg-yellow-50 p-3 rounded border-l-4 border-yellow-400">
+                <strong>Tip:</strong> Convert fractional indices to roots to evaluate, and use negative indices to rewrite reciprocals.
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article id="examples" class="bg-white p-6 rounded-xl card-glow">
+          <div class="flex items-start gap-4">
+            <div class="text-3xl text-indigo-600 mt-1"><i class="fas fa-lightbulb"></i></div>
+            <div>
+              <h2 class="text-2xl font-semibold mb-3">Worked Examples</h2>
+              <div class="grid sm:grid-cols-2 gap-4 text-gray-700">
+                <div class="p-3 bg-gray-50 rounded">
+                  <div class="font-semibold">2^3 × 2^4</div>
+                  <div class="mt-1 font-mono">2^{3+4} = 2^7 = 128</div>
+                </div>
+                <div class="p-3 bg-gray-50 rounded">
+                  <div class="font-semibold">(3^2)^3</div>
+                  <div class="mt-1 font-mono">3^{2×3} = 3^6 = 729</div>
+                </div>
+                <div class="p-3 bg-gray-50 rounded">
+                  <div class="font-semibold">5^{-2}</div>
+                  <div class="mt-1 font-mono">1 / 5^2 = 1/25</div>
+                </div>
+                <div class="p-3 bg-gray-50 rounded">
+                  <div class="font-semibold">16^{3/4}</div>
+                  <div class="mt-1 font-mono">(4√16)^3 = 2^3 = 8</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article id="practice" class="bg-white p-6 rounded-xl card-glow">
+          <div class="flex items-start gap-4">
+            <div class="text-3xl text-indigo-600 mt-1"><i class="fas fa-pencil-alt"></i></div>
+            <div class="w-full">
+              <h2 class="text-2xl font-semibold mb-3">Practice Problems</h2>
+              <p class="text-gray-700 mb-4">Interactive checks with hints and show-solution buttons.</p>
+
+              <div class="grid md:grid-cols-2 gap-4">
+                <!-- Problem Card Template -->
+                <div class="p-4 border rounded-md bg-gray-50">
+                  <div class="flex justify-between items-start">
+                    <div>
+                      <div class="font-semibold">1) Simplify</div>
+                      <div class="font-mono text-indigo-700">2^3 × 2^4</div>
+                      <input id="q1" class="mt-3 p-2 border rounded w-full" placeholder="Answer (e.g., 128 or 2^7)" />
+                    </div>
+                    <div class="text-right ml-3">
+                      <button id="check1" class="px-4 py-2 bg-indigo-600 text-white rounded mb-2">Check</button>
+                      <button id="hint1" class="px-2 py-1 text-xs bg-white border rounded">Hint</button>
+                      <div id="fb1" class="mt-3 text-sm"></div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="p-4 border rounded-md bg-gray-50">
+                  <div class="flex justify-between items-start">
+                    <div>
+                      <div class="font-semibold">2) Power of a power</div>
+                      <div class="font-mono text-indigo-700">(3^2)^3</div>
+                      <input id="q2" class="mt-3 p-2 border rounded w-full" placeholder="Answer (e.g., 729 or 3^6)" />
+                    </div>
+                    <div class="text-right ml-3">
+                      <button id="check2" class="px-4 py-2 bg-indigo-600 text-white rounded mb-2">Check</button>
+                      <button id="hint2" class="px-2 py-1 text-xs bg-white border rounded">Hint</button>
+                      <div id="fb2" class="mt-3 text-sm"></div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="p-4 border rounded-md bg-gray-50">
+                  <div class="flex justify-between items-start">
+                    <div>
+                      <div class="font-semibold">3) Negative index</div>
+                      <div class="font-mono text-indigo-700">5^{-2}</div>
+                      <input id="q3" class="mt-3 p-2 border rounded w-full" placeholder="Answer (e.g., 1/25 or 0.04)" />
+                    </div>
+                    <div class="text-right ml-3">
+                      <button id="check3" class="px-4 py-2 bg-indigo-600 text-white rounded mb-2">Check</button>
+                      <button id="hint3" class="px-2 py-1 text-xs bg-white border rounded">Hint</button>
+                      <div id="fb3" class="mt-3 text-sm"></div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="p-4 border rounded-md bg-gray-50">
+                  <div class="flex justify-between items-start">
+                    <div>
+                      <div class="font-semibold">4) Fractional index</div>
+                      <div class="font-mono text-indigo-700">16^{3/4}</div>
+                      <input id="q4" class="mt-3 p-2 border rounded w-full" placeholder="Answer (e.g., 8)" />
+                    </div>
+                    <div class="text-right ml-3">
+                      <button id="check4" class="px-4 py-2 bg-indigo-600 text-white rounded mb-2">Check</button>
+                      <button id="hint4" class="px-2 py-1 text-xs bg-white border rounded">Hint</button>
+                      <div id="fb4" class="mt-3 text-sm"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="mt-6 pt-4 border-t">
+                <h3 class="font-semibold mb-2">Independent Practice</h3>
+                <p class="text-sm text-gray-600 mb-2">Simplify and enter your final answer. Use <button id="show-solution" class="text-xs ml-2 text-indigo-600">Show solution</button> if stuck.</p>
+                <label class="block text-sm">Problem: <code class="font-mono">(2^3 × 2^{-1}) × (4^{1/2})</code></label>
+                <div class="mt-2 flex gap-3">
+                  <input id="independent" class="p-2 border rounded w-60" placeholder="Final answer" />
+                  <button id="check-ind" class="px-4 py-2 bg-green-600 text-white rounded">Check Final Answer</button>
+                </div>
+                <div id="fb-ind" class="mt-3 text-sm"></div>
+                <div id="solution-ind" class="mt-3 hidden p-3 bg-gray-50 rounded text-sm"></div>
+              </div>
+
+            </div>
+          </div>
+        </article>
+
+      </section>
+    </div>
+  </main>
+
+
+  <!-- Quiz Mode Modal -->
+  <button id="quiz-mode-btn" class="fixed bottom-8 right-8 z-50 bg-indigo-600 text-white px-6 py-3 rounded-full shadow-lg hover:bg-indigo-700 text-lg font-semibold flex items-center gap-2">
+    <i class="fas fa-stopwatch"></i> Quiz Mode
+  </button>
+  <div id="quiz-modal" class="hidden fixed inset-0 bg-black/40 z-50 flex items-center justify-center">
+    <div class="bg-white rounded-xl shadow-2xl max-w-lg w-full p-6 relative animate-fadeIn">
+      <button id="close-quiz-modal" class="absolute top-3 right-4 text-gray-400 hover:text-gray-700 text-2xl">&times;</button>
+      <div id="quiz-content">
+        <!-- Quiz content will be injected here -->
+      </div>
+    </div>
+  </div>
+
+  <footer class="max-w-7xl mx-auto px-4 py-6 text-sm text-gray-500">
+    <div>Created from templates in the algebraic foundations collection.</div>
+  </footer>
+
+  <script>
+    // --- Quiz Mode Logic ---
+    const quizQuestions = [
+      {
+        q: 'Simplify: 2^4 × 2^2',
+        a: ['2^6','64','2^6=64'],
+        type: 'text',
+        explain: 'Add exponents: 2^4 × 2^2 = 2^{4+2} = 2^6 = 64.'
+      },
+      {
+        q: 'What is (5^3)^2?',
+        a: ['5^6','15625','5^6=15625'],
+        type: 'text',
+        explain: '(a^m)^n = a^{m·n}. 5^3^2 = 5^{3×2} = 5^6 = 15625.'
+      },
+      {
+        q: 'Write 9^{-1} as a fraction.',
+        a: ['1/9','0.111','0.1111'],
+        type: 'text',
+        explain: 'Negative index: 9^{-1} = 1/9.'
+      },
+      {
+        q: 'Evaluate 27^{1/3}',
+        a: ['3'],
+        type: 'text',
+        explain: 'Fractional index: 27^{1/3} = 3 (cube root of 27).'
+      },
+      {
+        q: 'Simplify: (4^2) × (4^{-1})',
+        a: ['4','4^1','4.0'],
+        type: 'text',
+        explain: 'Add exponents: 4^{2+(-1)} = 4^1 = 4.'
+      },
+      {
+        q: 'What is the value of 16^{3/4}?',
+        a: ['8','2^3'],
+        type: 'text',
+        explain: '16^{3/4} = (4th root of 16)^3 = 2^3 = 8.'
+      },
+      {
+        q: 'Which law is used: (a^m)^n = a^{m·n}?',
+        a: ['power of a power','power law','power of power'],
+        type: 'text',
+        explain: 'This is the power of a power law.'
+      },
+      {
+        q: 'Simplify: 10^0',
+        a: ['1','1.0'],
+        type: 'text',
+        explain: 'Any nonzero number to the power 0 is 1.'
+      }
+    ];
+
+    let quizState = null;
+
+    function startQuizMode() {
+      // Pick 3 random questions
+      const pool = [...quizQuestions];
+      const selected = [];
+      for(let i=0;i<3;i++) {
+        const idx = Math.floor(Math.random()*pool.length);
+        selected.push(pool.splice(idx,1)[0]);
+      }
+      quizState = {
+        questions: selected,
+        current: 0,
+        score: 0,
+        answers: [],
+        timer: 20,
+        timerId: null,
+        finished: false
+      };
+      showQuizQuestion();
+      document.getElementById('quiz-modal').classList.remove('hidden');
+    }
+
+    function showQuizQuestion() {
+      const q = quizState.questions[quizState.current];
+      const quizContent = document.getElementById('quiz-content');
+      quizContent.innerHTML = `
+        <div class="flex items-center justify-between mb-2">
+          <div class="text-lg font-semibold">Question ${quizState.current+1} of 3</div>
+          <div class="flex items-center gap-2"><i class="fas fa-stopwatch text-indigo-500"></i> <span id="quiz-timer" class="font-mono">${quizState.timer}</span>s</div>
+        </div>
+        <div class="mb-4 text-xl">${q.q}</div>
+        <input id="quiz-answer" class="w-full p-3 border rounded text-lg mb-4" placeholder="Your answer..." autocomplete="off" />
+        <button id="quiz-submit" class="w-full bg-indigo-600 text-white py-2 rounded font-semibold text-lg hover:bg-indigo-700">Submit</button>
+        <div id="quiz-feedback" class="mt-4 text-base"></div>
+      `;
+      document.getElementById('quiz-answer').focus();
+      quizState.timer = 20;
+      updateQuizTimer();
+      quizState.timerId = setInterval(()=>{
+        quizState.timer--;
+        updateQuizTimer();
+        if(quizState.timer<=0) {
+          clearInterval(quizState.timerId);
+          quizTimeout();
+        }
+      },1000);
+      document.getElementById('quiz-submit').onclick = submitQuizAnswer;
+      document.getElementById('quiz-answer').onkeypress = function(e){ if(e.key==='Enter'){ submitQuizAnswer(); } };
+    }
+
+    function updateQuizTimer() {
+      const el = document.getElementById('quiz-timer');
+      if(el) el.textContent = quizState.timer;
+    }
+
+    function submitQuizAnswer() {
+      if(quizState.finished) return;
+      clearInterval(quizState.timerId);
+      const q = quizState.questions[quizState.current];
+      const ans = document.getElementById('quiz-answer').value.trim().toLowerCase().replace(/\s+/g,'');
+      let correct = false;
+      for(const a of q.a) {
+        if(ans === a.replace(/\s+/g,'').toLowerCase()) correct = true;
+        // Also allow numeric answers
+        if(!correct && !isNaN(ans) && !isNaN(a) && Math.abs(parseFloat(ans)-parseFloat(a))<1e-6) correct = true;
+      }
+      quizState.answers.push({correct, ans, q});
+      if(correct) quizState.score++;
+      showQuizFeedback(correct, q);
+    }
+
+    function quizTimeout() {
+      showQuizFeedback(false, quizState.questions[quizState.current], true);
+    }
+
+    function showQuizFeedback(correct, q, timeout=false) {
+      const fb = document.getElementById('quiz-feedback');
+      if(correct) {
+        fb.innerHTML = `<span class="feedback-correct"><i class="fas fa-check-circle"></i> Correct!</span>`;
+      } else if(timeout) {
+        fb.innerHTML = `<span class="feedback-wrong"><i class="fas fa-clock"></i> Time's up!</span><br><span class="text-gray-700">${q.explain}</span>`;
+      } else {
+        fb.innerHTML = `<span class="feedback-wrong"><i class="fas fa-times-circle"></i> Not quite.</span><br><span class="text-gray-700">${q.explain}</span>`;
+      }
+      setTimeout(()=>{
+        nextQuizStep();
+      }, 1600);
+    }
+
+    function nextQuizStep() {
+      quizState.current++;
+      if(quizState.current < quizState.questions.length) {
+        showQuizQuestion();
+      } else {
+        quizState.finished = true;
+        showQuizResult();
+      }
+    }
+
+    function showQuizResult() {
+      const quizContent = document.getElementById('quiz-content');
+      let msg = '';
+      if(quizState.score === 3) msg = '🏆 Excellent! You got all questions right!';
+      else if(quizState.score === 2) msg = '🎉 Good job! You got 2 out of 3.';
+      else if(quizState.score === 1) msg = '👍 Keep practicing! You got 1 out of 3.';
+      else msg = '💡 Try again! Review the laws and try once more.';
+      quizContent.innerHTML = `
+        <div class="text-2xl font-bold mb-2">Quiz Complete</div>
+        <div class="mb-4 text-lg">Score: <span class="font-mono">${quizState.score} / 3</span></div>
+        <div class="mb-4">${msg}</div>
+        <button id="quiz-retry" class="w-full bg-indigo-600 text-white py-2 rounded font-semibold text-lg hover:bg-indigo-700">Try Again</button>
+        <button id="quiz-close" class="w-full mt-2 bg-gray-200 text-gray-800 py-2 rounded font-semibold text-lg hover:bg-gray-300">Close</button>
+      `;
+      document.getElementById('quiz-retry').onclick = startQuizMode;
+      document.getElementById('quiz-close').onclick = closeQuizModal;
+    }
+
+    function closeQuizModal() {
+      document.getElementById('quiz-modal').classList.add('hidden');
+      quizState = null;
+    }
+
+    document.getElementById('quiz-mode-btn').onclick = startQuizMode;
+    document.getElementById('close-quiz-modal').onclick = closeQuizModal;
+
+    // --- End Quiz Mode Logic ---
+
+    function normalizeAnswer(s){
+      if(!s) return '';
+      return s.toString().trim().replace(/\s+/g,'').toLowerCase();
+    }
+
+    function numericEqual(a,b){
+      const na = parseFloat(a);
+      const nb = parseFloat(b);
+      if(!isFinite(na) || !isFinite(nb)) return false;
+      return Math.abs(na-nb) < 1e-9;
+    }
+
+    // Progress tracking
+    const progressEl = document.getElementById('progress');
+    const correctFlags = {q1:false,q2:false,q3:false,q4:false,ind:false};
+
+    function setCorrect(id){
+      if(!correctFlags[id]){
+        correctFlags[id]=true;
+        const total = Object.keys(correctFlags).length;
+        const done = Object.values(correctFlags).filter(Boolean).length;
+        progressEl.textContent = Math.round((done/total)*100)+'%';
+      }
+    }
+
+    // Problem 1: 2^3 × 2^4
+    document.getElementById('check1').addEventListener('click', ()=>{
+      const input = normalizeAnswer(document.getElementById('q1').value);
+      const fb = document.getElementById('fb1');
+      const correctPowers = ['2^7','2^7=128','128','128.0'];
+      if(correctPowers.includes(input) || numericEqual(input,128)){
+        fb.innerHTML = '<span class="feedback-correct"><i class="fas fa-check-circle"></i> Correct! 2^{3+4} = 2^7 = 128</span>';
+        setCorrect('q1');
+      } else {
+        fb.innerHTML = '<span class="feedback-wrong"><i class="fas fa-times-circle"></i> Not quite. Use a^m × a^n = a^{m+n}</span>';
+      }
+    });
+
+    document.getElementById('hint1').addEventListener('click', ()=>{
+      alert('Hint: When multiplying powers with the same base, add the exponents. 3 + 4 = ?');
+    });
+
+    // Problem 2: (3^2)^3
+    document.getElementById('check2').addEventListener('click', ()=>{
+      const input = normalizeAnswer(document.getElementById('q2').value);
+      const fb = document.getElementById('fb2');
+      const correct = ['3^6','3^6=729','729','729.0'];
+      if(correct.includes(input) || numericEqual(input,729)){
+        fb.innerHTML = '<span class="feedback-correct"><i class="fas fa-check-circle"></i> Correct! (3^2)^3 = 3^{2×3} = 3^6 = 729</span>';
+        setCorrect('q2');
+      } else {
+        fb.innerHTML = '<span class="feedback-wrong"><i class="fas fa-times-circle"></i> Not quite. Apply (a^m)^n = a^{m·n}</span>';
+      }
+    });
+
+    document.getElementById('hint2').addEventListener('click', ()=>{
+      alert('Hint: Power of a power rule: (a^m)^n = a^{m·n}. What is 2 × 3?');
+    });
+
+    // Problem 3: 5^{-2}
+    document.getElementById('check3').addEventListener('click', ()=>{
+      const raw = document.getElementById('q3').value.trim();
+      const input = normalizeAnswer(raw);
+      const fb = document.getElementById('fb3');
+      const correctFractions = ['1/25','0.04'];
+      if(correctFractions.includes(input) || numericEqual(input,0.04)){
+        fb.innerHTML = '<span class="feedback-correct"><i class="fas fa-check-circle"></i> Correct! 5^{-2} = 1/(5^2) = 1/25 = 0.04</span>';
+        setCorrect('q3');
+      } else {
+        fb.innerHTML = '<span class="feedback-wrong"><i class="fas fa-times-circle"></i> Not correct. Remember a^{-n} = 1/a^n</span>';
+      }
+    });
+
+    document.getElementById('hint3').addEventListener('click', ()=>{
+      alert('Hint: A negative exponent means reciprocal. 5^{-2} = 1 / 5^2 = 1 / 25');
+    });
+
+    // Problem 4: 16^{3/4}
+    document.getElementById('check4').addEventListener('click', ()=>{
+      const raw = document.getElementById('q4').value.trim();
+      const input = normalizeAnswer(raw);
+      const fb = document.getElementById('fb4');
+      if(input==='8' || input==='8.0' || input==='2^3'){
+        fb.innerHTML = '<span class="feedback-correct"><i class="fas fa-check-circle"></i> Correct! 16^{3/4} = (^4√16)^3 = 2^3 = 8</span>';
+        setCorrect('q4');
+      } else {
+        fb.innerHTML = '<span class="feedback-wrong"><i class="fas fa-times-circle"></i> Not quite. First find the 4th root of 16, then cube it.</span>';
+      }
+    });
+
+    document.getElementById('hint4').addEventListener('click', ()=>{
+      alert('Hint: a^{m/n} = (^n√a)^m\n16^{3/4} = (^4√16)^3\n^4√16 = 2, so 2^3 = 8');
+    });
+
+    // Independent Practice: (2^3 × 2^{-1}) × (4^{1/2})
+    document.getElementById('check-ind').addEventListener('click', ()=>{
+      const raw = document.getElementById('independent').value.trim();
+      const input = normalizeAnswer(raw);
+      const fb = document.getElementById('fb-ind');
+      // Simplify: (2^3 × 2^{-1}) × (4^{1/2}) = (2^2) × 2 = 4 × 2 = 8
+      if(input==='8' || input==='8.0' || input==='2^3'){
+        fb.innerHTML = '<span class="feedback-correct"><i class="fas fa-check-circle"></i> Correct! The answer is 8.</span>';
+        setCorrect('ind');
+      } else {
+        fb.innerHTML = '<span class="feedback-wrong"><i class="fas fa-times-circle"></i> Not quite. Try breaking it down step by step.</span>';
+      }
+    });
+
+    document.getElementById('show-solution').addEventListener('click', (e)=>{
+      e.preventDefault();
+      const sol = document.getElementById('solution-ind');
+      sol.classList.remove('hidden');
+      sol.innerHTML = `
+        <strong>Step-by-step solution:</strong><br>
+        1. (2^3 × 2^{-1}) = 2^{3+(-1)} = 2^2 = 4<br>
+        2. 4^{1/2} = √4 = 2<br>
+        3. 4 × 2 = <strong>8</strong>
+      `;
+    });
+
+    // Add smooth scrolling on link clicks
+    document.querySelectorAll('a[href^="#"]').forEach(link=>{
+      link.addEventListener('click', (e)=>{
+        const href = link.getAttribute('href');
+        if(href !== '#' && document.querySelector(href)){
+          e.preventDefault();
+          document.querySelector(href).scrollIntoView({behavior:'smooth'});
+        }
+      });
+    });
+
+    // Add animation to feedback when it appears
+    const observerConfig = {childList:true, subtree:true, characterData:true};
+    ['fb1','fb2','fb3','fb4','fb-ind'].forEach(fid=>{
+      const el = document.getElementById(fid);
+      const observer = new MutationObserver(()=>{
+        if(el.textContent.length > 0){
+          el.style.animation = 'none';
+          setTimeout(()=>{ el.style.animation = ''; }, 10);
+        }
+      });
+      observer.observe(el, observerConfig);
+    });
+
+    // Add keyboard support: Enter to check
+    ['q1','q2','q3','q4','independent'].forEach(id=>{
+      document.getElementById(id).addEventListener('keypress', (e)=>{
+        if(e.key === 'Enter'){
+          const checkId = id === 'independent' ? 'check-ind' : 'check' + id.slice(1);
+          document.getElementById(checkId).click();
+        }
+      });
+    });
+
+  </script>
+<!-- Topic Quiz System -->
+<script src="/js/topic-quiz-loader.js"></script>
+<script src="/js/topic-quiz-injector.js"></script>
+</body>
+</html>

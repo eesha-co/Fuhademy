@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/assets/images/Logo of JUANOVA Cortex Tutor.png" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard - Prep100</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50">
+    <!-- Simple Error Toast -->
+    <div id="error-toast" class="fixed top-4 right-4 bg-red-100 border-l-4 border-red-500 text-red-700 p-4 hidden shadow-lg rounded">
+        <div class="flex items-center">
+            <i class="fas fa-exclamation-circle mr-2"></i>
+            <span id="error-message"></span>
+        </div>
+    </div>
+
+    <div class="flex min-h-screen">
+        <!-- Sidebar -->
+        <aside class="fixed top-0 left-0 h-screen bg-white/80 backdrop-blur-lg shadow-xl w-72 flex flex-col px-4 py-6 border-r border-gray-200 overflow-y-auto z-50">
+            <div class="sticky top-0 bg-white/95 backdrop-blur-lg z-10 py-2 mb-8">
+                <a href="#" class="flex items-center gap-3">
+                    <img src="/assets/images/Logo%20of%20JUANOVA%20Cortex%20Tutor.png" alt="Logo" class="h-16 w-16 object-contain rounded-full shadow-2xl border-4 border-blue-700">
+                    <span class="text-3xl font-extrabold text-blue-800 tracking-tight font-serif italic drop-shadow-lg">JUANOVA CORTEX</span>
+                </a>
+            </div>
+            
+            <nav class="flex flex-col gap-2 text-gray-700 font-medium">
+                <a href="student-dashboard.html" class="flex items-center gap-3 px-4 py-2 rounded-lg bg-blue-50 text-blue-600">
+                    <i class="fas fa-home"></i> Home
+                </a>
+                <a href="news-feed-gemini.html" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-blue-50 transition">
+                    <i class="fas fa-newspaper text-pink-500"></i> News Feed
+                </a>
+                <a href="ai-tutor-chatbot.html" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-blue-50 transition">
+                    <i class="fas fa-robot text-purple-500"></i> AI Tutor
+                </a>
+                <a href="all-formula.html" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-blue-50 transition">
+                    <i class="fas fa-book-open text-teal-600"></i> All Formula
+                </a>
+                <a href="smart-note.html" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-blue-50 transition">
+                    <i class="fas fa-sticky-note text-yellow-500"></i> Smart Notes
+                </a>
+                <a href="study-plan.html" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-blue-50 transition">
+                    <i class="fas fa-calendar-alt text-green-500"></i> Study Plan
+                </a>
+                <a href="video-library.html" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-blue-50 transition">
+                    <i class="fas fa-video text-red-500"></i> Video Library
+                </a>
+                <a href="practice-exams.html" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-blue-50 transition">
+                    <i class="fas fa-pencil-alt text-orange-500"></i> Mock Exams
+                </a>
+                <a href="notifications.html" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-blue-50 transition">
+                    <i class="fas fa-bell text-pink-600"></i> Notifications
+                </a>
+                <a href="student-live-session.html" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-blue-50 transition">
+                    <i class="fas fa-chalkboard-teacher text-blue-400"></i> Join Live Session
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 p-8 ml-72">
+            <!-- Top Bar -->
+            <div class="flex items-center justify-between mb-8">
+                <div class="flex-1 max-w-xl relative">
+                    <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                    <input type="text" class="w-full pl-12 pr-4 py-3 rounded-full border-2 border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 bg-white" placeholder="Search topics, subjects, or resources...">
+          </div>
+                <div class="flex items-center gap-4">
+                    <span id="student-level" class="bg-blue-100 text-blue-700 px-4 py-1 rounded-full font-semibold text-sm"></span>
+                    <span id="student-name" class="font-semibold text-gray-700"></span>
+                    <img id="user-avatar" src="../assets/images/unnamed.jpg" alt="User" class="h-10 w-10 rounded-full border-2 border-blue-500 shadow">
+                    <button class="relative p-2 rounded-full hover:bg-blue-100 transition" aria-label="Notifications">
+                        <i class="fas fa-bell text-blue-600 text-lg"></i>
+                        <span class="absolute -top-1 -right-1 bg-pink-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold shadow" id="notification-count">0</span>
+                    </button>
+                </div>
+        </div>
+
+                        <!-- Sliding Welcome/Quest Banner -->
+                        <div class="relative h-[230px] mb-12 overflow-hidden" id="sliding-banner-container">
+                            <!-- Welcome Banner -->
+                            <div id="welcome-banner" class="absolute inset-0 transition-all duration-700 ease-in-out translate-x-0 opacity-100 z-20">
+                                <div class="rounded-3xl bg-gradient-to-r from-blue-600 to-blue-400 text-white p-8 shadow-xl relative overflow-hidden h-full flex items-center">
+                                    <div class="relative z-10 max-w-xl">
+                                        <h1 class="text-3xl md:text-4xl font-extrabold mb-2">Ready to Excel?</h1>
+                                        <p id="ai-welcome-message" class="text-lg opacity-90 mb-6 text-blue-100">Analyzing your learning journey...</p>
+                                        <button class="border border-white text-white px-6 py-2 rounded-full font-semibold hover:bg-white hover:text-blue-600 transition" onclick="document.getElementById('subjects-section').scrollIntoView({ behavior: 'smooth' });">Continue Learning</button>
+                                    </div>
+                                    <img src="/assets/images/hero-platform.png" class="absolute right-0 top-0 h-full w-1/3 object-cover opacity-20 z-0 hidden md:block" alt="Banner" />
+                                </div>
+                            </div>
+                            <!-- Daily Learning Quest Banner -->
+                            <div id="quest-banner" class="absolute inset-0 transition-all duration-700 ease-in-out translate-x-full opacity-0 z-10">
+                                <div class="bg-gradient-to-r from-green-400 to-blue-400 rounded-3xl p-8 flex flex-col md:flex-row items-center justify-between gap-6 shadow-lg h-full">
+                                    <div>
+                                        <h3 class="text-xl font-bold text-white mb-2 flex items-center gap-2"><i class="fas fa-trophy text-yellow-300"></i> Daily Learning Quest</h3>
+                                        <p id="ai-quest-desc" class="text-white mb-2">Loading your personalized quest...</p>
+                                        <ul id="ai-quest-tasks" class="list-disc list-inside text-white/90 mb-2">
+                                            <li class="text-white/60">Loading tasks...</li>
+                                        </ul>
+                                        <span id="ai-quest-progress" class="inline-block bg-white/80 text-blue-700 font-bold px-4 py-1 rounded-full text-sm shadow">Progress: ...</span>
+                                    </div>
+                                    <button id="ai-quest-reward-btn" class="bg-yellow-300 text-blue-900 font-bold px-6 py-2 rounded-full shadow hover:bg-yellow-400 transition" disabled>Claim Reward</button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- WhatsApp Community Modal -->
+                        <div id="whatsapp-modal" class="fixed inset-0 z-[200] hidden items-center justify-center bg-black/40 transition-all">
+                            <div class="bg-white rounded-2xl shadow-2xl p-8 max-w-md w-full relative animate-slide-in">
+                                <button onclick="closeModal('whatsapp-modal')" title="Close" class="absolute top-3 right-3 text-gray-400 hover:text-gray-700 text-2xl"><i class="fas fa-times"></i></button>
+                                <div class="flex flex-col items-center text-center gap-4">
+                                    <i class="fab fa-whatsapp text-green-500 text-5xl"></i>
+                                    <h3 class="text-2xl font-bold text-gray-800">Join Our WhatsApp Community!</h3>
+                                    <p class="text-gray-600">Connect with fellow students, get updates, and access exclusive resources. Click below to join our WhatsApp group now!</p>
+                                    <a href="https://chat.whatsapp.com/JMSYNLdXvTd0XNpDtcp4CK?mode=ac_t" target="_blank" rel="noopener" class="bg-green-500 hover:bg-green-600 text-white font-bold px-6 py-3 rounded-full flex items-center gap-2 text-lg shadow transition"><i class="fab fa-whatsapp"></i> Join WhatsApp Group</a>
+                                </div>
+                            </div>
+                        </div>
+
+            <!-- Progress Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+                <!-- Weekly Progress -->
+                <div class="bg-white rounded-2xl p-6 shadow">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="font-semibold text-gray-800">Weekly Progress</span>
+                        <i class="fas fa-chart-line text-blue-600"></i>
+                    </div>
+                    <div id="weekly-progress" class="text-3xl font-bold text-blue-600">0%</div>
+                    <div id="weekly-tasks" class="text-gray-500 text-sm mb-2">0/0 Tasks Completed</div>
+                    <div class="w-full h-2 bg-blue-100 rounded-full overflow-hidden">
+                        <div id="weekly-progress-bar" class="h-full bg-blue-500 transition-all duration-1000 w-0"></div>
+                    </div>
+                </div>
+
+                <!-- Mock Tests -->
+                <div class="bg-white rounded-2xl p-6 shadow">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="font-semibold text-gray-800">Mock Tests Score</span>
+                        <i class="fas fa-star text-yellow-400"></i>
+                    </div>
+                    <div id="mock-score" class="text-3xl font-bold text-yellow-500">0%</div>
+                    <div id="mock-label" class="text-gray-500 text-sm mb-2">No tests taken yet</div>
+                    <div class="w-full h-2 bg-yellow-100 rounded-full overflow-hidden">
+                        <div id="mock-progress-bar" class="h-full bg-yellow-500 transition-all duration-1000 w-0"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Subjects Section -->
+            <section id="subjects-section" class="mb-12">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-2xl font-bold text-gray-800">Your Subjects</h2>
+                    <button id="view-all-subjects" class="border border-blue-500 text-blue-600 px-5 py-1.5 rounded-full font-semibold hover:bg-blue-50 transition">
+                        View All
+                    </button>
+                </div>
+
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                    <!-- Core Subjects -->
+                    <a href="subjects/mathematics.html" class="flex flex-col items-center justify-center gap-2 p-6 rounded-2xl font-bold text-white text-lg shadow-lg bg-gradient-to-br from-blue-600 to-blue-400 hover:scale-105 transition subject-card">
+                        <i class="fas fa-square-root-alt text-3xl"></i>
+                        MATHEMATICS
+                    </a>
+                    <a href="subjects/biology.html" class="flex flex-col items-center justify-center gap-2 p-6 rounded-2xl font-bold text-white text-lg shadow-lg bg-gradient-to-br from-green-500 to-green-300 hover:scale-105 transition subject-card">
+                        <i class="fas fa-dna text-3xl"></i>
+                        BIOLOGY
+                    </a>
+                    <a href="subjects/chemistry.html" class="flex flex-col items-center justify-center gap-2 p-6 rounded-2xl font-bold text-white text-lg shadow-lg bg-gradient-to-br from-pink-500 to-pink-300 hover:scale-105 transition subject-card">
+                        <i class="fas fa-flask text-3xl"></i>
+                        CHEMISTRY
+                    </a>
+                    <a href="subjects/physics.html" class="flex flex-col items-center justify-center gap-2 p-6 rounded-2xl font-bold text-white text-lg shadow-lg bg-gradient-to-br from-yellow-500 to-yellow-300 hover:scale-105 transition subject-card">
+                        <i class="fas fa-atom text-3xl"></i>
+                        PHYSICS
+                    </a>
+                    <a href="subjects/english.html" class="flex flex-col items-center justify-center gap-2 p-6 rounded-2xl font-bold text-white text-lg shadow-lg bg-gradient-to-br from-indigo-500 to-indigo-300 hover:scale-105 transition subject-card">
+                        <i class="fas fa-book text-3xl"></i>
+                        ENGLISH
+                    </a>
+                    
+                    <!-- Additional Subjects (Hidden by Default) -->
+                    <a href="subjects/literature.html" class="flex flex-col items-center justify-center gap-2 p-6 rounded-2xl font-bold text-white text-lg shadow-lg bg-gradient-to-br from-purple-500 to-purple-300 hover:scale-105 transition subject-card hidden">
+                        <i class="fas fa-feather text-3xl"></i>
+                        LITERATURE
+                    </a>
+                    <a href="subjects/government.html" class="flex flex-col items-center justify-center gap-2 p-6 rounded-2xl font-bold text-white text-lg shadow-lg bg-gradient-to-br from-red-500 to-red-300 hover:scale-105 transition subject-card hidden">
+                        <i class="fas fa-landmark text-3xl"></i>
+                        GOVERNMENT
+                    </a>
+                    <a href="subjects/economics.html" class="flex flex-col items-center justify-center gap-2 p-6 rounded-2xl font-bold text-white text-lg shadow-lg bg-gradient-to-br from-teal-500 to-teal-300 hover:scale-105 transition subject-card hidden">
+                        <i class="fas fa-chart-pie text-3xl"></i>
+                        ECONOMICS
+                    </a>
+                    <a href="subjects/commerce.html" class="flex flex-col items-center justify-center gap-2 p-6 rounded-2xl font-bold text-white text-lg shadow-lg bg-gradient-to-br from-orange-500 to-orange-300 hover:scale-105 transition subject-card hidden">
+                        <i class="fas fa-balance-scale text-3xl"></i>
+                        COMMERCE
+                    </a>
+                    <a href="subjects/accounting/accounting.html" class="flex flex-col items-center justify-center gap-2 p-6 rounded-2xl font-bold text-white text-lg shadow-lg bg-gradient-to-br from-gray-700 to-gray-400 hover:scale-105 transition subject-card hidden">
+                        <i class="fas fa-calculator text-3xl"></i>
+                        ACCOUNTING
+                    </a>
+                </div>
+            </section>
+
+            <!-- Quick Actions Toolbar -->
+            <div id="toolbar" class="fixed bottom-8 right-12">
+                <!-- Main Tools Button -->
+                <div class="relative group">
+                    <button id="toolsButton" onclick="toggleToolsMenu()" title="Learning Tools" aria-label="Toggle Learning Tools" 
+                            class="text-purple-500 hover:text-purple-700 transition-colors p-2">
+                        <i class="fas fa-tools text-4xl drop-shadow-lg hover:scale-110 transform transition-transform" aria-hidden="true"></i>
+                    </button>
+
+                    <!-- Tools Menu (Initially Hidden) -->
+                    <div id="toolsMenu" class="hidden absolute bottom-14 right-0 bg-white/95 backdrop-blur-sm rounded-xl shadow-2xl overflow-hidden min-w-[220px] border border-purple-100/50">
+                        <!-- AI Tutor -->
+                        <button onclick="openTool('ai-tutor')" class="w-full px-6 py-4 flex items-center gap-4 hover:bg-purple-50 transition-all text-left group">
+                            <i class="fas fa-robot text-xl text-purple-500 group-hover:scale-110 transition-transform"></i>
+                            <span class="text-gray-700 group-hover:text-purple-600 font-medium">AI Tutor</span>
+                        </button>
+                        
+                        <!-- Smart Notes -->
+                        <button onclick="openTool('smart-notes')" class="w-full px-6 py-4 flex items-center gap-4 hover:bg-yellow-50 transition-all text-left group border-t border-purple-100/30">
+                            <i class="fas fa-sticky-note text-xl text-yellow-500 group-hover:scale-110 transition-transform"></i>
+                            <span class="text-gray-700 group-hover:text-yellow-600 font-medium">Smart Notes</span>
+                        </button>
+                        
+                        <!-- Formula Tool -->
+                        <button onclick="openTool('formula')" class="w-full px-6 py-4 flex items-center gap-4 hover:bg-teal-50 transition-all text-left group border-t border-purple-100/30">
+                            <i class="fas fa-superscript text-xl text-teal-500 group-hover:scale-110 transition-transform"></i>
+                            <span class="text-gray-700 group-hover:text-teal-600 font-medium">Formula Tool</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Tool Windows (Initially Hidden) -->
+            <div id="smart-notes-window" class="hidden fixed bg-white rounded-lg shadow-2xl p-4 w-80 cursor-move z-[1000]">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="font-bold text-lg text-yellow-600">Smart Notes</h3>
+                    <button onclick="closeTool('smart-notes')" class="text-gray-500 hover:text-gray-700" title="Close Smart Notes" aria-label="Close Smart Notes">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <textarea id="smart-notes-input" class="w-full p-2 border rounded-lg mb-2" rows="4" placeholder="Write your note..."></textarea>
+                <button onclick="saveNote()" class="w-full bg-yellow-500 text-white py-2 rounded-lg hover:bg-yellow-600">Save Note</button>
+            </div>
+            
+            <div id="formula-window" class="hidden fixed bg-white rounded-lg shadow-2xl p-4 w-80 cursor-move z-[1000]">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="font-bold text-lg text-teal-600">Formula Tool</h3>
+                    <button onclick="closeTool('formula')" class="text-gray-500 hover:text-gray-700" title="Close Formula Tool" aria-label="Close Formula Tool">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <input type="text" id="formula-name" class="w-full p-2 border rounded-lg mb-2" placeholder="Formula Name">
+                <textarea id="formula-input" class="w-full p-2 border rounded-lg mb-2" rows="3" placeholder="Enter your formula..."></textarea>
+                <button onclick="saveFormula()" class="w-full bg-teal-600 text-white py-2 rounded-lg hover:bg-teal-700">Save Formula</button>
+            </div>
+        </main>
+    </div>
+
+    <!-- Firebase Scripts -->
+    <script type="module">
+
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import {
+            getFirestore,
+            doc,
+            getDoc,
+            setDoc,
+            collection,
+            query,
+            where,
+            getDocs,
+            serverTimestamp
+        } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+    import { firebaseConfig } from '../js/firebase-config.js';
+        import { initializeAppCheck, ReCaptchaV3Provider } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app-check.js";
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        // App Check: only initialize if a reCAPTCHA site key is provided. During local dev
+        // you may want to skip App Check to avoid ReCAPTCHA errors.
+        if (firebaseConfig && firebaseConfig.recaptchaSiteKey) {
+            try {
+                initializeAppCheck(app, {
+                    provider: new ReCaptchaV3Provider(firebaseConfig.recaptchaSiteKey),
+                    isTokenAutoRefreshEnabled: true
+                });
+            } catch (err) {
+                console.warn('App Check initialization failed:', err && err.message ? err.message : err);
+            }
+        } else {
+            console.warn('App Check skipped: firebaseConfig.recaptchaSiteKey missing. Set a site key or skip App Check for local development.');
+        }
+
+        // Global handler to capture unhandled promise rejections and help diagnose 'Uncaught (in promise) null'
+        window.addEventListener('unhandledrejection', (event) => {
+            console.error('Unhandled promise rejection:', event.reason);
+            // Surface a friendly toast for developers during testing
+            showError('Unhandled promise rejection: ' + (event.reason && event.reason.message ? event.reason.message : String(event.reason)), 8000);
+        });
+
+        // Helper functions
+        function setText(id, text) {
+            const el = document.getElementById(id);
+            if (el) {
+                el.textContent = text;
+                console.log(`Set text for ${id}:`, text);
+            } else {
+                console.warn(`Element ${id} not found`);
+            }
+        }
+        function setImage(id, url) {
+            const el = document.getElementById(id);
+            if (el) {
+                el.src = url;
+                console.log(`Set image for ${id}:`, url);
+            } else {
+                console.warn(`Element ${id} not found`);
+            }
+        }
+        function showError(message, duration = 5000) {
+            const toast = document.getElementById('error-toast');
+            const errorMsg = document.getElementById('error-message');
+            errorMsg.textContent = message;
+            toast.classList.remove('hidden');
+            setTimeout(() => toast.classList.add('hidden'), duration);
+        }
+
+        // Animate progress bar
+        function animateProgress(elementId, targetValue) {
+            const element = document.getElementById(elementId);
+            if (!element) return;
+            let currentWidth = 0;
+            const animationDuration = 1000;
+            const steps = 60;
+            const increment = targetValue / steps;
+            const stepDuration = animationDuration / steps;
+            const animation = setInterval(() => {
+                if (currentWidth >= targetValue) {
+                    clearInterval(animation);
+                    element.style.width = `${targetValue}%`;
+                    return;
+                }
+                currentWidth += increment;
+                element.style.width = `${currentWidth}%`;
+            }, stepDuration);
+        }
+
+        // Welcome message generator
+        function generateWelcomeMessage(userData) {
+            const hour = new Date().getHours();
+            let timeBasedGreeting = 'Hello';
+            if (hour < 12) timeBasedGreeting = 'Good morning';
+            else if (hour < 18) timeBasedGreeting = 'Good afternoon';
+            else timeBasedGreeting = 'Good evening';
+            if (!userData || !userData.lastLogin) {
+                return `${timeBasedGreeting}! Welcome to your personalized learning dashboard.`;
+            }
+            const progress = userData.weeklyProgress || 0;
+            if (progress > 75) {
+                return `${timeBasedGreeting}! You're doing great! Keep up the excellent work!`;
+            } else if (progress > 50) {
+                return `${timeBasedGreeting}! You're making good progress. Let's aim even higher!`;
+            } else {
+                return `${timeBasedGreeting}! Ready to boost your progress today?`;
+            }
+        }
+
+        // WhatsApp modal logic (fix close)
+        window.addEventListener('DOMContentLoaded', function() {
+            var modal = document.getElementById('whatsapp-modal');
+            if (!sessionStorage.getItem('whatsappModalShown')) {
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+                sessionStorage.setItem('whatsappModalShown', '1');
+            } else {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }
+        });
+        window.closeModal = function(id) {
+            var modal = document.getElementById(id);
+            if (modal) {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }
+        }
+
+        // Sliding banner logic
+        let showWelcome = true;
+        setInterval(() => {
+            showWelcome = !showWelcome;
+            const welcome = document.getElementById('welcome-banner');
+            const quest = document.getElementById('quest-banner');
+            if (welcome && quest) {
+                if (showWelcome) {
+                    welcome.classList.remove('translate-x-full', 'opacity-0', 'z-10');
+                    welcome.classList.add('translate-x-0', 'opacity-100', 'z-20');
+                    quest.classList.remove('translate-x-0', 'opacity-100', 'z-20');
+                    quest.classList.add('translate-x-full', 'opacity-0', 'z-10');
+                } else {
+                    welcome.classList.remove('translate-x-0', 'opacity-100', 'z-20');
+                    welcome.classList.add('translate-x-full', 'opacity-0', 'z-10');
+                    quest.classList.remove('translate-x-full', 'opacity-0', 'z-10');
+                    quest.classList.add('translate-x-0', 'opacity-100', 'z-20');
+                }
+            }
+        }, 5000);
+
+        // Main dashboard logic
+        async function loadDashboardData(userData) {
+            // Set name, level, avatar
+            console.log("Updating UI with userData:", userData);
+            const studentName = userData.name || userData.displayName || 'Student';
+            const studentLevel = userData.level || 'SS 3/WAEC';
+            setText('student-name', studentName);
+            setText('student-level', studentLevel);
+            
+            const avatarUrl = userData.avatarUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(studentName)}&background=2563eb&color=fff`;
+            setImage('user-avatar', avatarUrl);
+            
+            // Welcome message
+            const welcomeMessage = generateWelcomeMessage(userData);
+            console.log("Setting welcome message:", welcomeMessage);
+            setText('ai-welcome-message', welcomeMessage);
+            
+            // Progress
+            animateProgress('weekly-progress-bar', userData.weeklyProgress || 0);
+            setText('weekly-progress', `${userData.weeklyProgress || 0}%`);
+            setText('weekly-tasks', `${userData.completedTasks || 0}/${userData.totalTasks || 0} Tasks Completed`);
+            // Mock tests
+            if (userData.mockTests && userData.mockTests.length > 0) {
+                const average = userData.mockTests.reduce((sum, test) => sum + test.score, 0) / userData.mockTests.length;
+                animateProgress('mock-progress-bar', average);
+                setText('mock-score', `${Math.round(average)}%`);
+                setText('mock-label', 'Average Score Across Subjects');
+            } else {
+                animateProgress('mock-progress-bar', 0);
+                setText('mock-score', '0%');
+                setText('mock-label', 'No Mock Tests Taken');
+            }
+        }
+
+        // Quick test function to verify UI updates
+        async function testUIWithMockData() {
+            const mockUserData = {
+                name: "John Smith",
+                displayName: "John Smith",
+                email: "test@example.com",
+                level: "SS 3/WAEC",
+                weeklyProgress: 65,
+                completedTasks: 15,
+                totalTasks: 25,
+                mockTests: [
+                    { score: 85 },
+                    { score: 90 }
+                ],
+                lastLogin: new Date().toISOString()
+            };
+            await loadDashboardData(mockUserData);
+            console.log("Test data loaded");
+        }
+
+        // Firebase Auth state
+        onAuthStateChanged(auth, async (user) => {
+            if (!user) {
+                console.log("No user, testing UI...");
+                await testUIWithMockData(); // Test UI while not logged in
+                return;
+            }
+            try {
+                const userRef = doc(db, 'students', user.uid);
+                let userDoc = await getDoc(userRef);
+                let userData;
+                if (!userDoc.exists()) {
+                    // Create new student profile
+                    try {
+                        await setDoc(userRef, {
+                            email: user.email,
+                            name: user.displayName || '',
+                            displayName: user.displayName || '',
+                            photoURL: user.photoURL || '',
+                            level: 'SS 3/WAEC',
+                            createdAt: serverTimestamp(),
+                            lastLogin: serverTimestamp(),
+                            isActive: true,
+                            weeklyProgress: 0,
+                            completedTasks: 0,
+                            totalTasks: 25,
+                            mockTests: []
+                        });
+                        userDoc = await getDoc(userRef);
+                        userData = userDoc.data();
+                    } catch (err) {
+                        console.error('Error creating profile:', err);
+                        showError('Failed to create profile. Please try again.');
+                        return;
+                    }
+                } else {
+                    userData = userDoc.data();
+                    // Update last login
+                    await setDoc(userRef, { lastLogin: serverTimestamp() }, { merge: true });
+                }
+                // Update notification count
+                const notificationsQuery = query(
+                    collection(db, 'notifications'),
+                    where('userId', '==', user.uid),
+                    where('read', '==', false)
+                );
+                const notifications = await getDocs(notificationsQuery);
+                setText('notification-count', notifications.size);
+                // Update UI
+                await loadDashboardData(userData);
+            } catch (error) {
+                console.error('Error:', error);
+                showError(error.message || 'An error occurred. Please try again.');
+            }
+        });
+
+        // Quick Action Functions
+        window.openAITutor = () => {
+            window.location.href = 'ai-tutor-chatbot.html';
+        };
+
+        window.openSmartNotes = () => {
+            window.location.href = 'smart-note.html';
+        };
+
+        // View All Subjects Toggle
+        const viewAllButton = document.getElementById('view-all-subjects');
+        if (viewAllButton) {
+            viewAllButton.addEventListener('click', () => {
+                const hiddenSubjects = document.querySelectorAll('.subject-card.hidden');
+                hiddenSubjects.forEach(card => {
+                    card.classList.toggle('hidden');
+                });
+                viewAllButton.textContent = viewAllButton.textContent === 'View All' ? 'Show Less' : 'View All';
+            });
+        }
+
+    // Tool Windows Management
+    const tools = ['smart-notes', 'formula', 'ai-tutor'];
+        let activeWindow = null;
+        let isDragging = false;
+        let currentX;
+        let currentY;
+        let initialX;
+        let initialY;
+        let xOffset = 0;
+        let yOffset = 0;
+
+        // Tool Functions
+        window.toggleToolsMenu = () => {
+            const menu = document.getElementById('toolsMenu');
+            const isHidden = menu.classList.contains('hidden');
+            
+            // If we're showing the menu, add click listener
+            if (isHidden) {
+                menu.classList.remove('hidden');
+                // Use setTimeout to avoid immediate trigger of click event
+                setTimeout(() => {
+                    const closeMenu = (e) => {
+                        if (!menu.contains(e.target) && !e.target.closest('#toolsButton')) {
+                            menu.classList.add('hidden');
+                            document.removeEventListener('click', closeMenu);
+                        }
+                    };
+                    document.addEventListener('click', closeMenu);
+                }, 0);
+            } else {
+                menu.classList.add('hidden');
+            }
+        };
+
+        window.openTool = (toolName) => {
+            // Hide the tools menu when opening a tool
+            const menu = document.getElementById('toolsMenu');
+            menu.classList.add('hidden');
+            
+            const toolWindow = document.getElementById(`${toolName}-window`);
+            if (!toolWindow) return;
+            
+            // Position window near the toolbar
+            toolWindow.style.bottom = '120px';
+            toolWindow.style.right = '100px';
+            toolWindow.classList.remove('hidden');
+            activeWindow = toolWindow;
+
+            // If it's AI Tutor, redirect to the chatbot page
+            if (toolName === 'ai-tutor') {
+                window.location.href = 'ai-tutor-chatbot.html';
+                return;
+            }
+        };
+
+        window.closeTool = (toolName) => {
+            const toolWindow = document.getElementById(`${toolName}-window`);
+            if (toolWindow) {
+                toolWindow.classList.add('hidden');
+            }
+        };
+
+        // Draggable Functionality
+        if (Array.isArray(tools)) {
+            tools.forEach(tool => {
+                try {
+                    const toolWindow = document.getElementById(`${tool}-window`);
+                    if (!toolWindow) return;
+
+                    toolWindow.addEventListener('mousedown', dragStart);
+                    toolWindow.addEventListener('mousemove', drag);
+                    toolWindow.addEventListener('mouseup', dragEnd);
+                    toolWindow.addEventListener('mouseleave', dragEnd);
+                } catch (e) {
+                    console.warn('Draggable init skipped for', tool, e);
+                }
+            });
+        }
+
+        function dragStart(e) {
+            if (e.target.tagName === 'BUTTON' || e.target.tagName === 'TEXTAREA' || e.target.tagName === 'INPUT') return;
+            
+            initialX = e.clientX - xOffset;
+            initialY = e.clientY - yOffset;
+
+            if (e.target === activeWindow || e.target.parentNode === activeWindow) {
+                isDragging = true;
+            }
+        }
+
+        function drag(e) {
+            if (isDragging) {
+                e.preventDefault();
+                
+                currentX = e.clientX - initialX;
+                currentY = e.clientY - initialY;
+
+                xOffset = currentX;
+                yOffset = currentY;
+
+                setTranslate(currentX, currentY, activeWindow);
+            }
+        }
+
+        function dragEnd(e) {
+            initialX = currentX;
+            initialY = currentY;
+            isDragging = false;
+        }
+
+        function setTranslate(xPos, yPos, el) {
+            el.style.transform = `translate(${xPos}px, ${yPos}px)`;
+        }
+
+        // Smart Notes Storage
+        window.saveNote = () => {
+            const noteInput = document.getElementById('smart-notes-input');
+            if (!noteInput.value.trim()) return;
+
+            const notes = JSON.parse(localStorage.getItem('smartNotes') || '[]');
+            notes.push({
+                id: Date.now(),
+                text: noteInput.value,
+                timestamp: new Date().toISOString()
+            });
+
+            localStorage.setItem('smartNotes', JSON.stringify(notes));
+            noteInput.value = '';
+            showError('Note saved successfully!');
+        };
+
+        // Formula Storage
+        window.saveFormula = () => {
+            const nameInput = document.getElementById('formula-name');
+            const formulaInput = document.getElementById('formula-input');
+            
+            if (!nameInput.value.trim() || !formulaInput.value.trim()) return;
+
+            const formulas = JSON.parse(localStorage.getItem('formulas') || '[]');
+            formulas.push({
+                id: Date.now(),
+                name: nameInput.value,
+                formula: formulaInput.value,
+                timestamp: new Date().toISOString()
+            });
+
+            localStorage.setItem('formulas', JSON.stringify(formulas));
+            nameInput.value = '';
+            formulaInput.value = '';
+            showError('Formula saved successfully!');
+        };
+    </script>
+</body>
+</html>

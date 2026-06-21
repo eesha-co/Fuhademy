@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Periodicity & Bonding - Chemistry | Juanova Cortex</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        
+        .topic-card {
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .topic-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.1);
+        }
+        
+        .topic-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #f59e0b, #ef4444);
+        }
+        
+        .progress-ring {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            width: 48px;
+            height: 48px;
+        }
+        
+        .prerequisite-badge {
+            font-size: 0.65rem;
+            padding: 2px 8px;
+            border-radius: 9999px;
+            background: #fef3c7;
+            color: #92400e;
+        }
+        
+        .learning-path-line {
+            position: absolute;
+            left: 50%;
+            top: 100%;
+            width: 2px;
+            height: 24px;
+            background: linear-gradient(to bottom, #d1d5db, transparent);
+        }
+        
+        @keyframes pulse-ring {
+            0% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(1.3); opacity: 0; }
+        }
+        
+        .pulse-animation::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            border: 2px solid currentColor;
+            animation: pulse-ring 1.5s ease-out infinite;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50">
+    <!-- Navigation -->
+    <nav class="bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <a href="../index.html" class="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition">
+                    <i class="fas fa-arrow-left"></i>
+                    <span class="font-medium">Back to Chemistry</span>
+                </a>
+                <h1 class="text-xl font-bold text-amber-800">
+                    <i class="fas fa-atom mr-2"></i>Periodicity & Bonding
+                </h1>
+                <div class="w-24"></div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-6xl mx-auto px-4 py-8">
+        <!-- Module Header -->
+        <div class="bg-white rounded-2xl shadow-lg p-6 mb-8">
+            <div class="flex items-start gap-4">
+                <div class="w-16 h-16 bg-gradient-to-br from-amber-400 to-orange-500 rounded-2xl flex items-center justify-center text-white text-2xl shadow-lg">
+                    <i class="fas fa-atom"></i>
+                </div>
+                <div class="flex-1">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-2">Periodicity & Bonding</h2>
+                    <p class="text-gray-600">
+                        Understand how elements are organized in the periodic table, discover trends in their properties, 
+                        and learn about the three main types of chemical bonding: ionic, covalent, and metallic.
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Module Stats -->
+            <div class="grid grid-cols-3 gap-4 mt-6 pt-6 border-t border-gray-100">
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-amber-600">6</div>
+                    <div class="text-sm text-gray-500">Topics</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-orange-600">~45</div>
+                    <div class="text-sm text-gray-500">Minutes</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-red-500">48</div>
+                    <div class="text-sm text-gray-500">Practice Questions</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Learning Path -->
+        <div class="mb-8">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
+                <i class="fas fa-route text-amber-500"></i>
+                Learning Path
+            </h3>
+            <p class="text-sm text-gray-600 mb-4">
+                Topics should be completed in order as each builds on the previous one.
+            </p>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <!-- Topic 1: Periodic Table Overview -->
+                <a href="periodic-table-overview.html" class="topic-card bg-white rounded-xl p-5 shadow-md block relative">
+                    <div class="absolute top-3 left-3 w-8 h-8 bg-emerald-500 text-white rounded-full flex items-center justify-center font-bold text-sm">1</div>
+                    <div class="mt-6">
+                        <h4 class="font-semibold text-gray-800 mb-2">Periodic Table Overview</h4>
+                        <p class="text-sm text-gray-600 mb-3">Introduction to the periodic table, metals/non-metals, atomic structure basics.</p>
+                        <div class="flex items-center gap-2 flex-wrap">
+                            <span class="text-xs bg-emerald-100 text-emerald-700 px-2 py-1 rounded-full">
+                                <i class="fas fa-play-circle mr-1"></i>Start Here
+                            </span>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Topic 2: Electron Configuration -->
+                <a href="electron-configuration.html" class="topic-card bg-white rounded-xl p-5 shadow-md block relative">
+                    <div class="absolute top-3 left-3 w-8 h-8 bg-indigo-500 text-white rounded-full flex items-center justify-center font-bold text-sm">2</div>
+                    <div class="mt-6">
+                        <h4 class="font-semibold text-gray-800 mb-2">Electron Configuration</h4>
+                        <p class="text-sm text-gray-600 mb-3">How electrons are arranged in atoms: Aufbau, Hund's Rule, orbital diagrams.</p>
+                        <div class="flex items-center gap-2 flex-wrap">
+                            <span class="prerequisite-badge">
+                                <i class="fas fa-lock mr-1"></i>Requires: Topic 1
+                            </span>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Topic 3: Periodic Trends -->
+                <a href="periodic-trends.html" class="topic-card bg-white rounded-xl p-5 shadow-md block relative">
+                    <div class="absolute top-3 left-3 w-8 h-8 bg-purple-500 text-white rounded-full flex items-center justify-center font-bold text-sm">3</div>
+                    <div class="mt-6">
+                        <h4 class="font-semibold text-gray-800 mb-2">Periodic Trends</h4>
+                        <p class="text-sm text-gray-600 mb-3">Atomic radius, ionization energy, electronegativity trends across periods and groups.</p>
+                        <div class="flex items-center gap-2 flex-wrap">
+                            <span class="prerequisite-badge">
+                                <i class="fas fa-lock mr-1"></i>Requires: Topic 2
+                            </span>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Topic 4: Ionic Bonding -->
+                <a href="ionic-bonding.html" class="topic-card bg-white rounded-xl p-5 shadow-md block relative">
+                    <div class="absolute top-3 left-3 w-8 h-8 bg-orange-500 text-white rounded-full flex items-center justify-center font-bold text-sm">4</div>
+                    <div class="mt-6">
+                        <h4 class="font-semibold text-gray-800 mb-2">Ionic Bonding</h4>
+                        <p class="text-sm text-gray-600 mb-3">Electron transfer, ion formation, properties of ionic compounds, dot-cross diagrams.</p>
+                        <div class="flex items-center gap-2 flex-wrap">
+                            <span class="prerequisite-badge">
+                                <i class="fas fa-lock mr-1"></i>Requires: Topic 3
+                            </span>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Topic 5: Covalent Bonding -->
+                <a href="covalent-bonding.html" class="topic-card bg-white rounded-xl p-5 shadow-md block relative">
+                    <div class="absolute top-3 left-3 w-8 h-8 bg-green-500 text-white rounded-full flex items-center justify-center font-bold text-sm">5</div>
+                    <div class="mt-6">
+                        <h4 class="font-semibold text-gray-800 mb-2">Covalent Bonding</h4>
+                        <p class="text-sm text-gray-600 mb-3">Electron sharing, single/double/triple bonds, VSEPR theory, bond polarity.</p>
+                        <div class="flex items-center gap-2 flex-wrap">
+                            <span class="prerequisite-badge">
+                                <i class="fas fa-lock mr-1"></i>Requires: Topic 4
+                            </span>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Topic 6: Metallic Bonding -->
+                <a href="metallic-bonding.html" class="topic-card bg-white rounded-xl p-5 shadow-md block relative">
+                    <div class="absolute top-3 left-3 w-8 h-8 bg-slate-500 text-white rounded-full flex items-center justify-center font-bold text-sm">6</div>
+                    <div class="mt-6">
+                        <h4 class="font-semibold text-gray-800 mb-2">Metallic Bonding</h4>
+                        <p class="text-sm text-gray-600 mb-3">Sea of electrons model, properties of metals, comparison of all bonding types.</p>
+                        <div class="flex items-center gap-2 flex-wrap">
+                            <span class="prerequisite-badge">
+                                <i class="fas fa-lock mr-1"></i>Requires: Topic 5
+                            </span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <!-- Module Summary -->
+        <div class="bg-gradient-to-r from-amber-100 to-orange-100 rounded-2xl p-6">
+            <h3 class="text-lg font-semibold text-amber-800 mb-4 flex items-center gap-2">
+                <i class="fas fa-graduation-cap"></i>
+                What You'll Master
+            </h3>
+            <div class="grid md:grid-cols-2 gap-4 text-sm text-amber-900">
+                <div>
+                    <h4 class="font-semibold mb-2">Periodic Table & Trends</h4>
+                    <ul class="space-y-1">
+                        <li><i class="fas fa-check text-green-600 mr-2"></i>Navigate and interpret the periodic table</li>
+                        <li><i class="fas fa-check text-green-600 mr-2"></i>Write electron configurations for any element</li>
+                        <li><i class="fas fa-check text-green-600 mr-2"></i>Predict trends in atomic properties</li>
+                        <li><i class="fas fa-check text-green-600 mr-2"></i>Explain shielding effect and effective nuclear charge</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-2">Chemical Bonding</h4>
+                    <ul class="space-y-1">
+                        <li><i class="fas fa-check text-green-600 mr-2"></i>Draw dot-cross diagrams for ionic compounds</li>
+                        <li><i class="fas fa-check text-green-600 mr-2"></i>Predict bond types and molecular shapes</li>
+                        <li><i class="fas fa-check text-green-600 mr-2"></i>Explain properties of different compound types</li>
+                        <li><i class="fas fa-check text-green-600 mr-2"></i>Compare ionic, covalent, and metallic bonding</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- WAEC Tips -->
+        <div class="mt-6 bg-white rounded-xl p-5 shadow-md">
+            <h3 class="font-semibold text-gray-800 mb-3 flex items-center gap-2">
+                <i class="fas fa-lightbulb text-yellow-500"></i>
+                WAEC Exam Tips
+            </h3>
+            <div class="grid md:grid-cols-3 gap-4 text-sm">
+                <div class="bg-yellow-50 p-3 rounded-lg">
+                    <p class="font-medium text-yellow-800 mb-1">Common Questions</p>
+                    <p class="text-yellow-700">Explain trends, write electron configurations, draw bonding diagrams</p>
+                </div>
+                <div class="bg-blue-50 p-3 rounded-lg">
+                    <p class="font-medium text-blue-800 mb-1">Key Formulas</p>
+                    <p class="text-blue-700">Z<sub>eff</sub> = Z - S, Max electrons = 2n², EN difference for bond type</p>
+                </div>
+                <div class="bg-pink-50 p-3 rounded-lg">
+                    <p class="font-medium text-pink-800 mb-1">Don't Forget</p>
+                    <p class="text-pink-700">4s fills before 3d, IE exceptions at Groups 2→3 and 5→6</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t mt-12 py-6">
+        <div class="max-w-6xl mx-auto px-4 text-center text-sm text-gray-500">
+            <p>Juanova Cortex E-Learning Platform</p>
+            <p class="mt-1">Complete all topics in order for the best learning experience.</p>
+        </div>
+    </footer>
+
+    <!-- Chemistry Subject Quiz Handler -->
+    <script src="../subject-quiz-handler.js"></script>
+</body>
+</html>

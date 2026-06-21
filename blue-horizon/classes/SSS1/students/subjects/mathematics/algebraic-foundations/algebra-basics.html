@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mathematics - Algebra Basics</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    @keyframes fadeIn { from { opacity: 0 } to { opacity: 1 } }
+    .card-glow { box-shadow: 0 6px 18px rgba(99,102,241,0.06); animation: fadeIn 0.45s ease; }
+    .accent-gradient { background: linear-gradient(90deg,#6366f1,#06b6d4); }
+    .step-badge { background: rgba(99,102,241,0.08); color:#3730a3; padding:.25rem .5rem; border-radius:.5rem; font-weight:600; display:inline-block; width:24px; height:24px; text-align:center; font-size:.75rem }
+    .accordion-content { max-height:0; overflow:hidden; transition: max-height .28s ease }
+    .accordion-content.open { max-height:900px }
+  </style>
+</head>
+<body class="bg-gray-100 font-sans">
+  <header class="accent-gradient text-white sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
+      <a href="../algebraic-foundations.html" class="flex items-center gap-4">
+        <div class="p-2 bg-white/20 rounded-lg"><i class="fas fa-atom"></i></div>
+        <div>
+          <div class="font-semibold text-lg">Algebra Basics</div>
+          <div class="text-xs opacity-80">Variables, like terms, simplifying and distributive property</div>
+        </div>
+      </a>
+      <div class="flex items-center gap-4">
+        <div class="text-sm opacity-90">Progress: <span id="progress">0%</span></div>
+        <a href="../mathematics.html" class="text-white/90 hover:text-white text-sm">Back to Math</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-4 py-8">
+    <div class="grid lg:grid-cols-4 gap-8">
+      <aside class="lg:col-span-1">
+        <div class="bg-white p-5 rounded-xl card-glow sticky top-24">
+          <h3 class="font-semibold mb-3">Contents</h3>
+          <ul class="space-y-2 text-sm">
+            <li><a href="#definition" class="hover:text-indigo-600 flex items-center gap-2"><span class="step-badge">1</span>Definition</a></li>
+            <li><a href="#methods" class="hover:text-indigo-600 flex items-center gap-2"><span class="step-badge">2</span>Key Ideas</a></li>
+            <li><a href="#examples" class="hover:text-indigo-600 flex items-center gap-2"><span class="step-badge">3</span>Examples</a></li>
+            <li><a href="#practice" class="hover:text-indigo-600 flex items-center gap-2"><span class="step-badge">4</span>Practice</a></li>
+          </ul>
+        </div>
+      </aside>
+
+      <section class="lg:col-span-3 space-y-6">
+        <article id="definition" class="bg-white p-6 rounded-xl card-glow">
+          <div class="flex items-start gap-4">
+            <div class="text-3xl text-indigo-600 mt-1"><i class="fas fa-book"></i></div>
+            <div>
+              <h2 class="text-2xl font-semibold mb-2">What is Algebra?</h2>
+              <p class="text-gray-700">Algebra uses letters (variables) to stand for numbers. We learn to work with expressions and simplify them by combining like terms and using rules such as the distributive property.</p>
+            </div>
+          </div>
+        </article>
+
+        <article id="methods" class="bg-white p-6 rounded-xl card-glow">
+          <div class="flex items-start gap-4">
+            <div class="text-3xl text-indigo-600 mt-1"><i class="fas fa-lightbulb"></i></div>
+            <div class="w-full">
+              <h2 class="text-2xl font-semibold mb-3">Key Ideas</h2>
+
+              <!-- Accordion: Variables & Like Terms -->
+              <div class="border rounded-lg mb-3">
+                <button class="accordion-btn w-full text-left p-4 font-semibold flex justify-between items-center hover:bg-gray-50" data-accordion="k1">
+                  <span>1. Variables & Like Terms</span>
+                  <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="accordion-content" id="k1">
+                  <div class="p-4 pt-0 text-gray-700 bg-gray-50">
+                    <p class="mb-2"><strong>Variables</strong> are letters that stand for numbers (e.g., x, y).</p>
+                    <p class="mb-2"><strong>Like terms</strong> have the same variable(s) to the same power. Example: 3x and -2x are like terms; 3x and 3x² are not.</p>
+                    <p class="mb-2">Step: When simplifying, add/subtract only like terms.</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Accordion: Coefficients & Constants -->
+              <div class="border rounded-lg mb-3">
+                <button class="accordion-btn w-full text-left p-4 font-semibold flex justify-between items-center hover:bg-gray-50" data-accordion="k2">
+                  <span>2. Coefficients & Constants</span>
+                  <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="accordion-content" id="k2">
+                  <div class="p-4 pt-0 text-gray-700 bg-gray-50">
+                    <p class="mb-2">The <strong>coefficient</strong> is the number in front of a variable (3x → 3). A <strong>constant</strong> has no variable (5 is a constant).</p>
+                    <p class="mb-2">To combine like terms, add/subtract their coefficients and keep the variable part the same.</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Accordion: Distributive Property -->
+              <div class="border rounded-lg mb-3">
+                <button class="accordion-btn w-full text-left p-4 font-semibold flex justify-between items-center hover:bg-gray-50" data-accordion="k3">
+                  <span>3. Distributive Property</span>
+                  <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="accordion-content" id="k3">
+                  <div class="p-4 pt-0 text-gray-700 bg-gray-50">
+                    <p class="mb-2">a(b + c) = ab + ac. Multiply the term outside the bracket with each term inside.</p>
+                    <p class="mb-2">Example: 3(x + 4) → 3x + 12.</p>
+                    <p class="mb-2">Tip: Use distributive property to remove brackets before combining like terms.</p>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </article>
+
+        <article id="examples" class="bg-white p-6 rounded-xl card-glow">
+          <div class="flex items-start gap-4">
+            <div class="text-3xl text-indigo-600 mt-1"><i class="fas fa-calculator"></i></div>
+            <div>
+              <h2 class="text-2xl font-semibold mb-3">Worked Examples (step-by-step)</h2>
+              <div class="grid sm:grid-cols-2 gap-4 text-gray-700">
+
+                <div class="p-4 bg-gray-50 rounded">
+                  <div class="font-semibold">Example 1: Simplify 3x + 5x</div>
+                  <div class="mt-2 text-sm">
+                    <ol class="list-decimal list-inside ml-3 space-y-1">
+                      <li>Recognise like terms: 3x and 5x both have x</li>
+                      <li>Add coefficients: 3 + 5 = 8</li>
+                      <li>Answer: 8x</li>
+                    </ol>
+                  </div>
+                </div>
+
+                <div class="p-4 bg-gray-50 rounded">
+                  <div class="font-semibold">Example 2: Simplify 4a - 2a + 7</div>
+                  <div class="mt-2 text-sm">
+                    <ol class="list-decimal list-inside ml-3 space-y-1">
+                      <li>Combine like terms (4a - 2a = 2a)</li>
+                      <li>Constants: 7 stays as is</li>
+                      <li>Answer: 2a + 7</li>
+                    </ol>
+                  </div>
+                </div>
+
+                <div class="p-4 bg-gray-50 rounded">
+                  <div class="font-semibold">Example 3: Expand 2(x + 3)</div>
+                  <div class="mt-2 text-sm">
+                    <ol class="list-decimal list-inside ml-3 space-y-1">
+                      <li>Distribute: 2·x + 2·3</li>
+                      <li>Simplify: 2x + 6</li>
+                      <li>Answer: 2x + 6</li>
+                    </ol>
+                  </div>
+                </div>
+
+                <div class="p-4 bg-gray-50 rounded">
+                  <div class="font-semibold">Example 4: Simplify 5 + 2x + 3 + x</div>
+                  <div class="mt-2 text-sm">
+                    <ol class="list-decimal list-inside ml-3 space-y-1">
+                      <li>Group like terms: (2x + x) and (5 + 3)</li>
+                      <li>2x + x = 3x; 5 + 3 = 8</li>
+                      <li>Answer: 3x + 8</li>
+                    </ol>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article id="practice" class="bg-white p-6 rounded-xl card-glow">
+          <div class="flex items-start gap-4">
+            <div class="text-3xl text-indigo-600 mt-1"><i class="fas fa-pencil-alt"></i></div>
+            <div class="w-full">
+              <h2 class="text-2xl font-semibold mb-3">Practice Problems</h2>
+              <p class="text-gray-700 mb-4">Type answers and press Check. Hints available.</p>
+
+              <div class="grid md:grid-cols-2 gap-4">
+                <div class="p-4 border rounded-md bg-gray-50">
+                  <div class="font-semibold">1) Combine like terms</div>
+                  <div class="font-mono text-indigo-700">3x + 4x</div>
+                  <input id="p1" class="mt-3 p-2 border rounded w-full" placeholder="e.g., 7x" />
+                  <div class="mt-2 flex gap-2"><button id="c1" class="px-3 py-1 bg-indigo-600 text-white rounded text-sm">Check</button><button id="h1" class="px-3 py-1 text-xs bg-white border rounded">Hint</button></div>
+                  <div id="fb1" class="mt-3 text-sm"></div>
+                </div>
+
+                <div class="p-4 border rounded-md bg-gray-50">
+                  <div class="font-semibold">2) Distribute</div>
+                  <div class="font-mono text-indigo-700">2(x + 5)</div>
+                  <input id="p2" class="mt-3 p-2 border rounded w-full" placeholder="e.g., 2x+10" />
+                  <div class="mt-2 flex gap-2"><button id="c2" class="px-3 py-1 bg-indigo-600 text-white rounded text-sm">Check</button><button id="h2" class="px-3 py-1 text-xs bg-white border rounded">Hint</button></div>
+                  <div id="fb2" class="mt-3 text-sm"></div>
+                </div>
+
+                <div class="p-4 border rounded-md bg-gray-50">
+                  <div class="font-semibold">3) Combine and simplify</div>
+                  <div class="font-mono text-indigo-700">4a - 2a + 5</div>
+                  <input id="p3" class="mt-3 p-2 border rounded w-full" placeholder="e.g., 2a+5" />
+                  <div class="mt-2 flex gap-2"><button id="c3" class="px-3 py-1 bg-indigo-600 text-white rounded text-sm">Check</button><button id="h3" class="px-3 py-1 text-xs bg-white border rounded">Hint</button></div>
+                  <div id="fb3" class="mt-3 text-sm"></div>
+                </div>
+
+                <div class="p-4 border rounded-md bg-gray-50">
+                  <div class="font-semibold">4) Group then factor</div>
+                  <div class="font-mono text-indigo-700">ab + 2a + b + 2</div>
+                  <input id="p4" class="mt-3 p-2 border rounded w-full" placeholder="e.g., (a+1)(b+2)" />
+                  <div class="mt-2 flex gap-2"><button id="c4" class="px-3 py-1 bg-indigo-600 text-white rounded text-sm">Check</button><button id="h4" class="px-3 py-1 text-xs bg-white border rounded">Hint</button></div>
+                  <div id="fb4" class="mt-3 text-sm"></div>
+                </div>
+              </div>
+
+              <div class="mt-6 pt-4 border-t">
+                <h3 class="font-semibold mb-2">Independent Practice</h3>
+                <p class="text-sm text-gray-600 mb-2">Simplify and show your final answer.</p>
+                <label class="block text-sm">Problem: <code class="font-mono">3(x + 2) + 4x</code></label>
+                <div class="mt-2 flex gap-3">
+                  <input id="ind" class="p-2 border rounded w-60" placeholder="Final answer" />
+                  <button id="checkInd" class="px-4 py-2 bg-green-600 text-white rounded">Check</button>
+                </div>
+                <div id="fbInd" class="mt-3 text-sm"></div>
+                <button id="showIndSol" class="text-xs mt-2 text-indigo-600 hover:text-indigo-700">Show solution</button>
+                <div id="indSol" class="mt-3 hidden p-3 bg-gray-50 rounded text-sm"></div>
+              </div>
+
+            </div>
+          </div>
+        </article>
+      </section>
+    </div>
+  </main>
+
+  <button id="quizBtn" class="fixed bottom-8 right-8 z-50 bg-indigo-600 text-white px-5 py-3 rounded-full shadow-lg hover:bg-indigo-700 flex items-center gap-2"><i class="fas fa-bolt"></i> Quiz</button>
+
+  <div id="quizModal" class="hidden fixed inset-0 bg-black/40 z-50 flex items-center justify-center">
+    <div class="bg-white rounded-xl shadow-2xl max-w-lg w-full p-6 relative">
+      <button id="closeQuiz" class="absolute top-3 right-4 text-gray-400 hover:text-gray-700 text-2xl">&times;</button>
+      <div id="quizContent"></div>
+    </div>
+  </div>
+
+  <footer class="max-w-7xl mx-auto px-4 py-6 text-sm text-gray-500">Algebra Basics — interactive lesson</footer>
+
+  <script>
+    // Accordion
+    document.querySelectorAll('.accordion-btn').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const id = btn.dataset.accordion;
+        const el = document.getElementById(id);
+        el.classList.toggle('open');
+      });
+    });
+
+    // Progress tracking
+    const progressEl = document.getElementById('progress');
+    const done = {p1:false,p2:false,p3:false,p4:false,ind:false};
+    function setDone(k){ if(!done[k]){ done[k]=true; const total=Object.keys(done).length; const c=Object.values(done).filter(Boolean).length; progressEl.textContent = Math.round((c/total)*100)+'%'; }}
+
+    function norm(s){ return (s||'').toString().trim().replace(/\s+/g,'').toLowerCase(); }
+
+    // Problem checks
+    document.getElementById('c1').addEventListener('click', ()=>{
+      const v = norm(document.getElementById('p1').value);
+      const fb = document.getElementById('fb1');
+      if(v==='7x' || v==='7x=') { fb.innerHTML = '<span style="color:#16a34a">Correct — 7x</span>'; setDone('p1'); } else { fb.innerHTML = '<span style="color:#e11d48">Try again — add coefficients</span>'; }
+    });
+    document.getElementById('h1').addEventListener('click', ()=> alert('Hint: 3x + 4x — add the numbers in front of x.'));
+
+    document.getElementById('c2').addEventListener('click', ()=>{
+      const v = norm(document.getElementById('p2').value);
+      const fb = document.getElementById('fb2');
+      if(v==='2x+10' || v==='2x+10=') { fb.innerHTML = '<span style="color:#16a34a">Correct — 2x + 10</span>'; setDone('p2'); } else { fb.innerHTML = '<span style="color:#e11d48">Try again — distribute 2</span>'; }
+    });
+    document.getElementById('h2').addEventListener('click', ()=> alert('Hint: Multiply 2 by each term inside the brackets.'));
+
+    document.getElementById('c3').addEventListener('click', ()=>{
+      const v = norm(document.getElementById('p3').value);
+      const fb = document.getElementById('fb3');
+      if(v==='2a+5' || v==='2a+5=') { fb.innerHTML = '<span style="color:#16a34a">Correct — 2a + 5</span>'; setDone('p3'); } else { fb.innerHTML = '<span style="color:#e11d48">Try again — combine 4a and -2a</span>'; }
+    });
+    document.getElementById('h3').addEventListener('click', ()=> alert('Hint: 4a - 2a equals 2a.'));
+
+    document.getElementById('c4').addEventListener('click', ()=>{
+      const v = norm(document.getElementById('p4').value);
+      const fb = document.getElementById('fb4');
+      const ok = ['(a+1)(b+2)','(b+2)(a+1)'];
+      if(ok.includes(v) || ok.includes(v.replace(/\s+/g,''))){ fb.innerHTML = '<span style="color:#16a34a">Correct — (a+1)(b+2)</span>'; setDone('p4'); } else { fb.innerHTML = '<span style="color:#e11d48">Try again — group terms</span>'; }
+    });
+    document.getElementById('h4').addEventListener('click', ()=> alert('Hint: Group (ab + 2a) + (b + 2) and factor each group.'));
+
+    // Independent
+    document.getElementById('checkInd').addEventListener('click', ()=>{
+      const v = norm(document.getElementById('ind').value);
+      const fb = document.getElementById('fbInd');
+      if(v==='7x+6' || v==='7x+6=') { fb.innerHTML = '<span style="color:#16a34a">Correct — 7x + 6</span>'; setDone('ind'); } else { fb.innerHTML = '<span style="color:#e11d48">Try again — distribute then combine like terms</span>'; }
+    });
+    document.getElementById('showIndSol').addEventListener('click', ()=>{
+      const sol = document.getElementById('indSol'); sol.classList.remove('hidden'); sol.innerHTML = '<strong>Solution:</strong> 3(x+2)+4x = 3x+6+4x = (3x+4x)+6 = 7x+6';
+    });
+
+    // Quiz questions
+    const quizPool = [
+      {q:'Simplify: 3x + 5x', a:['7x']},
+      {q:'Expand: 2(x+3)', a:['2x+6']},
+      {q:'Simplify: 4a - 2a + 3', a:['2a+3']},
+      {q:'Combine: 2x + x + 5', a:['3x+5']},
+      {q:'Expand: 5(y+2)', a:['5y+10']},
+      {q:'Are 3x and 3x² like terms?', a:['no','n']},
+      {q:'Simplify: 6 - 2 + x', a:['4+x','x+4']},
+      {q:'Group and factor: ab + a + b + 1', a:['(a+1)(b+1)']}
+    ];
+
+    let quizState = null;
+    function startQuiz(){
+      const pool = [...quizPool]; const sel=[]; for(let i=0;i<3;i++){ const idx=Math.floor(Math.random()*pool.length); sel.push(pool.splice(idx,1)[0]); }
+      quizState={q:sel, i:0, score:0, timer:20, id:null}; showQ(); document.getElementById('quizModal').classList.remove('hidden');
+    }
+    function showQ(){
+      const current = quizState.q[quizState.i];
+      document.getElementById('quizContent').innerHTML = `<div class="text-lg font-semibold mb-2">Question ${quizState.i+1} of ${quizState.q.length}</div><div class="mb-4">${current.q}</div><input id="qa" class="w-full p-3 border rounded mb-3" placeholder="Your answer"><button id="subq" class="w-full bg-indigo-600 text-white py-2 rounded">Submit</button><div id="qfb" class="mt-3"></div>`;
+      document.getElementById('subq').onclick = submitQ; quizState.timer=20; updateTimer(); quizState.id=setInterval(()=>{ quizState.timer--; updateTimer(); if(quizState.timer<=0){ clearInterval(quizState.id); submitQ(true); } },1000);
+    }
+    function updateTimer(){ const t=document.getElementById('qfb'); if(t) t.innerHTML = `<div class="text-xs text-gray-500">Time: ${quizState.timer}s</div>`; }
+    function submitQ(timeout){ clearInterval(quizState.id); const ans = norm(document.getElementById('qa').value||''); const cur = quizState.q[quizState.i]; const ok = cur.a.map(x=>norm(x)); let correct = ok.includes(ans); if(timeout) correct=false; const qfb=document.getElementById('qfb'); if(correct){ qfb.innerHTML = '<span style="color:#16a34a">Correct!</span>'; quizState.score++; } else { qfb.innerHTML = `<span style="color:#e11d48">Wrong — Answer: ${cur.a[0]}</span>`; } setTimeout(()=>{ quizState.i++; if(quizState.i<quizState.q.length) showQ(); else finishQuiz(); },1200); }
+    function finishQuiz(){ document.getElementById('quizContent').innerHTML = `<div class="text-2xl font-bold">Quiz complete</div><div class="mt-2">Score: ${quizState.score}/${quizState.q.length}</div><button id="tryQ" class="mt-4 w-full bg-indigo-600 text-white py-2 rounded">Try Again</button><button id="closeQ" class="mt-2 w-full bg-gray-200 py-2 rounded">Close</button>`; document.getElementById('tryQ').onclick = ()=>{ startQuiz(); }; document.getElementById('closeQ').onclick = ()=>{ document.getElementById('quizModal').classList.add('hidden'); } }
+
+    document.getElementById('quizBtn').addEventListener('click', startQuiz);
+    document.getElementById('closeQuiz').addEventListener('click', ()=> document.getElementById('quizModal').classList.add('hidden'));
+
+    // Enter key support for practice
+    ['p1','p2','p3','p4','ind'].forEach(id=>{ const el=document.getElementById(id); el&&el.addEventListener('keypress', e=>{ if(e.key==='Enter'){ if(id==='ind') document.getElementById('checkInd').click(); else document.getElementById('c'+id.slice(1)).click(); } }); });
+  </script>
+<!-- Topic Quiz System -->
+<script src="/js/topic-quiz-loader.js"></script>
+<script src="/js/topic-quiz-injector.js"></script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Algebra Basics | Mathematics</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style> body{font-family:Inter, sans-serif}.content-card{-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);background:rgba(255,255,255,0.95);border:1px solid rgba(255,255,255,0.2);} </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-indigo-50 to-purple-100 p-6">
+  <div class="max-w-3xl mx-auto">
+    <nav class="mb-4"><a href="index.html" class="text-blue-600">← Back to Algebraic Foundations</a></nav>
+    <article class="content-card rounded-lg p-6">
+      <h1 class="text-xl font-bold mb-2">Algebra Basics</h1>
+      <p class="text-gray-700 mb-4">Introduction to variables, expressions, substitution and simplifying algebraic expressions.</p>
+
+      <h3 class="mt-4 font-semibold">Worked example</h3>
+      <p class="text-gray-700">Simplify: 3(x+2) - 2x = 3x+6-2x = x+6.</p>
+
+      <h3 class="mt-4 font-semibold">Practice</h3>
+      <ol class="list-decimal list-inside text-gray-700">
+        <li>Simplify: 5a - 2a + 3.</li>
+        <li>Evaluate for x=2: 4x^2 - x + 1.</li>
+      </ol>
+
+      <h3 class="mt-3 font-semibold">Brief solutions</h3>
+      <ol class="list-decimal list-inside text-gray-700">
+        <li>3a + 3.</li>
+        <li>4(4) - 2 + 1 = 15.</li>
+      </ol>
+    </article>
+  </div>
+<!-- Topic Quiz System -->
+<script src="/js/topic-quiz-loader.js"></script>
+<script src="/js/topic-quiz-injector.js"></script>
+</body>
+</html>

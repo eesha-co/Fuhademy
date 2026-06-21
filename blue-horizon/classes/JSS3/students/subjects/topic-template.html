@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Topic Learning Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Supabase Bootstrap (REQUIRED for progress tracking) -->
+    <script>
+        window.SUPABASE_URL = 'https://kruwfhzfqieuiuhqlutt.supabase.co';
+        window.SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtydXdmaHpmcWlldWl1aHFsdXR0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjIxOTk0OTAsImV4cCI6MjA3Nzc3NTQ5MH0.XD3-PDjDtKwCVsBILYgVrHF7Yc9tHkzpvpN2b7ojvB4';
+    </script>
+    <script src="../../js/supabase-bootstrap.js"></script>
+    
+    <!-- Custom styles for progress indicators and animations -->
+    <style>
+        .step-progress {
+            transition: width 0.3s ease-in-out;
+        }
+        .resource-card {
+            transition: transform 0.2s;
+        }
+        .resource-card:hover {
+            transform: translateY(-4px);
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Top Navigation Bar -->
+    <nav class="bg-white shadow-sm fixed top-0 w-full z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <button id="backBtn" class="mr-4 text-gray-600 hover:text-gray-900">
+                        <i class="fas fa-arrow-left"></i>
+                    </button>
+                    <h1 class="text-xl font-semibold text-gray-900" id="topicTitle">Topic Title</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="text-sm text-gray-600">
+                        Progress: <span id="progressPercent">0%</span>
+                    </div>
+                    <div class="w-32 h-2 bg-gray-200 rounded-full">
+                        <div class="step-progress h-2 bg-blue-500 rounded-full" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="pt-20 pb-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Topic Overview -->
+            <div class="mb-8 bg-white rounded-lg shadow-sm p-6">
+                <h2 class="text-2xl font-semibold mb-4">Overview</h2>
+                <p class="text-gray-600" id="topicDescription">Topic description goes here...</p>
+                <div class="mt-4 flex items-center text-sm text-gray-500">
+                    <i class="fas fa-clock mr-2"></i>
+                    <span>Estimated time: <span id="estimatedTime">45 minutes</span></span>
+                </div>
+            </div>
+
+            <!-- Learning Path Grid -->
+            <div class="grid md:grid-cols-12 gap-6">
+                <!-- Left Sidebar - Steps List -->
+                <div class="md:col-span-3">
+                    <div class="bg-white rounded-lg shadow-sm p-4">
+                        <h3 class="font-semibold mb-4">Learning Steps</h3>
+                        <ul class="space-y-2" id="stepsList">
+                            <!-- Steps will be dynamically populated -->
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Main Content Area -->
+                <div class="md:col-span-9">
+                    <!-- Current Step Content -->
+                    <div class="bg-white rounded-lg shadow-sm p-6 mb-6" id="currentStep">
+                        <div class="mb-6">
+                            <h3 class="text-xl font-semibold mb-4" id="stepTitle">Step Title</h3>
+                            <div id="stepContent">
+                                <!-- Step content will be dynamically loaded here -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Resources Section -->
+                    <div class="bg-white rounded-lg shadow-sm p-6">
+                        <h3 class="text-lg font-semibold mb-4">Resources</h3>
+                        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4" id="resourcesGrid">
+                            <!-- Resource cards will be dynamically populated -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Bottom Navigation Bar -->
+    <div class="fixed bottom-0 w-full bg-white border-t border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between py-4">
+                <button id="prevStep" class="px-4 py-2 text-gray-600 hover:text-gray-900 disabled:opacity-50">
+                    <i class="fas fa-chevron-left mr-2"></i>
+                    Previous
+                </button>
+                <button id="nextStep" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50">
+                    Next
+                    <i class="fas fa-chevron-right ml-2"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quiz Modal -->
+    <div id="quizModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center">
+        <div class="bg-white rounded-lg shadow-xl max-w-2xl w-full mx-4">
+            <div class="p-6">
+                <h3 class="text-xl font-semibold mb-4">Knowledge Check</h3>
+                <div id="quizContent">
+                    <!-- Quiz content will be dynamically loaded -->
+                </div>
+                <div class="mt-6 flex justify-end">
+                    <button id="submitQuiz" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
+                        Submit
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        // ============================================
+        // TOPIC PROGRESS TRACKING INTEGRATION
+        // ============================================
+        
+        // Import TopicTracker for database integration
+        import { TopicTracker } from '../../js/topic-tracker.js';
+        
+        // Topic data structure - CUSTOMIZE THIS FOR EACH TOPIC
+        const topicData = {
+            id: 'sample-topic', // MUST be unique - change for each topic
+            title: "Sample Topic",
+            subject: 'general', // CHANGE THIS: mathematics, physics, chemistry, english, biology
+            description: "This is a sample topic description...",
+            estimatedTime: "45 minutes",
+            steps: [
+                {
+                    id: 'intro',
+                    title: "Introduction",
+                    type: "note",
+                    content: `<p>Step content goes here. Add your HTML content for this step.</p>
+                              <p>This is where you explain the concept.</p>`,
+                    resources: [
+                        {
+                            type: "video",
+                            title: "Introduction Video",
+                            url: "video-url"
+                        }
+                    ]
+                },
+                {
+                    id: 'core-concept',
+                    title: "Core Concept",
+                    type: "note",
+                    content: `<p>Explain the core concept here.</p>`,
+                    resources: []
+                },
+                {
+                    id: 'quiz',
+                    title: "Knowledge Check",
+                    type: "quiz",
+                    content: `<p>Test your understanding:</p>`,
+                    quiz: {
+                        questions: [
+                            {
+                                question: "Sample question?",
+                                options: ["Option A", "Option B", "Option C", "Option D"],
+                                correct: 0,
+                                explanation: "Explanation for the correct answer."
+                            }
+                        ],
+                        passingScore: 60
+                    },
+                    resources: []
+                }
+                // Add more steps as needed
+            ]
+        };
+
+        // Current state
+        let currentStepIndex = 0;
+        let progress = 0;
+        let tracker = null;
+        let startTime = Date.now();
+        let activeTime = 0;
+        let isActive = true;
+
+        // Initialize TopicTracker
+        async function initializeTracker() {
+            try {
+                tracker = new TopicTracker({
+                    topicId: topicData.id,
+                    topicTitle: topicData.title,
+                    subject: topicData.subject,
+                    sections: topicData.steps.map(s => s.id),
+                    onComplete: (data) => {
+                        console.log('Topic completed!', data);
+                        showCompletionModal();
+                    }
+                });
+                console.log('TopicTracker initialized for:', topicData.id);
+            } catch (err) {
+                console.warn('TopicTracker initialization failed:', err);
+            }
+        }
+
+        // Track activity
+        function setupActivityTracking() {
+            // Track if tab is visible
+            document.addEventListener('visibilitychange', () => {
+                if (document.hidden) {
+                    recordTime();
+                    isActive = false;
+                } else {
+                    startTime = Date.now();
+                    isActive = true;
+                }
+            });
+
+            // Track user activity
+            let activityTimeout;
+            const resetActivity = () => {
+                isActive = true;
+                clearTimeout(activityTimeout);
+                activityTimeout = setTimeout(() => {
+                    isActive = false;
+                }, 60000);
+            };
+
+            ['scroll', 'click', 'keypress', 'touchstart'].forEach(event => {
+                document.addEventListener(event, resetActivity, { passive: true });
+            });
+
+            // Save progress periodically
+            setInterval(saveProgress, 30000);
+        }
+
+        // Record time spent
+        function recordTime() {
+            if (isActive) {
+                const elapsed = Date.now() - startTime;
+                activeTime += elapsed;
+                startTime = Date.now();
+            }
+        }
+
+        // Save progress to database
+        async function saveProgress() {
+            recordTime();
+            
+            if (!tracker) return;
+            
+            try {
+                // Mark sections as viewed
+                const currentStep = topicData.steps[currentStepIndex];
+                if (currentStep && tracker.sectionsViewed) {
+                    tracker.sectionsViewed.add(currentStep.id);
+                }
+                
+                // Update tracker time
+                if (tracker.totalTimeSpent !== undefined) {
+                    tracker.totalTimeSpent = activeTime;
+                }
+                
+                // Save to database
+                await tracker.saveProgress();
+                console.log('Progress saved');
+            } catch (err) {
+                console.warn('Failed to save progress:', err);
+            }
+        }
+
+        // Initialize the page
+        async function initializePage() {
+            document.getElementById('topicTitle').textContent = topicData.title;
+            document.getElementById('topicDescription').textContent = topicData.description;
+            document.getElementById('estimatedTime').textContent = topicData.estimatedTime;
+            
+            // Populate steps list
+            const stepsList = document.getElementById('stepsList');
+            topicData.steps.forEach((step, index) => {
+                const li = document.createElement('li');
+                li.innerHTML = `
+                    <button class="w-full text-left px-3 py-2 rounded ${
+                        index === currentStepIndex ? 'bg-blue-50 text-blue-600' : 'text-gray-600 hover:bg-gray-50'
+                    }" data-step-index="${index}">
+                        <i class="fas fa-${getStepIcon(step.type)} mr-2"></i>
+                        ${step.title}
+                    </button>
+                `;
+                li.querySelector('button').onclick = () => navigateToStep(index);
+                stepsList.appendChild(li);
+            });
+
+            // Initialize tracker
+            await initializeTracker();
+            
+            // Setup activity tracking
+            setupActivityTracking();
+
+            loadCurrentStep();
+            
+            // Save progress before leaving
+            window.addEventListener('beforeunload', () => {
+                saveProgress();
+            });
+        }
+
+        // Helper function to get step icon
+        function getStepIcon(type) {
+            const icons = {
+                note: 'book',
+                video: 'play-circle',
+                quiz: 'question-circle',
+                simulation: 'laptop-code'
+            };
+            return icons[type] || 'circle';
+        }
+
+        // Load current step content
+        function loadCurrentStep() {
+            const step = topicData.steps[currentStepIndex];
+            document.getElementById('stepTitle').textContent = step.title;
+            
+            // Load step content
+            const content = document.getElementById('stepContent');
+            content.innerHTML = step.content;
+            
+            // If this is a quiz step, render quiz
+            if (step.type === 'quiz' && step.quiz) {
+                renderQuiz(step.quiz);
+            }
+
+            // Load resources
+            const resourcesGrid = document.getElementById('resourcesGrid');
+            resourcesGrid.innerHTML = '';
+            if (step.resources && step.resources.length > 0) {
+                step.resources.forEach(resource => {
+                    const card = document.createElement('div');
+                    card.className = 'resource-card bg-gray-50 rounded-lg p-4 hover:shadow-md cursor-pointer';
+                    card.innerHTML = `
+                        <i class="fas fa-${getResourceIcon(resource.type)} text-2xl text-blue-500 mb-2"></i>
+                        <h4 class="font-medium">${resource.title}</h4>
+                    `;
+                    card.onclick = () => openResource(resource);
+                    resourcesGrid.appendChild(card);
+                });
+            }
+
+            // Update navigation buttons
+            document.getElementById('prevStep').disabled = currentStepIndex === 0;
+            const nextBtn = document.getElementById('nextStep');
+            if (currentStepIndex === topicData.steps.length - 1) {
+                nextBtn.innerHTML = 'Complete <i class="fas fa-check ml-2"></i>';
+            } else {
+                nextBtn.innerHTML = 'Next <i class="fas fa-chevron-right ml-2"></i>';
+            }
+
+            // Mark step as viewed
+            markStepViewed(step.id);
+            
+            // Update progress
+            updateProgress();
+            
+            // Update steps list highlighting
+            updateStepsListUI();
+        }
+        
+        // Update steps list UI
+        function updateStepsListUI() {
+            const buttons = document.querySelectorAll('#stepsList button');
+            buttons.forEach((btn, index) => {
+                if (index === currentStepIndex) {
+                    btn.className = 'w-full text-left px-3 py-2 rounded bg-blue-50 text-blue-600';
+                } else {
+                    btn.className = 'w-full text-left px-3 py-2 rounded text-gray-600 hover:bg-gray-50';
+                }
+            });
+        }
+
+        // Mark step as viewed
+        function markStepViewed(stepId) {
+            if (tracker && tracker.sectionsViewed) {
+                tracker.sectionsViewed.add(stepId);
+            }
+        }
+
+        // Helper function to get resource icon
+        function getResourceIcon(type) {
+            const icons = {
+                video: 'play-circle',
+                pdf: 'file-pdf',
+                simulation: 'laptop-code',
+                image: 'image'
+            };
+            return icons[type] || 'file';
+        }
+
+        // Navigation functions
+        function navigateToStep(index) {
+            if (index >= 0 && index < topicData.steps.length) {
+                // Save progress for current step before navigating
+                saveProgress();
+                
+                currentStepIndex = index;
+                loadCurrentStep();
+            }
+        }
+
+        // Open resource
+        function openResource(resource) {
+            console.log('Opening resource:', resource);
+            if (resource.url) {
+                window.open(resource.url, '_blank');
+            }
+        }
+
+        // Update progress
+        function updateProgress() {
+            progress = ((currentStepIndex + 1) / topicData.steps.length) * 100;
+            document.getElementById('progressPercent').textContent = `${Math.round(progress)}%`;
+            document.querySelector('.step-progress').style.width = `${progress}%`;
+            
+            // Update tracker progress
+            if (tracker) {
+                tracker.progress = progress;
+            }
+        }
+
+        // Render quiz
+        function renderQuiz(quizData) {
+            const content = document.getElementById('stepContent');
+            let quizHTML = '<div class="space-y-4">';
+            
+            quizData.questions.forEach((q, qIndex) => {
+                quizHTML += `
+                    <div class="quiz-question bg-gray-50 p-4 rounded-lg" data-question="${qIndex}">
+                        <p class="font-medium mb-3">${qIndex + 1}. ${q.question}</p>
+                        <div class="space-y-2">
+                            ${q.options.map((opt, oIndex) => `
+                                <label class="flex items-center p-2 rounded hover:bg-gray-100 cursor-pointer">
+                                    <input type="radio" name="q${qIndex}" value="${oIndex}" class="mr-3">
+                                    <span>${opt}</span>
+                                </label>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            });
+            
+            quizHTML += `
+                <button id="submitQuizBtn" class="mt-4 px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
+                    Submit Quiz
+                </button>
+            `;
+            
+            content.innerHTML = quizHTML;
+            
+            // Add submit handler
+            document.getElementById('submitQuizBtn').onclick = () => submitQuiz(quizData);
+        }
+
+        // Submit quiz
+        async function submitQuiz(quizData) {
+            let correct = 0;
+            const answers = [];
+            
+            quizData.questions.forEach((q, qIndex) => {
+                const selected = document.querySelector(`input[name="q${qIndex}"]:checked`);
+                const selectedIndex = selected ? parseInt(selected.value) : -1;
+                const isCorrect = selectedIndex === q.correct;
+                
+                if (isCorrect) correct++;
+                
+                answers.push({
+                    question: qIndex,
+                    selected: selectedIndex,
+                    correct: q.correct,
+                    isCorrect
+                });
+                
+                // Visual feedback
+                const questionDiv = document.querySelector(`.quiz-question[data-question="${qIndex}"]`);
+                const labels = questionDiv.querySelectorAll('label');
+                labels.forEach((label, i) => {
+                    if (i === q.correct) {
+                        label.classList.add('bg-green-100', 'border-green-500');
+                    } else if (i === selectedIndex && !isCorrect) {
+                        label.classList.add('bg-red-100', 'border-red-500');
+                    }
+                });
+            });
+            
+            const percentage = Math.round((correct / quizData.questions.length) * 100);
+            const passed = percentage >= quizData.passingScore;
+            
+            // Update tracker
+            if (tracker && passed) {
+                await tracker.markQuizPassed(percentage);
+            }
+            
+            // Show result
+            const content = document.getElementById('stepContent');
+            content.innerHTML += `
+                <div class="mt-6 p-4 ${passed ? 'bg-green-50 border-green-200' : 'bg-yellow-50 border-yellow-200'} border rounded-lg">
+                    <p class="font-bold text-lg">${passed ? '🎉 Passed!' : '📚 Keep Learning!'}</p>
+                    <p>Score: ${percentage}% (${correct}/${quizData.questions.length})</p>
+                    ${!passed ? '<p class="text-sm mt-2">Review the material and try again.</p>' : ''}
+                </div>
+            `;
+        }
+
+        // Show completion modal
+        function showCompletionModal() {
+            const modal = document.getElementById('quizModal');
+            document.getElementById('quizContent').innerHTML = `
+                <div class="text-center py-8">
+                    <div class="text-6xl mb-4">🎉</div>
+                    <h3 class="text-2xl font-bold mb-2">Congratulations!</h3>
+                    <p class="text-gray-600">You have completed this topic.</p>
+                </div>
+            `;
+            modal.classList.remove('hidden');
+        }
+
+        // Event listeners
+        document.getElementById('prevStep').onclick = () => navigateToStep(currentStepIndex - 1);
+        document.getElementById('nextStep').onclick = () => {
+            if (currentStepIndex < topicData.steps.length - 1) {
+                navigateToStep(currentStepIndex + 1);
+            } else {
+                // Complete topic
+                saveProgress();
+                showCompletionModal();
+            }
+        };
+        document.getElementById('backBtn').onclick = () => {
+            saveProgress();
+            history.back();
+        };
+
+        // Initialize the page
+        initializePage();
+    </script>
+</body>
+</html>

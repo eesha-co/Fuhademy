@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Applications of Differentiation — Calculus</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>.card{background:#fff;padding:1rem;border-radius:10px;box-shadow:0 10px 30px rgba(2,6,23,0.06)} .muted{color:#374151}</style>
+</head>
+<body class="bg-rose-50 font-sans">
+  <header class="bg-rose-600 text-white py-3 mb-6"><div class="max-w-6xl mx-auto px-4 flex items-center justify-between"><div class="font-semibold">Applications — Differentiation</div><a href="index.html" class="text-white/90">Back</a></div></header>
+
+  <main class="max-w-6xl mx-auto px-4 space-y-6">
+    <section class="card"><h2 class="text-lg font-semibold">Maxima & Minima</h2><div class="muted mt-2">Find stationary points by solving f'(x)=0. Use second derivative or sign change to classify.</div></section>
+
+    <section class="card">
+      <h2 class="text-lg font-semibold">Visual — turning point</h2>
+      <div class="mt-3 muted">A parabola with a maximum at x=2 (example f(x)=-x^2+4x).</div>
+      <div class="mt-4 flex justify-center">
+        <svg width="420" height="160" xmlns="http://www.w3.org/2000/svg">
+          <path d="M20,120 C80,60 140,40 200,50 260,60 320,90 380,120" fill="none" stroke="#fb7185" stroke-width="2"/>
+          <circle cx="200" cy="50" r="4" fill="#111827"/>
+          <text x="210" y="45" font-size="11" fill="#374151">Stationary at x=2</text>
+        </svg>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2 class="text-lg font-semibold">Worked examples</h2>
+      <div class="muted mt-2">
+        <div class="mb-2">1) f(x)= -x^2 + 4x → f'(x) = -2x + 4. Solve -2x + 4 = 0 → x=2 (maximum). Second derivative f''(x) = -2 &lt; 0 confirms maximum.</div>
+        <div>2) Optimization: Given perimeter 20, rectangle sides x and (10−x). Area A(x)=x(10−x)=10x−x^2. A'(x)=10−2x → set 0 → x=5. Max area 25 (square).</div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2 class="text-lg font-semibold">Practice</h2>
+      <div class="grid md:grid-cols-2 gap-4 mt-3">
+        <div class="p-3 bg-gray-50 rounded"><div class="font-medium">1) Find stationary points of y = x^3 - 3x^2</div><input id="ad1" class="mt-2 p-2 border rounded w-full" placeholder="e.g., 0,2"><div class="mt-2 flex gap-2"><button id="adc1" class="px-3 py-1 bg-rose-600 text-white rounded">Check</button><button id="adh1" class="px-3 py-1 border rounded">Hint</button></div><div id="adfb1" class="mt-2 text-sm"></div></div>
+
+        <div class="p-3 bg-gray-50 rounded"><div class="font-medium">2) If s(t) position, what is s'(t)?</div><input id="ad2" class="mt-2 p-2 border rounded w-full" placeholder="e.g., velocity"><div class="mt-2 flex gap-2"><button id="adc2" class="px-3 py-1 bg-rose-600 text-white rounded">Check</button><button id="adh2" class="px-3 py-1 border rounded">Hint</button></div><div id="adfb2" class="mt-2 text-sm"></div></div>
+
+        <div class="p-3 bg-gray-50 rounded"><div class="font-medium">3) For A(x)=10x−x^2, at x=5 what is A''(x)? Use to classify extremum.</div><input id="ad3" class="mt-2 p-2 border rounded w-full" placeholder="e.g., -2"><div class="mt-2 flex gap-2"><button id="adc3" class="px-3 py-1 bg-rose-600 text-white rounded">Check</button><button id="adh3" class="px-3 py-1 border rounded">Hint</button></div><div id="adfb3" class="mt-2 text-sm"></div></div>
+
+        <div class="p-3 bg-gray-50 rounded"><div class="font-medium">4) For f(x) = x^3−3x^2, classify x=0: min, max or inflection?</div><input id="ad4" class="mt-2 p-2 border rounded w-full" placeholder="e.g., inflection or saddle"><div class="mt-2 flex gap-2"><button id="adc4" class="px-3 py-1 bg-rose-600 text-white rounded">Check</button><button id="adh4" class="px-3 py-1 border rounded">Hint</button></div><div id="adfb4" class="mt-2 text-sm"></div></div>
+      </div>
+    </section>
+
+    <div class="text-right"><button id="adQuiz" class="bg-rose-600 text-white px-4 py-2 rounded">Mini Quiz</button></div>
+  </main>
+
+  <div id="adModal" class="hidden fixed inset-0 bg-black/40 z-40 flex items-center justify-center"><div class="bg-white rounded p-6 max-w-md w-full"><div id="adContent"></div><div class="mt-4 text-right"><button id="adClose" class="px-3 py-1 border rounded">Close</button></div></div></div>
+
+  <script>
+    function norm(s){ return (s||'').toString().trim().replace(/\s+/g,''); }
+    document.getElementById('adc1').addEventListener('click', ()=>{ const v=norm(document.getElementById('ad1').value); const fb=document.getElementById('adfb1'); if(v.includes('0')&&v.includes('2')) fb.innerHTML='<span style="color:#16a34a">Correct — stationary at x=0 and x=2</span>'; else fb.innerHTML='<span style="color:#e11d48">Try again — differentiate and solve 3x^2-6x=0</span>'; });
+    document.getElementById('adh1').addEventListener('click', ()=> alert('Hint: y\' = 3x^2 - 6x → factor'));
+
+    document.getElementById('adc2').addEventListener('click', ()=>{ const v=norm(document.getElementById('ad2').value).toLowerCase(); const fb=document.getElementById('adfb2'); if(v.includes('vel')||v.includes('velocity')) fb.innerHTML='<span style="color:#16a34a">Correct — velocity</span>'; else fb.innerHTML='<span style="color:#e11d48">Think: derivative of displacement gives rate of change of position</span>'; });
+    document.getElementById('adh2').addEventListener('click', ()=> alert('Hint: derivative of position is velocity'));
+
+    const pool=[
+      {q:'Find derivative of -x^2+4x = ?', a:['-2x+4']},
+      {q:'Stationary point of f(x)= -x^2 +4x ?', a:['2']},
+      {q:'For A(x)=10x−x^2, what is A\'\'(x)?', a:['-2']},
+      {q:'Classification at x=5 for A(x)=10x−x^2 (max/min)?', a:['max','maximum']}
+    ];
+    function show(){ let i=0,score=0; const modal=document.getElementById('adModal'); const content=document.getElementById('adContent'); modal.classList.remove('hidden'); function next(){ if(i>=pool.length){ content.innerHTML=`<div class="font-bold">Done</div><div>Score: ${score}/${pool.length}</div>`; return; } const cur=pool[i]; content.innerHTML=`<div class="font-semibold">${cur.q}</div><input id="qa" class="mt-3 p-2 border rounded w-full"><div class="mt-3"><button id="subq" class="px-3 py-1 bg-rose-600 text-white rounded">Submit</button></div><div id="qfb" class="mt-2"></div>`; document.getElementById('subq').onclick=()=>{ const a=(document.getElementById('qa').value||'').trim(); if(cur.a.includes(a)) { score++; document.getElementById('qfb').innerHTML='<span style="color:#16a34a">Correct</span>'; } else document.getElementById('qfb').innerHTML=`<span style="color:#e11d48">Wrong — ${cur.a[0]}</span>`; i++; setTimeout(next,700); }; }
+    next(); }
+    document.getElementById('adQuiz').addEventListener('click', show);
+    document.getElementById('adClose').addEventListener('click', ()=> document.getElementById('adModal').classList.add('hidden'));
+  </script>
+<!-- Topic Quiz System -->
+<script src="/js/topic-quiz-loader.js"></script>
+<script src="/js/topic-quiz-injector.js"></script>
+</body>
+</html>

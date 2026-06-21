@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Refraction & Snell's Law - Step-by-Step Learning</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @keyframes fade-in-up {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in-up { animation: fade-in-up 0.6s ease-out forwards; }
+        .step-progress { transition: width 0.3s ease-in-out; }
+        .resource-card { transition: transform 0.2s; }
+        .resource-card:hover { transform: translateY(-4px); }
+        .step-button.active { background-color: #EFF6FF; color: #2563EB; }
+        .quiz-option.selected { border-color: #2563EB; background-color: #EFF6FF; }
+        .quiz-option.correct { border-color: #16A34A; background-color: #F0FDF4; }
+        .quiz-option.incorrect { background-color: #fff5f5; border-color: #e53e3e; }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Top Navigation -->
+    <nav class="bg-white shadow-sm fixed top-0 w-full z-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <a href="../index.html" class="text-gray-600 hover:text-gray-900 mr-4" aria-label="Back to topics">
+                        <i class="fas fa-arrow-left"></i>
+                    </a>
+                    <h1 id="topicTitle" class="text-xl font-semibold text-gray-900">Refraction & Snell's Law</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="text-sm text-gray-600">
+                        Progress: <span id="progressPercent">0%</span>
+                    </div>
+                    <div class="w-32 h-2 bg-gray-200 rounded-full">
+                        <div id="progressBar" class="step-progress h-2 bg-blue-500 rounded-full" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="pt-20 pb-24">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-12 gap-6">
+                <!-- Left Sidebar - Steps -->
+                <div class="md:col-span-3">
+                    <div class="bg-white rounded-lg shadow-sm p-4 sticky top-20">
+                        <h3 class="font-semibold mb-4">Learning Steps</h3>
+                        <ul id="stepsList" class="space-y-2">
+                            <!-- Steps will be dynamically populated -->
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Main Content Area -->
+                <div class="md:col-span-9">
+                    <div id="stepContainer" class="bg-white rounded-lg shadow-sm p-6 mb-6">
+                        <!-- Step content will be dynamically loaded -->
+                    </div>
+
+                    <div id="resourcesContainer" class="bg-white rounded-lg shadow-sm p-6">
+                        <h3 class="text-lg font-semibold mb-4">Resources</h3>
+                        <div id="resourcesGrid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                            <!-- Resource cards will be dynamically populated -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Bottom Navigation -->
+    <div class="fixed bottom-0 w-full bg-white border-t border-gray-200 z-40">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between py-4">
+                <button id="prevStepBtn" class="px-4 py-2 text-gray-600 hover:text-gray-900 disabled:opacity-50 disabled:cursor-not-allowed">
+                    <i class="fas fa-chevron-left mr-2"></i>
+                    Previous
+                </button>
+                <button id="nextStepBtn" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed">
+                    Next
+                    <i class="fas fa-chevron-right ml-2"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Resource Modal -->
+    <div id="resourceModal" class="hidden fixed inset-0 bg-gray-800 bg-opacity-75 overflow-y-auto h-full w-full z-50 flex items-center justify-center">
+        <div class="relative mx-auto p-5 border w-full max-w-4xl shadow-lg rounded-md bg-white">
+            <div class="flex justify-between items-center pb-3 border-b">
+                <h3 id="resourceModalTitle" class="text-xl font-semibold">Resource</h3>
+                <button id="closeResourceModal" class="text-gray-600 hover:text-gray-900 text-2xl font-bold">&times;</button>
+            </div>
+            <div id="resourceModalContent" class="mt-4">
+                <!-- Resource content will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Quiz Modal -->
+    <div id="quizModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
+        <div class="relative top-20 mx-auto p-5 border w-full max-w-2xl shadow-lg rounded-md bg-white">
+            <div id="quizContent" class="p-6">
+                <!-- Quiz content will be dynamically loaded -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize step navigation and content loading
+        let currentStep = 0;
+        
+        function updateProgress() {
+            const progress = Math.round((currentStep + 1) * 100 / topicData.steps.length);
+            document.getElementById('progressPercent').textContent = `${progress}%`;
+            document.getElementById('progressBar').style.width = `${progress}%`;
+        }
+
+        function updateStepsList() {
+            const stepsList = document.getElementById('stepsList');
+            stepsList.innerHTML = '';
+            topicData.steps.forEach((step, index) => {
+                const li = document.createElement('li');
+                li.innerHTML = `
+                    <button class="w-full px-4 py-2 text-left rounded-lg hover:bg-gray-50 ${index === currentStep ? 'active step-button' : ''}"
+                            onclick="goToStep(${index})">
+                        ${index + 1}. ${step.title}
+                    </button>
+                `;
+                stepsList.appendChild(li);
+            });
+        }
+
+        function updateContent() {
+            const step = topicData.steps[currentStep];
+            document.getElementById('topicTitle').textContent = topicData.title;
+            
+            // Update step content
+            const container = document.getElementById('stepContainer');
+            container.innerHTML = step.content.join('\n');
+
+            // Update resources
+            const resourcesGrid = document.getElementById('resourcesGrid');
+            resourcesGrid.innerHTML = '';
+            if (step.resources && step.resources.length > 0) {
+                step.resources.forEach(resource => {
+                    const card = document.createElement('div');
+                    card.className = 'resource-card bg-white p-4 rounded-lg border hover:shadow-md';
+                    card.innerHTML = `
+                        <h4 class="font-semibold mb-2">${resource.title}</h4>
+                        <p class="text-sm text-gray-600 mb-2">${resource.description}</p>
+                        <button onclick="openResource('${resource.url}')" 
+                                class="text-blue-600 hover:text-blue-700 text-sm">
+                            Open ${resource.type === 'video' ? 'Video' : 'Resource'}
+                            <i class="fas fa-external-link-alt ml-1"></i>
+                        </button>
+                    `;
+                    resourcesGrid.appendChild(card);
+                });
+            }
+
+            // Update navigation
+            document.getElementById('prevStepBtn').disabled = currentStep === 0;
+            document.getElementById('nextStepBtn').disabled = currentStep === topicData.steps.length - 1;
+
+            updateProgress();
+            updateStepsList();
+        }
+
+        function goToStep(index) {
+            if (index >= 0 && index < topicData.steps.length) {
+                currentStep = index;
+                updateContent();
+            }
+        }
+
+        function nextStep() {
+            if (currentStep < topicData.steps.length - 1) {
+                currentStep++;
+                updateContent();
+            }
+        }
+
+        function prevStep() {
+            if (currentStep > 0) {
+                currentStep--;
+                updateContent();
+            }
+        }
+
+        function openResource(url) {
+            const modal = document.getElementById('resourceModal');
+            const content = document.getElementById('resourceModalContent');
+            const title = document.getElementById('resourceModalTitle');
+            
+            if (url.includes('youtube.com')) {
+                content.innerHTML = `<iframe src="${url}" class="w-full aspect-video" allowfullscreen></iframe>`;
+                title.textContent = 'Video Resource';
+            } else if (url.includes('phet.colorado.edu')) {
+                content.innerHTML = `<iframe src="${url}" class="w-full h-[600px]" allowfullscreen></iframe>`;
+                title.textContent = 'Interactive Simulation';
+            } else {
+                content.innerHTML = `<iframe src="${url}" class="w-full h-[600px]"></iframe>`;
+                title.textContent = 'Resource';
+            }
+            
+            modal.classList.remove('hidden');
+        }
+
+        document.getElementById('closeResourceModal').onclick = () => {
+            document.getElementById('resourceModal').classList.add('hidden');
+        };
+
+        document.getElementById('nextStepBtn').onclick = nextStep;
+        document.getElementById('prevStepBtn').onclick = prevStep;
+
+        const topicData = {
+            title: "Refraction & Snell's Law",
+            steps: [
+                {
+                    id: "intro",
+                    title: "Introduction to Refraction",
+                    type: "note",
+                    content: [
+                        `<div class="bg-blue-50 p-4 rounded-lg mb-4">
+                            <p class="text-gray-700"><i class="fas fa-robot mr-2 text-blue-500"></i>Welcome! Today we'll explore refraction - the bending of light as it passes from one medium to another. This fascinating phenomenon explains why straws appear bent in water and how lenses work!</p>
+                        </div>`,
+                        `<h3 class="text-xl font-semibold mb-2">What is Refraction?</h3>`,
+                        `<p class="text-gray-700">Refraction is the bending of light as it passes from one medium to another. This happens because light travels at different speeds in different materials.</p>`,
+                        `<div class="bg-gray-50 p-4 rounded-lg border mt-4">
+                            <h4 class="font-semibold mb-2">Key Concepts:</h4>
+                            <ul class="list-disc pl-6 space-y-2 text-gray-700">
+                                <li>Light changes speed when entering a new medium</li>
+                                <li>The amount of bending depends on the change in speed</li>
+                                <li>Refractive index (n) measures how much light slows down</li>
+                                <li>The higher the refractive index, the more light bends</li>
+                            </ul>
+                        </div>`,
+                        `<div class="mt-6">
+                            <h4 class="font-semibold mb-2">Real-World Examples:</h4>
+                            <div class="grid md:grid-cols-2 gap-4">
+                                <div class="bg-blue-50 p-4 rounded-lg">
+                                    <h5 class="font-semibold mb-1">Bent Straw in Glass</h5>
+                                    <p class="text-sm">Light bends at the water-air boundary, making the straw appear broken</p>
+                                </div>
+                                <div class="bg-green-50 p-4 rounded-lg">
+                                    <h5 class="font-semibold mb-1">Rainbow Formation</h5>
+                                    <p class="text-sm">Different colors bend by different amounts in water droplets</p>
+                                </div>
+                            </div>
+                        </div>`
+                    ],
+                    resources: [
+                        {
+                            type: "video",
+                            title: "Refraction Basics",
+                            description: "Visual explanation of light bending",
+                            url: "https://www.youtube.com/embed/lkv0uZTP_zo"
+                        }
+                    ],
+                    quiz: {
+                        question: "What causes light to refract when entering a new medium?",
+                        options: [
+                            "Change in color",
+                            "Change in speed",
+                            "Change in wavelength",
+                            "Change in brightness"
+                        ],
+                        correct: 1,
+                        explanation: "Light refracts because it changes speed when entering a new medium. This speed change causes the light ray to bend."
+                    }
+                },
+                {
+                    id: "refractive-index",
+                    title: "Refractive Index",
+                    type: "note",
+                    content: [
+                        `<h3 class="text-xl font-semibold mb-4">Understanding Refractive Index</h3>`,
+                        `<p class="text-gray-700 mb-4">The refractive index (n) is a measure of how much light slows down in a material compared to its speed in a vacuum. It's defined by the equation:</p>`,
+                        `<div class="bg-blue-50 p-4 rounded-lg mb-6">
+                            <p class="text-center text-xl mb-2">n = c/v</p>
+                            <ul class="text-sm space-y-1">
+                                <li>n = refractive index (no units)</li>
+                                <li>c = speed of light in vacuum (3×10⁸ m/s)</li>
+                                <li>v = speed of light in the medium</li>
+                            </ul>
+                        </div>`,
+                        `<div class="mb-6">
+                            <h4 class="font-semibold mb-2">Common Refractive Indices:</h4>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <ul class="space-y-2 text-gray-700">
+                                        <li>Air: ≈ 1.00</li>
+                                        <li>Water: 1.33</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <ul class="space-y-2 text-gray-700">
+                                        <li>Glass: 1.50-1.75</li>
+                                        <li>Diamond: 2.42</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>`,
+                        `<div class="bg-yellow-50 border-l-4 border-yellow-500 p-4">
+                            <h4 class="font-semibold mb-2">Important Note:</h4>
+                            <p>The larger the refractive index, the more the light bends when entering that material. This is why diamonds sparkle so much!</p>
+                        </div>`
+                    ],
+                    resources: [
+                        {
+                            type: "simulation",
+                            title: "Refractive Index Explorer",
+                            description: "Interactive simulation of light in different materials",
+                            url: "https://phet.colorado.edu/sims/html/bending-light/latest/bending-light_en.html"
+                        }
+                    ],
+                    quiz: {
+                        question: "Which material has the highest refractive index?",
+                        options: ["Air", "Water", "Glass", "Diamond"],
+                        correct: 3,
+                        explanation: "Diamond has the highest refractive index (2.42) among these materials, which is why it bends light the most and creates such brilliant sparkles."
+                    }
+                },
+                {
+                    id: "snells-law",
+                    title: "Snell's Law",
+                    type: "note",
+                    content: [
+                        `<h3 class="text-xl font-semibold mb-4">Snell's Law</h3>`,
+                        `<p class="text-gray-700 mb-4">Snell's Law is a mathematical relationship that describes how light bends when passing between different materials. The equation is:</p>`,
+                        `<div class="bg-blue-50 p-4 rounded-lg mb-6">
+                            <p class="text-center text-xl mb-2">n₁ sin θ₁ = n₂ sin θ₂</p>
+                            <ul class="text-sm space-y-1">
+                                <li>n₁ = refractive index of first medium</li>
+                                <li>θ₁ = angle of incidence</li>
+                                <li>n₂ = refractive index of second medium</li>
+                                <li>θ₂ = angle of refraction</li>
+                            </ul>
+                        </div>`,
+                        `<div class="mt-6 bg-gray-50 p-6 rounded-lg border">
+                            <h4 class="font-semibold mb-4">Example Problem</h4>
+                            <p class="mb-2">Light travels from air (n₁ = 1.00) into glass (n₂ = 1.50) with an incident angle of 30°.</p>
+                            <div class="space-y-2">
+                                <p><strong>Given:</strong></p>
+                                <ul class="list-disc pl-6">
+                                    <li>n₁ = 1.00 (air)</li>
+                                    <li>n₂ = 1.50 (glass)</li>
+                                    <li>θ₁ = 30°</li>
+                                </ul>
+                                <p><strong>Solution:</strong></p>
+                                <p>n₁ sin θ₁ = n₂ sin θ₂</p>
+                                <p>1.00 × sin(30°) = 1.50 × sin θ₂</p>
+                                <p>sin θ₂ = (1.00 × sin(30°))/1.50 = 0.333</p>
+                                <p>θ₂ = arcsin(0.333) ≈ 19.47°</p>
+                            </div>
+                        </div>`
+                    ],
+                    resources: [
+                        {
+                            type: "video",
+                            title: "Snell's Law Explained",
+                            description: "Step-by-step explanation with examples",
+                            url: "https://www.youtube.com/embed/lj_sEqDsfIU"
+                        }
+                    ],
+                    quiz: {
+                        question: "When light enters a medium with a higher refractive index, what happens to the angle of refraction compared to the angle of incidence?",
+                        options: [
+                            "It increases",
+                            "It decreases",
+                            "It stays the same",
+                            "It depends on the wavelength"
+                        ],
+                        correct: 1,
+                        explanation: "When light enters a medium with a higher refractive index, the angle of refraction is smaller than the angle of incidence, meaning the light bends towards the normal."
+                    }
+                },
+                {
+                    id: "applications",
+                    title: "Applications & Practice",
+                    type: "note",
+                    content: [
+                        `<h3 class="text-xl font-semibold mb-4">Real-World Applications</h3>`,
+                        `<div class="grid md:grid-cols-2 gap-6 mb-6">
+                            <div class="bg-blue-50 p-4 rounded-lg">
+                                <h4 class="font-semibold mb-2">Optical Fibers</h4>
+                                <p>Uses total internal reflection to transmit data as light signals over long distances with minimal loss.</p>
+                            </div>
+                            <div class="bg-green-50 p-4 rounded-lg">
+                                <h4 class="font-semibold mb-2">Camera Lenses</h4>
+                                <p>Multiple refracting surfaces focus light to form clear images.</p>
+                            </div>
+                        </div>`,
+                        `<div class="mb-6">
+                            <h4 class="font-semibold mb-2">Practice Problems</h4>
+                            <ol class="list-decimal list-inside space-y-4">
+                                <li class="bg-gray-50 p-4 rounded-lg">
+                                    <p class="mb-2">Light passes from air (n = 1.00) into water (n = 1.33) at an angle of 45°. Calculate the angle of refraction.</p>
+                                    <div class="pl-6 mt-2 text-gray-600">
+                                        <p>Solution: Using Snell's law:</p>
+                                        <p>1.00 × sin(45°) = 1.33 × sin θ₂</p>
+                                        <p>θ₂ = arcsin((1.00 × sin(45°))/1.33) ≈ 32.2°</p>
+                                    </div>
+                                </li>
+                                <li class="bg-gray-50 p-4 rounded-lg">
+                                    <p class="mb-2">A light ray in glass (n = 1.50) hits the surface at 40° to the normal. What is the angle in air?</p>
+                                    <div class="pl-6 mt-2 text-gray-600">
+                                        <p>Solution: Using Snell's law:</p>
+                                        <p>1.50 × sin(40°) = 1.00 × sin θ₂</p>
+                                        <p>θ₂ = arcsin((1.50 × sin(40°))/1.00) ≈ 69.3°</p>
+                                    </div>
+                                </li>
+                            </ol>
+                        </div>`
+                    ],
+                    resources: [
+                        {
+                            type: "simulation",
+                            title: "Refraction Lab",
+                            description: "Interactive refraction experiments",
+                            url: "https://phet.colorado.edu/sims/html/bending-light/latest/bending-light_en.html"
+                        }
+                    ],
+                    quiz: {
+                        question: "A submarine uses a periscope to see above water. Which principle makes this possible?",
+                        options: [
+                            "Diffraction",
+                            "Reflection only",
+                            "Refraction and reflection",
+                            "Dispersion"
+                        ],
+                        correct: 2,
+                        explanation: "Periscopes work using a combination of refraction (as light enters and exits the water) and reflection (from mirrors) to transmit images to the observer below water."
+                    }
+                }
+            ]
+        };
+
+        // Initial setup
+        updateContent();
+    </script>
+<!-- Topic Quiz System -->
+<script src="/js/topic-quiz-loader.js"></script>
+<script src="/js/topic-quiz-injector.js"></script>
+</body>
+</html>

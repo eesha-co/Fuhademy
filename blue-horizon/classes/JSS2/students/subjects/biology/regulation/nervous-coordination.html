@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nervous Coordination - Biology</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @keyframes fade-in-up {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in-up { animation: fade-in-up 0.5s ease-out forwards; }
+        .section-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            border: 1px solid #e5e7eb;
+        }
+        .video-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 8px;
+            background: #f9fafb;
+        }
+        .video-container iframe {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Header -->
+    <nav class="bg-white shadow-sm fixed top-0 w-full z-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center">
+                    <a href="index.html" class="text-purple-600 hover:text-purple-800 mr-4">
+                        <i class="fas fa-arrow-left"></i>
+                    </a>
+                    <h1 class="text-xl font-semibold text-gray-900">Nervous Coordination</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="text-sm text-gray-600 hidden sm:block">
+                        Progress: <span id="progressPercent">0%</span>
+                    </div>
+                    <div class="w-24 sm:w-32 h-2 bg-gray-200 rounded-full">
+                        <div id="progressBar" class="h-2 bg-purple-500 rounded-full transition-all duration-300" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="pt-20 pb-8 px-4 max-w-5xl mx-auto">
+        <!-- Learning Objectives -->
+        <div class="bg-purple-50 border-l-4 border-purple-500 p-4 rounded-r-lg mb-6 animate-fade-in-up">
+            <h3 class="font-semibold text-purple-800 mb-2"><i class="fas fa-bullseye mr-2"></i>Learning Objectives</h3>
+            <ul class="text-purple-700 text-sm space-y-1">
+                <li>• Describe the structure and function of neurons</li>
+                <li>• Explain how nerve impulses are transmitted</li>
+                <li>• Differentiate between sensory, relay, and motor neurons</li>
+                <li>• Describe the reflex arc and synaptic transmission</li>
+            </ul>
+        </div>
+
+        <!-- Section 1: The Nervous System Overview -->
+        <div class="section-card animate-fade-in-up">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <span class="bg-purple-100 text-purple-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">1</span>
+                The Nervous System
+            </h2>
+            
+            <p class="text-gray-700 mb-4">The <strong>nervous system</strong> is a complex network of cells that coordinates the body's actions and responses to stimuli. It works alongside the endocrine system to maintain homeostasis.</p>
+            
+            <div class="grid md:grid-cols-2 gap-4 mb-4">
+                <div class="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-500">
+                    <h4 class="font-semibold text-blue-700 mb-2"><i class="fas fa-brain mr-2"></i>Central Nervous System (CNS)</h4>
+                    <ul class="text-gray-600 text-sm space-y-1">
+                        <li>• <strong>Brain</strong> - control center</li>
+                        <li>• <strong>Spinal cord</strong> - information highway</li>
+                        <li>• Processes information and makes decisions</li>
+                    </ul>
+                </div>
+                <div class="bg-green-50 p-4 rounded-lg border-l-4 border-green-500">
+                    <h4 class="font-semibold text-green-700 mb-2"><i class="fas fa-network-wired mr-2"></i>Peripheral Nervous System (PNS)</h4>
+                    <ul class="text-gray-600 text-sm space-y-1">
+                        <li>• All nerves outside the CNS</li>
+                        <li>• <strong>Sensory neurons</strong> - carry signals TO CNS</li>
+                        <li>• <strong>Motor neurons</strong> - carry signals FROM CNS</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 2: Structure of a Neuron -->
+        <div class="section-card animate-fade-in-up">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <span class="bg-purple-100 text-purple-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">2</span>
+                Structure of a Neuron (Nerve Cell)
+            </h2>
+
+            <p class="text-gray-700 mb-4">A <strong>neuron</strong> is the basic unit of the nervous system. It is specialized for transmitting electrical signals called nerve impulses.</p>
+
+            <!-- Neuron Diagram -->
+            <div class="bg-white p-4 rounded-lg border border-gray-200 mb-4">
+                <svg viewBox="0 0 600 250" class="w-full max-w-2xl mx-auto">
+                    <!-- Cell body -->
+                    <ellipse cx="150" cy="125" rx="50" ry="40" fill="#e9d5ff" stroke="#9333ea" stroke-width="2"/>
+                    <text x="150" y="130" text-anchor="middle" fill="#7c3aed" font-size="11" font-weight="bold">Cell Body</text>
+                    
+                    <!-- Nucleus -->
+                    <circle cx="150" cy="125" r="15" fill="#c4b5fd" stroke="#7c3aed" stroke-width="1"/>
+                    <text x="150" y="129" text-anchor="middle" fill="#5b21b6" font-size="8">Nucleus</text>
+                    
+                    <!-- Dendrites -->
+                    <line x1="100" y1="100" x2="60" y2="70" stroke="#9333ea" stroke-width="2"/>
+                    <line x1="100" y1="120" x2="50" y2="110" stroke="#9333ea" stroke-width="2"/>
+                    <line x1="100" y1="140" x2="60" y2="170" stroke="#9333ea" stroke-width="2"/>
+                    <line x1="110" y1="90" x2="80" y2="50" stroke="#9333ea" stroke-width="2"/>
+                    <text x="60" y="60" fill="#7c3aed" font-size="10">Dendrites</text>
+                    
+                    <!-- Axon -->
+                    <line x1="200" y1="125" x2="480" y2="125" stroke="#9333ea" stroke-width="4"/>
+                    <text x="340" y="115" text-anchor="middle" fill="#7c3aed" font-size="11">Axon</text>
+                    
+                    <!-- Myelin sheath -->
+                    <rect x="250" y="115" width="30" height="20" fill="#fde68a" stroke="#d97706" stroke-width="1" rx="3"/>
+                    <rect x="300" y="115" width="30" height="20" fill="#fde68a" stroke="#d97706" stroke-width="1" rx="3"/>
+                    <rect x="350" y="115" width="30" height="20" fill="#fde68a" stroke="#d97706" stroke-width="1" rx="3"/>
+                    <rect x="400" y="115" width="30" height="20" fill="#fde68a" stroke="#d97706" stroke-width="1" rx="3"/>
+                    <text x="340" y="155" text-anchor="middle" fill="#b45309" font-size="10">Myelin Sheath</text>
+                    
+                    <!-- Axon terminals -->
+                    <line x1="480" y1="125" x2="510" y2="100" stroke="#9333ea" stroke-width="2"/>
+                    <line x1="480" y1="125" x2="510" y2="125" stroke="#9333ea" stroke-width="2"/>
+                    <line x1="480" y1="125" x2="510" y2="150" stroke="#9333ea" stroke-width="2"/>
+                    <circle cx="515" cy="100" r="5" fill="#9333ea"/>
+                    <circle cx="515" cy="125" r="5" fill="#9333ea"/>
+                    <circle cx="515" cy="150" r="5" fill="#9333ea"/>
+                    <text x="540" y="130" fill="#7c3aed" font-size="10">Axon</text>
+                    <text x="540" y="142" fill="#7c3aed" font-size="10">Terminals</text>
+                    
+                    <!-- Direction arrow -->
+                    <path d="M 60 200 L 540 200" stroke="#ef4444" stroke-width="2" marker-end="url(#arrowhead2)"/>
+                    <defs>
+                        <marker id="arrowhead2" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                            <polygon points="0 0, 10 3.5, 0 7" fill="#ef4444"/>
+                        </marker>
+                    </defs>
+                    <text x="300" y="220" text-anchor="middle" fill="#ef4444" font-size="10">Direction of nerve impulse</text>
+                </svg>
+            </div>
+
+            <div class="space-y-3">
+                <div class="bg-purple-50 p-3 rounded-lg border-l-4 border-purple-400">
+                    <h4 class="font-semibold text-purple-800">Dendrites</h4>
+                    <p class="text-gray-600 text-sm">Short, branched extensions that receive signals from other neurons and carry them toward the cell body.</p>
+                </div>
+                <div class="bg-indigo-50 p-3 rounded-lg border-l-4 border-indigo-400">
+                    <h4 class="font-semibold text-indigo-800">Cell Body (Soma)</h4>
+                    <p class="text-gray-600 text-sm">Contains the nucleus and organelles. Integrates incoming signals and generates nerve impulses.</p>
+                </div>
+                <div class="bg-violet-50 p-3 rounded-lg border-l-4 border-violet-400">
+                    <h4 class="font-semibold text-violet-800">Axon</h4>
+                    <p class="text-gray-600 text-sm">Long extension that carries nerve impulses away from the cell body. Can be up to 1 meter long!</p>
+                </div>
+                <div class="bg-yellow-50 p-3 rounded-lg border-l-4 border-yellow-500">
+                    <h4 class="font-semibold text-yellow-800">Myelin Sheath</h4>
+                    <p class="text-gray-600 text-sm">Fatty insulating layer around some axons. Produced by Schwann cells. Speeds up impulse transmission.</p>
+                </div>
+                <div class="bg-pink-50 p-3 rounded-lg border-l-4 border-pink-400">
+                    <h4 class="font-semibold text-pink-800">Axon Terminals</h4>
+                    <p class="text-gray-600 text-sm">Branched endings that release neurotransmitters to pass signals to the next neuron or effector.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 3: Types of Neurons -->
+        <div class="section-card animate-fade-in-up">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <span class="bg-purple-100 text-purple-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">3</span>
+                Types of Neurons
+            </h2>
+
+            <div class="grid md:grid-cols-3 gap-4">
+                <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                    <h4 class="font-semibold text-blue-700 mb-2 text-center">Sensory Neuron</h4>
+                    <p class="text-gray-600 text-sm text-center mb-2">Detects stimuli and sends signals TO the CNS</p>
+                    <ul class="text-gray-600 text-xs space-y-1">
+                        <li>• Long dendrite, short axon</li>
+                        <li>• Found in sense organs</li>
+                        <li>• Carries info from receptors</li>
+                    </ul>
+                </div>
+                <div class="bg-purple-50 p-4 rounded-lg border border-purple-200">
+                    <h4 class="font-semibold text-purple-700 mb-2 text-center">Relay Neuron</h4>
+                    <p class="text-gray-600 text-sm text-center mb-2">Connects sensory and motor neurons in CNS</p>
+                    <ul class="text-gray-600 text-xs space-y-1">
+                        <li>• Short dendrites and axon</li>
+                        <li>• Found in brain and spinal cord</li>
+                        <li>• Processes information</li>
+                    </ul>
+                </div>
+                <div class="bg-green-50 p-4 rounded-lg border border-green-200">
+                    <h4 class="font-semibold text-green-700 mb-2 text-center">Motor Neuron</h4>
+                    <p class="text-gray-600 text-sm text-center mb-2">Carries signals FROM CNS to effectors</p>
+                    <ul class="text-gray-600 text-xs space-y-1">
+                        <li>• Short dendrites, long axon</li>
+                        <li>• Connects to muscles/glands</li>
+                        <li>• Causes action/response</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 4: The Synapse -->
+        <div class="section-card animate-fade-in-up">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <span class="bg-purple-100 text-purple-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">4</span>
+                Synaptic Transmission
+            </h2>
+
+            <p class="text-gray-700 mb-4">A <strong>synapse</strong> is the junction between two neurons or between a neuron and an effector. Signals are transmitted across synapses using chemicals called neurotransmitters.</p>
+
+            <div class="bg-gray-50 p-4 rounded-lg border border-gray-200 mb-4">
+                <ol class="list-decimal list-inside space-y-2 text-gray-700 text-sm">
+                    <li><strong>Impulse arrives</strong> at the axon terminal of the presynaptic neuron</li>
+                    <li><strong>Calcium channels open</strong>, allowing Ca²⁺ ions to enter</li>
+                    <li><strong>Synaptic vesicles fuse</strong> with the membrane and release neurotransmitters</li>
+                    <li><strong>Neurotransmitters diffuse</strong> across the synaptic cleft</li>
+                    <li><strong>Neurotransmitters bind</strong> to receptors on the postsynaptic membrane</li>
+                    <li><strong>New impulse generated</strong> in the postsynaptic neuron</li>
+                    <li><strong>Neurotransmitters broken down</strong> by enzymes or reabsorbed</li>
+                </ol>
+            </div>
+
+            <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-r-lg">
+                <h4 class="font-semibold text-yellow-800 mb-2"><i class="fas fa-flask mr-2"></i>Common Neurotransmitters</h4>
+                <ul class="text-gray-700 text-sm space-y-1">
+                    <li>• <strong>Acetylcholine</strong> - at neuromuscular junctions, causes muscle contraction</li>
+                    <li>• <strong>Dopamine</strong> - involved in pleasure, reward, and movement</li>
+                    <li>• <strong>Serotonin</strong> - mood regulation, sleep, appetite</li>
+                    <li>• <strong>Adrenaline</strong> - "fight or flight" response</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Section 5: Reflex Arc -->
+        <div class="section-card animate-fade-in-up">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <span class="bg-purple-100 text-purple-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">5</span>
+                The Reflex Arc
+            </h2>
+
+            <p class="text-gray-700 mb-4">A <strong>reflex arc</strong> is the neural pathway that controls a reflex action - a rapid, automatic response that doesn't require conscious thought.</p>
+
+            <div class="bg-purple-50 p-4 rounded-lg mb-4">
+                <div class="flex flex-wrap items-center justify-center gap-2 text-center">
+                    <div class="bg-white px-3 py-2 rounded-lg border border-purple-300">
+                        <p class="text-sm font-semibold text-purple-700">1. Stimulus</p>
+                        <p class="text-xs text-gray-500">e.g., hot object</p>
+                    </div>
+                    <i class="fas fa-arrow-right text-purple-400"></i>
+                    <div class="bg-blue-100 px-3 py-2 rounded-lg border border-blue-300">
+                        <p class="text-sm font-semibold text-blue-700">2. Receptor</p>
+                        <p class="text-xs text-gray-500">detects stimulus</p>
+                    </div>
+                    <i class="fas fa-arrow-right text-purple-400"></i>
+                    <div class="bg-indigo-100 px-3 py-2 rounded-lg border border-indigo-300">
+                        <p class="text-sm font-semibold text-indigo-700">3. Sensory Neuron</p>
+                        <p class="text-xs text-gray-500">to spinal cord</p>
+                    </div>
+                    <i class="fas fa-arrow-right text-purple-400"></i>
+                    <div class="bg-violet-100 px-3 py-2 rounded-lg border border-violet-300">
+                        <p class="text-sm font-semibold text-violet-700">4. Relay Neuron</p>
+                        <p class="text-xs text-gray-500">in CNS</p>
+                    </div>
+                    <i class="fas fa-arrow-right text-purple-400"></i>
+                    <div class="bg-green-100 px-3 py-2 rounded-lg border border-green-300">
+                        <p class="text-sm font-semibold text-green-700">5. Motor Neuron</p>
+                        <p class="text-xs text-gray-500">to effector</p>
+                    </div>
+                    <i class="fas fa-arrow-right text-purple-400"></i>
+                    <div class="bg-orange-100 px-3 py-2 rounded-lg border border-orange-300">
+                        <p class="text-sm font-semibold text-orange-700">6. Effector</p>
+                        <p class="text-xs text-gray-500">muscle/gland</p>
+                    </div>
+                    <i class="fas fa-arrow-right text-purple-400"></i>
+                    <div class="bg-red-100 px-3 py-2 rounded-lg border border-red-300">
+                        <p class="text-sm font-semibold text-red-700">7. Response</p>
+                        <p class="text-xs text-gray-500">e.g., pull away</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-green-50 border-l-4 border-green-400 p-4 rounded-r-lg">
+                <h4 class="font-semibold text-green-800 mb-2"><i class="fas fa-check-circle mr-2"></i>Why Are Reflexes Important?</h4>
+                <ul class="text-gray-700 text-sm space-y-1">
+                    <li>• <strong>Speed:</strong> Bypasses the brain for faster response</li>
+                    <li>• <strong>Protection:</strong> Helps avoid injury (e.g., pulling hand from hot object)</li>
+                    <li>• <strong>Automatic:</strong> No conscious thought needed</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Section 6: Video -->
+        <div class="section-card animate-fade-in-up">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <span class="bg-purple-100 text-purple-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">6</span>
+                Video: The Nervous System
+            </h2>
+            
+            <div class="bg-gray-50 p-4 rounded-lg border">
+                <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/vK8qk1FWZDU" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+            </div>
+        </div>
+
+        <!-- Practice Problems -->
+        <div class="section-card animate-fade-in-up">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-pencil-alt text-purple-600 mr-3"></i>
+                Practice Questions
+            </h2>
+
+            <div class="space-y-4">
+                <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+                    <p class="font-medium text-gray-800 mb-2">1. What is the function of the myelin sheath?</p>
+                    <details class="mt-2">
+                        <summary class="text-sm text-blue-600 cursor-pointer hover:text-blue-800">Show Answer</summary>
+                        <div class="mt-2 text-sm text-gray-700">
+                            The myelin sheath <strong>insulates the axon</strong> and <strong>speeds up nerve impulse transmission</strong>. It allows impulses to "jump" between gaps (Nodes of Ranvier) in a process called saltatory conduction.
+                        </div>
+                    </details>
+                </div>
+
+                <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+                    <p class="font-medium text-gray-800 mb-2">2. State three differences between sensory and motor neurons.</p>
+                    <details class="mt-2">
+                        <summary class="text-sm text-blue-600 cursor-pointer hover:text-blue-800">Show Answer</summary>
+                        <div class="mt-2 text-sm text-gray-700">
+                            <table class="w-full text-xs">
+                                <tr class="border-b"><th class="text-left py-1">Sensory Neuron</th><th class="text-left py-1">Motor Neuron</th></tr>
+                                <tr class="border-b"><td>Long dendrite</td><td>Short dendrites</td></tr>
+                                <tr class="border-b"><td>Carries signals TO CNS</td><td>Carries signals FROM CNS</td></tr>
+                                <tr class="border-b"><td>Cell body off to side</td><td>Cell body at end</td></tr>
+                                <tr><td>Connects to receptors</td><td>Connects to effectors</td></tr>
+                            </table>
+                        </div>
+                    </details>
+                </div>
+
+                <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+                    <p class="font-medium text-gray-800 mb-2">3. Explain why reflex actions are faster than voluntary actions.</p>
+                    <details class="mt-2">
+                        <summary class="text-sm text-blue-600 cursor-pointer hover:text-blue-800">Show Answer</summary>
+                        <div class="mt-2 text-sm text-gray-700">
+                            Reflex actions are faster because:
+                            <ul class="list-disc list-inside mt-1">
+                                <li>The impulse doesn't travel to the brain for processing</li>
+                                <li>Only the spinal cord is involved (shorter pathway)</li>
+                                <li>No conscious decision-making is required</li>
+                                <li>Fewer synapses to cross</li>
+                            </ul>
+                        </div>
+                    </details>
+                </div>
+            </div>
+        </div>
+
+        <!-- Key Takeaways -->
+        <div class="bg-gradient-to-r from-purple-50 to-violet-50 p-5 rounded-lg border border-purple-200 animate-fade-in-up">
+            <h3 class="font-semibold text-purple-800 mb-3"><i class="fas fa-star mr-2"></i>Key Takeaways</h3>
+            <ul class="text-purple-700 text-sm space-y-2">
+                <li>• The nervous system controls rapid responses through electrical impulses</li>
+                <li>• Neurons have dendrites (receive), cell body (process), and axon (transmit)</li>
+                <li>• Three types: sensory (to CNS), relay (in CNS), motor (from CNS)</li>
+                <li>• Synapses use neurotransmitters to transmit signals between neurons</li>
+                <li>• Reflex arcs provide rapid, automatic protective responses</li>
+            </ul>
+        </div>
+
+        <!-- Navigation -->
+        <div class="flex justify-between items-center mt-8">
+            <a href="index.html" class="px-4 py-2 text-gray-600 hover:text-gray-900">
+                <i class="fas fa-chevron-left mr-2"></i>Previous
+            </a>
+            <a href="hormonal-coordination.html" class="px-4 py-2 bg-purple-500 text-white rounded-lg hover:bg-purple-600">
+                Next: Hormones<i class="fas fa-chevron-right ml-2"></i>
+            </a>
+        </div>
+    </main>
+
+    <script>
+        // Progress tracking
+        let progress = 0;
+        const totalSections = 6;
+        
+        function updateProgress() {
+            const percentage = Math.round((progress / totalSections) * 100);
+            document.getElementById('progressPercent').textContent = percentage + '%';
+            document.getElementById('progressBar').style.width = percentage + '%';
+        }
+
+        const sections = document.querySelectorAll('.section-card');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    progress = Array.from(sections).indexOf(entry.target) + 1;
+                    updateProgress();
+                }
+            });
+        }, { threshold: 0.5 });
+
+        sections.forEach(section => observer.observe(section));
+    </script>
+
+<!-- Topic Quiz System -->
+<script src="/js/topic-quiz-loader.js"></script>
+<script src="/js/topic-quiz-injector.js"></script>
+</body>
+</html>

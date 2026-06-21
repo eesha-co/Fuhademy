@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/assets/images/logo.png" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Accounting Topic - JUANOVA CORTEX</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.9);
+            -webkit-backdrop-filter: blur(8px);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(59, 130, 246, 0.1);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 
+                       0 2px 4px -1px rgba(0, 0, 0, 0.06),
+                       0 0 0 1px rgba(255, 255, 255, 0.2) inset;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .card:hover {
+            transform: translateY(-4px) scale(1.01);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 
+                       0 10px 10px -5px rgba(0, 0, 0, 0.04),
+                       0 0 0 1px rgba(59, 130, 246, 0.2) inset,
+                       0 0 20px rgba(59, 130, 246, 0.15);
+            border-color: rgba(59, 130, 246, 0.3);
+        }
+
+        .glow-effect {
+            position: relative;
+        }
+
+        .glow-effect::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: inherit;
+            box-shadow: 0 0 30px rgba(59, 130, 246, 0.15);
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: -1;
+        }
+
+        .glow-effect:hover::after {
+            opacity: 1;
+        }
+
+        .section-title {
+            background: linear-gradient(135deg, #1D4ED8, #60A5FA);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 2.5rem;
+            font-weight: 800;
+            text-align: center;
+            padding: 1rem 0;
+        }
+
+        .topic-progress {
+            height: 6px;
+            background: #E5E7EB;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .topic-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #1D4ED8, #60A5FA);
+            transition: width 0.3s ease;
+        }
+
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.9);
+            -webkit-backdrop-filter: blur(8px);
+            backdrop-filter: blur(8px);
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-blue-100 via-white to-blue-50">
+    <!-- Navigation Bar -->
+    <nav class="fixed top-0 left-0 right-0 glass-effect border-b border-blue-100 z-50">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <a href="accounting.html" class="text-blue-600 hover:text-blue-800 transition">
+                        <i class="fas fa-arrow-left"></i>
+                        <span class="ml-2">Back to Accounting</span>
+                    </a>
+                </div>
+                <div class="flex items-center gap-4">
+                    <button id="prevTopic" class="px-4 py-2 rounded-lg border border-blue-600 text-blue-600 hover:bg-blue-50 transition">
+                        <i class="fas fa-chevron-left mr-2"></i>
+                        Previous
+                    </button>
+                    <button id="nextTopic" class="px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition">
+                        Next
+                        <i class="fas fa-chevron-right ml-2"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container mx-auto px-4 pt-20 pb-12">
+        <!-- Topic Header -->
+        <header class="mb-12">
+            <h1 class="section-title mb-4" id="topicTitle">Loading Topic...</h1>
+            <div class="flex items-center justify-center gap-6 text-gray-600">
+                <span class="flex items-center gap-2">
+                    <i class="fas fa-clock"></i>
+                    <span id="duration">20 mins</span>
+                </span>
+                <span class="flex items-center gap-2">
+                    <i class="fas fa-chart-line"></i>
+                    <span id="difficulty">Intermediate</span>
+                </span>
+            </div>
+        </header>
+
+        <!-- Main Content Area -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Left Sidebar - Navigation -->
+            <div class="lg:col-span-1">
+                <div class="card rounded-2xl p-6 sticky top-24">
+                    <h2 class="text-xl font-bold text-gray-900 mb-4">Topic Outline</h2>
+                    <div class="space-y-4" id="topicOutline">
+                        <!-- Topic outline will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="lg:col-span-2 space-y-6">
+                <!-- Content Section -->
+                <div class="card rounded-2xl p-8" id="contentSection">
+                    <!-- Content will be populated by JavaScript -->
+                </div>
+
+                <!-- Interactive Elements -->
+                <div class="card rounded-2xl p-8">
+                    <h3 class="text-xl font-bold text-gray-900 mb-6">Practice Questions</h3>
+                    <div class="space-y-6" id="practiceQuestions">
+                        <!-- Questions will be populated by JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Resources -->
+                <div class="card rounded-2xl p-8">
+                    <h3 class="text-xl font-bold text-gray-900 mb-6">Additional Resources</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="resources">
+                        <!-- Resources will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Get the topic from URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const unit = urlParams.get('unit') || 'fundamentals';
+
+        // Mock data structure - In a real application, this would come from an API
+        const topicData = {
+            fundamentals: {
+                title: "Accounting Fundamentals",
+                duration: "20 mins",
+                difficulty: "Beginner",
+                outline: [
+                    { id: 1, title: "Introduction to Accounting", progress: 0 },
+                    { id: 2, title: "Basic Concepts and Conventions", progress: 0 },
+                    { id: 3, title: "Professional Ethics", progress: 0 }
+                ],
+                content: `
+                    <h2 class="text-2xl font-bold text-gray-900 mb-6">Introduction to Accounting</h2>
+                    <p class="text-gray-700 mb-4">
+                        Accounting is the process of recording, classifying, and summarizing financial 
+                        transactions to provide useful information for making business decisions.
+                    </p>
+                    <div class="bg-blue-50 border-l-4 border-blue-500 p-4 my-6">
+                        <p class="text-blue-700">
+                            <strong>Key Point:</strong> Accounting serves as the language of business, 
+                            providing essential information to stakeholders.
+                        </p>
+                    </div>
+                `,
+                questions: [
+                    {
+                        question: "What is the primary purpose of accounting?",
+                        options: [
+                            "To record financial transactions only",
+                            "To provide useful information for decision making",
+                            "To calculate taxes",
+                            "To manage inventory"
+                        ],
+                        correct: 1
+                    }
+                ],
+                resources: [
+                    {
+                        title: "Video Tutorial",
+                        icon: "fas fa-video",
+                        link: "#",
+                        color: "text-red-500"
+                    },
+                    {
+                        title: "Practice Sheet",
+                        icon: "fas fa-file-alt",
+                        link: "#",
+                        color: "text-blue-500"
+                    }
+                ]
+            }
+        };
+
+        // Initialize the page
+        function initializePage() {
+            const topic = topicData[unit];
+            if (!topic) {
+                console.error('Topic not found');
+                return;
+            }
+
+            // Set header information
+            document.getElementById('topicTitle').textContent = topic.title;
+            document.getElementById('duration').textContent = topic.duration;
+            document.getElementById('difficulty').textContent = topic.difficulty;
+
+            // Populate outline
+            const outlineContainer = document.getElementById('topicOutline');
+            outlineContainer.innerHTML = topic.outline.map(item => `
+                <div class="space-y-2">
+                    <div class="flex items-center justify-between">
+                        <span class="text-gray-700">${item.title}</span>
+                        <span class="text-sm text-gray-500">${item.progress}%</span>
+                    </div>
+                    <div class="topic-progress">
+                        <div class="topic-progress-fill" style="width: ${item.progress}%"></div>
+                    </div>
+                </div>
+            `).join('');
+
+            // Set content
+            document.getElementById('contentSection').innerHTML = topic.content;
+
+            // Populate questions
+            const questionsContainer = document.getElementById('practiceQuestions');
+            questionsContainer.innerHTML = topic.questions.map((q, idx) => `
+                <div class="space-y-4">
+                    <p class="font-medium text-gray-900">${idx + 1}. ${q.question}</p>
+                    <div class="space-y-2">
+                        ${q.options.map((opt, optIdx) => `
+                            <label class="flex items-center gap-3 p-3 rounded-lg border border-gray-200 hover:border-blue-400 cursor-pointer transition">
+                                <input type="radio" name="question${idx}" value="${optIdx}" class="text-blue-600">
+                                <span class="text-gray-700">${opt}</span>
+                            </label>
+                        `).join('')}
+                    </div>
+                </div>
+            `).join('');
+
+            // Populate resources
+            const resourcesContainer = document.getElementById('resources');
+            resourcesContainer.innerHTML = topic.resources.map(resource => `
+                <a href="${resource.link}" class="flex items-center gap-4 p-4 rounded-lg border border-gray-200 hover:border-blue-400 transition">
+                    <i class="${resource.icon} ${resource.color} text-2xl"></i>
+                    <span class="text-gray-900 font-medium">${resource.title}</span>
+                </a>
+            `).join('');
+        }
+
+        // Initialize the page when loaded
+        document.addEventListener('DOMContentLoaded', initializePage);
+
+        // Navigation button handlers
+        document.getElementById('prevTopic').addEventListener('click', () => {
+            // Implement previous topic navigation
+            console.log('Navigate to previous topic');
+        });
+
+        document.getElementById('nextTopic').addEventListener('click', () => {
+            // Implement next topic navigation
+            console.log('Navigate to next topic');
+        });
+    </script>
+</body>
+</html>
+

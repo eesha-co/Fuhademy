@@ -1,0 +1,3611 @@
+[
+  {
+    "id": "topic-0001",
+    "topic": "Nobel Laureate Supabase",
+    "subject": "General",
+    "category": "General",
+    "difficulty": "medium",
+    "file_path": "nobel-laureate-supabase.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0002",
+    "topic": "Smart Note",
+    "subject": "General",
+    "category": "General",
+    "difficulty": "medium",
+    "file_path": "smart-note.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0003",
+    "topic": "Nobel Laureate Modern",
+    "subject": "General",
+    "category": "General",
+    "difficulty": "medium",
+    "file_path": "nobel-laureate-modern.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0004",
+    "topic": "Debug Goals",
+    "subject": "General",
+    "category": "General",
+    "difficulty": "medium",
+    "file_path": "debug-goals.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0005",
+    "topic": "All Formula",
+    "subject": "General",
+    "category": "General",
+    "difficulty": "medium",
+    "file_path": "all-formula.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0006",
+    "topic": "Nobel Laureate",
+    "subject": "General",
+    "category": "General",
+    "difficulty": "medium",
+    "file_path": "Nobel-laureate.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0007",
+    "topic": "Experiments",
+    "subject": "General",
+    "category": "Subjects",
+    "difficulty": "medium",
+    "file_path": "subjects/experiments.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0008",
+    "topic": "Accounting Topics",
+    "subject": "Accounting",
+    "category": "Accounting",
+    "difficulty": "medium",
+    "file_path": "subjects/accounting/accounting-topics.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0009",
+    "topic": "Accounting Topic Updated",
+    "subject": "Accounting",
+    "category": "Accounting",
+    "difficulty": "medium",
+    "file_path": "subjects/accounting/accounting-topic-updated.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0010",
+    "topic": "Accounting Updated",
+    "subject": "Accounting",
+    "category": "Accounting",
+    "difficulty": "medium",
+    "file_path": "subjects/accounting/accounting-updated.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0011",
+    "topic": "Accounting Topic New",
+    "subject": "Accounting",
+    "category": "Accounting",
+    "difficulty": "medium",
+    "file_path": "subjects/accounting/accounting-topic-new.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0012",
+    "topic": "Accounting Topic",
+    "subject": "Accounting",
+    "category": "Accounting",
+    "difficulty": "medium",
+    "file_path": "subjects/accounting/accounting-topic.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0013",
+    "topic": "Accounting New",
+    "subject": "Accounting",
+    "category": "Accounting",
+    "difficulty": "medium",
+    "file_path": "subjects/accounting/accounting-new.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0014",
+    "topic": "Accounting Main",
+    "subject": "Accounting",
+    "category": "Accounting",
+    "difficulty": "medium",
+    "file_path": "subjects/accounting/accounting-main.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0015",
+    "topic": "Accounting Explanation New",
+    "subject": "Accounting",
+    "category": "Accounting",
+    "difficulty": "medium",
+    "file_path": "subjects/accounting/accounting-explanation-new.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0016",
+    "topic": "Accounting",
+    "subject": "Accounting",
+    "category": "Accounting",
+    "difficulty": "medium",
+    "file_path": "subjects/accounting/accounting.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0017",
+    "topic": "Accounting Explanation",
+    "subject": "Accounting",
+    "category": "Accounting",
+    "difficulty": "medium",
+    "file_path": "subjects/accounting/accounting-explanation.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0018",
+    "topic": "Biology Topic Cell Structure",
+    "subject": "Biology",
+    "category": "Biology",
+    "difficulty": "medium",
+    "file_path": "subjects/biology/biology-topic-cell-structure.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0019",
+    "topic": "Biology Topic Micro Organisms And Better Health",
+    "subject": "Biology",
+    "category": "Biology",
+    "difficulty": "medium",
+    "file_path": "subjects/biology/biology-topic-micro-organisms-and-better-health.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0020",
+    "topic": "Biology Topic Reproduction In Unicellular Organisms",
+    "subject": "Biology",
+    "category": "Biology",
+    "difficulty": "medium",
+    "file_path": "subjects/biology/biology-topic-reproduction-in-unicellular-organisms.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0021",
+    "topic": "Biology Topic Plant Nutrition",
+    "subject": "Biology",
+    "category": "Biology",
+    "difficulty": "medium",
+    "file_path": "subjects/biology/biology-topic-plant-nutrition.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0022",
+    "topic": "Biology Genetics",
+    "subject": "Biology",
+    "category": "Biology",
+    "difficulty": "medium",
+    "file_path": "subjects/biology/biology-genetics.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0023",
+    "topic": "Biology Topic Excretion In Flowering Plants",
+    "subject": "Biology",
+    "category": "Biology",
+    "difficulty": "medium",
+    "file_path": "subjects/biology/biology-topic-excretion-in-flowering-plants.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0024",
+    "topic": "Biology Topic Circulation Blood",
+    "subject": "Biology",
+    "category": "Biology",
+    "difficulty": "medium",
+    "file_path": "subjects/biology/biology-topic-circulation-blood.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0025",
+    "topic": "Biology Foundations",
+    "subject": "Biology",
+    "category": "Biology",
+    "difficulty": "easy",
+    "file_path": "subjects/biology/biology-foundations.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0026",
+    "topic": "Biology Ecology",
+    "subject": "Biology",
+    "category": "Biology",
+    "difficulty": "medium",
+    "file_path": "subjects/biology/biology-ecology.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0027",
+    "topic": "Biology Plants",
+    "subject": "Biology",
+    "category": "Biology",
+    "difficulty": "medium",
+    "file_path": "subjects/biology/biology-plants.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0028",
+    "topic": "Biology Environment",
+    "subject": "Biology",
+    "category": "Biology",
+    "difficulty": "medium",
+    "file_path": "subjects/biology/biology-environment.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0029",
+    "topic": "Biology Bioagriculture",
+    "subject": "Biology",
+    "category": "Biology",
+    "difficulty": "medium",
+    "file_path": "subjects/biology/biology-bioagriculture.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0030",
+    "topic": "Biology Topic Respiratory Systems In Plants",
+    "subject": "Biology",
+    "category": "Biology",
+    "difficulty": "medium",
+    "file_path": "subjects/biology/biology-topic-respiratory-systems-in-plants.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0031",
+    "topic": "Biology Topic Reproductive Systems In Plants",
+    "subject": "Biology",
+    "category": "Biology",
+    "difficulty": "medium",
+    "file_path": "subjects/biology/biology-topic-reproductive-systems-in-plants.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0032",
+    "topic": "Biology Topic Photosynthesis",
+    "subject": "Biology",
+    "category": "Biology",
+    "difficulty": "medium",
+    "file_path": "subjects/biology/biology-topic-photosynthesis.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0033",
+    "topic": "Biology Explanation",
+    "subject": "Biology",
+    "category": "Biology",
+    "difficulty": "medium",
+    "file_path": "subjects/biology/biology-explanation.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0034",
+    "topic": "Biology Transport",
+    "subject": "Biology",
+    "category": "Biology",
+    "difficulty": "medium",
+    "file_path": "subjects/biology/biology-transport.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0035",
+    "topic": "Biology Micro",
+    "subject": "Biology",
+    "category": "Biology",
+    "difficulty": "medium",
+    "file_path": "subjects/biology/biology-micro.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0036",
+    "topic": "Biology Topic Relevance Of Bio To Agriculture",
+    "subject": "Biology",
+    "category": "Biology",
+    "difficulty": "medium",
+    "file_path": "subjects/biology/biology-topic-relevance-of-bio-to-agriculture.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0037",
+    "topic": "Biology Topic Micro Organisms In Action",
+    "subject": "Biology",
+    "category": "Biology",
+    "difficulty": "medium",
+    "file_path": "subjects/biology/biology-topic-micro-organisms-in-action.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0038",
+    "topic": "Biology Topic Food Shortage",
+    "subject": "Biology",
+    "category": "Biology",
+    "difficulty": "medium",
+    "file_path": "subjects/biology/biology-topic-food-shortage.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0039",
+    "topic": "Biology",
+    "subject": "Biology",
+    "category": "Biology",
+    "difficulty": "medium",
+    "file_path": "subjects/biology/biology.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0040",
+    "topic": "Biology Topic Excretion Systems",
+    "subject": "Biology",
+    "category": "Biology",
+    "difficulty": "medium",
+    "file_path": "subjects/biology/biology-topic-excretion-systems.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0041",
+    "topic": "Biology Topic Classification Of Plants",
+    "subject": "Biology",
+    "category": "Biology",
+    "difficulty": "medium",
+    "file_path": "subjects/biology/biology-topic-classification-of-plants.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0042",
+    "topic": "Biology Topic Cell Properties",
+    "subject": "Biology",
+    "category": "Biology",
+    "difficulty": "medium",
+    "file_path": "subjects/biology/biology-topic-cell-properties.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0043",
+    "topic": "Biology Topic Transport In Lower Organisms",
+    "subject": "Biology",
+    "category": "Biology",
+    "difficulty": "medium",
+    "file_path": "subjects/biology/biology-topic-transport-in-lower-organisms.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0044",
+    "topic": "Biology Topic Digestive System",
+    "subject": "Biology",
+    "category": "Biology",
+    "difficulty": "medium",
+    "file_path": "subjects/biology/biology-topic-digestive-system.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0045",
+    "topic": "Biology Topic Respiratory Animals",
+    "subject": "Biology",
+    "category": "Biology",
+    "difficulty": "medium",
+    "file_path": "subjects/biology/biology-topic-respiratory-animals.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0046",
+    "topic": "Biology Comparative",
+    "subject": "Biology",
+    "category": "Biology",
+    "difficulty": "medium",
+    "file_path": "subjects/biology/biology-comparative.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0047",
+    "topic": "Biology Animals",
+    "subject": "Biology",
+    "category": "Biology",
+    "difficulty": "medium",
+    "file_path": "subjects/biology/biology-animals.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0048",
+    "topic": "Biology Topic Supporting Tissues In Plants",
+    "subject": "Biology",
+    "category": "Biology",
+    "difficulty": "medium",
+    "file_path": "subjects/biology/biology-topic-supporting-tissues-in-plants.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0049",
+    "topic": "Biology Topic Mechanism Of Transportation In Plants",
+    "subject": "Biology",
+    "category": "Biology",
+    "difficulty": "medium",
+    "file_path": "subjects/biology/biology-topic-mechanism-of-transportation-in-plants.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0050",
+    "topic": "Biology Topic Nutrition Substances",
+    "subject": "Biology",
+    "category": "Biology",
+    "difficulty": "medium",
+    "file_path": "subjects/biology/biology-topic-nutrition-substances.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0051",
+    "topic": "Biology Topic Pests And Diseases Of Crops",
+    "subject": "Biology",
+    "category": "Biology",
+    "difficulty": "medium",
+    "file_path": "subjects/biology/biology-topic-pests-and-diseases-of-crops.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0052",
+    "topic": "Biology Topic Nervous System",
+    "subject": "Biology",
+    "category": "Biology",
+    "difficulty": "medium",
+    "file_path": "subjects/biology/biology-topic-nervous-system.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0053",
+    "topic": "Biology Topic Excretion",
+    "subject": "Biology",
+    "category": "Biology",
+    "difficulty": "medium",
+    "file_path": "subjects/biology/biology-topic-excretion.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0054",
+    "topic": "Biology Microorganisms",
+    "subject": "Biology",
+    "category": "Biology",
+    "difficulty": "medium",
+    "file_path": "subjects/biology/biology-microorganisms.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0055",
+    "topic": "Biology Topic Mode Of Nutrition In Micro Organisms",
+    "subject": "Biology",
+    "category": "Biology",
+    "difficulty": "medium",
+    "file_path": "subjects/biology/biology-topic-mode-of-nutrition-in-micro-organisms.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0056",
+    "topic": "Biology Nutrition",
+    "subject": "Biology",
+    "category": "Biology",
+    "difficulty": "medium",
+    "file_path": "subjects/biology/biology-nutrition.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0057",
+    "topic": "Biology Topic Homeostasis",
+    "subject": "Biology",
+    "category": "Biology",
+    "difficulty": "medium",
+    "file_path": "subjects/biology/biology-topic-homeostasis.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0058",
+    "topic": "Biology Topic Senses",
+    "subject": "Biology",
+    "category": "Biology",
+    "difficulty": "medium",
+    "file_path": "subjects/biology/biology-topic-senses.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0059",
+    "topic": "Biology Topic Micro Organisms Around Us",
+    "subject": "Biology",
+    "category": "Biology",
+    "difficulty": "medium",
+    "file_path": "subjects/biology/biology-topic-micro-organisms-around-us.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0060",
+    "topic": "Biology Topic Supporting Systems",
+    "subject": "Biology",
+    "category": "Biology",
+    "difficulty": "medium",
+    "file_path": "subjects/biology/biology-topic-supporting-systems.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0061",
+    "topic": "Biology Regulation",
+    "subject": "Biology",
+    "category": "Biology",
+    "difficulty": "medium",
+    "file_path": "subjects/biology/biology-regulation.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0062",
+    "topic": "Biology Reproduction",
+    "subject": "Biology",
+    "category": "Biology",
+    "difficulty": "medium",
+    "file_path": "subjects/biology/biology-reproduction.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0063",
+    "topic": "Cell Division",
+    "subject": "Biology",
+    "category": "Reproduction",
+    "difficulty": "medium",
+    "file_path": "subjects/biology/reproduction/cell-division.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0064",
+    "topic": "Reproduction Types",
+    "subject": "Biology",
+    "category": "Reproduction",
+    "difficulty": "medium",
+    "file_path": "subjects/biology/reproduction/reproduction-types.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0065",
+    "topic": "Molecular Genetics",
+    "subject": "Biology",
+    "category": "Genetics",
+    "difficulty": "medium",
+    "file_path": "subjects/biology/genetics/molecular-genetics.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0066",
+    "topic": "Mendelian Inheritance",
+    "subject": "Biology",
+    "category": "Genetics",
+    "difficulty": "medium",
+    "file_path": "subjects/biology/genetics/mendelian-inheritance.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0067",
+    "topic": "Variation Evolution",
+    "subject": "Biology",
+    "category": "Genetics",
+    "difficulty": "medium",
+    "file_path": "subjects/biology/genetics/variation-evolution.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0068",
+    "topic": "Applied Biology",
+    "subject": "Biology",
+    "category": "Comparative",
+    "difficulty": "medium",
+    "file_path": "subjects/biology/comparative/applied-biology.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0069",
+    "topic": "Adaptations",
+    "subject": "Biology",
+    "category": "Comparative",
+    "difficulty": "medium",
+    "file_path": "subjects/biology/comparative/adaptations.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0070",
+    "topic": "Supporting Systems",
+    "subject": "Biology",
+    "category": "Comparative",
+    "difficulty": "medium",
+    "file_path": "subjects/biology/comparative/supporting-systems.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0071",
+    "topic": "Homeostasis",
+    "subject": "Biology",
+    "category": "Regulation",
+    "difficulty": "medium",
+    "file_path": "subjects/biology/regulation/homeostasis.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0072",
+    "topic": "Nervous Coordination",
+    "subject": "Biology",
+    "category": "Regulation",
+    "difficulty": "medium",
+    "file_path": "subjects/biology/regulation/nervous-coordination.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0073",
+    "topic": "Sensory Systems",
+    "subject": "Biology",
+    "category": "Regulation",
+    "difficulty": "medium",
+    "file_path": "subjects/biology/regulation/sensory-systems.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0074",
+    "topic": "Hormonal Coordination",
+    "subject": "Biology",
+    "category": "Regulation",
+    "difficulty": "medium",
+    "file_path": "subjects/biology/regulation/hormonal-coordination.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0075",
+    "topic": "Microorganisms Health",
+    "subject": "Biology",
+    "category": "Micro Health",
+    "difficulty": "medium",
+    "file_path": "subjects/biology/micro-health/microorganisms-health.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0076",
+    "topic": "Introduction Microorganisms",
+    "subject": "Biology",
+    "category": "Micro Health",
+    "difficulty": "easy",
+    "file_path": "subjects/biology/micro-health/introduction-microorganisms.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0077",
+    "topic": "Applications",
+    "subject": "Biology",
+    "category": "Micro Health",
+    "difficulty": "medium",
+    "file_path": "subjects/biology/micro-health/applications.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0078",
+    "topic": "Transport Mechanisms",
+    "subject": "Biology",
+    "category": "Transport",
+    "difficulty": "medium",
+    "file_path": "subjects/biology/transport/transport-mechanisms.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0079",
+    "topic": "Excretory Systems",
+    "subject": "Biology",
+    "category": "Transport",
+    "difficulty": "medium",
+    "file_path": "subjects/biology/transport/excretory-systems.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0080",
+    "topic": "Gaseous Exchange",
+    "subject": "Biology",
+    "category": "Transport",
+    "difficulty": "medium",
+    "file_path": "subjects/biology/transport/gaseous-exchange.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0081",
+    "topic": "Homeostasis Integration",
+    "subject": "Biology",
+    "category": "Transport",
+    "difficulty": "hard",
+    "file_path": "subjects/biology/transport/homeostasis-integration.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0082",
+    "topic": "Classification",
+    "subject": "Biology",
+    "category": "Foundations",
+    "difficulty": "easy",
+    "file_path": "subjects/biology/foundations/classification.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0083",
+    "topic": "Cell Structure",
+    "subject": "Biology",
+    "category": "Foundations",
+    "difficulty": "easy",
+    "file_path": "subjects/biology/foundations/cell-structure.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0084",
+    "topic": "Supporting Systems",
+    "subject": "Biology",
+    "category": "Foundations",
+    "difficulty": "easy",
+    "file_path": "subjects/biology/foundations/supporting-systems.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0085",
+    "topic": "Cell Properties",
+    "subject": "Biology",
+    "category": "Foundations",
+    "difficulty": "easy",
+    "file_path": "subjects/biology/foundations/cell-properties.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0086",
+    "topic": "Photosynthesis",
+    "subject": "Biology",
+    "category": "Nutrition",
+    "difficulty": "medium",
+    "file_path": "subjects/biology/nutrition/photosynthesis.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0087",
+    "topic": "Digestive System",
+    "subject": "Biology",
+    "category": "Nutrition",
+    "difficulty": "medium",
+    "file_path": "subjects/biology/nutrition/digestive-system.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0088",
+    "topic": "Food Substances",
+    "subject": "Biology",
+    "category": "Nutrition",
+    "difficulty": "medium",
+    "file_path": "subjects/biology/nutrition/food-substances.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0089",
+    "topic": "Comparative Nutrition",
+    "subject": "Biology",
+    "category": "Nutrition",
+    "difficulty": "medium",
+    "file_path": "subjects/biology/nutrition/comparative-nutrition.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0090",
+    "topic": "Ecosystem Function",
+    "subject": "Biology",
+    "category": "Ecology",
+    "difficulty": "medium",
+    "file_path": "subjects/biology/ecology/ecosystem-function.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0091",
+    "topic": "Habitat Studies",
+    "subject": "Biology",
+    "category": "Ecology",
+    "difficulty": "medium",
+    "file_path": "subjects/biology/ecology/habitat-studies.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0092",
+    "topic": "Ecological Concepts",
+    "subject": "Biology",
+    "category": "Ecology",
+    "difficulty": "medium",
+    "file_path": "subjects/biology/ecology/ecological-concepts.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0093",
+    "topic": "Population Ecology",
+    "subject": "Biology",
+    "category": "Ecology",
+    "difficulty": "medium",
+    "file_path": "subjects/biology/ecology/population-ecology.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0094",
+    "topic": "Molecules And Light En",
+    "subject": "Physics",
+    "category": "Waves",
+    "difficulty": "medium",
+    "file_path": "subjects/waves/molecules-and-light_en.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0095",
+    "topic": "Geometric Optics En",
+    "subject": "Physics",
+    "category": "Waves",
+    "difficulty": "medium",
+    "file_path": "subjects/waves/geometric-optics_en.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0096",
+    "topic": "Bending Light En",
+    "subject": "Physics",
+    "category": "Waves",
+    "difficulty": "medium",
+    "file_path": "subjects/waves/bending-light_en.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0097",
+    "topic": "Wave On A String En",
+    "subject": "Physics",
+    "category": "Waves",
+    "difficulty": "medium",
+    "file_path": "subjects/waves/wave-on-a-string_en.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0098",
+    "topic": "Wave Interference En",
+    "subject": "Physics",
+    "category": "Waves",
+    "difficulty": "medium",
+    "file_path": "subjects/waves/wave-interference_en.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0099",
+    "topic": "Geometric Optics Basics En",
+    "subject": "Physics",
+    "category": "Waves",
+    "difficulty": "easy",
+    "file_path": "subjects/waves/geometric-optics-basics_en.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0100",
+    "topic": "Sound Waves En",
+    "subject": "Physics",
+    "category": "Waves",
+    "difficulty": "medium",
+    "file_path": "subjects/waves/sound-waves_en.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0101",
+    "topic": "Waves Intro En",
+    "subject": "Physics",
+    "category": "Waves",
+    "difficulty": "easy",
+    "file_path": "subjects/waves/waves-intro_en.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0102",
+    "topic": "Literature Appreciation",
+    "subject": "Literature in English",
+    "category": "Literature",
+    "difficulty": "medium",
+    "file_path": "subjects/literature/literature-appreciation.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0103",
+    "topic": "Literature",
+    "subject": "Literature in English",
+    "category": "Literature",
+    "difficulty": "medium",
+    "file_path": "subjects/literature/literature.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0104",
+    "topic": "Literature Explanation",
+    "subject": "Literature in English",
+    "category": "Literature",
+    "difficulty": "medium",
+    "file_path": "subjects/literature/literature-explanation.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0105",
+    "topic": "Literature Prose",
+    "subject": "Literature in English",
+    "category": "Literature",
+    "difficulty": "medium",
+    "file_path": "subjects/literature/literature-prose.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0106",
+    "topic": "Literature Poetry",
+    "subject": "Literature in English",
+    "category": "Literature",
+    "difficulty": "medium",
+    "file_path": "subjects/literature/literature-poetry.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0107",
+    "topic": "Literature Drama",
+    "subject": "Literature in English",
+    "category": "Literature",
+    "difficulty": "medium",
+    "file_path": "subjects/literature/literature-drama.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0108",
+    "topic": "Literature Principles",
+    "subject": "Literature in English",
+    "category": "Literature",
+    "difficulty": "medium",
+    "file_path": "subjects/literature/literature-principles.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0109",
+    "topic": "Literature Texts",
+    "subject": "Literature in English",
+    "category": "Literature",
+    "difficulty": "medium",
+    "file_path": "subjects/literature/literature-texts.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0110",
+    "topic": "Economics Explanation",
+    "subject": "Economics",
+    "category": "Economics",
+    "difficulty": "medium",
+    "file_path": "subjects/economics/economics-explanation.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0111",
+    "topic": "Economics Topic",
+    "subject": "Economics",
+    "category": "Economics",
+    "difficulty": "medium",
+    "file_path": "subjects/economics/economics-topic.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0112",
+    "topic": "Economics",
+    "subject": "Economics",
+    "category": "Economics",
+    "difficulty": "medium",
+    "file_path": "subjects/economics/economics.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0113",
+    "topic": "Government",
+    "subject": "Government",
+    "category": "Government",
+    "difficulty": "medium",
+    "file_path": "subjects/government/government.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0114",
+    "topic": "Government Topic",
+    "subject": "Government",
+    "category": "Government",
+    "difficulty": "medium",
+    "file_path": "subjects/government/government-topic.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0115",
+    "topic": "Government Explanation",
+    "subject": "Government",
+    "category": "Government",
+    "difficulty": "medium",
+    "file_path": "subjects/government/government-explanation.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0116",
+    "topic": "Physics Magnetism",
+    "subject": "Physics",
+    "category": "Physics",
+    "difficulty": "medium",
+    "file_path": "subjects/physics/physics-magnetism.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0117",
+    "topic": "Physics Fluids",
+    "subject": "Physics",
+    "category": "Physics",
+    "difficulty": "medium",
+    "file_path": "subjects/physics/physics-fluids.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0118",
+    "topic": "Physics Waves",
+    "subject": "Physics",
+    "category": "Physics",
+    "difficulty": "medium",
+    "file_path": "subjects/physics/physics-waves.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0119",
+    "topic": "Physics Modern",
+    "subject": "Physics",
+    "category": "Physics",
+    "difficulty": "medium",
+    "file_path": "subjects/physics/physics-modern.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0120",
+    "topic": "Physics Explanation",
+    "subject": "Physics",
+    "category": "Physics",
+    "difficulty": "medium",
+    "file_path": "subjects/physics/physics-explanation.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0121",
+    "topic": "Physics",
+    "subject": "Physics",
+    "category": "Physics",
+    "difficulty": "medium",
+    "file_path": "subjects/physics/physics.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0122",
+    "topic": "Physics Thermal",
+    "subject": "Physics",
+    "category": "Physics",
+    "difficulty": "medium",
+    "file_path": "subjects/physics/physics-thermal.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0123",
+    "topic": "Physics Heat",
+    "subject": "Physics",
+    "category": "Physics",
+    "difficulty": "medium",
+    "file_path": "subjects/physics/physics-heat.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0124",
+    "topic": "Physics Electricity",
+    "subject": "Physics",
+    "category": "Physics",
+    "difficulty": "medium",
+    "file_path": "subjects/physics/physics-electricity.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0125",
+    "topic": "Physics Optics",
+    "subject": "Physics",
+    "category": "Physics",
+    "difficulty": "medium",
+    "file_path": "subjects/physics/physics-optics.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0126",
+    "topic": "Physics Astrophysics",
+    "subject": "Physics",
+    "category": "Physics",
+    "difficulty": "medium",
+    "file_path": "subjects/physics/physics-astrophysics.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0127",
+    "topic": "Physics Properties",
+    "subject": "Physics",
+    "category": "Physics",
+    "difficulty": "medium",
+    "file_path": "subjects/physics/physics-properties.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0128",
+    "topic": "Physics Mechanics",
+    "subject": "Physics",
+    "category": "Physics",
+    "difficulty": "medium",
+    "file_path": "subjects/physics/physics-mechanics.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0129",
+    "topic": "Physics Foundations",
+    "subject": "Physics",
+    "category": "Physics",
+    "difficulty": "easy",
+    "file_path": "subjects/physics/physics-foundations.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0130",
+    "topic": "Gas Laws",
+    "subject": "Physics",
+    "category": "Thermal",
+    "difficulty": "medium",
+    "file_path": "subjects/physics/thermal/gas-laws.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0131",
+    "topic": "Heat Temperature",
+    "subject": "Physics",
+    "category": "Thermal",
+    "difficulty": "medium",
+    "file_path": "subjects/physics/thermal/heat-temperature.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0132",
+    "topic": "Calorimetry",
+    "subject": "Physics",
+    "category": "Thermal",
+    "difficulty": "medium",
+    "file_path": "subjects/physics/thermal/calorimetry.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0133",
+    "topic": "Thermodynamics",
+    "subject": "Physics",
+    "category": "Thermal",
+    "difficulty": "medium",
+    "file_path": "subjects/physics/thermal/thermodynamics.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0134",
+    "topic": "Heat Transfer",
+    "subject": "Physics",
+    "category": "Thermal",
+    "difficulty": "medium",
+    "file_path": "subjects/physics/thermal/heat-transfer.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0135",
+    "topic": "Ac Basics New",
+    "subject": "Physics",
+    "category": "Electricity",
+    "difficulty": "easy",
+    "file_path": "subjects/physics/electricity/ac-basics-new.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0136",
+    "topic": "Intro To Electricity Copy 2",
+    "subject": "Physics",
+    "category": "Electricity",
+    "difficulty": "easy",
+    "file_path": "subjects/physics/electricity/intro-to-electricity copy 2.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0137",
+    "topic": "Conduction",
+    "subject": "Physics",
+    "category": "Electricity",
+    "difficulty": "medium",
+    "file_path": "subjects/physics/electricity/conduction.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0138",
+    "topic": "Intro To Electricity Copy",
+    "subject": "Physics",
+    "category": "Electricity",
+    "difficulty": "easy",
+    "file_path": "subjects/physics/electricity/intro-to-electricity copy.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0139",
+    "topic": "Electronics",
+    "subject": "Physics",
+    "category": "Electricity",
+    "difficulty": "medium",
+    "file_path": "subjects/physics/electricity/electronics.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0140",
+    "topic": "Intro To Electricity",
+    "subject": "Physics",
+    "category": "Electricity",
+    "difficulty": "easy",
+    "file_path": "subjects/physics/electricity/intro-to-electricity.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0141",
+    "topic": "Circuits Interactive",
+    "subject": "Physics",
+    "category": "Electricity",
+    "difficulty": "medium",
+    "file_path": "subjects/physics/electricity/circuits-interactive.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0142",
+    "topic": "Circuits",
+    "subject": "Physics",
+    "category": "Electricity",
+    "difficulty": "medium",
+    "file_path": "subjects/physics/electricity/circuits.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0143",
+    "topic": "Power Energy",
+    "subject": "Physics",
+    "category": "Electricity",
+    "difficulty": "medium",
+    "file_path": "subjects/physics/electricity/power-energy.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0144",
+    "topic": "Electrostatics",
+    "subject": "Physics",
+    "category": "Electricity",
+    "difficulty": "medium",
+    "file_path": "subjects/physics/electricity/electrostatics.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0145",
+    "topic": "Ac Basics",
+    "subject": "Physics",
+    "category": "Electricity",
+    "difficulty": "easy",
+    "file_path": "subjects/physics/electricity/ac-basics.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0146",
+    "topic": "Coulombs Law En",
+    "subject": "Physics",
+    "category": "Electricity",
+    "difficulty": "medium",
+    "file_path": "subjects/physics/electricity/electricity/coulombs-law_en.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0147",
+    "topic": "Circuit Construction Kit Dc En",
+    "subject": "Physics",
+    "category": "Electricity",
+    "difficulty": "medium",
+    "file_path": "subjects/physics/electricity/electricity/circuit-construction-kit-dc_en.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0148",
+    "topic": "Faradays Law En",
+    "subject": "Physics",
+    "category": "Electricity",
+    "difficulty": "medium",
+    "file_path": "subjects/physics/electricity/electricity/faradays-law_en.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0149",
+    "topic": "Faradays Electromagnetic Lab En",
+    "subject": "Physics",
+    "category": "Electricity",
+    "difficulty": "medium",
+    "file_path": "subjects/physics/electricity/electricity/faradays-electromagnetic-lab_en.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0150",
+    "topic": "Balloons And Static Electricity En",
+    "subject": "Physics",
+    "category": "Electricity",
+    "difficulty": "medium",
+    "file_path": "subjects/physics/electricity/electricity/balloons-and-static-electricity_en.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0151",
+    "topic": "Generator En",
+    "subject": "Physics",
+    "category": "Electricity",
+    "difficulty": "medium",
+    "file_path": "subjects/physics/electricity/electricity/generator_en.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0152",
+    "topic": "Ohms Law En",
+    "subject": "Physics",
+    "category": "Electricity",
+    "difficulty": "medium",
+    "file_path": "subjects/physics/electricity/electricity/ohms-law_en.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0153",
+    "topic": "Resistance In A Wire En",
+    "subject": "Physics",
+    "category": "Electricity",
+    "difficulty": "medium",
+    "file_path": "subjects/physics/electricity/electricity/resistance-in-a-wire_en.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0154",
+    "topic": "Magnets And Electromagnets En",
+    "subject": "Physics",
+    "category": "Electricity",
+    "difficulty": "medium",
+    "file_path": "subjects/physics/electricity/electricity/magnets-and-electromagnets_en.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0155",
+    "topic": "Circuit Construction Kit Ac Virtual Lab En",
+    "subject": "Physics",
+    "category": "Electricity",
+    "difficulty": "medium",
+    "file_path": "subjects/physics/electricity/electricity/circuit-construction-kit-ac-virtual-lab_en.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0156",
+    "topic": "Circuit Construction Kit Ac En",
+    "subject": "Physics",
+    "category": "Electricity",
+    "difficulty": "medium",
+    "file_path": "subjects/physics/electricity/electricity/circuit-construction-kit-ac_en.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0157",
+    "topic": "Magnet And Compass En",
+    "subject": "Physics",
+    "category": "Electricity",
+    "difficulty": "medium",
+    "file_path": "subjects/physics/electricity/electricity/magnet-and-compass_en.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0158",
+    "topic": "Charges And Fields En",
+    "subject": "Physics",
+    "category": "Electricity",
+    "difficulty": "medium",
+    "file_path": "subjects/physics/electricity/electricity/charges-and-fields_en.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0159",
+    "topic": "Circuit Construction Kit Dc Virtual Lab En",
+    "subject": "Physics",
+    "category": "Electricity",
+    "difficulty": "medium",
+    "file_path": "subjects/physics/electricity/electricity/circuit-construction-kit-dc-virtual-lab_en.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0160",
+    "topic": "Capacitor Lab Basics En",
+    "subject": "Physics",
+    "category": "Electricity",
+    "difficulty": "easy",
+    "file_path": "subjects/physics/electricity/electricity/capacitor-lab-basics_en.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0161",
+    "topic": "Html5 Unsupported",
+    "subject": "Physics",
+    "category": "Data",
+    "difficulty": "medium",
+    "file_path": "subjects/physics/electricity/Steps (Published)/data/html5-unsupported.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0162",
+    "topic": "Temperature Heat Interactive",
+    "subject": "Physics",
+    "category": "Heat",
+    "difficulty": "medium",
+    "file_path": "subjects/physics/heat/temperature-heat-interactive.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0163",
+    "topic": "Equations Of Motion",
+    "subject": "Physics",
+    "category": "Mechanics",
+    "difficulty": "medium",
+    "file_path": "subjects/physics/mechanics/equations-of-motion.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0164",
+    "topic": "Newtons Laws",
+    "subject": "Physics",
+    "category": "Mechanics",
+    "difficulty": "medium",
+    "file_path": "subjects/physics/mechanics/newtons-laws.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0165",
+    "topic": "Circular Motion",
+    "subject": "Physics",
+    "category": "Mechanics",
+    "difficulty": "medium",
+    "file_path": "subjects/physics/mechanics/circular-motion.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0166",
+    "topic": "Momentum",
+    "subject": "Physics",
+    "category": "Mechanics",
+    "difficulty": "medium",
+    "file_path": "subjects/physics/mechanics/momentum.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0167",
+    "topic": "Projectile Motion",
+    "subject": "Physics",
+    "category": "Mechanics",
+    "difficulty": "medium",
+    "file_path": "subjects/physics/mechanics/projectile-motion.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0168",
+    "topic": "Newton Laws Steps",
+    "subject": "Physics",
+    "category": "Mechanics",
+    "difficulty": "medium",
+    "file_path": "subjects/physics/mechanics/newton-laws-steps.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0169",
+    "topic": "Linear Motion",
+    "subject": "Physics",
+    "category": "Mechanics",
+    "difficulty": "medium",
+    "file_path": "subjects/physics/mechanics/linear-motion.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0170",
+    "topic": "Work Energy Power",
+    "subject": "Physics",
+    "category": "Mechanics",
+    "difficulty": "medium",
+    "file_path": "subjects/physics/mechanics/work-energy-power.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0171",
+    "topic": "Simple Machines",
+    "subject": "Physics",
+    "category": "Mechanics",
+    "difficulty": "medium",
+    "file_path": "subjects/physics/mechanics/simple-machines.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0172",
+    "topic": "Introduuction To Motion",
+    "subject": "Physics",
+    "category": "Mechanics",
+    "difficulty": "easy",
+    "file_path": "subjects/physics/mechanics/Introduuction-to-Motion.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0173",
+    "topic": "Equilibrium",
+    "subject": "Physics",
+    "category": "Mechanics",
+    "difficulty": "medium",
+    "file_path": "subjects/physics/mechanics/equilibrium.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0174",
+    "topic": "Friction",
+    "subject": "Physics",
+    "category": "Mechanics",
+    "difficulty": "medium",
+    "file_path": "subjects/physics/mechanics/friction.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0175",
+    "topic": "Forces Motion Interactive",
+    "subject": "Physics",
+    "category": "Mechanics",
+    "difficulty": "medium",
+    "file_path": "subjects/physics/mechanics/forces-motion-interactive.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0176",
+    "topic": "Simple Machines Interactive",
+    "subject": "Physics",
+    "category": "Mechanics",
+    "difficulty": "medium",
+    "file_path": "subjects/physics/mechanics/simple-machines-interactive.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0177",
+    "topic": "Simple Machines",
+    "subject": "Physics",
+    "category": "New Folder",
+    "difficulty": "medium",
+    "file_path": "subjects/physics/mechanics/New folder/simple-machines.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0178",
+    "topic": "Solid State Interactive",
+    "subject": "Physics",
+    "category": "Solid",
+    "difficulty": "medium",
+    "file_path": "subjects/physics/solid/solid-state-interactive.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0179",
+    "topic": "Quantization",
+    "subject": "Physics",
+    "category": "Modern",
+    "difficulty": "medium",
+    "file_path": "subjects/physics/modern/quantization.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0180",
+    "topic": "Atomic Models",
+    "subject": "Physics",
+    "category": "Modern",
+    "difficulty": "medium",
+    "file_path": "subjects/physics/modern/atomic-models.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0181",
+    "topic": "Nuclear",
+    "subject": "Physics",
+    "category": "Modern",
+    "difficulty": "medium",
+    "file_path": "subjects/physics/modern/nuclear.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0182",
+    "topic": "Applications",
+    "subject": "Physics",
+    "category": "Modern",
+    "difficulty": "medium",
+    "file_path": "subjects/physics/modern/applications.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0183",
+    "topic": "Quantum Relativity Interactive",
+    "subject": "Physics",
+    "category": "Modern",
+    "difficulty": "medium",
+    "file_path": "subjects/physics/modern/quantum-relativity-interactive.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0184",
+    "topic": "Past Papers",
+    "subject": "Physics",
+    "category": "Projects",
+    "difficulty": "medium",
+    "file_path": "subjects/physics/projects/past-papers.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0185",
+    "topic": "Safety",
+    "subject": "Physics",
+    "category": "Projects",
+    "difficulty": "medium",
+    "file_path": "subjects/physics/projects/safety.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0186",
+    "topic": "Projects Overview",
+    "subject": "Physics",
+    "category": "Projects",
+    "difficulty": "medium",
+    "file_path": "subjects/physics/projects/projects-overview.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0187",
+    "topic": "Lab Skills",
+    "subject": "Physics",
+    "category": "Projects",
+    "difficulty": "medium",
+    "file_path": "subjects/physics/projects/lab-skills.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0188",
+    "topic": "Nuclear Physics Interactive",
+    "subject": "Physics",
+    "category": "Nuclear",
+    "difficulty": "medium",
+    "file_path": "subjects/physics/nuclear/nuclear-physics-interactive.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0189",
+    "topic": "Special Relativity Interactive",
+    "subject": "Physics",
+    "category": "Relativity",
+    "difficulty": "medium",
+    "file_path": "subjects/physics/relativity/special-relativity-interactive.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0190",
+    "topic": "Superposition Interference",
+    "subject": "Physics",
+    "category": "Waves",
+    "difficulty": "medium",
+    "file_path": "subjects/physics/waves/superposition-interference.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0191",
+    "topic": "Wave Concepts",
+    "subject": "Physics",
+    "category": "Waves",
+    "difficulty": "medium",
+    "file_path": "subjects/physics/waves/wave-concepts.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0192",
+    "topic": "Sound",
+    "subject": "Physics",
+    "category": "Waves",
+    "difficulty": "medium",
+    "file_path": "subjects/physics/waves/sound.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0193",
+    "topic": "Sound Waves Interactive",
+    "subject": "Physics",
+    "category": "Waves",
+    "difficulty": "medium",
+    "file_path": "subjects/physics/waves/sound-waves-interactive.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0194",
+    "topic": "Types Of Waves",
+    "subject": "Physics",
+    "category": "Waves",
+    "difficulty": "medium",
+    "file_path": "subjects/physics/waves/types-of-waves.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0195",
+    "topic": "Wave Motion Interactive",
+    "subject": "Physics",
+    "category": "Waves",
+    "difficulty": "medium",
+    "file_path": "subjects/physics/waves/wave-motion-interactive.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0196",
+    "topic": "Electromagnetism Interactive",
+    "subject": "Physics",
+    "category": "Electromag",
+    "difficulty": "medium",
+    "file_path": "subjects/physics/electromag/electromagnetism-interactive.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0197",
+    "topic": "Light Optics Interactive",
+    "subject": "Physics",
+    "category": "Optics",
+    "difficulty": "medium",
+    "file_path": "subjects/physics/optics/light-optics-interactive.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0198",
+    "topic": "Interference Diffraction",
+    "subject": "Physics",
+    "category": "Optics",
+    "difficulty": "medium",
+    "file_path": "subjects/physics/optics/interference-diffraction.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0199",
+    "topic": "Refraction New",
+    "subject": "Physics",
+    "category": "Optics",
+    "difficulty": "medium",
+    "file_path": "subjects/physics/optics/refraction-new.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0200",
+    "topic": "Reflection",
+    "subject": "Physics",
+    "category": "Optics",
+    "difficulty": "medium",
+    "file_path": "subjects/physics/optics/reflection.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0201",
+    "topic": "Lenses Mirrors",
+    "subject": "Physics",
+    "category": "Optics",
+    "difficulty": "medium",
+    "file_path": "subjects/physics/optics/lenses-mirrors.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0202",
+    "topic": "Refraction",
+    "subject": "Physics",
+    "category": "Optics",
+    "difficulty": "medium",
+    "file_path": "subjects/physics/optics/refraction.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0203",
+    "topic": "Statistical Mechanics Interactive",
+    "subject": "Physics",
+    "category": "Statmech",
+    "difficulty": "medium",
+    "file_path": "subjects/physics/statmech/statistical-mechanics-interactive.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0204",
+    "topic": "Viscosity",
+    "subject": "Physics",
+    "category": "Fluids",
+    "difficulty": "medium",
+    "file_path": "subjects/physics/fluids/viscosity.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0205",
+    "topic": "Surface Tension",
+    "subject": "Physics",
+    "category": "Fluids",
+    "difficulty": "medium",
+    "file_path": "subjects/physics/fluids/surface-tension.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0206",
+    "topic": "Buoyancy",
+    "subject": "Physics",
+    "category": "Fluids",
+    "difficulty": "medium",
+    "file_path": "subjects/physics/fluids/buoyancy.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0207",
+    "topic": "Bernoulli",
+    "subject": "Physics",
+    "category": "Fluids",
+    "difficulty": "medium",
+    "file_path": "subjects/physics/fluids/bernoulli.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0208",
+    "topic": "Fluid Dynamics Interactive",
+    "subject": "Physics",
+    "category": "Fluids",
+    "difficulty": "medium",
+    "file_path": "subjects/physics/fluids/fluid-dynamics-interactive.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0209",
+    "topic": "Pressure",
+    "subject": "Physics",
+    "category": "Fluids",
+    "difficulty": "medium",
+    "file_path": "subjects/physics/fluids/pressure.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0210",
+    "topic": "Practicals",
+    "subject": "Physics",
+    "category": "Magnetism",
+    "difficulty": "medium",
+    "file_path": "subjects/physics/magnetism/practicals.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0211",
+    "topic": "Magnetic Field",
+    "subject": "Physics",
+    "category": "Magnetism",
+    "difficulty": "medium",
+    "file_path": "subjects/physics/magnetism/magnetic-field.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0212",
+    "topic": "Electromagnet",
+    "subject": "Physics",
+    "category": "Magnetism",
+    "difficulty": "medium",
+    "file_path": "subjects/physics/magnetism/electromagnet.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0213",
+    "topic": "Induction",
+    "subject": "Physics",
+    "category": "Magnetism",
+    "difficulty": "medium",
+    "file_path": "subjects/physics/magnetism/induction.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0214",
+    "topic": "Thermodynamics Interactive",
+    "subject": "Physics",
+    "category": "Thermo",
+    "difficulty": "medium",
+    "file_path": "subjects/physics/thermo/thermodynamics-interactive.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0215",
+    "topic": "Units",
+    "subject": "Physics",
+    "category": "Foundations",
+    "difficulty": "easy",
+    "file_path": "subjects/physics/foundations/units.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0216",
+    "topic": "Quantities",
+    "subject": "Physics",
+    "category": "Foundations",
+    "difficulty": "easy",
+    "file_path": "subjects/physics/foundations/quantities.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0217",
+    "topic": "Measurement",
+    "subject": "Physics",
+    "category": "Foundations",
+    "difficulty": "easy",
+    "file_path": "subjects/physics/foundations/measurement.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0218",
+    "topic": "Vectors",
+    "subject": "Physics",
+    "category": "Foundations",
+    "difficulty": "easy",
+    "file_path": "subjects/physics/foundations/vectors.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0219",
+    "topic": "Matter",
+    "subject": "Physics",
+    "category": "Properties",
+    "difficulty": "medium",
+    "file_path": "subjects/physics/properties/matter.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0220",
+    "topic": "Equilibrium In Liquids",
+    "subject": "Physics",
+    "category": "Properties",
+    "difficulty": "medium",
+    "file_path": "subjects/physics/properties/equilibrium-in-liquids.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0221",
+    "topic": "Density Relative Density",
+    "subject": "Physics",
+    "category": "Properties",
+    "difficulty": "medium",
+    "file_path": "subjects/physics/properties/density-relative-density.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0222",
+    "topic": "Vibration Shm",
+    "subject": "Physics",
+    "category": "Properties",
+    "difficulty": "medium",
+    "file_path": "subjects/physics/properties/vibration-shm.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0223",
+    "topic": "Elastic Properties",
+    "subject": "Physics",
+    "category": "Properties",
+    "difficulty": "medium",
+    "file_path": "subjects/physics/properties/elastic-properties.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0224",
+    "topic": "Deformation Of Solids",
+    "subject": "Physics",
+    "category": "Properties",
+    "difficulty": "medium",
+    "file_path": "subjects/physics/properties/deformation-of-solids.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0225",
+    "topic": "Gravitation",
+    "subject": "Physics",
+    "category": "Fields",
+    "difficulty": "medium",
+    "file_path": "subjects/physics/fields/gravitation.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0226",
+    "topic": "Satellites",
+    "subject": "Physics",
+    "category": "Fields",
+    "difficulty": "medium",
+    "file_path": "subjects/physics/fields/satellites.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0227",
+    "topic": "Gravitational Field",
+    "subject": "Physics",
+    "category": "Fields",
+    "difficulty": "medium",
+    "file_path": "subjects/physics/fields/gravitational-field.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0228",
+    "topic": "Fields Concepts",
+    "subject": "Physics",
+    "category": "Fields",
+    "difficulty": "medium",
+    "file_path": "subjects/physics/fields/fields-concepts.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0229",
+    "topic": "Astrophysics",
+    "subject": "Physics",
+    "category": "Fields",
+    "difficulty": "medium",
+    "file_path": "subjects/physics/fields/astrophysics.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0230",
+    "topic": "Gravity Force Lab Basics En",
+    "subject": "Physics",
+    "category": "Fields Sims",
+    "difficulty": "easy",
+    "file_path": "subjects/physics/fields/fields-sims/gravity-force-lab-basics_en.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0231",
+    "topic": "Gravity Force Lab En",
+    "subject": "Physics",
+    "category": "Fields Sims",
+    "difficulty": "medium",
+    "file_path": "subjects/physics/fields/fields-sims/gravity-force-lab_en.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0232",
+    "topic": "Gravity And Orbits En",
+    "subject": "Physics",
+    "category": "Fields Sims",
+    "difficulty": "medium",
+    "file_path": "subjects/physics/fields/fields-sims/gravity-and-orbits_en.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0233",
+    "topic": "Keplers Laws En",
+    "subject": "Physics",
+    "category": "Fields Sims",
+    "difficulty": "medium",
+    "file_path": "subjects/physics/fields/fields-sims/keplers-laws_en.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0234",
+    "topic": "Chemistry Organic",
+    "subject": "Chemistry",
+    "category": "Chemistry",
+    "difficulty": "hard",
+    "file_path": "subjects/chemistry/chemistry-organic.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0235",
+    "topic": "Chemistry Inorganic",
+    "subject": "Chemistry",
+    "category": "Chemistry",
+    "difficulty": "hard",
+    "file_path": "subjects/chemistry/chemistry-inorganic.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0236",
+    "topic": "Chemistry",
+    "subject": "Chemistry",
+    "category": "Chemistry",
+    "difficulty": "medium",
+    "file_path": "subjects/chemistry/chemistry.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0237",
+    "topic": "Chemistry Basic",
+    "subject": "Chemistry",
+    "category": "Chemistry",
+    "difficulty": "easy",
+    "file_path": "subjects/chemistry/chemistry-basic.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0238",
+    "topic": "Chemistry Industrial",
+    "subject": "Chemistry",
+    "category": "Chemistry",
+    "difficulty": "medium",
+    "file_path": "subjects/chemistry/chemistry-industrial.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0239",
+    "topic": "Chemistry Explanation",
+    "subject": "Chemistry",
+    "category": "Chemistry",
+    "difficulty": "medium",
+    "file_path": "subjects/chemistry/chemistry-explanation.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0240",
+    "topic": "Periodic Trends",
+    "subject": "Chemistry",
+    "category": "Periodicity Bonding",
+    "difficulty": "medium",
+    "file_path": "subjects/chemistry/periodicity-bonding/periodic-trends.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0241",
+    "topic": "Periodic Table Overview",
+    "subject": "Chemistry",
+    "category": "Periodicity Bonding",
+    "difficulty": "medium",
+    "file_path": "subjects/chemistry/periodicity-bonding/periodic-table-overview.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0242",
+    "topic": "Ionic Bonding",
+    "subject": "Chemistry",
+    "category": "Periodicity Bonding",
+    "difficulty": "medium",
+    "file_path": "subjects/chemistry/periodicity-bonding/ionic-bonding.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0243",
+    "topic": "Electron Configuration",
+    "subject": "Chemistry",
+    "category": "Periodicity Bonding",
+    "difficulty": "medium",
+    "file_path": "subjects/chemistry/periodicity-bonding/electron-configuration.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0244",
+    "topic": "Metallic Bonding",
+    "subject": "Chemistry",
+    "category": "Periodicity Bonding",
+    "difficulty": "medium",
+    "file_path": "subjects/chemistry/periodicity-bonding/metallic-bonding.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0245",
+    "topic": "Covalent Bonding",
+    "subject": "Chemistry",
+    "category": "Periodicity Bonding",
+    "difficulty": "medium",
+    "file_path": "subjects/chemistry/periodicity-bonding/covalent-bonding.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0246",
+    "topic": "Quantitative Analysis",
+    "subject": "Chemistry",
+    "category": "Praticals",
+    "difficulty": "medium",
+    "file_path": "subjects/chemistry/Praticals/quantitative-analysis.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0247",
+    "topic": "Identification Of Apparatus",
+    "subject": "Chemistry",
+    "category": "Praticals",
+    "difficulty": "medium",
+    "file_path": "subjects/chemistry/Praticals/identification-of-apparatus.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0248",
+    "topic": "Redox Titration",
+    "subject": "Chemistry",
+    "category": "Praticals",
+    "difficulty": "medium",
+    "file_path": "subjects/chemistry/Praticals/redox-titration.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0249",
+    "topic": "Qlitative Anal",
+    "subject": "Chemistry",
+    "category": "Praticals",
+    "difficulty": "medium",
+    "file_path": "subjects/chemistry/Praticals/qlitative-anal.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0250",
+    "topic": "Intro To Chemistry Pratical",
+    "subject": "Chemistry",
+    "category": "Praticals",
+    "difficulty": "easy",
+    "file_path": "subjects/chemistry/Praticals/intro-to-chemistry-pratical.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0251",
+    "topic": "Qtitative Anal",
+    "subject": "Chemistry",
+    "category": "Praticals",
+    "difficulty": "medium",
+    "file_path": "subjects/chemistry/Praticals/qtitative-anal.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0252",
+    "topic": "Waec Titration Practicalv3",
+    "subject": "Chemistry",
+    "category": "Praticals",
+    "difficulty": "medium",
+    "file_path": "subjects/chemistry/Praticals/waec-titration-practicalv3.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0253",
+    "topic": "Acid Base Titration",
+    "subject": "Chemistry",
+    "category": "Praticals",
+    "difficulty": "medium",
+    "file_path": "subjects/chemistry/Praticals/acid-base-titration.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0254",
+    "topic": "Waec Titration Practical",
+    "subject": "Chemistry",
+    "category": "Praticals",
+    "difficulty": "medium",
+    "file_path": "subjects/chemistry/Praticals/waec-titration-practical.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0255",
+    "topic": "Principles",
+    "subject": "Chemistry",
+    "category": "Praticals",
+    "difficulty": "medium",
+    "file_path": "subjects/chemistry/Praticals/principles.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0256",
+    "topic": "Titration Simulator V2",
+    "subject": "Chemistry",
+    "category": "Praticals",
+    "difficulty": "medium",
+    "file_path": "subjects/chemistry/Praticals/titration-simulator-v2.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0257",
+    "topic": "Waectitration Practical",
+    "subject": "Chemistry",
+    "category": "Praticals",
+    "difficulty": "medium",
+    "file_path": "subjects/chemistry/Praticals/waectitration-practical.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0258",
+    "topic": "Waec Titration Practical V2",
+    "subject": "Chemistry",
+    "category": "Praticals",
+    "difficulty": "medium",
+    "file_path": "subjects/chemistry/Praticals/waec-titration-practical-v2.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0259",
+    "topic": "Molarity Concentration",
+    "subject": "Chemistry",
+    "category": "Stoichiometry Energetics",
+    "difficulty": "medium",
+    "file_path": "subjects/chemistry/stoichiometry-energetics/molarity-concentration.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0260",
+    "topic": "Stoichiometry Limiting Yield",
+    "subject": "Chemistry",
+    "category": "Stoichiometry Energetics",
+    "difficulty": "medium",
+    "file_path": "subjects/chemistry/stoichiometry-energetics/stoichiometry-limiting-yield.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0261",
+    "topic": "Reaction Rates Intro",
+    "subject": "Chemistry",
+    "category": "Stoichiometry Energetics",
+    "difficulty": "easy",
+    "file_path": "subjects/chemistry/stoichiometry-energetics/reaction-rates-intro.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0262",
+    "topic": "Energy Diagrams",
+    "subject": "Chemistry",
+    "category": "Stoichiometry Energetics",
+    "difficulty": "medium",
+    "file_path": "subjects/chemistry/stoichiometry-energetics/energy-diagrams.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0263",
+    "topic": "Enthalpy Changes",
+    "subject": "Chemistry",
+    "category": "Stoichiometry Energetics",
+    "difficulty": "medium",
+    "file_path": "subjects/chemistry/stoichiometry-energetics/enthalpy-changes.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0264",
+    "topic": "Titration Basics",
+    "subject": "Chemistry",
+    "category": "Stoichiometry Energetics",
+    "difficulty": "easy",
+    "file_path": "subjects/chemistry/stoichiometry-energetics/titration-basics.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0265",
+    "topic": "Corrosion",
+    "subject": "Chemistry",
+    "category": "Industrial Applied",
+    "difficulty": "medium",
+    "file_path": "subjects/chemistry/industrial-applied/corrosion.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0266",
+    "topic": "Water Treatment",
+    "subject": "Chemistry",
+    "category": "Industrial Applied",
+    "difficulty": "medium",
+    "file_path": "subjects/chemistry/industrial-applied/water-treatment.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0267",
+    "topic": "Industrial Polymers",
+    "subject": "Chemistry",
+    "category": "Industrial Applied",
+    "difficulty": "medium",
+    "file_path": "subjects/chemistry/industrial-applied/industrial-polymers.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0268",
+    "topic": "Fuels Energy",
+    "subject": "Chemistry",
+    "category": "Industrial Applied",
+    "difficulty": "medium",
+    "file_path": "subjects/chemistry/industrial-applied/fuels-energy.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0269",
+    "topic": "Fertilizers",
+    "subject": "Chemistry",
+    "category": "Industrial Applied",
+    "difficulty": "medium",
+    "file_path": "subjects/chemistry/industrial-applied/fertilizers.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0270",
+    "topic": "Green Chemistry",
+    "subject": "Chemistry",
+    "category": "Industrial Applied",
+    "difficulty": "medium",
+    "file_path": "subjects/chemistry/industrial-applied/green-chemistry.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0271",
+    "topic": "Waste Management",
+    "subject": "Chemistry",
+    "category": "Environmental Green",
+    "difficulty": "medium",
+    "file_path": "subjects/chemistry/environmental-green/waste-management.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0272",
+    "topic": "Soil Pollution",
+    "subject": "Chemistry",
+    "category": "Environmental Green",
+    "difficulty": "medium",
+    "file_path": "subjects/chemistry/environmental-green/soil-pollution.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0273",
+    "topic": "Water Pollution",
+    "subject": "Chemistry",
+    "category": "Environmental Green",
+    "difficulty": "medium",
+    "file_path": "subjects/chemistry/environmental-green/water-pollution.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0274",
+    "topic": "Sustainability Principles",
+    "subject": "Chemistry",
+    "category": "Environmental Green",
+    "difficulty": "medium",
+    "file_path": "subjects/chemistry/environmental-green/sustainability-principles.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0275",
+    "topic": "Environmental Analytical",
+    "subject": "Chemistry",
+    "category": "Environmental Green",
+    "difficulty": "medium",
+    "file_path": "subjects/chemistry/environmental-green/environmental-analytical.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0276",
+    "topic": "Air Pollution",
+    "subject": "Chemistry",
+    "category": "Environmental Green",
+    "difficulty": "medium",
+    "file_path": "subjects/chemistry/environmental-green/air-pollution.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0277",
+    "topic": "Nuclear Reactions",
+    "subject": "Chemistry",
+    "category": "Nuclear Chemistry",
+    "difficulty": "medium",
+    "file_path": "subjects/chemistry/nuclear-chemistry/nuclear-reactions.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0278",
+    "topic": "Applications",
+    "subject": "Chemistry",
+    "category": "Nuclear Chemistry",
+    "difficulty": "medium",
+    "file_path": "subjects/chemistry/nuclear-chemistry/applications.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0279",
+    "topic": "Radioactivity",
+    "subject": "Chemistry",
+    "category": "Nuclear Chemistry",
+    "difficulty": "medium",
+    "file_path": "subjects/chemistry/nuclear-chemistry/radioactivity.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0280",
+    "topic": "Sulphur Compounds",
+    "subject": "Chemistry",
+    "category": "Inorganic Chemistry",
+    "difficulty": "hard",
+    "file_path": "subjects/chemistry/inorganic-chemistry/sulphur-compounds.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0281",
+    "topic": "Carbon Allotropes",
+    "subject": "Chemistry",
+    "category": "Inorganic Chemistry",
+    "difficulty": "hard",
+    "file_path": "subjects/chemistry/inorganic-chemistry/carbon-allotropes.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0282",
+    "topic": "Phosphorus Compounds",
+    "subject": "Chemistry",
+    "category": "Inorganic Chemistry",
+    "difficulty": "hard",
+    "file_path": "subjects/chemistry/inorganic-chemistry/phosphorus-compounds.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0283",
+    "topic": "Oxygen Oxides",
+    "subject": "Chemistry",
+    "category": "Inorganic Chemistry",
+    "difficulty": "hard",
+    "file_path": "subjects/chemistry/inorganic-chemistry/oxygen-oxides.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0284",
+    "topic": "Hydrogen",
+    "subject": "Chemistry",
+    "category": "Inorganic Chemistry",
+    "difficulty": "hard",
+    "file_path": "subjects/chemistry/inorganic-chemistry/hydrogen.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0285",
+    "topic": "Nitrogen Compounds",
+    "subject": "Chemistry",
+    "category": "Inorganic Chemistry",
+    "difficulty": "hard",
+    "file_path": "subjects/chemistry/inorganic-chemistry/nitrogen-compounds.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0286",
+    "topic": "Spectroscopy Uv Vis",
+    "subject": "Chemistry",
+    "category": "Analytical Methods",
+    "difficulty": "medium",
+    "file_path": "subjects/chemistry/analytical-methods/spectroscopy-uv-vis.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0287",
+    "topic": "Infrared Ftir",
+    "subject": "Chemistry",
+    "category": "Analytical Methods",
+    "difficulty": "medium",
+    "file_path": "subjects/chemistry/analytical-methods/infrared-ftir.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0288",
+    "topic": "Quantitative Analysis",
+    "subject": "Chemistry",
+    "category": "Analytical Methods",
+    "difficulty": "medium",
+    "file_path": "subjects/chemistry/analytical-methods/quantitative-analysis.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0289",
+    "topic": "Qualitative Analysis",
+    "subject": "Chemistry",
+    "category": "Analytical Methods",
+    "difficulty": "medium",
+    "file_path": "subjects/chemistry/analytical-methods/qualitative-analysis.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0290",
+    "topic": "Mass Spectrometry",
+    "subject": "Chemistry",
+    "category": "Analytical Methods",
+    "difficulty": "medium",
+    "file_path": "subjects/chemistry/analytical-methods/mass-spectrometry.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0291",
+    "topic": "Chromatography",
+    "subject": "Chemistry",
+    "category": "Analytical Methods",
+    "difficulty": "medium",
+    "file_path": "subjects/chemistry/analytical-methods/chromatography.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0292",
+    "topic": "Symbols Formulas",
+    "subject": "Chemistry",
+    "category": "Foundations",
+    "difficulty": "easy",
+    "file_path": "subjects/chemistry/foundations/symbols-formulas.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0293",
+    "topic": "Particulate Nature",
+    "subject": "Chemistry",
+    "category": "Foundations",
+    "difficulty": "easy",
+    "file_path": "subjects/chemistry/foundations/particulate-nature.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0294",
+    "topic": "Atomic Structure",
+    "subject": "Chemistry",
+    "category": "Foundations",
+    "difficulty": "easy",
+    "file_path": "subjects/chemistry/foundations/atomic-structure.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0295",
+    "topic": "Vapour Density Rmm",
+    "subject": "Chemistry",
+    "category": "Foundations",
+    "difficulty": "easy",
+    "file_path": "subjects/chemistry/foundations/vapour-density-rmm.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0296",
+    "topic": "Definition Classification",
+    "subject": "Chemistry",
+    "category": "Foundations",
+    "difficulty": "easy",
+    "file_path": "subjects/chemistry/foundations/definition-classification.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0297",
+    "topic": "Mole Concept",
+    "subject": "Chemistry",
+    "category": "Foundations",
+    "difficulty": "easy",
+    "file_path": "subjects/chemistry/foundations/mole-concept.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0298",
+    "topic": "Physical Chemical Changes",
+    "subject": "Chemistry",
+    "category": "Foundations",
+    "difficulty": "easy",
+    "file_path": "subjects/chemistry/foundations/physical-chemical-changes.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0299",
+    "topic": "Laws Of Combination",
+    "subject": "Chemistry",
+    "category": "Foundations",
+    "difficulty": "easy",
+    "file_path": "subjects/chemistry/foundations/laws-of-combination.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0300",
+    "topic": "Gay Lussac Combining Volumes",
+    "subject": "Chemistry",
+    "category": "Foundations",
+    "difficulty": "easy",
+    "file_path": "subjects/chemistry/foundations/gay-lussac-combining-volumes.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0301",
+    "topic": "Separation Techniques",
+    "subject": "Chemistry",
+    "category": "Foundations",
+    "difficulty": "easy",
+    "file_path": "subjects/chemistry/foundations/separation-techniques.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0302",
+    "topic": "Real Gases",
+    "subject": "Chemistry",
+    "category": "States Of Matter",
+    "difficulty": "medium",
+    "file_path": "subjects/chemistry/states-of-matter/real-gases.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0303",
+    "topic": "Gas Laws Boyle Charles",
+    "subject": "Chemistry",
+    "category": "States Of Matter",
+    "difficulty": "medium",
+    "file_path": "subjects/chemistry/states-of-matter/gas-laws-boyle-charles.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0304",
+    "topic": "States Properties",
+    "subject": "Chemistry",
+    "category": "States Of Matter",
+    "difficulty": "medium",
+    "file_path": "subjects/chemistry/states-of-matter/states-properties.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0305",
+    "topic": "Ideal Gas Equation",
+    "subject": "Chemistry",
+    "category": "States Of Matter",
+    "difficulty": "medium",
+    "file_path": "subjects/chemistry/states-of-matter/ideal-gas-equation.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0306",
+    "topic": "Kinetic Theory",
+    "subject": "Chemistry",
+    "category": "States Of Matter",
+    "difficulty": "medium",
+    "file_path": "subjects/chemistry/states-of-matter/kinetic-theory.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0307",
+    "topic": "Measurement Pressure",
+    "subject": "Chemistry",
+    "category": "States Of Matter",
+    "difficulty": "medium",
+    "file_path": "subjects/chemistry/states-of-matter/measurement-pressure.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0308",
+    "topic": "Naming Iupac",
+    "subject": "Chemistry",
+    "category": "Organic Fundamentals",
+    "difficulty": "easy",
+    "file_path": "subjects/chemistry/organic-fundamentals/naming-iupac.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0309",
+    "topic": "Simple Reactions",
+    "subject": "Chemistry",
+    "category": "Organic Fundamentals",
+    "difficulty": "easy",
+    "file_path": "subjects/chemistry/organic-fundamentals/simple-reactions.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0310",
+    "topic": "Functional Groups",
+    "subject": "Chemistry",
+    "category": "Organic Fundamentals",
+    "difficulty": "easy",
+    "file_path": "subjects/chemistry/organic-fundamentals/functional-groups.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0311",
+    "topic": "Hydrocarbons",
+    "subject": "Chemistry",
+    "category": "Organic Fundamentals",
+    "difficulty": "easy",
+    "file_path": "subjects/chemistry/organic-fundamentals/hydrocarbons.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0312",
+    "topic": "Polymers Intro",
+    "subject": "Chemistry",
+    "category": "Organic Fundamentals",
+    "difficulty": "easy",
+    "file_path": "subjects/chemistry/organic-fundamentals/polymers-intro.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0313",
+    "topic": "Isomerism",
+    "subject": "Chemistry",
+    "category": "Organic Fundamentals",
+    "difficulty": "easy",
+    "file_path": "subjects/chemistry/organic-fundamentals/isomerism.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0314",
+    "topic": "Standard Potentials",
+    "subject": "Chemistry",
+    "category": "Electrochemistry Redox",
+    "difficulty": "medium",
+    "file_path": "subjects/chemistry/electrochemistry-redox/standard-potentials.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0315",
+    "topic": "Electrolysis Basics",
+    "subject": "Chemistry",
+    "category": "Electrochemistry Redox",
+    "difficulty": "easy",
+    "file_path": "subjects/chemistry/electrochemistry-redox/electrolysis-basics.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0316",
+    "topic": "Oxidation Reduction",
+    "subject": "Chemistry",
+    "category": "Electrochemistry Redox",
+    "difficulty": "medium",
+    "file_path": "subjects/chemistry/electrochemistry-redox/oxidation-reduction.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0317",
+    "topic": "Faradays Laws",
+    "subject": "Chemistry",
+    "category": "Electrochemistry Redox",
+    "difficulty": "medium",
+    "file_path": "subjects/chemistry/electrochemistry-redox/faradays-laws.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0318",
+    "topic": "Electrolysis Calculations",
+    "subject": "Chemistry",
+    "category": "Electrochemistry Redox",
+    "difficulty": "medium",
+    "file_path": "subjects/chemistry/electrochemistry-redox/electrolysis-calculations.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0319",
+    "topic": "Balancing Redox",
+    "subject": "Chemistry",
+    "category": "Electrochemistry Redox",
+    "difficulty": "medium",
+    "file_path": "subjects/chemistry/electrochemistry-redox/balancing-redox.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0320",
+    "topic": "Discharge Factors",
+    "subject": "Chemistry",
+    "category": "Electrochemistry Redox",
+    "difficulty": "medium",
+    "file_path": "subjects/chemistry/electrochemistry-redox/discharge-factors.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0321",
+    "topic": "Nernst Equation",
+    "subject": "Chemistry",
+    "category": "Electrochemistry Redox",
+    "difficulty": "medium",
+    "file_path": "subjects/chemistry/electrochemistry-redox/nernst-equation.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0322",
+    "topic": "Galvanic Cells",
+    "subject": "Chemistry",
+    "category": "Electrochemistry Redox",
+    "difficulty": "medium",
+    "file_path": "subjects/chemistry/electrochemistry-redox/galvanic-cells.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0323",
+    "topic": "Le Chatelier",
+    "subject": "Chemistry",
+    "category": "Equilibria Kinetics",
+    "difficulty": "medium",
+    "file_path": "subjects/chemistry/equilibria-kinetics/le-chatelier.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0324",
+    "topic": "Dynamic Equilibrium",
+    "subject": "Chemistry",
+    "category": "Equilibria Kinetics",
+    "difficulty": "medium",
+    "file_path": "subjects/chemistry/equilibria-kinetics/dynamic-equilibrium.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0325",
+    "topic": "Equilibrium Constant",
+    "subject": "Chemistry",
+    "category": "Equilibria Kinetics",
+    "difficulty": "medium",
+    "file_path": "subjects/chemistry/equilibria-kinetics/equilibrium-constant.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0326",
+    "topic": "Rate Laws",
+    "subject": "Chemistry",
+    "category": "Equilibria Kinetics",
+    "difficulty": "medium",
+    "file_path": "subjects/chemistry/equilibria-kinetics/rate-laws.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0327",
+    "topic": "Calculating K",
+    "subject": "Chemistry",
+    "category": "Equilibria Kinetics",
+    "difficulty": "medium",
+    "file_path": "subjects/chemistry/equilibria-kinetics/calculating-k.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0328",
+    "topic": "Factors Affecting Rate",
+    "subject": "Chemistry",
+    "category": "Equilibria Kinetics",
+    "difficulty": "medium",
+    "file_path": "subjects/chemistry/equilibria-kinetics/factors-affecting-rate.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0329",
+    "topic": "Acids Bases Intro",
+    "subject": "Chemistry",
+    "category": "Acids Bases",
+    "difficulty": "easy",
+    "file_path": "subjects/chemistry/acids-bases/acids-bases-intro.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0330",
+    "topic": "Commerce",
+    "subject": "Commerce",
+    "category": "Commerce",
+    "difficulty": "medium",
+    "file_path": "subjects/commerce/commerce.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0331",
+    "topic": "Commerce Topic",
+    "subject": "Commerce",
+    "category": "Commerce",
+    "difficulty": "medium",
+    "file_path": "subjects/commerce/commerce-topic.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0332",
+    "topic": "Commerce Explanation",
+    "subject": "Commerce",
+    "category": "Commerce",
+    "difficulty": "medium",
+    "file_path": "subjects/commerce/commerce-explanation.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0333",
+    "topic": "Determinants",
+    "subject": "Mathematics",
+    "category": "Matrices Determinants",
+    "difficulty": "medium",
+    "file_path": "subjects/mathematics/matrices-determinants/determinants.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0334",
+    "topic": "Matrices",
+    "subject": "Mathematics",
+    "category": "Matrices Determinants",
+    "difficulty": "medium",
+    "file_path": "subjects/mathematics/matrices-determinants/matrices.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0335",
+    "topic": "Quadratic Equation",
+    "subject": "Mathematics",
+    "category": "Algebraic Foundations",
+    "difficulty": "easy",
+    "file_path": "subjects/mathematics/algebraic-foundations/quadratic-equation.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0336",
+    "topic": "Quadratic Equations",
+    "subject": "Mathematics",
+    "category": "Algebraic Foundations",
+    "difficulty": "easy",
+    "file_path": "subjects/mathematics/algebraic-foundations/quadratic-equations.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0337",
+    "topic": "Indices",
+    "subject": "Mathematics",
+    "category": "Algebraic Foundations",
+    "difficulty": "easy",
+    "file_path": "subjects/mathematics/algebraic-foundations/indices.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0338",
+    "topic": "Factorization",
+    "subject": "Mathematics",
+    "category": "Algebraic Foundations",
+    "difficulty": "easy",
+    "file_path": "subjects/mathematics/algebraic-foundations/factorization.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0339",
+    "topic": "Polynomials",
+    "subject": "Mathematics",
+    "category": "Algebraic Foundations",
+    "difficulty": "easy",
+    "file_path": "subjects/mathematics/algebraic-foundations/polynomials.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0340",
+    "topic": "Algebra Basics",
+    "subject": "Mathematics",
+    "category": "Algebraic Foundations",
+    "difficulty": "easy",
+    "file_path": "subjects/mathematics/algebraic-foundations/algebra-basics.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0341",
+    "topic": "Linear Equations Inequalities",
+    "subject": "Mathematics",
+    "category": "Algebraic Foundations",
+    "difficulty": "easy",
+    "file_path": "subjects/mathematics/algebraic-foundations/linear-equations-inequalities.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0342",
+    "topic": "Constructions",
+    "subject": "Mathematics",
+    "category": "Geometry Trigonometry",
+    "difficulty": "medium",
+    "file_path": "subjects/mathematics/geometry-trigonometry/constructions.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0343",
+    "topic": "Coordinate Geometry",
+    "subject": "Mathematics",
+    "category": "Geometry Trigonometry",
+    "difficulty": "medium",
+    "file_path": "subjects/mathematics/geometry-trigonometry/coordinate-geometry.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0344",
+    "topic": "Mensuration",
+    "subject": "Mathematics",
+    "category": "Geometry Trigonometry",
+    "difficulty": "medium",
+    "file_path": "subjects/mathematics/geometry-trigonometry/mensuration.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0345",
+    "topic": "Triangles",
+    "subject": "Mathematics",
+    "category": "Geometry Trigonometry",
+    "difficulty": "medium",
+    "file_path": "subjects/mathematics/geometry-trigonometry/triangles.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0346",
+    "topic": "Angles",
+    "subject": "Mathematics",
+    "category": "Geometry Trigonometry",
+    "difficulty": "medium",
+    "file_path": "subjects/mathematics/geometry-trigonometry/angles.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0347",
+    "topic": "Trig Ratios",
+    "subject": "Mathematics",
+    "category": "Geometry Trigonometry",
+    "difficulty": "medium",
+    "file_path": "subjects/mathematics/geometry-trigonometry/trig-ratios.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0348",
+    "topic": "Circles",
+    "subject": "Mathematics",
+    "category": "Geometry Trigonometry",
+    "difficulty": "medium",
+    "file_path": "subjects/mathematics/geometry-trigonometry/circles.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0349",
+    "topic": "Bearings",
+    "subject": "Mathematics",
+    "category": "Geometry Trigonometry",
+    "difficulty": "medium",
+    "file_path": "subjects/mathematics/geometry-trigonometry/bearings.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0350",
+    "topic": "Elevation Depression",
+    "subject": "Mathematics",
+    "category": "Geometry Trigonometry",
+    "difficulty": "medium",
+    "file_path": "subjects/mathematics/geometry-trigonometry/elevation-depression.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0351",
+    "topic": "Representation Data",
+    "subject": "Mathematics",
+    "category": "Statistics Probability",
+    "difficulty": "medium",
+    "file_path": "subjects/mathematics/statistics-probability/representation-data.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0352",
+    "topic": "Probability",
+    "subject": "Mathematics",
+    "category": "Statistics Probability",
+    "difficulty": "medium",
+    "file_path": "subjects/mathematics/statistics-probability/probability.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0353",
+    "topic": "Measures Location Dispersion",
+    "subject": "Mathematics",
+    "category": "Statistics Probability",
+    "difficulty": "medium",
+    "file_path": "subjects/mathematics/statistics-probability/measures-location-dispersion.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0354",
+    "topic": "Permutations Combinations",
+    "subject": "Mathematics",
+    "category": "Statistics Probability",
+    "difficulty": "medium",
+    "file_path": "subjects/mathematics/statistics-probability/permutations-combinations.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0355",
+    "topic": "Fractions Decimals Percentages",
+    "subject": "Mathematics",
+    "category": "Foundations",
+    "difficulty": "easy",
+    "file_path": "subjects/mathematics/foundations/fractions-decimals-percentages.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0356",
+    "topic": "Ratios Proportions Rates",
+    "subject": "Mathematics",
+    "category": "Foundations",
+    "difficulty": "easy",
+    "file_path": "subjects/mathematics/foundations/ratios-proportions-rates.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0357",
+    "topic": "Financial Arithmetic",
+    "subject": "Mathematics",
+    "category": "Foundations",
+    "difficulty": "easy",
+    "file_path": "subjects/mathematics/foundations/financial-arithmetic.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0358",
+    "topic": "Rational Numbers",
+    "subject": "Mathematics",
+    "category": "Foundations",
+    "difficulty": "easy",
+    "file_path": "subjects/mathematics/foundations/rational-numbers.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0359",
+    "topic": "Positive Negative Integers",
+    "subject": "Mathematics",
+    "category": "Foundations",
+    "difficulty": "easy",
+    "file_path": "subjects/mathematics/foundations/positive-negative-integers.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0360",
+    "topic": "Variations",
+    "subject": "Mathematics",
+    "category": "Foundations",
+    "difficulty": "easy",
+    "file_path": "subjects/mathematics/foundations/variations.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0361",
+    "topic": "Number Bases",
+    "subject": "Mathematics",
+    "category": "Number Systems",
+    "difficulty": "medium",
+    "file_path": "subjects/mathematics/number-systems/number-bases.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0362",
+    "topic": "Surds",
+    "subject": "Mathematics",
+    "category": "Number Systems",
+    "difficulty": "medium",
+    "file_path": "subjects/mathematics/number-systems/surds.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0363",
+    "topic": "Logarithms",
+    "subject": "Mathematics",
+    "category": "Number Systems",
+    "difficulty": "medium",
+    "file_path": "subjects/mathematics/number-systems/logarithms.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0364",
+    "topic": "Sets",
+    "subject": "Mathematics",
+    "category": "Number Systems",
+    "difficulty": "medium",
+    "file_path": "subjects/mathematics/number-systems/sets.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0365",
+    "topic": "Logic",
+    "subject": "Mathematics",
+    "category": "Number Systems",
+    "difficulty": "medium",
+    "file_path": "subjects/mathematics/number-systems/logic.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0366",
+    "topic": "Indices",
+    "subject": "Mathematics",
+    "category": "Number Systems",
+    "difficulty": "medium",
+    "file_path": "subjects/mathematics/number-systems/indices.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0367",
+    "topic": "Modular Arithmetic",
+    "subject": "Mathematics",
+    "category": "Number Systems",
+    "difficulty": "medium",
+    "file_path": "subjects/mathematics/number-systems/modular-arithmetic.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0368",
+    "topic": "Applications Differentiation",
+    "subject": "Mathematics",
+    "category": "Calculus",
+    "difficulty": "hard",
+    "file_path": "subjects/mathematics/calculus/applications-differentiation.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0369",
+    "topic": "Integration Basics",
+    "subject": "Mathematics",
+    "category": "Calculus",
+    "difficulty": "easy",
+    "file_path": "subjects/mathematics/calculus/integration-basics.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0370",
+    "topic": "Differentiation Basics",
+    "subject": "Mathematics",
+    "category": "Calculus",
+    "difficulty": "easy",
+    "file_path": "subjects/mathematics/calculus/differentiation-basics.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0371",
+    "topic": "Applications Integration",
+    "subject": "Mathematics",
+    "category": "Calculus",
+    "difficulty": "hard",
+    "file_path": "subjects/mathematics/calculus/applications-integration.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0372",
+    "topic": "Comprehension Strategies",
+    "subject": "English Language",
+    "category": "Comprehension Reading",
+    "difficulty": "medium",
+    "file_path": "subjects/english/comprehension-reading/comprehension-strategies.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0373",
+    "topic": "Inference Summary",
+    "subject": "English Language",
+    "category": "Comprehension Reading",
+    "difficulty": "medium",
+    "file_path": "subjects/english/comprehension-reading/inference-summary.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0374",
+    "topic": "Topic Grammar",
+    "subject": "English Language",
+    "category": "Comprehension Reading",
+    "difficulty": "medium",
+    "file_path": "subjects/english/comprehension-reading/topic-grammar.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0375",
+    "topic": "Sentence Building",
+    "subject": "English Language",
+    "category": "Mechanics Punctuation",
+    "difficulty": "medium",
+    "file_path": "subjects/english/mechanics-punctuation/sentence-building.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0376",
+    "topic": "Punctuation",
+    "subject": "English Language",
+    "category": "Mechanics Punctuation",
+    "difficulty": "medium",
+    "file_path": "subjects/english/mechanics-punctuation/punctuation.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0377",
+    "topic": "Spelling Rules",
+    "subject": "English Language",
+    "category": "Mechanics Punctuation",
+    "difficulty": "medium",
+    "file_path": "subjects/english/mechanics-punctuation/spelling-rules.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0378",
+    "topic": "Reported Speech Question Tags",
+    "subject": "English Language",
+    "category": "Core Grammar",
+    "difficulty": "medium",
+    "file_path": "subjects/english/core-grammar/reported-speech-question-tags.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0379",
+    "topic": "Phrasal Verbs Idioms",
+    "subject": "English Language",
+    "category": "Core Grammar",
+    "difficulty": "medium",
+    "file_path": "subjects/english/core-grammar/phrasal-verbs-idioms.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0380",
+    "topic": "Infinitives Gerunds Participles",
+    "subject": "English Language",
+    "category": "Core Grammar",
+    "difficulty": "medium",
+    "file_path": "subjects/english/core-grammar/infinitives-gerunds-participles.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0381",
+    "topic": "Concord Verbals",
+    "subject": "English Language",
+    "category": "Core Grammar",
+    "difficulty": "medium",
+    "file_path": "subjects/english/core-grammar/concord-verbals.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0382",
+    "topic": "Tense Aspect",
+    "subject": "English Language",
+    "category": "Core Grammar",
+    "difficulty": "medium",
+    "file_path": "subjects/english/core-grammar/tense-aspect.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0383",
+    "topic": "Sentence Classification",
+    "subject": "English Language",
+    "category": "Core Grammar",
+    "difficulty": "medium",
+    "file_path": "subjects/english/core-grammar/sentence-classification.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0384",
+    "topic": "Antonyms Synonyms Homonyms",
+    "subject": "English Language",
+    "category": "Core Grammar",
+    "difficulty": "medium",
+    "file_path": "subjects/english/core-grammar/antonyms-synonyms-homonyms.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0385",
+    "topic": "Language Registers",
+    "subject": "English Language",
+    "category": "Core Grammar",
+    "difficulty": "medium",
+    "file_path": "subjects/english/core-grammar/language-registers.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0386",
+    "topic": "Phrases Clauses",
+    "subject": "English Language",
+    "category": "Foundations",
+    "difficulty": "easy",
+    "file_path": "subjects/english/foundations/phrases-clauses.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0387",
+    "topic": "Morphemes Words",
+    "subject": "English Language",
+    "category": "Foundations",
+    "difficulty": "easy",
+    "file_path": "subjects/english/foundations/morphemes-words.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0388",
+    "topic": "Sentence Structure",
+    "subject": "English Language",
+    "category": "Foundations",
+    "difficulty": "easy",
+    "file_path": "subjects/english/foundations/sentence-structure.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0389",
+    "topic": "Word Classes",
+    "subject": "English Language",
+    "category": "Foundations",
+    "difficulty": "easy",
+    "file_path": "subjects/english/foundations/word-classes.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0390",
+    "topic": "Sentence Elements",
+    "subject": "English Language",
+    "category": "Foundations",
+    "difficulty": "easy",
+    "file_path": "subjects/english/foundations/sentence-elements.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0391",
+    "topic": "Vowel Consonant Stress",
+    "subject": "English Language",
+    "category": "Phonetics Oral",
+    "difficulty": "medium",
+    "file_path": "subjects/english/phonetics-oral/vowel-consonant-stress.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0392",
+    "topic": "Minimal Pair Drills",
+    "subject": "English Language",
+    "category": "Phonetics Oral",
+    "difficulty": "medium",
+    "file_path": "subjects/english/phonetics-oral/minimal-pair-drills.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0393",
+    "topic": "Sound System Ipa",
+    "subject": "English Language",
+    "category": "Phonetics Oral",
+    "difficulty": "medium",
+    "file_path": "subjects/english/phonetics-oral/sound-system-ipa.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0394",
+    "topic": "Syllable Intonation",
+    "subject": "English Language",
+    "category": "Phonetics Oral",
+    "difficulty": "medium",
+    "file_path": "subjects/english/phonetics-oral/syllable-intonation.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0395",
+    "topic": "Long Vowel Sounds",
+    "subject": "English Language",
+    "category": "Phonetics Oral",
+    "difficulty": "medium",
+    "file_path": "subjects/english/phonetics-oral/long-vowel-sounds.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0396",
+    "topic": "Writing Process",
+    "subject": "English Language",
+    "category": "Writing",
+    "difficulty": "medium",
+    "file_path": "subjects/english/writing/writing-process.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0397",
+    "topic": "Summary Precis",
+    "subject": "English Language",
+    "category": "Writing",
+    "difficulty": "medium",
+    "file_path": "subjects/english/writing/summary-precis.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0398",
+    "topic": "Advanced Sentence Building",
+    "subject": "English Language",
+    "category": "Writing",
+    "difficulty": "hard",
+    "file_path": "subjects/english/writing/advanced-sentence-building.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0399",
+    "topic": "Paragraph Structure",
+    "subject": "English Language",
+    "category": "Writing",
+    "difficulty": "medium",
+    "file_path": "subjects/english/writing/paragraph-structure.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0400",
+    "topic": "Essay Types",
+    "subject": "English Language",
+    "category": "Writing",
+    "difficulty": "medium",
+    "file_path": "subjects/english/writing/essay-types.html",
+    "estimated_hours": 1
+  },
+  {
+    "id": "topic-0401",
+    "topic": "Letter Writing",
+    "subject": "English Language",
+    "category": "Writing",
+    "difficulty": "medium",
+    "file_path": "subjects/english/writing/letter-writing.html",
+    "estimated_hours": 1
+  }
+]

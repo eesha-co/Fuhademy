@@ -1,0 +1,342 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Student Dashboard — Modern</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  </head>
+  <body class="bg-slate-50 text-slate-800">
+    <div class="min-h-screen flex">
+      <!-- Sidebar injected by sidebar-fragment.js -->
+        <div class="flex items-center gap-3">
+          <img src="/assets/images/logo.png" alt="logo" class="h-12 w-12 rounded-full shadow-sm">
+          <div>
+            <div class="text-lg font-bold text-sky-700">JUANOVA CORTEX</div>
+            <div class="text-xs text-slate-500">Student Dashboard</div>
+          </div>
+        </div>
+
+        <nav class="flex-1 overflow-auto">
+          <ul class="space-y-1">
+            <li><a href="student-dashboard.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-home text-sky-600"></i> Home</a></li>
+            <li><a href="news-feed-gemini.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-newspaper text-pink-500"></i> News Feed</a></li>
+            <li><a href="ai-tutor-chatbot.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-robot text-purple-500"></i> AI Tutor</a></li>
+            <li><a href="study-plan.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-calendar-check text-green-500"></i> Study Plan</a></li>
+            <li><a href="video-library.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-video text-red-500"></i> Video Library</a></li>
+            <li><a href="mock-exams.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-pencil-alt text-orange-500"></i> Mock Exams</a></li>
+            <li><a href="notifications.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-bell text-pink-600"></i> Notifications</a></li>
+            <li><a href="student-live-session.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-chalkboard-teacher text-blue-400"></i> Live Sessions</a></li>
+            <li><a href="smart-note.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-sticky-note text-yellow-500"></i> Smart Notes</a></li>
+          </ul>
+        </nav>
+
+        <div class="text-sm text-slate-500">
+          <div class="mb-2">Account</div>
+          <div class="flex items-center gap-3">
+            <img id="avatar-sm" src="../assets/images/unnamed.jpg" alt="avatar" class="h-10 w-10 rounded-full border">
+            <div>
+              <div id="userName" class="font-semibold">Student</div>
+              <div id="userLevel" class="text-xs text-slate-400"></div>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Main area -->
+  <div class="flex-1 flex flex-col ml-72">
+        <!-- Topbar -->
+        <header class="flex items-center justify-between p-4 bg-white border-b border-slate-200">
+          <div class="flex items-center gap-3">
+            <button id="toggleSidebar" class="p-2 rounded-md hover:bg-slate-100" title="Toggle sidebar"><i class="fas fa-bars"></i></button>
+            <div class="relative">
+              <input id="globalSearch" type="search" placeholder="Search subjects, topics, resources..." class="w-[520px] hidden md:inline-block pl-10 pr-4 py-2 rounded-full border border-slate-200 bg-white focus:outline-none focus:ring-2 focus:ring-sky-100">
+              <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-4">
+            <div class="relative">
+              <button id="notifBtn" class="p-2 rounded-full hover:bg-slate-50" aria-label="Notifications"><i class="fas fa-bell text-sky-600"></i></button>
+              <span id="notifCount" class="absolute -top-1 -right-1 bg-pink-500 text-white rounded-full w-5 h-5 text-xs flex items-center justify-center">3</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <div class="text-right mr-2">
+                <div id="topName" class="font-semibold">Student Name</div>
+                <div id="topLevel" class="text-xs text-slate-400">SS 3</div>
+              </div>
+              <img id="topAvatar" src="../assets/images/unnamed.jpg" alt="avatar" class="h-10 w-10 rounded-full border-2">
+            </div>
+          </div>
+        </header>
+
+        <!-- Content -->
+        <main class="p-6 space-y-6">
+          <!-- Hero + Quick Stats -->
+          <section class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div class="lg:col-span-2 bg-gradient-to-r from-sky-600 to-sky-500 text-white rounded-2xl p-6 shadow">
+              <h2 class="text-2xl font-bold mb-1">Welcome back, <span id="heroName">Student</span> 👋</h2>
+              <p id="heroMsg" class="opacity-90 mb-4">Let's make today productive — 3 tasks ready for you.</p>
+              <div class="flex gap-3">
+                <a href="study-plan.html" class="bg-white/20 px-4 py-2 rounded-full font-medium hover:bg-white/30">Open Study Plan</a>
+                <a href="mock-exams.html" class="bg-white/20 px-4 py-2 rounded-full font-medium hover:bg-white/30">Take a Mock Test</a>
+                <a href="ai-tutor-chatbot.html" class="bg-white/20 px-4 py-2 rounded-full font-medium hover:bg-white/30">Chat with AI Tutor</a>
+              </div>
+            </div>
+
+            <div class="bg-white rounded-2xl p-4 shadow flex flex-col gap-4">
+              <div class="flex items-center justify-between">
+                <div class="text-sm text-slate-500">Weekly Progress</div>
+                <div class="text-sm font-semibold">75%</div>
+              </div>
+              <div class="w-full h-3 bg-slate-100 rounded-full overflow-hidden"><div id="weekBar" class="h-full bg-sky-500 w-[75%]"></div></div>
+
+              <div class="flex items-center justify-between">
+                <div class="text-sm text-slate-500">Mock Test Avg</div>
+                <div class="text-sm font-semibold">82%</div>
+              </div>
+              <div class="w-full h-3 bg-slate-100 rounded-full overflow-hidden"><div id="mockBar" class="h-full bg-yellow-400 w-[82%]"></div></div>
+
+              <div class="text-sm text-slate-500">Streak</div>
+              <div class="text-lg font-bold">6 days</div>
+            </div>
+          </section>
+
+          <!-- Subjects grid -->
+          <section>
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-lg font-semibold">Subjects</h3>
+              <a href="subjects.html" class="text-sm text-sky-600">View all</a>
+            </div>
+
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+              <a href="subjects/mathematics.html" class="bg-white rounded-2xl p-5 shadow hover:scale-105 transition text-center">
+                <div class="text-2xl text-sky-500 mb-2"><i class="fas fa-square-root-alt"></i></div>
+                <div class="font-semibold">Mathematics</div>
+              </a>
+              <a href="subjects/physics.html" class="bg-white rounded-2xl p-5 shadow hover:scale-105 transition text-center">
+                <div class="text-2xl text-yellow-500 mb-2"><i class="fas fa-atom"></i></div>
+                <div class="font-semibold">Physics</div>
+              </a>
+              <a href="subjects/chemistry.html" class="bg-white rounded-2xl p-5 shadow hover:scale-105 transition text-center">
+                <div class="text-2xl text-pink-500 mb-2"><i class="fas fa-flask"></i></div>
+                <div class="font-semibold">Chemistry</div>
+              </a>
+              <a href="subjects/biology.html" class="bg-white rounded-2xl p-5 shadow hover:scale-105 transition text-center">
+                <div class="text-2xl text-green-500 mb-2"><i class="fas fa-dna"></i></div>
+                <div class="font-semibold">Biology</div>
+              </a>
+              <a href="subjects/english.html" class="bg-white rounded-2xl p-5 shadow hover:scale-105 transition text-center">
+                <div class="text-2xl text-indigo-500 mb-2"><i class="fas fa-book"></i></div>
+                <div class="font-semibold">English</div>
+              </a>
+            </div>
+          </section>
+
+          <!-- Two column layout: Study plan + Activity -->
+          <section class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div class="lg:col-span-2 bg-white rounded-2xl p-6 shadow space-y-4">
+              <div class="flex items-center justify-between">
+                <h4 class="font-semibold">Today — Study Plan</h4>
+                <div class="text-sm text-slate-400">3 tasks</div>
+              </div>
+              <ul id="todayTasks" class="space-y-3">
+                <!-- JS will populate tasks -->
+              </ul>
+
+              <div class="mt-4 flex gap-3">
+                <button id="addTaskBtn" class="px-4 py-2 bg-sky-600 text-white rounded-full">Add Task</button>
+                <button id="markCompleteAll" class="px-4 py-2 border rounded-full">Mark all complete</button>
+              </div>
+            </div>
+
+            <aside class="bg-white rounded-2xl p-6 shadow space-y-4">
+              <h4 class="font-semibold">Recent Activity</h4>
+              <div id="activityFeed" class="space-y-3 text-sm text-slate-600">
+                <!-- JS will populate feed -->
+              </div>
+
+              <hr>
+              <h5 class="font-semibold">Upcoming Live Sessions</h5>
+              <div id="upcoming" class="space-y-2 text-sm">
+                <!-- JS populate -->
+              </div>
+            </aside>
+          </section>
+
+        </main>
+
+        <!-- Floating quick actions -->
+        <div class="fixed bottom-8 right-8 flex flex-col gap-3 z-40">
+          <button id="openAiChat" class="bg-purple-600 text-white px-4 py-3 rounded-full shadow-lg hover:scale-105 transition">Chat with AI</button>
+          <button id="openNotes" class="bg-yellow-400 text-white px-4 py-3 rounded-full shadow-lg hover:scale-105 transition">Smart Notes</button>
+        </div>
+
+      </div>
+    </div>
+
+    <link rel="stylesheet" href="./dashboard-styles.css">
+
+    <script type="module">
+      // Firebase wiring and helper functions copied from existing dashboard
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+      import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+      import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+      import { firebaseConfig } from '../js/firebase-config.js';
+
+      const app = initializeApp(firebaseConfig);
+      const auth = getAuth(app);
+      const db = getFirestore(app);
+
+      // Helper functions
+      function setText(id, text) {
+        const el = document.getElementById(id);
+        if (el) el.textContent = text;
+      }
+      function setImage(id, url) {
+        const el = document.getElementById(id);
+        if (el) el.src = url;
+      }
+      function showError(message, duration = 5000) {
+        // reuse the project's error-toast if present
+        const toast = document.getElementById('error-toast');
+        const errorMsg = document.getElementById('error-message');
+        if (toast && errorMsg) {
+          errorMsg.textContent = message;
+          toast.classList.remove('hidden');
+          setTimeout(() => toast.classList.add('hidden'), duration);
+        } else {
+          // fallback to console
+          console.error(message);
+        }
+      }
+      function animateProgress(elementId, targetValue) {
+        const element = document.getElementById(elementId);
+        if (!element) return;
+        let currentWidth = 0;
+        const animationDuration = 1000;
+        const steps = 60;
+        const increment = targetValue / steps;
+        const stepDuration = animationDuration / steps;
+        const animation = setInterval(() => {
+          if (currentWidth >= targetValue) {
+            clearInterval(animation);
+            element.style.width = `${targetValue}%`;
+            return;
+          }
+          currentWidth += increment;
+          element.style.width = `${currentWidth}%`;
+        }, stepDuration);
+      }
+      function generateWelcomeMessage(userData) {
+        const hour = new Date().getHours();
+        let timeBasedGreeting = 'Hello';
+        if (hour < 12) timeBasedGreeting = 'Good morning';
+        else if (hour < 18) timeBasedGreeting = 'Good afternoon';
+        else timeBasedGreeting = 'Good evening';
+        if (!userData || !userData.lastLogin) {
+          return `${timeBasedGreeting}! Welcome to your personalized learning dashboard.`;
+        }
+        const progress = userData.weeklyProgress || 0;
+        if (progress > 75) return `${timeBasedGreeting}! You're doing great! Keep up the excellent work!`;
+        if (progress > 50) return `${timeBasedGreeting}! You're making good progress. Let's aim even higher!`;
+        return `${timeBasedGreeting}! Ready to boost your progress today?`;
+      }
+
+      // Small interactive layer: mock data / handlers (UI wiring)
+  const user = { name: 'Jane Doe', level: '200', avatar: '../assets/images/unnamed.jpg' };
+  setText('userName', user.name);
+  setText('topName', user.name);
+  setText('heroName', user.name.split(' ')[0]);
+  const mockNormLevel = user && user.level ? (String(user.level).startsWith('SS') ? user.level : 'SS 3') : '';
+  setText('userLevel', mockNormLevel);
+  setText('topLevel', mockNormLevel);
+  setImage('avatar-sm', user.avatar);
+  setImage('topAvatar', user.avatar);
+
+      // Sidebar toggle
+      const sidebar = document.getElementById('sidebar');
+      document.getElementById('toggleSidebar').addEventListener('click', () => {
+        sidebar.classList.toggle('-translate-x-full');
+      });
+
+      // Mock tasks and UI renderers
+      const tasks = [
+        {id:1, title:'Read Physics: Motion (30m)', due:'Today 4:00 PM', done:false},
+        {id:2, title:'Math: Past Questions Set A', due:'Today 6:00 PM', done:false},
+        {id:3, title:'Smart Notes: Summarize Chapter 2', due:'Tomorrow 9:00 AM', done:false}
+      ];
+      function renderTasks(){
+        const el = document.getElementById('todayTasks'); el.innerHTML='';
+        tasks.forEach(t=>{
+          const li = document.createElement('li');
+          li.className = 'flex items-center justify-between p-3 border rounded-lg';
+          li.innerHTML = `<div class="flex items-center gap-3"><input type="checkbox" data-id="${t.id}" ${t.done? 'checked':''} class="h-4 w-4"><div><div class="font-medium">${t.title}</div><div class="text-xs text-slate-400">${t.due}</div></div></div><div><button data-id="${t.id}" class="text-slate-500 hover:text-sky-600">Start</button></div>`;
+          el.appendChild(li);
+        });
+      }
+      renderTasks();
+
+      // Activity feed
+      const feed = [
+        {text:'Completed Mock Test — Physics (82%)', time:'2h ago'},
+        {text:'New video added — Simple Pendulum', time:'1d ago'},
+        {text:'AI Tutor answered your question', time:'2d ago'}
+      ];
+      function renderFeed(){
+        const el = document.getElementById('activityFeed'); el.innerHTML='';
+        feed.forEach(f=>{
+          const d = document.createElement('div'); d.className='flex items-start gap-3'; d.innerHTML = `<div class="w-2 h-2 rounded-full bg-sky-500 mt-2"></div><div><div class="text-sm">${f.text}</div><div class="text-xs text-slate-400">${f.time}</div></div>`; el.appendChild(d);
+        });
+      }
+      renderFeed();
+
+      // Upcoming live sessions
+      const upcoming = [{title:'Physics Live: Mechanics Q&A', time:'Today 5:00 PM', link:'student-live-session.html'}];
+      function renderUpcoming(){
+        const el = document.getElementById('upcoming'); el.innerHTML='';
+        upcoming.forEach(u=>{
+          const row = document.createElement('div'); row.className='flex items-center justify-between'; row.innerHTML = `<div><div class="font-medium">${u.title}</div><div class="text-xs text-slate-400">${u.time}</div></div><div><a href="${u.link}" class="text-sky-600 text-sm">Join</a></div>`; el.appendChild(row);
+        });
+      }
+      renderUpcoming();
+
+      // Quick actions
+      document.getElementById('openAiChat').addEventListener('click', ()=> window.location.href='ai-tutor-chatbot.html');
+      document.getElementById('openNotes').addEventListener('click', ()=> window.location.href='smart-note.html');
+
+      // Basic auth state handling: if logged in, replace mock user with real user data
+      onAuthStateChanged(auth, async (u)=>{
+        if (!u) return; // keep mock for anonymous view
+        try {
+          const userDoc = await getDoc(doc(db, 'students', u.uid));
+          const data = userDoc.exists() ? userDoc.data() : {};
+          const displayName = data.displayName || u.displayName || u.email || 'Student';
+          setText('userName', displayName);
+          setText('topName', displayName);
+          setText('heroName', (displayName.split(' ')[0]||displayName));
+          setImage('avatar-sm', data.photoURL || u.photoURL || '../assets/images/unnamed.jpg');
+          setImage('topAvatar', data.photoURL || u.photoURL || '../assets/images/unnamed.jpg');
+          const normLevel2 = (data && data.level) ? (String(data.level).startsWith('SS') ? data.level : 'SS 3') : '';
+          setText('userLevel', normLevel2);
+          setText('topLevel', normLevel2);
+          // update progress bars if available
+          if (data.weeklyProgress) {
+            setText('weekly-progress', data.weeklyProgress + '%');
+            animateProgress('weekly-progress-bar', data.weeklyProgress);
+          }
+        } catch (err) {
+          showError('Failed to load user data: ' + (err && err.message ? err.message : String(err)));
+        }
+      });
+
+    </script>
+  <script type="module" src="./js/sidebar-fragment.js"></script>
+  </body>
+</html>

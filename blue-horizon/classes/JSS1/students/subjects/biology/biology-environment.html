@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Biology — Environment</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+</head>
+<body class="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-100 font-inter">
+  <nav class="fixed inset-x-0 top-0 bg-white/60 backdrop-blur-sm border-b border-blue-100 z-50">
+    <div class="max-w-6xl mx-auto px-4 py-3">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-4">
+          <nav class="text-sm text-blue-600">
+            <a href="../student-dashboard.html" class="hover:underline">Dashboard</a>
+            <span class="mx-2">/</span>
+            <a href="biology.html" class="hover:underline">Biology</a>
+            <span class="mx-2">/</span>
+            <span class="font-semibold">Environment</span>
+          </nav>
+        </div>
+        <div class="flex items-center gap-3">
+          <div class="relative">
+            <i class="fas fa-search text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
+            <input aria-label="Search" class="pl-10 pr-3 py-2 rounded-lg border border-slate-200 bg-white" placeholder="Search biology topics" />
+          </div>
+          <img src="/assets/images/logo.png" alt="logo" class="h-10 w-auto" />
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <main class="max-w-6xl mx-auto px-4 pt-24 pb-12">
+    <header class="text-center mb-6">
+      <h1 class="text-3xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-700 to-blue-400">Environment</h1>
+      <p class="text-gray-600 mt-2">Ecosystems and conservation</p>
+    </header>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <a href="#" onclick="openModal('Basic Ecological Concepts')" class="block rounded-xl bg-white/60 backdrop-blur-sm shadow-sm border p-5 hover:shadow-md transition group">
+        <h3 class="font-semibold text-blue-700 group-hover:text-blue-500">Basic Ecological Concepts</h3>
+      </a>
+
+      <a href="#" onclick="openModal('Functioning Ecosystem')" class="block rounded-xl bg-white/60 backdrop-blur-sm shadow-sm border p-5 hover:shadow-md transition group">
+        <h3 class="font-semibold text-blue-700 group-hover:text-blue-500">Functioning Ecosystem</h3>
+      </a>
+
+      <a href="#" onclick="openModal('Energy transformation in Nature')" class="block rounded-xl bg-white/60 backdrop-blur-sm shadow-sm border p-5 hover:shadow-md transition group">
+        <h3 class="font-semibold text-blue-700 group-hover:text-blue-500">Energy transformation in Nature</h3>
+      </a>
+
+      <a href="#" onclick="openModal('Aquatic Habitats')" class="block rounded-xl bg-white/60 backdrop-blur-sm shadow-sm border p-5 hover:shadow-md transition group">
+        <h3 class="font-semibold text-blue-700 group-hover:text-blue-500">Aquatic Habitats</h3>
+      </a>
+
+      <a href="#" onclick="openModal('Terrestrial Habitats')" class="block rounded-xl bg-white/60 backdrop-blur-sm shadow-sm border p-5 hover:shadow-md transition group">
+        <h3 class="font-semibold text-blue-700 group-hover:text-blue-500">Terrestrial Habitats</h3>
+      </a>
+
+      <a href="#" onclick="openModal('Nutrient Cycling in Nature')" class="block rounded-xl bg-white/60 backdrop-blur-sm shadow-sm border p-5 hover:shadow-md transition group">
+        <h3 class="font-semibold text-blue-700 group-hover:text-blue-500">Nutrient Cycling in Nature</h3>
+      </a>
+
+      <a href="#" onclick="openModal('Ecological Management')" class="block rounded-xl bg-white/60 backdrop-blur-sm shadow-sm border p-5 hover:shadow-md transition group">
+        <h3 class="font-semibold text-blue-700 group-hover:text-blue-500">Ecological Management</h3>
+      </a>
+
+      <a href="#" onclick="openModal('Conservation of Natural Resources')" class="block rounded-xl bg-white/60 backdrop-blur-sm shadow-sm border p-5 hover:shadow-md transition group">
+        <h3 class="font-semibold text-blue-700 group-hover:text-blue-500">Conservation of Natural Resources</h3>
+      </a>
+
+      <a href="#" onclick="openModal('Ecology of Population')" class="block rounded-xl bg-white/60 backdrop-blur-sm shadow-sm border p-5 hover:shadow-md transition group">
+        <h3 class="font-semibold text-blue-700 group-hover:text-blue-500">Ecology of Population</h3>
+      </a>
+
+      <a href="#" onclick="openModal('Adaptation for survival')" class="block rounded-xl bg-white/60 backdrop-blur-sm shadow-sm border p-5 hover:shadow-md transition group">
+        <h3 class="font-semibold text-blue-700 group-hover:text-blue-500">Adaptation for survival</h3>
+      </a>
+    </div>
+  </main>
+
+  <!-- Modal -->
+  <div id="modal" class="hidden fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50">
+    <div class="flex items-center justify-center min-h-screen px-4">
+      <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-xl">
+        <div class="flex justify-between items-center mb-4">
+          <h2 id="modalTitle" class="text-xl font-semibold text-blue-700">Sub-topics:</h2>
+          <button onclick="closeModal()" class="text-slate-400 hover:text-slate-600">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        <div id="modalContent" class="space-y-4"></div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const subtopics = {
+      'Basic Ecological Concepts': [
+        { name: 'Abiotic and biotic factors, measurement, human impact', link: 'biology-explanation.html?topic=Abiotic%20and%20biotic%20factors%2C%20measurement%2C%20human%20impact' },
+        { name: 'deduce effects of abiotic/biotic factors', link: 'biology-explanation.html?topic=deduce%20effects%20of%20abiotic%2Fbiotic%20factors' },
+        { name: 'describe human impact', link: 'biology-explanation.html?topic=describe%20human%20impact' }
+      ],
+      'Functioning Ecosystem': [
+        { name: 'Food chains/webs, nutrient cycles (carbon, water, nitrogen)', link: 'biology-explanation.html?topic=Food%20chains%2Fwebs%2C%20nutrient%20cycles%20(carbon%2C%20water%2C%20nitrogen)' },
+        { name: 'determine examples of symbiosis', link: 'biology-explanation.html?topic=determine%20examples%20of%20symbiosis' },
+        { name: 'analyze food chains/webs', link: 'biology-explanation.html?topic=analyze%20food%20chains%2Fwebs' },
+        { name: 'describe cycles and significance', link: 'biology-explanation.html?topic=describe%20cycles%20and%20significance' }
+      ],
+      'Energy transformation in Nature': [
+        { name: 'Energy flow in ecosystem', link: 'biology-explanation.html?topic=Energy%20flow%20in%20ecosystem' },
+        { name: 'analyze energy transfer and loss', link: 'biology-explanation.html?topic=analyze%20energy%20transfer%20and%20loss' }
+      ],
+      'Aquatic Habitats': [
+        { name: 'Aquatic and terrestrial habitats, Nigerian biomes', link: 'biology-explanation.html?topic=Aquatic%20and%20terrestrial%20habitats%2C%20Nigerian%20biomes' },
+        { name: 'associate organisms with habitats', link: 'biology-explanation.html?topic=associate%20organisms%20with%20habitats' },
+        { name: 'relate features to biomes', link: 'biology-explanation.html?topic=relate%20features%20to%20biomes' }
+      ],
+      'Terrestrial Habitats': [
+        { name: 'Aquatic and terrestrial habitats, Nigerian biomes', link: 'biology-explanation.html?topic=Aquatic%20and%20terrestrial%20habitats%2C%20Nigerian%20biomes' },
+        { name: 'associate organisms with habitats', link: 'biology-explanation.html?topic=associate%20organisms%20with%20habitats' },
+        { name: 'relate features to biomes', link: 'biology-explanation.html?topic=relate%20features%20to%20biomes' }
+      ],
+      'Nutrient Cycling in Nature': [
+        { name: 'Food chains/webs, nutrient cycles (carbon, water, nitrogen)', link: 'biology-explanation.html?topic=Food%20chains%2Fwebs%2C%20nutrient%20cycles%20(carbon%2C%20water%2C%20nitrogen)' },
+        { name: 'describe cycles and significance', link: 'biology-explanation.html?topic=describe%20cycles%20and%20significance' }
+      ],
+      'Ecological Management': [
+        { name: 'Soil types, structure, components, fertility, conservation', link: 'biology-explanation.html?topic=Soil%20types%2C%20structure%2C%20components%2C%20fertility%2C%20conservation' },
+        { name: 'identify soil properties, relate to plant growth, apply conservation methods', link: 'biology-explanation.html?topic=identify%20soil%20properties%2C%20relate%20to%20plant%20growth%2C%20apply%20conservation%20methods' }
+      ],
+      'Conservation of Natural Resources': [
+        { name: 'Diseases, pollution, conservation, game reserves, health agencies', link: 'biology-explanation.html?topic=Diseases%2C%20pollution%2C%20conservation%2C%20game%20reserves%2C%20health%20agencies' },
+        { name: 'identify disease conditions, pollution types, conservation methods, and agencies', link: 'biology-explanation.html?topic=identify%20disease%20conditions%2C%20pollution%20types%2C%20conservation%20methods%2C%20and%20agencies' }
+      ],
+      'Ecology of Population': [
+        { name: 'Population density, competition, succession, factors affecting size', link: 'biology-explanation.html?topic=Population%20density%2C%20competition%2C%20succession%2C%20factors%20affecting%20size' },
+        { name: 'analyze population changes, competition, succession, and factors affecting size', link: 'biology-explanation.html?topic=analyze%20population%20changes%2C%20competition%2C%20succession%2C%20and%20factors%20affecting%20size' }
+      ],
+      'Adaptation for survival': [
+        { name: 'Structural, functional, and behavioural adaptations', link: 'biology-explanation.html?topic=Structural%2C%20functional%2C%20and%20behavioural%20adaptations' },
+        { name: 'describe adaptations to environment and way of life', link: 'biology-explanation.html?topic=describe%20adaptations%20to%20environment%20and%20way%20of%20life' },
+        { name: 'account for adaptation in food, protection, mating, temperature, and water conservation', link: 'biology-explanation.html?topic=account%20for%20adaptation%20in%20food%2C%20protection%2C%20mating%2C%20temperature%2C%20and%20water%20conservation' }
+      ]
+    };
+    function openModal(topic) {
+      document.getElementById('modal').classList.remove('hidden');
+      document.getElementById('modalTitle').textContent = 'Sub-topics: ' + topic;
+      const content = subtopics[topic] || [];
+      document.getElementById('modalContent').innerHTML = content.map(s => 
+        `<div class="flex items-center justify-between gap-4 p-3 rounded-lg hover:bg-slate-50">
+          <span class="text-slate-600">${s.name}</span>
+          <a href="${s.link}" class="flex-shrink-0 px-4 py-2 text-sm font-medium text-blue-600 hover:text-blue-500 bg-blue-50 hover:bg-blue-100 rounded-lg transition">
+            Start Learning
+          </a>
+        </div>`
+      ).join('');
+    }
+    function closeModal() {
+      document.getElementById('modal').classList.add('hidden');
+    }
+    window.onclick = function(event) {
+      const modal = document.getElementById('modal');
+      if(event.target === modal) closeModal();
+    }
+  </script>
+<!-- Topic Quiz System -->
+<script src="/js/topic-quiz-loader.js"></script>
+<script src="/js/topic-quiz-injector.js"></script>
+</body>
+</html>
+

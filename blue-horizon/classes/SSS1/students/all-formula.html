@@ -1,0 +1,463 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>All Formula - Prep100</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- MathJax for LaTeX rendering -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+    <!-- Preload user data -->
+        </script>
+        <script type="module" src="./js/sidebar-fragment.js"></script>
+    </body>
+    </html>
+            return fullName.split(' ')
+                .slice(0, 2)
+                .map(name => name.charAt(0))
+                .join('')
+                .toUpperCase();
+        }
+
+        // Initialize user data from cache immediately
+        try {
+            const cachedUserData = localStorage.getItem('cachedUserData_current');
+            if (cachedUserData) {
+                const { data } = JSON.parse(cachedUserData);
+                window.preloadedUserData = data;
+                
+                // Pre-initialize user interface as soon as DOM is ready
+                document.addEventListener('DOMContentLoaded', () => {
+                    if (window.preloadedUserData) {
+                        const user = window.preloadedUserData;
+                        const fullName = user.displayName || 'Student';
+                        const name = fullName.split(' ')[0];
+                        const level = (user.profile?.level || '').startsWith('SS') ? user.profile.level : 'SS 3';
+                        
+                        // Update all UI elements immediately
+                        const elements = {
+                            topName: fullName,
+                            userName: fullName,
+                            userLevel: level,
+                            'student-name': name // For personalized formula page elements
+                        };
+                        
+                        // Update text content
+                        Object.keys(elements).forEach(id => {
+                            const el = document.getElementById(id);
+                            if (el) el.textContent = elements[id];
+                        });
+                        
+                        // Update all avatars
+                        const initials = getInitials(fullName);
+                        const avatarUrl = user.photoURL || 
+                            `https://ui-avatars.com/api/?name=${encodeURIComponent(initials)}&background=2563eb&color=fff&size=128`;
+                        
+                        ['avatar-sm', 'topAvatar', 'user-avatar'].forEach(id => {
+                            const img = document.getElementById(id);
+                            if (img) img.src = avatarUrl;
+                        });
+                        
+                        // Store user context for formula interactions
+                        window.userContext = {
+                            name: fullName,
+                            shortName: name,
+                            level: level,
+                            avatarUrl: avatarUrl
+                        };
+                    }
+                });
+            }
+        } catch (e) {
+            console.warn('Error preloading user data:', e);
+        }
+    </script>
+    <style>
+        .formula-card { 
+            transition: all 0.3s ease; 
+            transform: perspective(1000px);
+        }
+        .formula-card:hover { 
+            transform: perspective(1000px) translateY(-5px) rotateX(2deg); 
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15); 
+        }
+        .mathjax { font-size: 1.3em; margin: 12px 0; }
+        .copy-btn { 
+            transition: all 0.2s ease; 
+            background: linear-gradient(to right, #3b82f6, #2563eb);
+        }
+        .copy-btn:hover { 
+            transform: scale(1.05); 
+            background: linear-gradient(to right, #2563eb, #1e40af);
+        }
+        .modal { 
+            display: none; 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            background: rgba(0, 0, 0, 0.5); 
+            align-items: center; 
+            justify-content: center; 
+            z-index: 1000; 
+        }
+        .modal-content { 
+            background: white; 
+            padding: 20px; 
+            border-radius: 10px; 
+            width: 90%; 
+            max-width: 500px; 
+        }
+    </style>
+</head>
+  <body class="bg-slate-50 text-slate-800">
+    <div class="min-h-screen flex">
+            <!-- Sidebar injected by sidebar-fragment.js -->
+
+    <!-- Main area -->
+    <div id="main-content" class="flex-1 flex flex-col lg:ml-72">
+            <!-- Top Bar (canonical) -->
+<iframe src="js/student-template.html" title="Student template" style="margin-left: 250px;"></iframe>
+
+
+        <main class="p-6 space-y-6">
+        <!-- Banner / Header -->
+        <div class="rounded-3xl bg-gradient-to-r from-yellow-500 to-yellow-400 text-white p-6 shadow mb-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h1 class="text-2xl font-extrabold">All Formula</h1>
+                        <p class="text-yellow-100 mt-1">Explore essential Physics, Chemistry, and Mathematics formulas in stylish cards.</p>
+                    </div>
+                    <button id="addFormulaBtn" class="bg-white text-yellow-500 px-4 py-2 rounded-full hover:bg-gray-100 transition"><i class="fas fa-plus mr-2"></i>Add Formula</button>
+                </div>
+            </div>
+
+            <!-- Filter -->
+            <div class="mb-6">
+                <label for="subjectFilter" class="text-gray-700 font-semibold mr-2">Filter by Subject:</label>
+                <select id="subjectFilter" class="border-2 border-gray-200 rounded-full px-4 py-2 focus:border-blue-500">
+                    <option value="all">All Subjects</option>
+                    <option value="Physics">Physics</option>
+                    <option value="Chemistry">Chemistry</option>
+                    <option value="Mathematics">Mathematics</option>
+                </select>
+            </div>
+
+            <!-- Page specific content -->
+            <div class="bg-white rounded-xl p-6 shadow">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="formulaContainer">
+                    <!-- Area of a Circle -->
+                    <div class="formula-card bg-white p-6 rounded-xl shadow-lg border border-gray-100" data-subject="Mathematics">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-2">Area of a Circle</h3>
+                        <div class="mathjax">\[ A = \pi r^2 \]</div>
+                        <p class="text-gray-600 text-sm">Calculates the area of a circle given its radius.</p>
+                        <button class="copy-btn text-white px-4 py-2 rounded-full mt-4 w-full" onclick="copyToClipboard('A = \\pi r^2')">Copy Formula</button>
+                    </div>
+                    <!-- Ideal Gas Law -->
+                    <div class="formula-card bg-white p-6 rounded-xl shadow-lg border border-gray-100" data-subject="Chemistry">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-2">Ideal Gas Law</h3>
+                        <div class="mathjax">\[ PV = nRT \]</div>
+                        <p class="text-gray-600 text-sm">Relates pressure, volume, moles, gas constant, and temperature for an ideal gas.</p>
+                        <button class="copy-btn text-white px-4 py-2 rounded-full mt-4 w-full" onclick="copyToClipboard('PV = nRT')">Copy Formula</button>
+                    </div>
+                    <!-- Kinematic Equation (Velocity) -->
+                    <div class="formula-card bg-white p-6 rounded-xl shadow-lg border border-gray-100" data-subject="Physics">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-2">Kinematic Equation (Velocity)</h3>
+                        <div class="mathjax">\[ v = u + at \]</div>
+                        <p class="text-gray-600 text-sm">Final velocity is initial velocity plus acceleration times time.</p>
+                        <button class="copy-btn text-white px-4 py-2 rounded-full mt-4 w-full" onclick="copyToClipboard('v = u + at')">Copy Formula</button>
+                    </div>
+                    <!-- Mole Concept -->
+                    <div class="formula-card bg-white p-6 rounded-xl shadow-lg border border-gray-100" data-subject="Chemistry">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-2">Mole Concept</h3>
+                        <div class="mathjax">\[ n = \frac{m}{M} \]</div>
+                        <p class="text-gray-600 text-sm">Number of moles is mass divided by molar mass.</p>
+                        <button class="copy-btn text-white px-4 py-2 rounded-full mt-4 w-full" onclick="copyToClipboard('n = \\frac{m}{M}')">Copy Formula</button>
+                    </div>
+                    <!-- Newton's Second Law -->
+                    <div class="formula-card bg-white p-6 rounded-xl shadow-lg border border-gray-100" data-subject="Physics">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-2">Newton's Second Law</h3>
+                        <div class="mathjax">\[ F = ma \]</div>
+                        <p class="text-gray-600 text-sm">Force equals mass times acceleration, describing how objects move under external forces.</p>
+                        <button class="copy-btn text-white px-4 py-2 rounded-full mt-4 w-full" onclick="copyToClipboard('F = ma')">Copy Formula</button>
+                    </div>
+                    <!-- pH Calculation -->
+                    <div class="formula-card bg-white p-6 rounded-xl shadow-lg border border-gray-100" data-subject="Chemistry">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-2">pH Calculation</h3>
+                        <div class="mathjax">\[ \text{pH} = -\log[H^+] \]</div>
+                        <p class="text-gray-600 text-sm">pH is the negative logarithm of hydrogen ion concentration.</p>
+                        <button class="copy-btn text-white px-4 py-2 rounded-full mt-4 w-full" onclick="copyToClipboard('\\text{pH} = -\\log[H^+]')">Copy Formula</button>
+                    </div>
+                    <!-- Pythagorean Theorem -->
+                    <div class="formula-card bg-white p-6 rounded-xl shadow-lg border border-gray-100" data-subject="Mathematics">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-2">Pythagorean Theorem</h3>
+                        <div class="mathjax">\[ a^2 + b^2 = c^2 \]</div>
+                        <p class="text-gray-600 text-sm">Relates the sides of a right triangle, where \( c \) is the hypotenuse.</p>
+                        <button class="copy-btn text-white px-4 py-2 rounded-full mt-4 w-full" onclick="copyToClipboard('a^2 + b^2 = c^2')">Copy Formula</button>
+                    </div>
+                    <!-- Quadratic Formula -->
+                    <div class="formula-card bg-white p-6 rounded-xl shadow-lg border border-gray-100" data-subject="Mathematics">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-2">Quadratic Formula</h3>
+                        <div class="mathjax">\[ x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a} \]</div>
+                        <p class="text-gray-600 text-sm">Solves quadratic equations of the form \( ax^2 + bx + c = 0 \).</p>
+                        <button class="copy-btn text-white px-4 py-2 rounded-full mt-4 w-full" onclick="copyToClipboard('x = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}')">Copy Formula</button>
+                    </div>
+                    <!-- Work Done -->
+                    <div class="formula-card bg-white p-6 rounded-xl shadow-lg border border-gray-100" data-subject="Physics">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-2">Work Done</h3>
+                        <div class="mathjax">\[ W = Fd \cos\theta \]</div>
+                        <p class="text-gray-600 text-sm">Work is force times displacement times the cosine of the angle between them.</p>
+                        <button class="copy-btn text-white px-4 py-2 rounded-full mt-4 w-full" onclick="copyToClipboard('W = Fd \\cos\\theta')">Copy Formula</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal for Adding Formula -->
+            <div id="addFormulaModal" class="modal">
+                <div class="modal-content">
+                    <h2 class="text-xl font-bold mb-4">Add New Formula</h2>
+                    <form id="addFormulaForm">
+                        <div class="mb-4">
+                            <label for="formulaTitle" class="block text-gray-700 font-semibold">Title</label>
+                            <input type="text" id="formulaTitle" class="w-full border-2 border-gray-200 rounded-lg px-4 py-2" required>
+                        </div>
+                        <div class="mb-4">
+                            <label for="formulaLatex" class="block text-gray-700 font-semibold">LaTeX Formula</label>
+                            <input type="text" id="formulaLatex" class="w-full border-2 border-gray-200 rounded-lg px-4 py-2" required>
+                        </div>
+                        <div class="mb-4">
+                            <label for="formulaDescription" class="block text-gray-700 font-semibold">Description</label>
+                            <textarea id="formulaDescription" class="w-full border-2 border-gray-200 rounded-lg px-4 py-2" required></textarea>
+                        </div>
+                        <div class="mb-4">
+                            <label for="formulaSubject" class="block text-gray-700 font-semibold">Subject</label>
+                            <select id="formulaSubject" class="w-full border-2 border-gray-200 rounded-lg px-4 py-2" required>
+                                <option value="Physics">Physics</option>
+                                <option value="Chemistry">Chemistry</option>
+                                <option value="Mathematics">Mathematics</option>
+                            </select>
+                        </div>
+                        <div class="flex justify-end gap-4">
+                            <button type="button" id="cancelFormulaBtn" class="px-4 py-2 rounded-full bg-gray-200 text-gray-700 hover:bg-gray-300">Cancel</button>
+                            <button type="submit" class="px-4 py-2 rounded-full bg-blue-500 text-white hover:bg-blue-600">Add</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+            if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+                try {
+                    var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                    var firstSheetName = workbook.SheetNames[0];
+                    var worksheet = workbook.Sheets[firstSheetName];
+                    var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                    var filteredData = jsonData.filter(row => row.some(filledCell));
+                    var headerRowIndex = filteredData.findIndex((row, index) =>
+                      row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                    );
+                    if (headerRowIndex === -1 || headerRowIndex > 25) {
+                      headerRowIndex = 0;
+                    }
+                    var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex));
+                    csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                    return csv;
+                } catch (e) {
+                    console.error(e);
+                    return "";
+                }
+            }
+            return gk_fileData[filename] || "";
+        }
+
+        // Wait for MathJax to be ready before typesetting
+        window.MathJax = {
+            startup: {
+                ready: () => {
+                    MathJax.startup.defaultReady();
+                    MathJax.startup.promise.then(() => {
+                        MathJax.typeset();
+                    });
+                }
+            }
+        };
+
+        // Copy to clipboard
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                alert('Formula copied to clipboard!');
+            }).catch(err => {
+                console.error('Failed to copy: ', err);
+            });
+        }
+
+        // Personalize with background updates only when needed
+        import('./js/firebase-user-helper.js').then(({ initUserPersonalization }) => {
+            // Skip immediate updates if we have preloaded data
+            initUserPersonalization(async ({ user, helpers }) => {
+                if (!user) return;
+                
+                const currentName = document.getElementById('userName')?.textContent;
+                const fullName = user.displayName || 'Student';
+                
+                // Only update if data is different from what's displayed
+                if (currentName !== fullName) {
+                    const name = fullName.split(' ')[0];
+                    const level = (user.profile?.level || '').startsWith('SS') ? user.profile.level : 'SS 3';
+                    
+                    // Update all text elements
+                    const elements = {
+                        topName: fullName,
+                        userName: fullName,
+                        userLevel: level,
+                        'student-name': name
+                    };
+                    
+                    Object.keys(elements).forEach(id => {
+                        const el = document.getElementById(id);
+                        if (el) el.setAttribute('textContent', elements[id]);
+                    });
+                    
+                    // Update avatars
+                    const initials = getInitials(fullName);
+                    const avatarUrl = user.photoURL || 
+                        `https://ui-avatars.com/api/?name=${encodeURIComponent(initials)}&background=2563eb&color=fff&size=128`;
+                    
+                    ['avatar-sm', 'topAvatar', 'user-avatar'].forEach(id => {
+                        const img = document.getElementById(id);
+                        if (img) img.src = avatarUrl;
+                    });
+                    
+                    // Update user context
+                    window.userContext = {
+                        name: fullName,
+                        shortName: name,
+                        level: level,
+                        avatarUrl: avatarUrl
+                    };
+                    
+                    // Cache the fresh data
+                    try {
+                        localStorage.setItem('cachedUserData_current', JSON.stringify({
+                            data: user,
+                            timestamp: Date.now()
+                        }));
+                    } catch (e) {
+                        console.warn('Failed to cache user data:', e);
+                    }
+                }
+                
+                // Always update notification count as it's dynamic
+                const notifBadge = document.getElementById('notification-count');
+                if (notifBadge && helpers?.getUnreadNotificationsCount) {
+                    notifBadge.textContent = String(await helpers.getUnreadNotificationsCount(user.uid));
+                }
+            });
+        }).catch(e => console.warn('firebase-user helper import failed', e));
+
+        // Search functionality
+        document.getElementById('searchInput').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const formulaCards = document.querySelectorAll('.formula-card');
+            formulaCards.forEach(card => {
+                const title = card.querySelector('h3').textContent.toLowerCase();
+                const description = card.querySelector('p').textContent.toLowerCase();
+                if (title.includes(searchTerm) || description.includes(searchTerm)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+
+    // Ensure sidebar toggle works
+    (function ensureSidebarToggle(){ try{ 
+        const sidebar = document.getElementById('sidebar');
+        const mainContent = document.getElementById('main-content');
+        const btn=document.getElementById('toggleSidebar'); 
+        if(btn && !btn.dataset.hasToggle){ 
+            btn.addEventListener('click', (e)=> {
+                e.stopPropagation();
+                sidebar.classList.toggle('-translate-x-full');
+            }); 
+            mainContent.addEventListener('click', () => {
+                if (window.innerWidth < 1024 && !sidebar.classList.contains('-translate-x-full')) {
+                    sidebar.classList.add('-translate-x-full');
+                }
+            });
+            btn.dataset.hasToggle='1'; 
+        } 
+    }catch(e){} })();
+
+        // Filter functionality
+        document.getElementById('subjectFilter').addEventListener('change', function(e) {
+            const selectedSubject = e.target.value;
+            const formulaCards = document.querySelectorAll('.formula-card');
+            formulaCards.forEach(card => {
+                const cardSubject = card.getAttribute('data-subject');
+                if (selectedSubject === 'all' || cardSubject === selectedSubject) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+
+        // Modal functionality
+        const modal = document.getElementById('addFormulaModal');
+        const addFormulaBtn = document.getElementById('addFormulaBtn');
+        const cancelFormulaBtn = document.getElementById('cancelFormulaBtn');
+        const addFormulaForm = document.getElementById('addFormulaForm');
+
+        addFormulaBtn.addEventListener('click', () => {
+            modal.style.display = 'flex';
+        });
+
+        cancelFormulaBtn.addEventListener('click', () => {
+            modal.style.display = 'none';
+            addFormulaForm.reset();
+        });
+
+        addFormulaForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const title = document.getElementById('formulaTitle').value;
+            const latex = document.getElementById('formulaLatex').value;
+            const description = document.getElementById('formulaDescription').value;
+            const subject = document.getElementById('formulaSubject').value;
+
+            const formulaContainer = document.getElementById('formulaContainer');
+            const newCard = document.createElement('div');
+            newCard.className = 'formula-card bg-white p-6 rounded-xl shadow-lg border border-gray-100';
+            newCard.setAttribute('data-subject', subject);
+            newCard.innerHTML = `
+                <h3 class="text-lg font-semibold text-gray-800 mb-2">${title}</h3>
+                <div class="mathjax">\[ ${latex} \]</div>
+                <p class="text-gray-600 text-sm">${description}</p>
+                <button class="copy-btn text-white px-4 py-2 rounded-full mt-4 w-full" onclick="copyToClipboard('${latex}')">Copy Formula</button>
+            `;
+            formulaContainer.appendChild(newCard);
+            MathJax.typeset();
+
+            modal.style.display = 'none';
+            addFormulaForm.reset();
+        });
+    </script>

@@ -1,0 +1,53 @@
+.workspace-container {
+    position: relative;
+    overflow: visible;
+    min-height: 500px; /* Ensure minimum height for workspace */
+}
+
+.lab-workspace {
+    position: relative;
+    z-index: 1;
+}
+
+/* Make sure the drag image stays visible while scrolling */
+.apparatus-item {
+    touch-action: none; /* Improves touch drag behavior */
+}
+
+/* Ensure the clamp is always visible in the viewport */
+.retort-stand {
+    position: sticky;
+    top: 20px; /* Adjust this value to control how far from the top it sticks */
+    z-index: 2;
+}
+
+/* Smooth scrolling for the entire page */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Add scroll markers to indicate draggable areas */
+.scroll-marker {
+    position: fixed;
+    left: 0;
+    right: 0;
+    height: 60px;
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.scroll-marker.top {
+    top: 0;
+    background: linear-gradient(to bottom, rgba(74, 144, 226, 0.2), transparent);
+}
+
+.scroll-marker.bottom {
+    bottom: 0;
+    background: linear-gradient(to top, rgba(74, 144, 226, 0.2), transparent);
+}
+
+.scroll-marker.visible {
+    opacity: 1;
+}

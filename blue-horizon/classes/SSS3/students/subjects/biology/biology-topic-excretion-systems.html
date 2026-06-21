@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Excretory Systems - WAEC Biology</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; }
+    .accordion-content.open { max-height: 2000px; }
+    .quiz-option:hover { transform: translateX(4px); }
+    .quiz-option.selected { background: #dbeafe; border-color: #3b82f6; }
+    .quiz-option.correct { background: #dcfce7; border-color: #22c55e; }
+    .quiz-option.incorrect { background: #fee2e2; border-color: #ef4444; }
+  </style>
+</head>
+<body class="bg-gradient-to-br from-emerald-50 via-white to-teal-50 min-h-screen">
+  <!-- Navigation -->
+  <nav class="sticky top-0 bg-white/80 backdrop-blur-sm border-b border-emerald-100 z-50">
+    <div class="max-w-6xl mx-auto px-4 py-3">
+      <div class="flex items-center justify-between">
+        <a href="biology.html" class="text-emerald-600 hover:text-emerald-700 flex items-center gap-2">
+          <i class="fas fa-arrow-left"></i>
+          <span>Back to Biology</span>
+        </a>
+        <div class="flex items-center gap-4">
+          <span class="text-sm text-gray-500">WAEC SSCE Biology</span>
+          <span class="bg-emerald-100 text-emerald-700 px-3 py-1 rounded-full text-sm font-medium">SS2-SS3</span>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <main class="max-w-6xl mx-auto px-4 py-8">
+    <!-- Header -->
+    <header class="text-center mb-10">
+      <div class="inline-flex items-center gap-2 bg-emerald-100 text-emerald-700 px-4 py-2 rounded-full text-sm font-medium mb-4">
+        <i class="fas fa-kidneys"></i>
+        <span>Transport & Excretion</span>
+      </div>
+      <h1 class="text-4xl font-bold text-gray-800 mb-4">Excretory Systems in Animals</h1>
+      <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+        Understanding how animals remove metabolic waste products is essential for WAEC Biology. 
+        Learn about the structures, mechanisms, and products of excretion across different organisms.
+      </p>
+    </header>
+
+    <!-- Learning Objectives -->
+    <section class="bg-white rounded-2xl shadow-lg p-6 mb-8 border border-emerald-100">
+      <div class="flex items-start gap-4">
+        <div class="w-12 h-12 bg-emerald-100 rounded-xl flex items-center justify-center flex-shrink-0">
+          <i class="fas fa-bullseye text-emerald-600 text-xl"></i>
+        </div>
+        <div>
+          <h2 class="text-xl font-semibold text-gray-800 mb-3">Learning Objectives</h2>
+          <p class="text-gray-600 mb-4">By the end of this lesson, you should be able to:</p>
+          <ul class="grid md:grid-cols-2 gap-3">
+            <li class="flex items-start gap-2">
+              <i class="fas fa-check-circle text-emerald-500 mt-1"></i>
+              <span class="text-gray-700">Define excretion and explain its importance</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <i class="fas fa-check-circle text-emerald-500 mt-1"></i>
+              <span class="text-gray-700">Identify excretory organs and their products</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <i class="fas fa-check-circle text-emerald-500 mt-1"></i>
+              <span class="text-gray-700">Compare excretory systems in different organisms</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <i class="fas fa-check-circle text-emerald-500 mt-1"></i>
+              <span class="text-gray-700">Explain the structure and function of the mammalian kidney</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Main Content -->
+    <div class="grid lg:grid-cols-3 gap-8">
+      <!-- Left Column - Main Content -->
+      <div class="lg:col-span-2 space-y-6">
+        
+        <!-- Definition Section -->
+        <section class="bg-white rounded-2xl shadow-lg p-6 border border-emerald-100">
+          <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-3">
+            <span class="w-8 h-8 bg-emerald-500 text-white rounded-lg flex items-center justify-center text-sm">1</span>
+            What is Excretion?
+          </h2>
+          
+          <div class="bg-emerald-50 rounded-xl p-5 mb-5">
+            <h3 class="font-semibold text-emerald-800 mb-2">Definition</h3>
+            <p class="text-gray-700">
+              <strong>Excretion</strong> is the process by which metabolic waste products are removed from the body of an organism. 
+              These waste products are produced during chemical reactions (metabolism) within cells and can be toxic if allowed to accumulate.
+            </p>
+          </div>
+
+          <div class="grid md:grid-cols-2 gap-4 mb-5">
+            <div class="bg-blue-50 rounded-xl p-4">
+              <h4 class="font-semibold text-blue-800 mb-2">
+                <i class="fas fa-flask mr-2"></i>Metabolic Wastes Include:
+              </h4>
+              <ul class="text-gray-700 space-y-1">
+                <li>• Carbon dioxide (CO₂)</li>
+                <li>• Water (H₂O)</li>
+                <li>• Urea</li>
+                <li>• Uric acid</li>
+                <li>• Ammonia</li>
+                <li>• Excess salts and minerals</li>
+              </ul>
+            </div>
+            <div class="bg-amber-50 rounded-xl p-4">
+              <h4 class="font-semibold text-amber-800 mb-2">
+                <i class="fas fa-exclamation-triangle mr-2"></i>Why Excretion is Important:
+              </h4>
+              <ul class="text-gray-700 space-y-1">
+                <li>• Prevents toxic accumulation</li>
+                <li>• Maintains osmotic balance</li>
+                <li>• Regulates pH of body fluids</li>
+                <li>• Maintains homeostasis</li>
+                <li>• Prevents cell damage</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="bg-red-50 border-l-4 border-red-400 p-4 rounded-r-xl">
+            <p class="text-red-800 font-medium">
+              <i class="fas fa-info-circle mr-2"></i>
+              <strong>Note:</strong> Excretion is different from egestion. Egestion is the removal of undigested food from the digestive tract (faeces), while excretion removes metabolic wastes from cells.
+            </p>
+          </div>
+        </section>
+
+        <!-- Excretory Products Section -->
+        <section class="bg-white rounded-2xl shadow-lg p-6 border border-emerald-100">
+          <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-3">
+            <span class="w-8 h-8 bg-emerald-500 text-white rounded-lg flex items-center justify-center text-sm">2</span>
+            Excretory Products and Organs
+          </h2>
+
+          <div class="overflow-x-auto mb-6">
+            <table class="w-full border-collapse">
+              <thead>
+                <tr class="bg-emerald-100">
+                  <th class="border border-emerald-200 px-4 py-3 text-left font-semibold text-emerald-800">Excretory Product</th>
+                  <th class="border border-emerald-200 px-4 py-3 text-left font-semibold text-emerald-800">Organ</th>
+                  <th class="border border-emerald-200 px-4 py-3 text-left font-semibold text-emerald-800">Source/Origin</th>
+                </tr>
+              </thead>
+              <tbody class="text-gray-700">
+                <tr class="hover:bg-gray-50">
+                  <td class="border border-emerald-200 px-4 py-3 font-medium">Carbon dioxide (CO₂)</td>
+                  <td class="border border-emerald-200 px-4 py-3">Lungs</td>
+                  <td class="border border-emerald-200 px-4 py-3">Cellular respiration</td>
+                </tr>
+                <tr class="hover:bg-gray-50 bg-emerald-50/50">
+                  <td class="border border-emerald-200 px-4 py-3 font-medium">Urea</td>
+                  <td class="border border-emerald-200 px-4 py-3">Kidneys</td>
+                  <td class="border border-emerald-200 px-4 py-3">Deamination of amino acids in liver</td>
+                </tr>
+                <tr class="hover:bg-gray-50">
+                  <td class="border border-emerald-200 px-4 py-3 font-medium">Uric acid</td>
+                  <td class="border border-emerald-200 px-4 py-3">Kidneys</td>
+                  <td class="border border-emerald-200 px-4 py-3">Breakdown of nucleic acids</td>
+                </tr>
+                <tr class="hover:bg-gray-50 bg-emerald-50/50">
+                  <td class="border border-emerald-200 px-4 py-3 font-medium">Water & Salts</td>
+                  <td class="border border-emerald-200 px-4 py-3">Kidneys, Skin (sweat)</td>
+                  <td class="border border-emerald-200 px-4 py-3">Metabolic reactions, diet</td>
+                </tr>
+                <tr class="hover:bg-gray-50">
+                  <td class="border border-emerald-200 px-4 py-3 font-medium">Bile pigments</td>
+                  <td class="border border-emerald-200 px-4 py-3">Liver</td>
+                  <td class="border border-emerald-200 px-4 py-3">Breakdown of haemoglobin</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Nitrogenous Wastes -->
+          <div class="bg-purple-50 rounded-xl p-5 mb-5">
+            <h3 class="font-semibold text-purple-800 mb-3">
+              <i class="fas fa-atom mr-2"></i>Nitrogenous Waste Products
+            </h3>
+            <p class="text-gray-700 mb-4">
+              Nitrogenous wastes are produced from the breakdown of proteins and nucleic acids. Different animals excrete nitrogen in different forms:
+            </p>
+            <div class="grid md:grid-cols-3 gap-4">
+              <div class="bg-white rounded-lg p-4 border border-purple-200">
+                <h4 class="font-semibold text-purple-700 mb-2">Ammonia (NH₃)</h4>
+                <ul class="text-sm text-gray-600 space-y-1">
+                  <li>• Very toxic</li>
+                  <li>• Highly soluble in water</li>
+                  <li>• Requires lots of water</li>
+                  <li>• Excreted by aquatic animals</li>
+                </ul>
+              </div>
+              <div class="bg-white rounded-lg p-4 border border-purple-200">
+                <h4 class="font-semibold text-purple-700 mb-2">Urea</h4>
+                <ul class="text-sm text-gray-600 space-y-1">
+                  <li>• Less toxic than ammonia</li>
+                  <li>• Moderately soluble</li>
+                  <li>• Requires less water</li>
+                  <li>• Excreted by mammals</li>
+                </ul>
+              </div>
+              <div class="bg-white rounded-lg p-4 border border-purple-200">
+                <h4 class="font-semibold text-purple-700 mb-2">Uric Acid</h4>
+                <ul class="text-sm text-gray-600 space-y-1">
+                  <li>• Least toxic</li>
+                  <li>• Insoluble (paste form)</li>
+                  <li>• Requires minimal water</li>
+                  <li>• Excreted by birds, reptiles, insects</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- The Mammalian Kidney -->
+        <section class="bg-white rounded-2xl shadow-lg p-6 border border-emerald-100">
+          <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-3">
+            <span class="w-8 h-8 bg-emerald-500 text-white rounded-lg flex items-center justify-center text-sm">3</span>
+            The Mammalian Kidney
+          </h2>
+
+          <div class="mb-6">
+            <h3 class="text-lg font-semibold text-gray-800 mb-3">Structure of the Kidney</h3>
+            <p class="text-gray-700 mb-4">
+              Humans have two bean-shaped kidneys located on either side of the vertebral column, behind the abdominal cavity. 
+              Each kidney weighs about 150g and is approximately 10-12cm long.
+            </p>
+          </div>
+
+          <!-- Kidney Structure Diagram -->
+          <div class="bg-gray-50 rounded-xl p-6 mb-6">
+            <h4 class="font-semibold text-gray-800 mb-4 text-center">Internal Structure of the Kidney</h4>
+            <div class="flex justify-center mb-4">
+              <svg viewBox="0 0 400 300" class="w-full max-w-md">
+                <!-- Kidney outline -->
+                <ellipse cx="200" cy="150" rx="120" ry="140" fill="#f87171" stroke="#dc2626" stroke-width="3"/>
+                
+                <!-- Cortex (outer region) -->
+                <ellipse cx="200" cy="150" rx="100" ry="120" fill="#fca5a5" stroke="none"/>
+                
+                <!-- Medulla (inner region with pyramids) -->
+                <ellipse cx="200" cy="150" rx="70" ry="90" fill="#ef4444" stroke="#dc2626" stroke-width="2"/>
+                
+                <!-- Renal pyramids -->
+                <path d="M160 80 L180 150 L160 220" fill="#dc2626" stroke="#991b1b" stroke-width="1"/>
+                <path d="M200 70 L200 150 L200 230" fill="#dc2626" stroke="#991b1b" stroke-width="1"/>
+                <path d="M240 80 L220 150 L240 220" fill="#dc2626" stroke="#991b1b" stroke-width="1"/>
+                
+                <!-- Pelvis -->
+                <path d="M200 180 Q200 220 180 250 L220 250 Q200 220 200 180" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+                
+                <!-- Ureter -->
+                <rect x="190" y="250" width="20" height="40" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+                
+                <!-- Labels -->
+                <text x="320" y="60" font-size="12" fill="#374151">Cortex</text>
+                <line x1="280" y1="55" x2="300" y2="55" stroke="#374151" stroke-width="1"/>
+                
+                <text x="320" y="120" font-size="12" fill="#374151">Medulla</text>
+                <line x1="260" y1="115" x2="300" y2="115" stroke="#374151" stroke-width="1"/>
+                
+                <text x="320" y="180" font-size="12" fill="#374151">Renal Pyramid</text>
+                <line x1="230" y1="175" x2="300" y2="175" stroke="#374151" stroke-width="1"/>
+                
+                <text x="320" y="250" font-size="12" fill="#374151">Renal Pelvis</text>
+                <line x1="210" y1="245" x2="300" y2="245" stroke="#374151" stroke-width="1"/>
+                
+                <text x="230" y="300" font-size="12" fill="#374151">Ureter</text>
+              </svg>
+            </div>
+          </div>
+
+          <!-- Kidney Parts Accordion -->
+          <div class="space-y-3">
+            <div class="border border-emerald-200 rounded-xl overflow-hidden">
+              <button onclick="toggleAccordion(this)" class="w-full px-4 py-3 bg-emerald-50 flex justify-between items-center hover:bg-emerald-100 transition">
+                <span class="font-semibold text-emerald-800">The Cortex (Outer Region)</span>
+                <i class="fas fa-chevron-down text-emerald-600 transition-transform"></i>
+              </button>
+              <div class="accordion-content">
+                <div class="p-4 bg-white">
+                  <ul class="text-gray-700 space-y-2">
+                    <li>• <strong>Location:</strong> Outer dark-brown region of the kidney</li>
+                    <li>• <strong>Contains:</strong> Bowman's capsules and convoluted tubules</li>
+                    <li>• <strong>Function:</strong> Site of ultrafiltration where blood is filtered</li>
+                    <li>• <strong>Appearance:</strong> Granular due to presence of glomeruli</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div class="border border-emerald-200 rounded-xl overflow-hidden">
+              <button onclick="toggleAccordion(this)" class="w-full px-4 py-3 bg-emerald-50 flex justify-between items-center hover:bg-emerald-100 transition">
+                <span class="font-semibold text-emerald-800">The Medulla (Inner Region)</span>
+                <i class="fas fa-chevron-down text-emerald-600 transition-transform"></i>
+              </button>
+              <div class="accordion-content">
+                <div class="p-4 bg-white">
+                  <ul class="text-gray-700 space-y-2">
+                    <li>• <strong>Location:</strong> Inner lighter-coloured region</li>
+                    <li>• <strong>Contains:</strong> Loop of Henle and collecting ducts</li>
+                    <li>• <strong>Structure:</strong> Made up of 8-18 renal pyramids</li>
+                    <li>• <strong>Function:</strong> Site of water reabsorption and urine concentration</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div class="border border-emerald-200 rounded-xl overflow-hidden">
+              <button onclick="toggleAccordion(this)" class="w-full px-4 py-3 bg-emerald-50 flex justify-between items-center hover:bg-emerald-100 transition">
+                <span class="font-semibold text-emerald-800">The Renal Pelvis</span>
+                <i class="fas fa-chevron-down text-emerald-600 transition-transform"></i>
+              </button>
+              <div class="accordion-content">
+                <div class="p-4 bg-white">
+                  <ul class="text-gray-700 space-y-2">
+                    <li>• <strong>Location:</strong> Funnel-shaped cavity in the centre</li>
+                    <li>• <strong>Function:</strong> Collects urine from collecting ducts</li>
+                    <li>• <strong>Connection:</strong> Leads into the ureter</li>
+                    <li>• <strong>Role:</strong> Acts as a reservoir before urine passes to ureter</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div class="border border-emerald-200 rounded-xl overflow-hidden">
+              <button onclick="toggleAccordion(this)" class="w-full px-4 py-3 bg-emerald-50 flex justify-between items-center hover:bg-emerald-100 transition">
+                <span class="font-semibold text-emerald-800">The Nephron (Functional Unit)</span>
+                <i class="fas fa-chevron-down text-emerald-600 transition-transform"></i>
+              </button>
+              <div class="accordion-content">
+                <div class="p-4 bg-white">
+                  <p class="text-gray-700 mb-3">The nephron is the functional unit of the kidney. Each kidney contains about 1 million nephrons.</p>
+                  <ul class="text-gray-700 space-y-2">
+                    <li>• <strong>Bowman's Capsule:</strong> Cup-shaped structure containing glomerulus</li>
+                    <li>• <strong>Proximal Convoluted Tubule:</strong> Highly coiled, site of reabsorption</li>
+                    <li>• <strong>Loop of Henle:</strong> U-shaped loop for water conservation</li>
+                    <li>• <strong>Distal Convoluted Tubule:</strong> Regulates ion concentration</li>
+                    <li>• <strong>Collecting Duct:</strong> Carries urine to pelvis, final water reabsorption</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Urine Formation -->
+        <section class="bg-white rounded-2xl shadow-lg p-6 border border-emerald-100">
+          <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-3">
+            <span class="w-8 h-8 bg-emerald-500 text-white rounded-lg flex items-center justify-center text-sm">4</span>
+            Formation of Urine
+          </h2>
+
+          <p class="text-gray-700 mb-6">
+            Urine formation involves three main processes that occur in the nephron:
+          </p>
+
+          <div class="grid gap-4 mb-6">
+            <!-- Ultrafiltration -->
+            <div class="bg-blue-50 rounded-xl p-5 border-l-4 border-blue-500">
+              <h3 class="font-semibold text-blue-800 mb-2">
+                <span class="inline-flex items-center justify-center w-6 h-6 bg-blue-500 text-white rounded-full text-sm mr-2">1</span>
+                Ultrafiltration
+              </h3>
+              <p class="text-gray-700 mb-3">
+                Occurs in the glomerulus and Bowman's capsule. Blood pressure forces small molecules through the glomerular capillary walls into the Bowman's capsule.
+              </p>
+              <div class="grid md:grid-cols-2 gap-3">
+                <div class="bg-white rounded-lg p-3">
+                  <p class="text-sm font-medium text-blue-700 mb-1">Filtered into capsule:</p>
+                  <p class="text-sm text-gray-600">Water, glucose, amino acids, urea, salts, vitamins</p>
+                </div>
+                <div class="bg-white rounded-lg p-3">
+                  <p class="text-sm font-medium text-blue-700 mb-1">Not filtered (too large):</p>
+                  <p class="text-sm text-gray-600">Red blood cells, white blood cells, platelets, proteins</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Selective Reabsorption -->
+            <div class="bg-green-50 rounded-xl p-5 border-l-4 border-green-500">
+              <h3 class="font-semibold text-green-800 mb-2">
+                <span class="inline-flex items-center justify-center w-6 h-6 bg-green-500 text-white rounded-full text-sm mr-2">2</span>
+                Selective Reabsorption
+              </h3>
+              <p class="text-gray-700 mb-3">
+                Useful substances are reabsorbed back into the blood from the filtrate as it passes through the tubules.
+              </p>
+              <ul class="text-gray-700 space-y-1 text-sm">
+                <li>• <strong>Proximal tubule:</strong> All glucose, amino acids, 65% of water and salts</li>
+                <li>• <strong>Loop of Henle:</strong> Water and sodium chloride</li>
+                <li>• <strong>Distal tubule:</strong> Water, sodium ions, bicarbonate ions</li>
+                <li>• <strong>Collecting duct:</strong> Water (controlled by ADH hormone)</li>
+              </ul>
+            </div>
+
+            <!-- Tubular Secretion -->
+            <div class="bg-purple-50 rounded-xl p-5 border-l-4 border-purple-500">
+              <h3 class="font-semibold text-purple-800 mb-2">
+                <span class="inline-flex items-center justify-center w-6 h-6 bg-purple-500 text-white rounded-full text-sm mr-2">3</span>
+                Tubular Secretion
+              </h3>
+              <p class="text-gray-700 mb-3">
+                Additional waste products are actively transported from blood into the tubules to be excreted.
+              </p>
+              <ul class="text-gray-700 space-y-1 text-sm">
+                <li>• Hydrogen ions (H⁺) - for pH regulation</li>
+                <li>• Potassium ions (K⁺)</li>
+                <li>• Certain drugs and toxins</li>
+                <li>• Creatinine</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Composition of Urine -->
+          <div class="bg-amber-50 rounded-xl p-5">
+            <h3 class="font-semibold text-amber-800 mb-3">
+              <i class="fas fa-flask mr-2"></i>Composition of Normal Urine
+            </h3>
+            <div class="grid md:grid-cols-2 gap-4">
+              <div>
+                <p class="text-sm font-medium text-amber-700 mb-2">Main Components:</p>
+                <ul class="text-gray-700 text-sm space-y-1">
+                  <li>• Water: 95-96%</li>
+                  <li>• Urea: 2%</li>
+                  <li>• Sodium chloride: 1%</li>
+                  <li>• Other salts: 0.5%</li>
+                  <li>• Uric acid and creatinine: trace amounts</li>
+                </ul>
+              </div>
+              <div>
+                <p class="text-sm font-medium text-amber-700 mb-2">Characteristics:</p>
+                <ul class="text-gray-700 text-sm space-y-1">
+                  <li>• Colour: Pale yellow (due to urochrome)</li>
+                  <li>• Odour: Slightly aromatic</li>
+                  <li>• pH: Slightly acidic (6.0)</li>
+                  <li>• Specific gravity: 1.010-1.030</li>
+                  <li>• Should NOT contain: glucose, proteins, blood</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Comparison of Excretory Systems -->
+        <section class="bg-white rounded-2xl shadow-lg p-6 border border-emerald-100">
+          <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-3">
+            <span class="w-8 h-8 bg-emerald-500 text-white rounded-lg flex items-center justify-center text-sm">5</span>
+            Comparison of Excretory Systems
+          </h2>
+
+          <div class="overflow-x-auto">
+            <table class="w-full border-collapse">
+              <thead>
+                <tr class="bg-emerald-100">
+                  <th class="border border-emerald-200 px-3 py-2 text-left font-semibold text-emerald-800">Organism</th>
+                  <th class="border border-emerald-200 px-3 py-2 text-left font-semibold text-emerald-800">Excretory Organ</th>
+                  <th class="border border-emerald-200 px-3 py-2 text-left font-semibold text-emerald-800">Main Waste</th>
+                  <th class="border border-emerald-200 px-3 py-2 text-left font-semibold text-emerald-800">Key Features</th>
+                </tr>
+              </thead>
+              <tbody class="text-gray-700 text-sm">
+                <tr class="hover:bg-gray-50">
+                  <td class="border border-emerald-200 px-3 py-2 font-medium">Amoeba</td>
+                  <td class="border border-emerald-200 px-3 py-2">Contractile vacuole</td>
+                  <td class="border border-emerald-200 px-3 py-2">Ammonia + excess water</td>
+                  <td class="border border-emerald-200 px-3 py-2">Simple, osmoregulation</td>
+                </tr>
+                <tr class="hover:bg-gray-50 bg-emerald-50/50">
+                  <td class="border border-emerald-200 px-3 py-2 font-medium">Flatworms</td>
+                  <td class="border border-emerald-200 px-3 py-2">Flame cells</td>
+                  <td class="border border-emerald-200 px-3 py-2">Ammonia</td>
+                  <td class="border border-emerald-200 px-3 py-2">Network of tubules</td>
+                </tr>
+                <tr class="hover:bg-gray-50">
+                  <td class="border border-emerald-200 px-3 py-2 font-medium">Earthworm</td>
+                  <td class="border border-emerald-200 px-3 py-2">Nephridia</td>
+                  <td class="border border-emerald-200 px-3 py-2">Ammonia + urea</td>
+                  <td class="border border-emerald-200 px-3 py-2">Pairs in each segment</td>
+                </tr>
+                <tr class="hover:bg-gray-50 bg-emerald-50/50">
+                  <td class="border border-emerald-200 px-3 py-2 font-medium">Insects</td>
+                  <td class="border border-emerald-200 px-3 py-2">Malpighian tubules</td>
+                  <td class="border border-emerald-200 px-3 py-2">Uric acid</td>
+                  <td class="border border-emerald-200 px-3 py-2">Water conservation</td>
+                </tr>
+                <tr class="hover:bg-gray-50">
+                  <td class="border border-emerald-200 px-3 py-2 font-medium">Fish (freshwater)</td>
+                  <td class="border border-emerald-200 px-3 py-2">Kidneys + gills</td>
+                  <td class="border border-emerald-200 px-3 py-2">Ammonia</td>
+                  <td class="border border-emerald-200 px-3 py-2">Produce dilute urine</td>
+                </tr>
+                <tr class="hover:bg-gray-50 bg-emerald-50/50">
+                  <td class="border border-emerald-200 px-3 py-2 font-medium">Mammals</td>
+                  <td class="border border-emerald-200 px-3 py-2">Kidneys + lungs + skin</td>
+                  <td class="border border-emerald-200 px-3 py-2">Urea + CO₂</td>
+                  <td class="border border-emerald-200 px-3 py-2">Concentrated urine</td>
+                </tr>
+                <tr class="hover:bg-gray-50">
+                  <td class="border border-emerald-200 px-3 py-2 font-medium">Birds/Reptiles</td>
+                  <td class="border border-emerald-200 px-3 py-2">Kidneys</td>
+                  <td class="border border-emerald-200 px-3 py-2">Uric acid</td>
+                  <td class="border border-emerald-200 px-3 py-2">Semi-solid waste, water-saving</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Worked Examples -->
+        <section class="bg-white rounded-2xl shadow-lg p-6 border border-emerald-100">
+          <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-3">
+            <span class="w-8 h-8 bg-emerald-500 text-white rounded-lg flex items-center justify-center text-sm">6</span>
+            Worked Examples
+          </h2>
+
+          <div class="space-y-6">
+            <!-- Example 1 -->
+            <div class="bg-gray-50 rounded-xl p-5">
+              <div class="flex items-start gap-3 mb-3">
+                <span class="bg-emerald-500 text-white px-2 py-1 rounded text-sm font-medium">WAEC 2019</span>
+                <span class="bg-blue-100 text-blue-700 px-2 py-1 rounded text-sm">Theory Question</span>
+              </div>
+              <p class="text-gray-800 font-medium mb-3">
+                Explain why a person suffering from kidney failure may need dialysis treatment.
+              </p>
+              <div class="bg-white rounded-lg p-4 border border-gray-200">
+                <p class="font-semibold text-emerald-700 mb-2">Solution:</p>
+                <ul class="text-gray-700 space-y-2">
+                  <li>1. The kidneys filter blood to remove metabolic waste products like urea, excess salts, and water.</li>
+                  <li>2. In kidney failure, these waste products accumulate in the blood to toxic levels.</li>
+                  <li>3. Dialysis is an artificial method that performs the function of the kidneys.</li>
+                  <li>4. In dialysis, blood is passed through a dialysis machine with a semi-permeable membrane.</li>
+                  <li>5. Waste products diffuse from the blood (high concentration) into the dialysis fluid (low concentration).</li>
+                  <li>6. Essential substances like glucose remain in the blood due to their absence in the dialysis fluid.</li>
+                  <li>7. The cleaned blood is returned to the body, preventing toxic accumulation.</li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- Example 2 -->
+            <div class="bg-gray-50 rounded-xl p-5">
+              <div class="flex items-start gap-3 mb-3">
+                <span class="bg-emerald-500 text-white px-2 py-1 rounded text-sm font-medium">WAEC 2021</span>
+                <span class="bg-blue-100 text-blue-700 px-2 py-1 rounded text-sm">Theory Question</span>
+              </div>
+              <p class="text-gray-800 font-medium mb-3">
+                State three differences between excretion and egestion.
+              </p>
+              <div class="bg-white rounded-lg p-4 border border-gray-200 overflow-x-auto">
+                <p class="font-semibold text-emerald-700 mb-2">Solution:</p>
+                <table class="w-full text-sm">
+                  <thead>
+                    <tr class="border-b border-gray-300">
+                      <th class="text-left py-2 px-2">Excretion</th>
+                      <th class="text-left py-2 px-2">Egestion</th>
+                    </tr>
+                  </thead>
+                  <tbody class="text-gray-700">
+                    <tr class="border-b border-gray-200">
+                      <td class="py-2 px-2">Removes metabolic waste products from cells</td>
+                      <td class="py-2 px-2">Removes undigested food from the digestive tract</td>
+                    </tr>
+                    <tr class="border-b border-gray-200">
+                      <td class="py-2 px-2">Products include urea, CO₂, excess water</td>
+                      <td class="py-2 px-2">Product is faeces</td>
+                    </tr>
+                    <tr class="border-b border-gray-200">
+                      <td class="py-2 px-2">Occurs in all living cells</td>
+                      <td class="py-2 px-2">Occurs only in the digestive system</td>
+                    </tr>
+                    <tr>
+                      <td class="py-2 px-2">Materials were never part of the body</td>
+                      <td class="py-2 px-2">Materials passed through but never entered cells</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- Right Column - Sidebar -->
+      <div class="space-y-6">
+        
+        <!-- Video Resource -->
+        <section class="bg-white rounded-2xl shadow-lg overflow-hidden border border-emerald-100">
+          <div class="bg-emerald-500 text-white px-4 py-3">
+            <h3 class="font-semibold flex items-center gap-2">
+              <i class="fas fa-play-circle"></i>
+              Video Lesson
+            </h3>
+          </div>
+          <div class="aspect-video">
+            <iframe 
+              class="w-full h-full"
+              src="https://www.youtube.com/embed/yX5f3hJfD6I" 
+              title="Excretory System" 
+              frameborder="0" 
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+              allowfullscreen>
+            </iframe>
+          </div>
+          <div class="p-4">
+            <p class="text-sm text-gray-600">
+              <i class="fas fa-info-circle text-emerald-500 mr-1"></i>
+              This video explains the structure and function of the human excretory system.
+            </p>
+          </div>
+        </section>
+
+        <!-- Key Terms -->
+        <section class="bg-white rounded-2xl shadow-lg p-5 border border-emerald-100">
+          <h3 class="font-semibold text-gray-800 mb-4 flex items-center gap-2">
+            <i class="fas fa-book text-emerald-500"></i>
+            Key Terms to Remember
+          </h3>
+          <div class="space-y-3">
+            <div class="border-l-4 border-emerald-400 pl-3">
+              <p class="font-medium text-gray-800">Deamination</p>
+              <p class="text-sm text-gray-600">Removal of amino group from amino acids in the liver</p>
+            </div>
+            <div class="border-l-4 border-emerald-400 pl-3">
+              <p class="font-medium text-gray-800">Glomerulus</p>
+              <p class="text-sm text-gray-600">Network of capillaries in Bowman's capsule</p>
+            </div>
+            <div class="border-l-4 border-emerald-400 pl-3">
+              <p class="font-medium text-gray-800">Ultrafiltration</p>
+              <p class="text-sm text-gray-600">Filtration under pressure through tiny pores</p>
+            </div>
+            <div class="border-l-4 border-emerald-400 pl-3">
+              <p class="font-medium text-gray-800">Osmoregulation</p>
+              <p class="text-sm text-gray-600">Control of water balance in the body</p>
+            </div>
+            <div class="border-l-4 border-emerald-400 pl-3">
+              <p class="font-medium text-gray-800">ADH (Antidiuretic Hormone)</p>
+              <p class="text-sm text-gray-600">Hormone that controls water reabsorption</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Quick Quiz -->
+        <section class="bg-white rounded-2xl shadow-lg p-5 border border-emerald-100">
+          <h3 class="font-semibold text-gray-800 mb-4 flex items-center gap-2">
+            <i class="fas fa-question-circle text-emerald-500"></i>
+            Quick Quiz
+          </h3>
+          <div id="quiz-container">
+            <div class="quiz-question mb-4" data-question="1">
+              <p class="text-gray-700 font-medium mb-3">1. The main excretory product in mammals is:</p>
+              <div class="space-y-2">
+                <button onclick="selectAnswer(this, 'q1', 'a')" class="quiz-option w-full text-left px-4 py-2 border border-gray-200 rounded-lg hover:border-emerald-400 transition">
+                  A. Ammonia
+                </button>
+                <button onclick="selectAnswer(this, 'q1', 'b')" class="quiz-option w-full text-left px-4 py-2 border border-gray-200 rounded-lg hover:border-emerald-400 transition">
+                  B. Urea
+                </button>
+                <button onclick="selectAnswer(this, 'q1', 'c')" class="quiz-option w-full text-left px-4 py-2 border border-gray-200 rounded-lg hover:border-emerald-400 transition">
+                  C. Uric acid
+                </button>
+                <button onclick="selectAnswer(this, 'q1', 'd')" class="quiz-option w-full text-left px-4 py-2 border border-gray-200 rounded-lg hover:border-emerald-400 transition">
+                  D. Creatinine
+                </button>
+              </div>
+              <div id="feedback-q1" class="mt-2 hidden"></div>
+            </div>
+
+            <div class="quiz-question mb-4" data-question="2">
+              <p class="text-gray-700 font-medium mb-3">2. Ultrafiltration occurs in the:</p>
+              <div class="space-y-2">
+                <button onclick="selectAnswer(this, 'q2', 'a')" class="quiz-option w-full text-left px-4 py-2 border border-gray-200 rounded-lg hover:border-emerald-400 transition">
+                  A. Loop of Henle
+                </button>
+                <button onclick="selectAnswer(this, 'q2', 'b')" class="quiz-option w-full text-left px-4 py-2 border border-gray-200 rounded-lg hover:border-emerald-400 transition">
+                  B. Distal tubule
+                </button>
+                <button onclick="selectAnswer(this, 'q2', 'c')" class="quiz-option w-full text-left px-4 py-2 border border-gray-200 rounded-lg hover:border-emerald-400 transition">
+                  C. Glomerulus and Bowman's capsule
+                </button>
+                <button onclick="selectAnswer(this, 'q2', 'd')" class="quiz-option w-full text-left px-4 py-2 border border-gray-200 rounded-lg hover:border-emerald-400 transition">
+                  D. Collecting duct
+                </button>
+              </div>
+              <div id="feedback-q2" class="mt-2 hidden"></div>
+            </div>
+
+            <div class="quiz-question" data-question="3">
+              <p class="text-gray-700 font-medium mb-3">3. Which organism excretes uric acid?</p>
+              <div class="space-y-2">
+                <button onclick="selectAnswer(this, 'q3', 'a')" class="quiz-option w-full text-left px-4 py-2 border border-gray-200 rounded-lg hover:border-emerald-400 transition">
+                  A. Fish
+                </button>
+                <button onclick="selectAnswer(this, 'q3', 'b')" class="quiz-option w-full text-left px-4 py-2 border border-gray-200 rounded-lg hover:border-emerald-400 transition">
+                  B. Bird
+                </button>
+                <button onclick="selectAnswer(this, 'q3', 'c')" class="quiz-option w-full text-left px-4 py-2 border border-gray-200 rounded-lg hover:border-emerald-400 transition">
+                  C. Mammal
+                </button>
+                <button onclick="selectAnswer(this, 'q3', 'd')" class="quiz-option w-full text-left px-4 py-2 border border-gray-200 rounded-lg hover:border-emerald-400 transition">
+                  D. Amoeba
+                </button>
+              </div>
+              <div id="feedback-q3" class="mt-2 hidden"></div>
+            </div>
+          </div>
+          <button onclick="checkAllAnswers()" class="mt-4 w-full bg-emerald-500 text-white py-2 rounded-lg hover:bg-emerald-600 transition font-medium">
+            Check Answers
+          </button>
+        </section>
+
+        <!-- WAEC Exam Tips -->
+        <section class="bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl shadow-lg p-5 border border-amber-200">
+          <h3 class="font-semibold text-amber-800 mb-4 flex items-center gap-2">
+            <i class="fas fa-lightbulb text-amber-500"></i>
+            WAEC Exam Tips
+          </h3>
+          <ul class="text-gray-700 space-y-2 text-sm">
+            <li class="flex items-start gap-2">
+              <i class="fas fa-check text-amber-500 mt-1"></i>
+              <span>Know the difference between excretion and egestion</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <i class="fas fa-check text-amber-500 mt-1"></i>
+              <span>Be able to label diagrams of the kidney and nephron</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <i class="fas fa-check text-amber-500 mt-1"></i>
+              <span>Understand the three stages of urine formation</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <i class="fas fa-check text-amber-500 mt-1"></i>
+              <span>Compare excretory systems across different organisms</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <i class="fas fa-check text-amber-500 mt-1"></i>
+              <span>Link excretion to homeostasis and osmoregulation</span>
+            </li>
+          </ul>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-gray-800 text-gray-300 py-6 mt-12">
+    <div class="max-w-6xl mx-auto px-4 text-center">
+      <p class="text-sm">WAEC SSCE Biology Study Material | Excretory Systems</p>
+      <p class="text-xs mt-2 text-gray-500">© 2024 Educational Platform. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script>
+    // Accordion functionality
+    function toggleAccordion(button) {
+      const content = button.nextElementSibling;
+      const icon = button.querySelector('i');
+      
+      content.classList.toggle('open');
+      icon.classList.toggle('rotate-180');
+    }
+
+    // Quiz functionality
+    const correctAnswers = {
+      'q1': 'b',
+      'q2': 'c',
+      'q3': 'b'
+    };
+
+    const userAnswers = {};
+
+    function selectAnswer(button, questionId, answer) {
+      // Remove previous selection
+      const questionDiv = button.closest('.quiz-question');
+      questionDiv.querySelectorAll('.quiz-option').forEach(opt => {
+        opt.classList.remove('selected', 'correct', 'incorrect');
+      });
+      
+      // Add selection
+      button.classList.add('selected');
+      userAnswers[questionId] = answer;
+    }
+
+    function checkAllAnswers() {
+      Object.keys(correctAnswers).forEach(questionId => {
+        const feedbackDiv = document.getElementById(`feedback-${questionId}`);
+        feedbackDiv.classList.remove('hidden');
+        
+        const questionDiv = feedbackDiv.closest('.quiz-question');
+        const options = questionDiv.querySelectorAll('.quiz-option');
+        
+        options.forEach(opt => {
+          const answer = opt.textContent.trim().charAt(0).toLowerCase();
+          if (answer === correctAnswers[questionId]) {
+            opt.classList.add('correct');
+          } else if (opt.classList.contains('selected')) {
+            opt.classList.add('incorrect');
+          }
+        });
+
+        if (userAnswers[questionId] === correctAnswers[questionId]) {
+          feedbackDiv.innerHTML = '<p class="text-green-600 font-medium"><i class="fas fa-check-circle mr-1"></i>Correct!</p>';
+        } else {
+          feedbackDiv.innerHTML = `<p class="text-red-600 font-medium"><i class="fas fa-times-circle mr-1"></i>Incorrect. The correct answer is ${correctAnswers[questionId].toUpperCase()}.</p>`;
+        }
+      });
+    }
+  </script>
+
+<!-- Topic Quiz System -->
+<script src="/js/topic-quiz-loader.js"></script>
+<script src="/js/topic-quiz-injector.js"></script>
+</body>
+</html>
