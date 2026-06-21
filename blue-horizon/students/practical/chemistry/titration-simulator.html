@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chemistry Practical Simulator - Titration</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <style>
+        .lab-bench {
+            background: #8b5e3c;
+            min-height: 500px;
+            padding: 20px;
+            position: relative;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .equipment-tray {
+            background: #f3f4f6;
+            padding: 15px;
+            border-radius: 8px;
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .draggable {
+            cursor: move;
+            user-select: none;
+            padding: 10px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+
+        .draggable:hover {
+            transform: scale(1.05);
+        }
+
+        .draggable.dragging {
+            opacity: 0.5;
+            box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+        }
+
+        .burette {
+            width: 40px;
+            height: 400px;
+            background: #f0f9ff;
+            border: 2px solid #93c5fd;
+            border-radius: 8px 8px 0 0;
+            position: relative;
+            margin: 20px auto;
+        }
+
+        .burette-stand {
+            width: 200px;
+            height: 500px;
+            background: #4a5568;
+            position: relative;
+        }
+
+        .burette-clamp {
+            width: 60px;
+            height: 30px;
+            background: #2d3748;
+            position: absolute;
+            right: -60px;
+            top: 50px;
+        }
+
+        .burette::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 15px;
+            background: #93c5fd;
+            border-radius: 0 0 2px 2px;
+        }
+
+        .liquid {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #fcd34d;
+            transition: height 0.5s ease-in-out;
+            border-radius: 6px 6px 0 0;
+        }
+
+        .conical-flask {
+            width: 200px;
+            height: 250px;
+            background: transparent;
+            border: 2px solid #93c5fd;
+            border-radius: 0 0 100px 100px;
+            position: relative;
+            margin: 20px auto;
+        }
+
+        .flask-liquid {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #f87171;
+            height: 100px;
+            border-radius: 0 0 98px 98px;
+            transition: background-color 0.5s ease-in-out;
+        }
+
+        .reading-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .reading-table th, .reading-table td {
+            border: 1px solid #e5e7eb;
+            padding: 8px;
+            text-align: center;
+        }
+
+        .reading-table th {
+            background-color: #f3f4f6;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 py-8">
+        <!-- Header -->
+        <header class="text-center mb-8">
+            <h1 class="text-3xl font-bold text-gray-900">Chemistry Practical Simulator</h1>
+            <p class="text-gray-600 mt-2">Titration of HNO₃ with NaOH</p>
+        </header>
+
+        <!-- Main Content -->
+        <div class="grid md:grid-cols-2 gap-8">
+            <!-- Left Column - Simulation -->
+            <div class="bg-white p-6 rounded-lg shadow-sm">
+                <h2 class="text-xl font-semibold mb-4">Titration Setup</h2>
+                
+                <!-- Equipment Tray -->
+                <div class="equipment-tray" id="equipment-tray">
+                    <div class="draggable" draggable="true" data-type="burette">
+                        <img src="https://cdn-icons-png.flaticon.com/512/1086/1086472.png" alt="Burette" class="w-16 h-16">
+                        <p class="text-center text-sm mt-1">Burette</p>
+                    </div>
+                    <div class="draggable" draggable="true" data-type="flask">
+                        <img src="https://cdn-icons-png.flaticon.com/512/1086/1086457.png" alt="Flask" class="w-16 h-16">
+                        <p class="text-center text-sm mt-1">Flask</p>
+                    </div>
+                    <div class="draggable" draggable="true" data-type="pipette">
+                        <img src="https://cdn-icons-png.flaticon.com/512/1086/1086468.png" alt="Pipette" class="w-16 h-16">
+                        <p class="text-center text-sm mt-1">Pipette</p>
+                    </div>
+                    <div class="draggable" draggable="true" data-type="stand">
+                        <img src="https://cdn-icons-png.flaticon.com/512/1086/1086475.png" alt="Stand" class="w-16 h-16">
+                        <p class="text-center text-sm mt-1">Burette Stand</p>
+                    </div>
+                </div>
+
+                <!-- Lab Bench -->
+                <div class="lab-bench" id="lab-bench">
+                    <div class="relative min-h-[500px]">
+                        <!-- Drop Zones -->
+                        <div id="stand-zone" class="absolute left-1/4 top-0 w-40 h-full border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center">
+                            <span class="text-gray-400">Drop Stand Here</span>
+                        </div>
+                        
+                        <div id="flask-zone" class="absolute left-1/3 bottom-0 w-40 h-40 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center">
+                            <span class="text-gray-400">Drop Flask Here</span>
+                        </div>
+
+                        <!-- Apparatus Container -->
+                        <div id="apparatus-container" class="absolute top-0 left-0 w-full h-full pointer-events-none">
+                            <div id="burette-setup" class="absolute left-1/4 top-0 hidden pointer-events-auto">
+                                <div class="burette-stand">
+                                    <div class="burette-clamp"></div>
+                                    <div class="burette">
+                                        <div class="liquid" id="burette-liquid" style="height: 100%;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="flask-setup" class="absolute left-1/3 bottom-0 hidden pointer-events-auto">
+                                <div class="conical-flask">
+                                    <div class="flask-liquid" id="flask-liquid"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="experiment-status" class="absolute top-4 right-4 text-white bg-blue-600 px-4 py-2 rounded-full hidden">
+                            Ready to start
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Solutions Panel -->
+                <div class="bg-white p-4 rounded-lg shadow-sm mt-4">
+                    <h3 class="font-medium mb-2">Solutions</h3>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="draggable" draggable="true" data-type="solution-hno3">
+                            <div class="bg-yellow-100 p-2 rounded text-center">
+                                <p class="text-sm">HNO₃</p>
+                                <p class="text-xs text-gray-600">5.00g in 500cm³</p>
+                            </div>
+                        </div>
+                        <div class="draggable" draggable="true" data-type="solution-naoh">
+                            <div class="bg-blue-100 p-2 rounded text-center">
+                                <p class="text-sm">NaOH</p>
+                                <p class="text-xs text-gray-600">Unknown concentration</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Controls -->
+                <div class="mt-8 space-y-4">
+                    <div class="flex items-center justify-between">
+                        <button id="add-drop" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+                            Add Drop
+                        </button>
+                        <button id="reset" class="px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700">
+                            Reset
+                        </button>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Flow Rate</label>
+                        <input type="range" id="flow-rate" min="1" max="10" value="1" 
+                               class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column - Readings & Calculations -->
+            <div class="space-y-6">
+                <!-- Readings Table -->
+                <div class="bg-white p-6 rounded-lg shadow-sm">
+                    <h2 class="text-xl font-semibold mb-4">Burette Readings</h2>
+                    <table class="reading-table">
+                        <thead>
+                            <tr>
+                                <th>Reading No.</th>
+                                <th>Initial (cm³)</th>
+                                <th>Final (cm³)</th>
+                                <th>Volume Used (cm³)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="readings-body">
+                            <tr>
+                                <td>1</td>
+                                <td>0.00</td>
+                                <td>-</td>
+                                <td>-</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Calculations -->
+                <div class="bg-white p-6 rounded-lg shadow-sm">
+                    <h2 class="text-xl font-semibold mb-4">Calculations</h2>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Average Volume Used</label>
+                            <input type="text" id="avg-volume" readonly
+                                   class="mt-1 block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Concentration of HNO₃ (mol dm⁻³)</label>
+                            <input type="text" id="acid-concentration" readonly
+                                   class="mt-1 block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Mass of NaNO₃ formed (g)</label>
+                            <input type="text" id="salt-mass" readonly
+                                   class="mt-1 block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Submit Section -->
+                <div class="bg-white p-6 rounded-lg shadow-sm">
+                    <button id="submit-readings" class="w-full px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">
+                        Submit Readings
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentVolume = 50.00;
+        let readings = [];
+        let isExperimentActive = false;
+        let experimentSetup = {
+            burette: false,
+            stand: false,
+            flask: false,
+            hno3: false,
+            naoh: false
+        };
+
+        // Drag and Drop Functionality
+        document.addEventListener('DOMContentLoaded', () => {
+            const draggables = document.querySelectorAll('.draggable');
+            const dropZones = {
+                stand: document.getElementById('stand-zone'),
+                flask: document.getElementById('flask-zone')
+            };
+            const experimentStatus = document.getElementById('experiment-status');
+
+            draggables.forEach(draggable => {
+                draggable.addEventListener('dragstart', (e) => {
+                    draggable.classList.add('dragging');
+                    e.dataTransfer.setData('text/plain', draggable.getAttribute('data-type'));
+                });
+
+                draggable.addEventListener('dragend', () => {
+                    draggable.classList.remove('dragging');
+                });
+            });
+
+            // Add dragover and drop events to each drop zone
+            Object.values(dropZones).forEach(zone => {
+                zone.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    zone.classList.add('bg-gray-100', 'bg-opacity-50');
+                });
+
+                zone.addEventListener('dragleave', (e) => {
+                    e.preventDefault();
+                    zone.classList.remove('bg-gray-100', 'bg-opacity-50');
+                });
+
+                zone.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    zone.classList.remove('bg-gray-100', 'bg-opacity-50');
+                    const equipmentType = e.dataTransfer.getData('text/plain');
+                    handleEquipmentPlacement(equipmentType, zone.id);
+                });
+            });
+
+            // Add drop events for solutions
+            const buretteLiquid = document.getElementById('burette-liquid');
+            const flaskLiquid = document.getElementById('flask-liquid');
+
+            [buretteLiquid, flaskLiquid].forEach(container => {
+                container.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    container.classList.add('bg-yellow-200');
+                });
+
+                container.addEventListener('dragleave', () => {
+                    container.classList.remove('bg-yellow-200');
+                });
+
+                container.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    container.classList.remove('bg-yellow-200');
+                    const solutionType = e.dataTransfer.getData('text/plain');
+                    handleSolutionPlacement(solutionType, container.id);
+                });
+            });
+        });
+
+        function handleEquipmentPlacement(type, dropZoneId) {
+            switch(type) {
+                case 'burette':
+                    if (dropZoneId === 'stand-zone' && experimentSetup.stand) {
+                        experimentSetup.burette = true;
+                        document.getElementById('burette-setup').classList.remove('hidden');
+                        // Hide the drop zone message
+                        document.getElementById('stand-zone').querySelector('span').classList.add('hidden');
+                    } else {
+                        showMessage('Please set up the stand first');
+                    }
+                    break;
+                case 'stand':
+                    if (dropZoneId === 'stand-zone') {
+                        experimentSetup.stand = true;
+                        // Show burette setup area
+                        document.getElementById('stand-zone').querySelector('span').textContent = 'Drop Burette Here';
+                    }
+                    break;
+                case 'flask':
+                    if (dropZoneId === 'flask-zone') {
+                        experimentSetup.flask = true;
+                        document.getElementById('flask-setup').classList.remove('hidden');
+                        // Hide the drop zone message
+                        document.getElementById('flask-zone').querySelector('span').classList.add('hidden');
+                    }
+                    break;
+                case 'solution-hno3':
+                    if (experimentSetup.burette) {
+                        experimentSetup.hno3 = true;
+                        document.getElementById('burette-liquid').style.backgroundColor = '#fcd34d';
+                    } else {
+                        showMessage('Set up the burette first');
+                    }
+                    break;
+                case 'solution-naoh':
+                    if (experimentSetup.flask) {
+                        experimentSetup.naoh = true;
+                        document.getElementById('flask-liquid').style.backgroundColor = '#93c5fd';
+                    } else {
+                        showMessage('Set up the flask first');
+                    }
+                    break;
+            }
+
+            checkExperimentReadiness();
+        }
+
+        function checkExperimentReadiness() {
+            const experimentStatus = document.getElementById('experiment-status');
+            if (Object.values(experimentSetup).every(v => v)) {
+                isExperimentActive = true;
+                experimentStatus.textContent = 'Ready to start titration';
+                experimentStatus.classList.remove('hidden');
+                experimentStatus.classList.remove('bg-red-600');
+                experimentStatus.classList.add('bg-green-600');
+            } else {
+                const missing = Object.entries(experimentSetup)
+                    .filter(([_, value]) => !value)
+                    .map(([key, _]) => key)
+                    .join(', ');
+                experimentStatus.textContent = `Missing: ${missing}`;
+                experimentStatus.classList.remove('hidden');
+                experimentStatus.classList.add('bg-red-600');
+            }
+        }
+
+        function showMessage(message) {
+            const status = document.getElementById('experiment-status');
+            status.textContent = message;
+            status.classList.remove('hidden', 'bg-blue-600', 'bg-green-600');
+            status.classList.add('bg-yellow-600');
+            setTimeout(() => {
+                if (!isExperimentActive) {
+                    checkExperimentReadiness();
+                }
+            }, 2000);
+        }
+
+        // Add styles for drop zones
+        const style = document.createElement('style');
+        style.textContent = `
+            .drop-zone-active {
+                background-color: rgba(59, 130, 246, 0.1);
+                border-color: rgb(59, 130, 246);
+            }
+            
+            .apparatus-placed {
+                border: none;
+                background: none;
+            }
+            
+            @keyframes fadeIn {
+                from { opacity: 0; }
+                to { opacity: 1; }
+            }
+            
+            .fade-in {
+                animation: fadeIn 0.3s ease-in;
+            }
+        `;
+        document.head.appendChild(style);
+
+        // DOM Elements
+        const buretteLiquid = document.getElementById('burette-liquid');
+        const flaskLiquid = document.getElementById('flask-liquid');
+        const buretteReading = document.getElementById('burette-reading');
+        const readingsBody = document.getElementById('readings-body');
+        const addDropBtn = document.getElementById('add-drop');
+        const resetBtn = document.getElementById('reset');
+        const flowRate = document.getElementById('flow-rate');
+        const submitBtn = document.getElementById('submit-readings');
+
+        // Add Drop Button Click Handler
+        addDropBtn.addEventListener('click', () => {
+            if (!isExperimentActive) return;
+
+            const rate = parseFloat(flowRate.value);
+            currentVolume -= rate * 0.1;
+            
+            if (currentVolume <= 0) {
+                currentVolume = 0;
+                isExperimentActive = false;
+            }
+
+            // Update burette display
+            buretteLiquid.style.height = (currentVolume * 2) + '%';
+            buretteReading.textContent = currentVolume.toFixed(2) + ' cm³';
+
+            // Change flask color based on pH
+            if (currentVolume < 25) {
+                flaskLiquid.style.backgroundColor = '#34d399'; // Green for basic
+            } else if (currentVolume < 30) {
+                flaskLiquid.style.backgroundColor = '#fcd34d'; // Yellow for near neutral
+            }
+
+            // Update readings table if it's the end point
+            if (currentVolume <= 0) {
+                addReading(50.00, 0.00);
+            }
+        });
+
+        // Reset Button Click Handler
+        resetBtn.addEventListener('click', () => {
+            currentVolume = 50.00;
+            buretteLiquid.style.height = '100%';
+            buretteReading.textContent = '50.00 cm³';
+            flaskLiquid.style.backgroundColor = '#f87171';
+            isExperimentActive = true;
+        });
+
+        // Add Reading to Table
+        function addReading(initial, final) {
+            const volume = initial - final;
+            readings.push(volume);
+            
+            const row = readingsBody.insertRow();
+            row.innerHTML = `
+                <td>${readings.length}</td>
+                <td>${initial.toFixed(2)}</td>
+                <td>${final.toFixed(2)}</td>
+                <td>${volume.toFixed(2)}</td>
+            `;
+        }
+
+        // Submit Readings Handler
+        submitBtn.addEventListener('click', () => {
+            if (readings.length === 0) {
+                alert('Please complete at least one titration');
+                return;
+            }
+
+            // Calculate average volume
+            const avgVolume = readings.reduce((a, b) => a + b) / readings.length;
+            document.getElementById('avg-volume').value = avgVolume.toFixed(2) + ' cm³';
+
+            // Calculate concentration of HNO₃
+            const concentration = (0.1 * avgVolume) / 25.0; // Using M₁V₁ = M₂V₂
+            document.getElementById('acid-concentration').value = concentration.toFixed(4);
+
+            // Calculate mass of NaNO₃ formed
+            const molarMass = 85; // g/mol for NaNO₃
+            const mass = concentration * 0.250 * molarMass; // concentration * volume in L * molar mass
+            document.getElementById('salt-mass').value = mass.toFixed(4) + ' g';
+        });
+    </script>
+</body>
+</html>

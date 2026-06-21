@@ -1,0 +1,1277 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Student Dashboard — JUANOVA CORTEX</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+      * { font-family: 'Plus Jakarta Sans', system-ui, sans-serif; }
+      
+      /* Custom Scrollbar */
+      ::-webkit-scrollbar { width: 6px; height: 6px; }
+      ::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 3px; }
+      ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+      ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+      
+      /* Sidebar */
+      #sidebar { transition: transform 0.3s ease-in-out; }
+      #sidebar.hide { transform: translateX(-100%); }
+      @media (min-width: 1024px) { #sidebar { transform: translateX(0) !important; } }
+      
+      /* Animated Gradient Background */
+      .hero-gradient {
+        background: linear-gradient(-45deg, #0ea5e9, #0284c7, #0891b2, #06b6d4);
+        background-size: 400% 400%;
+        animation: gradientFlow 15s ease infinite;
+      }
+      
+      @keyframes gradientFlow {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+      }
+      
+      /* Floating Particles */
+      .particle {
+        position: absolute;
+        background: rgba(255,255,255,0.15);
+        border-radius: 50%;
+        animation: particleFloat 8s infinite ease-in-out;
+      }
+      
+      @keyframes particleFloat {
+        0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0.7; }
+        50% { transform: translateY(-30px) rotate(180deg); opacity: 0.3; }
+      }
+      
+      /* Floating Mascot Animation */
+      .animate-float-mascot {
+        animation: floatMascot 4s ease-in-out infinite;
+      }
+      
+      @keyframes floatMascot {
+        0%, 100% { transform: translateY(0) rotate(-5deg); }
+        50% { transform: translateY(-15px) rotate(5deg); }
+      }
+      
+      /* Glassmorphism Cards */
+      .glass-card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+      }
+      
+      /* Card Hover Effect */
+      .hover-lift {
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      }
+      .hover-lift:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+      }
+      
+      /* Subject Card Colors */
+      .subject-math { --subject-color: #ef4444; --subject-bg: linear-gradient(135deg, #fef2f2, #fee2e2); }
+      .subject-physics { --subject-color: #f59e0b; --subject-bg: linear-gradient(135deg, #fffbeb, #fef3c7); }
+      .subject-chemistry { --subject-color: #ec4899; --subject-bg: linear-gradient(135deg, #fdf2f8, #fce7f3); }
+      .subject-biology { --subject-color: #22c55e; --subject-bg: linear-gradient(135deg, #f0fdf4, #dcfce7); }
+      .subject-english { --subject-color: #8b5cf6; --subject-bg: linear-gradient(135deg, #f5f3ff, #ede9fe); }
+      .subject-economics { --subject-color: #06b6d4; --subject-bg: linear-gradient(135deg, #ecfeff, #cffafe); }
+      .subject-government { --subject-color: #f43f5e; --subject-bg: linear-gradient(135deg, #fff1f2, #ffe4e6); }
+      .subject-commerce { --subject-color: #14b8a6; --subject-bg: linear-gradient(135deg, #f0fdfa, #ccfbf1); }
+      .subject-accounting { --subject-color: #64748b; --subject-bg: linear-gradient(135deg, #f8fafc, #f1f5f9); }
+      .subject-literature { --subject-color: #a855f7; --subject-bg: linear-gradient(135deg, #faf5ff, #f3e8ff); }
+      
+      .subject-card {
+        position: relative;
+        overflow: hidden;
+      }
+      
+      .subject-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: var(--subject-color);
+      }
+      
+      .subject-card::after {
+        content: '';
+        position: absolute;
+        bottom: -50%;
+        right: -50%;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(circle, var(--subject-color) 0%, transparent 70%);
+        opacity: 0.05;
+      }
+      
+      /* Progress Ring */
+      .progress-ring { transform: rotate(-90deg); }
+      .progress-ring__circle {
+        transition: stroke-dashoffset 1s ease-in-out;
+      }
+      
+      /* Streak Fire Animation */
+      .streak-glow {
+        animation: fireGlow 2s ease-in-out infinite alternate;
+      }
+      
+      @keyframes fireGlow {
+        0% { filter: drop-shadow(0 0 5px #f97316) drop-shadow(0 0 10px #fb923c); }
+        100% { filter: drop-shadow(0 0 15px #f97316) drop-shadow(0 0 25px #fb923c); }
+      }
+      
+      /* Pulse Animation */
+      .pulse-ring {
+        animation: pulseRing 2s infinite;
+      }
+      
+      @keyframes pulseRing {
+        0% { transform: scale(0.95); opacity: 1; }
+        50% { transform: scale(1); opacity: 0.7; }
+        100% { transform: scale(0.95); opacity: 1; }
+      }
+      
+      /* Quick Action Button */
+      .quick-btn {
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+      }
+      
+      .quick-btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+        transition: left 0.5s ease;
+      }
+      
+      .quick-btn:hover::before {
+        left: 100%;
+      }
+      
+      .quick-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 30px -10px rgba(14, 165, 233, 0.5);
+      }
+      
+      /* Activity Timeline */
+      .timeline-dot {
+        position: relative;
+      }
+      
+      .timeline-dot::before {
+        content: '';
+        position: absolute;
+        left: 50%;
+        top: 100%;
+        width: 2px;
+        height: 40px;
+        background: linear-gradient(to bottom, #e2e8f0, transparent);
+        transform: translateX(-50%);
+      }
+      
+      .timeline-dot:last-child::before { display: none; }
+      
+      /* Resource Card Shine */
+      .resource-card {
+        position: relative;
+        overflow: hidden;
+      }
+      
+      .resource-card::after {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(
+          45deg,
+          transparent 30%,
+          rgba(255,255,255,0.1) 50%,
+          transparent 70%
+        );
+        transform: rotate(45deg);
+        animation: cardShine 3s infinite;
+      }
+      
+      @keyframes cardShine {
+        0% { transform: rotate(45deg) translateX(-100%); }
+        100% { transform: rotate(45deg) translateX(100%); }
+      }
+      
+      /* Badge */
+      .achievement-badge {
+        animation: badgePop 0.5s ease-out;
+      }
+      
+      @keyframes badgePop {
+        0% { transform: scale(0); }
+        50% { transform: scale(1.2); }
+        100% { transform: scale(1); }
+      }
+      
+      /* Study Timer */
+      .timer-glow {
+        box-shadow: 0 0 30px rgba(14, 165, 233, 0.3);
+      }
+      
+      /* Notification Dot */
+      .notif-dot {
+        animation: notifPulse 2s infinite;
+      }
+      
+      @keyframes notifPulse {
+        0%, 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
+        50% { box-shadow: 0 0 0 8px rgba(239, 68, 68, 0); }
+      }
+      
+      /* Stat Counter Animation */
+      .stat-number {
+        animation: countUp 1s ease-out;
+      }
+      
+      /* Skeleton Loading */
+      .skeleton {
+        background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+        background-size: 200% 100%;
+        animation: skeleton-loading 1.5s infinite;
+      }
+      
+      @keyframes skeleton-loading {
+        0% { background-position: 200% 0; }
+        100% { background-position: -200% 0; }
+      }
+      
+      /* Countdown Box */
+      .countdown-box {
+        background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+        border: 2px solid #fcd34d;
+      }
+      
+      /* Focus Mode Overlay */
+      .focus-overlay {
+        backdrop-filter: blur(8px);
+      }
+    </style>
+    
+    <script type="module">
+      import { getGlobalUserData } from '../js/user-cache.js';
+      
+      function getInitials(fullName) {
+        try {
+          return String(fullName || '').split(' ').slice(0, 2).map(n => n.charAt(0)).join('').toUpperCase();
+        } catch (e) { return ''; }
+      }
+      
+      function applyUserData(user) {
+        if (!user) return;
+        const fullName = user.displayName || 'Student';
+        const name = fullName.split(' ')[0];
+        const level = (user.profile?.level || '').startsWith('SS') ? user.profile.level : 'SS 3';
+        const initials = getInitials(fullName);
+        
+        document.querySelectorAll('.user-fullname').forEach(el => el.textContent = fullName);
+        document.querySelectorAll('.user-firstname').forEach(el => el.textContent = name);
+        
+        const heroName = document.getElementById('heroName');
+        if (heroName) heroName.textContent = name;
+        
+        const avatarUrl = user.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(initials)}&background=0ea5e9&color=fff&size=128&font-size=0.4&bold=true`;
+        ['avatar-sm', 'topAvatar', 'main-avatar'].forEach(id => {
+          const a = document.getElementById(id);
+          if (a) a.src = avatarUrl;
+        });
+      }
+      
+      try {
+        const global = getGlobalUserData();
+        if (global) {
+          if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => applyUserData(global));
+          } else {
+            applyUserData(global);
+          }
+        }
+      } catch (err) {
+        console.debug('Preload cache check failed', err);
+      }
+    </script>
+    <script>
+      window.SUPABASE_URL = 'https://kruwfhzfqieuiuhqlutt.supabase.co';
+      window.SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtydXdmaHpmcWlldWl1aHFsdXR0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjIxOTk0OTAsImV4cCI6MjA3Nzc3NTQ5MH0.XD3-PDjDtKwCVsBILYgVrHF7Yc9tHkzpvpN2b7ojvB4';
+    </script>
+    <script src="./js/supabase-bootstrap.js"></script>
+  </head>
+  <body class="bg-slate-50 text-slate-800">
+    <div class="min-h-screen flex">
+      
+      <!-- Sidebar -->
+      <aside id="sidebar" class="w-64 md:w-72 lg:w-80 fixed left-0 top-0 h-full bg-white border-r border-slate-200 flex flex-col z-40 hide lg:translate-x-0">
+        <!-- Logo -->
+        <div class="p-5 border-b border-slate-100">
+          <div class="flex items-center gap-3">
+            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-sky-500 to-cyan-500 flex items-center justify-center shadow-lg">
+              <i class="fas fa-brain text-white text-xl"></i>
+            </div>
+            <div>
+              <div class="text-lg font-bold bg-gradient-to-r from-sky-600 to-cyan-600 bg-clip-text text-transparent">JUANOVA CORTEX</div>
+              <div class="text-xs text-slate-400">Learning Platform</div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Navigation -->
+        <nav class="flex-1 overflow-y-auto p-4">
+          <div class="mb-4">
+            <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider px-3 mb-2">Main Menu</div>
+            <ul class="space-y-1">
+              <li>
+                <a href="student-dashboard.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-sky-50 text-sky-700 font-medium">
+                  <i class="fas fa-home text-sky-500 w-5"></i>
+                  <span>Dashboard</span>
+                </a>
+              </li>
+              <li>
+                <a href="study-plan.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 hover:bg-slate-50 transition-colors">
+                  <i class="fas fa-calendar-alt text-emerald-500 w-5"></i>
+                  <span>Study Plan</span>
+                </a>
+              </li>
+              <li>
+                <a href="mock-exams.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 hover:bg-slate-50 transition-colors">
+                  <i class="fas fa-clipboard-list text-amber-500 w-5"></i>
+                  <span>Practice Tests</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+          
+          <div class="mb-4">
+            <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider px-3 mb-2">Resources</div>
+            <ul class="space-y-1">
+              <li>
+                <a href="video-library.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 hover:bg-slate-50 transition-colors">
+                  <i class="fas fa-play-circle text-rose-500 w-5"></i>
+                  <span>Video Lessons</span>
+                </a>
+              </li>
+              <li>
+                <a href="smart-note.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 hover:bg-slate-50 transition-colors">
+                  <i class="fas fa-sticky-note text-yellow-500 w-5"></i>
+                  <span>My Notes</span>
+                </a>
+              </li>
+              <li>
+                <a href="textbooks.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 hover:bg-slate-50 transition-colors">
+                  <i class="fas fa-book text-indigo-500 w-5"></i>
+                  <span>Textbooks</span>
+                </a>
+              </li>
+              <li>
+                <a href="formula-bank.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 hover:bg-slate-50 transition-colors">
+                  <i class="fas fa-square-root-alt text-teal-500 w-5"></i>
+                  <span>Formula Bank</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+          
+          <div>
+            <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider px-3 mb-2">Others</div>
+            <ul class="space-y-1">
+              <li>
+                <a href="digital-library.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 hover:bg-slate-50 transition-colors">
+                  <i class="fas fa-folder-open text-cyan-500 w-5"></i>
+                  <span>Digital Library</span>
+                </a>
+              </li>
+              <li>
+                <a href="student-live-session.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 hover:bg-slate-50 transition-colors">
+                  <i class="fas fa-video text-purple-500 w-5"></i>
+                  <span>Live Sessions</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+        
+        <!-- User Profile -->
+        <div class="p-4 border-t border-slate-100">
+          <div class="flex items-center gap-3 p-2 rounded-xl bg-slate-50">
+            <img id="avatar-sm" src="../assets/images/unnamed.jpg" alt="avatar" class="w-10 h-10 rounded-full border-2 border-sky-200">
+            <div class="flex-1 min-w-0">
+              <div id="userName" class="font-semibold text-slate-800 truncate user-firstname">Student</div>
+              <div id="userLevel" class="text-xs text-slate-500">SS 3</div>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Main Content -->
+      <div id="main-content" class="flex-1 flex flex-col ml-0 lg:ml-80">
+        
+        <!-- Top Header -->
+        <header class="sticky top-0 z-30 bg-white/80 backdrop-blur-xl border-b border-slate-200/50 px-6 py-4">
+          <div class="flex items-center justify-between gap-4">
+            <!-- Mobile Menu Toggle -->
+            <button id="toggleSidebar" class="p-2 rounded-xl hover:bg-slate-100 lg:hidden transition-colors">
+              <i class="fas fa-bars text-slate-500"></i>
+            </button>
+            
+            <!-- Search -->
+            <div class="flex-1 max-w-xl">
+              <div class="relative">
+                <input type="search" placeholder="Search subjects, topics, resources..." 
+                  class="w-full pl-11 pr-4 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 focus:outline-none focus:ring-2 focus:ring-sky-100 focus:border-sky-300 focus:bg-white transition-all">
+                <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
+              </div>
+            </div>
+            
+            <!-- Right Actions -->
+            <div class="flex items-center gap-3">
+              <!-- Notifications -->
+              <a href="notifications-supabase.html" class="relative p-2.5 rounded-xl hover:bg-slate-100 transition-colors">
+                <i class="fas fa-bell text-slate-500 text-lg"></i>
+                <span class="absolute top-1 right-1 w-2.5 h-2.5 bg-red-500 rounded-full notif-dot"></span>
+              </a>
+              
+              <!-- User -->
+              <div class="hidden sm:flex items-center gap-3">
+                <div class="text-right">
+                  <div id="topName" class="font-semibold text-slate-800 user-fullname">Student</div>
+                  <div id="topLevel" class="text-xs text-slate-500">SS 3</div>
+                </div>
+                <img id="topAvatar" src="../assets/images/unnamed.jpg" alt="avatar" class="w-10 h-10 rounded-full border-2 border-sky-200">
+              </div>
+            </div>
+          </div>
+        </header>
+
+        <!-- Main Body -->
+        <main class="p-6 space-y-6 overflow-y-auto">
+          
+          <!-- Hero Welcome Section -->
+          <section class="hero-gradient rounded-3xl p-8 text-white relative overflow-hidden">
+            <!-- Floating Particles -->
+            <div class="particle w-20 h-20 top-10 right-20" style="animation-delay: 0s;"></div>
+            <div class="particle w-12 h-12 bottom-20 right-40" style="animation-delay: 2s;"></div>
+            <div class="particle w-16 h-16 top-20 right-1/3" style="animation-delay: 4s;"></div>
+            
+            <!-- Cortex AI Owl Mascot - Floating Right -->
+            <div class="absolute right-4 top-1/2 -translate-y-1/2 hidden xl:block z-20">
+              <div class="relative">
+                <img src="/cortex-owl-brain.svg" alt="Cortex AI Owl" class="w-32 h-32 drop-shadow-2xl animate-float-mascot">
+                <div class="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-medium text-white whitespace-nowrap">
+                  🦉 Cortex AI
+                </div>
+              </div>
+            </div>
+            
+            <div class="relative z-10 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8">
+              <div>
+                <div class="flex items-center gap-3 mb-4">
+                  <span id="timeGreeting" class="px-4 py-1.5 bg-white/20 backdrop-blur rounded-full text-sm font-medium">Good Morning</span>
+                  <span id="currentDate" class="text-white/70 text-sm"></span>
+                </div>
+                <h1 class="text-3xl md:text-4xl font-bold mb-3">
+                  Welcome back, <span id="heroName">Student</span>! 👋
+                </h1>
+                <p class="text-white/80 text-lg mb-6 max-w-lg">Your learning journey continues. Every study session brings you closer to your goals.</p>
+                
+                <!-- Quick Actions -->
+                <div class="flex flex-wrap gap-3">
+                  <a href="study-plan.html" class="quick-btn px-5 py-2.5 bg-white text-sky-600 rounded-xl font-semibold flex items-center gap-2 shadow-lg">
+                    <i class="fas fa-plus-circle"></i>
+                    <span>New Study Plan</span>
+                  </a>
+                  <a href="mock-exams.html" class="quick-btn px-5 py-2.5 bg-white/20 backdrop-blur rounded-xl font-medium flex items-center gap-2 hover:bg-white/30">
+                    <i class="fas fa-clipboard-list"></i>
+                    <span>Take Practice Test</span>
+                  </a>
+                  <a href="video-library.html" class="quick-btn px-5 py-2.5 bg-white/20 backdrop-blur rounded-xl font-medium flex items-center gap-2 hover:bg-white/30">
+                    <i class="fas fa-play-circle"></i>
+                    <span>Watch Videos</span>
+                  </a>
+                </div>
+              </div>
+              
+              <!-- Stats Cards -->
+              <div class="flex items-center gap-4">
+                <!-- Study Streak -->
+                <div class="text-center bg-white/10 backdrop-blur rounded-2xl p-5">
+                  <div class="w-16 h-16 bg-gradient-to-br from-orange-400 to-red-500 rounded-2xl flex items-center justify-center mx-auto mb-3 streak-glow">
+                    <i class="fas fa-fire text-white text-2xl"></i>
+                  </div>
+                  <div id="streakCount" class="text-3xl font-bold text-white">0</div>
+                  <div class="text-white/70 text-sm">Day Streak</div>
+                </div>
+                
+                <!-- Progress Ring -->
+                <div class="text-center bg-white/10 backdrop-blur rounded-2xl p-5">
+                  <div class="relative w-20 h-20 mx-auto mb-3">
+                    <svg class="progress-ring w-20 h-20" viewBox="0 0 80 80">
+                      <circle cx="40" cy="40" r="35" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="6"/>
+                      <circle id="progressRing" class="progress-ring__circle" cx="40" cy="40" r="35" fill="none" stroke="white" stroke-width="6" stroke-linecap="round" stroke-dasharray="220" stroke-dashoffset="220"/>
+                    </svg>
+                    <div id="progressValue" class="absolute inset-0 flex items-center justify-center text-xl font-bold text-white">0%</div>
+                  </div>
+                  <div class="text-white/70 text-sm">Weekly Goal</div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Exam Countdown -->
+          <section class="countdown-box rounded-2xl p-5">
+            <div class="flex items-center justify-between flex-wrap gap-4">
+              <div class="flex items-center gap-4">
+                <div class="w-14 h-14 bg-amber-500 rounded-2xl flex items-center justify-center shadow-lg">
+                  <i class="fas fa-hourglass-half text-white text-2xl"></i>
+                </div>
+                <div>
+                  <div class="text-xs text-amber-700 uppercase tracking-wide font-medium">Exam Countdown</div>
+                  <div class="font-bold text-amber-900 text-lg" id="examName">JAMB 2026</div>
+                </div>
+              </div>
+              <div class="flex items-center gap-6">
+                <div class="text-center">
+                  <div class="text-3xl font-bold text-amber-700" id="countdownDays">--</div>
+                  <div class="text-xs text-amber-600 font-medium">Days</div>
+                </div>
+                <div class="text-center">
+                  <div class="text-3xl font-bold text-amber-700" id="countdownHours">--</div>
+                  <div class="text-xs text-amber-600 font-medium">Hours</div>
+                </div>
+                <div class="text-center">
+                  <div class="text-3xl font-bold text-amber-700" id="countdownMins">--</div>
+                  <div class="text-xs text-amber-600 font-medium">Minutes</div>
+                </div>
+                <div class="text-center">
+                  <div class="text-3xl font-bold text-amber-700" id="countdownSecs">--</div>
+                  <div class="text-xs text-amber-600 font-medium">Seconds</div>
+                </div>
+              </div>
+              <a href="study-plan.html" class="px-4 py-2 bg-amber-500 text-white font-medium rounded-xl hover:bg-amber-600 transition-colors text-sm">
+                <i class="fas fa-calendar-alt mr-2"></i>Set Exam Date
+              </a>
+            </div>
+          </section>
+
+          <!-- Subject Cards -->
+          <section>
+            <div class="flex items-center justify-between mb-5">
+              <div>
+                <h2 class="text-xl font-bold text-slate-800">Your Subjects</h2>
+                <p class="text-sm text-slate-500">Continue where you left off</p>
+              </div>
+              <a href="digital-library.html" class="text-sm font-medium text-sky-600 hover:text-sky-700 flex items-center gap-1">
+                View All <i class="fas fa-arrow-right"></i>
+              </a>
+            </div>
+            
+            <div id="subjectCardsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+              <!-- Subject cards will be dynamically loaded -->
+            </div>
+          </section>
+
+          <!-- Two Column Layout -->
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            
+            <!-- Left Column - Study Tools -->
+            <div class="lg:col-span-2 space-y-6">
+              
+              <!-- Study Tools Grid -->
+              <section>
+                <div class="flex items-center justify-between mb-5">
+                  <div>
+                    <h2 class="text-xl font-bold text-slate-800">Study Tools</h2>
+                    <p class="text-sm text-slate-500">Everything you need to excel</p>
+                  </div>
+                </div>
+                
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  <!-- Practice Tests -->
+                  <a href="mock-exams.html" class="hover-lift bg-white rounded-2xl p-5 border border-slate-200 shadow-sm text-center group">
+                    <div class="w-14 h-14 mx-auto mb-3 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                      <i class="fas fa-clipboard-list text-white text-xl"></i>
+                    </div>
+                    <h3 class="font-semibold text-slate-800 text-sm">Practice Tests</h3>
+                    <p class="text-xs text-slate-500 mt-1">JAMB, WAEC, NECO</p>
+                  </a>
+                  
+                  <!-- Video Lessons -->
+                  <a href="video-library.html" class="hover-lift bg-white rounded-2xl p-5 border border-slate-200 shadow-sm text-center group">
+                    <div class="w-14 h-14 mx-auto mb-3 bg-gradient-to-br from-rose-500 to-pink-600 rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                      <i class="fas fa-play-circle text-white text-xl"></i>
+                    </div>
+                    <h3 class="font-semibold text-slate-800 text-sm">Video Lessons</h3>
+                    <p class="text-xs text-slate-500 mt-1">Visual learning</p>
+                  </a>
+                  
+                  <!-- Smart Notes -->
+                  <a href="smart-note.html" class="hover-lift bg-white rounded-2xl p-5 border border-slate-200 shadow-sm text-center group">
+                    <div class="w-14 h-14 mx-auto mb-3 bg-gradient-to-br from-amber-500 to-orange-600 rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                      <i class="fas fa-sticky-note text-white text-xl"></i>
+                    </div>
+                    <h3 class="font-semibold text-slate-800 text-sm">Smart Notes</h3>
+                    <p class="text-xs text-slate-500 mt-1">Quick revision</p>
+                  </a>
+                  
+                  <!-- Formula Bank -->
+                  <a href="formula-bank.html" class="hover-lift bg-white rounded-2xl p-5 border border-slate-200 shadow-sm text-center group">
+                    <div class="w-14 h-14 mx-auto mb-3 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                      <i class="fas fa-square-root-alt text-white text-xl"></i>
+                    </div>
+                    <h3 class="font-semibold text-slate-800 text-sm">Formula Bank</h3>
+                    <p class="text-xs text-slate-500 mt-1">All formulas</p>
+                  </a>
+                  
+                  <!-- Textbooks -->
+                  <a href="textbooks.html" class="hover-lift bg-white rounded-2xl p-5 border border-slate-200 shadow-sm text-center group">
+                    <div class="w-14 h-14 mx-auto mb-3 bg-gradient-to-br from-violet-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                      <i class="fas fa-book text-white text-xl"></i>
+                    </div>
+                    <h3 class="font-semibold text-slate-800 text-sm">Textbooks</h3>
+                    <p class="text-xs text-slate-500 mt-1">PDF resources</p>
+                  </a>
+                  
+                  <!-- Study Plan -->
+                  <a href="study-plan.html" class="hover-lift bg-white rounded-2xl p-5 border border-slate-200 shadow-sm text-center group">
+                    <div class="w-14 h-14 mx-auto mb-3 bg-gradient-to-br from-sky-500 to-cyan-600 rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                      <i class="fas fa-calendar-alt text-white text-xl"></i>
+                    </div>
+                    <h3 class="font-semibold text-slate-800 text-sm">Study Plan</h3>
+                    <p class="text-xs text-slate-500 mt-1">Stay organized</p>
+                  </a>
+                  
+                  <!-- Digital Library -->
+                  <a href="digital-library.html" class="hover-lift bg-white rounded-2xl p-5 border border-slate-200 shadow-sm text-center group">
+                    <div class="w-14 h-14 mx-auto mb-3 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                      <i class="fas fa-folder-open text-white text-xl"></i>
+                    </div>
+                    <h3 class="font-semibold text-slate-800 text-sm">Library</h3>
+                    <p class="text-xs text-slate-500 mt-1">All resources</p>
+                  </a>
+                  
+                  <!-- Live Sessions -->
+                  <a href="student-live-session.html" class="hover-lift bg-white rounded-2xl p-5 border border-slate-200 shadow-sm text-center group">
+                    <div class="w-14 h-14 mx-auto mb-3 bg-gradient-to-br from-red-500 to-rose-600 rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                      <i class="fas fa-video text-white text-xl"></i>
+                    </div>
+                    <h3 class="font-semibold text-slate-800 text-sm">Live Classes</h3>
+                    <p class="text-xs text-slate-500 mt-1">Join sessions</p>
+                  </a>
+                </div>
+              </section>
+              
+              <!-- Recent Activity -->
+              <section class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                <div class="p-5 border-b border-slate-100">
+                  <h2 class="text-lg font-bold text-slate-800">Recent Activity</h2>
+                </div>
+                <div class="p-5">
+                  <div class="space-y-4">
+                    <div class="flex items-center gap-4 p-3 rounded-xl hover:bg-slate-50 transition-colors">
+                      <div class="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center">
+                        <i class="fas fa-check text-emerald-500"></i>
+                      </div>
+                      <div class="flex-1">
+                        <p class="font-medium text-slate-800 text-sm">Completed "Quadratic Equations" quiz</p>
+                        <p class="text-xs text-slate-500">Scored 85% • Mathematics</p>
+                      </div>
+                      <span class="text-xs text-slate-400">2h ago</span>
+                    </div>
+                    
+                    <div class="flex items-center gap-4 p-3 rounded-xl hover:bg-slate-50 transition-colors">
+                      <div class="w-10 h-10 rounded-full bg-sky-100 flex items-center justify-center">
+                        <i class="fas fa-play text-sky-500"></i>
+                      </div>
+                      <div class="flex-1">
+                        <p class="font-medium text-slate-800 text-sm">Watched "Newton's Laws of Motion"</p>
+                        <p class="text-xs text-slate-500">15 min video • Physics</p>
+                      </div>
+                      <span class="text-xs text-slate-400">4h ago</span>
+                    </div>
+                    
+                    <div class="flex items-center gap-4 p-3 rounded-xl hover:bg-slate-50 transition-colors">
+                      <div class="w-10 h-10 rounded-full bg-amber-100 flex items-center justify-center">
+                        <i class="fas fa-sticky-note text-amber-500"></i>
+                      </div>
+                      <div class="flex-1">
+                        <p class="font-medium text-slate-800 text-sm">Created new note "Organic Chemistry"</p>
+                        <p class="text-xs text-slate-500">Smart Notes • Chemistry</p>
+                      </div>
+                      <span class="text-xs text-slate-400">Yesterday</span>
+                    </div>
+                    
+                    <div class="flex items-center gap-4 p-3 rounded-xl hover:bg-slate-50 transition-colors">
+                      <div class="w-10 h-10 rounded-full bg-violet-100 flex items-center justify-center">
+                        <i class="fas fa-book text-violet-500"></i>
+                      </div>
+                      <div class="flex-1">
+                        <p class="font-medium text-slate-800 text-sm">Read "Comprehension Skills"</p>
+                        <p class="text-xs text-slate-500">15 pages • English</p>
+                      </div>
+                      <span class="text-xs text-slate-400">2 days ago</span>
+                    </div>
+                  </div>
+                </div>
+              </section>
+            </div>
+            
+            <!-- Right Column - Sidebar -->
+            <aside class="space-y-6">
+              
+              <!-- Daily Motivation -->
+              <div class="bg-gradient-to-br from-sky-50 to-cyan-50 rounded-2xl p-5 border border-sky-100">
+                <div class="flex items-start gap-3">
+                  <div class="w-10 h-10 rounded-xl bg-sky-500 flex items-center justify-center flex-shrink-0">
+                    <i class="fas fa-quote-left text-white"></i>
+                  </div>
+                  <div>
+                    <p class="text-slate-700 italic text-sm leading-relaxed" id="dailyQuote">
+                      "The secret of getting ahead is getting started."
+                    </p>
+                    <p class="text-sky-600 text-xs font-medium mt-2" id="quoteAuthor">— Mark Twain</p>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Quick Study Timer -->
+              <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                <div class="p-5 border-b border-slate-100">
+                  <h3 class="font-semibold text-slate-800">Focus Timer</h3>
+                  <p class="text-xs text-slate-500">Stay productive with Pomodoro</p>
+                </div>
+                <div class="p-5">
+                  <div class="text-center mb-4">
+                    <div id="timerDisplay" class="text-5xl font-bold text-slate-800 mb-2">25:00</div>
+                    <p id="timerLabel" class="text-sm text-slate-500">Focus Session</p>
+                  </div>
+                  <div class="flex gap-2">
+                    <button onclick="startTimer()" id="startBtn" class="flex-1 py-2.5 bg-sky-500 text-white font-medium rounded-xl hover:bg-sky-600 transition-colors text-sm">
+                      <i class="fas fa-play mr-1"></i> Start
+                    </button>
+                    <button onclick="pauseTimer()" id="pauseBtn" class="hidden flex-1 py-2.5 bg-amber-500 text-white font-medium rounded-xl hover:bg-amber-600 transition-colors text-sm">
+                      <i class="fas fa-pause mr-1"></i> Pause
+                    </button>
+                    <button onclick="resetTimer()" class="py-2.5 px-4 bg-slate-100 text-slate-600 font-medium rounded-xl hover:bg-slate-200 transition-colors text-sm">
+                      <i class="fas fa-redo"></i>
+                    </button>
+                  </div>
+                  <div class="flex justify-center gap-2 mt-3">
+                    <button onclick="setTimer(15)" class="px-3 py-1 text-xs bg-slate-100 rounded-full hover:bg-slate-200 transition-colors">15m</button>
+                    <button onclick="setTimer(25)" class="px-3 py-1 text-xs bg-sky-100 text-sky-600 rounded-full hover:bg-sky-200 transition-colors">25m</button>
+                    <button onclick="setTimer(45)" class="px-3 py-1 text-xs bg-slate-100 rounded-full hover:bg-slate-200 transition-colors">45m</button>
+                    <button onclick="setTimer(60)" class="px-3 py-1 text-xs bg-slate-100 rounded-full hover:bg-slate-200 transition-colors">60m</button>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Upcoming Tasks -->
+              <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                <div class="p-5 border-b border-slate-100 flex items-center justify-between">
+                  <h3 class="font-semibold text-slate-800">Today's Tasks</h3>
+                  <a href="study-plan.html" class="text-xs text-sky-600 hover:text-sky-700">View All</a>
+                </div>
+                <div class="p-3">
+                  <div class="space-y-2">
+                    <label class="flex items-center gap-3 p-2 rounded-lg hover:bg-slate-50 cursor-pointer group">
+                      <input type="checkbox" class="w-5 h-5 rounded border-slate-300 text-sky-500 focus:ring-sky-500">
+                      <span class="text-sm text-slate-600 group-hover:text-slate-800">Complete Math exercise</span>
+                    </label>
+                    <label class="flex items-center gap-3 p-2 rounded-lg hover:bg-slate-50 cursor-pointer group">
+                      <input type="checkbox" class="w-5 h-5 rounded border-slate-300 text-sky-500 focus:ring-sky-500">
+                      <span class="text-sm text-slate-600 group-hover:text-slate-800">Read Physics chapter 5</span>
+                    </label>
+                    <label class="flex items-center gap-3 p-2 rounded-lg hover:bg-slate-50 cursor-pointer group">
+                      <input type="checkbox" class="w-5 h-5 rounded border-slate-300 text-sky-500 focus:ring-sky-500" checked>
+                      <span class="text-sm text-slate-400 line-through">Watch Chemistry video</span>
+                    </label>
+                    <label class="flex items-center gap-3 p-2 rounded-lg hover:bg-slate-50 cursor-pointer group">
+                      <input type="checkbox" class="w-5 h-5 rounded border-slate-300 text-sky-500 focus:ring-sky-500">
+                      <span class="text-sm text-slate-600 group-hover:text-slate-800">Practice English essay</span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+              
+            </aside>
+          </div>
+
+        </main>
+        
+
+      </div>
+    </div>
+
+    <script type="module" src="../js/user-cache.js"></script>
+    <script type="module" src="./js/sidebar-fragment.js"></script>
+    
+    <script>
+      // Set current date and greeting
+      const dateEl = document.getElementById('currentDate');
+      const greetingEl = document.getElementById('timeGreeting');
+      if (dateEl) {
+        const options = { weekday: 'long', month: 'short', day: 'numeric' };
+        dateEl.textContent = new Date().toLocaleDateString('en-US', options);
+      }
+      if (greetingEl) {
+        const hour = new Date().getHours();
+        let greeting = 'Good Morning';
+        if (hour >= 12 && hour < 17) greeting = 'Good Afternoon';
+        else if (hour >= 17) greeting = 'Good Evening';
+        greetingEl.textContent = greeting;
+      }
+      
+      // Daily Quotes
+      const quotes = [
+        { text: "The secret of getting ahead is getting started.", author: "Mark Twain" },
+        { text: "Success is not final, failure is not fatal.", author: "Winston Churchill" },
+        { text: "The only way to do great work is to love what you do.", author: "Steve Jobs" },
+        { text: "Education is the most powerful weapon.", author: "Nelson Mandela" },
+        { text: "The beautiful thing about learning is that no one can take it away from you.", author: "B.B. King" },
+        { text: "It does not matter how slowly you go as long as you do not stop.", author: "Confucius" },
+        { text: "The more that you read, the more things you will know.", author: "Dr. Seuss" },
+      ];
+      
+      const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+      document.getElementById('dailyQuote').textContent = `"${randomQuote.text}"`;
+      document.getElementById('quoteAuthor').textContent = `— ${randomQuote.author}`;
+      
+      // Exam Countdown Timer
+      function updateCountdown() {
+        // Set exam date (example: JAMB 2026 - March 15, 2026)
+        const examDate = new Date('2026-03-15T08:00:00');
+        const now = new Date();
+        const diff = examDate - now;
+        
+        if (diff > 0) {
+          const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+          const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+          const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+          const secs = Math.floor((diff % (1000 * 60)) / 1000);
+          
+          document.getElementById('countdownDays').textContent = days;
+          document.getElementById('countdownHours').textContent = hours.toString().padStart(2, '0');
+          document.getElementById('countdownMins').textContent = mins.toString().padStart(2, '0');
+          document.getElementById('countdownSecs').textContent = secs.toString().padStart(2, '0');
+        }
+      }
+      
+      setInterval(updateCountdown, 1000);
+      updateCountdown();
+      
+      // Focus Timer
+      let timerMinutes = 25;
+      let timerSeconds = 0;
+      let timerInterval = null;
+      let isRunning = false;
+      
+      function updateTimerDisplay() {
+        const mins = timerMinutes.toString().padStart(2, '0');
+        const secs = timerSeconds.toString().padStart(2, '0');
+        document.getElementById('timerDisplay').textContent = `${mins}:${secs}`;
+      }
+      
+      function startTimer() {
+        if (isRunning) return;
+        isRunning = true;
+        document.getElementById('startBtn').classList.add('hidden');
+        document.getElementById('pauseBtn').classList.remove('hidden');
+        
+        timerInterval = setInterval(() => {
+          if (timerSeconds === 0) {
+            if (timerMinutes === 0) {
+              clearInterval(timerInterval);
+              isRunning = false;
+              document.getElementById('timerLabel').textContent = 'Session Complete! 🎉';
+              // Play sound or notification
+              return;
+            }
+            timerMinutes--;
+            timerSeconds = 59;
+          } else {
+            timerSeconds--;
+          }
+          updateTimerDisplay();
+        }, 1000);
+      }
+      
+      function pauseTimer() {
+        clearInterval(timerInterval);
+        isRunning = false;
+        document.getElementById('startBtn').classList.remove('hidden');
+        document.getElementById('pauseBtn').classList.add('hidden');
+        document.getElementById('startBtn').innerHTML = '<i class="fas fa-play mr-1"></i> Resume';
+      }
+      
+      function resetTimer() {
+        clearInterval(timerInterval);
+        isRunning = false;
+        timerMinutes = 25;
+        timerSeconds = 0;
+        updateTimerDisplay();
+        document.getElementById('startBtn').classList.remove('hidden');
+        document.getElementById('pauseBtn').classList.add('hidden');
+        document.getElementById('startBtn').innerHTML = '<i class="fas fa-play mr-1"></i> Start';
+        document.getElementById('timerLabel').textContent = 'Focus Session';
+      }
+      
+      function setTimer(mins) {
+        clearInterval(timerInterval);
+        isRunning = false;
+        timerMinutes = mins;
+        timerSeconds = 0;
+        updateTimerDisplay();
+        document.getElementById('startBtn').classList.remove('hidden');
+        document.getElementById('pauseBtn').classList.add('hidden');
+        document.getElementById('startBtn').innerHTML = '<i class="fas fa-play mr-1"></i> Start';
+        document.getElementById('timerLabel').textContent = 'Focus Session';
+      }
+      
+      // Sidebar Toggle
+      const sidebar = document.getElementById('sidebar');
+      const mainContent = document.getElementById('main-content');
+      const toggleBtn = document.getElementById('toggleSidebar');
+      
+      if (toggleBtn) {
+        toggleBtn.addEventListener('click', () => {
+          sidebar.classList.toggle('hide');
+        });
+      }
+      
+      // Close sidebar when clicking outside on mobile
+      mainContent.addEventListener('click', () => {
+        if (window.innerWidth < 1024 && !sidebar.classList.contains('hide')) {
+          sidebar.classList.add('hide');
+        }
+      });
+      
+      // ============================================
+      // SUBJECT DATA - Topics per subject
+      // ============================================
+      const SUBJECTS_DATA = {
+        mathematics: {
+          id: 'mathematics',
+          name: 'Mathematics',
+          icon: 'fa-calculator',
+          color: 'red',
+          gradient: 'from-red-400 to-red-600',
+          topics: [
+            'Number Bases', 'Indices', 'Logarithms', 'Sets', 'Modular Arithmetic',
+            'Algebraic Expressions', 'Simple Equations', 'Quadratic Equations',
+            'Simultaneous Equations', 'Polynomials', 'Functions', 'Mensuration',
+            'Geometry', 'Trigonometry', 'Vectors', 'Statistics', 'Probability',
+            'Differentiation', 'Integration', 'Matrices'
+          ],
+          link: 'subjects/mathematics/'
+        },
+        physics: {
+          id: 'physics',
+          name: 'Physics',
+          icon: 'fa-atom',
+          color: 'amber',
+          gradient: 'from-amber-400 to-amber-600',
+          topics: [
+            'Measurements', 'Motion', 'Newton\'s Laws', 'Work, Energy, Power',
+            'Momentum', 'Projectile Motion', 'Simple Harmonic Motion', 'Waves',
+            'Sound', 'Light', 'Optics', 'Heat', 'Electricity', 'Magnetism',
+            'Electromagnetic Induction', 'Modern Physics', 'Nuclear Physics'
+          ],
+          link: 'subjects/waves/'
+        },
+        chemistry: {
+          id: 'chemistry',
+          name: 'Chemistry',
+          icon: 'fa-flask',
+          color: 'pink',
+          gradient: 'from-pink-400 to-pink-600',
+          topics: [
+            'Atomic Structure', 'Periodic Table', 'Chemical Bonding',
+            'Chemical Reactions', 'Stoichiometry', 'States of Matter',
+            'Gas Laws', 'Solutions', 'Acids and Bases', 'Electrochemistry',
+            'Organic Chemistry', 'Environmental Chemistry', 'Nuclear Chemistry'
+          ],
+          link: 'subjects/chemistry/'
+        },
+        biology: {
+          id: 'biology',
+          name: 'Biology',
+          icon: 'fa-dna',
+          color: 'green',
+          gradient: 'from-green-400 to-green-600',
+          topics: [
+            'Cell Structure', 'Cell Division', 'Nutrition', 'Photosynthesis',
+            'Respiration', 'Transport', 'Excretion', 'Reproduction', 'Genetics',
+            'Evolution', 'Ecology', 'Nervous System', 'Endocrine System'
+          ],
+          link: 'subjects/biology/'
+        },
+        english: {
+          id: 'english',
+          name: 'English Language',
+          icon: 'fa-book-open',
+          color: 'violet',
+          gradient: 'from-violet-400 to-violet-600',
+          topics: [
+            'Parts of Speech', 'Sentence Structure', 'Tenses', 'Articles',
+            'Punctuation', 'Comprehension', 'Summary Writing', 'Essay Writing',
+            'Letter Writing', 'Vocabulary', 'Idioms', 'Figures of Speech'
+          ],
+          link: 'subjects/english/'
+        },
+        economics: {
+          id: 'economics',
+          name: 'Economics',
+          icon: 'fa-chart-line',
+          color: 'cyan',
+          gradient: 'from-cyan-400 to-cyan-600',
+          topics: [
+            'Basic Economic Concepts', 'Demand and Supply', 'Market Structures',
+            'National Income', 'Money and Banking', 'Public Finance',
+            'International Trade', 'Economic Development', 'Population'
+          ],
+          link: 'subjects/economics/'
+        },
+        government: {
+          id: 'government',
+          name: 'Government',
+          icon: 'fa-landmark',
+          color: 'rose',
+          gradient: 'from-rose-400 to-rose-600',
+          topics: [
+            'Basic Concepts', 'Constitution', 'Arms of Government',
+            'Federalism', 'Political Parties', 'Electoral Systems',
+            'Public Administration', 'Local Government', 'Human Rights'
+          ],
+          link: 'subjects/government/'
+        },
+        commerce: {
+          id: 'commerce',
+          name: 'Commerce',
+          icon: 'fa-store',
+          color: 'teal',
+          gradient: 'from-teal-400 to-teal-600',
+          topics: [
+            'Introduction to Commerce', 'Trade', 'Business Units',
+            'Business Management', 'Banking', 'Insurance', 'Transportation',
+            'Communication', 'Marketing', 'Consumer Protection'
+          ],
+          link: 'subjects/commerce/'
+        }
+      };
+      
+      // ============================================
+      // RENDER SUBJECT CARDS
+      // ============================================
+      function renderSubjectCards(progressData = {}) {
+        const grid = document.getElementById('subjectCardsGrid');
+        if (!grid) return;
+        
+        let html = '';
+        
+        Object.values(SUBJECTS_DATA).forEach(subject => {
+          const progress = progressData[subject.id] || { completed: 0, total: subject.topics.length };
+          const percentage = progress.total > 0 ? Math.round((progress.completed / progress.total) * 100) : 0;
+          
+          html += `
+            <a href="${subject.link}" class="subject-card subject-${subject.color} hover-lift bg-white rounded-2xl p-5 border border-slate-200 shadow-sm block">
+              <div class="flex items-start justify-between mb-4">
+                <div class="w-12 h-12 rounded-xl bg-gradient-to-br ${subject.gradient} flex items-center justify-center shadow-lg">
+                  <i class="fas ${subject.icon} text-white text-xl"></i>
+                </div>
+                <span class="text-xs font-medium text-${subject.color}-500 bg-${subject.color}-50 px-2 py-1 rounded-full">${subject.topics.length} Topics</span>
+              </div>
+              <h3 class="font-semibold text-slate-800 mb-1">${subject.name}</h3>
+              <p class="text-xs text-slate-500 mb-3">${progress.completed} of ${progress.total} completed</p>
+              <div class="flex items-center gap-2">
+                <div class="flex-1 h-1.5 bg-${subject.color}-100 rounded-full overflow-hidden">
+                  <div class="h-full bg-${subject.color}-500 rounded-full transition-all duration-1000" style="width: ${percentage}%"></div>
+                </div>
+                <span class="text-xs font-medium text-${subject.color}-500">${percentage}%</span>
+              </div>
+            </a>
+          `;
+        });
+        
+        grid.innerHTML = html;
+      }
+      
+      // ============================================
+      // LOAD PROGRESS FROM SUPABASE
+      // ============================================
+      async function loadProgressFromSupabase() {
+        // Wait for Supabase client
+        let attempts = 0;
+        while (!window.supabaseClient && attempts < 20) {
+          await new Promise(r => setTimeout(r, 300));
+          attempts++;
+        }
+        
+        if (!window.supabaseClient) {
+          console.warn('Supabase client not available, using default data');
+          renderSubjectCards({});
+          return;
+        }
+        
+        try {
+          const { data: { session } } = await window.supabaseClient.auth.getSession();
+          if (!session?.user) {
+            console.log('No user session, showing default progress');
+            renderSubjectCards({});
+            return;
+          }
+          
+          const userId = session.user.id;
+          
+          // Try to fetch topic_progress table
+          const { data: progressData, error } = await window.supabaseClient
+            .from('topic_progress')
+            .select('subject, topic, status')
+            .eq('user_id', userId)
+            .eq('status', 'completed');
+          
+          if (error) {
+            console.warn('Could not fetch progress:', error.message);
+            renderSubjectCards({});
+            return;
+          }
+          
+          // Calculate progress per subject
+          const progressMap = {};
+          Object.keys(SUBJECTS_DATA).forEach(subjectId => {
+            progressMap[subjectId] = { completed: 0, total: SUBJECTS_DATA[subjectId].topics.length };
+          });
+          
+          if (progressData && progressData.length > 0) {
+            progressData.forEach(item => {
+              const subjectId = item.subject?.toLowerCase();
+              if (progressMap[subjectId]) {
+                progressMap[subjectId].completed++;
+              }
+            });
+          }
+          
+          renderSubjectCards(progressMap);
+          
+          // Update overall progress ring
+          const totalCompleted = Object.values(progressMap).reduce((sum, p) => sum + p.completed, 0);
+          const totalTopics = Object.values(progressMap).reduce((sum, p) => sum + p.total, 0);
+          const overallProgress = totalTopics > 0 ? Math.round((totalCompleted / totalTopics) * 100) : 0;
+          
+          const progressRing = document.getElementById('progressRing');
+          const progressValue = document.getElementById('progressValue');
+          if (progressRing && progressValue) {
+            const circumference = 2 * Math.PI * 35;
+            progressRing.style.strokeDashoffset = circumference - (overallProgress / 100) * circumference;
+            progressValue.textContent = `${overallProgress}%`;
+          }
+          
+          // Update streak from user data
+          const { data: userData } = await window.supabaseClient
+            .from('profiles')
+            .select('streak')
+            .eq('id', userId)
+            .single();
+          
+          if (userData?.streak) {
+            document.getElementById('streakCount').textContent = userData.streak;
+          }
+          
+        } catch (err) {
+          console.error('Error loading progress:', err);
+          renderSubjectCards({});
+        }
+      }
+      
+      // Initialize
+      renderSubjectCards({}); // Show cards immediately with default state
+      loadProgressFromSupabase(); // Then load real data
+    </script>
+    
+    <!-- Floating Cortex AI Owl - Bottom Right -->
+    <div class="fixed bottom-6 right-6 z-50" id="floatingOwl">
+      <img src="/cortex-owl-brain.svg" id="chatBtn" alt="Cortex AI" class="w-20 h-20 cursor-pointer hover:scale-110 transition-transform drop-shadow-xl animate-float-mascot" title="Chat with Cortex AI">
+    </div>
+    
+    <!-- The Popup (Modal) -->
+    <div id="chatModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+      <div class="bg-white rounded-3xl w-full max-w-2xl max-h-[90vh] overflow-hidden shadow-2xl relative">
+        <button class="close-btn absolute top-4 right-4 w-10 h-10 bg-slate-100 hover:bg-slate-200 rounded-full flex items-center justify-center transition-colors z-10">
+          <i class="fas fa-times text-slate-600"></i>
+        </button>
+        
+        <div class="p-4 border-b border-slate-100 flex items-center gap-3">
+          <img src="/cortex-owl-brain.svg" alt="Cortex AI" class="w-10 h-10">
+          <div>
+            <div class="font-bold text-slate-800">CORTEX AI</div>
+            <div class="text-xs text-slate-500">Your Study Companion</div>
+          </div>
+        </div>
+        
+        <iframe 
+          src="https://app.edcafe.ai/chatbots/68b96ebb2a5be310497b6a0b" 
+          title="CORTEX AI" 
+          allow="microphone" 
+          style="border: none; width: 100%; height: 500px;">
+        </iframe>
+      </div>
+    </div>
+    
+    <script>
+      const modal = document.getElementById("chatModal");
+      const btn = document.getElementById("chatBtn");
+      const closeBtn = document.querySelector(".close-btn");
+
+      // Open the popup
+      btn.onclick = function() {
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+        document.body.style.overflow = 'hidden';
+      }
+
+      // Close the popup
+      closeBtn.onclick = function() {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+        document.body.style.overflow = '';
+      }
+
+      // Close if they click outside the box
+      modal.onclick = function(event) {
+        if (event.target === modal) {
+          modal.classList.add('hidden');
+          modal.classList.remove('flex');
+          document.body.style.overflow = '';
+        }
+      }
+      
+      // Close on Escape key
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+          modal.classList.add('hidden');
+          modal.classList.remove('flex');
+          document.body.style.overflow = '';
+        }
+      });
+    </script>
+  </body>
+</html>

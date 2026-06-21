@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Topic Learning Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom styles for progress indicators and animations -->
+    <style>
+        .step-progress {
+            transition: width 0.3s ease-in-out;
+        }
+        .resource-card {
+            transition: transform 0.2s;
+        }
+        .resource-card:hover {
+            transform: translateY(-4px);
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Top Navigation Bar -->
+    <nav class="bg-white shadow-sm fixed top-0 w-full z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <button id="backBtn" class="mr-4 text-gray-600 hover:text-gray-900">
+                        <i class="fas fa-arrow-left"></i>
+                    </button>
+                    <h1 class="text-xl font-semibold text-gray-900" id="topicTitle">Topic Title</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="text-sm text-gray-600">
+                        Progress: <span id="progressPercent">0%</span>
+                    </div>
+                    <div class="w-32 h-2 bg-gray-200 rounded-full">
+                        <div class="step-progress h-2 bg-blue-500 rounded-full" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="pt-20 pb-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Topic Overview -->
+            <div class="mb-8 bg-white rounded-lg shadow-sm p-6">
+                <h2 class="text-2xl font-semibold mb-4">Overview</h2>
+                <p class="text-gray-600" id="topicDescription">Topic description goes here...</p>
+                <div class="mt-4 flex items-center text-sm text-gray-500">
+                    <i class="fas fa-clock mr-2"></i>
+                    <span>Estimated time: <span id="estimatedTime">45 minutes</span></span>
+                </div>
+            </div>
+
+            <!-- Learning Path Grid -->
+            <div class="grid md:grid-cols-12 gap-6">
+                <!-- Left Sidebar - Steps List -->
+                <div class="md:col-span-3">
+                    <div class="bg-white rounded-lg shadow-sm p-4">
+                        <h3 class="font-semibold mb-4">Learning Steps</h3>
+                        <ul class="space-y-2" id="stepsList">
+                            <!-- Steps will be dynamically populated -->
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Main Content Area -->
+                <div class="md:col-span-9">
+                    <!-- Current Step Content -->
+                    <div class="bg-white rounded-lg shadow-sm p-6 mb-6" id="currentStep">
+                        <div class="mb-6">
+                            <h3 class="text-xl font-semibold mb-4" id="stepTitle">Step Title</h3>
+                            <div id="stepContent">
+                                <!-- Step content will be dynamically loaded here -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Resources Section -->
+                    <div class="bg-white rounded-lg shadow-sm p-6">
+                        <h3 class="text-lg font-semibold mb-4">Resources</h3>
+                        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4" id="resourcesGrid">
+                            <!-- Resource cards will be dynamically populated -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Bottom Navigation Bar -->
+    <div class="fixed bottom-0 w-full bg-white border-t border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between py-4">
+                <button id="prevStep" class="px-4 py-2 text-gray-600 hover:text-gray-900 disabled:opacity-50">
+                    <i class="fas fa-chevron-left mr-2"></i>
+                    Previous
+                </button>
+                <button id="nextStep" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50">
+                    Next
+                    <i class="fas fa-chevron-right ml-2"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quiz Modal -->
+    <div id="quizModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center">
+        <div class="bg-white rounded-lg shadow-xl max-w-2xl w-full mx-4">
+            <div class="p-6">
+                <h3 class="text-xl font-semibold mb-4">Knowledge Check</h3>
+                <div id="quizContent">
+                    <!-- Quiz content will be dynamically loaded -->
+                </div>
+                <div class="mt-6 flex justify-end">
+                    <button id="submitQuiz" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
+                        Submit
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Topic data structure
+        const topicData = {
+            title: "Sample Topic",
+            description: "This is a sample topic description...",
+            estimatedTime: "45 minutes",
+            steps: [
+                {
+                    id: 1,
+                    title: "Introduction",
+                    type: "note",
+                    content: "Step content goes here...",
+                    resources: [
+                        {
+                            type: "video",
+                            title: "Introduction Video",
+                            url: "video-url"
+                        }
+                    ]
+                }
+                // More steps...
+            ]
+        };
+
+        // Current state
+        let currentStepIndex = 0;
+        let progress = 0;
+
+        // Initialize the page
+        function initializePage() {
+            document.getElementById('topicTitle').textContent = topicData.title;
+            document.getElementById('topicDescription').textContent = topicData.description;
+            document.getElementById('estimatedTime').textContent = topicData.estimatedTime;
+            
+            // Populate steps list
+            const stepsList = document.getElementById('stepsList');
+            topicData.steps.forEach((step, index) => {
+                const li = document.createElement('li');
+                li.innerHTML = `
+                    <button class="w-full text-left px-3 py-2 rounded ${
+                        index === currentStepIndex ? 'bg-blue-50 text-blue-600' : 'text-gray-600 hover:bg-gray-50'
+                    }">
+                        <i class="fas fa-${getStepIcon(step.type)} mr-2"></i>
+                        ${step.title}
+                    </button>
+                `;
+                li.querySelector('button').onclick = () => navigateToStep(index);
+                stepsList.appendChild(li);
+            });
+
+            loadCurrentStep();
+        }
+
+        // Helper function to get step icon
+        function getStepIcon(type) {
+            const icons = {
+                note: 'book',
+                video: 'play-circle',
+                quiz: 'question-circle',
+                simulation: 'laptop-code'
+            };
+            return icons[type] || 'circle';
+        }
+
+        // Load current step content
+        function loadCurrentStep() {
+            const step = topicData.steps[currentStepIndex];
+            document.getElementById('stepTitle').textContent = step.title;
+            
+            // Load step content
+            const content = document.getElementById('stepContent');
+            content.innerHTML = step.content;
+
+            // Load resources
+            const resourcesGrid = document.getElementById('resourcesGrid');
+            resourcesGrid.innerHTML = '';
+            step.resources.forEach(resource => {
+                const card = document.createElement('div');
+                card.className = 'resource-card bg-gray-50 rounded-lg p-4 hover:shadow-md';
+                card.innerHTML = `
+                    <i class="fas fa-${getResourceIcon(resource.type)} text-2xl text-blue-500 mb-2"></i>
+                    <h4 class="font-medium">${resource.title}</h4>
+                `;
+                card.onclick = () => openResource(resource);
+                resourcesGrid.appendChild(card);
+            });
+
+            // Update navigation buttons
+            document.getElementById('prevStep').disabled = currentStepIndex === 0;
+            document.getElementById('nextStep').disabled = currentStepIndex === topicData.steps.length - 1;
+
+            // Update progress
+            updateProgress();
+        }
+
+        // Helper function to get resource icon
+        function getResourceIcon(type) {
+            const icons = {
+                video: 'play-circle',
+                pdf: 'file-pdf',
+                simulation: 'laptop-code',
+                image: 'image'
+            };
+            return icons[type] || 'file';
+        }
+
+        // Navigation functions
+        function navigateToStep(index) {
+            if (index >= 0 && index < topicData.steps.length) {
+                currentStepIndex = index;
+                loadCurrentStep();
+            }
+        }
+
+        // Open resource
+        function openResource(resource) {
+            // Implementation for opening different resource types
+            console.log('Opening resource:', resource);
+        }
+
+        // Update progress
+        function updateProgress() {
+            progress = ((currentStepIndex + 1) / topicData.steps.length) * 100;
+            document.getElementById('progressPercent').textContent = `${Math.round(progress)}%`;
+            document.querySelector('.step-progress').style.width = `${progress}%`;
+        }
+
+        // Event listeners
+        document.getElementById('prevStep').onclick = () => navigateToStep(currentStepIndex - 1);
+        document.getElementById('nextStep').onclick = () => navigateToStep(currentStepIndex + 1);
+        document.getElementById('backBtn').onclick = () => history.back();
+
+        // Initialize the page
+        initializePage();
+    </script>
+</body>
+</html>

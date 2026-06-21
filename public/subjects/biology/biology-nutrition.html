@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nutrition - Biology</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @keyframes fade-in-up { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-fade-in-up { animation: fade-in-up 0.5s ease-out forwards; }
+        .section-card { background: white; border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: 1px solid #e5e7eb; }
+        .topic-card { transition: all 0.3s ease; }
+        .topic-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <nav class="bg-white shadow-sm fixed top-0 w-full z-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center">
+                    <a href="index.html" class="text-green-600 hover:text-green-800 mr-4"><i class="fas fa-arrow-left"></i></a>
+                    <h1 class="text-xl font-semibold text-gray-900"><i class="fas fa-leaf text-green-500 mr-2"></i>Nutrition</h1>
+                </div>
+                <div class="text-sm text-gray-600">Biology Topics</div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="pt-20 pb-8 px-4 max-w-6xl mx-auto">
+        <div class="bg-green-50 border-l-4 border-green-500 p-4 rounded-r-lg mb-6 animate-fade-in-up">
+            <h3 class="font-semibold text-green-800 mb-2"><i class="fas fa-info-circle mr-2"></i>Introduction to Nutrition</h3>
+            <p class="text-green-700 text-sm">Nutrition is the process by which organisms obtain and utilize food for energy, growth, and repair. This section covers food substances, photosynthesis, digestive systems, and nutrition in different organisms.</p>
+        </div>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <a href="nutrition/food-substances.html" class="topic-card section-card animate-fade-in-up block">
+                <div class="flex items-center mb-3">
+                    <span class="bg-orange-100 text-orange-600 w-10 h-10 rounded-full flex items-center justify-center mr-3"><i class="fas fa-apple-alt"></i></span>
+                    <h3 class="font-semibold text-gray-800">Food Substances</h3>
+                </div>
+                <p class="text-gray-600 text-sm mb-3">Learn about carbohydrates, proteins, fats, vitamins, minerals, and food tests.</p>
+                <div class="flex flex-wrap gap-1">
+                    <span class="bg-orange-50 text-orange-600 text-xs px-2 py-1 rounded">Macronutrients</span>
+                    <span class="bg-orange-50 text-orange-600 text-xs px-2 py-1 rounded">Food Tests</span>
+                </div>
+            </a>
+
+            <a href="nutrition/photosynthesis.html" class="topic-card section-card animate-fade-in-up block">
+                <div class="flex items-center mb-3">
+                    <span class="bg-green-100 text-green-600 w-10 h-10 rounded-full flex items-center justify-center mr-3"><i class="fas fa-sun"></i></span>
+                    <h3 class="font-semibold text-gray-800">Photosynthesis</h3>
+                </div>
+                <p class="text-gray-600 text-sm mb-3">The process by which plants make food using sunlight, water, and carbon dioxide.</p>
+                <div class="flex flex-wrap gap-1">
+                    <span class="bg-green-50 text-green-600 text-xs px-2 py-1 rounded">Light Reaction</span>
+                    <span class="bg-green-50 text-green-600 text-xs px-2 py-1 rounded">Calvin Cycle</span>
+                </div>
+            </a>
+
+            <a href="nutrition/digestive-system.html" class="topic-card section-card animate-fade-in-up block">
+                <div class="flex items-center mb-3">
+                    <span class="bg-red-100 text-red-600 w-10 h-10 rounded-full flex items-center justify-center mr-3"><i class="fas fa-stomach"></i></span>
+                    <h3 class="font-semibold text-gray-800">Digestive System</h3>
+                </div>
+                <p class="text-gray-600 text-sm mb-3">Organs and enzymes involved in breaking down food for absorption.</p>
+                <div class="flex flex-wrap gap-1">
+                    <span class="bg-red-50 text-red-600 text-xs px-2 py-1 rounded">Enzymes</span>
+                    <span class="bg-red-50 text-red-600 text-xs px-2 py-1 rounded">Absorption</span>
+                </div>
+            </a>
+
+            <a href="nutrition/comparative-nutrition.html" class="topic-card section-card animate-fade-in-up block">
+                <div class="flex items-center mb-3">
+                    <span class="bg-blue-100 text-blue-600 w-10 h-10 rounded-full flex items-center justify-center mr-3"><i class="fas fa-balance-scale"></i></span>
+                    <h3 class="font-semibold text-gray-800">Comparative Nutrition</h3>
+                </div>
+                <p class="text-gray-600 text-sm mb-3">Compare nutrition in plants, animals, and other organisms.</p>
+                <div class="flex flex-wrap gap-1">
+                    <span class="bg-blue-50 text-blue-600 text-xs px-2 py-1 rounded">Autotrophs</span>
+                    <span class="bg-blue-50 text-blue-600 text-xs px-2 py-1 rounded">Heterotrophs</span>
+                </div>
+            </a>
+
+            <a href="biology-topic-plant-nutrition.html" class="topic-card section-card animate-fade-in-up block">
+                <div class="flex items-center mb-3">
+                    <span class="bg-purple-100 text-purple-600 w-10 h-10 rounded-full flex items-center justify-center mr-3"><i class="fas fa-seedling"></i></span>
+                    <h3 class="font-semibold text-gray-800">Plant Nutrition</h3>
+                </div>
+                <p class="text-gray-600 text-sm mb-3">Mineral requirements and nutrient uptake in plants.</p>
+                <div class="flex flex-wrap gap-1">
+                    <span class="bg-purple-50 text-purple-600 text-xs px-2 py-1 rounded">Minerals</span>
+                    <span class="bg-purple-50 text-purple-600 text-xs px-2 py-1 rounded">Root Uptake</span>
+                </div>
+            </a>
+
+            <a href="biology-topic-mode-of-nutrition-in-micro-organisms.html" class="topic-card section-card animate-fade-in-up block">
+                <div class="flex items-center mb-3">
+                    <span class="bg-yellow-100 text-yellow-600 w-10 h-10 rounded-full flex items-center justify-center mr-3"><i class="fas fa-bacteria"></i></span>
+                    <h3 class="font-semibold text-gray-800">Microorganism Nutrition</h3>
+                </div>
+                <p class="text-gray-600 text-sm mb-3">How microorganisms obtain their nutrients.</p>
+                <div class="flex flex-wrap gap-1">
+                    <span class="bg-yellow-50 text-yellow-600 text-xs px-2 py-1 rounded">Saprophytes</span>
+                    <span class="bg-yellow-50 text-yellow-600 text-xs px-2 py-1 rounded">Parasites</span>
+                </div>
+            </a>
+        </div>
+
+        <div class="mt-8 bg-gradient-to-r from-green-50 to-emerald-50 p-5 rounded-lg border border-green-200 animate-fade-in-up">
+            <h3 class="font-semibold text-green-800 mb-3"><i class="fas fa-lightbulb mr-2"></i>Key Concepts in Nutrition</h3>
+            <div class="grid md:grid-cols-2 gap-4 text-sm text-green-700">
+                <div>
+                    <p class="font-medium text-green-800 mb-1">Autotrophic Nutrition:</p>
+                    <p>Organisms that make their own food (plants, algae, some bacteria)</p>
+                </div>
+                <div>
+                    <p class="font-medium text-green-800 mb-1">Heterotrophic Nutrition:</p>
+                    <p>Organisms that obtain food from other organisms (animals, fungi)</p>
+                </div>
+                <div>
+                    <p class="font-medium text-green-800 mb-1">Photosynthesis Equation:</p>
+                    <p class="font-mono">6CO₂ + 6H₂O + light → C₆H₁₂O₆ + 6O₂</p>
+                </div>
+                <div>
+                    <p class="font-medium text-green-800 mb-1">Balanced Diet:</p>
+                    <p>Contains all nutrients in correct proportions for good health</p>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

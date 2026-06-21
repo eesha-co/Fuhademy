@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redox Titration - Chemistry Practicals</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @keyframes fade-in-up { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-fade-in-up { animation: fade-in-up 0.5s ease-out forwards; }
+        .section-card { background: white; border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: 1px solid #e5e7eb; }
+        .video-container { position: relative; width: 100%; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 8px; }
+        .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <nav class="bg-white shadow-sm fixed top-0 w-full z-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center">
+                    <a href="index.html" class="text-violet-600 hover:text-violet-800 mr-4"><i class="fas fa-arrow-left"></i></a>
+                    <h1 class="text-xl font-semibold text-gray-900"><i class="fas fa-exchange-alt text-violet-500 mr-2"></i>Redox Titration</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="text-sm text-gray-600 hidden sm:block">Progress: <span id="progressPercent">0%</span></div>
+                    <div class="w-24 sm:w-32 h-2 bg-gray-200 rounded-full">
+                        <div id="progressBar" class="h-2 bg-violet-500 rounded-full transition-all duration-300" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="pt-20 pb-8 px-4 max-w-5xl mx-auto">
+        <div class="bg-violet-50 border-l-4 border-violet-500 p-4 rounded-r-lg mb-6 animate-fade-in-up">
+            <h3 class="font-semibold text-violet-800 mb-2"><i class="fas fa-bullseye mr-2"></i>Learning Objectives</h3>
+            <ul class="text-violet-700 text-sm space-y-1">
+                <li>• Understand the principle of redox titration</li>
+                <li>• Balance redox equations for titration calculations</li>
+                <li>• Perform potassium manganate(VII) titrations</li>
+                <li>• Carry out iodine-thiosulfate titrations</li>
+                <li>• Calculate concentrations from redox titration data</li>
+            </ul>
+        </div>
+
+        <!-- Section 1: Introduction -->
+        <div class="section-card animate-fade-in-up">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <span class="bg-violet-100 text-violet-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">1</span>
+                What is Redox Titration?
+            </h2>
+            
+            <div class="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-500 mb-4">
+                <p class="text-blue-800 font-medium"><strong>Redox titration</strong> is a titration based on oxidation-reduction reactions between the titrant and the analyte. The endpoint is detected by a color change due to the oxidation state change of the titrant or an added indicator.</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-4">
+                <div class="bg-purple-50 p-4 rounded-lg border border-purple-200">
+                    <h4 class="font-semibold text-purple-700 mb-2"><i class="fas fa-arrow-up mr-2"></i>Oxidation</h4>
+                    <ul class="text-gray-600 text-sm space-y-1">
+                        <li>• Loss of electrons</li>
+                        <li>• Increase in oxidation number</li>
+                        <li>• Reducing agent gets oxidized</li>
+                        <li>• Example: Fe²⁺ → Fe³⁺ + e⁻</li>
+                    </ul>
+                </div>
+                <div class="bg-green-50 p-4 rounded-lg border border-green-200">
+                    <h4 class="font-semibold text-green-700 mb-2"><i class="fas fa-arrow-down mr-2"></i>Reduction</h4>
+                    <ul class="text-gray-600 text-sm space-y-1">
+                        <li>• Gain of electrons</li>
+                        <li>• Decrease in oxidation number</li>
+                        <li>• Oxidizing agent gets reduced</li>
+                        <li>• Example: MnO₄⁻ + 8H⁺ + 5e⁻ → Mn²⁺ + 4H₂O</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 2: Types of Redox Titrations -->
+        <div class="section-card animate-fade-in-up">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <span class="bg-violet-100 text-violet-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">2</span>
+                Types of Redox Titrations
+            </h2>
+
+            <div class="grid md:grid-cols-2 gap-4">
+                <div class="bg-purple-50 p-4 rounded-lg border-l-4 border-purple-500">
+                    <h4 class="font-semibold text-purple-700 mb-2"><i class="fas fa-tint mr-2"></i>Potassium Manganate(VII) Titrations</h4>
+                    <p class="text-gray-600 text-sm mb-2">KMnO₄ is a self-indicating titrant:</p>
+                    <ul class="text-gray-600 text-sm space-y-1">
+                        <li>• <strong>Purple</strong> MnO₄⁻ solution</li>
+                        <li>• Turns <strong>colorless</strong> Mn²⁺ when reduced</li>
+                        <li>• No external indicator needed</li>
+                        <li>• Carried out in acidic conditions</li>
+                        <li>• Used to determine Fe²⁺, C₂O₄²⁻, H₂O₂</li>
+                    </ul>
+                    <div class="bg-white p-2 rounded mt-2 text-sm font-mono text-center">
+                        MnO₄⁻ + 8H⁺ + 5e⁻ → Mn²⁺ + 4H₂O
+                    </div>
+                </div>
+                <div class="bg-amber-50 p-4 rounded-lg border-l-4 border-amber-500">
+                    <h4 class="font-semibold text-amber-700 mb-2"><i class="fas fa-circle mr-2"></i>Iodine-Thiosulfate Titrations</h4>
+                    <p class="text-gray-600 text-sm mb-2">Used for determining oxidizing agents:</p>
+                    <ul class="text-gray-600 text-sm space-y-1">
+                        <li>• I₂ is <strong>brown</strong> in solution</li>
+                        <li>• Starch indicator turns <strong>blue-black</strong> with I₂</li>
+                        <li>• Endpoint: blue-black → colorless</li>
+                        <li>• S₂O₃²⁻ reduces I₂ to I⁻</li>
+                        <li>• Used for Cu²⁺, Cl₂, H₂O₂ determination</li>
+                    </ul>
+                    <div class="bg-white p-2 rounded mt-2 text-sm font-mono text-center">
+                        I₂ + 2S₂O₃²⁻ → 2I⁻ + S₄O₆²⁻
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 3: KMnO4 Titration -->
+        <div class="section-card animate-fade-in-up">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <span class="bg-violet-100 text-violet-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">3</span>
+                Potassium Manganate(VII) Titration
+            </h2>
+
+            <div class="bg-purple-50 p-4 rounded-lg border border-purple-200 mb-4">
+                <h4 class="font-semibold text-purple-700 mb-2">Determination of Iron(II) with KMnO₄</h4>
+                <p class="text-gray-600 text-sm mb-2"><strong>Reaction:</strong></p>
+                <div class="bg-white p-3 rounded text-sm font-mono text-center mb-2">
+                    5Fe²⁺ + MnO₄⁻ + 8H⁺ → 5Fe³⁺ + Mn²⁺ + 4H₂O
+                </div>
+                <p class="text-gray-600 text-sm"><strong>Mole ratio:</strong> 5 Fe²⁺ : 1 MnO₄⁻</p>
+            </div>
+
+            <div class="bg-green-50 p-4 rounded-lg border-l-4 border-green-500">
+                <h4 class="font-semibold text-green-700 mb-2"><i class="fas fa-list-ol mr-2"></i>Procedure</h4>
+                <ol class="text-gray-600 text-sm space-y-2">
+                    <li><span class="bg-green-200 text-green-800 w-5 h-5 rounded-full inline-flex items-center justify-center text-xs mr-2 font-bold">1</span>Pipette 25.0 cm³ of Fe²⁺ solution into conical flask</li>
+                    <li><span class="bg-green-200 text-green-800 w-5 h-5 rounded-full inline-flex items-center justify-center text-xs mr-2 font-bold">2</span>Add ~10 cm³ of dilute H₂SO₄ (to provide H⁺ ions)</li>
+                    <li><span class="bg-green-200 text-green-800 w-5 h-5 rounded-full inline-flex items-center justify-center text-xs mr-2 font-bold">3</span>Fill burette with KMnO₄ solution</li>
+                    <li><span class="bg-green-200 text-green-800 w-5 h-5 rounded-full inline-flex items-center justify-center text-xs mr-2 font-bold">4</span>Titrate until permanent pale pink color appears</li>
+                    <li><span class="bg-green-200 text-green-800 w-5 h-5 rounded-full inline-flex items-center justify-center text-xs mr-2 font-bold">5</span>Record volume and repeat for concordant results</li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- Section 4: Iodine-Thiosulfate Titration -->
+        <div class="section-card animate-fade-in-up">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <span class="bg-violet-100 text-violet-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">4</span>
+                Iodine-Thiosulfate Titration
+            </h2>
+
+            <div class="bg-amber-50 p-4 rounded-lg border border-amber-200 mb-4">
+                <h4 class="font-semibold text-amber-700 mb-2">Determination of Copper(II) Ions</h4>
+                <p class="text-gray-600 text-sm mb-2"><strong>Reactions:</strong></p>
+                <div class="bg-white p-3 rounded text-sm font-mono mb-2">
+                    Step 1: 2Cu²⁺ + 4I⁻ → 2CuI(s) + I₂<br>
+                    Step 2: I₂ + 2S₂O₃²⁻ → 2I⁻ + S₄O₆²⁻
+                </div>
+                <p class="text-gray-600 text-sm"><strong>Mole ratio:</strong> 2 Cu²⁺ : 1 I₂ : 2 S₂O₃²⁻ → 1 Cu²⁺ : 1 S₂O₃²⁻</p>
+            </div>
+
+            <div class="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-500">
+                <h4 class="font-semibold text-blue-700 mb-2"><i class="fas fa-list-ol mr-2"></i>Procedure</h4>
+                <ol class="text-gray-600 text-sm space-y-2">
+                    <li><span class="bg-blue-200 text-blue-800 w-5 h-5 rounded-full inline-flex items-center justify-center text-xs mr-2 font-bold">1</span>Pipette Cu²⁺ solution into conical flask</li>
+                    <li><span class="bg-blue-200 text-blue-800 w-5 h-5 rounded-full inline-flex items-center justify-center text-xs mr-2 font-bold">2</span>Add excess KI solution (brown I₂ formed)</li>
+                    <li><span class="bg-blue-200 text-blue-800 w-5 h-5 rounded-full inline-flex items-center justify-center text-xs mr-2 font-bold">3</span>Titrate with Na₂S₂O₃ until pale yellow</li>
+                    <li><span class="bg-blue-200 text-blue-800 w-5 h-5 rounded-full inline-flex items-center justify-center text-xs mr-2 font-bold">4</span>Add starch indicator (blue-black appears)</li>
+                    <li><span class="bg-blue-200 text-blue-800 w-5 h-5 rounded-full inline-flex items-center justify-center text-xs mr-2 font-bold">5</span>Continue titration until colorless</li>
+                </ol>
+                <p class="text-red-600 text-sm mt-2"><i class="fas fa-exclamation-triangle mr-1"></i><strong>Note:</strong> Add starch near endpoint to avoid starch-iodine complex formation</p>
+            </div>
+        </div>
+
+        <!-- Section 5: Worked Example -->
+        <div class="section-card animate-fade-in-up">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <span class="bg-violet-100 text-violet-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">5</span>
+                Worked Example
+            </h2>
+
+            <div class="bg-amber-50 p-4 rounded-lg border border-amber-200 mb-4">
+                <h4 class="font-semibold text-amber-700 mb-2">Problem</h4>
+                <p class="text-gray-700">25.0 cm³ of FeSO₄ solution required 22.5 cm³ of 0.02 mol/dm³ KMnO₄ for complete reaction. Calculate the concentration of Fe²⁺ in g/dm³. (Fe = 56)</p>
+            </div>
+
+            <div class="space-y-3">
+                <div class="bg-white p-4 rounded-lg border">
+                    <p class="font-medium text-gray-700 mb-2"><strong>Step 1:</strong> Write balanced equation</p>
+                    <p class="text-blue-600 font-mono">5Fe²⁺ + MnO₄⁻ + 8H⁺ → 5Fe³⁺ + Mn²⁺ + 4H₂O</p>
+                    <p class="text-gray-500 text-sm">Mole ratio: 5 Fe²⁺ : 1 MnO₄⁻</p>
+                </div>
+                
+                <div class="bg-white p-4 rounded-lg border">
+                    <p class="font-medium text-gray-700 mb-2"><strong>Step 2:</strong> Calculate moles of KMnO₄</p>
+                    <p class="text-gray-600">Moles KMnO₄ = 0.02 × (22.5/1000) = <strong>4.5 × 10⁻⁴ mol</strong></p>
+                </div>
+                
+                <div class="bg-white p-4 rounded-lg border">
+                    <p class="font-medium text-gray-700 mb-2"><strong>Step 3:</strong> Calculate moles of Fe²⁺</p>
+                    <p class="text-gray-600">Moles Fe²⁺ = 5 × moles MnO₄⁻ = 5 × 4.5 × 10⁻⁴</p>
+                    <p class="text-gray-600">Moles Fe²⁺ = <strong>2.25 × 10⁻³ mol</strong></p>
+                </div>
+                
+                <div class="bg-white p-4 rounded-lg border">
+                    <p class="font-medium text-gray-700 mb-2"><strong>Step 4:</strong> Calculate concentration in mol/dm³</p>
+                    <p class="text-gray-600">[Fe²⁺] = 2.25 × 10⁻³ / (25.0/1000) = <strong>0.09 mol/dm³</strong></p>
+                </div>
+                
+                <div class="bg-green-50 p-4 rounded-lg border-l-4 border-green-500">
+                    <p class="font-medium text-green-700 mb-2"><strong>Step 5:</strong> Convert to g/dm³</p>
+                    <p class="text-gray-600">Concentration = 0.09 × 56 = <strong class="text-green-700">5.04 g/dm³</strong></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 6: Video -->
+        <div class="section-card animate-fade-in-up">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <span class="bg-violet-100 text-violet-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">6</span>
+                Video: Redox Titration Explained
+            </h2>
+            
+            <div class="bg-gray-50 p-4 rounded-lg border">
+                <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/Hn0m4B_nQvA" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+            </div>
+        </div>
+
+        <!-- Key Takeaways -->
+        <div class="bg-gradient-to-r from-violet-50 to-purple-50 p-5 rounded-lg border border-violet-200 animate-fade-in-up">
+            <h3 class="font-semibold text-violet-800 mb-3"><i class="fas fa-star mr-2"></i>Key Takeaways</h3>
+            <ul class="text-violet-700 text-sm space-y-2">
+                <li>• KMnO₄ is self-indicating: purple → colorless (Mn⁷⁺ → Mn²⁺)</li>
+                <li>• Iodine-thiosulfate uses starch: blue-black → colorless endpoint</li>
+                <li>• Always balance redox equations to find mole ratios</li>
+                <li>• KMnO₄ titrations require acidic conditions (add H₂SO₄)</li>
+                <li>• Add starch indicator near endpoint in iodine titrations</li>
+            </ul>
+        </div>
+
+        <div class="flex justify-between items-center mt-8">
+            <a href="acid-base-titration.html" class="px-4 py-2 text-gray-600 hover:text-gray-900"><i class="fas fa-chevron-left mr-2"></i>Previous</a>
+            <a href="quantitative-analysis.html" class="px-4 py-2 bg-violet-500 text-white rounded-lg hover:bg-violet-600">Next: Quantitative Analysis<i class="fas fa-chevron-right ml-2"></i></a>
+        </div>
+    </main>
+
+    <script>
+        let progress = 0;
+        const sections = document.querySelectorAll('.section-card');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    progress = Array.from(sections).indexOf(entry.target) + 1;
+                    document.getElementById('progressPercent').textContent = Math.round((progress / sections.length) * 100) + '%';
+                    document.getElementById('progressBar').style.width = Math.round((progress / sections.length) * 100) + '%';
+                }
+            });
+        }, { threshold: 0.5 });
+        sections.forEach(s => observer.observe(s));
+    </script>
+    <script src="/js/topic-quiz-loader.js"></script>
+    <script src="/js/topic-quiz-injector.js"></script>
+</body>
+</html>

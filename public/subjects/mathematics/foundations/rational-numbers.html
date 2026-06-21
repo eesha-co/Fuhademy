@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Rational Numbers | Mathematics</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style> body{font-family:Inter, sans-serif}.content-card{-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);background:rgba(255,255,255,0.9);border:1px solid rgba(255,255,255,0.2);} .accordion-content{max-height:0;overflow:hidden;transition:max-height 0.3s ease-out;}.accordion-content.open{max-height:2000px;} </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-green-50 to-teal-100 p-6">
+  <div class="max-w-4xl mx-auto">
+    <nav class="mb-4"><a href="index.html" class="text-blue-600 hover:text-blue-800 font-medium"><i class="fas fa-arrow-left mr-2"></i>Back to Foundations</a></nav>
+    
+    <article class="content-card rounded-xl shadow-lg p-6 md:p-8">
+      <header class="mb-6 border-b pb-4">
+        <h1 class="text-2xl md:text-3xl font-bold text-gray-800 mb-2">Rational Numbers</h1>
+        <p class="text-gray-600">Understand rational numbers, their properties, and how to convert between fractions and decimals - essential concepts for WAEC mathematics.</p>
+      </header>
+
+      <!-- Learning Objectives -->
+      <div class="bg-blue-50 border-l-4 border-blue-500 p-4 rounded-r-lg mb-6">
+        <h3 class="font-semibold text-blue-800 mb-2"><i class="fas fa-bullseye mr-2"></i>Learning Objectives</h3>
+        <ul class="text-sm text-blue-700 space-y-1">
+          <li>• Define and identify rational numbers</li>
+          <li>• Convert between fractions and terminating/repeating decimals</li>
+          <li>• Simplify fractions to their lowest terms</li>
+          <li>• Compare and order rational numbers</li>
+        </ul>
+      </div>
+
+      <!-- Section 1: What are Rational Numbers -->
+      <section class="mb-8">
+        <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+          <span class="bg-green-500 text-white rounded-full w-8 h-8 flex items-center justify-center mr-3 text-sm">1</span>
+          Definition of Rational Numbers
+        </h2>
+        
+        <p class="text-gray-700 mb-4">A rational number is any number that can be expressed as a fraction p/q where p and q are integers and q ≠ 0.</p>
+        
+        <div class="bg-gray-100 p-4 rounded-lg mb-4 text-center">
+          <p class="font-mono text-xl text-gray-800">Rational Number = p/q</p>
+          <p class="text-sm text-gray-600 mt-2">where p, q are integers and q ≠ 0</p>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-4 mb-4">
+          <div class="bg-green-50 p-4 rounded-lg border border-green-200">
+            <h4 class="font-semibold text-green-800 mb-2"><i class="fas fa-check-circle mr-2"></i>Examples of Rational Numbers</h4>
+            <ul class="text-sm text-gray-700 space-y-1">
+              <li>• <strong>Integers:</strong> 5 = 5/1, -3 = -3/1</li>
+              <li>• <strong>Fractions:</strong> 3/4, -2/5, 17/8</li>
+              <li>• <strong>Terminating decimals:</strong> 0.75 = 3/4</li>
+              <li>• <strong>Repeating decimals:</strong> 0.333... = 1/3</li>
+            </ul>
+          </div>
+          <div class="bg-red-50 p-4 rounded-lg border border-red-200">
+            <h4 class="font-semibold text-red-800 mb-2"><i class="fas fa-times-circle mr-2"></i>NOT Rational Numbers (Irrational)</h4>
+            <ul class="text-sm text-gray-700 space-y-1">
+              <li>• <strong>π (pi):</strong> ≈ 3.14159... (non-repeating)</li>
+              <li>• <strong>√2:</strong> ≈ 1.41421... (non-repeating)</li>
+              <li>• <strong>√3:</strong> ≈ 1.73205... (non-repeating)</li>
+              <li>• <strong>e:</strong> ≈ 2.71828... (non-repeating)</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-r-lg mb-4">
+          <h4 class="font-semibold text-yellow-800 mb-1"><i class="fas fa-lightbulb mr-2"></i>Key Insight</h4>
+          <p class="text-sm text-yellow-700">If a decimal terminates (ends) OR repeats in a pattern, it IS a rational number and can be written as a fraction!</p>
+        </div>
+      </section>
+
+      <!-- Section 2: Converting Fractions to Decimals -->
+      <section class="mb-8">
+        <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+          <span class="bg-blue-500 text-white rounded-full w-8 h-8 flex items-center justify-center mr-3 text-sm">2</span>
+          Converting Fractions to Decimals
+        </h2>
+        
+        <p class="text-gray-700 mb-4">To convert a fraction to a decimal, divide the numerator by the denominator.</p>
+
+        <div class="grid md:grid-cols-2 gap-4 mb-4">
+          <div class="bg-blue-50 p-4 rounded-lg">
+            <h4 class="font-semibold text-blue-800 mb-2">Terminating Decimals</h4>
+            <p class="text-sm text-gray-700 mb-2">These end after a finite number of decimal places.</p>
+            <div class="space-y-2">
+              <p class="font-mono bg-white p-2 rounded text-sm">1/2 = 1 ÷ 2 = <strong>0.5</strong></p>
+              <p class="font-mono bg-white p-2 rounded text-sm">3/4 = 3 ÷ 4 = <strong>0.75</strong></p>
+              <p class="font-mono bg-white p-2 rounded text-sm">5/8 = 5 ÷ 8 = <strong>0.625</strong></p>
+            </div>
+          </div>
+          <div class="bg-purple-50 p-4 rounded-lg">
+            <h4 class="font-semibold text-purple-800 mb-2">Repeating Decimals</h4>
+            <p class="text-sm text-gray-700 mb-2">These have a pattern that repeats forever.</p>
+            <div class="space-y-2">
+              <p class="font-mono bg-white p-2 rounded text-sm">1/3 = 0.333... = <strong>0.3̄</strong></p>
+              <p class="font-mono bg-white p-2 rounded text-sm">2/3 = 0.666... = <strong>0.6̄</strong></p>
+              <p class="font-mono bg-white p-2 rounded text-sm">1/7 = 0.142857142857... = <strong>0.1̄4̅2̅8̅5̅7̅</strong></p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Worked Example -->
+        <div class="border border-gray-200 rounded-lg overflow-hidden mb-4">
+          <button class="accordion-btn w-full flex items-center justify-between p-4 bg-gray-50 hover:bg-gray-100" onclick="toggleAccordion(this)">
+            <span class="font-semibold text-gray-700"><i class="fas fa-calculator text-blue-500 mr-2"></i>Worked Example: Convert Fraction to Decimal</span>
+            <i class="fas fa-chevron-down transition-transform"></i>
+          </button>
+          <div class="accordion-content">
+            <div class="p-4 bg-white">
+              <p class="font-medium text-gray-800 mb-3">Problem: Convert 5/12 to a decimal.</p>
+              <div class="space-y-2 text-gray-700">
+                <p><strong>Method:</strong> Long division of 5 ÷ 12</p>
+                <div class="bg-gray-50 p-3 rounded font-mono text-sm">
+                  5.000000 ÷ 12<br>
+                  = 0.416666...<br>
+                  = 0.416̄
+                </div>
+                <p><strong>Verification:</strong></p>
+                <div class="bg-gray-50 p-3 rounded font-mono text-sm">
+                  5/12 = (5 × 8.333...) / 12 = 0.41666...<br>
+                  Or: 12 × 0.41666... = 4.999... ≈ 5
+                </div>
+                <p class="text-green-600 font-semibold mt-2"><strong>Answer:</strong> 5/12 = 0.416̄ (read as "0.416 recurring")</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 3: Converting Decimals to Fractions -->
+      <section class="mb-8">
+        <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+          <span class="bg-purple-500 text-white rounded-full w-8 h-8 flex items-center justify-center mr-3 text-sm">3</span>
+          Converting Decimals to Fractions
+        </h2>
+
+        <div class="bg-gray-100 p-4 rounded-lg mb-4">
+          <h4 class="font-semibold text-gray-800 mb-2">Terminating Decimals</h4>
+          <p class="text-sm text-gray-700 mb-2">Write the decimal as a fraction over a power of 10, then simplify.</p>
+          <div class="space-y-2">
+            <p class="font-mono bg-white p-2 rounded text-sm">0.6 = 6/10 = <strong>3/5</strong></p>
+            <p class="font-mono bg-white p-2 rounded text-sm">0.25 = 25/100 = <strong>1/4</strong></p>
+            <p class="font-mono bg-white p-2 rounded text-sm">0.125 = 125/1000 = <strong>1/8</strong></p>
+          </div>
+        </div>
+
+        <!-- Worked Example -->
+        <div class="border border-gray-200 rounded-lg overflow-hidden mb-4">
+          <button class="accordion-btn w-full flex items-center justify-between p-4 bg-gray-50 hover:bg-gray-100" onclick="toggleAccordion(this)">
+            <span class="font-semibold text-gray-700"><i class="fas fa-calculator text-purple-500 mr-2"></i>Worked Example: Convert Decimal to Fraction</span>
+            <i class="fas fa-chevron-down transition-transform"></i>
+          </button>
+          <div class="accordion-content">
+            <div class="p-4 bg-white">
+              <p class="font-medium text-gray-800 mb-3">Problem: Express 0.375 as a fraction in its simplest form.</p>
+              <div class="space-y-2 text-gray-700">
+                <p><strong>Step 1:</strong> Write as fraction over power of 10</p>
+                <div class="bg-gray-50 p-3 rounded font-mono">0.375 has 3 decimal places, so: 375/1000</div>
+                <p><strong>Step 2:</strong> Find the GCD (Greatest Common Divisor)</p>
+                <div class="bg-gray-50 p-3 rounded font-mono text-sm">
+                  GCD of 375 and 1000 = 125<br>
+                  (Both divisible by 5: 375 = 5³ × 3, 1000 = 5³ × 8)
+                </div>
+                <p><strong>Step 3:</strong> Divide numerator and denominator by GCD</p>
+                <div class="bg-gray-50 p-3 rounded font-mono">
+                  375 ÷ 125 = 3<br>
+                  1000 ÷ 125 = 8<br>
+                  Therefore: 3/8
+                </div>
+                <p class="text-green-600 font-semibold mt-2"><strong>Answer:</strong> 0.375 = 3/8</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Repeating Decimal to Fraction -->
+        <div class="bg-indigo-50 p-4 rounded-lg border border-indigo-200 mb-4">
+          <h4 class="font-semibold text-indigo-800 mb-2"><i class="fas fa-sync-alt mr-2"></i>Converting Repeating Decimals to Fractions</h4>
+          <p class="text-sm text-gray-700 mb-2">Use algebra to convert repeating decimals:</p>
+          <div class="bg-white p-3 rounded text-sm space-y-1">
+            <p><strong>Example:</strong> Convert 0.7̄ to a fraction</p>
+            <p>Let x = 0.7777...</p>
+            <p>Then 10x = 7.7777...</p>
+            <p>10x - x = 7.7777... - 0.7777...</p>
+            <p>9x = 7, therefore x = 7/9</p>
+            <p class="text-green-600 font-semibold"><strong>Answer:</strong> 0.7̄ = 7/9</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 4: Simplifying Fractions -->
+      <section class="mb-8">
+        <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+          <span class="bg-orange-500 text-white rounded-full w-8 h-8 flex items-center justify-center mr-3 text-sm">4</span>
+          Simplifying Fractions
+        </h2>
+        
+        <p class="text-gray-700 mb-4">A fraction is in its simplest form (lowest terms) when the numerator and denominator have no common factor other than 1.</p>
+
+        <div class="bg-gray-100 p-4 rounded-lg mb-4">
+          <h4 class="font-semibold text-gray-800 mb-2">Method: Divide by the GCD</h4>
+          <p class="text-sm text-gray-700 mb-2">Find the greatest common divisor (GCD) of numerator and denominator, then divide both by it.</p>
+        </div>
+
+        <!-- Worked Example -->
+        <div class="border border-gray-200 rounded-lg overflow-hidden mb-4">
+          <button class="accordion-btn w-full flex items-center justify-between p-4 bg-gray-50 hover:bg-gray-100" onclick="toggleAccordion(this)">
+            <span class="font-semibold text-gray-700"><i class="fas fa-calculator text-orange-500 mr-2"></i>Worked Example: Simplify a Fraction</span>
+            <i class="fas fa-chevron-down transition-transform"></i>
+          </button>
+          <div class="accordion-content">
+            <div class="p-4 bg-white">
+              <p class="font-medium text-gray-800 mb-3">Problem: Simplify 45/60 to its lowest terms.</p>
+              <div class="space-y-2 text-gray-700">
+                <p><strong>Method 1: Step by step division</strong></p>
+                <div class="bg-gray-50 p-3 rounded font-mono text-sm">
+                  45/60 = (÷5) → 9/12<br>
+                  9/12 = (÷3) → 3/4<br>
+                  3/4 is in lowest terms (GCD of 3 and 4 is 1)
+                </div>
+                <p><strong>Method 2: Find GCD directly</strong></p>
+                <div class="bg-gray-50 p-3 rounded font-mono text-sm">
+                  45 = 3² × 5<br>
+                  60 = 2² × 3 × 5<br>
+                  GCD = 3 × 5 = 15<br>
+                  45/60 = (45÷15)/(60÷15) = 3/4
+                </div>
+                <p class="text-green-600 font-semibold mt-2"><strong>Answer:</strong> 45/60 = 3/4</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 5: Comparing Rational Numbers -->
+      <section class="mb-8">
+        <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+          <span class="bg-teal-500 text-white rounded-full w-8 h-8 flex items-center justify-center mr-3 text-sm">5</span>
+          Comparing and Ordering Rational Numbers
+        </h2>
+        
+        <div class="grid md:grid-cols-2 gap-4 mb-4">
+          <div class="bg-teal-50 p-4 rounded-lg">
+            <h4 class="font-semibold text-teal-800 mb-2">Method 1: Common Denominator</h4>
+            <p class="text-sm text-gray-700 mb-2">Convert all fractions to have the same denominator.</p>
+            <p class="font-mono text-sm bg-white p-2 rounded">Compare 3/4 and 5/6:</p>
+            <p class="font-mono text-sm bg-white p-2 rounded mt-1">LCM = 12: 9/12 vs 10/12</p>
+            <p class="font-mono text-sm bg-white p-2 rounded mt-1 text-green-600">5/6 > 3/4</p>
+          </div>
+          <div class="bg-blue-50 p-4 rounded-lg">
+            <h4 class="font-semibold text-blue-800 mb-2">Method 2: Convert to Decimals</h4>
+            <p class="text-sm text-gray-700 mb-2">Convert all to decimals and compare.</p>
+            <p class="font-mono text-sm bg-white p-2 rounded">Compare 2/5, 0.45, and 4/9:</p>
+            <p class="font-mono text-sm bg-white p-2 rounded mt-1">2/5 = 0.4</p>
+            <p class="font-mono text-sm bg-white p-2 rounded mt-1">4/9 = 0.444...</p>
+            <p class="font-mono text-sm bg-white p-2 rounded mt-1 text-green-600">Order: 0.4 < 0.444... < 0.45</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Interactive Practice -->
+      <section class="mb-8">
+        <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+          <i class="fas fa-pencil-alt text-orange-500 mr-3"></i>
+          Practice Problems
+        </h2>
+        
+        <div class="space-y-4">
+          <div class="bg-orange-50 p-4 rounded-lg border border-orange-200">
+            <p class="font-medium text-gray-800">1. Convert 7/8 to a decimal.</p>
+            <div class="mt-3 flex gap-2">
+              <input type="text" id="practice1" placeholder="Your answer" class="flex-grow p-2 border rounded">
+              <button onclick="checkAnswer(1, '0.875')" class="px-4 py-2 bg-orange-500 text-white rounded hover:bg-orange-600">Check</button>
+            </div>
+            <p id="feedback1" class="mt-2 text-sm"></p>
+          </div>
+
+          <div class="bg-orange-50 p-4 rounded-lg border border-orange-200">
+            <p class="font-medium text-gray-800">2. Simplify 36/48 to its lowest terms.</p>
+            <div class="mt-3 flex gap-2">
+              <input type="text" id="practice2" placeholder="e.g., 1/2" class="flex-grow p-2 border rounded">
+              <button onclick="checkAnswer(2, '3/4')" class="px-4 py-2 bg-orange-500 text-white rounded hover:bg-orange-600">Check</button>
+            </div>
+            <p id="feedback2" class="mt-2 text-sm"></p>
+          </div>
+
+          <div class="bg-orange-50 p-4 rounded-lg border border-orange-200">
+            <p class="font-medium text-gray-800">3. Express 0.6 as a fraction in its simplest form.</p>
+            <div class="mt-3 flex gap-2">
+              <input type="text" id="practice3" placeholder="e.g., 1/2" class="flex-grow p-2 border rounded">
+              <button onclick="checkAnswer(3, '3/5')" class="px-4 py-2 bg-orange-500 text-white rounded hover:bg-orange-600">Check</button>
+            </div>
+            <p id="feedback3" class="mt-2 text-sm"></p>
+          </div>
+
+          <div class="bg-orange-50 p-4 rounded-lg border border-orange-200">
+            <p class="font-medium text-gray-800">4. Which is larger: 3/7 or 5/12?</p>
+            <div class="mt-3 flex gap-2">
+              <input type="text" id="practice4" placeholder="3/7 or 5/12" class="flex-grow p-2 border rounded">
+              <button onclick="checkAnswer(4, '3/7')" class="px-4 py-2 bg-orange-500 text-white rounded hover:bg-orange-600">Check</button>
+            </div>
+            <p id="feedback4" class="mt-2 text-sm"></p>
+          </div>
+        </div>
+      </section>
+
+      <!-- PhET Simulation -->
+      <section class="mb-8">
+        <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+          <i class="fas fa-flask text-purple-500 mr-3"></i>
+          Interactive Simulation
+        </h2>
+        <div class="bg-purple-50 p-4 rounded-lg border border-purple-200">
+          <p class="text-sm text-gray-700 mb-3">Explore fraction concepts with this interactive simulation from PhET:</p>
+          <div class="aspect-video w-full rounded-lg overflow-hidden">
+            <iframe 
+              src="https://phet.colorado.edu/sims/html/fraction-matcher/latest/fraction-matcher_en.html" 
+              class="w-full h-full border-0"
+              allowfullscreen>
+            </iframe>
+          </div>
+        </div>
+      </section>
+
+      <!-- Summary -->
+      <section class="bg-gradient-to-r from-green-100 to-teal-100 p-6 rounded-lg">
+        <h3 class="font-bold text-gray-800 mb-3"><i class="fas fa-clipboard-list mr-2"></i>Key Points Summary</h3>
+        <div class="grid md:grid-cols-2 gap-4 text-sm">
+          <div class="bg-white/70 p-3 rounded">
+            <p class="font-semibold text-green-700">Definition</p>
+            <p>Rational = can be written as p/q (q ≠ 0)</p>
+          </div>
+          <div class="bg-white/70 p-3 rounded">
+            <p class="font-semibold text-blue-700">Fraction to Decimal</p>
+            <p>Divide numerator by denominator</p>
+          </div>
+          <div class="bg-white/70 p-3 rounded">
+            <p class="font-semibold text-purple-700">Decimal to Fraction</p>
+            <p>Write over power of 10, simplify</p>
+          </div>
+          <div class="bg-white/70 p-3 rounded">
+            <p class="font-semibold text-orange-700">Simplifying</p>
+            <p>Divide both by GCD</p>
+          </div>
+        </div>
+      </section>
+    </article>
+  </div>
+
+  <script>
+    // Accordion toggle function
+    function toggleAccordion(button) {
+      const content = button.nextElementSibling;
+      const icon = button.querySelector('.fa-chevron-down');
+      content.classList.toggle('open');
+      icon.classList.toggle('rotate-180');
+    }
+
+    // Answer checker
+    function checkAnswer(questionNum, correctAnswer) {
+      const userAnswer = document.getElementById('practice' + questionNum).value.trim().toLowerCase();
+      const feedback = document.getElementById('feedback' + questionNum);
+      
+      if (userAnswer === correctAnswer.toLowerCase()) {
+        feedback.innerHTML = '<span class="text-green-600 font-semibold"><i class="fas fa-check-circle mr-1"></i>Correct! Well done!</span>';
+      } else {
+        feedback.innerHTML = '<span class="text-red-600"><i class="fas fa-times-circle mr-1"></i>Not quite. The correct answer is ' + correctAnswer + '</span>';
+      }
+    }
+  </script>
+<!-- Topic Quiz System -->
+<script src="/js/topic-quiz-loader.js"></script>
+<script src="/js/topic-quiz-injector.js"></script>
+</body>
+</html>

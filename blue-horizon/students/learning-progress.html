@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learning Report - Juanova Cortex</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+        .skeleton {
+            background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+            border-radius: 8px;
+        }
+        .score-ring {
+            position: relative;
+            width: 140px;
+            height: 140px;
+        }
+        .score-ring svg {
+            transform: rotate(-90deg);
+        }
+        .score-ring .value {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+        .date-btn.active {
+            background-color: #0284c7;
+            color: white;
+        }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    </style>
+</head>
+<body class="bg-slate-100 min-h-screen">
+    <!-- Header -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-4">
+                    <a href="student-dashboard.html" class="flex items-center gap-2 text-slate-600 hover:text-sky-600">
+                        <i class="fas fa-arrow-left"></i>
+                    </a>
+                    <div>
+                        <h1 class="text-2xl font-bold text-slate-800">📊 Learning Report</h1>
+                        <p class="text-sm text-slate-500">Track your CBT progress and performance</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-3">
+                    <button onclick="LearningReport.refresh()" class="p-2 text-slate-400 hover:text-sky-600 hover:bg-sky-50 rounded-lg transition-colors" title="Refresh">
+                        <i class="fas fa-sync-alt"></i>
+                    </button>
+                    <a href="../cbt/cbt.html" class="px-4 py-2 bg-sky-600 text-white rounded-lg hover:bg-sky-700 transition-colors text-sm font-medium">
+                        <i class="fas fa-play mr-2"></i>Take Quiz
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Error Banner -->
+    <div id="errorBanner" class="hidden max-w-7xl mx-auto px-4 mt-4">
+        <div class="bg-red-50 border border-red-200 rounded-xl p-4 flex items-center gap-3">
+            <i class="fas fa-exclamation-circle text-red-500 text-xl"></i>
+            <p id="errorMessage" class="text-red-700"></p>
+            <button onclick="LearningReport.refresh()" class="ml-auto px-3 py-1 bg-red-600 text-white rounded-lg text-sm">Retry</button>
+        </div>
+    </div>
+
+    <main class="max-w-7xl mx-auto px-4 py-6">
+        <!-- Date Filter -->
+        <div class="flex justify-end mb-6">
+            <div class="bg-white rounded-lg p-1 flex gap-1 shadow-sm">
+                <button class="date-btn px-4 py-2 rounded-md text-sm font-medium text-slate-600 hover:bg-slate-100 transition-colors" data-range="week">Week</button>
+                <button class="date-btn px-4 py-2 rounded-md text-sm font-medium text-slate-600 hover:bg-slate-100 transition-colors" data-range="month">Month</button>
+                <button class="date-btn px-4 py-2 rounded-md text-sm font-medium text-slate-600 hover:bg-slate-100 transition-colors" data-range="year">Year</button>
+                <button class="date-btn active px-4 py-2 rounded-md text-sm font-medium transition-colors" data-range="all">All Time</button>
+            </div>
+        </div>
+
+        <!-- Stats Cards -->
+        <section class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+            <!-- Average Score -->
+            <div class="bg-white rounded-2xl p-6 shadow-sm">
+                <div class="flex items-center justify-between mb-4">
+                    <span class="text-sm font-medium text-slate-500">Average Score</span>
+                    <span class="text-2xl">🎯</span>
+                </div>
+                <div class="flex justify-center">
+                    <div class="score-ring">
+                        <svg width="140" height="140">
+                            <circle cx="70" cy="70" r="60" fill="none" stroke="#e2e8f0" stroke-width="10"/>
+                            <circle id="scoreCircle" cx="70" cy="70" r="60" fill="none" stroke="#0ea5e9" stroke-width="10" 
+                                stroke-linecap="round" stroke-dasharray="377" stroke-dashoffset="377"/>
+                        </svg>
+                        <div class="value">
+                            <span id="avgScore" class="text-3xl font-bold text-slate-800">--</span>
+                            <span class="text-sm text-slate-500">percent</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quizzes Taken -->
+            <div class="bg-white rounded-2xl p-6 shadow-sm">
+                <div class="flex items-center justify-between mb-4">
+                    <span class="text-sm font-medium text-slate-500">Quizzes Taken</span>
+                    <span class="text-2xl">📝</span>
+                </div>
+                <div id="quizCount" class="text-4xl font-bold text-slate-800">--</div>
+                <p class="text-sm text-slate-500 mt-1">total attempts</p>
+                <div class="mt-4 flex items-center gap-2 text-sm">
+                    <span id="passedCount" class="text-emerald-600 font-medium">0 passed</span>
+                    <span class="text-slate-300">•</span>
+                    <span id="failedCount" class="text-red-500 font-medium">0 failed</span>
+                </div>
+            </div>
+
+            <!-- Study Time -->
+            <div class="bg-white rounded-2xl p-6 shadow-sm">
+                <div class="flex items-center justify-between mb-4">
+                    <span class="text-sm font-medium text-slate-500">Study Time</span>
+                    <span class="text-2xl">⏰</span>
+                </div>
+                <div id="studyTime" class="text-4xl font-bold text-slate-800">--</div>
+                <p class="text-sm text-slate-500 mt-1">hours total</p>
+                <div class="mt-4 pt-4 border-t border-slate-100">
+                    <div class="flex justify-between text-sm">
+                        <span class="text-slate-500">This week</span>
+                        <span id="weeklyTime" class="font-medium text-slate-700">0h</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Streak -->
+            <div class="bg-white rounded-2xl p-6 shadow-sm">
+                <div class="flex items-center justify-between mb-4">
+                    <span class="text-sm font-medium text-slate-500">Current Streak</span>
+                    <span class="text-2xl">🔥</span>
+                </div>
+                <div class="flex items-baseline gap-1">
+                    <span id="streakDays" class="text-4xl font-bold text-slate-800">--</span>
+                    <span class="text-slate-500">days</span>
+                </div>
+                <p class="text-sm text-slate-500 mt-1">consecutive study</p>
+                <div class="mt-4 pt-4 border-t border-slate-100">
+                    <div class="flex justify-between text-sm">
+                        <span class="text-slate-500">Best streak</span>
+                        <span id="bestStreak" class="font-medium text-slate-700">0 days</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Main Content -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Left Column -->
+            <div class="lg:col-span-2 space-y-6">
+                <!-- Performance Chart -->
+                <div class="bg-white rounded-2xl p-6 shadow-sm">
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-lg font-semibold text-slate-800">Performance Trend</h2>
+                        <span class="text-sm text-slate-500">Score history</span>
+                    </div>
+                    <div id="chartSkeleton" class="h-64 skeleton"></div>
+                    <div id="chartContainer" class="h-64 hidden">
+                        <canvas id="performanceChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Subject Performance -->
+                <div class="bg-white rounded-2xl p-6 shadow-sm">
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-lg font-semibold text-slate-800">Subject Performance</h2>
+                        <a href="subject.html" class="text-sm text-sky-600 hover:underline">Practice more</a>
+                    </div>
+                    <div id="subjectsSkeleton" class="space-y-4">
+                        <div class="h-16 skeleton"></div>
+                        <div class="h-16 skeleton"></div>
+                        <div class="h-16 skeleton"></div>
+                    </div>
+                    <div id="subjectsContainer" class="space-y-4 hidden"></div>
+                </div>
+
+                <!-- Recent Results -->
+                <div class="bg-white rounded-2xl p-6 shadow-sm">
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-lg font-semibold text-slate-800">Recent Quiz Results</h2>
+                        <span class="text-sm text-slate-500">Latest attempts</span>
+                    </div>
+                    <div id="recentSkeleton" class="space-y-3">
+                        <div class="h-14 skeleton"></div>
+                        <div class="h-14 skeleton"></div>
+                        <div class="h-14 skeleton"></div>
+                    </div>
+                    <div id="recentContainer" class="space-y-3 hidden"></div>
+                </div>
+            </div>
+
+            <!-- Right Column -->
+            <div class="space-y-6">
+                <!-- Strengths -->
+                <div class="bg-white rounded-2xl p-6 shadow-sm">
+                    <div class="flex items-center gap-2 mb-4">
+                        <span class="text-xl">💪</span>
+                        <h2 class="text-lg font-semibold text-slate-800">Your Strengths</h2>
+                    </div>
+                    <div id="strengthsSkeleton" class="space-y-3">
+                        <div class="h-14 skeleton"></div>
+                        <div class="h-14 skeleton"></div>
+                    </div>
+                    <div id="strengthsContainer" class="space-y-3 hidden"></div>
+                </div>
+
+                <!-- Weaknesses -->
+                <div class="bg-white rounded-2xl p-6 shadow-sm">
+                    <div class="flex items-center gap-2 mb-4">
+                        <span class="text-xl">⚠️</span>
+                        <h2 class="text-lg font-semibold text-slate-800">Needs Improvement</h2>
+                    </div>
+                    <div id="weaknessesSkeleton" class="space-y-3">
+                        <div class="h-14 skeleton"></div>
+                        <div class="h-14 skeleton"></div>
+                    </div>
+                    <div id="weaknessesContainer" class="space-y-3 hidden"></div>
+                </div>
+
+                <!-- Goals -->
+                <div class="bg-white rounded-2xl p-6 shadow-sm">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center gap-2">
+                            <span class="text-xl">🎯</span>
+                            <h2 class="text-lg font-semibold text-slate-800">Goals Progress</h2>
+                        </div>
+                        <a href="../student-dashboard.html" class="text-sm text-sky-600 hover:underline">Edit</a>
+                    </div>
+                    <div id="goalsSkeleton" class="space-y-3">
+                        <div class="h-20 skeleton"></div>
+                        <div class="h-20 skeleton"></div>
+                    </div>
+                    <div id="goalsContainer" class="space-y-4 hidden"></div>
+                </div>
+
+                <!-- Insights -->
+                <div class="bg-gradient-to-br from-sky-50 to-blue-50 rounded-2xl p-6 border border-sky-100">
+                    <div class="flex items-center gap-2 mb-4">
+                        <span class="text-xl">💡</span>
+                        <h2 class="text-lg font-semibold text-slate-800">Insights</h2>
+                    </div>
+                    <div id="insightsSkeleton" class="space-y-3">
+                        <div class="h-16 skeleton"></div>
+                        <div class="h-16 skeleton"></div>
+                    </div>
+                    <div id="insightsContainer" class="space-y-3 hidden"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 mt-12">
+        <div class="max-w-7xl mx-auto px-4 py-6 text-center text-slate-500 text-sm">
+            © 2024 Juanova Cortex. All rights reserved.
+        </div>
+    </footer>
+
+    <script src="learning-report.js"></script>
+</body>
+</html>

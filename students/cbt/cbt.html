@@ -1,0 +1,1475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JAMB CBT Simulator - Juanova Cortex</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- fonts & theme colors to match site -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #d4a574;
+            --primary-dark: #8b6f47;
+            --accent: #2c3e50;
+            --bg-light: #fefdf9;
+            --bg-pale: #f9f5ef;
+            --text-dark: #1a1a1a;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-light);
+            color: var(--text-dark);
+            margin: 0;
+        }
+
+        .header-bar {
+            background: var(--primary);
+            color: #fff;
+            padding: 1rem 1.5rem;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 50;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .header-bar h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.25rem;
+            font-weight: 900;
+            margin: 0;
+            letter-spacing: -0.5px;
+        }
+
+        .main-content {
+            padding-top: 4rem;
+        }
+
+        .container {
+            background: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+
+        .dotted-bg {
+            background-image: radial-gradient(circle, #d1d5db 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        .screen {
+            display: none !important;
+            visibility: hidden !important;
+            position: absolute !important;
+            pointer-events: none !important;
+        }
+        .screen.active {
+            display: block !important;
+            visibility: visible !important;
+            position: static !important;
+            pointer-events: auto !important;
+        }
+
+        /* custom scrollbar for large containers */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #c1c1c1;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #a1a1a1;
+        }
+
+        .year-btn {
+            transition: all 0.2s;
+        }
+        .year-btn.selected {
+            background-color: #dc2626;
+            color: white;
+        }
+        
+        /* Save indicator */
+        .save-indicator {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            padding: 12px 20px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 500;
+            z-index: 100;
+            display: none;
+            animation: slideUp 0.3s ease-out;
+        }
+        
+        .save-indicator.success {
+            background: #dcfce7;
+            color: #166534;
+            border: 1px solid #86efac;
+        }
+        
+        .save-indicator.error {
+            background: #fef2f2;
+            color: #991b1b;
+            border: 1px solid #fca5a5;
+        }
+        
+        .save-indicator.loading {
+            background: #eff6ff;
+            color: #1e40af;
+            border: 1px solid #93c5fd;
+        }
+        
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+    </style>
+</head>
+<body class="dotted-bg min-h-screen">
+    <!-- Save Indicator -->
+    <div id="save-indicator" class="save-indicator"></div>
+    
+    <img src="images (2).png" alt="jamb logo" style="display: block; margin: 0 auto;">
+    <div class="header-bar">
+        <h1>JAMB CBT Simulator</h1>
+        <!-- optionally add a home link or logo -->
+        <a href="../student-dashboard.html" class="text-white text-sm hover:underline">Home</a>
+    </div>
+    <div class="main-content">
+        <!-- Welcome Screen -->
+        <div id="welcome-screen" class="screen active min-h-screen p-4">
+            <div class="max-w-md mx-auto container p-6">
+            <!-- Header -->
+            
+
+            <!-- Info Card -->
+
+            <!-- Practice Mode Selection -->
+            <div class="mb-6">
+                <h3 class="font-semibold text-gray-900 mb-3">Select Practice Mode</h3>
+                <div class="grid grid-cols-2 gap-4">
+                    <div id="mode-single" class="mode-card cursor-pointer bg-red-600 rounded-2xl p-4 text-white" onclick="selectPracticeMode('single')">
+                        <h4 class="font-semibold mb-1">Single Subject</h4>
+                        <div class="text-2xl font-bold">1</div>
+                        <div class="text-sm opacity-80">Subject</div>
+                        <button class="mt-3 w-full py-2 bg-white text-gray-900 rounded-lg font-medium text-sm">
+                            Select
+                        </button>
+                    </div>
+                    <div id="mode-full" class="mode-card cursor-pointer bg-blue-100 rounded-2xl p-4" onclick="selectPracticeMode('full')">
+                        <h4 class="font-semibold mb-1">Full Exam</h4>
+                        <div class="text-2xl font-bold text-gray-900">4</div>
+                        <div class="text-sm text-gray-600">Subjects</div>
+                        <button class="mt-3 w-full py-2 bg-white text-gray-900 rounded-lg font-medium text-sm border border-gray-200">
+                            Select
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Subject Selection Progress -->
+            <div class="flex items-center gap-2 mb-4">
+                <div class="w-8 h-8 rounded-lg bg-red-600 text-white flex items-center justify-center">
+                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z"/>
+                    </svg>
+                </div>
+                <span class="text-sm text-gray-600">Subject Selection</span>
+                <div class="flex-1 h-2 bg-gray-200 rounded-full ml-2">
+                    <div id="subject-progress" class="h-2 bg-red-600 rounded-full transition-all" style="width: 0%"></div>
+                </div>
+                <span id="subject-count" class="text-sm font-medium">0/<span id="max-subjects">1</span></span>
+            </div>
+
+            <!-- Selected Subjects with Year Selection -->
+            <div id="selected-subjects-main" class="space-y-3 mb-4">
+                <p class="text-sm text-gray-500 text-center py-4">Add subjects to begin</p>
+            </div>
+
+            <!-- Add Subject Button -->
+            <button id="add-subject-btn" onclick="toggleSubjectModal()" class="w-full p-4 border-2 border-dashed border-gray-300 rounded-xl text-gray-500 hover:border-red-600 hover:text-red-600 transition-colors flex items-center justify-center gap-2">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                </svg>
+                Add Subject
+            </button>
+
+            <!-- Proceed Button -->
+            <button id="proceed-btn" onclick="goToTestMode()" class="w-full mt-6 py-4 bg-gray-300 text-gray-500 font-semibold rounded-xl cursor-not-allowed" disabled>
+                Proceed
+            </button>
+        </div>
+    </div>
+
+    <!-- Subject Selection Modal -->
+    <div id="subject-modal" class="fixed inset-0 bg-black/50 z-50 hidden items-center justify-center p-4">
+        <div class="bg-white rounded-2xl p-6 w-full max-w-md max-h-[80vh] overflow-y-auto">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="font-semibold text-lg">Select Subject</h3>
+                <button onclick="toggleSubjectModal()" class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center">
+                    <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+            <div id="subject-list">
+                <!-- Subjects will be rendered here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Year Selection Modal -->
+    <div id="year-modal" class="fixed inset-0 bg-black/50 z-50 hidden items-center justify-center p-4">
+        <div class="bg-white rounded-2xl p-6 w-full max-w-md">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="font-semibold text-lg">Select Year for <span id="year-modal-subject"></span></h3>
+                <button onclick="toggleYearModal()" class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center">
+                    <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+            <p class="text-sm text-gray-500 mb-4">Select a specific year or "All Years" to practice questions from all available years.</p>
+            <div id="year-list" class="grid grid-cols-3 gap-2">
+                <!-- Years will be rendered here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Test Mode Screen -->
+    <div id="test-mode-screen" class="screen min-h-screen p-4">
+        <div class="max-w-md mx-auto">
+            <!-- Header -->
+            <div class="flex items-center gap-3 mb-6">
+                <button onclick="goBack()" class="w-10 h-10 rounded-full border-2 border-red-600 flex items-center justify-center">
+                    <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                    </svg>
+                </button>
+                <h1 class="text-lg font-semibold">Select Test Mode</h1>
+            </div>
+
+            <!-- Test Mode Selection -->
+            <div class="mb-6">
+                <h3 class="font-semibold mb-3 flex items-center gap-2">
+                    <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    Select Test Mode
+                </h3>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <!-- Practice Mode -->
+                    <div id="mode-practice" class="mode-card cursor-pointer bg-red-600 rounded-2xl p-4 text-white" onclick="selectTestDuration('practice')">
+                        <h4 class="font-semibold mb-1">Practice Mode</h4>
+                        <div class="text-3xl font-bold">35</div>
+                        <div class="text-sm opacity-80">Minutes</div>
+                        <button class="mt-3 w-full py-2 bg-white text-gray-900 rounded-lg font-medium text-sm">
+                            Select
+                        </button>
+                    </div>
+
+                    <!-- Full Test Mode -->
+                    <div id="mode-full-test" class="mode-card cursor-pointer bg-blue-100 rounded-2xl p-4" onclick="selectTestDuration('full')">
+                        <h4 class="font-semibold mb-1">Full Test Mode</h4>
+                        <div class="text-3xl font-bold text-gray-900">120</div>
+                        <div class="text-sm text-gray-600">Minutes</div>
+                        <button class="mt-3 w-full py-2 bg-white text-gray-900 rounded-lg font-medium text-sm border border-gray-200">
+                            Select
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Proceed Button -->
+            <button onclick="goToInstructions()" class="w-full py-4 bg-red-600 text-white font-semibold rounded-xl hover:bg-red-700 transition-colors">
+                Proceed
+            </button>
+        </div>
+    </div>
+
+    <!-- Instructions Screen -->
+    <div id="instructions-screen" class="screen min-h-screen p-4">
+        <div class="max-w-md mx-auto">
+            <!-- Header -->
+            <div class="flex items-center gap-3 mb-6">
+                <button onclick="goBack()" class="w-10 h-10 rounded-full border-2 border-red-600 flex items-center justify-center">
+                    <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Title Banner -->
+            <div class="bg-orange-100 rounded-2xl p-4 mb-6 flex items-center justify-between relative overflow-hidden">
+                <h2 class="font-bold text-xl">JAMB CBT Simulator</h2>
+                <div class="absolute right-0 top-0 bottom-0 w-20 opacity-20">
+                    <svg viewBox="0 0 100 100" class="w-full h-full">
+                        <polygon points="50,0 100,50 50,100" fill="currentColor"/>
+                        <polygon points="0,25 50,75 0,100" fill="currentColor"/>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- Instructions -->
+            <div class="bg-white rounded-2xl p-4 mb-6 shadow-sm">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="w-10 h-10 rounded-full bg-red-600 flex items-center justify-center">
+                        <span class="text-white font-semibold">E</span>
+                    </div>
+                    <h3 class="font-semibold text-lg">CBT Exam Instructions</h3>
+                </div>
+
+                <ul class="space-y-3 text-sm text-gray-600">
+                    <li class="flex gap-2">
+                        <span class="font-semibold text-gray-900">1.</span>
+                        Questions will appear one at a time.
+                    </li>
+                    <li class="flex gap-2">
+                        <span class="font-semibold text-gray-900">2.</span>
+                        You're free to move to any subject of your choice using the subject navigation at the top of your exam environment.
+                    </li>
+                    <li class="flex gap-2">
+                        <span class="font-semibold text-gray-900">3.</span>
+                        After answering a question, click 'Next' to proceed to the next one.
+                    </li>
+                    <li class="flex gap-2">
+                        <span class="font-semibold text-gray-900">4.</span>
+                        When you finish all the questions, click 'Submit'.
+                    </li>
+                    <li class="flex gap-2">
+                        <span class="font-semibold text-gray-900">5.</span>
+                        If you wish to exit before completing the test, click 'Quit' to exit the test environment and forfeit your exam progress.
+                    </li>
+                    <li class="flex gap-2">
+                        <span class="font-semibold text-gray-900">6.</span>
+                        At the bottom of your screen, a question navigation has been provided for you to quickly jump to any question of interest.
+                    </li>
+                    <li class="flex gap-2">
+                        <span class="font-semibold text-gray-900">7.</span>
+                        A simple calculator has also been provided at the top of your screen.
+                    </li>
+                    <li class="flex gap-2">
+                        <span class="font-semibold text-gray-900">8.</span>
+                        Keep an eye on your countdown time. If you run out of time, your answers will be automatically submitted.
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Proceed Button -->
+            <button onclick="goToSummary()" class="w-full py-4 bg-red-600 text-white font-semibold rounded-xl hover:bg-red-700 transition-colors">
+                Proceed
+            </button>
+        </div>
+    </div>
+
+    <!-- Summary Screen -->
+    <div id="summary-screen" class="screen min-h-screen p-4">
+        <div class="max-w-md mx-auto">
+            <!-- Header -->
+            <div class="flex items-center gap-3 mb-6">
+                <button onclick="goBack()" class="w-10 h-10 rounded-full border-2 border-red-600 flex items-center justify-center">
+                    <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                    </svg>
+                </button>
+                <h1 class="text-lg font-semibold">Summary</h1>
+            </div>
+
+            <!-- Subjects Section -->
+            <div class="bg-green-50 rounded-2xl p-4 mb-4">
+                <div class="flex items-center gap-3 mb-3">
+                    <div class="w-8 h-8 rounded-lg bg-green-500 flex items-center justify-center">
+                        <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z"/>
+                        </svg>
+                    </div>
+                    <h3 class="font-semibold">Subjects</h3>
+                </div>
+                <p class="text-sm text-gray-500 mb-3">You have selected, and will be examined on the following subjects.</p>
+                <div id="summary-subjects" class="space-y-2 text-sm">
+                    <!-- Subjects will be rendered here -->
+                </div>
+            </div>
+
+            <!-- Test Mode Section -->
+            <div class="bg-blue-50 rounded-2xl p-4 mb-4">
+                <div class="flex items-center gap-3 mb-2">
+                    <div class="w-8 h-8 rounded-lg bg-blue-500 flex items-center justify-center">
+                        <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </div>
+                    <h3 class="font-semibold">Test Mode</h3>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span id="summary-mode" class="text-sm">Practice Mode</span>
+                    <span id="summary-duration" class="font-semibold">35 Minutes</span>
+                </div>
+            </div>
+
+            <!-- Question Count Section -->
+            <div class="bg-orange-50 rounded-2xl p-4 mb-6">
+                <div class="flex items-center gap-3 mb-2">
+                    <div class="w-8 h-8 rounded-lg bg-orange-500 flex items-center justify-center">
+                        <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+                        </svg>
+                    </div>
+                    <h3 class="font-semibold">Total Questions</h3>
+                </div>
+                <span id="summary-questions" class="text-2xl font-bold text-gray-900">40</span>
+            </div>
+
+            <!-- Proceed Button -->
+            <button onclick="startTest()" class="w-full py-4 bg-red-600 text-white font-semibold rounded-xl hover:bg-red-700 transition-colors">
+                Proceed to Test
+            </button>
+        </div>
+    </div>
+
+    <!-- Test Screen -->
+    <div id="test-screen" class="screen min-h-screen flex flex-col bg-gray-100">
+        <!-- Top Bar -->
+        <div class="bg-white shadow-sm p-3">
+            <div class="max-w-4xl mx-auto">
+                <!-- Subject Navigation -->
+                <div id="subject-nav-buttons" class="flex gap-2 overflow-x-auto pb-2 mb-2">
+                    <!-- Subject buttons will be rendered here -->
+                </div>
+                
+                <!-- Timer and Controls -->
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <button onclick="toggleCalculator()" class="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center hover:bg-gray-200">
+                            <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                            </svg>
+                        </button>
+                    </div>
+                    
+                    <div class="flex items-center gap-2 bg-red-50 px-4 py-2 rounded-lg">
+                        <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        <span id="timer-display" class="font-mono font-bold text-red-600">35:00</span>
+                    </div>
+
+                    <button onclick="quitTest()" class="px-4 py-2 bg-gray-100 rounded-lg text-sm font-medium hover:bg-gray-200">
+                        Quit
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Calculator -->
+        <div id="calculator" class="hidden fixed top-24 right-4 bg-white rounded-2xl shadow-xl p-4 z-50 w-72">
+            <div class="bg-gray-100 rounded-lg p-3 mb-3 text-right font-mono text-2xl overflow-x-auto" id="calc-display">0</div>
+            <div class="grid grid-cols-4 gap-2">
+                <button onclick="calcBtn('C')" class="calc-btn p-3 bg-gray-100 rounded-lg hover:bg-gray-200 font-semibold active:bg-gray-300">C</button>
+                <button onclick="calcBtn('±')" class="calc-btn p-3 bg-gray-100 rounded-lg hover:bg-gray-200 font-semibold active:bg-gray-300">±</button>
+                <button onclick="calcBtn('%')" class="calc-btn p-3 bg-gray-100 rounded-lg hover:bg-gray-200 font-semibold active:bg-gray-300">%</button>
+                <button onclick="calcBtn('÷')" class="calc-btn p-3 bg-orange-500 text-white rounded-lg hover:bg-orange-600 font-semibold active:bg-orange-700">÷</button>
+                <button onclick="calcBtn('7')" class="calc-btn p-3 bg-gray-100 rounded-lg hover:bg-gray-200 font-semibold active:bg-gray-300">7</button>
+                <button onclick="calcBtn('8')" class="calc-btn p-3 bg-gray-100 rounded-lg hover:bg-gray-200 font-semibold active:bg-gray-300">8</button>
+                <button onclick="calcBtn('9')" class="calc-btn p-3 bg-gray-100 rounded-lg hover:bg-gray-200 font-semibold active:bg-gray-300">9</button>
+                <button onclick="calcBtn('×')" class="calc-btn p-3 bg-orange-500 text-white rounded-lg hover:bg-orange-600 font-semibold active:bg-orange-700">×</button>
+                <button onclick="calcBtn('4')" class="calc-btn p-3 bg-gray-100 rounded-lg hover:bg-gray-200 font-semibold active:bg-gray-300">4</button>
+                <button onclick="calcBtn('5')" class="calc-btn p-3 bg-gray-100 rounded-lg hover:bg-gray-200 font-semibold active:bg-gray-300">5</button>
+                <button onclick="calcBtn('6')" class="calc-btn p-3 bg-gray-100 rounded-lg hover:bg-gray-200 font-semibold active:bg-gray-300">6</button>
+                <button onclick="calcBtn('−')" class="calc-btn p-3 bg-orange-500 text-white rounded-lg hover:bg-orange-600 font-semibold active:bg-orange-700">−</button>
+                <button onclick="calcBtn('1')" class="calc-btn p-3 bg-gray-100 rounded-lg hover:bg-gray-200 font-semibold active:bg-gray-300">1</button>
+                <button onclick="calcBtn('2')" class="calc-btn p-3 bg-gray-100 rounded-lg hover:bg-gray-200 font-semibold active:bg-gray-300">2</button>
+                <button onclick="calcBtn('3')" class="calc-btn p-3 bg-gray-100 rounded-lg hover:bg-gray-200 font-semibold active:bg-gray-300">3</button>
+                <button onclick="calcBtn('+')" class="calc-btn p-3 bg-orange-500 text-white rounded-lg hover:bg-orange-600 font-semibold active:bg-orange-700">+</button>
+                <button onclick="calcBtn('0')" class="calc-btn p-3 bg-gray-100 rounded-lg hover:bg-gray-200 font-semibold col-span-2 active:bg-gray-300">0</button>
+                <button onclick="calcBtn('.')" class="calc-btn p-3 bg-gray-100 rounded-lg hover:bg-gray-200 font-semibold active:bg-gray-300">.</button>
+                <button onclick="calcBtn('=')" class="calc-btn p-3 bg-orange-500 text-white rounded-lg hover:bg-orange-600 font-semibold active:bg-orange-700">=</button>
+            </div>
+        </div>
+
+        <!-- Question Area -->
+        <div class="flex-1 p-4 overflow-y-auto">
+            <div class="max-w-4xl mx-auto">
+                <div class="bg-white rounded-2xl p-6 shadow-sm">
+                    <!-- Year Badge -->
+                    <div class="flex items-center gap-2 mb-2">
+                        <span id="year-badge" class="px-2 py-1 bg-orange-100 text-orange-600 text-xs font-medium rounded">2023</span>
+                        <span class="text-gray-300">|</span>
+                        <span id="current-subject-name" class="text-sm text-gray-500">English Language</span>
+                    </div>
+                    
+                    <!-- Question Number -->
+                    <div class="text-sm font-medium text-red-600 mb-4" id="question-number">Question 1 of 40</div>
+                    
+                    <!-- Question Text -->
+                    <p id="question-text" class="text-lg mb-6">Loading question...</p>
+                    
+                    <!-- Options -->
+                    <div id="options-container" class="space-y-3">
+                        <!-- Options will be rendered here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Navigation -->
+        <div class="bg-white border-t border-gray-200 p-3">
+            <div class="max-w-4xl mx-auto">
+                <!-- Question Navigation -->
+                <div class="mb-3">
+                    <div id="question-nav-buttons" class="flex gap-2 flex-wrap max-h-24 overflow-y-auto">
+                        <!-- Question buttons will be rendered here -->
+                    </div>
+                </div>
+                
+                <!-- Navigation Buttons -->
+                <div class="flex gap-3">
+                    <button onclick="prevQuestion()" class="flex-1 py-3 bg-gray-100 rounded-xl font-medium hover:bg-gray-200 transition-colors">
+                        Previous
+                    </button>
+                    <button onclick="nextQuestion()" class="flex-1 py-3 bg-gray-900 text-white rounded-xl font-medium hover:bg-gray-800 transition-colors">
+                        Next
+                    </button>
+                    <button onclick="submitTest()" class="px-6 py-3 bg-red-600 text-white rounded-xl font-medium hover:bg-red-700 transition-colors">
+                        Submit
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Results Screen -->
+    <div id="results-screen" class="screen min-h-screen p-4">
+        <div class="max-w-md mx-auto">
+            <!-- Header -->
+            <div class="text-center mb-6">
+                <h1 class="text-2xl font-bold mb-2">Test Completed!</h1>
+                <p class="text-gray-500">Here's your performance summary</p>
+            </div>
+
+            <!-- Score Circle -->
+            <div class="flex justify-center mb-6">
+                <div class="relative w-32 h-32">
+                    <svg class="w-full h-full transform -rotate-90">
+                        <circle cx="64" cy="64" r="45" stroke="#e5e7eb" stroke-width="12" fill="none"/>
+                        <circle id="progress-circle" cx="64" cy="64" r="45" stroke="#dc2626" stroke-width="12" fill="none" 
+                            stroke-linecap="round" style="stroke-dasharray: 283; stroke-dashoffset: 283;"/>
+                    </svg>
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <span id="score-percentage" class="text-3xl font-bold">0%</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats -->
+            <div class="grid grid-cols-3 gap-4 mb-6">
+                <div class="bg-green-50 rounded-xl p-4 text-center">
+                    <div id="correct-count" class="text-2xl font-bold text-green-600">0</div>
+                    <div class="text-sm text-gray-500">Correct</div>
+                </div>
+                <div class="bg-red-50 rounded-xl p-4 text-center">
+                    <div id="wrong-count" class="text-2xl font-bold text-red-600">0</div>
+                    <div class="text-sm text-gray-500">Wrong</div>
+                </div>
+                <div class="bg-gray-50 rounded-xl p-4 text-center">
+                    <div id="total-questions" class="text-2xl font-bold text-gray-600">0</div>
+                    <div class="text-sm text-gray-500">Total</div>
+                </div>
+            </div>
+
+            <!-- Subject Breakdown -->
+            <div class="bg-white rounded-2xl p-4 shadow-sm mb-6">
+                <h3 class="font-semibold mb-3">Subject Breakdown</h3>
+                <div id="subject-breakdown" class="space-y-2">
+                    <!-- Subject breakdown will be rendered here -->
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="space-y-3">
+                <button onclick="restartTest()" class="w-full py-4 bg-red-600 text-white font-semibold rounded-xl hover:bg-red-700 transition-colors">
+                    Start New Test
+                </button>
+                <a href="../student-dashboard.html" class="block w-full py-4 bg-gray-100 text-gray-700 font-semibold rounded-xl text-center hover:bg-gray-200 transition-colors">
+                    Back to Dashboard
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Image Modal for Full Page Zoom -->
+    <div id="image-modal" class="fixed inset-0 bg-black/90 z-50 hidden items-center justify-center p-4" onclick="closeImageModal()">
+        <div class="relative max-w-6xl max-h-full overflow-auto">
+            <button onclick="closeImageModal()" class="absolute top-2 right-2 w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-lg z-10 hover:bg-gray-100">
+                <svg class="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+            <img id="modal-image" src="" alt="Full Page Question" class="max-w-full h-auto rounded-lg shadow-2xl">
+        </div>
+    </div>
+
+    <!-- Load Questions from External Files -->
+    <script src="js/maths-questions.js"></script>
+    <script src="js/chem-questions.js"></script>
+    <script src="js/english-questions.js"></script>
+    <script src="js/physics-questions.js"></script>
+    <script src="js/biology-questions.js"></script>
+    <script src="js/economics-questions.js"></script>
+    
+    <!-- CBT Results Saver -->
+    <script src="js/cbt-results-saver.js"></script>
+    
+    <script>
+        // CBT Application State
+        const state = {
+            currentScreen: 'welcome',
+            practiceMode: 'single', // 'single' or 'full'
+            selectedSubjects: [], // Array of {name: string, year: string}
+            testMode: 'practice', // 'practice' or 'full'
+            testDuration: 35,
+            currentSubjectIndex: 0,
+            currentQuestionIndex: 0,
+            answers: {},
+            timeRemaining: 0,
+            timerInterval: null,
+            questions: [],
+            showCalculator: false,
+            showSubjectModal: false,
+            currentEditingSubject: null, // For year selection
+            
+            // For results saving
+            testStartTime: null,
+            subjectBreakdown: []
+        };
+
+        // Calculator State
+        let calcDisplay = '0';
+        let calcFirstOperand = null;
+        let calcOperator = null;
+        let calcWaitingForSecondOperand = false;
+
+        // Get available subjects dynamically
+        function getAvailableSubjects() {
+            if (typeof jambQuestions === 'undefined' || !jambQuestions) {
+                console.error('jambQuestions is not defined!');
+                return [];
+            }
+            return Object.keys(jambQuestions);
+        }
+
+        // Utility Functions
+        function showScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(screen => {
+                screen.classList.remove('active');
+            });
+            document.getElementById(screenId).classList.add('active');
+            state.currentScreen = screenId;
+        }
+
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        }
+        
+        // Show save indicator
+        function showSaveIndicator(message, type = 'loading') {
+            const indicator = document.getElementById('save-indicator');
+            indicator.textContent = message;
+            indicator.className = `save-indicator ${type}`;
+            indicator.style.display = 'block';
+            
+            if (type !== 'loading') {
+                setTimeout(() => {
+                    indicator.style.display = 'none';
+                }, 3000);
+            }
+        }
+        
+        function hideSaveIndicator() {
+            document.getElementById('save-indicator').style.display = 'none';
+        }
+
+        function selectPracticeMode(mode) {
+            state.practiceMode = mode;
+            state.selectedSubjects = [];
+            
+            // Update UI
+            document.getElementById('mode-single').className = mode === 'single' 
+                ? 'mode-card cursor-pointer bg-red-600 rounded-2xl p-4 text-white'
+                : 'mode-card cursor-pointer bg-blue-100 rounded-2xl p-4';
+            document.getElementById('mode-full').className = mode === 'full'
+                ? 'mode-card cursor-pointer bg-red-600 rounded-2xl p-4 text-white'
+                : 'mode-card cursor-pointer bg-blue-100 rounded-2xl p-4';
+            
+            document.getElementById('max-subjects').textContent = mode === 'single' ? '1' : '4';
+            updateSubjectProgress();
+            renderSelectedSubjects();
+            updateProceedButton();
+        }
+
+        function updateSubjectProgress() {
+            const maxSubjects = state.practiceMode === 'single' ? 1 : 4;
+            const progress = (state.selectedSubjects.length / maxSubjects) * 100;
+            document.getElementById('subject-progress').style.width = `${progress}%`;
+            document.getElementById('subject-count').innerHTML = `${state.selectedSubjects.length}/<span id="max-subjects">${maxSubjects}</span>`;
+        }
+
+        function updateProceedButton() {
+            const maxSubjects = state.practiceMode === 'single' ? 1 : 4;
+            const btn = document.getElementById('proceed-btn');
+            if (state.selectedSubjects.length === maxSubjects) {
+                btn.disabled = false;
+                btn.className = 'w-full mt-6 py-4 bg-red-600 text-white font-semibold rounded-xl hover:bg-red-700 transition-colors cursor-pointer';
+            } else {
+                btn.disabled = true;
+                btn.className = 'w-full mt-6 py-4 bg-gray-300 text-gray-500 font-semibold rounded-xl cursor-not-allowed';
+            }
+        }
+
+        function renderSelectedSubjects() {
+            const container = document.getElementById('selected-subjects-main');
+            if (state.selectedSubjects.length === 0) {
+                container.innerHTML = '<p class="text-sm text-gray-500 text-center py-4">Add subjects to begin</p>';
+                return;
+            }
+
+            container.innerHTML = state.selectedSubjects.map((subject, index) => `
+                <div class="bg-white rounded-xl p-4 shadow-sm flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-lg bg-red-600 text-white flex items-center justify-center font-semibold">
+                            ${index + 1}
+                        </div>
+                        <div>
+                            <div class="font-medium">${subject.name}</div>
+                            <div class="text-sm text-gray-500">Year: ${subject.year === 'all' ? 'All Years' : subject.year}</div>
+                        </div>
+                    </div>
+                    <div class="flex gap-2">
+                        <button onclick="editSubjectYear(${index})" class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center hover:bg-gray-200">
+                            <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                            </svg>
+                        </button>
+                        <button onclick="removeSubject(${index})" class="w-8 h-8 rounded-full bg-red-100 flex items-center justify-center hover:bg-red-200">
+                            <svg class="w-4 h-4 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function toggleSubjectModal() {
+            const modal = document.getElementById('subject-modal');
+            const isHidden = modal.classList.contains('hidden');
+            
+            if (isHidden) {
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+                renderSubjectList();
+            } else {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }
+        }
+
+        function renderSubjectList() {
+            const maxSubjects = state.practiceMode === 'single' ? 1 : 4;
+            const selectedNames = state.selectedSubjects.map(s => s.name);
+            const canAddMore = state.selectedSubjects.length < maxSubjects;
+            const subjects = getAvailableSubjects();
+
+            if (subjects.length === 0) {
+                document.getElementById('subject-list').innerHTML = `
+                    <div class="p-4 text-center text-gray-500">
+                        <p>No subjects available. Please refresh the page.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            document.getElementById('subject-list').innerHTML = subjects.map(subject => {
+                const isSelected = selectedNames.includes(subject);
+                const years = jambQuestions[subject]?.years || [];
+                
+                return `
+                    <div class="p-3 border-b border-gray-100 last:border-0">
+                        <div class="flex items-center justify-between">
+                            <span class="font-medium ${isSelected ? 'text-red-600' : 'text-gray-900'}">${subject}</span>
+                            ${isSelected 
+                                ? '<span class="text-xs bg-green-100 text-green-600 px-2 py-1 rounded">Selected</span>'
+                                : canAddMore 
+                                    ? `<button onclick="addSubject('${subject}')" class="text-xs bg-red-600 text-white px-3 py-1 rounded-lg">Add</button>`
+                                    : '<span class="text-xs text-gray-400">Max reached</span>'
+                            }
+                        </div>
+                        <div class="text-xs text-gray-500 mt-1">Years: ${years.join(', ')}</div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function addSubject(subjectName) {
+            const maxSubjects = state.practiceMode === 'single' ? 1 : 4;
+            if (state.selectedSubjects.length >= maxSubjects) return;
+            
+            // Check if already selected
+            if (state.selectedSubjects.some(s => s.name === subjectName)) return;
+
+            // Add subject with default "all" years
+            state.selectedSubjects.push({
+                name: subjectName,
+                year: 'all'
+            });
+
+            updateSubjectProgress();
+            renderSelectedSubjects();
+            updateProceedButton();
+            toggleSubjectModal();
+        }
+
+        function removeSubject(index) {
+            state.selectedSubjects.splice(index, 1);
+            updateSubjectProgress();
+            renderSelectedSubjects();
+            updateProceedButton();
+        }
+
+        function editSubjectYear(index) {
+            state.currentEditingSubject = index;
+            const subject = state.selectedSubjects[index];
+            const years = jambQuestions[subject.name].years;
+            
+            document.getElementById('year-modal-subject').textContent = subject.name;
+            
+            // Render year options
+            let yearHtml = `
+                <button onclick="selectYear('all')" class="year-btn p-3 rounded-lg border border-gray-200 text-center ${subject.year === 'all' ? 'selected' : ''}">
+                    All Years
+                </button>
+            `;
+            yearHtml += years.map(year => `
+                <button onclick="selectYear('${year}')" class="year-btn p-3 rounded-lg border border-gray-200 text-center ${subject.year === year ? 'selected' : ''}">
+                    ${year}
+                </button>
+            `).join('');
+            
+            document.getElementById('year-list').innerHTML = yearHtml;
+            toggleYearModal();
+        }
+
+        function toggleYearModal() {
+            const modal = document.getElementById('year-modal');
+            const isHidden = modal.classList.contains('hidden');
+            
+            if (isHidden) {
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+            } else {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }
+        }
+
+        function selectYear(year) {
+            if (state.currentEditingSubject !== null) {
+                state.selectedSubjects[state.currentEditingSubject].year = year;
+                renderSelectedSubjects();
+            }
+            toggleYearModal();
+        }
+
+        function selectTestDuration(mode) {
+            state.testMode = mode;
+            state.testDuration = mode === 'practice' ? 35 : 120;
+
+            document.getElementById('mode-practice').className = mode === 'practice'
+                ? 'mode-card cursor-pointer bg-red-600 rounded-2xl p-4 text-white'
+                : 'mode-card cursor-pointer bg-blue-100 rounded-2xl p-4';
+            document.getElementById('mode-full-test').className = mode === 'full'
+                ? 'mode-card cursor-pointer bg-red-600 rounded-2xl p-4 text-white'
+                : 'mode-card cursor-pointer bg-blue-100 rounded-2xl p-4';
+        }
+
+        function goToTestMode() {
+            const maxSubjects = state.practiceMode === 'single' ? 1 : 4;
+            if (state.selectedSubjects.length !== maxSubjects) return;
+            showScreen('test-mode-screen');
+        }
+
+        function goToInstructions() {
+            showScreen('instructions-screen');
+        }
+
+        function goToSummary() {
+            // Render summary
+            document.getElementById('summary-subjects').innerHTML = state.selectedSubjects.map(s => `
+                <div class="flex items-center justify-between p-2 bg-white rounded-lg">
+                    <span>${s.name}</span>
+                    <span class="text-gray-500">${s.year === 'all' ? 'All Years' : s.year}</span>
+                </div>
+            `).join('');
+
+            document.getElementById('summary-mode').textContent = state.testMode === 'practice' ? 'Practice Mode' : 'Full Test Mode';
+            document.getElementById('summary-duration').textContent = `${state.testDuration} Minutes`;
+
+            // Calculate total questions
+            let totalQuestions = 0;
+            state.selectedSubjects.forEach(s => {
+                const subjectData = jambQuestions[s.name];
+                if (s.year === 'all') {
+                    subjectData.years.forEach(year => {
+                        totalQuestions += subjectData.questionsByYear[year].length;
+                    });
+                } else {
+                    totalQuestions += subjectData.questionsByYear[s.year].length;
+                }
+            });
+            document.getElementById('summary-questions').textContent = totalQuestions;
+
+            showScreen('summary-screen');
+        }
+
+        function generateQuestions() {
+            const questions = [];
+            state.selectedSubjects.forEach(subjectInfo => {
+                const subjectData = jambQuestions[subjectInfo.name];
+                if (subjectInfo.year === 'all') {
+                    subjectData.years.forEach(year => {
+                        subjectData.questionsByYear[year].forEach(q => {
+                            questions.push({
+                                ...q,
+                                subject: subjectInfo.name,
+                                year: year
+                            });
+                        });
+                    });
+                } else {
+                    subjectData.questionsByYear[subjectInfo.year].forEach(q => {
+                        questions.push({
+                            ...q,
+                            subject: subjectInfo.name,
+                            year: subjectInfo.year
+                        });
+                    });
+                }
+            });
+            return questions;
+        }
+
+        function startTest() {
+            state.questions = generateQuestions();
+            state.currentQuestionIndex = 0;
+            state.answers = {};
+            state.timeRemaining = state.testDuration * 60;
+            state.testStartTime = new Date(); // Record start time
+            
+            showScreen('test-screen');
+            startTimer();
+            renderQuestion();
+        }
+
+        function startTimer() {
+            if (state.timerInterval) {
+                clearInterval(state.timerInterval);
+            }
+            state.timerInterval = setInterval(() => {
+                state.timeRemaining--;
+                document.getElementById('timer-display').textContent = formatTime(state.timeRemaining);
+                if (state.timeRemaining <= 0) {
+                    submitTest();
+                }
+            }, 1000);
+        }
+
+        function renderQuestion() {
+            const question = state.questions[state.currentQuestionIndex];
+            if (!question) return;
+
+            // Build question content with passage and image support
+            let questionContent = '';
+            
+            // Add passage if exists (for English comprehension) - collapsible format
+            if (question.passage) {
+                // Get passage data from the passages object
+                const yearPassages = window.jambQuestions?.["English"]?.passages?.[question.year];
+                const passageData = yearPassages?.[question.passage];
+                const passageText = passageData?.content || question.passage;
+                const passageTitle = passageData?.title || 'PASSAGE';
+                const passageId = `passage-${state.currentQuestionIndex}`;
+                
+                questionContent += `
+                <div class="mb-4">
+                    <button onclick="togglePassage('${passageId}')" 
+                        class="w-full flex items-center justify-between p-3 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-xl hover:from-blue-100 hover:to-indigo-100 transition-all group">
+                        <div class="flex items-center gap-2">
+                            <span class="text-xl">📖</span>
+                            <span class="font-semibold text-blue-800">${passageTitle}</span>
+                            <span class="text-xs text-blue-600 bg-blue-100 px-2 py-0.5 rounded-full">Click to ${document.getElementById(passageId)?.classList?.contains('hidden') !== false ? 'expand' : 'collapse'}</span>
+                        </div>
+                        <svg id="${passageId}-icon" class="w-5 h-5 text-blue-600 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+                    <div id="${passageId}" class="hidden mt-2 p-4 bg-white border border-gray-200 rounded-xl shadow-sm max-h-64 overflow-y-auto">
+                        <p class="text-sm text-gray-700 leading-relaxed whitespace-pre-line">${passageText}</p>
+                    </div>
+                </div>`;
+            }
+            
+            // Add image if exists - different handling for full page images
+            if (question.image) {
+                if (question.isPageImage) {
+                    // Full page image - display prominently with zoom capability
+                    questionContent += `
+                        <div class="mb-4 p-3 bg-amber-50 rounded-lg border border-amber-200">
+                            <div class="flex items-center gap-2 mb-2 text-amber-700">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                                </svg>
+                                <span class="font-semibold">Find Question ${question.questionNumber || (state.currentQuestionIndex + 1)} on the page below:</span>
+                            </div>
+                            <div class="relative group cursor-pointer" onclick="showImageModal('${question.image}')">
+                                <img src="${question.image}" alt="Question Page" 
+                                    class="max-w-full h-auto rounded-lg border border-gray-300 shadow-lg mx-auto cursor-zoom-in"
+                                    style="max-height: 500px; width: auto;">
+                                <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-all rounded-lg flex items-center justify-center">
+                                    <span class="opacity-0 group-hover:opacity-100 bg-white/90 px-3 py-1 rounded-full text-sm font-medium shadow">
+                                        🔍 Click to enlarge
+                                    </span>
+                                </div>
+                            </div>
+                        </div>`;
+                } else {
+                    // Regular diagram image
+                    questionContent += `<div class="mb-4">
+                        <img src="${question.image}" alt="Question diagram" class="max-w-full h-auto rounded-lg border border-gray-200 shadow-sm" style="max-height: 300px;">
+                    </div>`;
+                }
+            }
+            
+            // Add question text
+            questionContent += question.question;
+            
+            document.getElementById('question-text').innerHTML = questionContent;
+            document.getElementById('question-number').textContent = `Question ${state.currentQuestionIndex + 1} of ${state.questions.length}`;
+            document.getElementById('current-subject-name').textContent = question.subject;
+            document.getElementById('year-badge').textContent = question.year;
+
+            const optionLetters = ['A', 'B', 'C', 'D'];
+            const answerKey = `${state.currentQuestionIndex}`;
+            const selectedAnswer = state.answers[answerKey];
+
+            document.getElementById('options-container').innerHTML = question.options.map((option, index) => `
+                <button onclick="selectAnswer(${index})" 
+                    class="option-btn w-full p-4 rounded-lg border-2 text-left flex items-center gap-3 transition-all duration-200
+                    ${selectedAnswer === index ? 'border-red-600 bg-red-50' : 'border-gray-200 hover:border-gray-300 bg-white'}">
+                    <span class="w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold
+                        ${selectedAnswer === index ? 'bg-red-600 text-white' : 'bg-gray-100 text-gray-600'}">
+                        ${optionLetters[index]}
+                    </span>
+                    <span class="flex-1">${option}</span>
+                    ${selectedAnswer === index ? '<svg class="w-5 h-5 text-red-600" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>' : ''}
+                </button>
+            `).join('');
+
+            updateQuestionNav();
+            updateSubjectNav();
+        }
+
+        function updateQuestionNav() {
+            const navContainer = document.getElementById('question-nav-buttons');
+            if (!navContainer) return;
+
+            // Group questions by subject
+            const subjectGroups = [];
+            let currentSubject = null;
+            let currentGroup = [];
+
+            state.questions.forEach((q, i) => {
+                if (currentSubject !== q.subject) {
+                    if (currentGroup.length > 0) {
+                        subjectGroups.push({ subject: currentSubject, questions: currentGroup });
+                    }
+                    currentSubject = q.subject;
+                    currentGroup = [i];
+                } else {
+                    currentGroup.push(i);
+                }
+            });
+            if (currentGroup.length > 0) {
+                subjectGroups.push({ subject: currentSubject, questions: currentGroup });
+            }
+
+            // Find current group
+            let currentGroupData = subjectGroups[0];
+            for (const group of subjectGroups) {
+                if (group.questions.includes(state.currentQuestionIndex)) {
+                    currentGroupData = group;
+                    break;
+                }
+            }
+
+            const buttons = currentGroupData.questions.map(i => {
+                const answerKey = `${i}`;
+                const isAnswered = state.answers[answerKey] !== undefined;
+                const isCurrent = i === state.currentQuestionIndex;
+
+                return `
+                    <button onclick="goToQuestion(${i})"
+                        class="w-10 h-10 rounded-lg text-sm font-medium transition-all duration-200
+                        ${isCurrent ? 'bg-red-600 text-white' : isAnswered ? 'bg-green-500 text-white' : 'bg-gray-200 text-gray-600 hover:bg-gray-300'}">
+                        ${currentGroupData.questions.indexOf(i) + 1}
+                    </button>
+                `;
+            });
+
+            navContainer.innerHTML = buttons.join('');
+        }
+
+        function updateSubjectNav() {
+            const navContainer = document.getElementById('subject-nav-buttons');
+            if (!navContainer) return;
+
+            // Group questions by subject
+            const subjectStats = {};
+            state.questions.forEach((q, i) => {
+                if (!subjectStats[q.subject]) {
+                    subjectStats[q.subject] = { total: 0, answered: 0 };
+                }
+                subjectStats[q.subject].total++;
+                if (state.answers[`${i}`] !== undefined) {
+                    subjectStats[q.subject].answered++;
+                }
+            });
+
+            const currentQuestion = state.questions[state.currentQuestionIndex];
+
+            navContainer.innerHTML = Object.keys(subjectStats).map(subject => {
+                const isCurrentSubject = currentQuestion && currentQuestion.subject === subject;
+                const stats = subjectStats[subject];
+
+                return `
+                    <button onclick="goToSubject('${subject}')"
+                        class="px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 whitespace-nowrap
+                        ${isCurrentSubject ? 'bg-red-600 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}">
+                        ${subject.split(' ')[0]} (${stats.answered}/${stats.total})
+                    </button>
+                `;
+            }).join('');
+        }
+
+        function goToSubject(subjectName) {
+            // Find first question of this subject
+            const index = state.questions.findIndex(q => q.subject === subjectName);
+            if (index !== -1) {
+                state.currentQuestionIndex = index;
+                renderQuestion();
+            }
+        }
+
+        function selectAnswer(optionIndex) {
+            const answerKey = `${state.currentQuestionIndex}`;
+            state.answers[answerKey] = optionIndex;
+            renderQuestion();
+        }
+
+        function goToQuestion(index) {
+            state.currentQuestionIndex = index;
+            renderQuestion();
+        }
+
+        function nextQuestion() {
+            if (state.currentQuestionIndex < state.questions.length - 1) {
+                state.currentQuestionIndex++;
+                renderQuestion();
+            }
+        }
+
+        function prevQuestion() {
+            if (state.currentQuestionIndex > 0) {
+                state.currentQuestionIndex--;
+                renderQuestion();
+            }
+        }
+
+        // ============================================
+        // MODIFIED: Submit Test with Result Saving
+        // ============================================
+        async function submitTest() {
+            if (state.timerInterval) {
+                clearInterval(state.timerInterval);
+            }
+
+            let correct = 0;
+            const total = state.questions.length;
+
+            state.questions.forEach((question, index) => {
+                const answerKey = `${index}`;
+                if (state.answers[answerKey] === question.correctAnswer) {
+                    correct++;
+                }
+            });
+
+            const score = Math.round((correct / total) * 100);
+
+            document.getElementById('score-percentage').textContent = `${score}%`;
+            document.getElementById('correct-count').textContent = `${correct}`;
+            document.getElementById('wrong-count').textContent = `${total - correct}`;
+            document.getElementById('total-questions').textContent = `${total}`;
+
+            const progressCircle = document.getElementById('progress-circle');
+            if (progressCircle) {
+                const circumference = 2 * Math.PI * 45;
+                progressCircle.style.strokeDasharray = circumference.toString();
+                progressCircle.style.strokeDashoffset = (circumference * (1 - score / 100)).toString();
+            }
+
+            // Subject breakdown
+            const subjectStats = {};
+            state.questions.forEach((q, i) => {
+                if (!subjectStats[q.subject]) {
+                    subjectStats[q.subject] = { correct: 0, total: 0 };
+                }
+                subjectStats[q.subject].total++;
+                if (state.answers[`${i}`] === q.correctAnswer) {
+                    subjectStats[q.subject].correct++;
+                }
+            });
+            
+            // Store for saving
+            state.subjectBreakdown = Object.keys(subjectStats).map(subject => ({
+                subject: subject,
+                correct: subjectStats[subject].correct,
+                total: subjectStats[subject].total
+            }));
+
+            const breakdownContainer = document.getElementById('subject-breakdown');
+            if (breakdownContainer) {
+                breakdownContainer.innerHTML = Object.keys(subjectStats).map(subject => {
+                    const stats = subjectStats[subject];
+                    const subjectScore = Math.round((stats.correct / stats.total) * 100);
+
+                    return `
+                        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                            <span class="font-medium">${subject}</span>
+                            <span class="font-semibold ${subjectScore >= 50 ? 'text-green-600' : 'text-red-600'}">${stats.correct}/${stats.total} (${subjectScore}%)</span>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            showScreen('results-screen');
+            
+            // ============================================
+            // SAVE RESULTS TO DATABASE
+            // ============================================
+            showSaveIndicator('Saving results...', 'loading');
+            
+            try {
+                const testData = {
+                    quizName: `JAMB CBT ${state.testMode === 'full' ? 'Full Exam' : 'Practice'}`,
+                    quizId: `cbt_${Date.now()}`,
+                    subjects: state.selectedSubjects.map(s => s.name),
+                    correct: correct,
+                    total: total,
+                    testDuration: state.testDuration,
+                    timeRemaining: state.timeRemaining,
+                    testMode: state.testMode,
+                    questions: state.questions,
+                    answers: state.answers,
+                    subjectBreakdown: state.subjectBreakdown
+                };
+                
+                const result = await window.CBTResultsSaver.saveResult(testData);
+                
+                if (result.success) {
+                    showSaveIndicator('✅ Results saved successfully!', 'success');
+                } else {
+                    showSaveIndicator(`⚠️ ${result.message}`, 'error');
+                }
+            } catch (err) {
+                console.error('Error saving results:', err);
+                showSaveIndicator('⚠️ Could not save results', 'error');
+            }
+        }
+
+        function quitTest() {
+            if (confirm('Are you sure you want to quit? Your progress will be lost.')) {
+                if (state.timerInterval) {
+                    clearInterval(state.timerInterval);
+                }
+                showScreen('welcome-screen');
+            }
+        }
+
+        function restartTest() {
+            state.selectedSubjects = [];
+            state.currentQuestionIndex = 0;
+            state.answers = {};
+            state.testMode = 'practice';
+            state.testDuration = 35;
+            state.subjectBreakdown = [];
+            state.testStartTime = null;
+            
+            updateSubjectProgress();
+            renderSelectedSubjects();
+            updateProceedButton();
+            selectPracticeMode('single');
+            
+            showScreen('welcome-screen');
+        }
+
+        function goBack() {
+            if (state.currentScreen === 'test-mode-screen') {
+                showScreen('welcome-screen');
+            } else if (state.currentScreen === 'instructions-screen') {
+                showScreen('test-mode-screen');
+            } else if (state.currentScreen === 'summary-screen') {
+                showScreen('instructions-screen');
+            }
+        }
+
+        // Calculator Functions
+        function toggleCalculator() {
+            const calc = document.getElementById('calculator');
+            calc.classList.toggle('hidden');
+        }
+
+        function calcBtn(value) {
+            const display = document.getElementById('calc-display');
+            
+            if (value === 'C') {
+                calcDisplay = '0';
+                calcFirstOperand = null;
+                calcOperator = null;
+                calcWaitingForSecondOperand = false;
+            } else if (value === '±') {
+                calcDisplay = (parseFloat(calcDisplay) * -1).toString();
+            } else if (value === '%') {
+                calcDisplay = (parseFloat(calcDisplay) / 100).toString();
+            } else if (['+', '−', '×', '÷'].includes(value)) {
+                calcFirstOperand = parseFloat(calcDisplay);
+                calcOperator = value;
+                calcWaitingForSecondOperand = true;
+            } else if (value === '=') {
+                if (calcOperator && calcFirstOperand !== null) {
+                    const secondOperand = parseFloat(calcDisplay);
+                    let result;
+                    switch (calcOperator) {
+                        case '+': result = calcFirstOperand + secondOperand; break;
+                        case '−': result = calcFirstOperand - secondOperand; break;
+                        case '×': result = calcFirstOperand * secondOperand; break;
+                        case '÷': result = calcFirstOperand / secondOperand; break;
+                    }
+                    calcDisplay = result.toString();
+                    calcFirstOperand = null;
+                    calcOperator = null;
+                    calcWaitingForSecondOperand = false;
+                }
+            } else if (value === '.') {
+                if (!calcDisplay.includes('.')) {
+                    calcDisplay += '.';
+                }
+            } else {
+                if (calcWaitingForSecondOperand) {
+                    calcDisplay = value;
+                    calcWaitingForSecondOperand = false;
+                } else {
+                    calcDisplay = calcDisplay === '0' ? value : calcDisplay + value;
+                }
+            }
+            
+            display.textContent = calcDisplay;
+        }
+
+        // Passage Toggle Function for English comprehension
+        function togglePassage(passageId) {
+            const passageDiv = document.getElementById(passageId);
+            const icon = document.getElementById(passageId + '-icon');
+            
+            if (passageDiv.classList.contains('hidden')) {
+                passageDiv.classList.remove('hidden');
+                icon.classList.add('rotate-180');
+            } else {
+                passageDiv.classList.add('hidden');
+                icon.classList.remove('rotate-180');
+            }
+        }
+
+        // Image Modal Functions
+        function showImageModal(imageSrc) {
+            const modal = document.getElementById('image-modal');
+            const modalImage = document.getElementById('modal-image');
+            modalImage.src = imageSrc;
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeImageModal() {
+            const modal = document.getElementById('image-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            document.body.style.overflow = '';
+        }
+
+        // Close modal on Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeImageModal();
+            }
+        });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if questions are loaded
+            if (typeof jambQuestions === 'undefined') {
+                console.error('ERROR: jambQuestions is not loaded! Check if questions.js is accessible.');
+                alert('Failed to load questions. Please refresh the page.');
+                return;
+            }
+            
+            const subjects = getAvailableSubjects();
+            console.log('Loaded subjects:', subjects.length, subjects);
+            
+            if (subjects.length === 0) {
+                console.error('No subjects loaded!');
+                alert('No subjects could be loaded. Please check the questions file.');
+                return;
+            }
+            
+            selectPracticeMode('single');
+            updateSubjectProgress();
+            updateProceedButton();
+            
+            // Sync any locally saved results
+            if (window.CBTResultsSaver) {
+                setTimeout(() => {
+                    window.CBTResultsSaver.syncLocal();
+                }, 2000);
+            }
+        });
+    </script>
+  </main>
+</body>
+</html>

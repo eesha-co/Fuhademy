@@ -1,0 +1,28 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "[{\"q\": 1, \"y_start\": 100, \"y_end\": 350, \"has_diagram\": false}, {\"q\": 2, \"y_start\": 350, \"y_end\": 700, \"has_diagram\": false}, {\"q\": 3, \"y_start\": 700, \"y_end\": 1050, \"has_diagram\": true}, {\"q\": 4, \"y_start\": 1050, \"y_end\": 1400, \"has_diagram\": false}]",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1774106543,
+  "id": "20260321232215a7abc92ad1a3487b",
+  "model": "glm-4.6v",
+  "object": "chat.completion",
+  "request_id": "20260321232215a7abc92ad1a3487b",
+  "usage": {
+    "completion_tokens": 115,
+    "completion_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "prompt_tokens": 5159,
+    "prompt_tokens_details": {
+      "cached_tokens": 6
+    },
+    "total_tokens": 5274
+  }
+}

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Astrophysics - Physics</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+</head>
+<body class="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-100 font-inter">
+  <nav class="fixed inset-x-0 top-0 bg-white/60 backdrop-blur-sm border-b border-blue-100 z-50">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+      <a href="physics.html" class="text-sm text-blue-600 hover:underline">← Back to Physics</a>
+      <img src="/assets/images/logo.png" alt="logo" class="h-10 w-auto" />
+    </div>
+  </nav>
+
+  <main class="max-w-6xl mx-auto px-4 pt-24 pb-12">
+    <h1 class="text-3xl font-extrabold text-blue-700 mb-4">Astrophysics</h1>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <a href="javascript:void(0)" onclick="openModal('The Universe')" class="topic-card rounded-xl bg-white/60 backdrop-blur-sm shadow-sm border p-5">
+        <h3 class="font-semibold text-blue-700">The Universe</h3>
+        <p class="text-sm text-slate-500 mt-1">Origin and structure</p>
+      </a>
+
+      <a href="javascript:void(0)" onclick="openModal('Stars & Galaxies')" class="topic-card rounded-xl bg-white/60 backdrop-blur-sm shadow-sm border p-5">
+        <h3 class="font-semibold text-blue-700">Stars & Galaxies</h3>
+        <p class="text-sm text-slate-500 mt-1">Life cycle of stars</p>
+      </a>
+
+      <a href="javascript:void(0)" onclick="openModal('Satellites & Rockets')" class="topic-card rounded-xl bg-white/60 backdrop-blur-sm shadow-sm border p-5">
+        <h3 class="font-semibold text-blue-700">Satellites & Rockets</h3>
+        <p class="text-sm text-slate-500 mt-1">Space missions and propulsion</p>
+      </a>
+
+      <a href="javascript:void(0)" onclick="openModal('Space Exploration')" class="topic-card rounded-xl bg-white/60 backdrop-blur-sm shadow-sm border p-5">
+        <h3 class="font-semibold text-blue-700">Space Exploration</h3>
+        <p class="text-sm text-slate-500 mt-1">Telescopes, probes, discoveries</p>
+      </a>
+    </div>
+  </main>
+
+  <!-- Modal -->
+  <div id="modal" class="fixed inset-0 bg-gray-700/30 backdrop-blur-sm hidden items-center justify-center z-50">
+    <div class="bg-white rounded-xl shadow-lg w-11/12 max-w-md p-6 relative">
+      <button onclick="closeModal()" class="text-slate-400 hover:text-slate-600" title="Close modal">
+        <i class="fas fa-times" aria-hidden="true"></i>
+        <span class="sr-only">Close</span>
+      </button>
+      <h2 id="modalTitle" class="text-xl font-semibold text-blue-700 mb-3">Sub-topics:</h2>
+      <ul id="subtopicList" class="space-y-2 text-gray-700"></ul>
+    </div>
+  </div>
+
+  <script>
+    const subtopics = {
+      'The Universe': ['Origin of the Universe', 'Structure of the Universe', 'Galaxies'],
+      'Stars & Galaxies': ['Life Cycle of Stars', 'Types of Stars', 'Black Holes'],
+      'Satellites & Rockets': ['Artificial Satellites', 'Rocket Propulsion', 'Space Missions'],
+      'Space Exploration': ['History of Space Exploration', 'Major Discoveries', 'Future Prospects']
+    };
+
+    function openModal(topic) {
+      document.getElementById('modalTitle').textContent = topic;
+      const list = document.getElementById('subtopicList'); list.innerHTML = '';
+      (subtopics[topic]||[]).forEach(s => { const li = document.createElement('li'); li.textContent = s; list.appendChild(li); });
+      document.getElementById('modal').classList.remove('hidden'); document.getElementById('modal').classList.add('flex');
+    }
+    function closeModal() { document.getElementById('modal').classList.remove('flex'); document.getElementById('modal').classList.add('hidden'); }
+  </script>
+<!-- Topic Quiz System -->
+<script src="/js/topic-quiz-loader.js"></script>
+<script src="/js/topic-quiz-injector.js"></script>
+</body>
+</html>

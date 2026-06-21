@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Oxidation & Reduction | Chemistry</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <style> 
+    body{font-family:Inter, sans-serif}
+    .content-card{-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);background:rgba(255,255,255,0.95);border:1px solid rgba(255,255,255,0.2);} 
+    .accordion-content{max-height:0;overflow:hidden;transition:max-height 0.3s ease-out;}
+    .accordion-content.open{max-height:2000px;}
+    .step-card{transition:all 0.2s ease;}
+    .step-card:hover{transform:translateX(4px);}
+    .simulation-container{position:relative;width:100%;height:450px;overflow:hidden;border-radius:8px;background:#f9fafb;}
+    .simulation-container iframe{width:100%;height:100%;border:none;}
+    .video-container{position:relative;width:100%;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;background:#f9fafb;}
+    .video-container iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:none;}
+  </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-rose-50 to-pink-100 p-4 md:p-6">
+  <div class="max-w-4xl mx-auto">
+    <nav class="mb-4"><a href="index.html" class="text-blue-600 hover:text-blue-800 transition"><i class="fas fa-arrow-left mr-2"></i>Back to Electrochemistry & Redox</a></nav>
+    
+    <article class="content-card rounded-xl p-6 md:p-8 shadow-lg">
+      <!-- Header -->
+      <div class="border-b pb-4 mb-6">
+        <h1 class="text-2xl md:text-3xl font-bold text-gray-800 mb-2">
+          <i class="fas fa-exchange-alt text-rose-500 mr-3"></i>Oxidation & Reduction
+        </h1>
+        <p class="text-gray-600">Understanding oxidation-reduction reactions, oxidation numbers, and identifying oxidizing and reducing agents.</p>
+      </div>
+
+      <!-- Learning Objectives -->
+      <div class="bg-rose-50 border-l-4 border-rose-500 p-4 rounded-r-lg mb-6">
+        <h3 class="font-semibold text-rose-800 mb-2"><i class="fas fa-bullseye mr-2"></i>Learning Objectives</h3>
+        <ul class="text-rose-700 text-sm space-y-1">
+          <li>• Define oxidation and reduction in terms of electrons and oxygen</li>
+          <li>• Calculate oxidation numbers for elements in compounds</li>
+          <li>• Identify oxidizing and reducing agents in reactions</li>
+          <li>• Balance simple redox equations</li>
+        </ul>
+      </div>
+
+      <!-- Section 1: Definitions -->
+      <section class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <span class="bg-rose-100 text-rose-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">1</span>
+          What are Oxidation and Reduction?
+        </h2>
+        
+        <div class="bg-gray-50 p-5 rounded-lg mb-4">
+          <p class="text-gray-700 mb-4"><strong class="text-rose-600">Oxidation-Reduction (Redox) reactions</strong> are reactions that involve the transfer of electrons between substances. These reactions always occur together - when one substance loses electrons, another must gain them.</p>
+          
+          <!-- The Classic Mnemonic -->
+          <div class="bg-blue-50 p-4 rounded-lg border border-blue-200 mb-4">
+            <h4 class="font-semibold text-blue-800 mb-2"><i class="fas fa-lightbulb mr-2 text-yellow-500"></i>Remember: OIL RIG</h4>
+            <div class="grid md:grid-cols-2 gap-4">
+              <div class="bg-white p-3 rounded-lg">
+                <p class="font-bold text-rose-600 text-lg">OIL</p>
+                <p class="text-gray-700"><strong>O</strong>xidation <strong>I</strong>s <strong>L</strong>oss (of electrons)</p>
+              </div>
+              <div class="bg-white p-3 rounded-lg">
+                <p class="font-bold text-blue-600 text-lg">RIG</p>
+                <p class="text-gray-700"><strong>R</strong>eduction <strong>I</strong>s <strong>G</strong>ain (of electrons)</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Two Definitions Table -->
+        <div class="bg-white border border-gray-200 rounded-lg overflow-hidden mb-4">
+          <table class="w-full text-sm">
+            <thead class="bg-gray-100">
+              <tr>
+                <th class="p-3 text-left font-semibold text-gray-700">Definition</th>
+                <th class="p-3 text-left font-semibold text-rose-600">Oxidation</th>
+                <th class="p-3 text-left font-semibold text-blue-600">Reduction</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="border-t">
+                <td class="p-3 font-medium text-gray-600">In terms of electrons</td>
+                <td class="p-3 text-rose-700">Loss of electrons</td>
+                <td class="p-3 text-blue-700">Gain of electrons</td>
+              </tr>
+              <tr class="border-t bg-gray-50">
+                <td class="p-3 font-medium text-gray-600">In terms of oxygen</td>
+                <td class="p-3 text-rose-700">Gain of oxygen</td>
+                <td class="p-3 text-blue-700">Loss of oxygen</td>
+              </tr>
+              <tr class="border-t">
+                <td class="p-3 font-medium text-gray-600">In terms of hydrogen</td>
+                <td class="p-3 text-rose-700">Loss of hydrogen</td>
+                <td class="p-3 text-blue-700">Gain of hydrogen</td>
+              </tr>
+              <tr class="border-t bg-gray-50">
+                <td class="p-3 font-medium text-gray-600">Oxidation number</td>
+                <td class="p-3 text-rose-700">Increases (becomes more positive)</td>
+                <td class="p-3 text-blue-700">Decreases (becomes more negative)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Example -->
+        <div class="bg-green-50 p-4 rounded-lg border border-green-200">
+          <h4 class="font-semibold text-green-800 mb-2"><i class="fas fa-flask mr-2"></i>Example: Reaction of Magnesium with Oxygen</h4>
+          <div class="bg-white p-3 rounded-lg font-mono text-center text-lg mb-2">
+            2Mg + O<sub>2</sub> → 2MgO
+          </div>
+          <ul class="text-green-700 text-sm space-y-1">
+            <li>• <strong>Magnesium</strong>: Loses electrons (oxidized) - oxidation number changes from 0 to +2</li>
+            <li>• <strong>Oxygen</strong>: Gains electrons (reduced) - oxidation number changes from 0 to -2</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Section 2: Oxidation Numbers -->
+      <section class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <span class="bg-rose-100 text-rose-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">2</span>
+          Oxidation Numbers
+        </h2>
+        
+        <div class="bg-gray-50 p-5 rounded-lg mb-4">
+          <p class="text-gray-700 mb-4">An <strong>oxidation number</strong> (or oxidation state) is a number assigned to an element in a compound that represents the number of electrons lost or gained by an atom of that element.</p>
+          
+          <div class="bg-white p-4 rounded-lg border border-gray-200">
+            <h4 class="font-semibold text-gray-800 mb-3">Rules for Assigning Oxidation Numbers:</h4>
+            <ol class="list-decimal list-inside space-y-2 text-gray-700 text-sm">
+              <li>Elements in their free state have an oxidation number of <strong class="text-rose-600">0</strong> (e.g., O<sub>2</sub>, Fe, Cl<sub>2</sub>)</li>
+              <li>For monatomic ions, oxidation number = charge (e.g., Na<sup>+</sup> = +1, Cl<sup>-</sup> = -1)</li>
+              <li><strong class="text-blue-600">Oxygen</strong> is usually <strong>-2</strong> (except in peroxides where it's -1)</li>
+              <li><strong class="text-blue-600">Hydrogen</strong> is usually <strong>+1</strong> (except in metal hydrides where it's -1)</li>
+              <li>The sum of oxidation numbers in a neutral compound = <strong>0</strong></li>
+              <li>The sum of oxidation numbers in a polyatomic ion = <strong>charge of ion</strong></li>
+              <li>Group 1 metals = <strong>+1</strong>, Group 2 metals = <strong>+2</strong></li>
+              <li>Halogens are usually <strong>-1</strong> (unless bonded to a more electronegative element)</li>
+            </ol>
+          </div>
+        </div>
+
+        <!-- Worked Example -->
+        <div class="border border-gray-200 rounded-lg overflow-hidden mb-4">
+          <button class="accordion-btn w-full p-4 bg-rose-50 text-left font-semibold text-rose-800 flex justify-between items-center hover:bg-rose-100 transition">
+            <span><i class="fas fa-calculator mr-2 text-rose-500"></i>Worked Example: Find the oxidation number of S in H<sub>2</sub>SO<sub>4</sub></span>
+            <i class="fas fa-chevron-down transform transition-transform"></i>
+          </button>
+          <div class="accordion-content">
+            <div class="p-5">
+              <div class="space-y-3">
+                <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-rose-500">
+                  <p class="text-sm text-gray-600"><strong>Step 1:</strong> Let the oxidation number of S be <em>x</em></p>
+                </div>
+                
+                <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-blue-500">
+                  <p class="text-sm text-gray-600"><strong>Step 2:</strong> Set up the equation (sum = 0 for neutral compound)</p>
+                  <p class="text-rose-700 font-mono mt-1">2(+1) + x + 4(-2) = 0</p>
+                  <p class="text-gray-500 text-xs mt-1">H is +1, O is -2</p>
+                </div>
+                
+                <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-green-500">
+                  <p class="text-sm text-gray-600"><strong>Step 3:</strong> Solve for x</p>
+                  <p class="text-rose-700 font-mono mt-1">2 + x - 8 = 0</p>
+                  <p class="text-rose-700 font-mono mt-1">x - 6 = 0</p>
+                  <p class="text-rose-700 font-mono mt-1">x = +6</p>
+                </div>
+                
+                <div class="bg-green-100 p-3 rounded-lg">
+                  <p class="text-green-800 font-semibold"><i class="fas fa-check-circle mr-2"></i>Answer: The oxidation number of S in H<sub>2</sub>SO<sub>4</sub> is <strong>+6</strong></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 3: Oxidizing and Reducing Agents -->
+      <section class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <span class="bg-rose-100 text-rose-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">3</span>
+          Oxidizing and Reducing Agents
+        </h2>
+        
+        <div class="grid md:grid-cols-2 gap-4 mb-4">
+          <div class="bg-red-50 p-5 rounded-lg border border-red-200">
+            <h3 class="font-semibold text-red-800 mb-3 flex items-center">
+              <i class="fas fa-arrow-down mr-2"></i>Oxidizing Agent
+            </h3>
+            <ul class="text-red-700 text-sm space-y-2">
+              <li>• <strong>Causes oxidation</strong> in another substance</li>
+              <li>• <strong>Gets reduced</strong> itself (gains electrons)</li>
+              <li>• Accepts electrons from other species</li>
+              <li>• Oxidation number decreases</li>
+            </ul>
+            <div class="mt-3 bg-white p-2 rounded text-center">
+              <p class="text-sm text-gray-600">Examples:</p>
+              <p class="text-red-600 font-semibold">O<sub>2</sub>, Cl<sub>2</sub>, H<sub>2</sub>O<sub>2</sub>, KMnO<sub>4</sub>, K<sub>2</sub>Cr<sub>2</sub>O<sub>7</sub></p>
+            </div>
+          </div>
+          
+          <div class="bg-blue-50 p-5 rounded-lg border border-blue-200">
+            <h3 class="font-semibold text-blue-800 mb-3 flex items-center">
+              <i class="fas fa-arrow-up mr-2"></i>Reducing Agent
+            </h3>
+            <ul class="text-blue-700 text-sm space-y-2">
+              <li>• <strong>Causes reduction</strong> in another substance</li>
+              <li>• <strong>Gets oxidized</strong> itself (loses electrons)</li>
+              <li>• Donates electrons to other species</li>
+              <li>• Oxidation number increases</li>
+            </ul>
+            <div class="mt-3 bg-white p-2 rounded text-center">
+              <p class="text-sm text-gray-600">Examples:</p>
+              <p class="text-blue-600 font-semibold">H<sub>2</sub>, C, CO, SO<sub>2</sub>, Metals (Zn, Fe, Mg)</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Memory Tip -->
+        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-r-lg">
+          <h4 class="font-semibold text-yellow-800 mb-2"><i class="fas fa-brain mr-2"></i>Memory Tip</h4>
+          <p class="text-gray-700 text-sm">An <strong class="text-red-600">oxidizing agent</strong> is the one that gets <strong class="text-red-600">reduced</strong>. A <strong class="text-blue-600">reducing agent</strong> is the one that gets <strong class="text-blue-600">oxidized</strong>. It sounds backwards, but think: "An oxidizing agent does the oxidizing to others, so it gets reduced itself!"</p>
+        </div>
+      </section>
+
+      <!-- Section 4: Video Explanation -->
+      <section class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <span class="bg-rose-100 text-rose-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">4</span>
+          Video: Understanding Redox Reactions
+        </h2>
+        
+        <div class="bg-gray-50 p-4 rounded-lg border">
+          <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/9JIqRhJxpzU" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
+        </div>
+      </section>
+
+      <!-- Practice Problems -->
+      <section class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <i class="fas fa-pencil-alt text-rose-600 mr-3"></i>
+          Practice Problems
+        </h2>
+        
+        <div class="space-y-4">
+          <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+            <p class="font-medium text-gray-800 mb-2">1. What is the oxidation number of Mn in KMnO<sub>4</sub>?</p>
+            <details class="mt-2">
+              <summary class="text-sm text-blue-600 cursor-pointer hover:text-blue-800">Show Solution</summary>
+              <div class="mt-2 text-sm text-gray-700">
+                <p>K = +1, O = -2</p>
+                <p class="font-mono">(+1) + x + 4(-2) = 0</p>
+                <p class="font-mono">1 + x - 8 = 0</p>
+                <p class="font-mono">x = <strong>+7</strong></p>
+              </div>
+            </details>
+          </div>
+          
+          <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+            <p class="font-medium text-gray-800 mb-2">2. In the reaction: CuO + H<sub>2</sub> → Cu + H<sub>2</sub>O</p>
+            <p class="text-gray-600 text-sm mb-2">Identify: (a) What is oxidized? (b) What is reduced? (c) The oxidizing agent (d) The reducing agent</p>
+            <details class="mt-2">
+              <summary class="text-sm text-blue-600 cursor-pointer hover:text-blue-800">Show Solution</summary>
+              <div class="mt-2 text-sm text-gray-700">
+                <p>(a) <strong>H<sub>2</sub></strong> is oxidized (oxidation number: 0 → +1)</p>
+                <p>(b) <strong>Cu</strong> in CuO is reduced (oxidation number: +2 → 0)</p>
+                <p>(c) <strong>CuO</strong> is the oxidizing agent</p>
+                <p>(d) <strong>H<sub>2</sub></strong> is the reducing agent</p>
+              </div>
+            </details>
+          </div>
+          
+          <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+            <p class="font-medium text-gray-800 mb-2">3. Find the oxidation number of Cr in Cr<sub>2</sub>O<sub>7</sub><sup>2-</sup></p>
+            <details class="mt-2">
+              <summary class="text-sm text-blue-600 cursor-pointer hover:text-blue-800">Show Solution</summary>
+              <div class="mt-2 text-sm text-gray-700">
+                <p>O = -2, charge of ion = -2</p>
+                <p class="font-mono">2x + 7(-2) = -2</p>
+                <p class="font-mono">2x - 14 = -2</p>
+                <p class="font-mono">2x = 12</p>
+                <p class="font-mono">x = <strong>+6</strong></p>
+              </div>
+            </details>
+          </div>
+        </div>
+      </section>
+
+      <!-- Key Takeaways -->
+      <div class="bg-gradient-to-r from-rose-50 to-pink-50 p-5 rounded-lg border border-rose-200">
+        <h3 class="font-semibold text-rose-800 mb-3"><i class="fas fa-star mr-2"></i>Key Takeaways</h3>
+        <ul class="text-rose-700 text-sm space-y-2">
+          <li>• <strong>OIL RIG</strong>: Oxidation Is Loss, Reduction Is Gain (of electrons)</li>
+          <li>• Redox reactions always occur together - electrons lost = electrons gained</li>
+          <li>• Oxidizing agents get reduced; Reducing agents get oxidized</li>
+          <li>• Oxidation numbers help track electron transfer</li>
+          <li>• The sum of oxidation numbers equals the charge of the species</li>
+        </ul>
+      </div>
+    </article>
+  </div>
+
+  <script>
+    // Accordion functionality
+    document.querySelectorAll('.accordion-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const content = btn.nextElementSibling;
+        const icon = btn.querySelector('.fa-chevron-down');
+        
+        content.classList.toggle('open');
+        icon.classList.toggle('rotate-180');
+      });
+    });
+  </script>
+
+<!-- Topic Quiz System -->
+<script src="/js/topic-quiz-loader.js"></script>
+<script src="/js/topic-quiz-injector.js"></script>
+</body>
+</html>

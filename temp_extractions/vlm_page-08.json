@@ -1,0 +1,28 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "Q32: Dispersion occurs when white light passes through a glass prim because of the | Diagram: no\nQ33: When a positively charged rod is brought nearer the cap of a positively charged electroscope, the leaves divergence will. | Diagram: no\nQ34: Three capacitors of capacitance, 2μF, 4μF and 8μF are connected in parallel and a p.d of 6V is maintained across each capacitor, the total energy stored is | Diagram: no\nQ35: A cell of emf 12V and internal resistance 4Ω is connected to an external resistor of resistance 2 Ω Find the current flow. | Diagram: no\nQ36: The diagram above shows a balanced metre bridge the value of x is | Diagram: yes",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1774106496,
+  "id": "2026032123212893206c26c15f419f",
+  "model": "glm-4.6v",
+  "object": "chat.completion",
+  "request_id": "2026032123212893206c26c15f419f",
+  "usage": {
+    "completion_tokens": 166,
+    "completion_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "prompt_tokens": 5065,
+    "prompt_tokens_details": {
+      "cached_tokens": 4
+    },
+    "total_tokens": 5231
+  }
+}

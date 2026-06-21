@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Newton's Laws - Step by Step Guide</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .step-progress {
+            transition: width 0.3s ease-in-out;
+        }
+        .resource-card {
+            transition: transform 0.2s;
+        }
+        .resource-card:hover {
+            transform: translateY(-4px);
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Top Navigation -->
+    <nav class="bg-white shadow-sm fixed top-0 w-full z-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <a href="index.html" class="text-gray-600 hover:text-gray-900 mr-4">
+                        <i class="fas fa-arrow-left"></i>
+                    </a>
+                    <h1 class="text-xl font-semibold text-gray-900">Newton's Laws of Motion</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="text-sm text-gray-600">
+                        Progress: <span id="progressPercent">33%</span>
+                    </div>
+                    <div class="w-32 h-2 bg-gray-200 rounded-full">
+                        <div class="step-progress h-2 bg-blue-500 rounded-full" style="width: 33%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="pt-20 pb-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-12 gap-6">
+                <!-- Left Sidebar - Steps -->
+                <div class="md:col-span-3">
+                    <div class="bg-white rounded-lg shadow-sm p-4">
+                        <h3 class="font-semibold mb-4">Learning Steps</h3>
+                        <ul class="space-y-2">
+                            <li>
+                                <button class="w-full text-left px-3 py-2 rounded bg-blue-50 text-blue-600">
+                                    <i class="fas fa-book-open mr-2"></i>
+                                    First Law of Motion
+                                </button>
+                            </li>
+                            <li>
+                                <button class="w-full text-left px-3 py-2 rounded text-gray-600 hover:bg-gray-50">
+                                    <i class="fas fa-book mr-2"></i>
+                                    Second Law of Motion
+                                </button>
+                            </li>
+                            <li>
+                                <button class="w-full text-left px-3 py-2 rounded text-gray-600 hover:bg-gray-50">
+                                    <i class="fas fa-book mr-2"></i>
+                                    Third Law of Motion
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Main Content Area -->
+                <div class="md:col-span-9">
+                    <!-- Current Step Content -->
+                    <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+                        <div class="space-y-6">
+                            <div class="bg-blue-50 border-l-4 border-blue-500 p-4">
+                                <h4 class="font-semibold mb-2">Key Concept</h4>
+                                <p>An object will remain at rest or in uniform motion in a straight line unless acted upon by an external force.</p>
+                            </div>
+
+                            <div>
+                                <h4 class="font-semibold mb-3">Understanding Inertia</h4>
+                                <p class="mb-4">Inertia is the resistance of an object to any change in its state of motion. This includes:</p>
+                                <ul class="list-disc pl-6 space-y-2 text-gray-600">
+                                    <li>Changes in speed</li>
+                                    <li>Changes in direction</li>
+                                    <li>Starting from rest</li>
+                                    <li>Coming to a stop</li>
+                                </ul>
+                            </div>
+
+                            <div>
+                                <h4 class="font-semibold mb-3">Real-World Examples</h4>
+                                <div class="grid sm:grid-cols-2 gap-4">
+                                    <div class="bg-gray-50 p-4 rounded-lg">
+                                        <h5 class="font-medium mb-2">Example 1: Car Braking</h5>
+                                        <p class="text-gray-600">Passengers lean forward when a car suddenly brakes due to their inertia.</p>
+                                    </div>
+                                    <div class="bg-gray-50 p-4 rounded-lg">
+                                        <h5 class="font-medium mb-2">Example 2: Table Cloth Trick</h5>
+                                        <p class="text-gray-600">Objects on a tablecloth stay in place when the cloth is quickly pulled away.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Resources Section -->
+                    <div class="bg-white rounded-lg shadow-sm p-6">
+                        <h3 class="text-lg font-semibold mb-4">Resources</h3>
+                        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                            <!-- Video Resource -->
+                            <div class="resource-card bg-gray-50 rounded-lg p-4 cursor-pointer">
+                                <div class="text-blue-500 mb-3">
+                                    <i class="fas fa-play-circle text-2xl"></i>
+                                </div>
+                                <h4 class="font-medium mb-2">Understanding Inertia</h4>
+                                <p class="text-sm text-gray-600">5-minute video with demonstrations</p>
+                            </div>
+
+                            <!-- Simulation Resource -->
+                            <div class="resource-card bg-gray-50 rounded-lg p-4 cursor-pointer">
+                                <div class="text-blue-500 mb-3">
+                                    <i class="fas fa-laptop-code text-2xl"></i>
+                                </div>
+                                <h4 class="font-medium mb-2">Interactive Forces Lab</h4>
+                                <p class="text-sm text-gray-600">Experiment with forces and motion</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Bottom Navigation -->
+    <div class="fixed bottom-0 w-full bg-white border-t border-gray-200">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between py-4">
+                <button disabled class="px-4 py-2 text-gray-400 cursor-not-allowed">
+                    <i class="fas fa-chevron-left mr-2"></i>
+                    Previous
+                </button>
+                <button id="nextStep" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
+                    Next
+                    <i class="fas fa-chevron-right ml-2"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quiz Modal -->
+    <div id="quizModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full">
+        <div class="relative top-20 mx-auto p-5 border w-full max-w-2xl shadow-lg rounded-md bg-white">
+            <div class="p-6">
+                <h3 class="text-xl font-semibold mb-4">Knowledge Check</h3>
+                <div class="mb-6">
+                    <p class="mb-4">What happens to an object in motion if no external forces act on it?</p>
+                    <div class="space-y-2">
+                        <label class="flex items-center space-x-3 p-3 rounded-lg border hover:bg-gray-50 cursor-pointer">
+                            <input type="radio" name="q1" value="0" class="h-4 w-4 text-blue-600">
+                            <span>It gradually slows down</span>
+                        </label>
+                        <label class="flex items-center space-x-3 p-3 rounded-lg border hover:bg-gray-50 cursor-pointer">
+                            <input type="radio" name="q1" value="1" class="h-4 w-4 text-blue-600">
+                            <span>It continues moving at constant velocity</span>
+                        </label>
+                        <label class="flex items-center space-x-3 p-3 rounded-lg border hover:bg-gray-50 cursor-pointer">
+                            <input type="radio" name="q1" value="2" class="h-4 w-4 text-blue-600">
+                            <span>It speeds up</span>
+                        </label>
+                        <label class="flex items-center space-x-3 p-3 rounded-lg border hover:bg-gray-50 cursor-pointer">
+                            <input type="radio" name="q1" value="3" class="h-4 w-4 text-blue-600">
+                            <span>It changes direction</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="flex justify-end">
+                    <button class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
+                        Submit Answer
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Show quiz modal when clicking next
+        document.getElementById('nextStep').addEventListener('click', function() {
+            document.getElementById('quizModal').classList.remove('hidden');
+        });
+
+        // Hide quiz modal when clicking outside
+        document.getElementById('quizModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                this.classList.add('hidden');
+            }
+        });
+    </script>
+    
+<!-- Topic Quiz System -->
+<script src="/js/topic-quiz-loader.js"></script>
+<script src="/js/topic-quiz-injector.js"></script>
+</body>
+</html>

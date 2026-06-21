@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Learn about Girau International School - Our history, mission, vision, and commitment to excellence in education.">
+    <title>About Us | Girau International School | Kaduna, Nigeria</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="icon" type="image/png" href="../images/favicon.png">
+    <style>
+        /* Page-specific styles */
+        .page-hero {
+            background: var(--gradient-hero);
+            padding: 10rem 0 5rem;
+            text-align: center;
+            color: white;
+            position: relative;
+        }
+        
+        .page-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(circle at 30% 70%, rgba(255,255,255,0.1) 0%, transparent 50%);
+        }
+        
+        .page-hero-content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .page-title {
+            font-family: var(--font-secondary);
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        
+        .breadcrumb {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            font-size: 0.9375rem;
+            opacity: 0.9;
+        }
+        
+        .breadcrumb a {
+            color: var(--primary-lighter);
+        }
+        
+        .breadcrumb span {
+            opacity: 0.7;
+        }
+        
+        .values-section {
+            background: var(--bg-light);
+        }
+        
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+        
+        .value-card {
+            background: var(--bg-lighter);
+            padding: 2.5rem;
+            border-radius: var(--radius-xl);
+            text-align: center;
+            box-shadow: var(--shadow-md);
+            transition: all var(--transition-base);
+            border: 1px solid var(--border-color);
+        }
+        
+        .value-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-xl);
+            border-color: var(--primary-light);
+        }
+        
+        .value-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--primary-lightest);
+            border-radius: var(--radius-xl);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+        }
+        
+        .value-icon i {
+            font-size: 2rem;
+            color: var(--primary-color);
+        }
+        
+        .value-card h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 1rem;
+        }
+        
+        .value-card p {
+            font-size: 0.9375rem;
+            color: var(--text-light);
+            line-height: 1.7;
+        }
+        
+        .history-section {
+            background: var(--bg-lighter);
+        }
+        
+        .history-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+        
+        .history-content h3 {
+            font-family: var(--font-secondary);
+            font-size: 2rem;
+            color: var(--text-dark);
+            margin-bottom: 1.5rem;
+        }
+        
+        .history-content p {
+            color: var(--text-light);
+            margin-bottom: 1rem;
+            line-height: 1.8;
+        }
+        
+        .history-image {
+            position: relative;
+        }
+        
+        .history-image .image-placeholder {
+            min-height: 400px;
+        }
+        
+        .timeline-section {
+            background: var(--bg-light);
+        }
+        
+        .timeline {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 100%;
+            background: var(--primary-light);
+        }
+        
+        .timeline-item {
+            position: relative;
+            margin-bottom: 3rem;
+        }
+        
+        .timeline-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        .timeline-content {
+            width: 45%;
+            background: var(--bg-lighter);
+            padding: 1.5rem;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .timeline-item:nth-child(odd) .timeline-content {
+            margin-left: auto;
+        }
+        
+        .timeline-year {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--gradient-primary);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-full);
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+        
+        .timeline-content h4 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+        }
+        
+        .timeline-content p {
+            font-size: 0.9375rem;
+            color: var(--text-light);
+        }
+        
+        .leadership-section {
+            background: var(--bg-lighter);
+        }
+        
+        .leadership-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+        }
+        
+        .leader-card {
+            background: var(--bg-lighter);
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            text-align: center;
+            transition: all var(--transition-base);
+        }
+        
+        .leader-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-xl);
+        }
+        
+        .leader-image {
+            height: 250px;
+            background: var(--gradient-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .leader-image i {
+            font-size: 4rem;
+            color: rgba(255,255,255,0.3);
+        }
+        
+        .leader-info {
+            padding: 1.5rem;
+        }
+        
+        .leader-info h4 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 0.25rem;
+        }
+        
+        .leader-info span {
+            font-size: 0.875rem;
+            color: var(--primary-color);
+        }
+        
+        @media (max-width: 992px) {
+            .values-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .history-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .timeline::before {
+                left: 20px;
+            }
+            
+            .timeline-content {
+                width: calc(100% - 60px);
+                margin-left: 60px !important;
+            }
+            
+            .timeline-year {
+                left: 20px;
+                transform: translateX(-50%);
+            }
+            
+            .leadership-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .page-title {
+                font-size: 2rem;
+            }
+            
+            .values-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .leadership-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div class="container">
+            <div class="top-bar-content">
+                <div class="top-bar-left">
+                    <span><i class="fas fa-map-marker-alt"></i> Plot 283621 Road B, Beside MPH Estate, Millennium City, Kaduna</span>
+                    <span><i class="fas fa-clock"></i> Mon - Fri: 7:30AM - 4:00PM</span>
+                </div>
+                <div class="top-bar-right">
+                    <span><i class="fas fa-phone"></i> +234 706 776 4310</span>
+                    <span><i class="fas fa-envelope"></i> info@girauintlschool.com</span>
+                    <div class="social-links">
+                        <a href="https://www.facebook.com/girau.school" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://www.instagram.com/girau_intl_school" target="_blank"><i class="fab fa-instagram"></i></a>
+                        <a href="https://www.tiktok.com/@girauinternationalschool" target="_blank"><i class="fab fa-tiktok"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="header" id="header">
+        <div class="container">
+            <nav class="navbar">
+                <a href="../index.html" class="logo">
+                    <div class="logo-icon">
+                        <span class="logo-text">GIS</span>
+                    </div>
+                    <div class="logo-full">
+                        <span class="logo-name">Girau International</span>
+                        <span class="logo-subtitle">School</span>
+                    </div>
+                </a>
+                
+                <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+                    <span class="hamburger"></span>
+                </button>
+                
+                <ul class="nav-menu" id="navMenu">
+                    <li class="nav-item"><a href="../index.html" class="nav-link">Home</a></li>
+                    <li class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle active">About Us <i class="fas fa-chevron-down"></i></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="about.html">Our Story</a></li>
+                            <li><a href="mission.html">Mission & Vision</a></li>
+                            <li><a href="leadership.html">Leadership</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle">Academics <i class="fas fa-chevron-down"></i></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="curriculum.html">Curriculum</a></li>
+                            <li><a href="creche.html">Creche</a></li>
+                            <li><a href="nursery.html">Nursery</a></li>
+                            <li><a href="primary.html">Primary</a></li>
+                            <li><a href="secondary.html">Secondary</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item"><a href="admissions.html" class="nav-link">Admissions</a></li>
+                    <li class="nav-item"><a href="gallery.html" class="nav-link">Gallery</a></li>
+                    <li class="nav-item"><a href="news.html" class="nav-link">News & Events</a></li>
+                    <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
+                    <li class="nav-item">
+                        <a href="apply.html" class="btn btn-primary nav-cta">Apply Now</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Page Hero -->
+    <section class="page-hero">
+        <div class="container">
+            <div class="page-hero-content">
+                <h1 class="page-title">About Us</h1>
+                <nav class="breadcrumb">
+                    <a href="../index.html">Home</a>
+                    <span>/</span>
+                    <span>About Us</span>
+                </nav>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mission & Vision Section -->
+    <section class="section" id="mission">
+        <div class="container">
+            <div class="section-header text-center">
+                <span class="section-tag">Our Purpose</span>
+                <h2 class="section-title">Mission & Vision</h2>
+                <p class="section-subtitle">Guiding principles that drive our commitment to excellence</p>
+            </div>
+            <div class="about-grid">
+                <div class="about-image">
+                    <div class="image-wrapper">
+                        <div class="image-placeholder">
+                            <i class="fas fa-bullseye"></i>
+                            <span>Our Mission</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="about-content">
+                    <h3>Our Mission</h3>
+                    <p class="lead">To provide world-class education that nurtures creativity, critical thinking, and character development, preparing students for success in an ever-changing world.</p>
+                    <p>At Girau International School, we are committed to taking learners to higher ground by providing an environment that fosters academic excellence, moral integrity, and practical skills. Our mission is to develop well-rounded individuals who are equipped to face the challenges of the future with confidence and competence.</p>
+                    <p>We believe in the holistic development of every child, combining rigorous academics with character education, extracurricular activities, and practical life skills.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Core Values Section -->
+    <section class="values-section section" id="values">
+        <div class="container">
+            <div class="section-header text-center">
+                <span class="section-tag">Our Principles</span>
+                <h2 class="section-title">Core Values</h2>
+                <p class="section-subtitle">The foundation of everything we do</p>
+            </div>
+            <div class="values-grid">
+                <div class="value-card">
+                    <div class="value-icon">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <h3>Excellence</h3>
+                    <p>We strive for excellence in everything we do, encouraging students to reach their highest potential and never settle for mediocrity.</p>
+                </div>
+                <div class="value-card">
+                    <div class="value-icon">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <h3>Integrity</h3>
+                    <p>We uphold honesty, transparency, and ethical behavior in all our interactions, teaching students the importance of doing what is right.</p>
+                </div>
+                <div class="value-card">
+                    <div class="value-icon">
+                        <i class="fas fa-lightbulb"></i>
+                    </div>
+                    <h3>Innovation</h3>
+                    <p>We embrace creative thinking and innovative approaches to learning, preparing students for a rapidly evolving world.</p>
+                </div>
+                <div class="value-card">
+                    <div class="value-icon">
+                        <i class="fas fa-hands-helping"></i>
+                    </div>
+                    <h3>Respect</h3>
+                    <p>We foster a culture of mutual respect, valuing diversity and treating everyone with dignity and consideration.</p>
+                </div>
+                <div class="value-card">
+                    <div class="value-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>Community</h3>
+                    <p>We build strong relationships within our school community, creating a supportive network of students, parents, and educators.</p>
+                </div>
+                <div class="value-card">
+                    <div class="value-icon">
+                        <i class="fas fa-book-reader"></i>
+                    </div>
+                    <h3>Lifelong Learning</h3>
+                    <p>We instill a love for learning that extends beyond the classroom, encouraging curiosity and continuous personal growth.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- History Section -->
+    <section class="history-section section" id="history">
+        <div class="container">
+            <div class="section-header text-center">
+                <span class="section-tag">Our Journey</span>
+                <h2 class="section-title">Our History</h2>
+                <p class="section-subtitle">From humble beginnings to educational excellence</p>
+            </div>
+            <div class="history-grid">
+                <div class="history-content">
+                    <h3>The Girau Story</h3>
+                    <p>Girau International School was founded with a vision to transform education in Kaduna State. From our humble beginnings, we have grown into one of the most respected educational institutions in the region, known for our commitment to academic excellence and character development.</p>
+                    <p>Our journey began with a simple belief: every child deserves access to quality education that prepares them for success in life. This belief continues to guide everything we do, from our carefully designed curriculum to our state-of-the-art facilities.</p>
+                    <p>Today, Girau International School stands as a testament to what can be achieved when passion for education meets dedication to excellence. Our students consistently excel in national and international examinations, and our alumni have gone on to achieve remarkable success in various fields.</p>
+                </div>
+                <div class="history-image">
+                    <div class="image-placeholder">
+                        <i class="fas fa-history"></i>
+                        <span>Our Journey</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Timeline Section -->
+    <section class="timeline-section section">
+        <div class="container">
+            <div class="section-header text-center">
+                <span class="section-tag">Milestones</span>
+                <h2 class="section-title">Our Journey</h2>
+            </div>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <span class="timeline-year">2015</span>
+                    <div class="timeline-content">
+                        <h4>Foundation</h4>
+                        <p>Girau International School was established with a vision to provide world-class education in Kaduna.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <span class="timeline-year">2018</span>
+                    <div class="timeline-content">
+                        <h4>Expansion</h4>
+                        <p>Expanded our facilities to include secondary school programs and modern science laboratories.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <span class="timeline-year">2021</span>
+                    <div class="timeline-content">
+                        <h4>Curriculum Enhancement</h4>
+                        <p>Introduced the blended Nigerian-British curriculum to provide students with international opportunities.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <span class="timeline-year">2024</span>
+                    <div class="timeline-content">
+                        <h4>Award Recognition</h4>
+                        <p>Named the 2024 Authentic Primary School Award Winner in Kaduna State for excellence in education.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Leadership Section -->
+    <section class="leadership-section section">
+        <div class="container">
+            <div class="section-header text-center">
+                <span class="section-tag">Our Team</span>
+                <h2 class="section-title">School Leadership</h2>
+                <p class="section-subtitle">Meet the dedicated professionals guiding our school</p>
+            </div>
+            <div class="leadership-grid">
+                <div class="leader-card">
+                    <div class="leader-image">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="leader-info">
+                        <h4>Proprietor</h4>
+                        <span>School Leadership</span>
+                    </div>
+                </div>
+                <div class="leader-card">
+                    <div class="leader-image">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="leader-info">
+                        <h4>Principal</h4>
+                        <span>Head of School</span>
+                    </div>
+                </div>
+                <div class="leader-card">
+                    <div class="leader-image">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="leader-info">
+                        <h4>Head of Academics</h4>
+                        <span>Academic Affairs</span>
+                    </div>
+                </div>
+                <div class="leader-card">
+                    <div class="leader-image">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="leader-info">
+                        <h4>Head of Administration</h4>
+                        <span>Administrative Affairs</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-content">
+                <h2>Join Our School Family</h2>
+                <p>Experience the Girau difference. Enroll your child today.</p>
+                <div class="cta-buttons">
+                    <a href="apply.html" class="btn btn-white btn-lg">
+                        Apply Now <i class="fas fa-arrow-right"></i>
+                    </a>
+                    <a href="contact.html" class="btn btn-outline-white btn-lg">
+                        Contact Us <i class="fas fa-phone"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-top">
+            <div class="container">
+                <div class="footer-grid">
+                    <div class="footer-col footer-about">
+                        <a href="../index.html" class="footer-logo">
+                            <div class="logo-icon">
+                                <span class="logo-text">GIS</span>
+                            </div>
+                            <div class="logo-full">
+                                <span class="logo-name">Girau International</span>
+                                <span class="logo-subtitle">School</span>
+                            </div>
+                        </a>
+                        <p>Taking learners to higher ground with equipped facilities to aid creativity and productivity.</p>
+                        <div class="footer-social">
+                            <a href="https://www.facebook.com/girau.school" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                            <a href="https://www.instagram.com/girau_intl_school" target="_blank"><i class="fab fa-instagram"></i></a>
+                            <a href="https://www.tiktok.com/@girauinternationalschool" target="_blank"><i class="fab fa-tiktok"></i></a>
+                        </div>
+                    </div>
+                    <div class="footer-col">
+                        <h4>Quick Links</h4>
+                        <ul>
+                            <li><a href="about.html">About Us</a></li>
+                            <li><a href="curriculum.html">Curriculum</a></li>
+                            <li><a href="admissions.html">Admissions</a></li>
+                            <li><a href="gallery.html">Gallery</a></li>
+                            <li><a href="news.html">News & Events</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-col">
+                        <h4>Programs</h4>
+                        <ul>
+                            <li><a href="creche.html">Creche</a></li>
+                            <li><a href="nursery.html">Nursery</a></li>
+                            <li><a href="primary.html">Primary</a></li>
+                            <li><a href="secondary.html">Secondary</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-col footer-contact">
+                        <h4>Contact Us</h4>
+                        <ul>
+                            <li>
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>Plot 283621 Road B, Beside MPH Estate, Millennium City, Kaduna</span>
+                            </li>
+                            <li>
+                                <i class="fas fa-phone"></i>
+                                <a href="tel:+2347067764310">+234 706 776 4310</a>
+                            </li>
+                            <li>
+                                <i class="fas fa-envelope"></i>
+                                <a href="mailto:info@girauintlschool.com">info@girauintlschool.com</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="container">
+                <div class="footer-bottom-content">
+                    <p>&copy; 2025 Girau International School. All Rights Reserved.</p>
+                    <div class="footer-links">
+                        <a href="privacy.html">Privacy Policy</a>
+                        <a href="terms.html">Terms of Service</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top -->
+    <a href="#" class="back-to-top" id="backToTop">
+        <i class="fas fa-chevron-up"></i>
+    </a>
+
+    <script src="../js/main.js"></script>
+</body>
+</html>

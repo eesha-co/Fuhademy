@@ -1,0 +1,130 @@
+.syllabus-tracker-title,
+.syllabus-progress-info,
+.syllabus-grid {
+  margin-left: 2.5rem;
+}
+body {
+  margin: 0;
+  font-family: 'Open Sans', Arial, sans-serif;
+  background: #f5f6fa;
+  color: #222;
+}
+.canvas-layout {
+  display: flex;
+  min-height: 100vh;
+}
+.dashboard-container {
+  flex: 1;
+  min-height: 100vh;
+  background: #f5f6fa;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+  box-sizing: border-box;
+  margin-left: 220px; /* End of existing styles */
+
+/* Dashboard progress bars */
+.progress-bar {
+  transition: width 0.5s ease-in-out;
+}
+
+#ai-weekly-bar, #ai-mock-bar {
+  height: 100%;
+  transition: width 0.5s ease-in-out;
+}
+
+#ai-weekly-bar {
+  background-color: #3b82f6;
+  border-radius: 9999px;
+}
+
+#ai-mock-bar {
+  background-color: #facc15;
+  border-radius: 9999px;
+}
+}
+.dashboard-inner-container {
+  padding: 2rem 2.5rem;
+  box-sizing: border-box;
+}
+.syllabus-progress-box {
+  background: #f5f6fa;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  color: #2d3b45;
+  font-size: 1rem;
+}
+.dashboard-banner-image {
+  width: 100%;
+  height: 180px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(30,41,59,0.07);
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.dashboard-banner-syllabus {
+  margin-bottom: 2rem;
+}
+.dashboard-banner-syllabus-progress {
+  color: #2563eb;
+  font-weight: 600;
+  margin-top: 0.5rem;
+}
+.syllabus-tracker-title {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+.syllabus-progress-info {
+  color: #2d3b45;
+  margin-bottom: 1.5rem;
+}
+.syllabus-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+.syllabus-link {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(30,41,59,0.07);
+  padding: 1.5rem 2rem;
+  min-width: 160px;
+  text-align: center;
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: #fff;
+  cursor: pointer;
+  transition: box-shadow 0.2s, transform 0.2s;
+  text-decoration: none;
+}
+.syllabus-link.mathematics { background: #f87171; }
+.syllabus-link.biology { background: #34d399; }
+.syllabus-link.chemistry { background: #fbbf24; }
+.syllabus-link.literature { background: #a78bfa; }
+.syllabus-link.physics { background: #60a5fa; }
+.syllabus-link.english { background: #f472b6; }
+.syllabus-link.economics { background: #38bdf8; }
+.syllabus-link.accounting { background: #f59e42; }
+.syllabus-link.government { background: #6366f1; }
+.syllabus-link.commerce { background: #10b981; }
+.syllabus-link:hover {
+  box-shadow: 0 4px 16px rgba(0,0,0,0.13);
+  transform: translateY(-2px);
+  opacity: 0.95;
+}
+
+/* Accessibility: soften dark sidebar borders used across teacher dashboards
+   This makes thin dividers less visually aggressive on dark backgrounds
+   while keeping the layout separation. Adjust if you prefer a different tint. */
+.canvas-sidebar {
+  border-right-color: rgba(255,255,255,0.06) !important;
+}
+
+

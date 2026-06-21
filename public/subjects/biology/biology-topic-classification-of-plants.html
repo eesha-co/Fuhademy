@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Classification of Plants — Playlist</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{--gap:16px}
+    body{font-family:Inter,system-ui,Segoe UI,Roboto,Arial;margin:0;background:#f8fafc;color:#0f172a}
+    .container{max-width:1100px;margin:28px auto;padding:16px}
+    .layout{display:grid;grid-template-columns:1fr 340px;gap:var(--gap);align-items:start}
+    .player{background:white;border-radius:12px;padding:16px;box-shadow:0 6px 18px rgba(2,6,23,0.08)}
+    .video-frame{width:100%;height:520px;border-radius:8px;overflow:hidden;background:#000}
+    .video-desc{margin-top:12px;color:#334155}
+    .playlist .list-item{display:flex;gap:12px;align-items:center;padding:10px;border-radius:10px;cursor:pointer}
+    .playlist .list-item:hover{background:#eef2ff}
+    .playlist .list-item.active{background:#e0f2fe;border-left:4px solid #0284c7}
+    .thumb{width:96px;height:56px;background:#cbd5e1;border-radius:6px;flex-shrink:0}
+    .meta{font-size:14px;color:#0f172a}
+    @media (max-width:1024px){.layout{grid-template-columns:1fr 300px}.video-frame{height:420px}}
+    @media (max-width:640px){.layout{grid-template-columns:1fr}.video-frame{height:220px}.playlist{order:2;margin-top:12px}}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <nav style="font-size:14px;color:#2563eb;margin-bottom:12px"><a href="biology.html">← Back to Biology</a></nav>
+    <div class="layout">
+      <div class="player">
+        <div id="videoTitle" style="font-weight:600;font-size:18px;color:#0b5cff">Classification of Plants</div>
+        <div class="video-frame" id="playerContainer">
+          <iframe id="player" title="Video player" src="https://www.youtube.com/embed/A_DF246uVlU" frameborder="0" allowfullscreen style="width:100%;height:100%"></iframe>
+        </div>
+        <div id="videoDesc" class="video-desc">Select a video from the playlist to view details here.</div>
+      </div>
+      <aside class="playlist">
+        <div style="font-weight:600;margin-bottom:10px">Playlist</div>
+        <div id="playlistList"></div>
+      </aside>
+    </div>
+  </div>
+  <script>
+    // Note: these use placeholder embed URLs (VIDEO_ID_x). I added richer descriptions and learning objectives
+    // so each playlist item is self-contained and explanatory. Replace src values with final YouTube IDs
+    // or local file URLs when available.
+    const videos = [
+      {
+        title: 'Introduction to Plant Classification',
+  src: 'https://www.youtube.com/embed/A_DF246uVlU',
+        desc: 'A clear overview of major plant groups (algae, bryophytes, pteridophytes, gymnosperms, angiosperms) with examples and diagnostic features.',
+        notes: 'Learning objectives: identify major plant groups, explain the basis for grouping, and provide example taxa for each group.'
+      },
+      {
+        title: 'Taxonomic Ranks, Binomial Nomenclature & Identification',
+  src: 'https://www.youtube.com/embed/2mXkTLTQ5Zk',
+        desc: 'Step-by-step walkthrough of taxonomic ranks (kingdom → species) and how to apply binomial nomenclature when identifying plants.',
+        notes: 'Learning objectives: use taxonomic ranks in classification and correctly read/write scientific names.'
+      },
+      {
+        title: 'Modern Classification: Morphology vs Molecular Phylogeny',
+  src: 'https://www.youtube.com/embed/KLMn4XwS8Tw',
+        desc: 'Comparison between classical morphology-based classification and modern molecular approaches (DNA barcoding, phylogenetic trees) with case studies.',
+        notes: 'Learning objectives: compare classification methods and explain how molecular data can change our understanding of relationships.'
+      }
+    ];
+
+    const q = new URLSearchParams(location.search);
+    let idx = parseInt(q.get('vid')) || 0;
+    const listEl = document.getElementById('playlistList');
+
+    function renderList(){
+      listEl.innerHTML = '';
+      videos.forEach((v,i)=>{
+        const item = document.createElement('div');
+        item.className = 'list-item' + (i===idx ? ' active' : '');
+        item.innerHTML = `<div class="thumb" aria-hidden="true"></div><div style="flex:1"><div class="meta">${v.title}</div><div style="font-size:12px;color:#64748b">Video ${i+1}</div></div>`;
+        item.onclick = ()=>{ select(i); history.replaceState(null,'',`?vid=${i}`); };
+        listEl.appendChild(item);
+      });
+    }
+
+    function select(i){
+      idx = i;
+      document.getElementById('player').src = videos[i].src;
+      document.getElementById('videoTitle').textContent = videos[i].title;
+      // show description + learning objectives to make the content self-explanatory
+      document.getElementById('videoDesc').innerHTML = `<p>${videos[i].desc}</p><p style="margin-top:8px;color:#475569;font-size:13px"><strong>Key learning objectives:</strong> ${videos[i].notes}</p>`;
+      renderList();
+      window.scrollTo({top:0,behavior:'smooth'});
+    }
+
+    select(idx);
+  </script>
+<!-- Topic Quiz System -->
+<script src="/js/topic-quiz-loader.js"></script>
+<script src="/js/topic-quiz-injector.js"></script>
+</body>
+</html>

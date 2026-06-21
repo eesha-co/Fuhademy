@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Probability — Basics & Events</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>.card{background:#fff;padding:1rem;border-radius:10px;box-shadow:0 10px 30px rgba(2,6,23,0.06)} .muted{color:#374151}</style>
+</head>
+<body class="bg-emerald-50 font-sans">
+  <header class="bg-emerald-700 text-white py-3 mb-6"><div class="max-w-5xl mx-auto px-4 flex items-center justify-between"><div class="font-semibold">Probability</div><a href="index.html" class="text-white/90">Back</a></div></header>
+
+  <main class="max-w-5xl mx-auto px-4 space-y-6">
+    <section class="card"><h2 class="text-lg font-semibold">Core ideas</h2><div class="muted mt-2">Probability is a number between 0 and 1 that measures how likely an event is. P(A)= favourable outcomes / total outcomes for equally likely cases.</div></section>
+
+    <section class="card">
+      <h2 class="text-lg font-semibold">Venn diagram — events</h2>
+      <div class="mt-2 text-sm muted">Overlap shows intersection P(A∩B). Use inclusion-exclusion: P(A∪B)=P(A)+P(B)-P(A∩B).</div>
+      <div class="mt-4 flex justify-center">
+        <!-- Venn diagram SVG -->
+        <svg width="320" height="120" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="120" cy="60" r="44" fill="#bfdbfe" fill-opacity="0.6" stroke="#2563eb"/>
+          <circle cx="200" cy="60" r="44" fill="#fbcfe8" fill-opacity="0.6" stroke="#be185d"/>
+          <text x="92" y="60" font-size="11" fill="#063970">A</text>
+          <text x="232" y="60" font-size="11" fill="#6b0b3a">B</text>
+        </svg>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2 class="text-lg font-semibold">Probability tree (conditional)</h2>
+      <div class="mt-3 muted text-sm">Trees help list sequential outcomes and calculate combined probabilities.</div>
+      <div class="mt-4 flex justify-center">
+        <!-- simple tree SVG -->
+        <svg width="360" height="120" xmlns="http://www.w3.org/2000/svg">
+          <line x1="20" y1="20" x2="120" y2="50" stroke="#111827"/>
+          <line x1="20" y1="20" x2="120" y2="90" stroke="#111827"/>
+          <text x="8" y="18" font-size="11">Start</text>
+          <text x="125" y="48" font-size="11">A (p)</text>
+          <text x="125" y="92" font-size="11">¬A (1-p)</text>
+        </svg>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2 class="text-lg font-semibold">Practice</h2>
+      <div class="grid md:grid-cols-2 gap-4 mt-3">
+        <div class="p-3 bg-gray-50 rounded"><div class="font-medium">1) Fair coin — P(heads)?</div><input id="prob1" class="mt-2 p-2 border rounded w-full" placeholder="e.g., 1/2"><div class="mt-2 flex gap-2"><button id="pb1" class="px-3 py-1 bg-emerald-700 text-white rounded">Check</button><button id="phb1" class="px-3 py-1 border rounded">Hint</button></div><div id="pfb1" class="mt-2 text-sm"></div></div>
+
+        <div class="p-3 bg-gray-50 rounded"><div class="font-medium">2) Ace from 52-card deck?</div><input id="prob2" class="mt-2 p-2 border rounded w-full" placeholder="e.g., 1/13"><div class="mt-2 flex gap-2"><button id="pb2" class="px-3 py-1 bg-emerald-700 text-white rounded">Check</button><button id="phb2" class="px-3 py-1 border rounded">Hint</button></div><div id="pfb2" class="mt-2 text-sm"></div></div>
+      </div>
+    </section>
+
+    <div class="text-right"><button id="probQuiz" class="bg-emerald-700 text-white px-4 py-2 rounded">Quick Quiz</button></div>
+  </main>
+
+  <div id="probModal" class="hidden fixed inset-0 bg-black/40 z-40 flex items-center justify-center"><div class="bg-white rounded p-6 max-w-md w-full"><div id="probContent"></div><div class="mt-4 text-right"><button id="probClose" class="px-3 py-1 border rounded">Close</button></div></div></div>
+
+  <script>
+    function norm(s){ return (s||'').toString().trim().replace(/\s+/g,'').toLowerCase(); }
+    document.getElementById('pb1').addEventListener('click', ()=>{ const fb=document.getElementById('pfb1'); const v=norm(document.getElementById('prob1').value); if(['1/2','0.5'].includes(v)) fb.innerHTML='<span style="color:#16a34a">Correct — 1/2</span>'; else fb.innerHTML='<span style="color:#e11d48">Try again — coin has two equally likely sides</span>'; });
+    document.getElementById('phb1').addEventListener('click', ()=> alert('Hint: two outcomes: heads or tails'));
+
+    document.getElementById('pb2').addEventListener('click', ()=>{ const fb=document.getElementById('pfb2'); const v=norm(document.getElementById('prob2').value); if(['1/13','4/52','4/52=1/13','0.0769'].some(x=>x===v)) fb.innerHTML='<span style="color:#16a34a">Correct — 1/13</span>'; else fb.innerHTML='<span style="color:#e11d48">Try again — 4 favourable out of 52</span>'; });
+    document.getElementById('phb2').addEventListener('click', ()=> alert('Hint: 4 Aces in 52 cards'));
+
+    const pool=[{q:'P(rolling even number on fair die)=?', a:['1/2','3/6']},{q:'P(draw red card from deck)=?', a:['1/2','26/52'] }];
+    function show(){ let i=0,score=0; const modal=document.getElementById('probModal'); const content=document.getElementById('probContent'); modal.classList.remove('hidden'); function next(){ if(i>=pool.length){ content.innerHTML=`<div class="font-bold">Done</div><div>Score: ${score}/${pool.length}</div>`; return; } const cur=pool[i]; content.innerHTML=`<div class="font-semibold">${cur.q}</div><input id="qa" class="mt-3 p-2 border rounded w-full"><div class="mt-3"><button id="subq" class="px-3 py-1 bg-emerald-700 text-white rounded">Submit</button></div><div id="qfb" class="mt-2"></div>`; document.getElementById('subq').onclick=()=>{ const a=norm(document.getElementById('qa').value); if(cur.a.some(x=>norm(x)===a)) { score++; document.getElementById('qfb').innerHTML='<span style="color:#16a34a">Correct</span>'; } else document.getElementById('qfb').innerHTML=`<span style="color:#e11d48">Wrong — ${cur.a[0]}</span>`; i++; setTimeout(next,700); }; }
+    next(); }
+    document.getElementById('probQuiz').addEventListener('click', show);
+    document.getElementById('probClose').addEventListener('click', ()=> document.getElementById('probModal').classList.add('hidden'));
+  </script>
+<!-- Topic Quiz System -->
+<script src="/js/topic-quiz-loader.js"></script>
+<script src="/js/topic-quiz-injector.js"></script>
+</body>
+</html>

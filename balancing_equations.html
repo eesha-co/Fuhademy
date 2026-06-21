@@ -1,0 +1,180 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Balancing Chemical Equations</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+        }
+        #simulation-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            width: 80%;
+            max-width: 800px;
+        }
+        .equation {
+            font-size: 24px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        .molecule {
+            display: inline-flex;
+            align-items: center;
+            margin: 0 10px;
+        }
+        input[type="number"] {
+            width: 50px;
+            padding: 5px;
+            font-size: 16px;
+            margin-right: 5px;
+        }
+        .atom-counts {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            font-size: 18px;
+        }
+        .controls {
+            margin-top: 20px;
+            text-align: center;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin: 0 10px;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #feedback {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div id="simulation-container">
+        <h1>Balancing Chemical Equations</h1>
+        <div class="equation">
+            <span class="molecule"><input type="number" id="coef1" min="1" value="1"> H₂</span> +
+            <span class="molecule"><input type="number" id="coef2" min="1" value="1"> O₂</span> →
+            <span class="molecule"><input type="number" id="coef3" min="1" value="1"> H₂O</span>
+        </div>
+        <div class="atom-counts">
+            <div id="left-counts">Left: H: 2, O: 2</div>
+            <div id="right-counts">Right: H: 2, O: 1</div>
+        </div>
+        <div class="controls">
+            <button id="check-button">Check</button>
+            <button id="reset-button">Reset</button>
+        </div>
+        <div id="feedback">Adjust the coefficients to balance the equation.</div>
+    </div>
+
+    <script>
+        function updateAtomCounts() {
+            const coef1 = parseInt(document.getElementById('coef1').value) || 1;
+            const coef2 = parseInt(document.getElementById('coef2').value) || 1;
+            const coef3 = parseInt(document.getElementById('coef3').value) || 1;
+
+            const leftH = 2 * coef1;
+            const leftO = 2 * coef2;
+            const rightH = 2 * coef3;
+            const rightO = 1 * coef3;
+
+            document.getElementById('left-counts').innerHTML = `Left: H: ${leftH}, O: ${leftO}`;
+            document.getElementById('right-counts').innerHTML = `Right: H: ${rightH}, O: ${rightO}`;
+        }
+
+        function checkBalance() {
+            const coef1 = parseInt(document.getElementById('coef1').value) || 1;
+            const coef2 = parseInt(document.getElementById('coef2').value) || 1;
+            const coef3 = parseInt(document.getElementById('coef3').value) || 1;
+
+            const leftH = 2 * coef1;
+            const leftO = 2 * coef2;
+            const rightH = 2 * coef3;
+            const rightO = 1 * coef3;
+
+            if (leftH === rightH && leftO === rightO) {
+                document.getElementById('feedback').innerText = "Correct! The equation is balanced.";
+                document.getElementById('feedback').style.color = "#4CAF50";
+            } else {
+                document.getElementById('feedback').innerText = "Try again. The atoms don't balance yet.";
+                document.getElementById('feedback').style.color = "#f44336";
+            }
+        }
+
+        function resetEquation() {
+            document.getElementById('coef1').value = 1;
+            document.getElementById('coef2').value = 1;
+            document.getElementById('coef3').value = 1;
+            updateAtomCounts();
+            document.getElementById('feedback').innerText = "Adjust the coefficients to balance the equation.";
+            document.getElementById('feedback').style.color = "#333";
+        }
+
+        document.getElementById('coef1').addEventListener('input', updateAtomCounts);
+        document.getElementById('coef2').addEventListener('input', updateAtomCounts);
+        document.getElementById('coef3').addEventListener('input', updateAtomCounts);
+        document.getElementById('check-button').addEventListener('click', checkBalance);
+        document.getElementById('reset-button').addEventListener('click', resetEquation);
+
+        updateAtomCounts();
+    </script>
+</body>
+</html>

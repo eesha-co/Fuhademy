@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Transport in Living Organisms - WAEC Biology</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; }
+    .accordion-content.open { max-height: 2000px; }
+    .quiz-option:hover { transform: translateX(4px); }
+    .quiz-option.selected { background: #dbeafe; border-color: #3b82f6; }
+    .quiz-option.correct { background: #dcfce7; border-color: #22c55e; }
+    .quiz-option.incorrect { background: #fee2e2; border-color: #ef4444; }
+  </style>
+</head>
+<body class="bg-gradient-to-br from-red-50 via-white to-orange-50 min-h-screen">
+  <!-- Navigation -->
+  <nav class="sticky top-0 bg-white/80 backdrop-blur-sm border-b border-red-100 z-50">
+    <div class="max-w-6xl mx-auto px-4 py-3">
+      <div class="flex items-center justify-between">
+        <a href="biology.html" class="text-red-600 hover:text-red-700 flex items-center gap-2">
+          <i class="fas fa-arrow-left"></i>
+          <span>Back to Biology</span>
+        </a>
+        <div class="flex items-center gap-4">
+          <span class="text-sm text-gray-500">WAEC SSCE Biology</span>
+          <span class="bg-red-100 text-red-700 px-3 py-1 rounded-full text-sm font-medium">SS1-SS3</span>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <main class="max-w-6xl mx-auto px-4 py-8">
+    <!-- Header -->
+    <header class="text-center mb-10">
+      <div class="inline-flex items-center gap-2 bg-red-100 text-red-700 px-4 py-2 rounded-full text-sm font-medium mb-4">
+        <i class="fas fa-heartbeat"></i>
+        <span>Transport & Circulation</span>
+      </div>
+      <h1 class="text-4xl font-bold text-gray-800 mb-4">Transport in Living Organisms</h1>
+      <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+        Transport is essential for moving materials within organisms. Learn about the circulatory system, 
+        transport in plants, and the mechanisms that sustain life in this comprehensive WAEC Biology topic.
+      </p>
+    </header>
+
+    <!-- Learning Objectives -->
+    <section class="bg-white rounded-2xl shadow-lg p-6 mb-8 border border-red-100">
+      <div class="flex items-start gap-4">
+        <div class="w-12 h-12 bg-red-100 rounded-xl flex items-center justify-center flex-shrink-0">
+          <i class="fas fa-bullseye text-red-600 text-xl"></i>
+        </div>
+        <div>
+          <h2 class="text-xl font-semibold text-gray-800 mb-3">Learning Objectives</h2>
+          <p class="text-gray-600 mb-4">By the end of this lesson, you should be able to:</p>
+          <ul class="grid md:grid-cols-2 gap-3">
+            <li class="flex items-start gap-2">
+              <i class="fas fa-check-circle text-red-500 mt-1"></i>
+              <span class="text-gray-700">Explain the need for transport systems</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <i class="fas fa-check-circle text-red-500 mt-1"></i>
+              <span class="text-gray-700">Describe the mammalian circulatory system</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <i class="fas fa-check-circle text-red-500 mt-1"></i>
+              <span class="text-gray-700">Explain blood composition and functions</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <i class="fas fa-check-circle text-red-500 mt-1"></i>
+              <span class="text-gray-700">Compare transport in plants and animals</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Main Content -->
+    <div class="grid lg:grid-cols-3 gap-8">
+      <!-- Left Column -->
+      <div class="lg:col-span-2 space-y-6">
+        
+        <!-- Need for Transport -->
+        <section class="bg-white rounded-2xl shadow-lg p-6 border border-red-100">
+          <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-3">
+            <span class="w-8 h-8 bg-red-500 text-white rounded-lg flex items-center justify-center text-sm">1</span>
+            Why Do Organisms Need Transport Systems?
+          </h2>
+          
+          <div class="bg-red-50 rounded-xl p-5 mb-5">
+            <p class="text-gray-700">
+              All living organisms need to move substances from one part of their body to another. 
+              This is necessary because cells need nutrients, oxygen, and other materials to survive, 
+              and waste products must be removed.
+            </p>
+          </div>
+
+          <div class="grid md:grid-cols-2 gap-4 mb-5">
+            <div class="bg-blue-50 rounded-xl p-4">
+              <h4 class="font-semibold text-blue-800 mb-2">
+                <i class="fas fa-box mr-2"></i>Materials Transported
+              </h4>
+              <ul class="text-gray-700 space-y-1 text-sm">
+                <li>• <strong>Nutrients:</strong> Glucose, amino acids, fatty acids</li>
+                <li>• <strong>Respiratory gases:</strong> Oxygen, carbon dioxide</li>
+                <li>• <strong>Waste products:</strong> Urea, carbon dioxide</li>
+                <li>• <strong>Hormones:</strong> Chemical messengers</li>
+                <li>• <strong>Water and salts:</strong> For osmoregulation</li>
+                <li>• <strong>Heat:</strong> Temperature regulation</li>
+              </ul>
+            </div>
+            <div class="bg-green-50 rounded-xl p-4">
+              <h4 class="font-semibold text-green-800 mb-2">
+                <i class="fas fa-exclamation-circle mr-2"></i>Factors Affecting Transport Need
+              </h4>
+              <ul class="text-gray-700 space-y-1 text-sm">
+                <li>• Size of the organism</li>
+                <li>• Level of metabolic activity</li>
+                <li>• Surface area to volume ratio</li>
+                <li>• Complexity of organization</li>
+                <li>• Environment (aquatic/terrestrial)</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="bg-amber-50 border-l-4 border-amber-400 p-4 rounded-r-xl">
+            <p class="text-amber-800 text-sm">
+              <i class="fas fa-info-circle mr-2"></i>
+              <strong>Key Point:</strong> Small organisms like Amoeba don't need specialized transport systems 
+              because they have a large surface area to volume ratio, allowing diffusion to meet their needs.
+            </p>
+          </div>
+        </section>
+
+        <!-- Transport in Animals -->
+        <section class="bg-white rounded-2xl shadow-lg p-6 border border-red-100">
+          <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-3">
+            <span class="w-8 h-8 bg-red-500 text-white rounded-lg flex items-center justify-center text-sm">2</span>
+            Transport in Animals - The Circulatory System
+          </h2>
+
+          <div class="mb-6">
+            <h3 class="text-lg font-semibold text-gray-800 mb-3">Types of Circulatory Systems</h3>
+            
+            <div class="grid md:grid-cols-2 gap-4">
+              <div class="bg-purple-50 rounded-xl p-4 border border-purple-200">
+                <h4 class="font-semibold text-purple-800 mb-2">Open Circulatory System</h4>
+                <p class="text-gray-700 text-sm mb-2">Blood flows through open spaces (sinuses) in the body.</p>
+                <ul class="text-gray-600 text-sm space-y-1">
+                  <li>• Found in: Insects, molluscs</li>
+                  <li>• Blood not always in vessels</li>
+                  <li>• Low pressure system</li>
+                  <li>• Direct contact with tissues</li>
+                </ul>
+              </div>
+              <div class="bg-indigo-50 rounded-xl p-4 border border-indigo-200">
+                <h4 class="font-semibold text-indigo-800 mb-2">Closed Circulatory System</h4>
+                <p class="text-gray-700 text-sm mb-2">Blood flows entirely within blood vessels.</p>
+                <ul class="text-gray-600 text-sm space-y-1">
+                  <li>• Found in: Vertebrates, annelids</li>
+                  <li>• Blood always in vessels</li>
+                  <li>• High pressure system</li>
+                  <li>• Efficient transport</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- Human Heart -->
+          <div class="mb-6">
+            <h3 class="text-lg font-semibold text-gray-800 mb-3">The Human Heart</h3>
+            
+            <div class="bg-gray-50 rounded-xl p-6">
+              <div class="flex justify-center mb-4">
+                <svg viewBox="0 0 300 280" class="w-full max-w-sm">
+                  <!-- Heart outline -->
+                  <path d="M150 250 L50 150 Q30 100 70 70 Q110 40 150 80 Q190 40 230 70 Q270 100 250 150 Z" 
+                        fill="#fca5a5" stroke="#dc2626" stroke-width="3"/>
+                  
+                  <!-- Dividing line (septum) -->
+                  <line x1="150" y1="80" x2="150" y2="230" stroke="#dc2626" stroke-width="2"/>
+                  
+                  <!-- Right atrium -->
+                  <text x="100" y="110" font-size="10" fill="#374151">Right</text>
+                  <text x="95" y="122" font-size="10" fill="#374151">Atrium</text>
+                  
+                  <!-- Left atrium -->
+                  <text x="175" y="110" font-size="10" fill="#374151">Left</text>
+                  <text x="175" y="122" font-size="10" fill="#374151">Atrium</text>
+                  
+                  <!-- Right ventricle -->
+                  <text x="90" y="180" font-size="10" fill="#374151">Right</text>
+                  <text x="82" y="192" font-size="10" fill="#374151">Ventricle</text>
+                  
+                  <!-- Left ventricle -->
+                  <text x="180" y="180" font-size="10" fill="#374151">Left</text>
+                  <text x="175" y="192" font-size="10" fill="#374151">Ventricle</text>
+                  
+                  <!-- Vena cava -->
+                  <line x1="100" y1="70" x2="100" y2="30" stroke="#3b82f6" stroke-width="6"/>
+                  <text x="70" y="25" font-size="9" fill="#3b82f6">Vena Cava</text>
+                  
+                  <!-- Pulmonary artery -->
+                  <line x1="120" y1="70" x2="120" y2="20" stroke="#60a5fa" stroke-width="4"/>
+                  <text x="125" y="25" font-size="9" fill="#60a5fa">Pulmonary Artery</text>
+                  
+                  <!-- Pulmonary vein -->
+                  <line x1="180" y1="70" x2="180" y2="25" stroke="#ef4444" stroke-width="4"/>
+                  <text x="190" y="30" font-size="9" fill="#ef4444">Pulmonary Vein</text>
+                  
+                  <!-- Aorta -->
+                  <line x1="200" y1="70" x2="200" y2="20" stroke="#dc2626" stroke-width="6"/>
+                  <text x="210" y="25" font-size="9" fill="#dc2626">Aorta</text>
+                  
+                  <!-- Valves -->
+                  <circle cx="110" cy="140" r="5" fill="#fbbf24" stroke="#f59e0b" stroke-width="1"/>
+                  <circle cx="190" cy="140" r="5" fill="#fbbf24" stroke="#f59e0b" stroke-width="1"/>
+                  <text x="240" y="143" font-size="8" fill="#f59e0b">Valves</text>
+                </svg>
+              </div>
+              <p class="text-center text-sm text-gray-600">Structure of the Human Heart</p>
+            </div>
+          </div>
+
+          <!-- Blood Vessels -->
+          <div class="mb-6">
+            <h3 class="text-lg font-semibold text-gray-800 mb-3">Blood Vessels</h3>
+            
+            <div class="overflow-x-auto">
+              <table class="w-full border-collapse text-sm">
+                <thead>
+                  <tr class="bg-red-100">
+                    <th class="border border-red-200 px-3 py-2 text-left font-semibold text-red-800">Feature</th>
+                    <th class="border border-red-200 px-3 py-2 text-left font-semibold text-red-800">Arteries</th>
+                    <th class="border border-red-200 px-3 py-2 text-left font-semibold text-red-800">Veins</th>
+                    <th class="border border-red-200 px-3 py-2 text-left font-semibold text-red-800">Capillaries</th>
+                  </tr>
+                </thead>
+                <tbody class="text-gray-700">
+                  <tr class="hover:bg-gray-50">
+                    <td class="border border-red-200 px-3 py-2 font-medium">Wall thickness</td>
+                    <td class="border border-red-200 px-3 py-2">Thick and muscular</td>
+                    <td class="border border-red-200 px-3 py-2">Thin</td>
+                    <td class="border border-red-200 px-3 py-2">One cell thick</td>
+                  </tr>
+                  <tr class="hover:bg-gray-50 bg-red-50/50">
+                    <td class="border border-red-200 px-3 py-2 font-medium">Lumen size</td>
+                    <td class="border border-red-200 px-3 py-2">Small</td>
+                    <td class="border border-red-200 px-3 py-2">Large</td>
+                    <td class="border border-red-200 px-3 py-2">Very small</td>
+                  </tr>
+                  <tr class="hover:bg-gray-50">
+                    <td class="border border-red-200 px-3 py-2 font-medium">Valves</td>
+                    <td class="border border-red-200 px-3 py-2">Absent</td>
+                    <td class="border border-red-200 px-3 py-2">Present</td>
+                    <td class="border border-red-200 px-3 py-2">Absent</td>
+                  </tr>
+                  <tr class="hover:bg-gray-50 bg-red-50/50">
+                    <td class="border border-red-200 px-3 py-2 font-medium">Blood pressure</td>
+                    <td class="border border-red-200 px-3 py-2">High</td>
+                    <td class="border border-red-200 px-3 py-2">Low</td>
+                    <td class="border border-red-200 px-3 py-2">Moderate</td>
+                  </tr>
+                  <tr class="hover:bg-gray-50">
+                    <td class="border border-red-200 px-3 py-2 font-medium">Function</td>
+                    <td class="border border-red-200 px-3 py-2">Carry blood away from heart</td>
+                    <td class="border border-red-200 px-3 py-2">Carry blood to heart</td>
+                    <td class="border border-red-200 px-3 py-2">Exchange of materials</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Blood Composition -->
+          <div>
+            <h3 class="text-lg font-semibold text-gray-800 mb-3">Composition of Blood</h3>
+            
+            <div class="grid md:grid-cols-2 gap-4">
+              <div class="bg-red-50 rounded-xl p-4">
+                <h4 class="font-semibold text-red-800 mb-2">Blood Plasma (55%)</h4>
+                <p class="text-gray-700 text-sm mb-2">Yellow liquid that carries:</p>
+                <ul class="text-gray-600 text-sm space-y-1">
+                  <li>• Water (90%)</li>
+                  <li>• Proteins (fibrinogen, albumin, globulins)</li>
+                  <li>• Nutrients (glucose, amino acids)</li>
+                  <li>• Waste products (urea)</li>
+                  <li>• Hormones and antibodies</li>
+                </ul>
+              </div>
+              
+              <div class="bg-pink-50 rounded-xl p-4">
+                <h4 class="font-semibold text-pink-800 mb-2">Blood Cells (45%)</h4>
+                <ul class="text-gray-700 text-sm space-y-2">
+                  <li><strong>Red Blood Cells (Erythrocytes):</strong>
+                    <ul class="text-gray-600 text-xs ml-4">
+                      <li>- Transport oxygen (contain hemoglobin)</li>
+                      <li>- Biconcave disc shape</li>
+                      <li>- No nucleus (more space for hemoglobin)</li>
+                    </ul>
+                  </li>
+                  <li><strong>White Blood Cells (Leucocytes):</strong>
+                    <ul class="text-gray-600 text-xs ml-4">
+                      <li>- Fight infection (phagocytes & lymphocytes)</li>
+                      <li>- Have nucleus</li>
+                    </ul>
+                  </li>
+                  <li><strong>Platelets (Thrombocytes):</strong>
+                    <ul class="text-gray-600 text-xs ml-4">
+                      <li>- Cell fragments for blood clotting</li>
+                    </ul>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Transport in Plants -->
+        <section class="bg-white rounded-2xl shadow-lg p-6 border border-red-100">
+          <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-3">
+            <span class="w-8 h-8 bg-red-500 text-white rounded-lg flex items-center justify-center text-sm">3</span>
+            Transport in Plants
+          </h2>
+
+          <p class="text-gray-700 mb-4">
+            Plants have a vascular system consisting of two types of transport tissues: xylem and phloem.
+          </p>
+
+          <div class="grid md:grid-cols-2 gap-4 mb-6">
+            <div class="bg-blue-50 rounded-xl p-5 border border-blue-200">
+              <h4 class="font-semibold text-blue-800 mb-3 flex items-center gap-2">
+                <i class="fas fa-arrow-up text-blue-600"></i>
+                Xylem
+              </h4>
+              <ul class="text-gray-700 text-sm space-y-2">
+                <li><strong>Transports:</strong> Water and dissolved minerals</li>
+                <li><strong>Direction:</strong> Upward (roots → leaves)</li>
+                <li><strong>Structure:</strong> Dead, hollow cells with lignified walls</li>
+                <li><strong>Types:</strong> Vessels, tracheids, xylem fibers, xylem parenchyma</li>
+                <li><strong>Mechanism:</strong> Transpiration pull, root pressure, capillary action</li>
+              </ul>
+            </div>
+            
+            <div class="bg-green-50 rounded-xl p-5 border border-green-200">
+              <h4 class="font-semibold text-green-800 mb-3 flex items-center gap-2">
+                <i class="fas fa-exchange-alt text-green-600"></i>
+                Phloem
+              </h4>
+              <ul class="text-gray-700 text-sm space-y-2">
+                <li><strong>Transports:</strong> Sugars (sucrose) and organic compounds</li>
+                <li><strong>Direction:</strong> Both directions (translocation)</li>
+                <li><strong>Structure:</strong> Living cells (sieve tubes, companion cells)</li>
+                <li><strong>Types:</strong> Sieve tube elements, companion cells, phloem fibers, phloem parenchyma</li>
+                <li><strong>Mechanism:</strong> Mass flow hypothesis (pressure flow)</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Transpiration -->
+          <div class="bg-teal-50 rounded-xl p-5">
+            <h3 class="font-semibold text-teal-800 mb-3">
+              <i class="fas fa-water mr-2"></i>Transpiration
+            </h3>
+            <p class="text-gray-700 mb-3">
+              The loss of water vapor from plant leaves through stomata. It creates a pulling force that draws water up through the xylem.
+            </p>
+            
+            <div class="grid md:grid-cols-2 gap-4">
+              <div>
+                <h4 class="font-medium text-teal-700 mb-2">Factors Affecting Transpiration:</h4>
+                <ul class="text-gray-700 text-sm space-y-1">
+                  <li>• <strong>Temperature:</strong> Higher temp → faster transpiration</li>
+                  <li>• <strong>Humidity:</strong> Lower humidity → faster transpiration</li>
+                  <li>• <strong>Wind:</strong> More wind → faster transpiration</li>
+                  <li>• <strong>Light intensity:</strong> More light → stomata open → faster</li>
+                </ul>
+              </div>
+              <div>
+                <h4 class="font-medium text-teal-700 mb-2">Importance:</h4>
+                <ul class="text-gray-700 text-sm space-y-1">
+                  <li>• Creates transpiration pull for water movement</li>
+                  <li>• Cools the plant</li>
+                  <li>• Helps in mineral absorption</li>
+                  <li>• Maintains turgidity of cells</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Worked Examples -->
+        <section class="bg-white rounded-2xl shadow-lg p-6 border border-red-100">
+          <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-3">
+            <span class="w-8 h-8 bg-red-500 text-white rounded-lg flex items-center justify-center text-sm">4</span>
+            Worked Examples
+          </h2>
+
+          <div class="space-y-6">
+            <!-- Example 1 -->
+            <div class="bg-gray-50 rounded-xl p-5">
+              <div class="flex items-start gap-3 mb-3">
+                <span class="bg-red-500 text-white px-2 py-1 rounded text-sm font-medium">WAEC 2021</span>
+                <span class="bg-blue-100 text-blue-700 px-2 py-1 rounded text-sm">Theory</span>
+              </div>
+              <p class="text-gray-800 font-medium mb-3">
+                Describe the adaptations of the mammalian heart to its function.
+              </p>
+              <div class="bg-white rounded-lg p-4 border border-gray-200">
+                <p class="font-semibold text-red-700 mb-2">Solution:</p>
+                <ul class="text-gray-700 space-y-2 text-sm">
+                  <li><strong>1. Muscular walls:</strong> The heart has thick muscular walls (myocardium) that contract to pump blood. The left ventricle has the thickest wall because it pumps blood to the entire body.</li>
+                  <li><strong>2. Valves:</strong> Tricuspid, bicuspid (mitral), and semilunar valves prevent backflow of blood, ensuring one-way flow.</li>
+                  <li><strong>3. Septum:</strong> Divides the heart into left and right sides, preventing mixing of oxygenated and deoxygenated blood.</li>
+                  <li><strong>4. Four chambers:</strong> Two atria receive blood, two ventricles pump blood out, allowing efficient double circulation.</li>
+                  <li><strong>5. Coronary vessels:</strong> Supply the heart muscle with oxygen and nutrients for continuous pumping.</li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- Example 2 -->
+            <div class="bg-gray-50 rounded-xl p-5">
+              <div class="flex items-start gap-3 mb-3">
+                <span class="bg-red-500 text-white px-2 py-1 rounded text-sm font-medium">WAEC 2019</span>
+                <span class="bg-blue-100 text-blue-700 px-2 py-1 rounded text-sm">Theory</span>
+              </div>
+              <p class="text-gray-800 font-medium mb-3">
+                State three differences between arteries and veins.
+              </p>
+              <div class="bg-white rounded-lg p-4 border border-gray-200 overflow-x-auto">
+                <p class="font-semibold text-red-700 mb-2">Solution:</p>
+                <table class="w-full text-sm">
+                  <thead>
+                    <tr class="border-b border-gray-300">
+                      <th class="text-left py-2 px-2">Arteries</th>
+                      <th class="text-left py-2 px-2">Veins</th>
+                    </tr>
+                  </thead>
+                  <tbody class="text-gray-700">
+                    <tr class="border-b border-gray-200">
+                      <td class="py-2 px-2">Carry blood away from the heart</td>
+                      <td class="py-2 px-2">Carry blood towards the heart</td>
+                    </tr>
+                    <tr class="border-b border-gray-200">
+                      <td class="py-2 px-2">Have thick, muscular walls</td>
+                      <td class="py-2 px-2">Have thin walls</td>
+                    </tr>
+                    <tr class="border-b border-gray-200">
+                      <td class="py-2 px-2">Have narrow lumen</td>
+                      <td class="py-2 px-2">Have wide lumen</td>
+                    </tr>
+                    <tr class="border-b border-gray-200">
+                      <td class="py-2 px-2">No valves</td>
+                      <td class="py-2 px-2">Have valves</td>
+                    </tr>
+                    <tr>
+                      <td class="py-2 px-2">Blood flows under high pressure</td>
+                      <td class="py-2 px-2">Blood flows under low pressure</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- Right Column - Sidebar -->
+      <div class="space-y-6">
+        
+        <!-- Video Resource -->
+        <section class="bg-white rounded-2xl shadow-lg overflow-hidden border border-red-100">
+          <div class="bg-red-500 text-white px-4 py-3">
+            <h3 class="font-semibold flex items-center gap-2">
+              <i class="fas fa-play-circle"></i>
+              Video Lesson
+            </h3>
+          </div>
+          <div class="aspect-video">
+            <iframe 
+              class="w-full h-full"
+              src="https://www.youtube.com/embed/CWFyxn0RuDE" 
+              title="Circulatory System" 
+              frameborder="0" 
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+              allowfullscreen>
+            </iframe>
+          </div>
+          <div class="p-4">
+            <p class="text-sm text-gray-600">
+              <i class="fas fa-info-circle text-red-500 mr-1"></i>
+              Learn about the human circulatory system and blood vessels.
+            </p>
+          </div>
+        </section>
+
+        <!-- Quick Facts -->
+        <section class="bg-white rounded-2xl shadow-lg p-5 border border-red-100">
+          <h3 class="font-semibold text-gray-800 mb-4 flex items-center gap-2">
+            <i class="fas fa-lightbulb text-red-500"></i>
+            Quick Facts
+          </h3>
+          <div class="space-y-3 text-sm">
+            <div class="bg-red-50 rounded-lg p-3">
+              <p class="font-medium text-red-800">Heart Rate</p>
+              <p class="text-gray-600">Average adult: 72 beats/min</p>
+            </div>
+            <div class="bg-red-50 rounded-lg p-3">
+              <p class="font-medium text-red-800">Blood Volume</p>
+              <p class="text-gray-600">About 5 liters in average adult</p>
+            </div>
+            <div class="bg-red-50 rounded-lg p-3">
+              <p class="font-medium text-red-800">Blood Types</p>
+              <p class="text-gray-600">A, B, AB, O (each + or -)</p>
+            </div>
+            <div class="bg-red-50 rounded-lg p-3">
+              <p class="font-medium text-red-800">Blood Pressure</p>
+              <p class="text-gray-600">Normal: 120/80 mmHg</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Key Terms -->
+        <section class="bg-white rounded-2xl shadow-lg p-5 border border-red-100">
+          <h3 class="font-semibold text-gray-800 mb-4 flex items-center gap-2">
+            <i class="fas fa-book text-red-500"></i>
+            Key Terms
+          </h3>
+          <div class="space-y-3">
+            <div class="border-l-4 border-red-400 pl-3">
+              <p class="font-medium text-gray-800">Double Circulation</p>
+              <p class="text-sm text-gray-600">Blood passes through heart twice per circuit</p>
+            </div>
+            <div class="border-l-4 border-red-400 pl-3">
+              <p class="font-medium text-gray-800">Systole/Diastole</p>
+              <p class="text-sm text-gray-600">Contraction/Relaxation phases of heart</p>
+            </div>
+            <div class="border-l-4 border-red-400 pl-3">
+              <p class="font-medium text-gray-800">Translocation</p>
+              <p class="text-sm text-gray-600">Movement of sugars in phloem</p>
+            </div>
+            <div class="border-l-4 border-red-400 pl-3">
+              <p class="font-medium text-gray-800">Transpiration Pull</p>
+              <p class="text-sm text-gray-600">Force that draws water up xylem</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Quick Quiz -->
+        <section class="bg-white rounded-2xl shadow-lg p-5 border border-red-100">
+          <h3 class="font-semibold text-gray-800 mb-4 flex items-center gap-2">
+            <i class="fas fa-question-circle text-red-500"></i>
+            Quick Quiz
+          </h3>
+          <div id="quiz-container">
+            <div class="quiz-question mb-4" data-question="1">
+              <p class="text-gray-700 font-medium mb-3 text-sm">1. Which blood vessel carries blood away from the heart?</p>
+              <div class="space-y-2">
+                <button onclick="selectAnswer(this, 'q1', 'a')" class="quiz-option w-full text-left px-3 py-2 border border-gray-200 rounded-lg hover:border-red-400 transition text-sm">
+                  A. Vein
+                </button>
+                <button onclick="selectAnswer(this, 'q1', 'b')" class="quiz-option w-full text-left px-3 py-2 border border-gray-200 rounded-lg hover:border-red-400 transition text-sm">
+                  B. Artery
+                </button>
+                <button onclick="selectAnswer(this, 'q1', 'c')" class="quiz-option w-full text-left px-3 py-2 border border-gray-200 rounded-lg hover:border-red-400 transition text-sm">
+                  C. Capillary
+                </button>
+                <button onclick="selectAnswer(this, 'q1', 'd')" class="quiz-option w-full text-left px-3 py-2 border border-gray-200 rounded-lg hover:border-red-400 transition text-sm">
+                  D. Venule
+                </button>
+              </div>
+              <div id="feedback-q1" class="mt-2 hidden text-sm"></div>
+            </div>
+
+            <div class="quiz-question" data-question="2">
+              <p class="text-gray-700 font-medium mb-3 text-sm">2. Xylem transports:</p>
+              <div class="space-y-2">
+                <button onclick="selectAnswer(this, 'q2', 'a')" class="quiz-option w-full text-left px-3 py-2 border border-gray-200 rounded-lg hover:border-red-400 transition text-sm">
+                  A. Sugars
+                </button>
+                <button onclick="selectAnswer(this, 'q2', 'b')" class="quiz-option w-full text-left px-3 py-2 border border-gray-200 rounded-lg hover:border-red-400 transition text-sm">
+                  B. Water and minerals
+                </button>
+                <button onclick="selectAnswer(this, 'q2', 'c')" class="quiz-option w-full text-left px-3 py-2 border border-gray-200 rounded-lg hover:border-red-400 transition text-sm">
+                  C. Proteins
+                </button>
+                <button onclick="selectAnswer(this, 'q2', 'd')" class="quiz-option w-full text-left px-3 py-2 border border-gray-200 rounded-lg hover:border-red-400 transition text-sm">
+                  D. Hormones only
+                </button>
+              </div>
+              <div id="feedback-q2" class="mt-2 hidden text-sm"></div>
+            </div>
+          </div>
+          <button onclick="checkAllAnswers()" class="mt-4 w-full bg-red-500 text-white py-2 rounded-lg hover:bg-red-600 transition font-medium text-sm">
+            Check Answers
+          </button>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <!-- Scripts -->
+  <script>
+    const correctAnswers = {
+      'q1': 'b',
+      'q2': 'b'
+    };
+
+    const userAnswers = {};
+
+    function selectAnswer(button, questionId, answer) {
+      const questionDiv = button.closest('.quiz-question');
+      questionDiv.querySelectorAll('.quiz-option').forEach(opt => {
+        opt.classList.remove('selected', 'correct', 'incorrect');
+      });
+      
+      button.classList.add('selected');
+      userAnswers[questionId] = answer;
+    }
+
+    function checkAllAnswers() {
+      Object.keys(correctAnswers).forEach(questionId => {
+        const feedbackDiv = document.getElementById(`feedback-${questionId}`);
+        feedbackDiv.classList.remove('hidden');
+        
+        const questionDiv = feedbackDiv.closest('.quiz-question');
+        const options = questionDiv.querySelectorAll('.quiz-option');
+        
+        options.forEach(opt => {
+          const answer = opt.textContent.trim().charAt(0).toLowerCase();
+          if (answer === correctAnswers[questionId]) {
+            opt.classList.add('correct');
+          } else if (opt.classList.contains('selected')) {
+            opt.classList.add('incorrect');
+          }
+        });
+
+        if (userAnswers[questionId] === correctAnswers[questionId]) {
+          feedbackDiv.innerHTML = '<p class="text-green-600 font-medium"><i class="fas fa-check-circle mr-1"></i>Correct!</p>';
+        } else {
+          feedbackDiv.innerHTML = `<p class="text-red-600 font-medium"><i class="fas fa-times-circle mr-1"></i>Incorrect. Answer: ${correctAnswers[questionId].toUpperCase()}</p>`;
+        }
+      });
+    }
+  </script>
+
+<!-- Topic Quiz System -->
+<script src="/js/topic-quiz-loader.js"></script>
+<script src="/js/topic-quiz-injector.js"></script>
+</body>
+</html>

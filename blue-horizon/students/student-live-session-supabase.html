@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Live Sessions - Prep100</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>#sidebar { transition: transform 0.3s ease-in-out; } #sidebar.hide { transform: translateX(-100%); } @media (min-width: 1024px) { #sidebar { transform: translateX(0) !important; } }</style>
+</head>
+<body class="bg-slate-50">
+  <div class="min-h-screen flex">
+    <aside id="sidebar" class="w-64 md:w-72 lg:w-80 fixed left-0 top-0 h-full bg-white border-r border-slate-200 p-5 flex flex-col gap-6 overflow-auto z-40">
+      <div class="flex items-center gap-3"><img src="/assets/images/logo.png" alt="logo" class="h-12 w-12 rounded-full shadow-sm"><div><div class="text-lg font-bold text-sky-700">JUANOVA CORTEX</div><div class="text-xs text-slate-500">Student Dashboard</div></div></div>
+      <nav class="flex-1 overflow-auto"><ul class="space-y-1">
+        <li><a href="student-dashboard-supabase.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-home text-sky-600"></i> Home</a></li>
+        <li><a href="news-feed-supabase.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-newspaper text-pink-500"></i> News Feed</a></li>
+        <li><a href="notes-supabase.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-note-sticky text-yellow-500"></i> Study Notes</a></li>
+        <li><a href="textbooks-supabase.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-book text-indigo-500"></i> Textbooks</a></li>
+        <li><a href="formula-bank-supabase.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-book-open text-teal-600"></i> All Formula</a></li>
+        <li><a href="study-plan-supabase.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-calendar-check text-green-500"></i> Study Plan</a></li>
+        <li><a href="video-library-supabase.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-photo-video text-cyan-600"></i> Video Library</a></li>
+        <li><a href="digital-library-supabase.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-book text-indigo-500"></i> Digital Library</a></li>
+        <li><a href="game-supabase.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-puzzle-piece text-purple-500"></i> Game</a></li>
+        <li><a href="mock-exams-supabase.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-pencil-alt text-orange-500"></i> Mock Exams</a></li>
+        <li><a href="notifications-supabase.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-bell text-pink-600"></i> Notifications</a></li>
+        <li><a href="student-live-session-supabase.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50 bg-sky-50"><i class="fas fa-chalkboard-teacher text-blue-400"></i> Live Sessions</a></li>
+        <li><a href="nobel-laureate-supabase.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50"><i class="fas fa-award text-yellow-600"></i> Nobel Laureate</a></li>
+      </ul></nav>
+      <div class="text-sm text-slate-500 border-t pt-4"><div class="mb-2">Account</div><div class="flex items-center gap-3"><img id="avatar-sm" src="../assets/images/unnamed.jpg" alt="avatar" class="h-10 w-10 rounded-full border"><div><div id="userName" class="font-semibold">Student</div><div id="userLevel" class="text-xs text-slate-400"></div></div></div></div>
+    </aside>
+          <div id="main-content" class="flex-1 flex flex-col lg:ml-72">
+        <header class="flex items-center justify-between p-4 bg-white border-b border-slate-200 w-full">
+          <div class="flex items-center gap-3">
+            <button id="toggleSidebar" class="p-2 rounded-md hover:bg-slate-100 lg:hidden" title="Toggle sidebar"><i class="fas fa-bars"></i></button>
+            <div class="relative">
+              <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
+              <input id="globalSearch" type="search" placeholder="Search sessions, teachers or topics..." class="w-[520px] hidden md:inline-block pl-10 pr-4 py-2 rounded-full border border-slate-200 bg-white focus:outline-none focus:ring-2 focus:ring-sky-100" aria-label="Search sessions">
+            </div>
+          </div>
+
+          <div class="flex items-center gap-4">
+            <div class="relative">
+              <button id="notifBtn" class="p-2 rounded-full hover:bg-slate-50" aria-label="Notifications"><i class="fas fa-bell text-sky-600"></i></button>
+              <span id="notifCount" class="absolute -top-1 -right-1 bg-pink-500 text-white rounded-full w-5 h-5 text-xs flex items-center justify-center">0</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <div class="text-right mr-2">
+                <div id="topName" class="font-semibold">Student Name</div>
+                <div id="topLevel" class="text-xs text-slate-400">SS 3</div>
+              </div>
+              <img id="topAvatar" src="../assets/images/unnamed.jpg" alt="avatar" class="h-10 w-10 rounded-full border-2">
+            </div>
+          </div>
+        </header>
+
+        <main class="p-6 space-y-6">
+      <!-- Hero: next session & actions -->
+      <section class="rounded-3xl bg-gradient-to-r from-blue-600 to-blue-400 text-white p-6 shadow mb-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        <div>
+          <h1 class="text-2xl font-extrabold">Live Sessions</h1>
+          <p class="text-blue-100 mt-1">Quickly join live classes, explore upcoming schedules, or watch recordings.</p>
+          <div class="mt-3 flex items-center gap-3">
+            <div class="text-sm">Next:</div>
+            <div id="nextSessionTitle" class="font-semibold">—</div>
+            <div id="nextCountdown" class="ml-3 text-sm countdown bg-white/20 px-3 py-1 rounded">—</div>
+          </div>
+        </div>
+        <div class="flex items-center gap-3">
+          <button id="viewSchedule" class="bg-white text-blue-600 px-4 py-2 rounded-full font-semibold">View Schedule</button>
+          <button id="quickJoin" class="bg-green-500 px-4 py-2 rounded-full font-semibold shadow hover:bg-green-600">Join Next</button>
+        </div>
+      </section>
+
+      <!-- Tabs + Filters -->
+      <div class="flex items-center justify-between mb-4 gap-4">
+        <nav class="flex items-center gap-2" role="tablist" aria-label="Session tabs">
+          <button class="tab-btn px-4 py-2 rounded-md bg-white border" role="tab" aria-selected="true" data-tab="live">Live Now</button>
+          <button class="tab-btn px-4 py-2 rounded-md bg-white border" role="tab" aria-selected="false" data-tab="upcoming">Upcoming</button>
+          <button class="tab-btn px-4 py-2 rounded-md bg-white border" role="tab" aria-selected="false" data-tab="recordings">Recordings</button>
+          <button class="tab-btn px-4 py-2 rounded-md bg-white border" role="tab" aria-selected="false" data-tab="my">My Sessions</button>
+        </nav>
+
+        <div class="flex items-center gap-2">
+          <select id="filterSubject" aria-label="Filter by subject" class="px-3 py-2 border rounded bg-white">
+            <option value="">All subjects</option>
+          </select>
+          <select id="filterMode" aria-label="Filter by mode" class="px-3 py-2 border rounded bg-white">
+            <option value="">All modes</option>
+            <option value="webinar">Webinar</option>
+            <option value="breakout">Breakout</option>
+          </select>
+        </div>
+      </div>
+
+      <div id="contentArea" class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Main column: session lists -->
+        <section id="listColumn" class="lg:col-span-2">
+          <div id="sessionsList" class="grid grid-cols-1 gap-4"></div>
+        </section>
+
+        <!-- Right column: details / pinned info -->
+        <aside id="rightColumn" class="space-y-4">
+          <div class="p-4 bg-white rounded-lg shadow">
+            <h3 class="font-semibold">Quick Actions</h3>
+            <p class="text-sm text-gray-600">Jump between live, upcoming and recorded sessions easily.</p>
+            <div class="mt-3 flex flex-col gap-2">
+              <button id="openCalendar" class="px-3 py-2 bg-gray-100 rounded">Open Calendar</button>
+              <button id="openRecordings" class="px-3 py-2 bg-gray-100 rounded">Browse Recordings</button>
+            </div>
+          </div>
+
+          <div id="upcomingMini" class="p-4 bg-white rounded-lg shadow">
+            <h4 class="font-semibold">Soon</h4>
+            <ul id="upcomingList" class="text-sm text-gray-600 mt-2 space-y-2"></ul>
+          </div>
+        </aside>
+      </div>
+
+      <!-- Slide-over detail -->
+      <div id="slideOver" class="fixed right-0 top-0 h-full w-full md:w-1/3 bg-white shadow-lg slide-over z-50" aria-hidden="true">
+        <div class="p-6 h-full flex flex-col">
+          <div class="flex items-start justify-between">
+            <div>
+              <h2 id="detailTitle" class="text-xl font-bold">Session title</h2>
+              <div id="detailMeta" class="text-sm text-gray-600">Teacher • Subject • 1h</div>
+            </div>
+            <div class="flex items-center gap-2">
+              <button id="detailCopy" class="p-2 rounded hover:bg-gray-100" title="Copy link" aria-label="Copy link"><i class="fas fa-link"></i></button>
+              <button id="detailClose" class="p-2 rounded hover:bg-gray-100" title="Close" aria-label="Close detail"><i class="fas fa-times"></i></button>
+            </div>
+          </div>
+
+          <div id="detailBody" class="mt-4 flex-1 overflow-auto">
+            <p id="detailDescription" class="text-gray-700">Details about the session, materials, and quick actions.</p>
+            <div id="detailMaterials" class="mt-4"></div>
+          </div>
+
+          <div class="mt-4 flex gap-2">
+            <a id="detailJoin" class="ml-auto bg-green-500 px-4 py-2 rounded text-white font-semibold" role="button">Join</a>
+            <button id="detailPreview" class="px-4 py-2 rounded bg-gray-100">Preview</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mini-player placeholder (appears when user joins a session) -->
+      <div id="miniPlayer" class="hidden mini-player bg-white p-3 flex items-center gap-3">
+        <div class="w-12 h-8 bg-gray-200 rounded"></div>
+        <div class="flex-1 text-sm">
+          <div id="miniTitle" class="font-semibold">Live: —</div>
+          <div id="miniTeacher" class="text-xs text-gray-600">Teacher</div>
+        </div>
+        <div>
+          <button id="miniClose" class="p-2 rounded hover:bg-gray-100" aria-label="Close mini player"><i class="fas fa-times"></i></button>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+<script>
+    // Tiny app: sessions data, rendering and interactions
+    const sessions = [
+      { id: 101, title: 'Wave Motion', subject: 'Physics', teacher: {name:'Dr. Akpan'}, start: addMinutes(new Date(), -5).toISOString(), duration: 90, mode:'webinar', state:'live', joinUrl:'physics-live-session.html', materials:[{name:'Slides', url:'#'}], tags:['waves'] },
+      { id: 102, title: 'Calculus Integration', subject: 'Mathematics', teacher: {name:'Ms. Sanni'}, start: addMinutes(new Date(), 60).toISOString(), duration: 120, mode:'webinar', state:'scheduled', joinUrl:'mathematics-live-session.html', materials:[], tags:['calculus'] },
+      { id: 103, title: 'Organic Chemistry', subject: 'Chemistry', teacher: {name:'Dr. Ibe'}, start: addMinutes(new Date(), -180).toISOString(), duration: 120, mode:'webinar', state:'recorded', joinUrl:'chemistry-recording.html', materials:[], tags:['organic'] }
+    ];
+
+    // Utilities
+    function addMinutes(d, m){ const x=new Date(d); x.setMinutes(x.getMinutes()+m); return x; }
+    function formatTime(iso){ const d=new Date(iso); return d.toLocaleString(); }
+    function timeUntil(iso){ const diff = new Date(iso) - new Date(); return Math.max(0, Math.floor(diff/1000)); }
+
+    // Elements
+    const sessionsList = document.getElementById('sessionsList');
+    const upcomingList = document.getElementById('upcomingList');
+    const nextSessionTitle = document.getElementById('nextSessionTitle');
+    const nextCountdown = document.getElementById('nextCountdown');
+    const quickJoin = document.getElementById('quickJoin');
+
+    // Populate subject filter
+    const filterSubject = document.getElementById('filterSubject');
+    [...new Set(sessions.map(s=>s.subject))].forEach(sub=>{ const o=document.createElement('option'); o.value=sub; o.textContent=sub; filterSubject.appendChild(o); });
+
+    // Renderers
+    function renderSessions(filterTab='live'){
+      sessionsList.innerHTML='';
+      const now = new Date();
+      const list = sessions.filter(s=>{
+        if(filterSubject.value && s.subject!==filterSubject.value) return false;
+        if(filterTab==='live') return s.state==='live';
+        if(filterTab==='upcoming') return s.state==='scheduled';
+        if(filterTab==='recordings') return s.state==='recorded';
+        if(filterTab==='my') return s.isMine;
+        return true;
+      });
+      if(!list.length) { sessionsList.innerHTML = '<div class="p-6 bg-white rounded-lg shadow text-gray-600">No sessions found.</div>'; return; }
+      list.forEach(s=>{
+        const card = document.createElement('div');
+        card.className = 'p-4 bg-white rounded-lg shadow flex items-center justify-between card-hover';
+        card.innerHTML = `<div class="flex items-center gap-4"><div class="w-12 h-12 flex items-center justify-center rounded-full bg-indigo-50 text-indigo-600 font-bold">${s.subject.charAt(0)}</div>
+          <div>
+            <div class="font-semibold">${escapeHtml(s.title)}</div>
+            <div class="text-sm text-gray-600">${s.subject} • ${s.teacher.name} • ${s.duration}m</div>
+          </div></div>
+          <div class="flex items-center gap-2">
+            ${s.state==='live' ? '<span class="text-green-600 font-semibold mr-2">Live</span>' : (s.state==='scheduled' ? '<span class="text-yellow-600 font-semibold mr-2">Upcoming</span>' : '<span class="text-gray-600 font-semibold mr-2">Recorded</span>')}
+            <button class="px-3 py-1 rounded bg-gray-100" data-action="detail" data-id="${s.id}">Details</button>
+            <button class="px-3 py-1 rounded bg-green-500 text-white" data-action="join" data-id="${s.id}">Join</button>
+          </div>`;
+        // detail click pivot
+        sessionsList.appendChild(card);
+      });
+    }
+
+    function renderUpcomingMini(){ upcomingList.innerHTML=''; const up = sessions.filter(s=>s.state==='scheduled').slice(0,5); up.forEach(s=>{ const li=document.createElement('li'); li.textContent = `${s.title} • ${new Date(s.start).toLocaleString()}`; upcomingList.appendChild(li); }); }
+
+    // Helpers
+    function escapeHtml(s){ return (s+'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+    // Tab handling
+    document.querySelectorAll('.tab-btn').forEach(btn=> btn.addEventListener('click', ()=>{
+      document.querySelectorAll('.tab-btn').forEach(b=> b.setAttribute('aria-selected','false'));
+      btn.setAttribute('aria-selected','true');
+      const tab = btn.dataset.tab;
+      renderSessions(tab);
+    }));
+
+    // Global actions
+    document.body.addEventListener('click', (e)=>{
+      const a = e.target.closest('button[data-action]');
+      if(!a) return;
+      const id = Number(a.dataset.id);
+      const action = a.dataset.action;
+      const s = sessions.find(x=>x.id===id);
+      if(action==='join' && s) joinFlow(s);
+      if(action==='detail' && s) openDetail(s);
+    });
+
+    function joinFlow(s){ // open in new tab or show mini-player
+      window.open(s.joinUrl, '_blank');
+      showMiniPlayer(s);
+    }
+
+    // Detail slide-over
+    const slideOver = document.getElementById('slideOver');
+    function openDetail(s){ document.getElementById('detailTitle').textContent = s.title; document.getElementById('detailMeta').textContent = `${s.teacher.name} • ${s.subject} • ${s.duration}m`; document.getElementById('detailDescription').textContent = `Starts: ${formatTime(s.start)}\nMode: ${s.mode}`; const mat = document.getElementById('detailMaterials'); mat.innerHTML=''; s.materials.forEach(m=>{ const a=document.createElement('a'); a.href=m.url; a.className='block text-sm text-blue-600'; a.textContent = m.name; mat.appendChild(a); }); document.getElementById('detailJoin').href = s.joinUrl; slideOver.classList.add('open'); slideOver.setAttribute('aria-hidden','false'); }
+    document.getElementById('detailClose').addEventListener('click', ()=>{ slideOver.classList.remove('open'); slideOver.setAttribute('aria-hidden','true'); });
+    document.getElementById('detailCopy').addEventListener('click', ()=>{ const url = location.origin + '/' + document.getElementById('detailJoin').getAttribute('href'); navigator.clipboard?.writeText(url); alert('Link copied'); });
+
+    // Mini player
+    function showMiniPlayer(s){ const mini = document.getElementById('miniPlayer'); document.getElementById('miniTitle').textContent = `Live: ${s.title}`; document.getElementById('miniTeacher').textContent = s.teacher.name; mini.classList.remove('hidden'); }
+    </script>
+      <script>
+      // Listen for background updates
+      window.addEventListener('userDataUpdated', (event) => {
+        const user = event.detail;
+        if (user) {
+          const fullName = user.displayName || 'Student';
+          const name = fullName.split(' ')[0];
+          const level = (user.profile?.level || '').startsWith('SS') ? user.profile.level : 'SS 3';
+          const initials = getInitials(fullName);
+
+          // Update heading
+          const heading = document.querySelector('h1');
+          if (heading) heading.textContent = `${name}'s Live Sessions`;
+
+          // Update sidebar elements
+          const userName = document.getElementById('userName');
+          if (userName) userName.textContent = name;
+          const userLevel = document.getElementById('userLevel');
+          if (userLevel) userLevel.textContent = level;
+
+          // Update topbar elements
+          const topName = document.getElementById('topName');
+          if (topName) topName.textContent = fullName;
+          const topLevel = document.getElementById('topLevel');
+          if (topLevel) topLevel.textContent = level;
+
+          // Update student info in session details
+          document.querySelectorAll('.user-fullname').forEach(el => {
+            el.textContent = fullName;
+          });
+          document.querySelectorAll('.user-firstname').forEach(el => {
+            el.textContent = name;
+          });
+          document.querySelectorAll('.user-level').forEach(el => {
+            el.textContent = level;
+          });
+
+          // Update avatars with user photo or initials
+          const avatarUrl = user.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(initials)}&background=2563eb&color=fff&size=128`;
+          ['avatar-sm', 'topAvatar', 'session-avatar'].forEach(id => {
+            const avatar = document.getElementById(id);
+            if (avatar) avatar.setAttribute('src', avatarUrl);
+          });
+
+          // Update notification count
+          if (user.unreadNotifications) {
+            const notifCount = document.getElementById('notifCount');
+            if (notifCount) notifCount.textContent = user.unreadNotifications.length;
+          }
+        }
+      });
+
+      // Sidebar toggle (consolidated)
+      (function setupSidebarToggle(){
+        const sidebar = document.getElementById('sidebar');
+        const mainContent = document.getElementById('main-content');
+        const toggleButton = document.getElementById('toggleSidebar');
+        const marginClasses = ['ml-64', 'md:ml-72', 'lg:ml-80'];
+
+        if (!sidebar || !mainContent) return;
+
+        // initial state
+        if (window.innerWidth < 1024) {
+          sidebar.classList.add('-translate-x-full');
+          mainContent.classList.remove(...marginClasses);
+        } else {
+          sidebar.classList.remove('-translate-x-full');
+          mainContent.classList.add(...marginClasses);
+        }
+
+        if (toggleButton && !toggleButton.dataset.hasToggle) {
+          toggleButton.addEventListener('click', (e) => {
+            e.stopPropagation();
+            sidebar.classList.toggle('-translate-x-full');
+            if (sidebar.classList.contains('-translate-x-full')) mainContent.classList.remove(...marginClasses); else mainContent.classList.add(...marginClasses);
+          });
+          toggleButton.dataset.hasToggle = '1';
+        }
+
+        mainContent.addEventListener('click', () => {
+          if (window.innerWidth < 1024 && !sidebar.classList.contains('-translate-x-full')) {
+            sidebar.classList.add('-translate-x-full');
+            mainContent.classList.remove(...marginClasses);
+          }
+        });
+
+        // sync on resize
+        let lastIsDesktop = window.innerWidth >= 1024;
+        window.addEventListener('resize', () => {
+          const isDesktop = window.innerWidth >= 1024;
+          if (isDesktop !== lastIsDesktop) {
+            lastIsDesktop = isDesktop;
+            if (isDesktop) {
+              sidebar.classList.remove('-translate-x-full');
+              mainContent.classList.add(...marginClasses);
+            } else {
+              sidebar.classList.add('-translate-x-full');
+              mainContent.classList.remove(...marginClasses);
+            }
+          }
+        });
+      })();
+    document.getElementById('miniClose').addEventListener('click', ()=>{ document.getElementById('miniPlayer').classList.add('hidden'); });
+
+    // Quick join (next session)
+    quickJoin.addEventListener('click', ()=>{ const next = sessions.find(s=>s.state==='live') || sessions.find(s=>s.state==='scheduled'); if(next) joinFlow(next); else alert('No session to join'); });
+
+    // Countdown for next scheduled session
+    function updateNext(){ const next = sessions.filter(s=>s.state==='scheduled').sort((a,b)=> new Date(a.start)-new Date(b.start))[0]; if(!next){ nextSessionTitle.textContent='—'; nextCountdown.textContent='No upcoming'; return; } nextSessionTitle.textContent = `${next.title} • ${next.subject}`; let secs = timeUntil(next.start); nextCountdown.textContent = formatCountdown(secs); }
+    function formatCountdown(secs){ if(secs<=0) return 'Starting soon'; const h=Math.floor(secs/3600); const m=Math.floor((secs%3600)/60); const s=secs%60; return `${h}h ${m}m ${s}s`; }
+    setInterval(()=>{ sessions.forEach(s=>{ if(s.state==='scheduled' && new Date(s.start) <= new Date()){ s.state='live'; } }); renderSessions(document.querySelector('.tab-btn[aria-selected="true"]').dataset.tab || 'live'); updateNext(); renderUpcomingMini(); }, 1000);
+
+    // Filters
+    filterSubject.addEventListener('change', ()=> renderSessions(document.querySelector('.tab-btn[aria-selected="true"]').dataset.tab || 'live'));
+
+    // Keyboard shortcut: J to join first live
+    window.addEventListener('keydown', (e)=>{ if(e.key.toLowerCase()==='j'){ const live = sessions.find(s=>s.state==='live'); if(live) joinFlow(live); } });
+
+    // Boot
+    renderSessions('live'); renderUpcomingMini(); updateNext();
+
+  </script>
+  <script type="module">
+    import { config } from '../js/config.js';
+    import { initSupabase } from '../js/supabase-client.js';
+    const supabase = initSupabase(config.supabase.url, config.supabase.anonKey);
+    function setText(id, text) { const el = document.getElementById(id); if (el) el.textContent = text; }
+    function setImage(id, url) { const el = document.getElementById(id); if (el) el.src = url; }
+    const sidebar = document.getElementById('sidebar');
+    const mainContent = document.getElementById('main-content');
+    const toggleBtn = document.getElementById('toggleSidebar');
+    const marginClasses = ['ml-64', 'md:ml-72', 'lg:ml-80'];
+    if (window.innerWidth < 1024) { sidebar.classList.add('hide'); mainContent.classList.remove(...marginClasses); } else { sidebar.classList.remove('hide'); mainContent.classList.add(...marginClasses); }
+    if (toggleBtn) toggleBtn.addEventListener('click', (e) => { e.stopPropagation(); sidebar.classList.toggle('hide'); if (sidebar.classList.contains('hide')) { mainContent.classList.remove(...marginClasses); } else { mainContent.classList.add(...marginClasses); } });
+    let lastIsDesktop = window.innerWidth >= 1024;
+    window.addEventListener('resize', () => { const isDesktop = window.innerWidth >= 1024; if (isDesktop !== lastIsDesktop) { lastIsDesktop = isDesktop; if (isDesktop) { sidebar.classList.remove('hide'); mainContent.classList.add(...marginClasses); } else { sidebar.classList.add('hide'); mainContent.classList.remove(...marginClasses); } } });
+    supabase.auth.onAuthStateChange(async (event, session) => {
+      if (!session || !session.user) { window.location.href = '../general/login.html'; return; }
+      if (!session.user.email_confirmed_at) { alert('Please verify your email first.'); await supabase.auth.signOut(); window.location.href = '../general/login.html'; return; }
+      const { data: profile } = await supabase.from('profiles').select('*').eq('id', session.user.id).single();
+      if (profile) { const displayName = profile.full_name || session.user.email?.split('@')[0] || 'Student'; setText('userName', displayName.split(' ')[0]); setText('topName', displayName); if (profile.avatar_url) { setImage('avatar-sm', profile.avatar_url); setImage('topAvatar', profile.avatar_url); } if (profile.level) { setText('userLevel', profile.level); setText('topLevel', profile.level); } }
+    });
+  </script>
+</body>
+</html>

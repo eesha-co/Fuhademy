@@ -1,0 +1,28 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "Q37: Three 4Ω resistors connected in parallel have 3 potential | Diagram: no\nQ38: In the diagram above, a 200 W bulb is lighted by a 240 V a.c | Diagram: yes\nQ39: Power supply is transmitted at a very high voltage and low | Diagram: no\nQ40: In the diagram above, if the south-poles of two magnets | Diagram: yes",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1774106510,
+  "id": "20260321232145b9c35946e2d24060",
+  "model": "glm-4.6v",
+  "object": "chat.completion",
+  "request_id": "20260321232145b9c35946e2d24060",
+  "usage": {
+    "completion_tokens": 91,
+    "completion_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "prompt_tokens": 5065,
+    "prompt_tokens_details": {
+      "cached_tokens": 4
+    },
+    "total_tokens": 5156
+  }
+}

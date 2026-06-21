@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mathematics - Polynomials</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    @keyframes fadeIn { from { opacity: 0 } to { opacity: 1 } }
+    .card-glow { box-shadow: 0 6px 18px rgba(99,102,241,0.06); animation: fadeIn 0.45s ease; }
+    .accent-gradient { background: linear-gradient(90deg,#6366f1,#06b6d4); }
+    .step-badge { background: rgba(99,102,241,0.08); color:#3730a3; padding:.25rem .5rem; border-radius:.5rem; font-weight:600; display:inline-block; width:24px; height:24px; text-align:center; font-size:.75rem }
+    .accordion-content { max-height:0; overflow:hidden; transition: max-height .28s ease }
+    .accordion-content.open { max-height:900px }
+  </style>
+</head>
+<body class="bg-gray-100 font-sans">
+  <header class="accent-gradient text-white sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
+      <a href="../algebraic-foundations.html" class="flex items-center gap-4">
+        <div class="p-2 bg-white/20 rounded-lg"><i class="fas fa-shapes"></i></div>
+        <div>
+          <div class="font-semibold text-lg">Polynomials</div>
+          <div class="text-xs opacity-80">Degree, types, operations, and factoring</div>
+        </div>
+      </a>
+      <div class="flex items-center gap-4">
+        <div class="text-sm opacity-90">Progress: <span id="progress">0%</span></div>
+        <a href="../mathematics.html" class="text-white/90 hover:text-white text-sm">Back to Math</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-4 py-8">
+    <div class="grid lg:grid-cols-4 gap-8">
+      <aside class="lg:col-span-1">
+        <div class="bg-white p-5 rounded-xl card-glow sticky top-24">
+          <h3 class="font-semibold mb-3">Contents</h3>
+          <ul class="space-y-2 text-sm">
+            <li><a href="#definition" class="hover:text-indigo-600 flex items-center gap-2"><span class="step-badge">1</span>Definition</a></li>
+            <li><a href="#methods" class="hover:text-indigo-600 flex items-center gap-2"><span class="step-badge">2</span>Key Methods</a></li>
+            <li><a href="#examples" class="hover:text-indigo-600 flex items-center gap-2"><span class="step-badge">3</span>Examples</a></li>
+            <li><a href="#practice" class="hover:text-indigo-600 flex items-center gap-2"><span class="step-badge">4</span>Practice</a></li>
+          </ul>
+        </div>
+      </aside>
+
+      <section class="lg:col-span-3 space-y-6">
+        <article id="definition" class="bg-white p-6 rounded-xl card-glow">
+          <div class="flex items-start gap-4">
+            <div class="text-3xl text-indigo-600 mt-1"><i class="fas fa-info-circle"></i></div>
+            <div>
+              <h2 class="text-2xl font-semibold mb-2">What is a Polynomial?</h2>
+              <p class="text-gray-700">A <strong>polynomial</strong> is a math expression made by adding, subtracting, or multiplying numbers and variables (like x or y), where the variables have whole number powers (exponents).<br><br>
+                <strong>Examples:</strong> <br>
+                <span class="bg-indigo-50 px-2 py-1 rounded">2x + 3</span> (2 terms)<br>
+                <span class="bg-indigo-50 px-2 py-1 rounded">x² - 4x + 7</span> (3 terms)<br>
+                <span class="bg-indigo-50 px-2 py-1 rounded">5y³ + 2y - 1</span> (3 terms)
+              </p>
+              <div class="mt-3 text-sm bg-blue-50 p-2 rounded border-l-4 border-blue-400">
+                <strong>Tip:</strong> Each part separated by + or - is called a <em>term</em>. The highest power of the variable is called the <em>degree</em>.
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article id="methods" class="bg-white p-6 rounded-xl card-glow">
+          <div class="flex items-start gap-4">
+            <div class="text-3xl text-indigo-600 mt-1"><i class="fas fa-tools"></i></div>
+            <div class="w-full">
+              <h2 class="text-2xl font-semibold mb-3">Key Methods</h2>
+
+              <!-- Accordion: Degree & Types -->
+              <div class="border rounded-lg mb-3">
+                <button class="accordion-btn w-full text-left p-4 font-semibold flex justify-between items-center hover:bg-gray-50" data-accordion="m1">
+                  <span>1. Degree & Types</span>
+                  <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="accordion-content" id="m1">
+                  <div class="p-4 pt-0 text-gray-700 bg-gray-50">
+                    <p class="mb-2"><strong>Degree</strong> is the highest exponent of the variable. Example: x³ + 2x² + 1 has degree 3.</p>
+                    <p class="mb-2"><strong>Types:</strong> <br>
+                      <span class="bg-indigo-50 px-2 py-1 rounded">Monomial</span> (1 term, e.g. 5x)<br>
+                      <span class="bg-indigo-50 px-2 py-1 rounded">Binomial</span> (2 terms, e.g. x + 2)<br>
+                      <span class="bg-indigo-50 px-2 py-1 rounded">Trinomial</span> (3 terms, e.g. x² + x + 1)<br>
+                      <span class="bg-indigo-50 px-2 py-1 rounded">Polynomial</span> (any number of terms)
+                    </p>
+                    <div class="mt-2 text-sm bg-blue-50 p-2 rounded border-l-4 border-blue-400">To find the degree, look for the biggest exponent on any variable.</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Accordion: Addition & Subtraction -->
+              <div class="border rounded-lg mb-3">
+                <button class="accordion-btn w-full text-left p-4 font-semibold flex justify-between items-center hover:bg-gray-50" data-accordion="m2">
+                  <span>2. Addition & Subtraction</span>
+                  <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="accordion-content" id="m2">
+                  <div class="p-4 pt-0 text-gray-700 bg-gray-50">
+                    <p class="mb-2">Add or subtract polynomials by combining like terms. Example: (2x + 3) + (x - 5) = 3x - 2.</p>
+                                      <div class="mt-2 text-sm bg-blue-50 p-2 rounded border-l-4 border-blue-400">Like terms have the same variable and exponent. Add/subtract their numbers (coefficients).</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Accordion: Multiplication -->
+              <div class="border rounded-lg mb-3">
+                <button class="accordion-btn w-full text-left p-4 font-semibold flex justify-between items-center hover:bg-gray-50" data-accordion="m3">
+                  <span>3. Multiplication</span>
+                  <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="accordion-content" id="m3">
+                  <div class="p-4 pt-0 text-gray-700 bg-gray-50">
+                    <p class="mb-2">Multiply each term in one polynomial by each term in the other. Example: (x + 2)(x + 3) = x² + 5x + 6.</p>
+                                      <div class="mt-2 text-sm bg-blue-50 p-2 rounded border-l-4 border-blue-400">Tip: Use FOIL for multiplying two binomials: First, Outer, Inner, Last.</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Accordion: Factoring -->
+              <div class="border rounded-lg mb-3">
+                <button class="accordion-btn w-full text-left p-4 font-semibold flex justify-between items-center hover:bg-gray-50" data-accordion="m4">
+                  <span>4. Factoring</span>
+                  <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="accordion-content" id="m4">
+                  <div class="p-4 pt-0 text-gray-700 bg-gray-50">
+                    <p class="mb-2">Rewrite a polynomial as a product of simpler polynomials. Example: x² - 9 = (x + 3)(x - 3).</p>
+                                      <div class="mt-2 text-sm bg-blue-50 p-2 rounded border-l-4 border-blue-400">Factoring helps you solve equations and find roots. Look for patterns like difference of squares or common factors.</div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </article>
+
+        <article id="examples" class="bg-white p-6 rounded-xl card-glow">
+          <div class="flex items-start gap-4">
+            <div class="text-3xl text-indigo-600 mt-1"><i class="fas fa-lightbulb"></i></div>
+            <div>
+              <h2 class="text-2xl font-semibold mb-3">Worked Examples (step-by-step)</h2>
+              <div class="grid sm:grid-cols-2 gap-4 text-gray-700">
+
+                <div class="p-4 bg-gray-50 rounded">
+                  <div class="font-semibold">Example 1: Add (2x + 3) + (x - 5)</div>
+                  <div class="mt-2 text-sm">
+                    <ol class="list-decimal list-inside ml-3 space-y-1">
+                      <li>Write both polynomials: (2x + 3) and (x - 5)</li>
+                      <li>Find like terms: 2x and x (both have x)</li>
+                      <li>Add their numbers: 2 + 1 = 3 → 3x</li>
+                      <li>Add constants: 3 + (-5) = -2</li>
+                      <li>Final answer: <span class="bg-green-50 px-2 py-1 rounded">3x - 2</span></li>
+                    </ol>
+                  </div>
+                </div>
+
+                <div class="p-4 bg-gray-50 rounded">
+                  <div class="font-semibold">Example 2: Multiply (x + 2)(x + 3)</div>
+                  <div class="mt-2 text-sm">
+                    <ol class="list-decimal list-inside ml-3 space-y-1">
+                      <li>Multiply each part:
+                        <ul class="list-disc ml-4">
+                          <li>First: x·x = x²</li>
+                          <li>Outer: x·3 = 3x</li>
+                          <li>Inner: 2·x = 2x</li>
+                          <li>Last: 2·3 = 6</li>
+                        </ul>
+                      </li>
+                      <li>Add all terms: x² + 3x + 2x + 6</li>
+                      <li>Combine like terms: 3x + 2x = 5x</li>
+                      <li>Final answer: <span class="bg-green-50 px-2 py-1 rounded">x² + 5x + 6</span></li>
+                    </ol>
+                  </div>
+                </div>
+
+                <div class="p-4 bg-gray-50 rounded">
+                  <div class="font-semibold">Example 3: Find degree of 4x³ + 2x² - x + 7</div>
+                  <div class="mt-2 text-sm">
+                    <ol class="list-decimal list-inside ml-3 space-y-1">
+                      <li>List all exponents: x³ (3), x² (2), x (1), constant (0)</li>
+                      <li>Find the biggest: 3</li>
+                      <li>Final answer: <span class="bg-green-50 px-2 py-1 rounded">Degree is 3</span></li>
+                    </ol>
+                  </div>
+                </div>
+
+                <div class="p-4 bg-gray-50 rounded">
+                  <div class="font-semibold">Example 4: Factor x² - 16</div>
+                  <div class="mt-2 text-sm">
+                    <ol class="list-decimal list-inside ml-3 space-y-1">
+                      <li>Check: Is each part a perfect square? x² (yes), 16 (yes, 4²)</li>
+                      <li>Use the pattern: a² - b² = (a + b)(a - b)</li>
+                      <li>Here: a = x, b = 4</li>
+                      <li>Final answer: <span class="bg-green-50 px-2 py-1 rounded">(x + 4)(x - 4)</span></li>
+                    </ol>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article id="practice" class="bg-white p-6 rounded-xl card-glow">
+          <div class="flex items-start gap-4">
+            <div class="text-3xl text-indigo-600 mt-1"><i class="fas fa-pencil-alt"></i></div>
+            <div class="w-full">
+              <h2 class="text-2xl font-semibold mb-3">Practice Problems</h2>
+              <p class="text-gray-700 mb-4">Type answers and press Check. Hints available.</p>
+
+              <div class="grid md:grid-cols-2 gap-4">
+                <div class="p-4 border rounded-md bg-gray-50">
+                  <div class="font-semibold">1) Add polynomials</div>
+                  <div class="font-mono text-indigo-700">(3x + 2) + (x + 5)</div>
+                  <input id="p1" class="mt-3 p-2 border rounded w-full" placeholder="e.g., 4x+7" />
+                  <div class="mt-2 flex gap-2"><button id="c1" class="px-3 py-1 bg-indigo-600 text-white rounded text-sm">Check</button><button id="h1" class="px-3 py-1 text-xs bg-white border rounded">Hint</button></div>
+                  <div id="fb1" class="mt-3 text-sm"></div>
+                </div>
+
+                <div class="p-4 border rounded-md bg-gray-50">
+                  <div class="font-semibold">2) Multiply polynomials</div>
+                  <div class="font-mono text-indigo-700">(x + 1)(x + 4)</div>
+                  <input id="p2" class="mt-3 p-2 border rounded w-full" placeholder="e.g., x^2+5x+4" />
+                  <div class="mt-2 flex gap-2"><button id="c2" class="px-3 py-1 bg-indigo-600 text-white rounded text-sm">Check</button><button id="h2" class="px-3 py-1 text-xs bg-white border rounded">Hint</button></div>
+                  <div id="fb2" class="mt-3 text-sm"></div>
+                </div>
+
+                <div class="p-4 border rounded-md bg-gray-50">
+                  <div class="font-semibold">3) Find degree</div>
+                  <div class="font-mono text-indigo-700">2x^4 + 3x^2 - 7</div>
+                  <input id="p3" class="mt-3 p-2 border rounded w-full" placeholder="e.g., 4" />
+                  <div class="mt-2 flex gap-2"><button id="c3" class="px-3 py-1 bg-indigo-600 text-white rounded text-sm">Check</button><button id="h3" class="px-3 py-1 text-xs bg-white border rounded">Hint</button></div>
+                  <div id="fb3" class="mt-3 text-sm"></div>
+                </div>
+
+                <div class="p-4 border rounded-md bg-gray-50">
+                  <div class="font-semibold">4) Factor polynomial</div>
+                  <div class="font-mono text-indigo-700">x^2 - 25</div>
+                  <input id="p4" class="mt-3 p-2 border rounded w-full" placeholder="e.g., (x+5)(x-5)" />
+                  <div class="mt-2 flex gap-2"><button id="c4" class="px-3 py-1 bg-indigo-600 text-white rounded text-sm">Check</button><button id="h4" class="px-3 py-1 text-xs bg-white border rounded">Hint</button></div>
+                  <div id="fb4" class="mt-3 text-sm"></div>
+                </div>
+              </div>
+
+              <div class="mt-6 pt-4 border-t">
+                <h3 class="font-semibold mb-2">Independent Practice</h3>
+                <p class="text-sm text-gray-600 mb-2">Try this challenge:</p>
+                <label class="block text-sm">Problem: <code class="font-mono">(x + 2)(x - 2) + x^2</code></label>
+                <div class="mt-2 flex gap-3">
+                  <input id="ind" class="p-2 border rounded w-60" placeholder="Final answer" />
+                  <button id="checkInd" class="px-4 py-2 bg-green-600 text-white rounded">Check</button>
+                </div>
+                <div id="fbInd" class="mt-3 text-sm"></div>
+                <button id="showIndSol" class="text-xs mt-2 text-indigo-600 hover:text-indigo-700">Show solution</button>
+                <div id="indSol" class="mt-3 hidden p-3 bg-gray-50 rounded text-sm"></div>
+              </div>
+
+            </div>
+          </div>
+        </article>
+      </section>
+    </div>
+  </main>
+
+  <button id="quizBtn" class="fixed bottom-8 right-8 z-50 bg-indigo-600 text-white px-5 py-3 rounded-full shadow-lg hover:bg-indigo-700 flex items-center gap-2"><i class="fas fa-bolt"></i> Quiz</button>
+
+  <div id="quizModal" class="hidden fixed inset-0 bg-black/40 z-50 flex items-center justify-center">
+    <div class="bg-white rounded-xl shadow-2xl max-w-lg w-full p-6 relative">
+      <button id="closeQuiz" class="absolute top-3 right-4 text-gray-400 hover:text-gray-700 text-2xl">&times;</button>
+      <div id="quizContent"></div>
+    </div>
+  </div>
+
+  <footer class="max-w-7xl mx-auto px-4 py-6 text-sm text-gray-500">Polynomials — interactive lesson</footer>
+
+  <script>
+    // Accordion
+    document.querySelectorAll('.accordion-btn').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const id = btn.dataset.accordion;
+        const el = document.getElementById(id);
+        el.classList.toggle('open');
+      });
+    });
+
+    // Progress tracking
+    const progressEl = document.getElementById('progress');
+    const done = {p1:false,p2:false,p3:false,p4:false,ind:false};
+    function setDone(k){ if(!done[k]){ done[k]=true; const total=Object.keys(done).length; const c=Object.values(done).filter(Boolean).length; progressEl.textContent = Math.round((c/total)*100)+'%'; }}
+
+    function norm(s){ return (s||'').toString().trim().replace(/\s+/g,'').toLowerCase(); }
+
+    // Problem checks
+    document.getElementById('c1').addEventListener('click', ()=>{
+      const v = norm(document.getElementById('p1').value);
+      const fb = document.getElementById('fb1');
+      if(v==='4x+7' || v==='7+4x' || v==='4x+7=') { fb.innerHTML = '<span style="color:#16a34a">Correct — 4x + 7</span>'; setDone('p1'); } else { fb.innerHTML = '<span style="color:#e11d48">Try again — add like terms</span>'; }
+    });
+    document.getElementById('h1').addEventListener('click', ()=> alert('Hint: Add the x terms and the numbers separately.'));
+
+    document.getElementById('c2').addEventListener('click', ()=>{
+      const v = norm(document.getElementById('p2').value);
+      const fb = document.getElementById('fb2');
+      if(v==='x^2+5x+4' || v==='x2+5x+4' || v==='x^2+5x+4=') { fb.innerHTML = '<span style="color:#16a34a">Correct — x² + 5x + 4</span>'; setDone('p2'); } else { fb.innerHTML = '<span style="color:#e11d48">Try again — multiply each term</span>'; }
+    });
+    document.getElementById('h2').addEventListener('click', ()=> alert('Hint: Use FOIL: First, Outer, Inner, Last.'));
+
+    document.getElementById('c3').addEventListener('click', ()=>{
+      const v = norm(document.getElementById('p3').value);
+      const fb = document.getElementById('fb3');
+      if(v==='4') { fb.innerHTML = '<span style="color:#16a34a">Correct — degree is 4</span>'; setDone('p3'); } else { fb.innerHTML = '<span style="color:#e11d48">Try again — look for highest exponent</span>'; }
+    });
+    document.getElementById('h3').addEventListener('click', ()=> alert('Hint: The degree is the highest power of x.'));
+
+    document.getElementById('c4').addEventListener('click', ()=>{
+      const v = norm(document.getElementById('p4').value);
+      const fb = document.getElementById('fb4');
+      const ok = ['(x+5)(x-5)','(x-5)(x+5)'];
+      if(ok.includes(v) || ok.includes(v.replace(/\s+/g,''))){ fb.innerHTML = '<span style="color:#16a34a">Correct — (x+5)(x-5)</span>'; setDone('p4'); } else { fb.innerHTML = '<span style="color:#e11d48">Try again — difference of squares</span>'; }
+    });
+    document.getElementById('h4').addEventListener('click', ()=> alert('Hint: Use the difference of squares pattern.'));
+
+    // Independent
+    document.getElementById('checkInd').addEventListener('click', ()=>{
+      const v = norm(document.getElementById('ind').value);
+      const fb = document.getElementById('fbInd');
+      if(v==='2x^2+2' || v==='2x2+2' || v==='2x^2+2=') { fb.innerHTML = '<span style="color:#16a34a">Correct — 2x² + 2</span>'; setDone('ind'); } else { fb.innerHTML = '<span style="color:#e11d48">Try again — expand and simplify</span>'; }
+    });
+    document.getElementById('showIndSol').addEventListener('click', ()=>{
+      const sol = document.getElementById('indSol'); sol.classList.remove('hidden'); sol.innerHTML = '<strong>Solution:</strong> (x+2)(x-2)+x^2 = x^2-4+x^2 = 2x^2-4';
+    });
+
+    // Quiz questions
+    const quizPool = [
+      {q:'Add: (2x+1)+(3x+4)', a:['5x+5']},
+      {q:'Multiply: (x+2)(x+1)', a:['x^2+3x+2','x2+3x+2']},
+      {q:'Find degree: 5x^3+2x-1', a:['3']},
+      {q:'Factor: x^2-36', a:['(x+6)(x-6)','(x-6)(x+6)']},
+      {q:'Subtract: (4x+5)-(2x+3)', a:['2x+2']},
+      {q:'Type: How many terms in x^2+2x+1?', a:['3']},
+      {q:'Is x^2+1 a binomial?', a:['yes','y']},
+      {q:'Expand: (x+3)^2', a:['x^2+6x+9','x2+6x+9']}
+    ];
+
+    let quizState = null;
+    function startQuiz(){
+      const pool = [...quizPool]; const sel=[]; for(let i=0;i<3;i++){ const idx=Math.floor(Math.random()*pool.length); sel.push(pool.splice(idx,1)[0]); }
+      quizState={q:sel, i:0, score:0, timer:20, id:null}; showQ(); document.getElementById('quizModal').classList.remove('hidden');
+    }
+    function showQ(){
+      const current = quizState.q[quizState.i];
+      document.getElementById('quizContent').innerHTML = `<div class="text-lg font-semibold mb-2">Question ${quizState.i+1} of ${quizState.q.length}</div><div class="mb-4">${current.q}</div><input id="qa" class="w-full p-3 border rounded mb-3" placeholder="Your answer"><button id="subq" class="w-full bg-indigo-600 text-white py-2 rounded">Submit</button><div id="qfb" class="mt-3"></div>`;
+      document.getElementById('subq').onclick = submitQ; quizState.timer=20; updateTimer(); quizState.id=setInterval(()=>{ quizState.timer--; updateTimer(); if(quizState.timer<=0){ clearInterval(quizState.id); submitQ(true); } },1000);
+    }
+    function updateTimer(){ const t=document.getElementById('qfb'); if(t) t.innerHTML = `<div class="text-xs text-gray-500">Time: ${quizState.timer}s</div>`; }
+    function submitQ(timeout){ clearInterval(quizState.id); const ans = norm(document.getElementById('qa').value||''); const cur = quizState.q[quizState.i]; const ok = cur.a.map(x=>norm(x)); let correct = ok.includes(ans); if(timeout) correct=false; const qfb=document.getElementById('qfb'); if(correct){ qfb.innerHTML = '<span style="color:#16a34a">Correct!</span>'; quizState.score++; } else { qfb.innerHTML = `<span style="color:#e11d48">Wrong — Answer: ${cur.a[0]}</span>`; } setTimeout(()=>{ quizState.i++; if(quizState.i<quizState.q.length) showQ(); else finishQuiz(); },1200); }
+    function finishQuiz(){ document.getElementById('quizContent').innerHTML = `<div class="text-2xl font-bold">Quiz complete</div><div class="mt-2">Score: ${quizState.score}/${quizState.q.length}</div><button id="tryQ" class="mt-4 w-full bg-indigo-600 text-white py-2 rounded">Try Again</button><button id="closeQ" class="mt-2 w-full bg-gray-200 py-2 rounded">Close</button>`; document.getElementById('tryQ').onclick = ()=>{ startQuiz(); }; document.getElementById('closeQ').onclick = ()=>{ document.getElementById('quizModal').classList.add('hidden'); } }
+
+    document.getElementById('quizBtn').addEventListener('click', startQuiz);
+    document.getElementById('closeQuiz').addEventListener('click', ()=> document.getElementById('quizModal').classList.add('hidden'));
+
+    // Enter key support for practice
+    ['p1','p2','p3','p4','ind'].forEach(id=>{ const el=document.getElementById(id); el&&el.addEventListener('keypress', e=>{ if(e.key==='Enter'){ if(id==='ind') document.getElementById('checkInd').click(); else document.getElementById('c'+id.slice(1)).click(); } }); });
+  </script>
+<!-- Topic Quiz System -->
+<script src="/js/topic-quiz-loader.js"></script>
+<script src="/js/topic-quiz-injector.js"></script>
+</body>
+</html><!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Polynomials | Mathematics</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style> body{font-family:Inter, sans-serif}.content-card{-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);background:rgba(255,255,255,0.95);border:1px solid rgba(255,255,255,0.2);} </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-indigo-50 to-purple-100 p-6">
+  <div class="max-w-3xl mx-auto">
+    <nav class="mb-4"><a href="index.html" class="text-blue-600">← Back to Algebraic Foundations</a></nav>
+    <article class="content-card rounded-lg p-6">
+      <h1 class="text-xl font-bold mb-2">Polynomials</h1>
+      <p class="text-gray-700 mb-4">Definitions: degree, leading coefficient; addition, subtraction, multiplication and basic division of polynomials.</p>
+
+      <h3 class="mt-4 font-semibold">Worked example</h3>
+      <p class="text-gray-700">Multiply: (x+2)(x-3) = x^2 - x - 6.</p>
+
+      <h3 class="mt-4 font-semibold">Practice</h3>
+      <ol class="list-decimal list-inside text-gray-700">
+        <li>Find degree of 4x^3 + x - 7.</li>
+        <li>Multiply: (2x+1)(x+3).</li>
+      </ol>
+
+      <h3 class="mt-3 font-semibold">Brief solutions</h3>
+      <ol class="list-decimal list-inside text-gray-700">
+        <li>Degree = 3.</li>
+        <li>2x^2 + 7x + 3.</li>
+      </ol>
+    </article>
+  </div>
+<!-- Topic Quiz System -->
+<script src="/js/topic-quiz-loader.js"></script>
+<script src="/js/topic-quiz-injector.js"></script>
+</body>
+</html>

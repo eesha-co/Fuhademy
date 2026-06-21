@@ -1,0 +1,28 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "Q16: Two metals P and Q of lengths | Diagram: no\nQ17: The density of a certain oil on | Diagram: no\nQ18: Heat is radiated by all hot | Diagram: no\nQ19: If a container is filled with ice | Diagram: no\nQ20: The small droplet of water | Diagram: no",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1774106444,
+  "id": "202603212320396d18d191868d44b6",
+  "model": "glm-4.6v",
+  "object": "chat.completion",
+  "request_id": "202603212320396d18d191868d44b6",
+  "usage": {
+    "completion_tokens": 76,
+    "completion_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "prompt_tokens": 5065,
+    "prompt_tokens_details": {
+      "cached_tokens": 4
+    },
+    "total_tokens": 5141
+  }
+}

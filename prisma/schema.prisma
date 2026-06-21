@@ -1,0 +1,130 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Post {
+  id        String   @id @default(cuid())
+  title     String
+  content   String?
+  published Boolean  @default(false)
+  authorId  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ============================================
+// STUDY TRACKING MODELS
+// ============================================
+
+// Subject definitions
+model Subject {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  slug        String   @unique
+  icon        String?
+  color       String?
+  description String?
+  topics      Topic[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// Topic definitions within subjects
+model Topic {
+  id          String   @id @default(cuid())
+  subjectId   String
+  subject     Subject  @relation(fields: [subjectId], references: [id])
+  name        String
+  slug        String
+  description String?
+  order       Int      @default(0)
+  duration    Int      @default(10) // estimated minutes to complete
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@unique([subjectId, slug])
+}
+
+// Study sessions - tracks time spent studying
+model StudySession {
+  id          String   @id @default(cuid())
+  userId      String
+  subjectId   String?
+  subject     String?  // subject name for quick access
+  topicId     String?
+  topic       String?  // topic name for quick access
+  activityType String  @default("reading") // reading, quiz, practice
+  durationMin Int      @default(0) // duration in minutes
+  startedAt   DateTime @default(now())
+  endedAt     DateTime?
+  createdAt   DateTime @default(now())
+}
+
+// Topic progress - tracks completion and quiz scores per topic
+model TopicProgress {
+  id              String   @id @default(cuid())
+  userId          String
+  subjectId       String
+  topicId         String
+  subject         String   // subject name
+  topic           String   // topic name
+  status          String   @default("not_started") // not_started, in_progress, completed
+  timeSpentMin    Int      @default(0) // total time spent on this topic
+  quizScore       Float?   // score percentage
+  quizAttempts    Int      @default(0)
+  quizBestScore   Float?
+  lastAccessedAt  DateTime?
+  completedAt     DateTime?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  @@unique([userId, topicId])
+}
+
+// Topic quizzes - stores quiz questions for topics
+model TopicQuiz {
+  id          String   @id @default(cuid())
+  topicId     String
+  question    String
+  optionA     String
+  optionB     String
+  optionC     String
+  optionD     String
+  correctAns  String   // A, B, C, or D
+  explanation String?
+  difficulty  String   @default("medium") // easy, medium, hard
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+}
+
+// Daily study stats - aggregated daily statistics
+model DailyStudyStats {
+  id              String   @id @default(cuid())
+  userId          String
+  date            String   // YYYY-MM-DD format
+  totalMinutes    Int      @default(0)
+  topicsStudied   Int      @default(0)
+  quizzesTaken    Int      @default(0)
+  avgQuizScore    Float?
+  subjects        String?  // comma-separated subject names
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  @@unique([userId, date])
+}

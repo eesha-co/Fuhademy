@@ -1,0 +1,91 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!--
+  Cordova / Capacitor config for PlanAlarm
+  =========================================
+  This config requests the SYSTEM_ALERT_WINDOW permission
+  needed for "Display Over Other Apps" on Android.
+
+  When converting your HTML app to a native Android app,
+  include this file and the following permissions will be requested:
+
+  - SYSTEM_ALERT_WINDOW: Display floating overlay on top of other apps
+  - WAKE_LOCK: Keep the device awake during alarms
+  - VIBRATE: Vibrate the phone when alarm triggers
+  - FOREGROUND_SERVICE: Run alarm checks in background
+  - POST_NOTIFICATIONS: Send notifications (Android 13+)
+  - SCHEDULE_EXACT_ALARM: Fire alarms at exact times (Android 12+)
+  - USE_EXACT_ALARM: Exact alarm permission (Android 13+)
+
+  IMPORTANT: After installing the native app, users must manually grant
+  "Display over other apps" in:
+  Settings > Apps > PlanAlarm > Display over other apps > Allow
+-->
+<widget id="com.planalarm.app" version="1.0.0" xmlns="http://www.w3.org/ns/widgets">
+    <name>PlanAlarm</name>
+    <description>Your smart daily plan manager with persistent alarms</description>
+    <author email="dev@planalarm.app">PlanAlarm</author>
+
+    <content src="index.html" />
+    <access origin="*" />
+    <allow-navigation href="*" />
+    <allow-intent href="http://*/*" />
+    <allow-intent href="https://*/*" />
+
+    <preference name="DisallowOverscroll" value="true" />
+    <preference name="Orientation" value="portrait" />
+    <preference name="BackgroundColor" value="#0x0f0f23" />
+    <preference name="StatusBarBackgroundColor" value="#0f0f23" />
+    <preference name="StatusBarStyle" value="lightcontent" />
+    <preference name="AndroidWindowSplashScreenBackground" value="#0f0f23" />
+    <preference name="AndroidWindowSplashScreenAnimatedIcon" value="" />
+    <preference name="KeepRunning" value="true" />
+    <preference name="AndroidPersistentFileLocation" value="Compatibility" />
+
+    <platform name="android">
+        <!-- Display Over Other Apps - CRITICAL for floating overlay -->
+        <config-file target="AndroidManifest.xml" parent="/manifest">
+            <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+            <uses-permission android:name="android.permission.WAKE_LOCK" />
+            <uses-permission android:name="android.permission.VIBRATE" />
+            <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+            <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
+            <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+            <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+            <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
+            <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+            <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
+
+            <!-- Foreground service for alarm monitoring -->
+            <service
+                android:name=".AlarmService"
+                android:enabled="true"
+                android:exported="false"
+                android:foregroundServiceType="specialUse">
+                <property android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                    android:value="Alarm monitoring service for PlanAlarm" />
+            </service>
+
+            <!-- Boot receiver to restart alarm service after reboot -->
+            <receiver
+                android:name=".BootReceiver"
+                android:enabled="true"
+                android:exported="true">
+                <intent-filter>
+                    <action android:name="android.intent.action.BOOT_COMPLETED" />
+                    <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+                </intent-filter>
+            </receiver>
+        </config-file>
+
+        <!-- Request overlay permission at runtime -->
+        <config-file target="config.xml" parent="/*">
+            <preference name="android-compileSdkVersion" value="34" />
+            <preference name="android-targetSdkVersion" value="34" />
+            <preference name="android-minSdkVersion" value="24" />
+        </config-file>
+    </platform>
+
+    <platform name="ios">
+        <preference name="AllowInlineMediaPlayback" value="true" />
+    </platform>
+</widget>

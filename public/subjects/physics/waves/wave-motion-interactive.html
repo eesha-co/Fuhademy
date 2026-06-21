@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wave Motion - Interactive Learning</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <style>
+    .step-active { background-color: #2563eb; color: white; }
+    .step-inactive { background-color: #e5e7eb; color: #374151; }
+    @keyframes wave {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-100%); }
+    }
+    .animate-wave { animation: wave 10s linear infinite; }
+  </style>
+</head>
+<body class="bg-gray-50 min-h-screen font-inter">
+  <nav class="bg-blue-700 p-4">
+    <div class="max-w-7xl mx-auto px-4 flex justify-between items-center">
+      <a href="../index.html" class="text-white hover:text-blue-100 flex items-center gap-2">
+        <i class="fas fa-arrow-left"></i>
+        <span>Back to Physics</span>
+      </a>
+      <h1 class="text-white text-xl font-bold">Wave Motion</h1>
+    </div>
+  </nav>
+
+  <div class="flex">
+    <!-- Sidebar Steps -->
+    <aside class="w-64 bg-white shadow-md p-4 min-h-screen">
+      <h2 class="text-lg font-semibold mb-4">Learning Steps</h2>
+      <ul id="stepsList" class="space-y-2"></ul>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 p-8">
+      <div id="progressBar" class="mb-6 h-3 bg-gray-200 rounded-full overflow-hidden">
+        <div id="progress" class="h-full bg-blue-600 transition-all" style="width: 0%"></div>
+      </div>
+
+      <div id="stepContent" class="bg-white rounded-xl shadow-sm p-6 min-h-[300px]"></div>
+
+      <!-- Wave Simulation Canvas -->
+      <div id="simulationContainer" class="mt-6 bg-white rounded-xl shadow-sm p-6">
+        <h3 class="text-lg font-semibold mb-4">Interactive Wave Simulation</h3>
+        <canvas id="waveCanvas" class="w-full border rounded-lg" height="200"></canvas>
+        <div class="mt-4 grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Amplitude</label>
+            <input type="range" id="amplitudeSlider" min="10" max="80" value="40" class="w-full">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Frequency</label>
+            <input type="range" id="frequencySlider" min="1" max="10" value="2" class="w-full">
+          </div>
+        </div>
+      </div>
+
+      <div class="flex justify-between mt-8">
+        <button id="prevBtn" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400" disabled>Previous</button>
+        <button id="nextBtn" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Next</button>
+      </div>
+    </main>
+  </div>
+
+  <!-- Quiz Modal -->
+  <div id="quizModal" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center hidden">
+    <div class="bg-white p-8 rounded-xl shadow-lg max-w-lg w-full">
+      <h3 class="text-xl font-bold mb-4">Check Your Understanding</h3>
+      <div id="quizContent"></div>
+      <div class="mt-6 flex justify-end gap-4">
+        <button id="closeQuiz" class="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300">Close</button>
+        <button id="submitQuiz" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Submit</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const topicData = {
+      title: "Wave Motion",
+      steps: [
+        {
+          title: "What is a Wave?",
+          content: `
+            <div class="prose max-w-none">
+              <p>A wave is a disturbance that transfers energy from one place to another without transferring matter. Think of waves in water - while the water moves up and down, it doesn't travel with the wave.</p>
+              <div class="my-4 p-4 bg-blue-50 rounded-lg">
+                <h4 class="font-semibold text-blue-900">Key Concepts:</h4>
+                <ul class="list-disc list-inside text-blue-800">
+                  <li>Energy Transfer</li>
+                  <li>No Mass Transfer</li>
+                  <li>Periodic Motion</li>
+                </ul>
+              </div>
+            </div>
+          `
+        },
+        {
+          title: "Wave Characteristics",
+          content: `
+            <div class="prose max-w-none">
+              <p>Every wave has specific characteristics that define its behavior:</p>
+              <ul>
+                <li><strong>Amplitude:</strong> The maximum displacement from equilibrium</li>
+                <li><strong>Wavelength:</strong> The distance between two consecutive peaks</li>
+                <li><strong>Frequency:</strong> The number of waves passing a point per second</li>
+                <li><strong>Period:</strong> The time taken for one complete oscillation</li>
+              </ul>
+              <p class="mt-4">Use the sliders below to experiment with amplitude and frequency!</p>
+            </div>
+          `
+        },
+        {
+          title: "Types of Waves",
+          content: `
+            <div class="prose max-w-none">
+              <h3>Two Main Types of Waves:</h3>
+              <div class="grid grid-cols-2 gap-4">
+                <div class="p-4 bg-blue-50 rounded-lg">
+                  <h4 class="font-semibold">Transverse Waves</h4>
+                  <p>Particles move perpendicular to wave direction</p>
+                  <p class="text-sm text-blue-600">Example: Light waves</p>
+                </div>
+                <div class="p-4 bg-green-50 rounded-lg">
+                  <h4 class="font-semibold">Longitudinal Waves</h4>
+                  <p>Particles move parallel to wave direction</p>
+                  <p class="text-sm text-green-600">Example: Sound waves</p>
+                </div>
+              </div>
+            </div>
+          `
+        }
+      ],
+      quiz: [
+        {
+          question: "What is the maximum displacement of a wave from its equilibrium position called?",
+          options: ["Wavelength", "Amplitude", "Frequency", "Period"],
+          correct: 1
+        },
+        {
+          question: "In a transverse wave, particles move _____ to the direction of wave propagation.",
+          options: ["parallel", "perpendicular", "at 45 degrees", "randomly"],
+          correct: 1
+        },
+        {
+          question: "Which type of wave requires a medium to propagate?",
+          options: ["Light waves", "Radio waves", "Sound waves", "X-rays"],
+          correct: 2
+        }
+      ]
+    };
+
+    let currentStep = 0;
+    let completedSteps = new Set();
+
+    // Initialize wave simulation
+    const canvas = document.getElementById('waveCanvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = canvas.offsetWidth;
+    canvas.height = 200;
+
+    let amplitude = 40;
+    let frequency = 2;
+    let phase = 0;
+
+    function drawWave() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.beginPath();
+      ctx.moveTo(0, canvas.height / 2);
+
+      for (let x = 0; x < canvas.width; x++) {
+        const y = canvas.height / 2 + amplitude * Math.sin((x * frequency / 50) + phase);
+        ctx.lineTo(x, y);
+      }
+
+      ctx.strokeStyle = '#2563eb';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      phase += 0.05;
+      requestAnimationFrame(drawWave);
+    }
+
+    // Event listeners for sliders
+    document.getElementById('amplitudeSlider').addEventListener('input', (e) => {
+      amplitude = parseInt(e.target.value);
+    });
+
+    document.getElementById('frequencySlider').addEventListener('input', (e) => {
+      frequency = parseInt(e.target.value);
+    });
+
+    // Initialize steps navigation
+    function renderSteps() {
+      const stepsList = document.getElementById('stepsList');
+      stepsList.innerHTML = '';
+      topicData.steps.forEach((step, idx) => {
+        const li = document.createElement('li');
+        li.className = `cursor-pointer p-2 rounded ${idx === currentStep ? 'step-active' : 'step-inactive'}`;
+        li.textContent = step.title;
+        li.onclick = () => showStep(idx);
+        stepsList.appendChild(li);
+      });
+    }
+
+    function showStep(idx) {
+      currentStep = idx;
+      document.getElementById('stepContent').innerHTML = topicData.steps[idx].content;
+      renderSteps();
+      updateProgress();
+      document.getElementById('prevBtn').disabled = idx === 0;
+      document.getElementById('nextBtn').disabled = idx === topicData.steps.length - 1;
+    }
+
+    function updateProgress() {
+      const percent = ((completedSteps.size) / topicData.steps.length) * 100;
+      document.getElementById('progress').style.width = percent + '%';
+    }
+
+    // Quiz functionality
+    function showQuiz() {
+      const quizModal = document.getElementById('quizModal');
+      quizModal.classList.remove('hidden');
+      
+      const quizContent = document.getElementById('quizContent');
+      quizContent.innerHTML = topicData.quiz.map((q, idx) => `
+        <div class="mb-6">
+          <p class="font-semibold mb-2">${idx + 1}. ${q.question}</p>
+          <div class="space-y-2">
+            ${q.options.map((opt, i) => `
+              <label class="flex items-center">
+                <input type="radio" name="q${idx}" value="${i}" class="mr-2">
+                <span>${opt}</span>
+              </label>
+            `).join('')}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    document.getElementById('closeQuiz').onclick = () => {
+      document.getElementById('quizModal').classList.add('hidden');
+    };
+
+    document.getElementById('submitQuiz').onclick = () => {
+      let score = 0;
+      topicData.quiz.forEach((q, idx) => {
+        const selected = document.querySelector(`input[name="q${idx}"]:checked`);
+        if (selected && parseInt(selected.value) === q.correct) score++;
+      });
+      
+      const percent = (score / topicData.quiz.length) * 100;
+      if (percent >= 70) {
+        completedSteps.add(currentStep);
+        updateProgress();
+      }
+      
+      document.getElementById('quizContent').innerHTML = `
+        <div class="text-center">
+          <p class="text-2xl font-bold ${percent >= 70 ? 'text-green-600' : 'text-red-600'}">${score}/${topicData.quiz.length}</p>
+          <p class="mt-2">${percent >= 70 ? 'Great job! You can move on to the next section.' : 'Try again to improve your score.'}</p>
+        </div>
+      `;
+      document.getElementById('submitQuiz').style.display = 'none';
+    };
+
+    // Navigation buttons
+    document.getElementById('prevBtn').onclick = () => {
+      if (currentStep > 0) showStep(currentStep - 1);
+    };
+
+    document.getElementById('nextBtn').onclick = () => {
+      if (currentStep < topicData.steps.length - 1) {
+        showQuiz();
+      }
+    };
+
+    // Initialize
+    window.onload = () => {
+      renderSteps();
+      showStep(0);
+      drawWave();
+    };
+  </script>
+<!-- Topic Quiz System -->
+<script src="/js/topic-quiz-loader.js"></script>
+<script src="/js/topic-quiz-injector.js"></script>
+</body>
+</html>

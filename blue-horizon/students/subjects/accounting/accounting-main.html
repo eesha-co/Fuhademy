@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="/assets/images/logo.png" />
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Accounting Course Overview - JUANOVA CORTEX</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <link rel="stylesheet" href="../../general/styles.css" />
+    <style>
+        /* Your existing styles plus improvements */
+        .divisions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .division-card {
+            background: white;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .division-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .division-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--accent-blue);
+        }
+
+        .division-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1F2937;
+            margin-bottom: 0.5rem;
+        }
+
+        .division-description {
+            color: #6B7280;
+            font-size: 0.875rem;
+            line-height: 1.25rem;
+            margin-bottom: 1rem;
+        }
+
+        .topic-preview {
+            margin-top: auto;
+            padding-top: 1rem;
+            border-top: 1px solid #E5E7EB;
+        }
+
+        .topic-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            font-size: 0.875rem;
+            color: #4B5563;
+        }
+
+        .topic-list li {
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .topic-list li:before {
+            content: "•";
+            color: var(--accent-blue);
+            font-weight: bold;
+            margin-right: 0.5rem;
+        }
+
+        .stats-container {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+            font-size: 0.875rem;
+            color: #6B7280;
+        }
+
+        .stat {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .progress-bar {
+            background: #E5E7EB;
+            height: 4px;
+            border-radius: 2px;
+            overflow: hidden;
+            margin-top: 0.5rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--accent-blue);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="container mx-auto px-4 py-8">
+        <nav class="breadcrumbs mb-6">
+            <a href="../student-dashboard.html">Dashboard</a>
+            <i class="fas fa-chevron-right text-sm"></i>
+            <span>Accounting</span>
+        </nav>
+
+        <header class="mb-8">
+            <h1 class="text-3xl font-bold text-gray-900 mb-2">Accounting</h1>
+            <p class="text-gray-600">Comprehensive guide to accounting principles and practices</p>
+        </header>
+
+        <div class="divisions-grid">
+            <!-- Fundamentals Division -->
+            <div class="division-card" onclick="navigateToTopics('fundamentals')">
+                <i class="fas fa-book-open division-icon"></i>
+                <h3 class="division-title">Accounting Fundamentals</h3>
+                <p class="division-description">Core concepts, principles, and foundations of accounting</p>
+                <div class="topic-preview">
+                    <ul class="topic-list">
+                        <li>Nature and Significance</li>
+                        <li>Basic Concepts and Conventions</li>
+                        <li>Professional Ethics</li>
+                    </ul>
+                </div>
+                <div class="stats-container">
+                    <div class="stat">
+                        <i class="fas fa-book"></i>
+                        <span>3 Topics</span>
+                    </div>
+                    <div class="stat">
+                        <i class="fas fa-clock"></i>
+                        <span>4h</span>
+                    </div>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <!-- Recording Division -->
+            <div class="division-card" onclick="navigateToTopics('recording')">
+                <i class="fas fa-pen-to-square division-icon"></i>
+                <h3 class="division-title">Recording Transactions</h3>
+                <p class="division-description">Double entry, books of accounts, and documentation</p>
+                <div class="topic-preview">
+                    <ul class="topic-list">
+                        <li>Double Entry System</li>
+                        <li>Source Documents</li>
+                        <li>Books of Original Entry</li>
+                    </ul>
+                </div>
+                <div class="stats-container">
+                    <div class="stat">
+                        <i class="fas fa-book"></i>
+                        <span>3 Topics</span>
+                    </div>
+                    <div class="stat">
+                        <i class="fas fa-clock"></i>
+                        <span>5h</span>
+                    </div>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <!-- Cash and Banking -->
+            <div class="division-card" onclick="navigateToTopics('cash-banking')">
+                <i class="fas fa-money-bill-wave division-icon"></i>
+                <h3 class="division-title">Cash and Banking</h3>
+                <p class="division-description">Cash management and banking transactions</p>
+                <div class="topic-preview">
+                    <ul class="topic-list">
+                        <li>Cashbook and Petty Cash</li>
+                        <li>Bank Reconciliation</li>
+                        <li>E-banking Systems</li>
+                    </ul>
+                </div>
+                <div class="stats-container">
+                    <div class="stat">
+                        <i class="fas fa-book"></i>
+                        <span>3 Topics</span>
+                    </div>
+                    <div class="stat">
+                        <i class="fas fa-clock"></i>
+                        <span>3h</span>
+                    </div>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <!-- Financial Statements -->
+            <div class="division-card" onclick="navigateToTopics('statements')">
+                <i class="fas fa-file-invoice-dollar division-icon"></i>
+                <h3 class="division-title">Financial Statements</h3>
+                <p class="division-description">Preparation and analysis of financial reports</p>
+                <div class="topic-preview">
+                    <ul class="topic-list">
+                        <li>Trading and Profit & Loss</li>
+                        <li>Balance Sheet</li>
+                        <li>Adjustments and Provisions</li>
+                    </ul>
+                </div>
+                <div class="stats-container">
+                    <div class="stat">
+                        <i class="fas fa-book"></i>
+                        <span>3 Topics</span>
+                    </div>
+                    <div class="stat">
+                        <i class="fas fa-clock"></i>
+                        <span>6h</span>
+                    </div>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <!-- Special Accounts -->
+            <div class="division-card" onclick="navigateToTopics('special')">
+                <i class="fas fa-building division-icon"></i>
+                <h3 class="division-title">Special Accounts</h3>
+                <p class="division-description">Specialized accounting for different organizations</p>
+                <div class="topic-preview">
+                    <ul class="topic-list">
+                        <li>Manufacturing Accounts</li>
+                        <li>Non-Profit Organizations</li>
+                        <li>Departmental Accounts</li>
+                    </ul>
+                </div>
+                <div class="stats-container">
+                    <div class="stat">
+                        <i class="fas fa-book"></i>
+                        <span>3 Topics</span>
+                    </div>
+                    <div class="stat">
+                        <i class="fas fa-clock"></i>
+                        <span>5h</span>
+                    </div>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <!-- Business Accounting -->
+            <div class="division-card" onclick="navigateToTopics('business')">
+                <i class="fas fa-handshake division-icon"></i>
+                <h3 class="division-title">Business Accounting</h3>
+                <p class="division-description">Partnership and company accounts</p>
+                <div class="topic-preview">
+                    <ul class="topic-list">
+                        <li>Partnership Accounts</li>
+                        <li>Company Formation</li>
+                        <li>Public Sector Accounting</li>
+                    </ul>
+                </div>
+                <div class="stats-container">
+                    <div class="stat">
+                        <i class="fas fa-book"></i>
+                        <span>3 Topics</span>
+                    </div>
+                    <div class="stat">
+                        <i class="fas fa-clock"></i>
+                        <span>7h</span>
+                    </div>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <!-- Advanced Topics -->
+            <div class="division-card" onclick="navigateToTopics('advanced')">
+                <i class="fas fa-chart-line division-icon"></i>
+                <h3 class="division-title">Advanced Topics</h3>
+                <p class="division-description">Complex accounting scenarios and analysis</p>
+                <div class="topic-preview">
+                    <ul class="topic-list">
+                        <li>Stock Valuation Methods</li>
+                        <li>Control Accounts</li>
+                        <li>Incomplete Records</li>
+                    </ul>
+                </div>
+                <div class="stats-container">
+                    <div class="stat">
+                        <i class="fas fa-book"></i>
+                        <span>3 Topics</span>
+                    </div>
+                    <div class="stat">
+                        <i class="fas fa-clock"></i>
+                        <span>6h</span>
+                    </div>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <!-- Study Resources -->
+            <div class="division-card bg-gradient-to-br from-blue-50 to-purple-50">
+                <i class="fas fa-lightbulb division-icon text-yellow-500"></i>
+                <h3 class="division-title">Study Resources</h3>
+                <p class="division-description">Tools and resources to enhance your learning</p>
+                <div class="flex flex-col gap-2 mt-4">
+                    <button onclick="openTool('calculator')" class="text-sm px-4 py-2 bg-white rounded-lg hover:bg-blue-50 transition flex items-center gap-2 border border-gray-200">
+                        <i class="fas fa-calculator text-blue-600"></i>
+                        <span>Financial Calculator</span>
+                    </button>
+                    <button onclick="openTool('notes')" class="text-sm px-4 py-2 bg-white rounded-lg hover:bg-blue-50 transition flex items-center gap-2 border border-gray-200">
+                        <i class="fas fa-sticky-note text-yellow-500"></i>
+                        <span>Smart Notes</span>
+                    </button>
+                    <button onclick="openTool('flashcards')" class="text-sm px-4 py-2 bg-white rounded-lg hover:bg-blue-50 transition flex items-center gap-2 border border-gray-200">
+                        <i class="fas fa-cards-blank text-green-500"></i>
+                        <span>Flashcards</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tips Section -->
+        <div class="mt-12 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-8">
+            <h2 class="text-xl font-bold text-gray-800 mb-4">Study Tips</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="flex items-start gap-3">
+                    <i class="fas fa-check-circle text-green-500 mt-1"></i>
+                    <p class="text-gray-600">Master fundamentals before advancing to complex topics</p>
+                </div>
+                <div class="flex items-start gap-3">
+                    <i class="fas fa-check-circle text-green-500 mt-1"></i>
+                    <p class="text-gray-600">Practice double entry exercises daily</p>
+                </div>
+                <div class="flex items-start gap-3">
+                    <i class="fas fa-check-circle text-green-500 mt-1"></i>
+                    <p class="text-gray-600">Use the financial calculator for complex calculations</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openTool(toolType) {
+            switch (toolType) {
+                case 'calculator':
+                    window.location.href = '../tools/financial-calculator.html';
+                    break;
+                case 'notes':
+                    window.location.href = '../tools/smart-notes.html';
+                    break;
+                case 'flashcards':
+                    window.location.href = '../tools/flashcards.html';
+                    break;
+            }
+        }
+
+        function navigateToTopics(unit) {
+            window.location.href = `accounting-topics.html?unit=${unit}`;
+        }
+
+        // Initialize progress bars
+        document.addEventListener('DOMContentLoaded', function() {
+            // This would normally be loaded from a progress tracking system
+            const progressBars = document.querySelectorAll('.progress-fill');
+            progressBars.forEach(bar => {
+                bar.style.width = '0%';
+            });
+        });
+    </script>
+</body>
+</html>
+

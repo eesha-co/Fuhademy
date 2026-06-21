@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+# This allows Google to show your brand and entry points
+Allow: /general/login.html
+Allow: /general/signup.html
+
+# This hides the dashboard so Google doesn't get confused by the redirect
+Disallow: /students/student-dashboard.html
+
+Sitemap: https://juanovacortex.netlify.app

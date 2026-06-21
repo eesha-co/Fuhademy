@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <!-- Favicon -->
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Teacher Confirmation - JUANOVA CORTEX</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../general/modernized.css">
+  <style>
+    .btn-primary {
+      display: inline-block;
+      text-align: center;
+      padding: 0.75rem 1.5rem;
+      background: linear-gradient(45deg, #3B82F6, #2563EB);
+      color: white;
+      border-radius: 9999px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      text-decoration: none;
+    }
+    .btn-primary:hover {
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 15px 25px -5px rgba(59, 130, 246, 0.5);
+    }
+    .btn-secondary {
+      display: inline-block;
+      text-align: center;
+      padding: 0.75rem 1.5rem;
+      background: transparent;
+      border: 2px solid #3B82F6;
+      color: #3B82F6;
+      border-radius: 9999px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      text-decoration: none;
+    }
+    .btn-secondary:hover {
+      background: #3B82F6;
+      color: white;
+      transform: translateY(-3px) scale(1.05);
+    }
+  </style>
+</head>
+<body class="bg-gray-50">
+  <div class="min-h-screen flex items-center justify-center">
+    <div class="max-w-md w-full bg-white p-8 rounded-lg shadow-lg text-center">
+      <div id="teacher-id-section">
+        <h2 class="text-3xl font-bold text-gray-800 mb-4">Enter Your Teacher ID</h2>
+        <p class="text-gray-600 mb-6">Please enter your unique ID to proceed.</p>
+        <form id="teacher-id-form">
+          <input type="text" id="teacher-id" placeholder="Enter Teacher ID" class="w-full px-4 py-2 border border-gray-300 rounded-lg mb-4">
+          <button type="submit" class="btn-primary w-full">Submit</button>
+        </form>
+        NOTE: Only Teachers from JUANOVA CORTEX have acess to the ID.<br>
+        Want To Become One of Our Teachers or Apply For A Role. 
+        <a href="" style="text-decoration: none; color: #2563EB;">CLICK HERE</a>
+      </div>
+
+      <div id="welcome-section" class="hidden">
+        <h2 class="text-3xl font-bold text-gray-800 mb-4">Welcome, Teacher!</h2>
+        <p class="text-gray-600 mb-6">Thank you for confirming your role. We're excited to have you on board.</p>
+        
+        <div class="my-6">
+          <label for="subject-select" class="block text-gray-700 text-sm font-bold mb-2">Please select the subject you teach:</label>
+          <select id="subject-select" class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+            <option value="">--Select a Subject--</option>
+            <option value="accounting">Accounting</option>
+            <option value="biology">Biology</option>
+            <option value="chemistry">Chemistry</option>
+            <option value="commerce">Commerce</option>
+            <option value="economics">Economics</option>
+            <option value="english">English</option>
+            <option value="government">Government</option>
+            <option value="literature">Literature</option>
+            <option value="mathematics">Mathematics</option>
+            <option value="physics">Physics</option>
+          </select>
+        </div>
+
+        <p class="text-gray-600 mb-6">What would you like to do next?</p>
+        <div class="flex flex-col gap-4">
+          <button id="go-to-dashboard-btn" class="btn-primary">Go to Teacher Dashboard</button>
+          <a href="../index.html" class="btn-secondary">Back to Homepage</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('teacher-id-form').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const teacherId = document.getElementById('teacher-id').value;
+        const correctId = 'juatex@2025.NO.1';
+
+        if (teacherId === correctId) {
+            document.getElementById('teacher-id-section').classList.add('hidden');
+            document.getElementById('welcome-section').classList.remove('hidden');
+        } else {
+            alert('Invalid Teacher ID. Please try again.');
+        }
+    });
+
+    document.getElementById('go-to-dashboard-btn').addEventListener('click', function() {
+        const selectedSubject = document.getElementById('subject-select').value;
+        if (selectedSubject) {
+            window.location.href = `teacher-dashboard-${selectedSubject}.html`;
+        } else {
+            alert('Please select a subject before proceeding.');
+        }
+    });
+  </script>
+</body>
+</html>

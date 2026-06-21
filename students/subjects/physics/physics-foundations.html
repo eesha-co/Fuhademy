@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Physics Foundations - Learning Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @keyframes fade-in-up {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in-up { animation: fade-in-up 0.5s ease-out forwards; }
+        .topic-card { transition: all 0.3s ease; }
+        .topic-card:hover { transform: translateY(-8px); box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
+        
+        /* Hero gradient */
+        .hero-gradient {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 50%, #60a5fa 100%);
+        }
+        
+        /* Card colors */
+        .card-blue { border-left: 4px solid #3b82f6; }
+        .card-green { border-left: 4px solid #10b981; }
+        .card-purple { border-left: 4px solid #8b5cf6; }
+        .card-orange { border-left: 4px solid #f59e0b; }
+        
+        @media (max-width: 768px) {
+            .topic-card { margin-bottom: 1rem; }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Top Navigation -->
+    <nav class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center">
+                    <a href="/subjects/physics/" class="text-gray-600 hover:text-gray-900 mr-4">
+                        <i class="fas fa-arrow-left"></i>
+                    </a>
+                    <h1 class="text-xl font-semibold text-gray-900">Physics Foundations</h1>
+                </div>
+                <div class="flex items-center">
+                    <span class="text-sm text-gray-500">4 Topics</span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="hero-gradient text-white py-16 px-4">
+        <div class="max-w-4xl mx-auto text-center">
+            <h1 class="text-4xl md:text-5xl font-bold mb-4 animate-fade-in-up">Physics Foundations</h1>
+            <p class="text-xl md:text-2xl text-blue-100 mb-6 animate-fade-in-up" style="animation-delay: 0.1s">
+                Master the essential building blocks of physics
+            </p>
+            <p class="text-blue-200 max-w-2xl mx-auto animate-fade-in-up" style="animation-delay: 0.2s">
+                Before diving into complex physics concepts, you need a solid foundation. 
+                Learn about measurement, quantities, and vectors—the language of physics.
+            </p>
+        </div>
+    </div>
+
+    <!-- Learning Objectives -->
+    <div class="max-w-7xl mx-auto px-4 -mt-8">
+        <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-bullseye text-blue-500 mr-3"></i>Learning Objectives
+            </h2>
+            <div class="grid md:grid-cols-2 gap-4">
+                <div class="flex items-start space-x-3">
+                    <i class="fas fa-check-circle text-green-500 mt-1"></i>
+                    <span class="text-gray-700">Understand how to measure physical quantities accurately</span>
+                </div>
+                <div class="flex items-start space-x-3">
+                    <i class="fas fa-check-circle text-green-500 mt-1"></i>
+                    <span class="text-gray-700">Distinguish between scalar and vector quantities</span>
+                </div>
+                <div class="flex items-start space-x-3">
+                    <i class="fas fa-check-circle text-green-500 mt-1"></i>
+                    <span class="text-gray-700">Identify fundamental and derived quantities</span>
+                </div>
+                <div class="flex items-start space-x-3">
+                    <i class="fas fa-check-circle text-green-500 mt-1"></i>
+                    <span class="text-gray-700">Perform vector operations and calculations</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Topics Grid -->
+    <main class="max-w-7xl mx-auto px-4 py-8">
+        <h2 class="text-2xl font-bold text-gray-800 mb-6">Topics in This Section</h2>
+        
+        <div class="grid md:grid-cols-2 gap-6 mb-12">
+            <!-- Measurement Topic -->
+            <a href="foundations/measurement.html" class="topic-card bg-white rounded-xl shadow-md overflow-hidden card-blue block">
+                <div class="p-6">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mr-4">
+                            <i class="fas fa-ruler-combined text-blue-600 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-semibold text-gray-800">Measurement in Physics</h3>
+                            <p class="text-sm text-gray-500">3 sections • ~30 min</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 mb-4">
+                        Learn about precision, accuracy, and how to use measuring instruments like vernier calipers and micrometers.
+                    </p>
+                    <div class="flex items-center text-sm text-gray-500">
+                        <span class="bg-blue-100 text-blue-700 px-2 py-1 rounded mr-2">Interactive</span>
+                        <span class="bg-green-100 text-green-700 px-2 py-1 rounded">Quiz</span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Quantities Topic -->
+            <a href="foundations/quantities.html" class="topic-card bg-white rounded-xl shadow-md overflow-hidden card-green block">
+                <div class="p-6">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mr-4">
+                            <i class="fas fa-weight text-green-600 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-semibold text-gray-800">Physical Quantities</h3>
+                            <p class="text-sm text-gray-500">3 sections • ~25 min</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 mb-4">
+                        Understand the difference between fundamental and derived quantities, and the SI system of units.
+                    </p>
+                    <div class="flex items-center text-sm text-gray-500">
+                        <span class="bg-blue-100 text-blue-700 px-2 py-1 rounded mr-2">Interactive</span>
+                        <span class="bg-green-100 text-green-700 px-2 py-1 rounded">Quiz</span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Vectors Topic -->
+            <a href="foundations/vectors.html" class="topic-card bg-white rounded-xl shadow-md overflow-hidden card-purple block">
+                <div class="p-6">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mr-4">
+                            <i class="fas fa-arrows-alt text-purple-600 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-semibold text-gray-800">Scalars and Vectors</h3>
+                            <p class="text-sm text-gray-500">4 sections • ~35 min</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 mb-4">
+                        Learn about quantities with direction, vector operations, and how to resolve vectors into components.
+                    </p>
+                    <div class="flex items-center text-sm text-gray-500">
+                        <span class="bg-purple-100 text-purple-700 px-2 py-1 rounded mr-2">Simulation</span>
+                        <span class="bg-green-100 text-green-700 px-2 py-1 rounded">Quiz</span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Coming Soon -->
+            <div class="topic-card bg-white rounded-xl shadow-md overflow-hidden card-orange opacity-75">
+                <div class="p-6">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center mr-4">
+                            <i class="fas fa-calculator text-orange-600 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-semibold text-gray-800">Dimensional Analysis</h3>
+                            <p class="text-sm text-gray-500">Coming Soon</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 mb-4">
+                        Learn how to use dimensional analysis to check equations and derive relationships.
+                    </p>
+                    <div class="flex items-center text-sm text-gray-500">
+                        <span class="bg-orange-100 text-orange-700 px-2 py-1 rounded">In Development</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Why Learn Foundations -->
+        <div class="bg-gradient-to-r from-blue-600 to-indigo-600 rounded-xl p-8 text-white mb-8">
+            <h2 class="text-2xl font-bold mb-4">Why Learn Physics Foundations?</h2>
+            <div class="grid md:grid-cols-3 gap-6">
+                <div>
+                    <div class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center mb-3">
+                        <i class="fas fa-language text-xl"></i>
+                    </div>
+                    <h3 class="font-semibold mb-2">The Language of Physics</h3>
+                    <p class="text-blue-100 text-sm">Measurements and quantities form the vocabulary scientists use to describe the universe.</p>
+                </div>
+                <div>
+                    <div class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center mb-3">
+                        <i class="fas fa-cogs text-xl"></i>
+                    </div>
+                    <h3 class="font-semibold mb-2">Essential Tools</h3>
+                    <p class="text-blue-100 text-sm">Vectors and units are the tools you'll use in every physics topic, from mechanics to electromagnetism.</p>
+                </div>
+                <div>
+                    <div class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center mb-3">
+                        <i class="fas fa-check-double text-xl"></i>
+                    </div>
+                    <h3 class="font-semibold mb-2">Problem Solving</h3>
+                    <p class="text-blue-100 text-sm">Strong foundations help you tackle complex problems with confidence and accuracy.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Start Learning Button -->
+        <div class="text-center mb-8">
+            <a href="foundations/measurement.html" class="inline-flex items-center px-8 py-4 bg-blue-600 text-white font-semibold rounded-full hover:bg-blue-700 transition-all shadow-lg hover:shadow-xl">
+                Start Learning <i class="fas fa-arrow-right ml-2"></i>
+            </a>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t py-6">
+        <div class="max-w-7xl mx-auto px-4 text-center text-gray-500 text-sm">
+            <p>Physics Foundations • Part of the Physics Learning Series</p>
+        </div>
+    </footer>
+
+    <!-- Topic Quiz System -->
+    <script src="/js/topic-quiz-loader.js"></script>
+    <script src="/js/topic-quiz-injector.js"></script>
+</body>
+</html>

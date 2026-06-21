@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Logarithms — definition & laws</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>.card{background:#fff;padding:1rem;border-radius:10px;box-shadow:0 10px 30px rgba(2,6,23,0.06)} .mono{font-family:ui-monospace, monospace}</style>
+</head>
+<body class="bg-teal-50 font-sans">
+  <header class="bg-teal-700 text-white py-3 mb-6"><div class="max-w-5xl mx-auto px-4 flex items-center justify-between"><div class="font-semibold">Logarithms</div><a href="index.html" class="text-white/90">Back</a></div></header>
+
+  <main class="max-w-5xl mx-auto px-4 space-y-6">
+    <section class="card"><h2 class="text-lg font-semibold">Definition</h2><div class="mt-2 text-gray-700">log_b(a)=c ↔ b^c=a. Common logs: base 10, natural logs: base e.</div></section>
+
+    <section class="card">
+      <h2 class="text-lg font-semibold">Change of base</h2>
+      <div class="mt-2 text-gray-700">log_b(a) = log_k(a)/log_k(b). Useful for calculator work.</div>
+      <div class="mt-4"><svg width="300" height="60" xmlns="http://www.w3.org/2000/svg"><text x="10" y="20" font-size="12">2^4 = 16  →  log_2(16)=4</text></svg></div>
+    </section>
+
+    <section class="card">
+      <h2 class="text-lg font-semibold">Practice</h2>
+      <div class="grid md:grid-cols-2 gap-4 mt-3">
+        <div class="p-3 bg-gray-50 rounded"><div class="font-medium">1) log_10(1000) = ?</div><input id="l1" class="mt-2 p-2 border rounded w-full" placeholder="e.g., 3"><div class="mt-2 flex gap-2"><button id="lc1" class="px-3 py-1 bg-teal-700 text-white rounded">Check</button><button id="lh1" class="px-3 py-1 border rounded">Hint</button></div><div id="lfb1" class="mt-2 text-sm"></div></div>
+
+        <div class="p-3 bg-gray-50 rounded"><div class="font-medium">2) Solve 10^x = 250 (leave as logs)</div><input id="l2" class="mt-2 p-2 border rounded w-full" placeholder="e.g., log10(250)"><div class="mt-2 flex gap-2"><button id="lc2" class="px-3 py-1 bg-teal-700 text-white rounded">Check</button><button id="lh2" class="px-3 py-1 border rounded">Hint</button></div><div id="lfb2" class="mt-2 text-sm"></div></div>
+      </div>
+    </section>
+
+    <div class="text-right"><button id="lQuiz" class="bg-teal-700 text-white px-4 py-2 rounded">Quick Quiz</button></div>
+  </main>
+
+  <div id="lModal" class="hidden fixed inset-0 bg-black/40 z-40 flex items-center justify-center"><div class="bg-white rounded p-6 max-w-md w-full"><div id="lContent"></div><div class="mt-4 text-right"><button id="lClose" class="px-3 py-1 border rounded">Close</button></div></div></div>
+
+  <script>
+    function norm(s){return (s||'').toString().trim().replace(/\s+/g,'');}
+    document.getElementById('lc1').addEventListener('click', ()=>{ const v=norm(document.getElementById('l1').value); const fb=document.getElementById('lfb1'); if(['3','03'].includes(v)) fb.innerHTML='<span style="color:#16a34a">Correct — 3</span>'; else fb.innerHTML='<span style="color:#e11d48">Try again — 10^3 = 1000</span>'; });
+    document.getElementById('lh1').addEventListener('click', ()=> alert('Hint: 10^3 = 1000'));
+    document.getElementById('lc2').addEventListener('click', ()=>{ const v=norm(document.getElementById('l2').value); const fb=document.getElementById('lfb2'); if(v.toLowerCase().includes('log') && v.includes('250')) fb.innerHTML='<span style="color:#16a34a">Looks good — x = log_{10}(250)</span>'; else fb.innerHTML='<span style="color:#e11d48">Write x = log_{10}(250)</span>'; });
+    document.getElementById('lh2').addEventListener('click', ()=> alert('Hint: take log base 10 both sides: x = log10(250)'));
+
+    const pool=[{q:'log_2(8)=?', a:['3']},{q:'log_10(100)=?', a:['2']}];
+    function show(){ let i=0,score=0; const modal=document.getElementById('lModal'); const content=document.getElementById('lContent'); modal.classList.remove('hidden'); function next(){ if(i>=pool.length){ content.innerHTML=`<div class="font-bold">Done</div><div>Score: ${score}/${pool.length}</div>`; return; } const cur=pool[i]; content.innerHTML=`<div class="font-semibold">${cur.q}</div><input id="qa" class="mt-3 p-2 border rounded w-full"><div class="mt-3"><button id="subq" class="px-3 py-1 bg-teal-700 text-white rounded">Submit</button></div><div id="qfb" class="mt-2"></div>`; document.getElementById('subq').onclick=()=>{ const a=(document.getElementById('qa').value||'').trim(); if(cur.a.includes(a)) { score++; document.getElementById('qfb').innerHTML='<span style="color:#16a34a">Correct</span>'; } else document.getElementById('qfb').innerHTML=`<span style="color:#e11d48">Wrong — ${cur.a[0]}</span>`; i++; setTimeout(next,700); }; }
+    next(); }
+    document.getElementById('lQuiz').addEventListener('click', show);
+    document.getElementById('lClose').addEventListener('click', ()=> document.getElementById('lModal').classList.add('hidden'));
+  </script>
+<!-- Topic Quiz System -->
+<script src="/js/topic-quiz-loader.js"></script>
+<script src="/js/topic-quiz-injector.js"></script>
+</body>
+</html>

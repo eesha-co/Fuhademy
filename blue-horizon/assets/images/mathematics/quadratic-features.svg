@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 350">
+  <style>
+    .bg { fill: #ffffff; }
+    .axis { stroke: #444; stroke-width: 1; }
+    .parabola { fill: none; stroke: #0b74de; stroke-width: 3; }
+    .line { stroke: #9ca3af; stroke-width: 1.5; stroke-dasharray: 6 4; }
+    .point { fill: #ef4444; stroke: #fff; stroke-width: 1; }
+    .label { fill: #111827; font-family: Arial, sans-serif; font-size: 14px; }
+    .caption { fill: #374151; font-family: Arial, sans-serif; font-size: 12px; }
+  </style>
+
+  <rect width="100%" height="100%" class="bg"/>
+
+  <g transform="translate(40,20)">
+    <rect x="0" y="0" width="620" height="300" fill="#fbfdff" stroke="#e6eef8"/>
+    <g stroke="#f3f7fb">
+      <line x1="0" y1="150" x2="620" y2="150"/>
+      <line x1="310" y1="0" x2="310" y2="300"/>
+    </g>
+    <line x1="0" y1="150" x2="620" y2="150" class="axis"/>
+    <line x1="310" y1="0" x2="310" y2="300" class="axis"/>
+
+    <!-- parabola with vertex at (310,90) -->
+    <path d="M0,220 C140,30 220,10 310,90 C400,170 480,210 620,200" class="parabola"/>
+
+    <!-- axis of symmetry -->
+    <line x1="310" y1="20" x2="310" y2="300" class="line"/>
+
+    <!-- vertex marker -->
+    <circle cx="310" cy="90" r="5" class="point"/>
+    <text x="330" y="92" class="caption">Vertex (h, k)</text>
+
+    <!-- y-intercept marker -->
+    <circle cx="310" cy="150" r="4" fill="#10b981"/>
+    <text x="320" y="152" class="caption">Y-intercept (0, c)</text>
+
+    <text x="10" y="16" class="label">Key Features of a Quadratic</text>
+    <text x="10" y="36" class="caption">Vertex, axis of symmetry, direction of opening, and y-intercept</text>
+
+    <!-- direction arrow -->
+    <path d="M500,70 L540,70 L530,60 M540,70 L530,80" fill="none" stroke="#111827" stroke-width="2"/>
+    <text x="545" y="74" class="caption">Opens upwards</text>
+  </g>
+</svg>

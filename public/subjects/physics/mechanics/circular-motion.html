@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Circular Motion | Physics Mechanics</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .content-card {
+            -webkit-backdrop-filter: blur(16px);
+            backdrop-filter: blur(16px);
+            background: rgba(255, 255, 255, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-6">
+    <div class="max-w-6xl mx-auto">
+        <nav class="mb-8">
+            <a href="./" class="text-blue-600 hover:text-blue-700">← Back to Mechanics</a>
+        </nav>
+
+        <div class="content-card rounded-xl p-8">
+            <header class="mb-12">
+                <h1 class="text-3xl font-bold text-gray-800 mb-4">Circular Motion</h1>
+                <p class="text-lg text-gray-600">Understanding motion in a circle and the forces involved</p>
+            </header>
+
+            <div class="grid gap-8">
+                <!-- Basic Concepts -->
+                <section>
+                    <h2 class="text-xl font-semibold text-gray-800 mb-4">Basic Concepts</h2>
+                    <div class="bg-white/50 rounded-lg p-6">
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <h3 class="font-medium text-gray-800 mb-3">Key Terms</h3>
+                                <ul class="space-y-2 text-sm text-gray-700">
+                                    <li>• Radius (r): Distance from center</li>
+                                    <li>• Period (T): Time for one revolution</li>
+                                    <li>• Frequency (f): Revolutions per second</li>
+                                    <li>• Angular velocity (ω): Rate of angle change</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h3 class="font-medium text-gray-800 mb-3">Important Relations</h3>
+                                <ul class="space-y-2 text-sm text-gray-700">
+                                    <li>• f = 1/T</li>
+                                    <li>• ω = 2π/T = 2πf</li>
+                                    <li>• v = 2πr/T = ωr</li>
+                                    <li>• v = linear velocity</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Uniform Circular Motion -->
+                <section>
+                    <h2 class="text-xl font-semibold text-gray-800 mb-4">Uniform Circular Motion</h2>
+                    <div class="space-y-6">
+                        <!-- Characteristics -->
+                        <div class="bg-white/50 rounded-lg p-6">
+                            <h3 class="font-medium text-gray-800 mb-3">Characteristics</h3>
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <div>
+                                    <h4 class="font-medium text-gray-800 mb-2">Motion Properties</h4>
+                                    <ul class="space-y-2 text-sm text-gray-700">
+                                        <li>• Constant speed</li>
+                                        <li>• Varying velocity (direction changes)</li>
+                                        <li>• Constant radius</li>
+                                        <li>• Constant angular velocity</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium text-gray-800 mb-2">Key Features</h4>
+                                    <ul class="space-y-2 text-sm text-gray-700">
+                                        <li>• Path is circular</li>
+                                        <li>• Speed remains constant</li>
+                                        <li>• Acceleration toward center</li>
+                                        <li>• Requires centripetal force</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Centripetal Acceleration -->
+                <section>
+                    <h2 class="text-xl font-semibold text-gray-800 mb-4">Centripetal Acceleration</h2>
+                    <div class="space-y-6">
+                        <div class="bg-white/50 rounded-lg p-6">
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <div>
+                                    <h3 class="font-medium text-gray-800 mb-3">Formula</h3>
+                                    <ul class="space-y-2 text-sm text-gray-700">
+                                        <li>• a = v²/r</li>
+                                        <li>• a = ω²r</li>
+                                        <li>• a = 4π²r/T²</li>
+                                        <li>• Always points to center</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h3 class="font-medium text-gray-800 mb-3">Properties</h3>
+                                    <ul class="space-y-2 text-sm text-gray-700">
+                                        <li>• Causes direction change</li>
+                                        <li>• Magnitude constant</li>
+                                        <li>• Direction changes continuously</li>
+                                        <li>• Required for circular motion</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Common Examples -->
+                <section>
+                    <h2 class="text-xl font-semibold text-gray-800 mb-4">Common Examples</h2>
+                    <div class="bg-white/50 rounded-lg p-6">
+                        <div class="grid md:grid-cols-3 gap-6">
+                            <div>
+                                <h3 class="font-medium text-gray-800 mb-3">Natural Motion</h3>
+                                <ul class="space-y-2 text-sm text-gray-700">
+                                    <li>• Moon around Earth</li>
+                                    <li>• Planets around Sun</li>
+                                    <li>• Electrons around nucleus</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h3 class="font-medium text-gray-800 mb-3">Mechanical Systems</h3>
+                                <ul class="space-y-2 text-sm text-gray-700">
+                                    <li>• Car turning</li>
+                                    <li>• Merry-go-round</li>
+                                    <li>• Fan blades</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h3 class="font-medium text-gray-800 mb-3">Laboratory</h3>
+                                <ul class="space-y-2 text-sm text-gray-700">
+                                    <li>• Centrifuge</li>
+                                    <li>• Whirling apparatus</li>
+                                    <li>• Conical pendulum</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Forces in Circular Motion -->
+                <section>
+                    <h2 class="text-xl font-semibold text-gray-800 mb-4">Forces Providing Centripetal Acceleration</h2>
+                    <div class="bg-white/50 rounded-lg p-6">
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <h3 class="font-medium text-gray-800 mb-3">Types of Forces</h3>
+                                <ul class="space-y-2 text-sm text-gray-700">
+                                    <li>• Tension (in string)</li>
+                                    <li>• Friction (on road)</li>
+                                    <li>• Gravity (orbital motion)</li>
+                                    <li>• Normal force (banked roads)</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h3 class="font-medium text-gray-800 mb-3">Force Requirements</h3>
+                                <ul class="space-y-2 text-sm text-gray-700">
+                                    <li>• F = mv²/r</li>
+                                    <li>• F = mω²r</li>
+                                    <li>• Points to center</li>
+                                    <li>• Must be maintained</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Practice Problems -->
+                <section>
+                    <h2 class="text-xl font-semibold text-gray-800 mb-4">Practice Problems</h2>
+                    <div class="bg-white/50 rounded-lg p-6">
+                        <ol class="list-decimal pl-6 space-y-4 text-gray-700">
+                            <li>
+                                <p class="font-medium mb-2">Basic Calculations</p>
+                                <p>A car moves in a circular path of radius 50m at a speed of 10 m/s. Calculate:</p>
+                                <ul class="list-disc pl-6 mt-2 space-y-1 text-sm">
+                                    <li>Centripetal acceleration</li>
+                                    <li>Time for one complete revolution</li>
+                                </ul>
+                            </li>
+                            <li>
+                                <p class="font-medium mb-2">Minimum Speed</p>
+                                <p>A conical pendulum makes an angle of 30° with the vertical. Find:</p>
+                                <ul class="list-disc pl-6 mt-2 space-y-1 text-sm">
+                                    <li>Minimum speed needed</li>
+                                    <li>Tension in the string</li>
+                                </ul>
+                            </li>
+                            <li>
+                                <p class="font-medium mb-2">Banking of Roads</p>
+                                <p>A circular track of radius 100m is banked at 15°. What is the safe speed to avoid sideways friction?</p>
+                                <p class="mt-2 text-sm text-blue-600">Hint: Consider normal force components</p>
+                            </li>
+                        </ol>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+<!-- Topic Quiz System -->
+<script src="/js/topic-quiz-loader.js"></script>
+<script src="/js/topic-quiz-injector.js"></script>
+</body>
+</html>

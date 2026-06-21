@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dashboard — JUANOVA CORTEX</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#0ea5e9',
+            secondary: '#6366f1',
+            accent: '#f43f5e',
+            success: '#22c55e',
+            warning: '#f59e0b'
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+    
+    * { font-family: 'Inter', sans-serif; }
+    
+    #sidebar { transition: transform 0.3s ease-in-out; }
+    #sidebar.hide { transform: translateX(-100%); }
+    @media (min-width: 1024px) { #sidebar { transform: translateX(0) !important; } }
+    
+    /* Custom scrollbar */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 10px; }
+    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+    ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    
+    /* Animations */
+    @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-10px); } }
+    @keyframes pulse-ring { 0% { transform: scale(0.8); opacity: 1; } 100% { transform: scale(1.3); opacity: 0; } }
+    @keyframes gradient-shift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+    @keyframes slideIn { from { opacity: 0; transform: translateX(-20px); } to { opacity: 1; transform: translateX(0); } }
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    
+    .float-animation { animation: float 3s ease-in-out infinite; }
+    .gradient-animate { background-size: 200% 200%; animation: gradient-shift 8s ease infinite; }
+    .slide-in { animation: slideIn 0.5s ease forwards; }
+    .fade-in-up { animation: fadeInUp 0.6s ease forwards; }
+    
+    /* Card hover effects */
+    .card-hover { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+    .card-hover:hover { transform: translateY(-4px); box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.15); }
+    
+    /* Progress bar animation */
+    .progress-animate { transition: width 1s ease-in-out; }
+    
+    /* Glass morphism */
+    .glass { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2); }
+    
+    /* Task checkbox custom style */
+    .task-checkbox { appearance: none; width: 20px; height: 20px; border: 2px solid #cbd5e1; border-radius: 6px; cursor: pointer; transition: all 0.2s ease; position: relative; }
+    .task-checkbox:checked { background: linear-gradient(135deg, #0ea5e9, #6366f1); border-color: transparent; }
+    .task-checkbox:checked::after { content: '✓'; position: absolute; color: white; font-size: 12px; top: 50%; left: 50%; transform: translate(-50%, -50%); }
+    
+    /* Notification badge pulse */
+    .notif-pulse { position: relative; }
+    .notif-pulse::before { content: ''; position: absolute; inset: -2px; border-radius: 50%; background: #f43f5e; animation: pulse-ring 2s infinite; z-index: -1; }
+    
+    /* Subject card gradients */
+    .subject-math { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+    .subject-physics { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+    .subject-chemistry { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
+    .subject-biology { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); }
+    .subject-english { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); }
+    .subject-economics { background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); }
+  </style>
+</head>
+<body class="bg-gradient-to-br from-slate-50 via-sky-50 to-indigo-50 min-h-screen">
+  <div class="min-h-screen flex">
+    <!-- Sidebar -->
+    <aside id="sidebar" class="w-72 fixed left-0 top-0 h-full bg-white/80 backdrop-blur-xl border-r border-slate-200/50 p-5 flex flex-col gap-6 overflow-auto z-40 shadow-xl">
+      <!-- Logo -->
+      <div class="flex items-center gap-3 p-2">
+        <div class="relative">
+          <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-sky-500 to-indigo-600 flex items-center justify-center shadow-lg">
+            <i class="fas fa-brain text-white text-xl"></i>
+          </div>
+          <div class="absolute -bottom-1 -right-1 w-4 h-4 bg-green-400 rounded-full border-2 border-white"></div>
+        </div>
+        <div>
+          <div class="text-lg font-bold bg-gradient-to-r from-sky-600 to-indigo-600 bg-clip-text text-transparent">JUANOVA CORTEX</div>
+          <div class="text-xs text-slate-400 font-medium">Learning Platform</div>
+        </div>
+      </div>
+
+      <!-- Navigation -->
+      <nav class="flex-1 overflow-auto">
+        <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3 px-3">Main Menu</div>
+        <ul class="space-y-1">
+          <li>
+            <a href="student-dashboard-supabase.html" class="flex items-center gap-3 px-4 py-3 rounded-xl bg-gradient-to-r from-sky-50 to-indigo-50 text-sky-700 font-medium shadow-sm">
+              <i class="fas fa-home text-sky-500"></i> Dashboard
+            </a>
+          </li>
+          <li><a href="study-plan-supabase.html" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-50 text-slate-600 transition-all"><i class="fas fa-calendar-check text-green-500"></i> Study Plan</a></li>
+          <li><a href="mock-exams-supabase.html" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-50 text-slate-600 transition-all"><i class="fas fa-clipboard-list text-orange-500"></i> Mock Exams</a></li>
+          <li><a href="notes-supabase.html" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-50 text-slate-600 transition-all"><i class="fas fa-sticky-note text-yellow-500"></i> Study Notes</a></li>
+        </ul>
+        
+        <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3 mt-6 px-3">Resources</div>
+        <ul class="space-y-1">
+          <li><a href="video-library-supabase.html" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-50 text-slate-600 transition-all"><i class="fas fa-play-circle text-red-500"></i> Video Library</a></li>
+          <li><a href="textbooks-supabase.html" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-50 text-slate-600 transition-all"><i class="fas fa-book text-indigo-500"></i> Textbooks</a></li>
+          <li><a href="formula-bank-supabase.html" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-50 text-slate-600 transition-all"><i class="fas fa-calculator text-teal-500"></i> Formula Bank</a></li>
+          <li><a href="digital-library-supabase.html" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-50 text-slate-600 transition-all"><i class="fas fa-folder-open text-purple-500"></i> Digital Library</a></li>
+        </ul>
+
+        <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3 mt-6 px-3">Community</div>
+        <ul class="space-y-1">
+          <li><a href="news-feed-supabase.html" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-50 text-slate-600 transition-all"><i class="fas fa-newspaper text-pink-500"></i> News Feed</a></li>
+          <li><a href="student-live-session-supabase.html" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-50 text-slate-600 transition-all"><i class="fas fa-video text-blue-400"></i> Live Sessions</a></li>
+          <li><a href="notifications-supabase.html" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-50 text-slate-600 transition-all"><i class="fas fa-bell text-rose-500"></i> Notifications</a></li>
+        </ul>
+      </nav>
+
+      <!-- User Profile -->
+      <div class="border-t border-slate-200/50 pt-4">
+        <div class="flex items-center gap-3 p-3 rounded-xl bg-slate-50/50 hover:bg-slate-100/50 transition-all cursor-pointer">
+          <div class="relative">
+            <img id="avatar-sm" src="../assets/images/unnamed.jpg" alt="avatar" class="h-11 w-11 rounded-full border-2 border-white shadow-md object-cover">
+            <div class="absolute bottom-0 right-0 w-3 h-3 bg-green-400 rounded-full border-2 border-white"></div>
+          </div>
+          <div class="flex-1 min-w-0">
+            <div id="userName" class="font-semibold text-slate-800 truncate">Student</div>
+            <div id="userLevel" class="text-xs text-slate-400"></div>
+          </div>
+          <i class="fas fa-chevron-right text-slate-400 text-sm"></i>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <div id="main-content" class="flex-1 flex flex-col ml-72">
+      <!-- Topbar -->
+      <header class="sticky top-0 z-30 flex items-center justify-between px-6 py-4 bg-white/70 backdrop-blur-xl border-b border-slate-200/50">
+        <div class="flex items-center gap-4">
+          <button id="toggleSidebar" class="p-2.5 rounded-xl hover:bg-slate-100 lg:hidden transition-all">
+            <i class="fas fa-bars text-slate-600"></i>
+          </button>
+          <div class="relative">
+            <input id="globalSearch" type="search" placeholder="Search subjects, topics, resources..." class="w-80 pl-11 pr-4 py-2.5 rounded-xl border border-slate-200 bg-slate-50/50 focus:outline-none focus:ring-2 focus:ring-sky-100 focus:border-sky-300 transition-all">
+            <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <!-- Quick Actions -->
+          <button class="p-2.5 rounded-xl bg-gradient-to-r from-sky-500 to-indigo-500 text-white shadow-lg hover:shadow-xl transition-all">
+            <i class="fas fa-plus"></i>
+          </button>
+          
+          <!-- Notifications -->
+          <div class="relative">
+            <button id="notifBtn" class="p-2.5 rounded-xl hover:bg-slate-100 transition-all relative">
+              <i class="fas fa-bell text-slate-500"></i>
+              <span id="notifCount" class="absolute -top-0.5 -right-0.5 bg-rose-500 text-white rounded-full w-5 h-5 text-xs flex items-center justify-center font-medium shadow-md notif-pulse">0</span>
+            </button>
+          </div>
+          
+          <!-- User -->
+          <div class="flex items-center gap-3 pl-3 border-l border-slate-200">
+            <div class="text-right">
+              <div id="topName" class="font-semibold text-slate-800">Student</div>
+              <div id="topLevel" class="text-xs text-slate-400">SS 3</div>
+            </div>
+            <img id="topAvatar" src="../assets/images/unnamed.jpg" alt="avatar" class="h-10 w-10 rounded-full border-2 border-white shadow-md object-cover">
+          </div>
+        </div>
+      </header>
+
+      <!-- Main Content Area -->
+      <main class="flex-1 p-6 space-y-6 overflow-auto">
+        <!-- Welcome Hero Section -->
+        <section class="fade-in-up">
+          <div class="relative overflow-hidden rounded-3xl bg-gradient-to-r from-sky-600 via-indigo-600 to-purple-600 gradient-animate p-8 text-white shadow-2xl">
+            <div class="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/3"></div>
+            <div class="absolute bottom-0 left-0 w-64 h-64 bg-white/5 rounded-full translate-y-1/2 -translate-x-1/4"></div>
+            
+            <div class="relative z-10 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+              <div>
+                <div class="flex items-center gap-2 mb-2">
+                  <span class="text-2xl">👋</span>
+                  <span class="text-sm font-medium text-white/80">Good <span id="greeting">morning</span></span>
+                </div>
+                <h1 class="text-3xl lg:text-4xl font-bold mb-2">Welcome back, <span id="heroName">Student</span>!</h1>
+                <p class="text-white/80 text-lg max-w-xl">Ready to continue your learning journey? You're making great progress towards your goals.</p>
+                
+                <div class="flex flex-wrap gap-3 mt-6">
+                  <a href="study-plan-supabase.html" class="px-5 py-2.5 bg-white text-indigo-600 rounded-xl font-semibold hover:bg-white/90 transition-all shadow-lg flex items-center gap-2">
+                    <i class="fas fa-calendar-check"></i> View Study Plan
+                  </a>
+                  <a href="mock-exams-supabase.html" class="px-5 py-2.5 bg-white/20 text-white rounded-xl font-medium hover:bg-white/30 transition-all flex items-center gap-2">
+                    <i class="fas fa-clipboard-list"></i> Take Mock Test
+                  </a>
+                </div>
+              </div>
+              
+              <div class="flex gap-4">
+                <div class="text-center bg-white/10 rounded-2xl p-4 backdrop-blur-sm min-w-[100px]">
+                  <div id="heroStreak" class="text-3xl font-bold">0</div>
+                  <div class="text-sm text-white/70">Day Streak</div>
+                </div>
+                <div class="text-center bg-white/10 rounded-2xl p-4 backdrop-blur-sm min-w-[100px]">
+                  <div id="heroTasksCompleted" class="text-3xl font-bold">0</div>
+                  <div class="text-sm text-white/70">Tasks Done</div>
+                </div>
+                <div class="text-center bg-white/10 rounded-2xl p-4 backdrop-blur-sm min-w-[100px]">
+                  <div id="heroStudyHours" class="text-3xl font-bold">0</div>
+                  <div class="text-sm text-white/70">Hours</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Stats Cards -->
+        <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div class="card-hover bg-white rounded-2xl p-5 shadow-sm border border-slate-100">
+            <div class="flex items-center justify-between mb-3">
+              <div class="w-12 h-12 rounded-xl bg-sky-100 flex items-center justify-center">
+                <i class="fas fa-bullseye text-sky-600 text-xl"></i>
+              </div>
+              <span class="text-xs font-medium text-green-500 bg-green-50 px-2 py-1 rounded-full">+12%</span>
+            </div>
+            <div class="text-2xl font-bold text-slate-800" id="weeklyProgressLabel">0%</div>
+            <div class="text-sm text-slate-500">Weekly Progress</div>
+            <div class="mt-3 h-2 bg-slate-100 rounded-full overflow-hidden">
+              <div id="weekBar" class="h-full bg-gradient-to-r from-sky-400 to-sky-600 rounded-full progress-animate" style="width: 0%"></div>
+            </div>
+          </div>
+
+          <div class="card-hover bg-white rounded-2xl p-5 shadow-sm border border-slate-100">
+            <div class="flex items-center justify-between mb-3">
+              <div class="w-12 h-12 rounded-xl bg-amber-100 flex items-center justify-center">
+                <i class="fas fa-trophy text-amber-600 text-xl"></i>
+              </div>
+              <span class="text-xs font-medium text-amber-500 bg-amber-50 px-2 py-1 rounded-full">Avg</span>
+            </div>
+            <div class="text-2xl font-bold text-slate-800" id="mockAvgLabel">0%</div>
+            <div class="text-sm text-slate-500">Mock Test Score</div>
+            <div class="mt-3 h-2 bg-slate-100 rounded-full overflow-hidden">
+              <div id="mockBar" class="h-full bg-gradient-to-r from-amber-400 to-amber-600 rounded-full progress-animate" style="width: 0%"></div>
+            </div>
+          </div>
+
+          <div class="card-hover bg-white rounded-2xl p-5 shadow-sm border border-slate-100">
+            <div class="flex items-center justify-between mb-3">
+              <div class="w-12 h-12 rounded-xl bg-green-100 flex items-center justify-center">
+                <i class="fas fa-check-circle text-green-600 text-xl"></i>
+              </div>
+              <span class="text-xs font-medium text-green-500 bg-green-50 px-2 py-1 rounded-full">Done</span>
+            </div>
+            <div class="text-2xl font-bold text-slate-800" id="topicsCompleted">0</div>
+            <div class="text-sm text-slate-500">Topics Completed</div>
+            <div class="mt-3 h-2 bg-slate-100 rounded-full overflow-hidden">
+              <div id="topicsBar" class="h-full bg-gradient-to-r from-green-400 to-green-600 rounded-full progress-animate" style="width: 0%"></div>
+            </div>
+          </div>
+
+          <div class="card-hover bg-white rounded-2xl p-5 shadow-sm border border-slate-100">
+            <div class="flex items-center justify-between mb-3">
+              <div class="w-12 h-12 rounded-xl bg-purple-100 flex items-center justify-center">
+                <i class="fas fa-fire text-purple-600 text-xl"></i>
+              </div>
+              <span class="text-xs font-medium text-purple-500 bg-purple-50 px-2 py-1 rounded-full">🔥</span>
+            </div>
+            <div class="text-2xl font-bold text-slate-800" id="streakLabel">0 days</div>
+            <div class="text-sm text-slate-500">Current Streak</div>
+            <div class="mt-3 flex gap-1">
+              <div class="w-4 h-4 rounded bg-purple-200"></div>
+              <div class="w-4 h-4 rounded bg-purple-200"></div>
+              <div class="w-4 h-4 rounded bg-purple-200"></div>
+              <div class="w-4 h-4 rounded bg-purple-200"></div>
+              <div class="w-4 h-4 rounded bg-purple-200"></div>
+              <div class="w-4 h-4 rounded bg-purple-200"></div>
+              <div class="w-4 h-4 rounded bg-purple-500"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Main Content Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <!-- Today's Study Plan -->
+          <div class="lg:col-span-2 space-y-6">
+            <!-- Daily Plan Card -->
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+              <div class="bg-gradient-to-r from-sky-500 to-indigo-600 px-6 py-4">
+                <div class="flex items-center justify-between">
+                  <div>
+                    <h3 class="text-lg font-semibold text-white flex items-center gap-2">
+                      <i class="fas fa-tasks"></i> Today's Study Plan
+                    </h3>
+                    <p id="todayDate" class="text-sm text-white/80"></p>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <div class="bg-white/20 rounded-lg px-3 py-1.5">
+                      <span id="todayProgress" class="font-bold text-white">0%</span>
+                      <span class="text-white/70 text-sm">complete</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="mt-3 h-2 bg-white/20 rounded-full overflow-hidden">
+                  <div id="todayProgressBar" class="h-full bg-white rounded-full transition-all duration-500" style="width: 0%"></div>
+                </div>
+              </div>
+              
+              <div class="p-4">
+                <div id="studyPlanStatus" class="text-center py-8 text-slate-500">
+                  <i class="fas fa-calendar-plus text-4xl mb-3 text-slate-300"></i>
+                  <p>No active study plan yet</p>
+                  <a href="study-plan-supabase.html" class="inline-block mt-3 px-4 py-2 bg-sky-500 text-white rounded-lg text-sm font-medium hover:bg-sky-600 transition-all">Create Study Plan</a>
+                </div>
+                <ul id="todayTasks" class="space-y-3 max-h-96 overflow-y-auto hidden"></ul>
+              </div>
+            </div>
+
+            <!-- Subjects Grid -->
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
+              <div class="flex items-center justify-between mb-5">
+                <h3 class="text-lg font-semibold text-slate-800">Your Subjects</h3>
+                <a href="#" class="text-sm text-sky-600 hover:text-sky-700 font-medium">View all →</a>
+              </div>
+              
+              <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+                <a href="#" class="card-hover group">
+                  <div class="subject-math rounded-2xl p-4 text-white text-center">
+                    <div class="w-12 h-12 mx-auto mb-2 bg-white/20 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
+                      <i class="fas fa-square-root-alt text-xl"></i>
+                    </div>
+                    <div class="font-semibold text-sm">Mathematics</div>
+                    <div class="text-xs text-white/70 mt-1">36 topics</div>
+                  </div>
+                </a>
+                <a href="#" class="card-hover group">
+                  <div class="subject-physics rounded-2xl p-4 text-white text-center">
+                    <div class="w-12 h-12 mx-auto mb-2 bg-white/20 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
+                      <i class="fas fa-atom text-xl"></i>
+                    </div>
+                    <div class="font-semibold text-sm">Physics</div>
+                    <div class="text-xs text-white/70 mt-1">36 topics</div>
+                  </div>
+                </a>
+                <a href="#" class="card-hover group">
+                  <div class="subject-chemistry rounded-2xl p-4 text-white text-center">
+                    <div class="w-12 h-12 mx-auto mb-2 bg-white/20 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
+                      <i class="fas fa-flask text-xl"></i>
+                    </div>
+                    <div class="font-semibold text-sm">Chemistry</div>
+                    <div class="text-xs text-white/70 mt-1">30 topics</div>
+                  </div>
+                </a>
+                <a href="#" class="card-hover group">
+                  <div class="subject-biology rounded-2xl p-4 text-white text-center">
+                    <div class="w-12 h-12 mx-auto mb-2 bg-white/20 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
+                      <i class="fas fa-dna text-xl"></i>
+                    </div>
+                    <div class="font-semibold text-sm">Biology</div>
+                    <div class="text-xs text-white/70 mt-1">39 topics</div>
+                  </div>
+                </a>
+                <a href="#" class="card-hover group">
+                  <div class="subject-english rounded-2xl p-4 text-white text-center">
+                    <div class="w-12 h-12 mx-auto mb-2 bg-white/20 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
+                      <i class="fas fa-book text-xl"></i>
+                    </div>
+                    <div class="font-semibold text-sm">English</div>
+                    <div class="text-xs text-white/70 mt-1">34 topics</div>
+                  </div>
+                </a>
+                <a href="#" class="card-hover group">
+                  <div class="subject-economics rounded-2xl p-4 text-slate-700 text-center">
+                    <div class="w-12 h-12 mx-auto mb-2 bg-white/50 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
+                      <i class="fas fa-chart-line text-xl text-slate-600"></i>
+                    </div>
+                    <div class="font-semibold text-sm">Economics</div>
+                    <div class="text-xs text-slate-500 mt-1">More</div>
+                  </div>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Sidebar -->
+          <div class="space-y-6">
+            <!-- Exam Countdown -->
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-5">
+              <h3 class="font-semibold text-slate-800 mb-4 flex items-center gap-2">
+                <i class="fas fa-hourglass-half text-amber-500"></i> Exam Countdown
+              </h3>
+              <div id="examCountdown" class="text-center py-4">
+                <div class="text-sm text-slate-500 mb-2">No active study plan</div>
+                <a href="study-plan-supabase.html" class="text-sky-600 text-sm font-medium hover:underline">Set up your plan →</a>
+              </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-5">
+              <h3 class="font-semibold text-slate-800 mb-4 flex items-center gap-2">
+                <i class="fas fa-history text-purple-500"></i> Recent Activity
+              </h3>
+              <div id="activityFeed" class="space-y-3">
+                <div class="text-center py-4 text-slate-400 text-sm">
+                  <i class="fas fa-clock text-2xl mb-2 block"></i>
+                  No recent activity
+                </div>
+              </div>
+            </div>
+
+            <!-- Upcoming Sessions -->
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-5">
+              <h3 class="font-semibold text-slate-800 mb-4 flex items-center gap-2">
+                <i class="fas fa-video text-blue-500"></i> Upcoming Sessions
+              </h3>
+              <div id="upcomingSessions" class="space-y-3">
+                <div class="text-center py-4 text-slate-400 text-sm">
+                  <i class="fas fa-calendar text-2xl mb-2 block"></i>
+                  No upcoming sessions
+                </div>
+              </div>
+            </div>
+
+            <!-- Quick Links -->
+            <div class="bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl p-5 text-white">
+              <h3 class="font-semibold mb-4 flex items-center gap-2">
+                <i class="fas fa-bolt text-yellow-400"></i> Quick Actions
+              </h3>
+              <div class="grid grid-cols-2 gap-3">
+                <a href="study-plan-supabase.html" class="bg-white/10 hover:bg-white/20 rounded-xl p-3 text-center transition-all">
+                  <i class="fas fa-calendar-plus text-lg mb-1 block"></i>
+                  <span class="text-xs">New Plan</span>
+                </a>
+                <a href="mock-exams-supabase.html" class="bg-white/10 hover:bg-white/20 rounded-xl p-3 text-center transition-all">
+                  <i class="fas fa-clipboard-check text-lg mb-1 block"></i>
+                  <span class="text-xs">Mock Test</span>
+                </a>
+                <a href="notes-supabase.html" class="bg-white/10 hover:bg-white/20 rounded-xl p-3 text-center transition-all">
+                  <i class="fas fa-sticky-note text-lg mb-1 block"></i>
+                  <span class="text-xs">Notes</span>
+                </a>
+                <a href="video-library-supabase.html" class="bg-white/10 hover:bg-white/20 rounded-xl p-3 text-center transition-all">
+                  <i class="fas fa-play text-lg mb-1 block"></i>
+                  <span class="text-xs">Videos</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script type="module">
+    import { config } from '../js/config.js';
+    import { initSupabase, getSupabase } from '../js/supabase-client.js';
+
+    initSupabase(config.supabase.url, config.supabase.anonKey);
+    let supabase = null;
+
+    // Helper functions
+    function setText(id, text) { const el = document.getElementById(id); if (el) el.textContent = text; }
+    function setImage(id, url) { const el = document.getElementById(id); if (el) el.src = url; }
+    function setProgress(id, percent) { 
+      const el = document.getElementById(id); 
+      if (el) el.style.width = `${Math.min(100, Math.max(0, percent))}%`; 
+    }
+
+    // Set greeting based on time
+    function setGreeting() {
+      const hour = new Date().getHours();
+      let greeting = 'morning';
+      if (hour >= 12 && hour < 17) greeting = 'afternoon';
+      else if (hour >= 17) greeting = 'evening';
+      setText('greeting', greeting);
+    }
+
+    // Set today's date
+    function setTodayDate() {
+      const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+      setText('todayDate', new Date().toLocaleDateString('en-US', options));
+    }
+
+    // Sidebar toggle
+    const sidebar = document.getElementById('sidebar');
+    const mainContent = document.getElementById('main-content');
+    const toggleBtn = document.getElementById('toggleSidebar');
+
+    function applyInitialState() {
+      if (window.innerWidth < 1024) {
+        sidebar.classList.add('hide');
+        mainContent.classList.remove('ml-72');
+      } else {
+        sidebar.classList.remove('hide');
+        mainContent.classList.add('ml-72');
+      }
+    }
+
+    applyInitialState();
+    setGreeting();
+    setTodayDate();
+
+    if (toggleBtn) {
+      toggleBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        sidebar.classList.toggle('hide');
+        mainContent.classList.toggle('ml-72');
+      });
+    }
+
+    mainContent.addEventListener('click', () => {
+      if (window.innerWidth < 1024 && !sidebar.classList.contains('hide')) {
+        sidebar.classList.add('hide');
+        mainContent.classList.remove('ml-72');
+      }
+    });
+
+    window.addEventListener('resize', () => {
+      if (window.innerWidth >= 1024) {
+        sidebar.classList.remove('hide');
+        mainContent.classList.add('ml-72');
+      } else {
+        sidebar.classList.add('hide');
+        mainContent.classList.remove('ml-72');
+      }
+    });
+
+    // Load today's study plan
+    async function loadTodayStudyPlan(userId) {
+      try {
+        // Get active study plan
+        const { data: plan, error: planError } = await supabase
+          .from('study_plans')
+          .select('*')
+          .eq('user_id', userId)
+          .eq('status', 'active')
+          .single();
+
+        if (planError || !plan) {
+          document.getElementById('studyPlanStatus').classList.remove('hidden');
+          document.getElementById('todayTasks').classList.add('hidden');
+          return;
+        }
+
+        // Get today's tasks
+        const today = new Date().toISOString().split('T')[0];
+        const { data: todayDay, error: dayError } = await supabase
+          .from('study_plan_days')
+          .select('*, tasks:study_plan_tasks(*)')
+          .eq('plan_id', plan.id)
+          .eq('date', today)
+          .single();
+
+        if (!todayDay || !todayDay.tasks || todayDay.tasks.length === 0) {
+          // Get current day based on day_number
+          const daysSinceStart = Math.floor((new Date() - new Date(plan.created_at)) / (1000 * 60 * 60 * 24)) + 1;
+          
+          const { data: currentDay } = await supabase
+            .from('study_plan_days')
+            .select('*, tasks:study_plan_tasks(*)')
+            .eq('plan_id', plan.id)
+            .eq('day_number', Math.min(daysSinceStart, plan.total_topics || 90))
+            .single();
+
+          if (currentDay && currentDay.tasks && currentDay.tasks.length > 0) {
+            renderTasks(currentDay.tasks, plan);
+            updateExamCountdown(plan.exam_date);
+          } else {
+            document.getElementById('studyPlanStatus').classList.remove('hidden');
+            document.getElementById('todayTasks').classList.add('hidden');
+          }
+        } else {
+          renderTasks(todayDay.tasks, plan);
+          updateExamCountdown(plan.exam_date);
+        }
+
+        // Update stats
+        setText('topicsCompleted', plan.completed_topics || 0);
+        const progressPercent = plan.total_topics > 0 ? Math.round((plan.completed_topics / plan.total_topics) * 100) : 0;
+        setProgress('topicsBar', progressPercent);
+
+      } catch (err) {
+        console.error('Error loading study plan:', err);
+        document.getElementById('studyPlanStatus').classList.remove('hidden');
+        document.getElementById('todayTasks').classList.add('hidden');
+      }
+    }
+
+    function renderTasks(tasks, plan) {
+      document.getElementById('studyPlanStatus').classList.add('hidden');
+      const tasksEl = document.getElementById('todayTasks');
+      tasksEl.classList.remove('hidden');
+      tasksEl.innerHTML = '';
+
+      let completed = 0;
+      tasks.forEach((task, idx) => {
+        if (task.status === 'completed') completed++;
+        
+        const li = document.createElement('li');
+        li.className = `flex items-center gap-4 p-4 rounded-xl border ${task.status === 'completed' ? 'bg-green-50 border-green-200' : 'bg-slate-50 border-slate-200 hover:border-sky-300'} transition-all`;
+        li.style.animationDelay = `${idx * 50}ms`;
+        li.innerHTML = `
+          <input type="checkbox" 
+                 class="task-checkbox" 
+                 data-task-id="${task.id}" 
+                 ${task.status === 'completed' ? 'checked' : ''}>
+          <div class="flex-1 min-w-0">
+            <div class="font-semibold text-slate-800 ${task.status === 'completed' ? 'line-through text-slate-400' : ''}">${task.topic}</div>
+            <div class="flex items-center gap-3 mt-1">
+              <span class="text-xs px-2 py-0.5 rounded-full ${getSubjectColor(task.subject)}">${task.subject}</span>
+              <span class="text-xs text-slate-400"><i class="fas fa-clock mr-1"></i>${task.estimated_minutes || 30} min</span>
+            </div>
+          </div>
+          <div class="flex items-center gap-2">
+            ${task.task_type === 'quiz' ? '<i class="fas fa-question-circle text-purple-500" title="Quiz"></i>' : 
+              task.task_type === 'practice' ? '<i class="fas fa-pencil-alt text-amber-500" title="Practice"></i>' : 
+              task.task_type === 'review' ? '<i class="fas fa-redo text-blue-500" title="Review"></i>' : 
+              '<i class="fas fa-book-reader text-sky-500" title="Study"></i>'}
+          </div>
+        `;
+        tasksEl.appendChild(li);
+
+        // Add checkbox event listener
+        const checkbox = li.querySelector('input[type="checkbox"]');
+        checkbox.addEventListener('change', async (e) => {
+          const taskId = e.target.dataset.taskId;
+          const isChecked = e.target.checked;
+          
+          try {
+            await supabase
+              .from('study_plan_tasks')
+              .update({ 
+                status: isChecked ? 'completed' : 'pending',
+                completed_at: isChecked ? new Date().toISOString() : null
+              })
+              .eq('id', taskId);
+
+            // Update UI
+            if (isChecked) {
+              li.classList.add('bg-green-50', 'border-green-200');
+              li.classList.remove('bg-slate-50', 'border-slate-200');
+              li.querySelector('.font-semibold').classList.add('line-through', 'text-slate-400');
+              completed++;
+            } else {
+              li.classList.remove('bg-green-50', 'border-green-200');
+              li.classList.add('bg-slate-50', 'border-slate-200');
+              li.querySelector('.font-semibold').classList.remove('line-through', 'text-slate-400');
+              completed--;
+            }
+            
+            updateTodayProgress(tasks.length, completed);
+          } catch (err) {
+            console.error('Error updating task:', err);
+            e.target.checked = !isChecked;
+          }
+        });
+      });
+
+      updateTodayProgress(tasks.length, completed);
+    }
+
+    function getSubjectColor(subject) {
+      const colors = {
+        'Mathematics': 'bg-purple-100 text-purple-700',
+        'Physics': 'bg-pink-100 text-pink-700',
+        'Chemistry': 'bg-cyan-100 text-cyan-700',
+        'Biology': 'bg-green-100 text-green-700',
+        'English Language': 'bg-amber-100 text-amber-700',
+        'English': 'bg-amber-100 text-amber-700'
+      };
+      return colors[subject] || 'bg-slate-100 text-slate-700';
+    }
+
+    function updateTodayProgress(total, completed) {
+      const percent = total > 0 ? Math.round((completed / total) * 100) : 0;
+      setText('todayProgress', `${percent}%`);
+      setProgress('todayProgressBar', percent);
+      setText('heroTasksCompleted', completed);
+    }
+
+    function updateExamCountdown(examDate) {
+      if (!examDate) return;
+      
+      const exam = new Date(examDate);
+      const now = new Date();
+      const diff = exam - now;
+      
+      if (diff <= 0) {
+        document.getElementById('examCountdown').innerHTML = `
+          <div class="text-2xl font-bold text-slate-800">Exam Day!</div>
+          <div class="text-sm text-slate-500">Good luck!</div>
+        `;
+        return;
+      }
+      
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      
+      document.getElementById('examCountdown').innerHTML = `
+        <div class="grid grid-cols-2 gap-4">
+          <div class="bg-gradient-to-br from-sky-50 to-indigo-50 rounded-xl p-4 text-center">
+            <div class="text-3xl font-bold text-sky-600">${days}</div>
+            <div class="text-xs text-slate-500 mt-1">Days Left</div>
+          </div>
+          <div class="bg-gradient-to-br from-amber-50 to-orange-50 rounded-xl p-4 text-center">
+            <div class="text-3xl font-bold text-amber-600">${hours}</div>
+            <div class="text-xs text-slate-500 mt-1">Hours</div>
+          </div>
+        </div>
+        <div class="text-center mt-3 text-sm text-slate-500">
+          <i class="fas fa-calendar mr-1"></i> ${exam.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+        </div>
+      `;
+    }
+
+    // Auth handler
+    let currentUid = null;
+    
+    async function initAuth() {
+      supabase = await getSupabase();
+      if (!supabase) {
+        console.error('Failed to initialize Supabase');
+        return;
+      }
+
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session || !session.user) {
+        window.location.href = '../general/login.html';
+        return;
+      }
+
+      if (!session.user.email_confirmed_at) {
+        alert('Please verify your email first.');
+        await supabase.auth.signOut();
+        window.location.href = '../general/login.html';
+        return;
+      }
+
+      currentUid = session.user.id;
+      await loadUserProfile();
+      await loadTodayStudyPlan(currentUid);
+    }
+
+    async function loadUserProfile() {
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', currentUid)
+        .single();
+
+      if (profile) {
+        const displayName = profile.full_name || 'Student';
+        setText('userName', displayName.split(' ')[0]);
+        setText('topName', displayName);
+        setText('heroName', displayName.split(' ')[0]);
+        if (profile.avatar_url) {
+          setImage('avatar-sm', profile.avatar_url);
+          setImage('topAvatar', profile.avatar_url);
+        }
+        if (profile.level) {
+          setText('userLevel', profile.level);
+          setText('topLevel', profile.level);
+        }
+      }
+    }
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', initAuth);
+  </script>
+</body>
+</html>

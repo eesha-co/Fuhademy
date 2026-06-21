@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+  
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Biology — Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <!-- dedupe: removed duplicate favicon/manifest block -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+</head>
+<body class="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-100 font-inter">
+  <nav class="fixed inset-x-0 top-0 bg-white/60 backdrop-blur-sm border-b border-blue-100 z-50">
+    <div class="max-w-6xl mx-auto px-4 py-3">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-4">
+          <nav class="text-sm text-blue-600">
+            <a href="../student-dashboard.html" class="hover:underline">Dashboard</a>
+            <span class="mx-2">/</span>
+            <span class="font-semibold">Biology</span>
+          </nav>
+        </div>
+        <div class="flex items-center gap-3">
+          <div class="relative">
+            <i class="fas fa-search text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
+            <input aria-label="Search" class="pl-10 pr-3 py-2 rounded-lg border border-slate-200 bg-white" placeholder="Search biology topics" />
+          </div>
+          <img src="/assets/images/logo.png" alt="logo" class="h-10 w-auto" />
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <main class="max-w-6xl mx-auto px-4 pt-24 pb-12">
+    <header class="text-center mb-6">
+      <h1 class="text-3xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-700 to-blue-400">Biology</h1>
+      <p class="text-gray-600 mt-2">Organisms, ecosystems and applied biology</p>
+    </header>
+
+    <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <a href="biology-topic.html" class="block rounded-xl bg-white/60 backdrop-blur-sm shadow-sm border p-5 hover:shadow-md transition">
+        <h3 class="font-semibold text-blue-700">General Biology</h3>
+        <p class="text-sm text-slate-500 mt-1">Core concepts and foundations</p>
+      </a>
+
+      <a href="biology-micro.html" class="block rounded-xl bg-white/60 backdrop-blur-sm shadow-sm border p-5 hover:shadow-md transition">
+        <h3 class="font-semibold text-blue-700">Micro &amp; Unicellular Organisms</h3>
+        <p class="text-sm text-slate-500 mt-1">Bacteria, protists and lab basics</p>
+      </a>
+
+      <a href="biology-environment.html" class="block rounded-xl bg-white/60 backdrop-blur-sm shadow-sm border p-5 hover:shadow-md transition">
+        <h3 class="font-semibold text-blue-700">Environment</h3>
+        <p class="text-sm text-slate-500 mt-1">Ecosystems and conservation</p>
+      </a>
+
+      <a href="biology-bioagriculture.html" class="block rounded-xl bg-white/60 backdrop-blur-sm shadow-sm border p-5 hover:shadow-md transition">
+        <h3 class="font-semibold text-blue-700">Bio-Agriculture</h3>
+        <p class="text-sm text-slate-500 mt-1">Applied science for farming</p>
+      </a>
+    </section>
+  </main>
+<!-- Topic Quiz System -->
+<script src="/js/topic-quiz-loader.js"></script>
+<script src="/js/topic-quiz-injector.js"></script>
+</body>
+</html>

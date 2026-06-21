@@ -1,0 +1,1718 @@
+<!Doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=5" />
+    <title>Physics — Pendulum Experiment</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    <script src="https://unpkg.com/tippy.js@6"></script>
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/animations/scale.css" />
+    <style>
+      :root{
+        --color-bg: #f8fafc;
+        --color-surface: #ffffff;
+        --color-primary: #2563eb;
+        --color-accent: #10b981;
+        --color-muted: #64748b;
+        --shadow-1: 0 6px 18px rgba(15,23,42,0.06);
+        --radius-lg: 14px;
+      }
+      html,body{ font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; }
+      
+      /* Modern UI styles */
+      .app-container {
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 2.25rem 1.25rem;
+      }
+
+      .card {
+        background: var(--color-surface);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-1);
+        overflow: hidden;
+        transition: box-shadow 0.24s ease, transform 0.18s ease;
+      }
+
+      .card:hover {
+        box-shadow: 0 10px 30px rgba(15,23,42,0.08);
+        transform: translateY(-4px);
+      }
+
+      .card-header {
+        padding: 1rem;
+        border-bottom: 1px solid #f1f5f9;
+      }
+
+      .card-body {
+        padding: 1.5rem;
+      }
+
+      .canvas-container {
+        background: linear-gradient(135deg, #f8fafc 0%, #fff 100%);
+        border-radius: 1rem;
+        padding: 1rem 1rem 2rem 1rem;
+        transition: transform 0.3s ease;
+      }
+
+      #simCanvas { 
+        width: 100%;
+        height: auto;
+        border-radius: 12px;
+        background: linear-gradient(165deg, var(--color-bg) 0%, #eef2ff 100%);
+        box-shadow: inset 0 2px 6px rgba(15,23,42,0.03);
+        transition: box-shadow 0.3s ease, transform 0.12s ease;
+      }
+
+      #simCanvas:hover {
+        box-shadow: inset 0 4px 6px 0 rgba(0,0,0,0.1);
+      }
+
+      .control-panel {
+        background: var(--color-bg);
+        border-radius: 12px;
+        padding: 1.25rem;
+        box-shadow: inset 0 2px 6px rgba(15,23,42,0.02);
+      }
+
+      .control-group {
+        margin-bottom: 1.5rem;
+      }
+
+      .control-label {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 0.5rem;
+      }
+
+      .control-value {
+        font-size: 0.875rem;
+        font-weight: 500;
+        font-variant-numeric: tabular-nums;
+        color: #0f172a;
+        transition: color 0.2s ease;
+      }
+
+      /* Modern form elements */
+      input[type="range"] {
+        width: 100%;
+        height: 6px;
+        background: #e2e8f0;
+        border-radius: 999px;
+        -webkit-appearance: none;
+        appearance: none;
+        cursor: pointer;
+        transition: background 0.2s ease;
+      }
+
+      input[type="range"]:hover {
+        background: #cbd5e1;
+      }
+
+      input[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 16px;
+        height: 16px;
+        background: #3b82f6;
+        border-radius: 50%;
+        cursor: pointer;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        transition: all 0.2s ease;
+      }
+
+      input[type="range"]::-webkit-slider-thumb:hover {
+        transform: scale(1.15);
+        background: #2563eb;
+      }
+
+      input[type="range"]::-moz-range-thumb {
+        width: 16px;
+        height: 16px;
+        background: #3b82f6;
+        border-radius: 50%;
+        border: none;
+        cursor: pointer;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        transition: all 0.2s ease;
+      }
+
+      input[type="range"]::-moz-range-thumb:hover {
+        transform: scale(1.15);
+        background: #2563eb;
+      }
+
+      input[type="number"] {
+        border: 1px solid #e2e8f0;
+        border-radius: 0.5rem;
+        padding: 0.5rem;
+        font-size: 0.875rem;
+        color: #1e293b;
+        transition: all 0.2s ease;
+      }
+
+      input[type="number"]:focus {
+        outline: none;
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 3px rgba(59,130,246,0.1);
+      }
+
+      /* Modern buttons */
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.6rem 0.95rem;
+        border-radius: 10px;
+        font-size: 0.95rem;
+        font-weight: 600;
+        transition: all 0.16s ease;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 6px 18px rgba(15,23,42,0.03);
+      }
+
+      .btn:disabled {
+        opacity: 0.65;
+        cursor: not-allowed;
+      }
+
+      .btn-primary {
+        background: linear-gradient(180deg,var(--color-primary), #1e40af);
+        color: white;
+        border: 0;
+      }
+
+      .btn-primary:hover:not(:disabled) {
+        background: #1d4ed8;
+        transform: translateY(-1px);
+      }
+
+      .btn-primary:active:not(:disabled) {
+        transform: translateY(0);
+      }
+
+      .btn-primary:focus {
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(37,99,235,0.3);
+      }
+
+      .btn-secondary {
+        background: var(--color-surface);
+        color: #334155;
+        border: 1px solid rgba(15,23,42,0.06);
+      }
+
+      .btn-secondary:hover:not(:disabled) {
+        background: #f8fafc;
+        transform: translateY(-1px);
+      }
+
+      .btn-secondary:active:not(:disabled) {
+        transform: translateY(0);
+      }
+
+      .btn-secondary:focus {
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(71,85,105,0.2);
+      }
+
+      /* Loading state */
+      .btn.loading {
+        color: transparent !important;
+      }
+
+      .btn.loading::after {
+        content: "";
+        position: absolute;
+        width: 16px;
+        height: 16px;
+        top: 50%;
+        left: 50%;
+        margin: -8px 0 0 -8px;
+        border-radius: 50%;
+        border: 2px solid rgba(255,255,255,0.3);
+        border-top-color: white;
+        animation: spin 0.8s linear infinite;
+      }
+
+      @keyframes spin {
+        to { transform: rotate(360deg); }
+      }
+
+      /* Modern components */
+      .timer-display {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        background: #f8fafc;
+        padding: 0.75rem 1rem;
+        border-radius: 0.5rem;
+        box-shadow: inset 0 2px 4px 0 rgba(0,0,0,0.03);
+      }
+
+      .timer-value {
+        font-family: ui-monospace, monospace;
+        font-size: 1.125rem;
+        font-weight: 500;
+        color: #1e293b;
+      }
+
+      .energy-display {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        background: #f8fafc;
+        padding: 1rem;
+        border-radius: 0.5rem;
+        box-shadow: inset 0 2px 4px 0 rgba(0,0,0,0.03);
+      }
+
+      .energy-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 0.5rem 0;
+        border-bottom: 1px solid #e2e8f0;
+      }
+
+      .energy-row:last-child {
+        border-bottom: none;
+      }
+
+      .energy-label {
+        color: #64748b;
+        font-size: 0.875rem;
+      }
+
+      .energy-value {
+        font-weight: 500;
+        color: #0f172a;
+        font-variant-numeric: tabular-nums;
+      }
+
+      /* Energy bars */
+      .energy-bar-wrap { background: #eef2ff; height: 8px; border-radius: 999px; overflow: hidden; }
+      .energy-bar { height: 8px; border-radius: 999px; transition: width 150ms linear; }
+      .energy-bar.ke { background: linear-gradient(90deg,#60a5fa,#2563eb); }
+      .energy-bar.pe { background: linear-gradient(90deg,#f9a8d4,#fb7185); }
+      .energy-bar.total { background: linear-gradient(90deg,#86efac,#16a34a); }
+      .energy-bar { width: 0%; }
+
+      /* Table styles */
+      table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+      }
+
+      th {
+        background: linear-gradient(180deg, #fbfdff, #f8fafc);
+        color: #475569;
+        font-weight: 600;
+        font-size: 0.9rem;
+        padding: 0.85rem 0.9rem;
+        text-align: left;
+        border-bottom: 1px solid rgba(15,23,42,0.05);
+        position: sticky; top: 0; z-index: 2;
+      }
+
+      td {
+        padding: 0.75rem;
+        border-bottom: 1px solid #e2e8f0;
+        font-size: 0.875rem;
+        transition: background 0.15s ease;
+      }
+
+      tr:hover td {
+        background: #f8fafc;
+      }
+
+      /* Zebra rows */
+      tbody tr:nth-child(odd) td { background: #ffffff; }
+      tbody tr:nth-child(even) td { background: #fbfdff; }
+
+      /* Rounded table container */
+      .table-card { border-radius: 0.75rem; overflow: hidden; border: 1px solid #eef2ff; }
+
+      /* Animations */
+      .animate-fade {
+        animation: fadeIn 0.3s ease;
+      }
+
+      @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+      }
+
+      .animate-slide-up {
+        animation: slideUp 0.3s ease;
+        transition: all 0.2s ease;
+      }
+
+      @keyframes slideUp {
+        from { transform: translateY(10px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+      }
+
+      .btn:hover {
+        transform: translateY(-1px);
+      }
+      .btn:active {
+        transform: translateY(0);
+      }
+
+      /* Card & shadow effects */
+      .card-hover {
+        transition: box-shadow 0.3s ease, transform 0.3s ease;
+      }
+      .card-hover:hover {
+        box-shadow: 
+          0 4px 6px -1px rgba(0,0,0,0.1),
+          0 2px 4px -2px rgba(0,0,0,0.1);
+        transform: translateY(-2px);
+      }
+
+      /* Modern scrollbar */
+      .custom-scrollbar::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+      }
+      .custom-scrollbar::-webkit-scrollbar-track {
+        background: #f1f5f9;
+        border-radius: 3px;
+      }
+      .custom-scrollbar::-webkit-scrollbar-thumb {
+        background: #cbd5e1;
+        border-radius: 3px;
+      }
+      .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+        background: #94a3b8;
+      }
+      
+      /* input validation styles */
+      .input-invalid { border-color: #ef4444 !important; box-shadow: 0 0 0 3px rgba(239,68,68,0.06); }
+      .input-err { color: #ef4444; font-size: 0.75rem; margin-top: 0.25rem; }
+
+      /* ensure two-column layout columns stretch equally */
+      .grid { align-items: stretch; }
+      .grid > main, .grid > aside { display: flex; flex-direction: column; }
+      .grid > aside .space-y-4 { flex: 1 1 auto; display: flex; flex-direction: column; }
+      .grid > aside .space-y-4 > .bg-white { flex: 1 1 auto; display: flex; flex-direction: column; }
+      
+      /* Analysis tabs (chart / measurements) */
+      .analysis-tabs { display: flex; gap: 0.5rem; }
+      .tab-btn {
+        padding: 0.45rem 0.65rem;
+        border-radius: 8px;
+        background: transparent;
+        border: 1px solid rgba(15,23,42,0.06);
+        font-weight: 600;
+        color: #334155;
+        cursor: pointer;
+      }
+      .tab-btn.tab-active {
+        background: linear-gradient(180deg, #eef2ff, #e0f2fe);
+        border-color: rgba(37,99,235,0.15);
+        color: #0f172a;
+        box-shadow: 0 6px 18px rgba(15,23,42,0.04);
+      }
+
+      /* Hide measurement card by default; chart shown */
+      #measCard { display: none; }
+      #chartCard { display: block; }
+
+      /* Mobile analysis panel toggle */
+      .mobile-analysis-toggle {
+        position: fixed;
+        right: 16px;
+        bottom: 18px;
+        z-index: 90;
+        border-radius: 999px;
+        box-shadow: 0 8px 24px rgba(2,6,23,0.12);
+      }
+
+      /* Small-screen aside as slide-up panel when active */
+      .aside-panel {
+        transition: transform 0.28s ease, opacity 0.28s ease;
+      }
+      body.show-analysis .aside-panel {
+        position: fixed;
+        left: 0; right: 0; bottom: 0; top: 28%;
+        margin: 0; padding: 1rem;
+        background: white; z-index: 80;
+        border-top-left-radius: 14px; border-top-right-radius: 14px;
+        box-shadow: 0 -18px 40px rgba(2,6,23,0.12);
+        overflow: auto;
+      }
+
+      /* ==================== MOBILE RESPONSIVE STYLES ==================== */
+      
+      /* Extra small devices (phones, 480px and below) */
+      @media (max-width: 480px) {
+        .app-container {
+          padding: 0.75rem;
+        }
+        
+        h1 {
+          font-size: 1.5rem !important;
+        }
+        
+        h2 {
+          font-size: 1.125rem !important;
+        }
+        
+        .btn {
+          padding: 0.5rem 0.75rem;
+          font-size: 0.85rem;
+        }
+        
+        /* Stack all buttons vertically on very small screens */
+        .btn-group-mobile {
+          flex-direction: column;
+          width: 100%;
+        }
+        
+        .btn-group-mobile .btn {
+          width: 100%;
+          margin-bottom: 0.5rem;
+        }
+        
+        /* Controls panel - stack vertically */
+        .controls-grid {
+          flex-direction: column;
+        }
+        
+        .controls-sidebar {
+          width: 100% !important;
+          max-width: 100% !important;
+        }
+        
+        /* Table scrollable on mobile */
+        .table-wrapper {
+          overflow-x: auto;
+          -webkit-overflow-scrolling: touch;
+        }
+        
+        table {
+          min-width: 600px;
+          font-size: 0.75rem;
+        }
+        
+        th, td {
+          padding: 0.5rem 0.4rem;
+          font-size: 0.7rem;
+        }
+        
+        /* Energy display compact */
+        .energy-grid-mobile {
+          grid-template-columns: repeat(3, 1fr);
+          gap: 0.5rem;
+        }
+        
+        .energy-grid-mobile > div {
+          padding: 0.5rem;
+        }
+        
+        /* Hide some secondary text on very small screens */
+        .hide-on-xs {
+          display: none !important;
+        }
+        
+        /* Navigation breadcrumbs */
+        nav .text-sm {
+          font-size: 0.7rem;
+        }
+        
+        /* Canvas container */
+        .canvas-wrap {
+          padding: 0.5rem;
+        }
+        
+        /* Control inputs */
+        .control-row {
+          margin-bottom: 0.75rem;
+        }
+        
+        .control-row label {
+          font-size: 0.7rem;
+        }
+        
+        .control-row input[type="number"] {
+          padding: 0.4rem;
+          font-size: 0.8rem;
+        }
+        
+        /* Instructions card */
+        .instructions-list li {
+          font-size: 0.75rem;
+        }
+        
+        .instructions-list li span:first-child {
+          width: 20px !important;
+          height: 20px !important;
+          font-size: 0.65rem !important;
+        }
+      }
+      
+      /* Small devices (landscape phones, 481px to 768px) */
+      @media (min-width: 481px) and (max-width: 768px) {
+        .app-container {
+          padding: 1rem;
+        }
+        
+        h1 {
+          font-size: 1.75rem !important;
+        }
+        
+        /* Two-column controls on tablet portrait */
+        .controls-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        
+        /* Table adjustments */
+        .table-wrapper {
+          overflow-x: auto;
+          -webkit-overflow-scrolling: touch;
+        }
+        
+        table {
+          min-width: 700px;
+        }
+      }
+      
+      /* All mobile devices (below 768px) */
+      @media (max-width: 768px) {
+        .app-container {
+          padding: 1rem;
+        }
+        
+        /* Main grid becomes single column */
+        .main-grid {
+          grid-template-columns: 1fr !important;
+        }
+        
+        /* Flex containers stack vertically */
+        .flex-mobile-col {
+          flex-direction: column !important;
+        }
+        
+        /* Canvas and controls side by side on mobile */
+        .sim-layout {
+          flex-direction: column !important;
+        }
+        
+        .sim-layout > .w-full {
+          order: 1;
+        }
+        
+        .sim-layout > .controls-sidebar {
+          order: 2;
+          width: 100% !important;
+          margin-top: 1rem;
+        }
+        
+        /* Controls grid for mobile */
+        .controls-grid-mobile {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          gap: 0.75rem;
+        }
+        
+        /* Button group responsive */
+        .button-group {
+          flex-wrap: wrap;
+          gap: 0.5rem;
+        }
+        
+        .button-group .btn {
+          flex: 1 1 auto;
+          min-width: 120px;
+        }
+        
+        /* Larger touch targets for sliders on mobile */
+        input[type="range"] { 
+          height: 10px; 
+        }
+        input[type="range"]::-webkit-slider-thumb { 
+          width: 22px; 
+          height: 22px; 
+        }
+        input[type="range"]::-moz-range-thumb { 
+          width: 22px; 
+          height: 22px; 
+        }
+        
+        /* Analysis section improvements */
+        .analysis-section {
+          position: relative;
+        }
+        
+        /* Show mobile toggle button */
+        .mobile-analysis-toggle {
+          display: flex !important;
+        }
+        
+        /* Header adjustments */
+        header .flex-col {
+          gap: 1rem;
+        }
+        
+        header .lg\\:flex-row {
+          flex-direction: column !important;
+        }
+        
+        /* Badge adjustments */
+        .badge-container {
+          flex-direction: row !important;
+          flex-wrap: wrap;
+          gap: 0.5rem;
+        }
+        
+        /* Instructions card */
+        .instructions-card {
+          padding: 1rem !important;
+        }
+        
+        .instructions-card ol {
+          padding-left: 0;
+        }
+        
+        /* Energy bars compact */
+        .energy-display {
+          padding: 0.75rem;
+        }
+        
+        /* Timer display */
+        .timer-display {
+          padding: 0.5rem 0.75rem;
+        }
+        
+        .timer-value {
+          font-size: 1rem;
+        }
+        
+        /* Chart container */
+        #chartCard {
+          min-height: 200px;
+        }
+        
+        /* Analysis tabs */
+        .analysis-tabs {
+          flex-wrap: wrap;
+        }
+        
+        .tab-btn {
+          flex: 1;
+          text-align: center;
+          font-size: 0.85rem;
+        }
+        
+        /* Hide sidebar on mobile, show as panel */
+        aside.lg\\:col-span-4 {
+          display: none;
+        }
+        
+        body.show-analysis aside.lg\\:col-span-4 {
+          display: block;
+          position: fixed;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          top: 15%;
+          z-index: 100;
+          background: white;
+          border-radius: 16px 16px 0 0;
+          box-shadow: 0 -4px 20px rgba(0,0,0,0.15);
+          padding: 1rem;
+          overflow: auto;
+        }
+        
+        /* Close button for mobile panel */
+        .mobile-panel-close {
+          display: block;
+          position: absolute;
+          top: 0.75rem;
+          right: 0.75rem;
+          width: 32px;
+          height: 32px;
+          border-radius: 50%;
+          background: #f1f5f9;
+          border: none;
+          cursor: pointer;
+          z-index: 101;
+        }
+        
+        /* Navigation improvements */
+        nav {
+          padding: 0.5rem 0;
+        }
+        
+        nav .h-16 {
+          height: auto !important;
+          min-height: 56px;
+          padding: 0.5rem 0;
+        }
+        
+        /* Oscillation count input */
+        .osc-count-group {
+          flex-wrap: wrap;
+        }
+        
+        /* Theory section */
+        .theory-section {
+          flex-direction: column !important;
+        }
+        
+        .theory-section .w-5 {
+          margin-bottom: 0.25rem;
+        }
+      }
+      
+      /* Medium devices (tablets, 769px to 1024px) */
+      @media (min-width: 769px) and (max-width: 1024px) {
+        .main-grid {
+          grid-template-columns: 1fr;
+        }
+        
+        /* Controls sidebar wider on tablet */
+        .controls-sidebar {
+          width: 280px !important;
+        }
+        
+        /* Show analysis panel inline on tablet */
+        aside.lg\\:col-span-4 {
+          display: block;
+        }
+        
+        .mobile-analysis-toggle {
+          display: none !important;
+        }
+      }
+      
+      /* Large devices (desktops, 1025px and up) */
+      @media (min-width: 1025px) {
+        .main-grid {
+          grid-template-columns: repeat(12, 1fr);
+        }
+        
+        main.content-main {
+          grid-column: span 8;
+        }
+        
+        aside.content-aside {
+          grid-column: span 4;
+        }
+        
+        .mobile-analysis-toggle {
+          display: none !important;
+        }
+      }
+      
+      /* Landscape orientation adjustments */
+      @media (max-width: 768px) and (orientation: landscape) {
+        .app-container {
+          padding: 0.5rem 1rem;
+        }
+        
+        /* Reduce vertical spacing in landscape */
+        header {
+          margin-bottom: 1rem !important;
+        }
+        
+        .card {
+          margin-bottom: 0.75rem;
+        }
+        
+        /* Smaller canvas height in landscape */
+        #simCanvas {
+          max-height: 300px;
+        }
+      }
+      
+      /* Touch device optimizations */
+      @media (hover: none) and (pointer: coarse) {
+        /* Larger touch targets */
+        .btn {
+          min-height: 44px;
+          min-width: 44px;
+        }
+        
+        input[type="number"],
+        input[type="range"] {
+          min-height: 44px;
+        }
+        
+        /* Remove hover effects on touch devices */
+        .card:hover,
+        .btn:hover,
+        .tab-btn:hover {
+          transform: none;
+          box-shadow: inherit;
+        }
+        
+        /* Active state feedback */
+        .btn:active {
+          transform: scale(0.98);
+        }
+      }
+      
+      /* High DPI screens */
+      @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+        /* Ensure crisp text and borders */
+        .card,
+        .btn,
+        input {
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
+        }
+      }
+      
+      /* Print styles */
+      @media print {
+        .mobile-analysis-toggle,
+        nav,
+        .btn {
+          display: none !important;
+        }
+        
+        .main-grid {
+          display: block;
+        }
+        
+        aside {
+          display: block !important;
+          position: relative !important;
+        }
+      }
+      
+      /* Dark mode support (optional) */
+      @media (prefers-color-scheme: dark) {
+        /* Add dark mode styles if needed */
+      }
+      
+      /* Reduced motion preference */
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
+        }
+      }
+    </style>
+  </head>
+  <body class="bg-slate-100 min-h-screen text-slate-800">
+    <!-- Top Navigation -->
+    <nav class="bg-white border-b border-slate-200">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6">
+        <div class="flex justify-between items-center h-16">
+          <div class="flex">
+            <div class="flex items-center space-x-2 text-sm">
+              <a href="../teacher-dashboard-physics.html" class="text-slate-500 hover:text-slate-700">Physics Dashboard</a>
+              <span class="text-slate-300">/</span>
+              <a href="experiments.html" class="text-slate-500 hover:text-slate-700">Experiments</a>
+              <span class="text-slate-300">/</span>
+              <span class="text-slate-900 font-medium">Simple Pendulum</span>
+            </div>
+          </div>
+          <div class="flex items-center space-x-3">
+            <button id="exportCsvNav" title="Export measurements as CSV" class="btn text-sm text-slate-500 hover:text-slate-700" data-tippy-content="Export all measurements as CSV">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+            </button>
+            <script>document.getElementById('exportCsvNav').addEventListener('click', ()=>{ const target = document.getElementById('exportCsv'); if(target) target.click(); });</script>
+            <button title="View guide" class="btn text-sm text-slate-500 hover:text-slate-700" data-tippy-content="View guide">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <main class="max-w-6xl mx-auto px-4 sm:px-6 py-8">
+      <header class="mb-8">
+        <div class="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6">
+          <div class="animate-slide-up">
+            <h1 class="text-3xl font-bold text-slate-900 leading-tight">Simple Pendulum</h1>
+            <p class="mt-2 text-lg text-slate-600">Investigation: Relationship between period (T) and length (L)</p>
+          </div>
+          <div class="flex items-center gap-4 lg:items-start badge-container flex-wrap">
+            <div class="inline-flex items-center px-3 py-1.5 rounded-full text-sm font-medium bg-gradient-to-r from-blue-50 to-indigo-50 text-blue-700 border border-blue-100 shadow-sm animate-fade">
+              <svg class="w-4 h-4 mr-1.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <span>WAEC-style Practical</span>
+            </div>
+            <button class="inline-flex items-center px-3 py-1.5 rounded-full text-sm font-medium bg-emerald-50 text-emerald-700 border border-emerald-100 shadow-sm hover:bg-emerald-100 transition duration-150 ease-in-out animate-fade" onclick="document.querySelector('.card').scrollIntoView({behavior:'smooth'})">
+              <svg class="w-4 h-4 mr-1.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+              <span>Start Experiment</span>
+            </button>
+          </div>
+        </div>
+        
+        <div class="mt-6 card p-5 bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-100 instructions-card">
+          <div class="flex items-start space-x-4 flex-mobile-col">
+            <div class="flex-shrink-0 p-2 bg-blue-100 rounded-lg">
+              <svg class="w-6 h-6 text-blue-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <div class="flex-1">
+              <h2 class="text-lg font-semibold text-slate-900">Instructions</h2>
+              <ol class="mt-3 space-y-2 text-sm text-slate-700 instructions-list">
+                <li class="flex items-start">
+                  <span class="flex-shrink-0 w-6 h-6 flex items-center justify-center rounded-full bg-blue-100 text-blue-700 font-medium mr-2">1</span>
+                  <span>Set the pendulum length L using the slider (choose between ~0.2 m and 3.0 m).</span>
+                </li>
+                <li class="flex items-start">
+                  <span class="flex-shrink-0 w-6 h-6 flex items-center justify-center rounded-full bg-blue-100 text-blue-700 font-medium mr-2">2</span>
+                  <span>Use a real stopwatch. Choose N (e.g. 20) for the number of oscillations to time.</span>
+                </li>
+                <li class="flex items-start">
+                  <span class="flex-shrink-0 w-6 h-6 flex items-center justify-center rounded-full bg-blue-100 text-blue-700 font-medium mr-2">3</span>
+                  <span>Displace the bob slightly and release. Start your real stopwatch and count N complete oscillations, then stop the stopwatch.</span>
+                </li>
+                <li class="flex items-start">
+                  <span class="flex-shrink-0 w-6 h-6 flex items-center justify-center rounded-full bg-blue-100 text-blue-700 font-medium mr-2">4</span>
+                  <span>Enter the measured time as t₁ in the table for the chosen L and N.</span>
+                </li>
+                <li class="flex items-start">
+                  <span class="flex-shrink-0 w-6 h-6 flex items-center justify-center rounded-full bg-blue-100 text-blue-700 font-medium mr-2">5</span>
+                  <span>Repeat the timing to obtain t₂ and enter it in the table.</span>
+                </li>
+                <li class="flex items-start">
+                  <span class="flex-shrink-0 w-6 h-6 flex items-center justify-center rounded-full bg-blue-100 text-blue-700 font-medium mr-2">6</span>
+                  <span>Change L and repeat steps 2–5 for at least 5 different lengths.</span>
+                </li>
+                <li class="flex items-start">
+                  <span class="flex-shrink-0 w-6 h-6 flex items-center justify-center rounded-full bg-blue-100 text-blue-700 font-medium mr-2">7</span>
+                  <span>After entering valid rows, click <strong>Plot T² vs L</strong> to see the scatter, linear fit, and an estimated g.</span>
+                </li>
+              </ol>
+              <div class="mt-4 flex items-center space-x-2 text-sm theory-section">
+                <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                </svg>
+                <span class="text-slate-600 font-medium">Theory:</span>
+                <span class="text-slate-700">For small angles, T = 2π√(L/g) where g is acceleration due to gravity.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <div class="grid grid-cols-12 gap-4 main-grid">
+        <main class="col-span-12 lg:col-span-8 content-main">
+          <div class="bg-white p-4 rounded shadow">
+            <div class="flex items-center justify-between mb-3 flex-wrap gap-2">
+              <div class="flex gap-3 items-center flex-wrap button-group">
+                <button id="startBtn" class="btn btn-primary" aria-label="Start Timer">
+                  <svg class="w-4 h-4 mr-1.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  Start Timer
+                </button>
+                <button id="pauseBtn" class="btn btn-secondary" aria-label="Pause">
+                  <svg class="w-4 h-4 mr-1.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  Pause
+                </button>
+                <button id="resetBtn" class="btn btn-secondary" aria-label="Reset">
+                  <svg class="w-4 h-4 mr-1.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                  </svg>
+                  Reset
+                </button>
+                <div class="h-6 border-r mx-1 hidden sm:block"></div>
+                <button id="exportCsv" class="btn btn-secondary" aria-label="Export Data">
+                  <svg class="w-4 h-4 mr-1.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  </svg>
+                  Export Data
+                </button>
+              </div>
+              <div class="flex items-center gap-2 mt-2 sm:mt-0">
+                <div class="text-sm text-slate-600 hide-on-xs">Use a real stopwatch to time N oscillations and enter the measured times into the table manually.</div>
+              </div>
+            </div>
+
+            <div class="flex gap-4 sim-layout">
+              <div class="w-full">
+                <div class="flex items-center justify-between mb-2 flex-wrap gap-2">
+                  <div class="flex items-center gap-3">
+                    <div class="text-sm font-medium">Timer:</div>
+                    <div class="text-sm text-slate-600 hide-on-xs">Use a real stopwatch; enter times manually into the table.</div>
+                  </div>
+                  <div class="flex items-center gap-2 osc-count-group">
+                    <label class="text-sm font-medium">Count</label>
+                    <input id="oscCount" type="number" value="20" min="1" max="200" class="w-20 border rounded p-1 text-sm" aria-label="Number of oscillations to count">
+                    <span class="text-xs text-slate-600">oscillations</span>
+                  </div>
+                </div>
+                <div class="canvas-wrap">
+                  <canvas id="simCanvas" width="760" height="420"></canvas>
+                </div>
+              </div>
+              <div class="w-64 controls-sidebar">
+                <div class="bg-slate-50 p-3 rounded">
+                  <div class="text-sm font-medium mb-2">Controls</div>
+                  <div class="controls-grid-mobile">
+                    <div class="control-row">
+                      <label class="block text-xs text-slate-600">Length (cm)</label>
+                      <input id="length" type="number" min="1" max="100" step="0.1" value="100" aria-label="Pendulum length (cm)" class="w-full border rounded p-1 text-sm">
+                      <div class="text-sm mt-1" id="lengthVal">100 cm (1.00 m)</div>
+                    </div>
+
+                    <div class="control-row">
+                      <label class="block text-xs text-slate-600">Mass (kg)</label>
+                      <input id="mass" type="number" min="0.01" max="5" step="0.01" value="0.50" aria-label="Pendulum mass (kg)" class="w-full border rounded p-1 text-sm">
+                      <div class="text-sm mt-1" id="massVal">0.50 kg</div>
+                    </div>
+
+                    <div class="control-row">
+                      <label class="block text-xs text-slate-600">Initial angle (deg)</label>
+                      <input id="angle" type="number" min="0.1" max="90" step="0.1" value="20" aria-label="Initial angle in degrees" class="w-full border rounded p-1 text-sm">
+                      <div class="text-sm mt-1" id="angleVal">20°</div>
+                    </div>
+
+                    <div class="control-row">
+                      <label class="block text-xs text-slate-600">Damping</label>
+                      <input id="damping" type="number" min="0" max="1" step="0.01" value="0.02" aria-label="Damping coefficient" class="w-full border rounded p-1 text-sm">
+                      <div class="text-sm mt-1" id="dampingVal">0.02</div>
+                    </div>
+                    
+                    <div class="control-row">
+                      <label class="block text-xs text-slate-600">Bob radius (cm)</label>
+                      <input id="bobRadius" type="number" min="0.5" max="10" step="0.1" value="2.0" aria-label="Bob radius in cm" class="w-full border rounded p-1 text-sm">
+                      <div class="text-sm mt-1" id="bobRadiusVal">2.0 cm</div>
+                    </div>
+                    
+                    <div class="control-row">
+                      <label class="block text-xs text-slate-600">Drag coefficient (Cd)</label>
+                      <input id="dragCd" type="number" min="0.1" max="2.0" step="0.01" value="0.47" aria-label="Drag coefficient" class="w-full border rounded p-1 text-sm">
+                      <div class="text-sm mt-1" id="dragCdVal">0.47</div>
+                    </div>
+                  </div>
+                  
+                  <div class="mt-2 control-row">
+                    <label class="inline-flex items-center text-xs text-slate-600">
+                      <input id="autoEnv" type="checkbox" class="mr-2"> Auto environment (estimate air drag & pivot friction)
+                    </label>
+                    <div class="text-xs text-slate-500 mt-1">When enabled, the simulation estimates air drag and pivot friction from simple physical assumptions; manual damping is disabled.</div>
+                  </div>
+
+                  <div class="mt-4">
+                    <div class="text-sm font-medium mb-2">Energy (Joules)</div>
+                    <div class="mt-3">
+                      <div class="text-sm font-medium mb-1">Simulation Timer</div>
+                      <div id="simTimer" class="timer-display">
+                        <div class="timer-value" id="simTimerVal">00:00.000</div>
+                      </div>
+                    </div>
+                    <div class="energy-display">
+                      <div class="grid grid-cols-3 gap-2 energy-grid-mobile" id="energy">
+                        <div>
+                          <div class="text-xs text-slate-500 mb-1">Kinetic</div>
+                          <div class="text-sm font-medium text-slate-900 tabular-nums" id="keVal">0.000</div>
+                          <div class="mt-2 energy-bar-wrap"><div id="keBar" class="energy-bar ke"></div></div>
+                        </div>
+                        <div>
+                          <div class="text-xs text-slate-500 mb-1">Potential</div>
+                          <div class="text-sm font-medium text-slate-900 tabular-nums" id="peVal">0.000</div>
+                          <div class="mt-2 energy-bar-wrap"><div id="peBar" class="energy-bar pe"></div></div>
+                        </div>
+                        <div>
+                          <div class="text-xs text-slate-500 mb-1">Total</div>
+                          <div class="text-sm font-medium text-slate-900 tabular-nums" id="teVal">0.000</div>
+                          <div class="mt-2 energy-bar-wrap"><div id="teBar" class="energy-bar total"></div></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+            <!-- Chart and measurement table moved to the right column for better layout -->
+          </div>
+        </main>
+        
+        <aside class="col-span-12 lg:col-span-4 content-aside aside-panel">
+          <!-- Mobile close button -->
+          <button id="closePanelBtn" class="mobile-panel-close" aria-label="Close panel" style="display: none;">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+            </svg>
+          </button>
+          
+          <div class="space-y-4 lg:sticky lg:top-20">
+            <div class="bg-white p-4 rounded shadow">
+              <div class="flex items-start justify-between flex-wrap gap-2">
+                <div>
+                  <h3 class="font-medium">Analysis</h3>
+                  <p class="text-sm mt-1 text-slate-700 hide-on-xs">Live chart and measurements for quick analysis.</p>
+                </div>
+                <div class="analysis-tabs flex">
+                  <button id="tabChartBtn" class="tab-btn tab-active" aria-pressed="true">Chart</button>
+                  <button id="tabTableBtn" class="tab-btn">Table</button>
+                </div>
+              </div>
+              <div class="mt-3">
+                <div id="chartCard">
+                  <canvas id="chart" height="220"></canvas>
+                  <div id="fitResult" class="text-sm mt-2 text-slate-700"></div>
+                </div>
+
+                <!-- Measurements live in the same Analysis card so the tabs remain attached -->
+                <div id="measCard" class="mt-4 table-card">
+                  <div class="p-3">
+                    <div class="flex items-center justify-between mb-2">
+                      <div class="font-medium">Measurement Table</div>
+                    </div>
+
+                    <div class="overflow-x-auto table-wrapper custom-scrollbar">
+                      <table class="w-full text-sm">
+                        <thead class="bg-slate-50">
+                          <tr>
+                            <th class="p-2 text-left">S/N</th>
+                            <th class="p-2 text-left">L (m)</th>
+                            <th class="p-2 text-left">N</th>
+                            <th class="p-2 text-left">t1 (s)</th>
+                            <th class="p-2 text-left">t2 (s)</th>
+                            <th class="p-2 text-left">mean t (s)</th>
+                            <th class="p-2 text-left">T (s)</th>
+                            <th class="p-2 text-left">T² (s²)</th>
+                            <th class="p-2 text-left">Actions</th>
+                          </tr>
+                        </thead>
+                        <tbody id="measBody">
+                          <!-- six manual rows will be added by JS -->
+                        </tbody>
+                      </table>
+                    </div>
+
+                    <div class="p-3 bg-slate-50 mt-3">
+                      <div class="flex items-center justify-between flex-wrap gap-2">
+                        <div class="flex items-center gap-2">
+                          <button id="clearTable" class="btn btn-secondary" aria-label="Clear all measurements">Clear All</button>
+                          <button id="plotBtn" class="btn btn-primary" aria-label="Plot measurements">Plot T² vs L</button>
+                        </div>
+                        <div class="text-sm text-slate-600 hide-on-xs">Click <strong>Plot</strong> after entering data.</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </main>
+
+    <!-- Mobile analyze toggle -->
+    <button id="mobileAnalysisToggle" class="mobile-analysis-toggle btn btn-primary sm:hidden" title="Open analysis" aria-label="Open analysis panel">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5h10M11 12h10M11 19h10M4 6h.01M4 13h.01M4 20h.01"/>
+      </svg>
+    </button>
+
+    <script>
+      // -- Physics state and parameters
+      const canvas = document.getElementById('simCanvas');
+      const ctx = canvas.getContext('2d');
+      const chartCtx = document.getElementById('chart').getContext('2d');
+
+      // responsive canvas sizing
+      function resizeCanvasToContainer(){
+        const wrap = canvas.parentElement;
+        const w = Math.min(1100, wrap.clientWidth);
+        // make canvas taller to accommodate long pendulum lengths
+        const h = Math.max(280, Math.round(w * 9 / 14));
+        canvas.width = w; canvas.height = h;
+        drawScene();
+      }
+      window.addEventListener('resize', resizeCanvasToContainer);
+      // call once after DOM ready
+      setTimeout(resizeCanvasToContainer, 50);
+
+      // UI elements
+      const startBtn = document.getElementById('startBtn');
+      const pauseBtn = document.getElementById('pauseBtn');
+      const resetBtn = document.getElementById('resetBtn');
+      const exportCsv = document.getElementById('exportCsv');
+      const lengthEl = document.getElementById('length');
+      const massEl = document.getElementById('mass');
+      const angleEl = document.getElementById('angle');
+      const dampingEl = document.getElementById('damping');
+      const autoEnvEl = document.getElementById('autoEnv');
+      const lengthVal = document.getElementById('lengthVal');
+      const massVal = document.getElementById('massVal');
+      const angleVal = document.getElementById('angleVal');
+      const dampingVal = document.getElementById('dampingVal');
+      const energyEl = document.getElementById('energy');
+      const keValEl = document.getElementById('keVal');
+      const peValEl = document.getElementById('peVal');
+      const teValEl = document.getElementById('teVal');
+
+      // default params
+      const g = 9.81;
+      // length input is in cm (1-100) — convert to meters for physics
+      let L = (parseFloat(lengthEl.value) || 100) / 100; // meters
+      let m = parseFloat(massEl.value);
+      let theta = toRad(parseFloat(angleEl.value)); // radians
+      let omega = 0; // angular velocity
+      let damping = parseFloat(dampingEl.value);
+      let autoEnv = false;
+      // auto environment coefficients (computed when autoEnv=true)
+      let auto_c_linear = 0;
+      let auto_k_drag = 0;
+
+      // simulation state
+      let running = false;
+      let lastTime = null;
+      let accumulated = 0;
+      let dataLog = []; // {t, theta, omega, ke, pe, te}
+
+      // Chart.js setup - start empty for T² vs L (WAEC style)
+      let chart = new Chart(chartCtx, {
+        type: 'scatter',
+        data: { datasets: [] },
+        options: {
+          responsive: true,
+          maintainAspectRatio: true,
+          interaction: { mode: 'nearest', intersect: false },
+          parsing: false,
+          normalized: true,
+          plugins: {
+            legend: { display: true, labels: { color: '#334155' } },
+            tooltip: { backgroundColor: '#0f172a', titleColor: '#fff', bodyColor: '#fff' }
+          },
+          scales: {
+            x: { type: 'linear', title: { display: true, text: 'Length (m)', color: '#475569' }, grid: { color: 'rgba(15,23,42,0.06)' }, ticks: { color: '#0f172a' } },
+            y: { title: { display: true, text: 'T² (s²)', color: '#475569' }, grid: { color: 'rgba(15,23,42,0.06)' }, ticks: { color: '#0f172a' } }
+          }
+        }
+      });
+
+      // helpers
+      function toRad(d){ return d * Math.PI / 180; }
+      function toDeg(r){ return r * 180 / Math.PI; }
+
+      function rk4_step(theta, omega, dt){
+        // state vector y = [theta, omega]
+        // dynamics: dtheta/dt = omega; domega/dt = - (g/L) * sin(theta) - c * omega
+        // damping model: linear damping scaled by inverse mass, plus quadratic drag
+        const c_linear = autoEnv ? auto_c_linear : ((damping || 0) / Math.max(0.001, m));
+        const k_drag = autoEnv ? auto_k_drag : (0.02 / Math.max(0.001, m));
+        function f(state){
+          const th = state[0], w = state[1];
+          // quadratic drag approximation (opposes motion)
+          const drag = k_drag * w * Math.abs(w);
+          return [ w, - (g / L) * Math.sin(th) - c_linear * w - drag ];
+        }
+        const y0 = [theta, omega];
+        const k1 = f(y0);
+        const k2 = f([ y0[0] + 0.5*dt*k1[0], y0[1] + 0.5*dt*k1[1] ]);
+        const k3 = f([ y0[0] + 0.5*dt*k2[0], y0[1] + 0.5*dt*k2[1] ]);
+        const k4 = f([ y0[0] + dt*k3[0], y0[1] + dt*k3[1] ]);
+        const thNew = y0[0] + (dt/6) * (k1[0] + 2*k2[0] + 2*k3[0] + k4[0]);
+        const wNew  = y0[1] + (dt/6) * (k1[1] + 2*k2[1] + 2*k3[1] + k4[1]);
+        return [thNew, wNew];
+      }
+
+      function computeEnergies(theta, omega){
+        // PE = m g L (1 - cos theta), KE = 0.5 m (L^2) omega^2
+        const pe = m * g * L * (1 - Math.cos(theta));
+        const ke = 0.5 * m * (L*L) * (omega*omega);
+        return { ke, pe, total: ke + pe };
+      }
+
+      // drawing
+      function drawScene(){
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+        const cx = canvas.width/2;
+        // pivot placed near top with some padding
+        const topPadding = 36;
+        const cxPad = 20;
+        // compute pixels-per-meter scale so the longest expected L fits within canvas height
+        const maxL = 3.0; // meters (match input max)
+        const availableHeight = canvas.height - topPadding - 40; // leave room for bob
+        const pxPerM = Math.max(80, Math.min(220, Math.floor(availableHeight / (maxL + 0.2))));
+        const cy = topPadding;
+        // draw pivot
+        ctx.fillStyle = '#111827'; ctx.beginPath(); ctx.arc(cx,cy,6,0,Math.PI*2); ctx.fill();
+        // bob position (scale by pxPerM)
+        const px = cx + L * pxPerM * Math.sin(theta);
+        const py = cy + L * pxPerM * Math.cos(theta);
+        // rod
+        ctx.strokeStyle = '#374151'; ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(cx,cy); ctx.lineTo(px,py); ctx.stroke();
+        // bob
+        ctx.fillStyle = '#111827'; ctx.beginPath(); ctx.arc(px,py, 14, 0, Math.PI*2); ctx.fill();
+        // motion trail
+        if(dataLog.length>1){ ctx.strokeStyle='rgba(59,130,246,0.3)'; ctx.beginPath(); for(let i=0;i<dataLog.length;i++){ const d = dataLog[i]; const x = cx + L * 140 * Math.sin(d.theta); const y = cy + L * 140 * Math.cos(d.theta); if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y); } ctx.stroke(); }
+      }
+
+      // sampling and logging
+      function sampleAndLog(t){
+        const energies = computeEnergies(theta, omega);
+        dataLog.push({ t, theta, omega, ke: energies.ke, pe: energies.pe, total: energies.total });
+        // keep last N samples for trail
+        if(dataLog.length>600) dataLog.shift();
+        if(keValEl) keValEl.textContent = energies.ke.toFixed(3);
+        if(peValEl) peValEl.textContent = energies.pe.toFixed(3);
+        if(teValEl) teValEl.textContent = energies.total.toFixed(3);
+        // animate energy bars
+        const total = Math.max(energies.total, 1e-6);
+        const kePct = Math.min(100, Math.max(0, (energies.ke / total) * 100));
+        const pePct = Math.min(100, Math.max(0, (energies.pe / total) * 100));
+        const keBar = document.getElementById('keBar');
+        const peBar = document.getElementById('peBar');
+        const teBar = document.getElementById('teBar');
+        if(keBar) keBar.style.width = kePct + '%';
+        if(peBar) peBar.style.width = pePct + '%';
+        if(teBar) teBar.style.width = '100%';
+      }
+
+      // main loop
+      let raf = null;
+
+      // controls
+      startBtn.addEventListener('click', ()=>{
+        if(running) return;
+        running = true; lastTime = null;
+        if(dataLog.length===0) sampleAndLog(0);
+        oscCount = 0; lastSign = Math.sign(theta); oscTarget = parseInt(document.getElementById('oscCount').value,10) || 20;
+        raf = requestAnimationFrame(stepFrame);
+      });
+      pauseBtn.addEventListener('click', ()=>{ running = false; if(raf) cancelAnimationFrame(raf); raf=null; });
+      resetBtn.addEventListener('click', ()=>{
+        running = false; if(raf) cancelAnimationFrame(raf); raf=null; dataLog = []; chart.data.datasets[0].data = []; chart.update(); theta = toRad(Number(angleEl.value)); omega = 0; lastTime = null; accumulated = 0; drawScene();
+        if(keValEl) keValEl.textContent = '0.000';
+        if(peValEl) peValEl.textContent = '0.000';
+        if(teValEl) teValEl.textContent = '0.000';
+      });
+
+      exportCsv.addEventListener('click', ()=>{
+        if(dataLog.length===0) return alert('No data to export');
+        let csv = 'time,theta,omega,ke,pe,total\n';
+        dataLog.forEach(r=>{ csv += `${r.t.toFixed(6)},${r.theta.toFixed(6)},${r.omega.toFixed(6)},${r.ke.toFixed(6)},${r.pe.toFixed(6)},${r.total.toFixed(6)}\n`; });
+        const blob = new Blob([csv], { type: 'text/csv' }); const url = URL.createObjectURL(blob);
+        const a = document.createElement('a'); a.href = url; a.download = 'pendulum-data.csv'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+      });
+
+      // UI binding for sliders
+      lengthEl.addEventListener('input', ()=>{ const cm = parseFloat(lengthEl.value) || 0; L = (cm/100); lengthVal.textContent = `${cm.toFixed(1)} cm (${L.toFixed(2)} m)`; drawScene(); });
+      massEl.addEventListener('input', ()=>{ m = parseFloat(massEl.value) || 0; massVal.textContent = m.toFixed(2) + ' kg'; if(autoEnv) computeAutoCoeffs(); });
+      angleEl.addEventListener('input', ()=>{ angleVal.textContent = (Number(angleEl.value) || 0) + '°'; theta = toRad(Number(angleEl.value) || 0); drawScene(); });
+      dampingEl.addEventListener('input', ()=>{ damping = parseFloat(dampingEl.value) || 0; dampingVal.textContent = damping.toFixed(2); });
+      // bob radius and drag Cd
+      const bobRadiusEl = document.getElementById('bobRadius'); const dragCdEl = document.getElementById('dragCd');
+      if(bobRadiusEl){ bobRadiusEl.addEventListener('input', ()=>{ const v = parseFloat(bobRadiusEl.value) || 0; document.getElementById('bobRadiusVal').textContent = v.toFixed(1) + ' cm'; if(autoEnv) computeAutoCoeffs(); }); }
+      if(dragCdEl){ dragCdEl.addEventListener('input', ()=>{ const v = parseFloat(dragCdEl.value) || 0; document.getElementById('dragCdVal').textContent = v.toFixed(2); if(autoEnv) computeAutoCoeffs(); }); }
+      if(autoEnvEl){ autoEnvEl.addEventListener('change', ()=>{ autoEnv = !!autoEnvEl.checked; dampingEl.disabled = autoEnv; if(autoEnv) computeAutoCoeffs(); else { auto_c_linear = 0; auto_k_drag = 0; } }); }
+
+      function computeAutoCoeffs(){
+        const rCm = (document.getElementById('bobRadius') && parseFloat(document.getElementById('bobRadius').value)) ? parseFloat(document.getElementById('bobRadius').value) : 2.0;
+        const r = rCm / 100.0; // meters
+        const area = Math.PI * r * r;
+        auto_c_linear = 0.02 / Math.max(0.001, m);
+        const rho = 1.2; const Cd = (document.getElementById('dragCd') && parseFloat(document.getElementById('dragCd').value)) ? parseFloat(document.getElementById('dragCd').value) : 0.47;
+        auto_k_drag = (0.5 * rho * Cd * area) / Math.max(0.001, m) * 2.5;
+      }
+
+      // initialize state
+      theta = toRad(Number(angleEl.value)); omega = 0; drawScene();
+      // init energy bars
+      const keBarInit = document.getElementById('keBar'); if(keBarInit) keBarInit.style.width = '0%';
+      const peBarInit = document.getElementById('peBar'); if(peBarInit) peBarInit.style.width = '0%';
+      const teBarInit = document.getElementById('teBar'); if(teBarInit) teBarInit.style.width = '0%';
+
+      // small UX helpers
+      lengthVal.textContent = L.toFixed(2) + ' m'; massVal.textContent = m.toFixed(2) + ' kg'; angleVal.textContent = (Number(angleEl.value)) + '°'; dampingVal.textContent = damping.toFixed(2);
+
+      // warm up chart with initial point
+      sampleAndLog(0);
+
+      // ----- WAEC-style measurement table -----
+      const clearTable = document.getElementById('clearTable');
+
+      const measBody = document.getElementById('measBody');
+
+      function makeRow(idx){
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td class="p-1 text-xs">${idx}</td>
+          <td class="p-1"><div><input class="w-full border rounded p-1 text-xs" data-field="L" value="" placeholder="L"><div class="input-err" data-err-for="L"></div></div></td>
+          <td class="p-1"><div><input class="w-16 border rounded p-1 text-xs" data-field="N" value="20"><div class="input-err" data-err-for="N"></div></div></td>
+          <td class="p-1"><div><input class="w-16 border rounded p-1 text-xs" data-field="t1" placeholder="t1"><div class="input-err" data-err-for="t1"></div></div></td>
+          <td class="p-1"><div><input class="w-16 border rounded p-1 text-xs" data-field="t2" placeholder="t2"><div class="input-err" data-err-for="t2"></div></div></td>
+          <td class="p-1"><input class="w-16 border rounded p-1 text-xs bg-slate-50" data-field="mean" readonly></td>
+          <td class="p-1"><input class="w-16 border rounded p-1 text-xs bg-slate-50" data-field="T" readonly></td>
+          <td class="p-1"><input class="w-16 border rounded p-1 text-xs bg-slate-50" data-field="T2" readonly></td>
+          <td class="p-1">
+            <button class="text-xs text-red-600 hover:text-red-800 clearRow">Clear</button>
+            <button class="text-xs text-blue-600 hover:text-blue-800 ml-1 useL">Use L</button>
+          </td>`;
+        
+        // wire clear: clear t1/t2 only
+        const clearBtn = tr.querySelector('.clearRow');
+        clearBtn.addEventListener('click', ()=>{ 
+          tr.querySelector('[data-field="t1"]').value=''; 
+          tr.querySelector('[data-field="t2"]').value=''; 
+          computeRow(tr); 
+          clearRowErrors(tr); 
+        });
+        
+        // wire Use L button
+        const useBtn = tr.querySelector('.useL');
+        useBtn.addEventListener('click', ()=>{ 
+          const lin = tr.querySelector('[data-field="L"]'); 
+          if(lin){ lin.value = L.toFixed(3); computeRow(tr); clearRowErrors(tr); } 
+        });
+        
+        // wire inputs to recompute + validate
+        ['t1','t2','L','N'].forEach(f=>{ 
+          const el = tr.querySelector(`[data-field="${f}"]`); 
+          if(el) el.addEventListener('input', ()=>{ validateField(tr, f); computeRow(tr); }); 
+        });
+        return tr;
+      }
+
+      function setError(el, msg){ if(!el) return; el.classList.add('input-invalid'); const err = el.parentElement.querySelector('.input-err'); if(err) err.textContent = msg || ''; }
+      function clearError(el){ if(!el) return; el.classList.remove('input-invalid'); const err = el.parentElement.querySelector('.input-err'); if(err) err.textContent = ''; }
+      function clearRowErrors(tr){ ['t1','t2','L','N'].forEach(f=>{ const el = tr.querySelector(`[data-field="${f}"]`); clearError(el); }); }
+
+      function validateField(tr, field){
+        const el = tr.querySelector(`[data-field="${field}"]`);
+        if(!el) return true;
+        const v = el.value.trim();
+        clearError(el);
+        if(field === 'L'){
+          const n = parseFloat(v);
+          if(isNaN(n) || !isFinite(n) || n <= 0){ setError(el, 'Enter L > 0'); return false; }
+        }
+        if(field === 'N'){
+          const n = parseFloat(v);
+          if(isNaN(n) || !isFinite(n) || n < 1 || Math.floor(n) !== n){ setError(el, 'N must be integer ≥ 1'); return false; }
+        }
+        if(field === 't1' || field === 't2'){
+          if(v === ''){ clearError(el); return true; }
+          const n = parseFloat(v);
+          if(isNaN(n) || !isFinite(n) || n <= 0){ setError(el, 'Enter time > 0'); return false; }
+        }
+        return true;
+      }
+
+      // populate six rows
+      for(let i=1;i<=6;i++){ const r=makeRow(i); measBody.appendChild(r); }
+
+      function computeRow(tr){
+        const t1 = parseFloat(tr.querySelector('[data-field="t1"]').value) || 0;
+        const t2 = parseFloat(tr.querySelector('[data-field="t2"]').value) || 0;
+        const N = parseFloat(tr.querySelector('[data-field="N"]').value) || 20;
+        if(t1>0 && t2>0){
+          const mean = (t1 + t2)/2;
+          const T = mean / N;
+          const T2 = T*T;
+          tr.querySelector('[data-field="mean"]').value = mean.toFixed(4);
+          tr.querySelector('[data-field="T"]').value = T.toFixed(4);
+          tr.querySelector('[data-field="T2"]').value = T2.toFixed(5);
+          clearRowErrors(tr);
+        } else if(t1>0){
+          const mean = t1;
+          const T = mean / N;
+          const T2 = T*T;
+          tr.querySelector('[data-field="mean"]').value = mean.toFixed(4);
+          tr.querySelector('[data-field="T"]').value = T.toFixed(4);
+          tr.querySelector('[data-field="T2"]').value = T2.toFixed(5);
+          clearRowErrors(tr);
+        } else {
+          tr.querySelector('[data-field="mean"]').value='';
+          tr.querySelector('[data-field="T"]').value='';
+          tr.querySelector('[data-field="T2"]').value='';
+        }
+      }
+
+      // stopwatch and oscillation counting logic
+      function formatTime(ms){ const s = Math.floor(ms/1000); const msRem = ms%1000; const mm = Math.floor(s/60); const ss = s%60; return `${String(mm).padStart(2,'0')}:${String(ss).padStart(2,'0')}.${String(msRem).padStart(3,'0')}`; }
+
+      // oscillation counting variables
+      let oscCount = 0; let lastSign = null; let oscTarget = 20;
+
+      // stepFrame
+      let lastMotionTime = 0;
+      const motionStartThreshold = 0.002;
+      const motionStopTimeout = 0.8;
+
+      function stepFrame(now){
+        if(!lastTime) lastTime = now; const dtMs = now - lastTime; lastTime = now;
+        const dt = Math.min(0.05, dtMs/1000);
+        const substeps = Math.max(1, Math.floor(dt / (1/200)));
+        const h = dt / substeps;
+        for(let i=0;i<substeps;i++){ const res = rk4_step(theta, omega, h); theta = res[0]; omega = res[1]; }
+        const sampleHz = 50; accumulated = (accumulated || 0) + dt; const sampT = 1/sampleHz; if(accumulated >= sampT){ const t = (dataLog.length?dataLog[dataLog.length-1].t:0) + accumulated; sampleAndLog(t); accumulated = 0; }
+        drawScene();
+
+        // detect motion start/stop for sim timer
+        const motionLevel = Math.abs(omega) + Math.abs(theta)*0.1;
+        const nowSec = (performance.now()||0)/1000;
+        if(motionLevel > motionStartThreshold){
+          lastMotionTime = nowSec;
+          if(!simRunningTimer) startSimTimer();
+        } else {
+          if(simRunningTimer && (nowSec - lastMotionTime) > motionStopTimeout){ stopSimTimer(); }
+        }
+
+        // counting
+        const sign = Math.sign(theta); if(lastSign !== null && sign > 0 && lastSign <= 0){ oscCount += 1; }
+        lastSign = sign;
+
+        if(running) raf = requestAnimationFrame(stepFrame); else raf = null;
+      }
+
+      // clear table
+      clearTable.addEventListener('click', ()=>{ 
+        if(!confirm('Clear measurement table?')) return; 
+        Array.from(measBody.children).forEach((tr,i)=>{ 
+          tr.querySelector('[data-field="L"]').value = ''; 
+          tr.querySelector('[data-field="t1"]').value=''; 
+          tr.querySelector('[data-field="t2"]').value=''; 
+          computeRow(tr); 
+        }); 
+      });
+
+      // Plotting
+      const plotBtn = document.getElementById('plotBtn');
+      const fitResult = document.getElementById('fitResult');
+      if(fitResult) fitResult.textContent = '';
+
+      function readValidPoints(){
+        const pts = [];
+        const invalidRows = [];
+        Array.from(measBody.children).forEach((tr, idx)=>{
+          const rowNum = idx + 1;
+          const okL = validateField(tr, 'L');
+          const okN = validateField(tr, 'N');
+          const ok1 = validateField(tr, 't1');
+          const ok2 = validateField(tr, 't2');
+          if(!okL || !okN || !ok1 || !ok2){ invalidRows.push(rowNum); return; }
+          const Lval = parseFloat(tr.querySelector('[data-field="L"]').value);
+          const T2 = parseFloat(tr.querySelector('[data-field="T2"]').value);
+          if(!isNaN(Lval) && isFinite(Lval) && Lval>0 && !isNaN(T2) && isFinite(T2) && T2>0){ pts.push({ x: Lval, y: T2 }); }
+        });
+        return { pts, invalidRows };
+      }
+
+      // simulation timer logic
+      const simTimerVal = document.getElementById('simTimerVal');
+      let simStart = null; let simRunningTimer = false; let simElapsed = 0; let simTimerRaf = null;
+      function fmtTime(ms){ const s = Math.floor(ms/1000); const msRem = ms%1000; const mm = Math.floor(s/60); const ss = s%60; return `${String(mm).padStart(2,'0')}:${String(ss).padStart(2,'0')}.${String(msRem).padStart(3,'0')}`; }
+      function startSimTimer(){ if(simRunningTimer) return; simStart = performance.now() - simElapsed; simRunningTimer = true; tickSimTimer(); }
+      function stopSimTimer(){ simRunningTimer = false; if(simTimerRaf) cancelAnimationFrame(simTimerRaf); simTimerRaf = null; }
+      function tickSimTimer(now){ if(!simRunningTimer) return; simElapsed = performance.now() - simStart; if(simTimerVal) simTimerVal.textContent = fmtTime(Math.round(simElapsed)); simTimerRaf = requestAnimationFrame(tickSimTimer); }
+
+      // simple linear regression
+      function linearFit(points){
+        const n = points.length; if(n===0) return null;
+        let sx=0, sy=0, sxx=0, sxy=0;
+        for(const p of points){ sx += p.x; sy += p.y; sxx += p.x*p.x; sxy += p.x*p.y; }
+        const denom = (n*sxx - sx*sx);
+        if(Math.abs(denom) < 1e-12) return null;
+        const a = (n*sxy - sx*sy)/denom; // slope
+        const b = (sy - a*sx)/n; // intercept
+        return { a, b };
+      }
+
+      function updateChartWithFit(points, fit){
+        chart.data.datasets = [];
+        chart.data.datasets.push({ label: 'Measurements', data: points, backgroundColor: '#2563eb', borderColor: '#2563eb', pointRadius: 5, showLine: false });
+        if(fit){
+          const xs = points.map(p=>p.x).sort((a,b)=>a-b);
+          const xmin = xs[0]; const xmax = xs[xs.length-1];
+          const linePts = [ { x: xmin, y: fit.a * xmin + fit.b }, { x: xmax, y: fit.a * xmax + fit.b } ];
+          chart.data.datasets.push({ label: 'Linear fit', data: linePts, type: 'line', borderColor: '#10b981', backgroundColor: 'rgba(16,185,129,0.08)', fill: false, pointRadius: 0, borderWidth: 2 });
+        }
+        chart.update();
+      }
+
+      plotBtn.addEventListener('click', ()=>{
+        const { pts, invalidRows } = readValidPoints();
+        if(invalidRows.length > 0){ alert('Please fix invalid inputs in rows: ' + invalidRows.join(', ')); return; }
+        if(pts.length < 2) { alert('Enter at least two valid (L, T^2) rows to plot.'); return; }
+        const fit = linearFit(pts);
+        updateChartWithFit(pts, fit);
+        if(fit && Math.abs(fit.a) > 1e-12){
+          const slope = fit.a; // slope = 4*pi^2 / g  => g = 4*pi^2 / slope
+          const gEst = (4 * Math.PI * Math.PI) / slope;
+          fitResult.textContent = `Linear fit: T² = ${slope.toFixed(4)}·L + ${fit.b.toFixed(4)} — estimated g = ${gEst.toFixed(3)} m/s²`;
+        } else {
+          fitResult.textContent = 'Could not compute fit (degenerate data).';
+        }
+      });
+
+      // clear fit result when user clears table
+      clearTable.addEventListener('click', ()=>{ if(fitResult) fitResult.textContent = ''; });
+
+      // Analysis tab switching (desktop)
+      const tabChartBtn = document.getElementById('tabChartBtn');
+      const tabTableBtn = document.getElementById('tabTableBtn');
+      const chartCard = document.getElementById('chartCard');
+      const measCard = document.getElementById('measCard');
+      function activateTab(which){
+        if(which==='chart'){
+          tabChartBtn.classList.add('tab-active'); tabChartBtn.setAttribute('aria-pressed','true');
+          tabTableBtn.classList.remove('tab-active'); tabTableBtn.setAttribute('aria-pressed','false');
+          if(chartCard) chartCard.style.display='block'; if(measCard) measCard.style.display='none';
+          setTimeout(()=>{ chart.resize(); },60);
+        } else {
+          tabTableBtn.classList.add('tab-active'); tabTableBtn.setAttribute('aria-pressed','true');
+          tabChartBtn.classList.remove('tab-active'); tabChartBtn.setAttribute('aria-pressed','false');
+          if(chartCard) chartCard.style.display='none'; if(measCard) measCard.style.display='block';
+        }
+      }
+      if(tabChartBtn && tabTableBtn){ tabChartBtn.addEventListener('click', ()=>activateTab('chart')); tabTableBtn.addEventListener('click', ()=>activateTab('table')); }
+
+      // Mobile analysis toggle
+      const mobileToggle = document.getElementById('mobileAnalysisToggle');
+      const closePanelBtn = document.getElementById('closePanelBtn');
+      
+      if(mobileToggle){ 
+        mobileToggle.addEventListener('click', ()=>{ 
+          document.body.classList.toggle('show-analysis'); 
+          if(closePanelBtn) closePanelBtn.style.display = document.body.classList.contains('show-analysis') ? 'block' : 'none';
+          setTimeout(()=>{ chart.resize(); }, 160); 
+        }); 
+      }
+      
+      if(closePanelBtn){
+        closePanelBtn.addEventListener('click', ()=>{
+          document.body.classList.remove('show-analysis');
+          closePanelBtn.style.display = 'none';
+        });
+      }
+
+      // ensure initial tab state
+      activateTab('chart');
+      // initialize autoEnv state
+      if(autoEnvEl && autoEnvEl.checked){ autoEnv = true; dampingEl.disabled = true; computeAutoCoeffs(); }
+
+    </script>
+  </body>
+</html>

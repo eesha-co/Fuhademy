@@ -1,0 +1,28 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "Q47: The ground state energy for a hydrogen atom is 5.44 x 10⁻¹⁹ J. If an electron drops from zero to ground state, calculate the frequency of the emitted radiation [h = 6.6 x 10⁻³⁴ Js] | Diagram: no\nQ48: Transistors are used for the | Diagram: no\nQ49: A typical transistor characteristic is represented as | Diagram: yes\nQ50: Which of the following is a pure semiconductor? | Diagram: no",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1774106544,
+  "id": "20260321232218b2fec4bd6b0c4e66",
+  "model": "glm-4.6v",
+  "object": "chat.completion",
+  "request_id": "20260321232218b2fec4bd6b0c4e66",
+  "usage": {
+    "completion_tokens": 114,
+    "completion_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "prompt_tokens": 5065,
+    "prompt_tokens_details": {
+      "cached_tokens": 102
+    },
+    "total_tokens": 5179
+  }
+}

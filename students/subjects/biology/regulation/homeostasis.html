@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homeostasis - Biology</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @keyframes fade-in-up {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in-up { animation: fade-in-up 0.5s ease-out forwards; }
+        .section-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            border: 1px solid #e5e7eb;
+        }
+        .video-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 8px;
+        }
+        .video-container iframe {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <nav class="bg-white shadow-sm fixed top-0 w-full z-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center">
+                    <a href="index.html" class="text-teal-600 hover:text-teal-800 mr-4">
+                        <i class="fas fa-arrow-left"></i>
+                    </a>
+                    <h1 class="text-xl font-semibold text-gray-900">Homeostasis</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="text-sm text-gray-600 hidden sm:block">
+                        Progress: <span id="progressPercent">0%</span>
+                    </div>
+                    <div class="w-24 sm:w-32 h-2 bg-gray-200 rounded-full">
+                        <div id="progressBar" class="h-2 bg-teal-500 rounded-full transition-all" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="pt-20 pb-8 px-4 max-w-5xl mx-auto">
+        <div class="bg-teal-50 border-l-4 border-teal-500 p-4 rounded-r-lg mb-6 animate-fade-in-up">
+            <h3 class="font-semibold text-teal-800 mb-2"><i class="fas fa-bullseye mr-2"></i>Learning Objectives</h3>
+            <ul class="text-teal-700 text-sm space-y-1">
+                <li>• Define homeostasis and explain its importance</li>
+                <li>• Describe the role of negative feedback mechanisms</li>
+                <li>• Explain how body temperature is regulated</li>
+                <li>• Describe blood glucose regulation</li>
+                <li>• Explain osmoregulation and kidney function</li>
+            </ul>
+        </div>
+
+        <!-- Section 1 -->
+        <div class="section-card animate-fade-in-up">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <span class="bg-teal-100 text-teal-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">1</span>
+                What is Homeostasis?
+            </h2>
+            
+            <div class="bg-teal-50 p-4 rounded-lg border-l-4 border-teal-500 mb-4">
+                <p class="text-teal-800 font-medium text-lg"><strong>Homeostasis</strong> is the maintenance of a constant internal environment despite changes in external conditions.</p>
+            </div>
+
+            <p class="text-gray-700 mb-4">Your body must maintain stable internal conditions for cells to function properly. This includes maintaining constant:</p>
+
+            <div class="grid md:grid-cols-3 gap-4">
+                <div class="bg-red-50 p-4 rounded-lg border border-red-200 text-center">
+                    <i class="fas fa-thermometer-half text-red-500 text-2xl mb-2"></i>
+                    <p class="font-semibold text-red-700">Temperature</p>
+                    <p class="text-gray-600 text-sm">~37°C (98.6°F)</p>
+                </div>
+                <div class="bg-blue-50 p-4 rounded-lg border border-blue-200 text-center">
+                    <i class="fas fa-tint text-blue-500 text-2xl mb-2"></i>
+                    <p class="font-semibold text-blue-700">Water Balance</p>
+                    <p class="text-gray-600 text-sm">Blood water potential</p>
+                </div>
+                <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200 text-center">
+                    <i class="fas fa-candy-cane text-yellow-500 text-2xl mb-2"></i>
+                    <p class="font-semibold text-yellow-700">Blood Glucose</p>
+                    <p class="text-gray-600 text-sm">~90 mg/100mL</p>
+                </div>
+            </div>
+
+            <div class="bg-purple-50 p-4 rounded-lg border-l-4 border-purple-400 mt-4">
+                <h4 class="font-semibold text-purple-800 mb-2"><i class="fas fa-info-circle mr-2"></i>Why is Homeostasis Important?</h4>
+                <ul class="text-gray-700 text-sm space-y-1">
+                    <li>• <strong>Enzymes</strong> work best at specific temperatures and pH levels</li>
+                    <li>• <strong>Cells</strong> need constant water levels for metabolic reactions</li>
+                    <li>• <strong>Glucose</strong> is needed for respiration to produce energy</li>
+                    <li>• Changes can lead to illness or death</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Section 2: Negative Feedback -->
+        <div class="section-card animate-fade-in-up">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <span class="bg-teal-100 text-teal-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">2</span>
+                Negative Feedback Mechanism
+            </h2>
+
+            <p class="text-gray-700 mb-4">Homeostasis is maintained through <strong>negative feedback</strong> - a control mechanism that reverses any change from the normal level.</p>
+
+            <div class="bg-white p-4 rounded-lg border-2 border-teal-200 mb-4">
+                <div class="flex flex-wrap items-center justify-center gap-2 text-center">
+                    <div class="bg-teal-100 px-3 py-2 rounded-lg">
+                        <p class="text-sm font-semibold text-teal-700">Change Detected</p>
+                    </div>
+                    <i class="fas fa-arrow-right text-teal-400"></i>
+                    <div class="bg-blue-100 px-3 py-2 rounded-lg">
+                        <p class="text-sm font-semibold text-blue-700">Receptor</p>
+                        <p class="text-xs text-gray-500">detects change</p>
+                    </div>
+                    <i class="fas fa-arrow-right text-teal-400"></i>
+                    <div class="bg-purple-100 px-3 py-2 rounded-lg">
+                        <p class="text-sm font-semibold text-purple-700">Control Center</p>
+                        <p class="text-xs text-gray-500">processes info</p>
+                    </div>
+                    <i class="fas fa-arrow-right text-teal-400"></i>
+                    <div class="bg-orange-100 px-3 py-2 rounded-lg">
+                        <p class="text-sm font-semibold text-orange-700">Effector</p>
+                        <p class="text-xs text-gray-500">responds</p>
+                    </div>
+                    <i class="fas fa-arrow-right text-teal-400"></i>
+                    <div class="bg-green-100 px-3 py-2 rounded-lg">
+                        <p class="text-sm font-semibold text-green-700">Normal Level</p>
+                        <p class="text-xs text-gray-500">restored</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-r-lg">
+                <h4 class="font-semibold text-yellow-800 mb-2"><i class="fas fa-lightbulb mr-2"></i>Think of it like a thermostat!</h4>
+                <p class="text-gray-700 text-sm">If temperature rises above set point → cooling systems activate → temperature drops back to normal. If temperature drops below set point → heating systems activate → temperature rises back to normal.</p>
+            </div>
+        </div>
+
+        <!-- Section 3: Temperature Regulation -->
+        <div class="section-card animate-fade-in-up">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <span class="bg-teal-100 text-teal-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">3</span>
+                Thermoregulation (Temperature Control)
+            </h2>
+
+            <p class="text-gray-700 mb-4">The <strong>hypothalamus</strong> in the brain acts as the body's thermostat, detecting changes in blood temperature and skin receptors.</p>
+
+            <div class="grid md:grid-cols-2 gap-4">
+                <div class="bg-red-50 p-4 rounded-lg border border-red-200">
+                    <h4 class="font-semibold text-red-700 mb-3"><i class="fas fa-temperature-high mr-2"></i>When Body is TOO HOT</h4>
+                    <ul class="text-gray-700 text-sm space-y-2">
+                        <li><strong>Sweating:</strong> Sweat glands release sweat; evaporation cools skin</li>
+                        <li><strong>Vasodilation:</strong> Blood vessels widen; more blood to skin surface; heat lost by radiation</li>
+                        <li><strong>Hairs lie flat:</strong> Less air trapped, more heat loss</li>
+                        <li><strong>Reduced metabolism:</strong> Less heat produced</li>
+                    </ul>
+                </div>
+                <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                    <h4 class="font-semibold text-blue-700 mb-3"><i class="fas fa-temperature-low mr-2"></i>When Body is TOO COLD</h4>
+                    <ul class="text-gray-700 text-sm space-y-2">
+                        <li><strong>Shivering:</strong> Rapid muscle contractions generate heat</li>
+                        <li><strong>Vasoconstriction:</strong> Blood vessels narrow; less blood to skin; heat conserved</li>
+                        <li><strong>Hairs stand up:</strong> Traps insulating air layer (goosebumps)</li>
+                        <li><strong>Increased metabolism:</strong> More heat produced</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="bg-orange-50 p-4 rounded-lg mt-4 border border-orange-200">
+                <h4 class="font-semibold text-orange-700 mb-2"><i class="fas fa-exclamation-triangle mr-2"></i>Dangers of Temperature Extremes</h4>
+                <div class="grid md:grid-cols-2 gap-4 text-sm text-gray-700">
+                    <div>
+                        <p class="font-medium text-red-600">Hyperthermia (Too Hot):</p>
+                        <p>Heat exhaustion, heat stroke, enzymes denature (>40°C)</p>
+                    </div>
+                    <div>
+                        <p class="font-medium text-blue-600">Hypothermia (Too Cold):</p>
+                        <p>Slowed metabolism, confusion, organ failure (<35°C)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 4: Blood Glucose Regulation -->
+        <div class="section-card animate-fade-in-up">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <span class="bg-teal-100 text-teal-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">4</span>
+                Blood Glucose Regulation
+            </h2>
+
+            <p class="text-gray-700 mb-4">The <strong>pancreas</strong> monitors blood glucose levels and releases hormones to maintain normal levels (70-110 mg/dL).</p>
+
+            <div class="grid md:grid-cols-2 gap-4">
+                <div class="bg-green-50 p-4 rounded-lg border border-green-200">
+                    <h4 class="font-semibold text-green-700 mb-3"><i class="fas fa-arrow-down mr-2"></i>High Blood Glucose (After Eating)</h4>
+                    <div class="bg-white p-3 rounded-lg mb-2">
+                        <p class="text-sm"><strong>β-cells</strong> in pancreas release <strong class="text-green-600">INSULIN</strong></p>
+                    </div>
+                    <ul class="text-gray-700 text-sm space-y-1">
+                        <li>• Liver takes up glucose, converts to <strong>glycogen</strong></li>
+                        <li>• Muscle cells take up glucose</li>
+                        <li>• Fat cells store excess as fat</li>
+                        <li>• Blood glucose level <strong>decreases</strong></li>
+                    </ul>
+                </div>
+                <div class="bg-orange-50 p-4 rounded-lg border border-orange-200">
+                    <h4 class="font-semibold text-orange-700 mb-3"><i class="fas fa-arrow-up mr-2"></i>Low Blood Glucose (Fasting)</h4>
+                    <div class="bg-white p-3 rounded-lg mb-2">
+                        <p class="text-sm"><strong>α-cells</strong> in pancreas release <strong class="text-orange-600">GLUCAGON</strong></p>
+                    </div>
+                    <ul class="text-gray-700 text-sm space-y-1">
+                        <li>• Liver breaks down <strong>glycogen</strong> into glucose</li>
+                        <li>• Liver produces glucose from fats/amino acids</li>
+                        <li>• Glucose released into bloodstream</li>
+                        <li>• Blood glucose level <strong>increases</strong></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="bg-red-50 border-l-4 border-red-400 p-4 rounded-r-lg mt-4">
+                <h4 class="font-semibold text-red-800 mb-2"><i class="fas fa-disease mr-2"></i>Diabetes Mellitus</h4>
+                <p class="text-gray-700 text-sm"><strong>Type 1:</strong> Autoimmune - pancreas doesn't produce insulin. Requires insulin injections.</p>
+                <p class="text-gray-700 text-sm mt-1"><strong>Type 2:</strong> Body cells become resistant to insulin. Managed with diet, exercise, and medication.</p>
+            </div>
+        </div>
+
+        <!-- Section 5: Osmoregulation -->
+        <div class="section-card animate-fade-in-up">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <span class="bg-teal-100 text-teal-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">5</span>
+                Osmoregulation (Water Balance)
+            </h2>
+
+            <p class="text-gray-700 mb-4">The <strong>kidneys</strong> regulate water and salt balance in the blood. This is controlled by the hormone <strong>ADH (Anti-Diuretic Hormone)</strong>.</p>
+
+            <div class="bg-blue-50 p-4 rounded-lg border border-blue-200 mb-4">
+                <h4 class="font-semibold text-blue-700 mb-3"><i class="fas fa-tint mr-2"></i>How ADH Works</h4>
+                <div class="space-y-3 text-sm">
+                    <div class="flex items-start gap-3">
+                        <span class="bg-blue-200 text-blue-800 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">1</span>
+                        <p><strong>Low water in blood</strong> → Detected by hypothalamus</p>
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <span class="bg-blue-200 text-blue-800 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">2</span>
+                        <p>Pituitary gland releases <strong>ADH</strong></p>
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <span class="bg-blue-200 text-blue-800 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">3</span>
+                        <p>ADH makes kidney collecting ducts <strong>more permeable</strong> to water</p>
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <span class="bg-blue-200 text-blue-800 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">4</span>
+                        <p>More water reabsorbed → <strong>Less, more concentrated urine</strong></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-green-50 p-4 rounded-lg border border-green-200">
+                <h4 class="font-semibold text-green-700 mb-2">High Water in Blood</h4>
+                <p class="text-gray-700 text-sm"><strong>Less ADH released</strong> → Collecting ducts less permeable → More water excreted → Large amount of dilute urine</p>
+            </div>
+        </div>
+
+        <!-- Section 6: Video -->
+        <div class="section-card animate-fade-in-up">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <span class="bg-teal-100 text-teal-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">6</span>
+                Video: Homeostasis Explained
+            </h2>
+            <div class="video-container bg-gray-100 rounded-lg">
+                <iframe src="https://www.youtube.com/embed/ teams4IaEsjQ" frameborder="0" allowfullscreen></iframe>
+            </div>
+        </div>
+
+        <!-- Practice -->
+        <div class="section-card animate-fade-in-up">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-pencil-alt text-teal-600 mr-3"></i>Practice Questions
+            </h2>
+            <div class="space-y-4">
+                <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+                    <p class="font-medium text-gray-800 mb-2">1. What is the role of the hypothalamus in thermoregulation?</p>
+                    <details class="mt-2">
+                        <summary class="text-sm text-blue-600 cursor-pointer">Show Answer</summary>
+                        <div class="mt-2 text-sm text-gray-700">
+                            The hypothalamus acts as the body's <strong>thermostat</strong>. It detects changes in blood temperature through its own receptors and receives signals from skin thermoreceptors. It then coordinates responses (sweating, shivering, vasodilation/vasoconstriction) to restore normal temperature.
+                        </div>
+                    </details>
+                </div>
+                <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+                    <p class="font-medium text-gray-800 mb-2">2. Explain why someone with Type 1 diabetes needs insulin injections.</p>
+                    <details class="mt-2">
+                        <summary class="text-sm text-blue-600 cursor-pointer">Show Answer</summary>
+                        <div class="mt-2 text-sm text-gray-700">
+                            In Type 1 diabetes, the immune system destroys the <strong>β-cells</strong> in the pancreas that produce insulin. Without insulin, glucose cannot enter body cells and builds up in the blood. Insulin injections replace the missing hormone, allowing cells to take up glucose.
+                        </div>
+                    </details>
+                </div>
+                <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+                    <p class="font-medium text-gray-800 mb-2">3. Compare the effects of insulin and glucagon on blood glucose levels.</p>
+                    <details class="mt-2">
+                        <summary class="text-sm text-blue-600 cursor-pointer">Show Answer</summary>
+                        <div class="mt-2 text-sm text-gray-700">
+                            <table class="w-full text-xs">
+                                <tr class="border-b"><th class="text-left py-1">Insulin</th><th class="text-left py-1">Glucagon</th></tr>
+                                <tr class="border-b"><td>Lowers blood glucose</td><td>Raises blood glucose</td></tr>
+                                <tr class="border-b"><td>Released when glucose is HIGH</td><td>Released when glucose is LOW</td></tr>
+                                <tr class="border-b"><td>Converts glucose → glycogen</td><td>Converts glycogen → glucose</td></tr>
+                                <tr><td>Released by β-cells</td><td>Released by α-cells</td></tr>
+                            </table>
+                        </div>
+                    </details>
+                </div>
+            </div>
+        </div>
+
+        <!-- Key Takeaways -->
+        <div class="bg-gradient-to-r from-teal-50 to-cyan-50 p-5 rounded-lg border border-teal-200 animate-fade-in-up">
+            <h3 class="font-semibold text-teal-800 mb-3"><i class="fas fa-star mr-2"></i>Key Takeaways</h3>
+            <ul class="text-teal-700 text-sm space-y-2">
+                <li>• Homeostasis = maintaining constant internal environment</li>
+                <li>• Negative feedback reverses changes to restore normal levels</li>
+                <li>• Thermoregulation: Hypothalamus controls sweating, shivering, vasodilation/vasoconstriction</li>
+                <li>• Glucose regulation: Insulin lowers, Glucagon raises blood glucose</li>
+                <li>• Osmoregulation: ADH controls water reabsorption in kidneys</li>
+            </ul>
+        </div>
+
+        <div class="flex justify-between items-center mt-8">
+            <a href="nervous-coordination.html" class="px-4 py-2 text-gray-600 hover:text-gray-900">
+                <i class="fas fa-chevron-left mr-2"></i>Previous
+            </a>
+            <a href="hormonal-coordination.html" class="px-4 py-2 bg-teal-500 text-white rounded-lg hover:bg-teal-600">
+                Next: Hormones<i class="fas fa-chevron-right ml-2"></i>
+            </a>
+        </div>
+    </main>
+
+    <script>
+        let progress = 0;
+        const sections = document.querySelectorAll('.section-card');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    progress = Array.from(sections).indexOf(entry.target) + 1;
+                    document.getElementById('progressPercent').textContent = Math.round((progress / sections.length) * 100) + '%';
+                    document.getElementById('progressBar').style.width = Math.round((progress / sections.length) * 100) + '%';
+                }
+            });
+        }, { threshold: 0.5 });
+        sections.forEach(s => observer.observe(s));
+    </script>
+    <script src="/js/topic-quiz-loader.js"></script>
+    <script src="/js/topic-quiz-injector.js"></script>
+</body>
+</html>

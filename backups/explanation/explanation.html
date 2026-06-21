@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Accounting Topic Explanation - JUANOVA CORTEX</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <link rel="stylesheet" href="../../styles/subject-common.css" />
+    <!-- MathJax for mathematical equations -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-blue-100 via-white to-blue-50">
+    <!-- Navigation Bar -->
+    <nav class="fixed top-0 left-0 right-0 glass-effect border-b border-blue-100 z-50">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <a href="#" id="backButton" class="text-blue-600 hover:text-blue-800 transition">
+                        <i class="fas fa-arrow-left"></i>
+                        <span class="ml-2">Back</span>
+                    </a>
+                </div>
+                <div class="flex items-center gap-4">
+                    <button id="prevTopicBtn" class="nav-button" disabled>
+                        <i class="fas fa-chevron-left mr-2"></i>Previous
+                    </button>
+                    <button id="nextTopicBtn" class="nav-button">
+                        Next<i class="fas fa-chevron-right ml-2"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container mx-auto px-4 pt-20 pb-12">
+        <!-- Topic Header -->
+        <header class="mb-8">
+            <h1 class="section-title mb-4" id="topicTitle">Loading...</h1>
+            <div class="flex items-center gap-4 text-sm text-gray-600 mb-4">
+                <span><i class="far fa-clock mr-1"></i><span id="topicDuration"></span></span>
+                <span><i class="fas fa-signal mr-1"></i><span id="topicDifficulty"></span></span>
+                <span><i class="fas fa-tasks mr-1"></i><span id="progressText">0% Complete</span></span>
+            </div>
+            <div class="progress-bar w-full">
+                <div class="progress-fill progress-fill-0" id="progressBar"></div>
+            </div>
+        </header>
+
+        <!-- Content Navigation -->
+        <div class="flex gap-6">
+            <!-- Sidebar Navigation -->
+            <aside class="hidden lg:block w-64 sticky top-24 h-[calc(100vh-6rem)] overflow-y-auto glass-effect rounded-2xl p-4">
+                <h2 class="font-bold text-lg mb-4">Contents</h2>
+                <nav id="sidebarNav" class="space-y-2">
+                    <!-- Will be populated by JavaScript -->
+                </nav>
+            </aside>
+
+            <!-- Main Content Area -->
+            <div class="flex-grow max-w-3xl">
+                <div id="contentContainer" class="space-y-6">
+                    <!-- Will be populated by JavaScript -->
+                </div>
+
+                <!-- Questions Section -->
+                <div id="questionsContainer" class="mt-12 space-y-8">
+                    <h2 class="text-2xl font-bold mb-6">Practice Questions</h2>
+                    <!-- Will be populated by JavaScript -->
+                </div>
+
+                <!-- Navigation Footer -->
+                <footer class="mt-12 flex justify-between items-center">
+                    <button id="prevTopicBtnFooter" class="nav-button" disabled>
+                        <i class="fas fa-chevron-left mr-2"></i>Previous Topic
+                    </button>
+                    <button id="nextTopicBtnFooter" class="nav-button">
+                        Next Topic<i class="fas fa-chevron-right ml-2"></i>
+                    </button>
+                </footer>
+            </div>
+        </div>
+    </main>
+
+    <!-- Import Scripts -->
+    <script type="module">
+        import { initializeContent, renderContent } from '../functions/content-renderer.js';
+        import { initializeQuestions, renderQuestions } from '../functions/questions.js';
+        import { initializeProgress, loadProgress, updateProgress, updateProgressUI } from '../functions/progress.js';
+        import { initializeNavigation } from '../functions/navigation.js';
+
+        // Get current topic from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const currentDivision = urlParams.get('division') || 'fundamentals';
+        const currentTopic = urlParams.get('topic');
+
+        // Initialize content and navigation
+        async function initializePage() {
+            try {
+                // Load topic content
+            const contentModule = await import(`../../content/divisions/${currentDivision}/topics/${currentTopic}/content.js`);
+            const questionsModule = await import(`../../content/divisions/${currentDivision}/topics/${currentTopic}/questions.js`);
+            const content = contentModule.default;
+            const questions = questionsModule.default;
+
+            // Initialize components
+            await initializeContent(content);
+            await initializeQuestions(questions);
+            await initializeProgress(currentTopic);
+            await initializeNavigation(currentDivision, currentTopic);
+
+            // Render components
+            renderContent();
+            renderQuestions();
+            updateProgressUI();
+
+            // Set page title and metadata
+            document.title = `${content.title} - JUANOVA CORTEX`;
+            document.getElementById('topicTitle').textContent = content.title;
+            document.getElementById('topicDuration').textContent = content.duration;
+            document.getElementById('topicDifficulty').textContent = content.difficulty;
+
+            // Set back button URL
+            document.getElementById('backButton').href = `../accounting-topic.html?division=${currentDivision}`;
+            } catch (error) {
+                console.error('Error initializing page:', error);
+            }
+        }
+
+        // Initialize page when DOM is loaded
+        document.addEventListener('DOMContentLoaded', initializePage);
+
+        // Handle scroll spy for table of contents
+        window.addEventListener('scroll', () => {
+            const sections = document.querySelectorAll('[data-section-id]');
+            let currentSectionId = '';
+
+            sections.forEach(section => {
+                const rect = section.getBoundingClientRect();
+                if (rect.top <= 100) {
+                    currentSectionId = section.dataset.sectionId;
+                }
+            });
+
+            if (currentSectionId) {
+                const activeLink = document.querySelector('.toc-link.active');
+                if (activeLink) {
+                    activeLink.classList.remove('active');
+                }
+                const newActiveLink = document.querySelector(`[data-section-link="${currentSectionId}"]`);
+                if (newActiveLink) {
+                    newActiveLink.classList.add('active');
+                }
+            }
+        });
+    </script>
+</body>
+</html>
+

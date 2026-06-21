@@ -1,0 +1,11 @@
+{
+  "name": "api",
+  "runtime": "deno",
+  "security": {
+    "rate_limit": {
+      "window_seconds": 60,
+      "max_requests": 30
+    },
+    "ip_whitelist": []
+  }
+}

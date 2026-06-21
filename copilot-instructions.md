@@ -1,0 +1,2 @@
+any script(js) that as to do with supabase, tables in supabase, rls policies, users, create functions for them(each) so it(the js code for them) is not exposed in the front-end.
+yes please. let's move all javascript that has to do with users such as updating the username, checking if user is authenticated etc to functions

@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Chemistry Practicals — Quantitative Analysis</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: Inter, system-ui, -apple-system, sans-serif; }
+    .card {
+      background: #fff;
+      border-radius: 16px;
+      overflow: hidden;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+    }
+    .card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+    }
+    .preview-img {
+      width: 100%;
+      aspect-ratio: 16/9;
+      object-fit: cover;
+      background: linear-gradient(to bottom right, #e0f2fe, #e0e7ff);
+    }
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 12px;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      gap: 4px;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.625rem 1rem;
+      border-radius: 8px;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+    .btn-primary {
+      background: #0ea5e9;
+      color: white;
+    }
+    .btn-primary:hover {
+      background: #0284c7;
+      transform: translateY(-1px);
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-900">
+  <!-- Unified Navigation -->
+  <nav class="bg-white/90 backdrop-blur border-b border-slate-200 sticky top-0 z-50 mb-8">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between h-16">
+        <!-- Left side - Back to Dashboard -->
+        <div class="flex items-center gap-4">
+          <a href="../../../student-dashboard.html" class="inline-flex items-center px-3 py-2 border border-slate-200 rounded-lg text-sm font-medium text-slate-700 bg-white hover:bg-slate-50 transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 mr-2">
+              <path fill-rule="evenodd" d="M17 10a.75.75 0 01-.75.75H5.612l4.158 3.96a.75.75 0 11-1.04 1.08l-5.5-5.25a.75.75 0 010-1.08l5.5-5.25a.75.75 0 111.04 1.08L5.612 9.25H16.25A.75.75 0 0117 10z" clip-rule="evenodd" />
+            </svg>
+            Dashboard
+          </a>
+          <a href="../index.html" class="inline-flex items-center px-3 py-2 border border-slate-200 rounded-lg text-sm font-medium text-slate-700 bg-white hover:bg-slate-50 transition-colors">
+            Back to Chemistry
+          </a>
+          <a href="index.html" class="inline-flex items-center px-3 py-2 border border-slate-200 rounded-lg text-sm font-medium text-slate-700 bg-white hover:bg-slate-50 transition-colors">
+            All Practicals
+          </a>
+        </div>
+
+        <!-- Center - Current Location -->
+        <div class="flex items-center">
+          <div class="flex items-center px-3 py-2 rounded-lg bg-blue-50 text-blue-700">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 mr-2">
+              <path fill-rule="evenodd" d="M10 2c.12 0 .24.028.345.083L17.5 5.5a.75.75 0 010 1.32l-7.155 3.417a.75.75 0 01-.69 0L2.5 6.82a.75.75 0 010-1.32l7.155-3.417A.75.75 0 0110 2z" clip-rule="evenodd" />
+              <path fill-rule="evenodd" d="M10.5 6.94L17 3.78v7.44a.75.75 0 01-.415.672L10 15.314V6.94zM3.415 11.892A.75.75 0 013 11.22V3.78l6.5 3.16v8.374l-6.085-3.422z" clip-rule="evenodd" />
+            </svg>
+            Quantitative Analysis
+          </div>
+        </div>
+
+        <!-- Right side - Quick Actions -->
+        <div class="flex items-center space-x-4">
+          <a href="../../" class="inline-flex items-center px-3 py-2 border border-slate-200 rounded-lg text-sm font-medium text-slate-700 bg-white hover:bg-slate-50 transition-colors">
+            All Subjects
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+
+    <header class="mb-10 max-w-2xl">
+      <h1 class="text-3xl font-semibold mb-3">Quantitative Analysis Practicals</h1>
+      <p class="text-slate-600 text-lg">Interactive simulations and guided practicals for titration and volumetric analysis. Choose a practical below to begin.</p>
+    </header>
+
+    <div class="grid md:grid-cols-2 gap-8">
+      <!-- Modern Titration Card -->
+      <div class="card">
+        <div class="preview-img bg-gradient-to-br from-sky-50 to-indigo-50 flex items-center justify-center p-6">
+          <svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-sky-500"><path d="M10 2v7.31"/><path d="M14 9.3V1.99"/><path d="M8.5 2h7"/><path d="M14 9.3a6.5 6.5 0 1 1-4 0"/><path d="M5.52 16h12.96"/></svg>
+        </div>
+        <div class="p-6">
+          <div class="flex items-center gap-2 mb-3">
+            <span class="chip bg-sky-50 text-sky-600">Interactive</span>
+            <span class="chip bg-purple-50 text-purple-600">Modern UI</span>
+          </div>
+          <h2 class="text-xl font-semibold mb-2">Titration Practical v2</h2>
+          <p class="text-slate-600 mb-6">Step-by-step interactive titration simulator with modern interface and real-time guidance. Perfect for exam preparation.</p>
+          <a class="btn btn-primary" href="waec-titration-practical-v2.html">
+            Start Practical
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Classic Titration Card -->
+      <div class="card">
+        <div class="preview-img bg-gradient-to-br from-amber-50 to-red-50 flex items-center justify-center p-6">
+          <svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-amber-500"><path d="M9 3h6"/><path d="M12 3v7"/><path d="M8 20h8a4 4 0 0 0 4-4 7 7 0 0 0-4-6.3 3 3 0 0 0 .5-7.7"/><path d="M8.5 14a3 3 0 0 0-1.5 5.7"/></svg>
+        </div>
+        <div class="p-6">
+          <div class="flex items-center gap-2 mb-3">
+            <span class="chip bg-amber-50 text-amber-600">Classic</span>
+            <span class="chip bg-green-50 text-green-600">WAEC Format</span>
+          </div>
+          <h2 class="text-xl font-semibold mb-2">Classic Titration</h2>
+          <p class="text-slate-600 mb-6">Traditional titration practical with readings table and step-by-step instructions. Follows standard WAEC examination format.</p>
+          <a class="btn btn-primary" href="waec-titration-practical.html">
+            Start Practical
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <footer class="mt-12 text-center text-sm text-slate-500">
+      <p>Need help? Ask your instructor or use the AI Tutor feature from your dashboard.</p>
+    </footer>
+  </div>
+
+  <script>
+    // Optional: Add analytics or tracking for practical usage
+    document.querySelectorAll('a.btn').forEach(btn => {
+      btn.addEventListener('click', e => {
+        const practical = e.currentTarget.closest('.card').querySelector('h2').textContent;
+        console.log(`Starting practical: ${practical}`);
+      });
+    });
+  </script>
+<!-- Topic Quiz System -->
+<script src="/js/topic-quiz-loader.js"></script>
+<script src="/js/topic-quiz-injector.js"></script>
+</body>
+</html>

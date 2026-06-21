@@ -1,0 +1,1487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Electrolysis - Interactive Learning Module</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="content-styles.css">
+    <link rel="stylesheet" href="../../../css/quiz.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="../../../js/quiz-navigation.js"></script>
+    <style>
+        .formula {
+            font-family: 'Courier New', monospace;
+            background: #f3f4f6;
+            padding: 0.5rem;
+            border-radius: 0.25rem;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-inter">
+    <!-- Header -->
+    <header class="bg-white shadow-sm sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <!-- Top Navigation Bar -->
+            <div class="flex justify-between items-center mb-4">
+                <div class="flex items-center gap-4">
+                    <a href="../index.html" class="text-gray-600 hover:text-gray-900">
+                        <i class="fas fa-arrow-left"></i>
+                    </a>
+                    <div>
+                        <h1 class="text-xl font-semibold text-gray-900">Electrolysis</h1>
+                        <p id="section-description" class="text-sm text-gray-600 mt-1">Understanding the fundamental concepts of electrolysis</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4">
+                    <div class="text-sm text-gray-500">
+                        Progress: <span id="progressText">0%</span>
+                        <div class="w-32 bg-gray-200 rounded-full h-2.5 inline-block ml-2">
+                            <div id="progressBar" class="bg-blue-600 h-2.5 rounded-full" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Main Navigation -->
+            <nav class="bg-white border-b border-gray-200 overflow-x-auto">
+                <div class="flex space-x-1 p-2">
+                    <a href="#basic-principles" class="nav-link group inline-flex items-center px-4 py-2 rounded-lg transition-all duration-200 hover:bg-blue-50 min-w-max" data-section="basic-principles">
+                        <span class="w-7 h-7 flex items-center justify-center rounded-full bg-gradient-to-br from-blue-400 to-blue-600 text-white font-semibold text-sm shadow-sm group-hover:shadow-md transition-all duration-200">1</span>
+                        <span class="ml-2 text-sm font-medium text-gray-700 group-hover:text-blue-600">Basic Principles</span>
+                    </a>
+                    <a href="#interactive-simulations" class="nav-link group inline-flex items-center px-4 py-2 rounded-lg transition-all duration-200 hover:bg-indigo-50 min-w-max" data-section="simulations">
+                        <span class="w-7 h-7 flex items-center justify-center rounded-full bg-gradient-to-br from-indigo-400 to-indigo-600 text-white font-semibold text-sm shadow-sm group-hover:shadow-md transition-all duration-200">2</span>
+                        <span class="ml-2 text-sm font-medium text-gray-700 group-hover:text-indigo-600">Interactive Simulations</span>
+                    </a>
+                    <a href="#electrode-processes" class="nav-link group inline-flex items-center px-4 py-2 rounded-lg transition-all duration-200 hover:bg-purple-50 min-w-max" data-section="electrode-processes">
+                        <span class="w-7 h-7 flex items-center justify-center rounded-full bg-gradient-to-br from-purple-400 to-purple-600 text-white font-semibold text-sm shadow-sm group-hover:shadow-md transition-all duration-200">3</span>
+                        <span class="ml-2 text-sm font-medium text-gray-700 group-hover:text-purple-600">Electrode Processes</span>
+                    </a>
+                    <a href="#industrial-applications" class="nav-link group inline-flex items-center px-4 py-2 rounded-lg transition-all duration-200 hover:bg-gray-50 min-w-max" data-section="industrial-applications">
+                        <span class="w-7 h-7 flex items-center justify-center rounded-full bg-gradient-to-br from-gray-500 to-gray-700 text-white font-semibold text-sm shadow-sm group-hover:shadow-md transition-all duration-200">4</span>
+                        <span class="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-900">Industrial Applications</span>
+                    </a>
+                    <a href="#practice-questions" class="nav-link group inline-flex items-center px-4 py-2 rounded-lg transition-all duration-200 hover:bg-pink-50 min-w-max" data-section="practice-questions">
+                        <span class="w-7 h-7 flex items-center justify-center rounded-full bg-gradient-to-br from-pink-400 to-pink-600 text-white font-semibold text-sm shadow-sm group-hover:shadow-md transition-all duration-200">5</span>
+                        <span class="ml-2 text-sm font-medium text-gray-700 group-hover:text-pink-600">Practice Questions</span>
+                    </a>
+                    <a href="#calculations" class="nav-link group inline-flex items-center px-4 py-2 rounded-lg transition-all duration-200 hover:bg-green-50 min-w-max" data-section="calculations">
+                        <span class="w-7 h-7 flex items-center justify-center rounded-full bg-gradient-to-br from-green-400 to-green-600 text-white font-semibold text-sm shadow-sm group-hover:shadow-md transition-all duration-200">6</span>
+                        <span class="ml-2 text-sm font-medium text-gray-700 group-hover:text-green-600">Calculations</span>
+                    </a>
+                    <a href="#exam-tips" class="nav-link group inline-flex items-center px-4 py-2 rounded-lg transition-all duration-200 hover:bg-yellow-50 min-w-max" data-section="exam-tips">
+                        <span class="w-7 h-7 flex items-center justify-center rounded-full bg-gradient-to-br from-yellow-400 to-yellow-600 text-white font-semibold text-sm shadow-sm group-hover:shadow-md transition-all duration-200">7</span>
+                        <span class="ml-2 text-sm font-medium text-gray-700 group-hover:text-yellow-600">Exam Tips</span>
+                    </a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="flex gap-8">
+            <!-- Left Sidebar -->
+            <aside class="w-64 flex-shrink-0">
+                <div class="bg-white rounded-xl shadow-sm p-6 sticky top-24">
+                    <nav class="space-y-2">
+                        <a href="#basic-principles" class="nav-link flex items-center gap-2 px-3 py-2 text-gray-700 rounded-lg hover:bg-gray-50" data-section="basic-principles">
+                            <span class="w-6 h-6 flex items-center justify-center rounded-full bg-blue-100 text-blue-600 text-sm">1</span>
+                            <span>Basic Principles</span>
+                        </a>
+                        <!-- Easy Notes nav removed (content redistributed) -->
+                        <a href="#interactive-simulations" class="nav-link flex items-center gap-2 px-3 py-2 text-gray-700 rounded-lg hover:bg-gray-50" data-section="simulations">
+                            <span class="w-6 h-6 flex items-center justify-center rounded-full bg-gray-100 text-gray-600 text-sm">2</span>
+                            <span>Interactive Simulations</span>
+                        </a>
+                        <a href="#electrode-processes" class="nav-link flex items-center gap-2 px-3 py-2 text-gray-700 rounded-lg hover:bg-gray-50" data-section="electrode-processes">
+                            <span class="w-6 h-6 flex items-center justify-center rounded-full bg-gray-100 text-gray-600 text-sm">3</span>
+                            <span>Electrode Processes</span>
+                        </a>
+                        <a href="#industrial-applications" class="nav-link flex items-center gap-2 px-3 py-2 text-gray-700 rounded-lg hover:bg-gray-50" data-section="industrial-applications">
+                            <span class="w-6 h-6 flex items-center justify-center rounded-full bg-gray-100 text-gray-600 text-sm">4</span>
+                            <span>Industrial Applications</span>
+                        </a>
+                        <a href="#practice-questions" class="nav-link flex items-center gap-2 px-3 py-2 text-gray-700 rounded-lg hover:bg-gray-50" data-section="practice-questions">
+                            <span class="w-6 h-6 flex items-center justify-center rounded-full bg-gray-100 text-gray-600 text-sm">5</span>
+                            <span>Practice Questions</span>
+                        </a>
+                        <a href="#calculations" class="nav-link flex items-center gap-2 px-3 py-2 text-gray-700 rounded-lg hover:bg-gray-50" data-section="calculations">
+                            <span class="w-6 h-6 flex items-center justify-center rounded-full bg-gray-100 text-gray-600 text-sm">6</span>
+                            <span>Calculations</span>
+                        </a>
+                        <a href="#exam-tips" class="nav-link flex items-center gap-2 px-3 py-2 text-gray-700 rounded-lg hover:bg-gray-50" data-section="exam-tips">
+                            <span class="w-6 h-6 flex items-center justify-center rounded-full bg-gray-100 text-gray-600 text-sm">7</span>
+                            <span>Exam Tips</span>
+                        </a>
+                    </nav>                    <h2 class="font-semibold text-lg mb-4">Learning Steps</h2>
+
+
+                    <div class="mt-8 pt-6 border-t">
+                        <h3 class="font-semibold mb-3">Study Tools</h3>
+                        <div class="space-y-2">
+                            <button id="calculatorBtn" class="w-full text-left px-4 py-2 rounded-lg hover:bg-gray-50 flex items-center gap-2">
+                                <i class="fas fa-calculator text-blue-500"></i>
+                                <span>Electrolysis Calculator</span>
+                            </button>
+                            <button id="notesBtn" class="w-full text-left px-4 py-2 rounded-lg hover:bg-gray-50 flex items-center gap-2">
+                                <i class="fas fa-sticky-note text-yellow-500"></i>
+                                <span>My Notes</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Main Content Area -->
+            <div class="flex-1 min-w-0">
+                <div class="main-content bg-white rounded-xl shadow-sm p-8">
+                    <style>
+            .content-section {
+                display: none;
+                opacity: 0;
+                transition: opacity 0.3s ease-in-out;
+            }
+            .content-section.active {
+                display: block;
+                opacity: 1;
+            }
+        </style>
+        
+        <section id="basic-principles" class="content-section active">
+            <header class="mb-6">
+                <h2 class="text-2xl font-semibold text-gray-900 flex items-center">
+                    <i class="fas fa-book-open text-blue-500 mr-3"></i>
+                    Basic Principles
+                </h2>
+                <p class="text-gray-600 mt-2">Understanding the fundamental concepts of electrolysis</p>
+            </header>
+
+            <div class="space-y-6">
+                <!-- Key Terms -->
+                <div class="bg-blue-50 rounded-lg p-6">
+                    <h3 class="text-lg font-semibold text-blue-800 mb-4">Key Terms</h3>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div class="bg-white p-4 rounded-lg shadow-sm">
+                            <h4 class="font-medium text-blue-600">Electrolyte</h4>
+                            <p class="text-sm text-gray-600 mt-1">An ionic compound that conducts electricity when molten or in solution</p>
+                        </div>
+                        <div class="bg-white p-4 rounded-lg shadow-sm">
+                            <h4 class="font-medium text-blue-600">Electrodes</h4>
+                            <p class="text-sm text-gray-600 mt-1">The conductors through which electricity enters or leaves the electrolyte</p>
+                        </div>
+                        <div class="bg-white p-4 rounded-lg shadow-sm">
+                            <h4 class="font-medium text-blue-600">Anode (+)</h4>
+                            <p class="text-sm text-gray-600 mt-1">The positive electrode where oxidation occurs</p>
+                        </div>
+                        <div class="bg-white p-4 rounded-lg shadow-sm">
+                            <h4 class="font-medium text-blue-600">Cathode (-)</h4>
+                            <p class="text-sm text-gray-600 mt-1">The negative electrode where reduction occurs</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Conductors & Electrolytes (moved from Easy Notes) -->
+                <div class="bg-white rounded-lg p-6 shadow-sm">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-3">Conductors: Electrons vs. Ions</h3>
+                    <p class="text-sm text-gray-700">How a substance conducts electricity is key for predicting electrolysis behaviour.</p>
+                    <ul class="list-disc pl-5 mt-3 text-sm text-gray-700 space-y-2">
+                        <li><strong>Metals</strong> (e.g., Na, Cu, Mg): conduct via mobile electrons. The metal atoms themselves do not move.</li>
+                        <li><strong>Electrolytes</strong> (e.g., molten PbI₂, aqueous NaOH): conduct via mobile ions (cations and anions); they must be molten or in solution.</li>
+                        <li><strong>Non-conductors</strong>: ionic solids (ions locked in a lattice) and molecular substances (neutral molecules) do not conduct electricity in the solid state.</li>
+                    </ul>
+                </div>
+
+                <div class="bg-white rounded-lg p-6 shadow-sm">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-3">Electrolytes &amp; Electrodes</h3>
+                    <p class="text-sm text-gray-700">Electrolytes can be <strong>strong</strong> (fully ionise in water, good conductors) or <strong>weak</strong> (partially ionise). Electrodes are either <strong>inert</strong> (graphite, Pt) or <strong>active</strong> (e.g., copper which may dissolve).</p>
+                    <p class="text-sm text-gray-700 mt-3"><strong>Mnemonic:</strong> PANIC — Positive Anode, Negative Is Cathode. Anode = oxidation, Cathode = reduction.</p>
+                </div>
+
+                <!-- Quick Facts -->
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div class="bg-gradient-to-br from-blue-50 to-blue-100 p-4 rounded-lg">
+                        <h3 class="font-semibold text-blue-800 mb-2">Essential Facts</h3>
+                        <ul class="space-y-2">
+                            <li class="flex items-start gap-2">
+                                <i class="fas fa-check-circle text-blue-500 mt-1"></i>
+                                <span class="text-sm">Requires molten or dissolved ionic compounds</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i class="fas fa-check-circle text-blue-500 mt-1"></i>
+                                <span class="text-sm">Uses direct current (DC) electricity</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="bg-gradient-to-br from-purple-50 to-purple-100 p-4 rounded-lg">
+                        <h3 class="font-semibold text-purple-800 mb-2">Applications</h3>
+                        <ul class="space-y-2">
+                            <li class="flex items-start gap-2">
+                                <i class="fas fa-check-circle text-purple-500 mt-1"></i>
+                                <span class="text-sm">Metal extraction and purification</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i class="fas fa-check-circle text-purple-500 mt-1"></i>
+                                <span class="text-sm">Electroplating of metals</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Easy Notes section removed — content redistributed to corresponding learning steps -->
+
+        <section id="simulations" class="content-section mt-8">
+            <header class="mb-6">
+                <h2 class="text-2xl font-semibold text-gray-900 flex items-center">
+                    <i class="fas fa-flask text-indigo-500 mr-3"></i>
+                    Interactive Simulations
+                </h2>
+                <p class="text-gray-600 mt-2">Hands-on virtual experiments to understand electrolysis processes</p>
+            </header>
+            
+            <div class="space-y-8">
+                <!-- Simulation 1 -->
+                <div class="bg-white rounded-lg shadow-sm overflow-hidden">
+                    <div class="p-6 bg-indigo-50">
+                        <h3 class="text-lg font-semibold text-indigo-900 mb-2">Electrolysis of Water</h3>
+                        <p class="text-sm text-indigo-700 mb-4">Observe the decomposition of water into hydrogen and oxygen gases</p>
+                    </div>
+                    
+                    <div class="p-4">
+                        <div class="aspect-w-16 aspect-h-9 mb-6">
+                            <iframe src="https://javalab.org/en/electrolysis_of_water_en/" class="w-full h-full rounded-lg" frameborder="0"></iframe>
+                        </div>
+                        
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <h4 class="font-medium text-gray-900 mb-3">Key Observations:</h4>
+                            <ol class="space-y-2 text-sm text-gray-600">
+                                <li class="flex items-start gap-2">
+                                    <span class="font-medium text-indigo-600">1.</span>
+                                    Notice the ratio of hydrogen to oxygen gas produced (2:1)
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="font-medium text-indigo-600">2.</span>
+                                    Observe the movement of ions
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="font-medium text-indigo-600">3.</span>
+                                    Watch the electrode reactions
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Simulation 2 -->
+                <div class="bg-white rounded-lg shadow-sm overflow-hidden">
+                    <div class="p-6 bg-purple-50">
+                        <h3 class="text-lg font-semibold text-purple-900 mb-2">Electroplating Process</h3>
+                        <p class="text-sm text-purple-700 mb-4">Learn how metals are electroplated for protection and decoration</p>
+                    </div>
+                    
+                    <div class="p-4">
+                        <div class="aspect-w-16 aspect-h-9 mb-6">
+                            <iframe src="https://javalab.org/en/electric_plating_en/" class="w-full h-full rounded-lg" frameborder="0"></iframe>
+                        </div>
+                        
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <h4 class="font-medium text-gray-900 mb-3">Key Learning Points:</h4>
+                            <ul class="space-y-2 text-sm text-gray-600">
+                                <li class="flex items-start gap-2">
+                                    <i class="fas fa-check-circle text-purple-500 mt-1"></i>
+                                    <span>Metal ion movement through the electrolyte</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <i class="fas fa-check-circle text-purple-500 mt-1"></i>
+                                    <span>Metal deposition process at the cathode</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <i class="fas fa-check-circle text-purple-500 mt-1"></i>
+                                    <span>Effect of current strength on plating speed</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Simulation 3 -->
+                <div class="bg-white rounded-lg shadow-sm overflow-hidden">
+                    <div class="p-6 bg-green-50">
+                        <h3 class="text-lg font-semibold text-green-900 mb-2">Pearson's Electrolysis Lab</h3>
+                        <p class="text-sm text-green-700 mb-4">Comprehensive virtual lab for exploring various electrolysis setups</p>
+                    </div>
+                    
+                    <div class="p-4">
+                        <div class="aspect-w-16 aspect-h-9">
+                            <iframe src="https://media.pearsoncmg.com/bc/bc_0media_chem/chem_sim/html5/Electro/Electro.php" class="w-full h-full rounded-lg" frameborder="0"></iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="electrode-processes" class="content-section mt-8">
+            <header class="mb-6">
+                <h2 class="text-2xl font-semibold text-gray-900 flex items-center">
+                    <i class="fas fa-bolt text-yellow-500 mr-3"></i>
+                    Electrode Processes
+                </h2>
+                <p class="text-gray-600 mt-2">Understanding ion behavior and discharge order at electrodes</p>
+            </header>
+
+            <div class="grid md:grid-cols-2 gap-6">
+                <!-- Cathode Processes -->
+                <div class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg p-6">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 bg-blue-200 rounded-full flex items-center justify-center">
+                            <span class="text-blue-700 font-medium">-</span>
+                        </div>
+                        <h3 class="text-lg font-semibold text-blue-900">At the Cathode (-)</h3>
+                    </div>
+                    
+                    <div class="bg-white rounded-lg p-4 shadow-sm">
+                        <h4 class="font-medium text-blue-800 mb-3">Order of Preferential Discharge</h4>
+                        <div class="space-y-3">
+                            <div class="flex items-start gap-3">
+                                <span class="bg-blue-100 text-blue-700 text-sm font-medium px-2 py-1 rounded">1</span>
+                                <div>
+                                    <p class="font-medium text-gray-900">Group 1 Metal Ions</p>
+                                    <p class="text-sm text-gray-600">Least easily discharged</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <span class="bg-blue-100 text-blue-700 text-sm font-medium px-2 py-1 rounded">2</span>
+                                <div>
+                                    <p class="font-medium text-gray-900">Group 2 Metal Ions</p>
+                                    <p class="text-sm text-gray-600">Ca²⁺, Mg²⁺, etc.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <span class="bg-blue-100 text-blue-700 text-sm font-medium px-2 py-1 rounded">3</span>
+                                <div>
+                                    <p class="font-medium text-gray-900">Other Metal Ions</p>
+                                    <p class="text-sm text-gray-600">Group 3 onwards (Fe³⁺, Cu²⁺, etc.)</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <span class="bg-blue-100 text-blue-700 text-sm font-medium px-2 py-1 rounded">4</span>
+                                <div>
+                                    <p class="font-medium text-gray-900">Hydrogen Ions (H⁺)</p>
+                                    <p class="text-sm text-gray-600">Forms H₂ gas</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Anode Processes -->
+                <div class="bg-gradient-to-br from-red-50 to-red-100 rounded-lg p-6">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 bg-red-200 rounded-full flex items-center justify-center">
+                            <span class="text-red-700 font-medium">+</span>
+                        </div>
+                        <h3 class="text-lg font-semibold text-red-900">At the Anode (+)</h3>
+                    </div>
+                    
+                    <div class="bg-white rounded-lg p-4 shadow-sm">
+                        <h4 class="font-medium text-red-800 mb-3">Order of Preferential Discharge</h4>
+                        <div class="space-y-3">
+                            <div class="flex items-start gap-3">
+                                <span class="bg-red-100 text-red-700 text-sm font-medium px-2 py-1 rounded">1</span>
+                                <div>
+                                    <p class="font-medium text-gray-900">Halide Ions</p>
+                                    <p class="text-sm text-gray-600">Cl⁻, Br⁻, I⁻ → Halogen gas</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <span class="bg-red-100 text-red-700 text-sm font-medium px-2 py-1 rounded">2</span>
+                                <div>
+                                    <p class="font-medium text-gray-900">Hydroxide Ions</p>
+                                    <p class="text-sm text-gray-600">OH⁻ → O₂ + H₂O + e⁻</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <span class="bg-red-100 text-red-700 text-sm font-medium px-2 py-1 rounded">3</span>
+                                <div>
+                                    <p class="font-medium text-gray-900">Sulfate Ions</p>
+                                    <p class="text-sm text-gray-600">SO₄²⁻ (usually unreactive)</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Additional Info Box -->
+                    <div class="mt-4 bg-white/50 rounded-lg p-4">
+                        <h4 class="font-medium text-red-900 mb-2">Important Note:</h4>
+                        <p class="text-sm text-red-800">The order may vary slightly depending on concentration and other factors. Always consider the specific conditions of the electrolysis setup.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Migration and Discharge (moved from Easy Notes) -->
+            <div class="mt-6 bg-white rounded-lg p-6 shadow-sm">
+                <h3 class="text-lg font-semibold text-gray-900 mb-3">Migration &amp; Discharge</h3>
+                <p class="text-sm text-gray-700">Cations (positive ions like Na⁺, Cu²⁺, H⁺) migrate to the cathode and are reduced (gain electrons). Anions (negative ions like Cl⁻, Br⁻, OH⁻) migrate to the anode and are oxidized (lose electrons).</p>
+                <div class="mt-3 text-sm text-gray-700">
+                    <p><strong>At the cathode (reduction):</strong> e.g., Cu²⁺ + 2e⁻ → Cu; 2H⁺ + 2e⁻ → H₂.</p>
+                    <p class="mt-2"><strong>At the anode (oxidation):</strong> e.g., 2Cl⁻ → Cl₂ + 2e⁻; 4OH⁻ → 2H₂O + O₂ + 4e⁻.</p>
+                </div>
+            </div>
+
+            <!-- Preferential discharge rules (moved from Easy Notes) -->
+            <div class="mt-6 bg-white rounded-lg p-6 shadow-sm">
+                <h3 class="text-lg font-semibold text-gray-900 mb-3">Rules: Who Gets Discharged?</h3>
+                <p class="text-sm text-gray-700">In aqueous electrolysis water supplies H⁺ and OH⁻; only one species is discharged at each electrode. Decide the product by applying these rules:</p>
+                <ol class="list-decimal pl-5 mt-3 text-sm text-gray-700 space-y-2">
+                    <li><strong>Electrochemical series:</strong> at the cathode the least reactive (lowest) ion is discharged. Highly reactive metals will not be deposited from aqueous solutions (H⁺ is often discharged instead).</li>
+                    <li><strong>Concentration:</strong> at the anode OH⁻ normally gives O₂, but concentrated halide ions (Cl⁻, Br⁻, I⁻) may be preferentially oxidized to halogen gas.</li>
+                    <li><strong>Electrode nature:</strong> inert electrodes provide a surface only; active metal anodes can dissolve (e.g., copper anode → Cu²⁺ + 2e⁻).</li>
+                </ol>
+            </div>
+        </section>
+
+        <section id="industrial-applications" class="content-section mt-8">
+            <header class="mb-6">
+                <h2 class="text-2xl font-semibold text-gray-900 flex items-center">
+                    <i class="fas fa-industry text-gray-500 mr-3"></i>
+                    Industrial Applications
+                </h2>
+                <p class="text-gray-600 mt-2">Real-world applications of electrolysis in industry</p>
+            </header>
+
+            <div class="space-y-6">
+                <!-- Aluminum Extraction -->
+                <div class="bg-white rounded-lg shadow-sm overflow-hidden">
+                    <div class="p-6 bg-gradient-to-r from-gray-50 to-gray-100">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-lg font-semibold text-gray-900">Extraction of Aluminum</h3>
+                            <span class="px-3 py-1 text-sm font-medium text-gray-600 bg-gray-200 rounded-full">Hall-Héroult Process</span>
+                        </div>
+                    </div>
+                    
+                    <div class="p-6">
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <!-- Process Details -->
+                            <div class="space-y-4">
+                                <h4 class="font-medium text-gray-900">Process Components</h4>
+                                <ul class="space-y-3">
+                                    <li class="flex items-start gap-3">
+                                        <div class="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0 mt-1">
+                                            <i class="fas fa-flask text-xs text-blue-600"></i>
+                                        </div>
+                                        <div>
+                                            <p class="font-medium text-gray-800">Electrolyte</p>
+                                            <p class="text-sm text-gray-600">Molten aluminum oxide (alumina) dissolved in cryolite</p>
+                                        </div>
+                                    </li>
+                                    <li class="flex items-start gap-3">
+                                        <div class="w-6 h-6 rounded-full bg-red-100 flex items-center justify-center flex-shrink-0 mt-1">
+                                            <i class="fas fa-temperature-high text-xs text-red-600"></i>
+                                        </div>
+                                        <div>
+                                            <p class="font-medium text-gray-800">Temperature</p>
+                                            <p class="text-sm text-gray-600">Around 950°C</p>
+                                        </div>
+                                    </li>
+                                    <li class="flex items-start gap-3">
+                                        <div class="w-6 h-6 rounded-full bg-purple-100 flex items-center justify-center flex-shrink-0 mt-1">
+                                            <i class="fas fa-plug text-xs text-purple-600"></i>
+                                        </div>
+                                        <div>
+                                            <p class="font-medium text-gray-800">Electrodes</p>
+                                            <p class="text-sm text-gray-600">Carbon (graphite) electrodes</p>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <!-- Products -->
+                            <div class="bg-gray-50 rounded-lg p-4">
+                                <h4 class="font-medium text-gray-900 mb-4">Products & Reactions</h4>
+                                <div class="space-y-3">
+                                    <div class="bg-white p-3 rounded shadow-sm">
+                                        <p class="text-sm font-medium text-gray-900">At Cathode:</p>
+                                        <p class="text-sm text-gray-600">Al³⁺ + 3e⁻ → Al (molten)</p>
+                                    </div>
+                                    <div class="bg-white p-3 rounded shadow-sm">
+                                        <p class="text-sm font-medium text-gray-900">At Anode:</p>
+                                        <p class="text-sm text-gray-600">2O²⁻ → O₂ + 4e⁻</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chloralkali Process -->
+                <div class="bg-white rounded-lg shadow-sm overflow-hidden">
+                    <div class="p-6 bg-gradient-to-r from-green-50 to-green-100">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-lg font-semibold text-gray-900">Chloralkali Process</h3>
+                            <span class="px-3 py-1 text-sm font-medium text-green-600 bg-green-100 rounded-full">Membrane Cell</span>
+                        </div>
+                    </div>
+                    
+                    <div class="p-6">
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <!-- Process Description -->
+                            <div class="space-y-4">
+                                <h4 class="font-medium text-gray-900">Process Overview</h4>
+                                <p class="text-sm text-gray-600">Electrolysis of brine (NaCl solution) to produce three valuable products used in various industries</p>
+                                
+                                <div class="bg-green-50 p-4 rounded-lg">
+                                    <h5 class="font-medium text-green-800 mb-3">Key Features</h5>
+                                    <ul class="space-y-2 text-sm text-green-700">
+                                        <li class="flex items-center gap-2">
+                                            <i class="fas fa-check text-green-500"></i>
+                                            <span>Environmentally friendly membrane process</span>
+                                        </li>
+                                        <li class="flex items-center gap-2">
+                                            <i class="fas fa-check text-green-500"></i>
+                                            <span>High energy efficiency</span>
+                                        </li>
+                                        <li class="flex items-center gap-2">
+                                            <i class="fas fa-check text-green-500"></i>
+                                            <span>Continuous production process</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <!-- Products -->
+                            <div class="bg-gray-50 rounded-lg p-4">
+                                <h4 class="font-medium text-gray-900 mb-4">Products</h4>
+                                <div class="grid gap-3">
+                                    <div class="bg-white p-4 rounded shadow-sm">
+                                        <div class="flex items-center gap-3">
+                                            <i class="fas fa-flask text-yellow-500"></i>
+                                            <div>
+                                                <p class="font-medium text-gray-900">Chlorine Gas (Cl₂)</p>
+                                                <p class="text-sm text-gray-600">Used in water treatment and manufacturing</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="bg-white p-4 rounded shadow-sm">
+                                        <div class="flex items-center gap-3">
+                                            <i class="fas fa-atom text-blue-500"></i>
+                                            <div>
+                                                <p class="font-medium text-gray-900">Hydrogen Gas (H₂)</p>
+                                                <p class="text-sm text-gray-600">Fuel cells and chemical synthesis</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="bg-white p-4 rounded shadow-sm">
+                                        <div class="flex items-center gap-3">
+                                            <i class="fas fa-vial text-purple-500"></i>
+                                            <div>
+                                                <p class="font-medium text-gray-900">Sodium Hydroxide (NaOH)</p>
+                                                <p class="text-sm text-gray-600">Used in soap making and paper production</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="practice-questions" class="content-section mt-8">
+            <header class="mb-6">
+                <h2 class="text-2xl font-semibold text-gray-900 flex items-center">
+                    <i class="fas fa-pencil-alt text-purple-500 mr-3"></i>
+                    Practice Questions
+                </h2>
+                <p class="text-gray-600 mt-2">IGCSE and WAEC level questions to test your understanding</p>
+            </header>
+
+            <div class="space-y-8">
+                <!-- Question 1 -->
+                <div class="bg-white rounded-lg shadow-sm overflow-hidden">
+                    <div class="p-6 bg-purple-50 border-l-4 border-purple-500">
+                        <span class="inline-block px-2 py-1 text-xs font-medium text-purple-600 bg-purple-100 rounded mb-2">Question 1</span>
+                        <h3 class="text-lg font-medium text-gray-900">Electrolysis of Molten Lead(II) Bromide</h3>
+                    </div>
+
+                    <div class="p-6 space-y-4">
+                        <div class="space-y-3">
+                            <div class="flex items-start gap-3">
+                                <span class="px-2 py-1 text-xs font-medium text-purple-600 bg-purple-100 rounded">a</span>
+                                <div>
+                                    <p class="text-gray-800">What is produced at the cathode?</p>
+                                    <div class="mt-2 p-3 bg-gray-50 rounded-lg">
+                                        <button class="text-sm text-purple-600 hover:text-purple-700" onclick="toggleHint('q1a')">Show Hint</button>
+                                        <p id="q1a-hint" class="hidden mt-2 text-sm text-gray-600">Think about what happens to Pb²⁺ ions at the negative electrode.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start gap-3">
+                                <span class="px-2 py-1 text-xs font-medium text-purple-600 bg-purple-100 rounded">b</span>
+                                <div>
+                                    <p class="text-gray-800">Write the half equation for the reaction at the anode.</p>
+                                    <div class="mt-2 p-3 bg-gray-50 rounded-lg">
+                                        <button class="text-sm text-purple-600 hover:text-purple-700" onclick="toggleHint('q1b')">Show Hint</button>
+                                        <p id="q1b-hint" class="hidden mt-2 text-sm text-gray-600">Remember that Br⁻ ions are oxidized at the anode.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start gap-3">
+                                <span class="px-2 py-1 text-xs font-medium text-purple-600 bg-purple-100 rounded">c</span>
+                                <div>
+                                    <p class="text-gray-800">Calculate the mass of lead produced when a current of 2.0A passes for 30 minutes.</p>
+                                    <div class="mt-2 p-3 bg-gray-50 rounded-lg">
+                                        <button class="text-sm text-purple-600 hover:text-purple-700" onclick="toggleHint('q1c')">Show Hint</button>
+                                        <p id="q1c-hint" class="hidden mt-2 text-sm text-gray-600">Use m = (It × M)/(nF) where F = 96,500 C/mol</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Question 2 -->
+                <div class="bg-white rounded-lg shadow-sm overflow-hidden">
+                    <div class="p-6 bg-blue-50 border-l-4 border-blue-500">
+                        <span class="inline-block px-2 py-1 text-xs font-medium text-blue-600 bg-blue-100 rounded mb-2">Question 2</span>
+                        <h3 class="text-lg font-medium text-gray-900">Understanding Electrolytes</h3>
+                    </div>
+
+                    <div class="p-6 space-y-4">
+                        <p class="text-gray-700 font-medium">Explain why:</p>
+                        
+                        <div class="space-y-3">
+                            <div class="flex items-start gap-3">
+                                <span class="px-2 py-1 text-xs font-medium text-blue-600 bg-blue-100 rounded">a</span>
+                                <div>
+                                    <p class="text-gray-800">Pure water does not conduct electricity</p>
+                                    <div class="mt-2 p-3 bg-gray-50 rounded-lg">
+                                        <button class="text-sm text-blue-600 hover:text-blue-700" onclick="toggleHint('q2a')">Show Hint</button>
+                                        <p id="q2a-hint" class="hidden mt-2 text-sm text-gray-600">Consider the concentration of H⁺ and OH⁻ ions in pure water.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start gap-3">
+                                <span class="px-2 py-1 text-xs font-medium text-blue-600 bg-blue-100 rounded">b</span>
+                                <div>
+                                    <p class="text-gray-800">Sodium chloride solution conducts electricity</p>
+                                    <div class="mt-2 p-3 bg-gray-50 rounded-lg">
+                                        <button class="text-sm text-blue-600 hover:text-blue-700" onclick="toggleHint('q2b')">Show Hint</button>
+                                        <p id="q2b-hint" class="hidden mt-2 text-sm text-gray-600">Think about what happens to NaCl when dissolved in water.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start gap-3">
+                                <span class="px-2 py-1 text-xs font-medium text-blue-600 bg-blue-100 rounded">c</span>
+                                <div>
+                                    <p class="text-gray-800">Different products are obtained when concentrated and dilute sodium chloride solutions are electrolyzed</p>
+                                    <div class="mt-2 p-3 bg-gray-50 rounded-lg">
+                                        <button class="text-sm text-blue-600 hover:text-blue-700" onclick="toggleHint('q2c')">Show Hint</button>
+                                        <p id="q2c-hint" class="hidden mt-2 text-sm text-gray-600">Consider how concentration affects the competition between ions at each electrode.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Submission Section -->
+                <div class="bg-gray-50 rounded-lg p-6">
+                    <h3 class="text-lg font-medium text-gray-900 mb-4">Submit Your Answers</h3>
+                    <div class="space-y-4">
+                        <textarea
+                            class="w-full p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                            rows="6"
+                            placeholder="Type your answers here..."
+                        ></textarea>
+                        <button class="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition-colors">
+                            Submit for Review
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <script>
+                function toggleHint(id) {
+                    const hint = document.getElementById(id + '-hint');
+                    hint.classList.toggle('hidden');
+                }
+
+                // Navigation functionality
+                document.addEventListener('DOMContentLoaded', function() {
+                    const navTabs = document.querySelectorAll('.nav-tab');
+                    const navLinks = document.querySelectorAll('.nav-link');
+                    const sections = document.querySelectorAll('.content-section');
+
+                    function updateActiveTab(sectionId) {
+                        // Update main navigation tabs
+                        navTabs.forEach(tab => {
+                            const isActive = tab.getAttribute('data-section') === sectionId;
+                            tab.classList.toggle('text-gray-900', isActive);
+                            tab.classList.toggle('border-blue-500', isActive);
+                            tab.classList.toggle('text-gray-500', !isActive);
+                            tab.classList.toggle('border-transparent', !isActive);
+                        });
+
+                        // Update sidebar navigation
+                        navLinks.forEach(link => {
+                            const isActive = link.getAttribute('data-section') === sectionId;
+                            link.classList.toggle('bg-blue-50', isActive);
+                            link.classList.toggle('text-blue-600', isActive);
+                            const numberSpan = link.querySelector('span:first-child');
+                            if (numberSpan) {
+                                numberSpan.classList.toggle('bg-blue-600', isActive);
+                                numberSpan.classList.toggle('text-white', isActive);
+                                numberSpan.classList.toggle('bg-gray-100', !isActive);
+                                numberSpan.classList.toggle('text-gray-600', !isActive);
+                            }
+                        });
+
+                        // Update sections visibility with smooth transition
+                        sections.forEach(section => {
+                            if (section.id === sectionId) {
+                                // Show the target section first
+                                section.style.display = 'block';
+                                // Trigger reflow to ensure the transition works
+                                section.offsetHeight;
+                                // Add active class for opacity transition
+                                section.classList.add('active');
+                            } else {
+                                // Start fade out
+                                section.classList.remove('active');
+                                // After fade out, hide the section
+                                setTimeout(() => {
+                                    if (!section.classList.contains('active')) {
+                                        section.style.display = 'none';
+                                    }
+                                }, 300); // Match this with the CSS transition duration
+                            }
+                        });
+                    }
+
+                    // Handle click events for both main nav and sidebar
+                    [...navTabs, ...navLinks].forEach(navItem => {
+                        navItem.addEventListener('click', function(e) {
+                            e.preventDefault();
+                            const targetSection = this.getAttribute('data-section');
+                            const targetElement = document.getElementById(targetSection);
+                            
+                            // Smooth scroll to section
+                            targetElement.scrollIntoView({ behavior: 'smooth' });
+                            
+                            // Update active state
+                            updateActiveTab(targetSection);
+                            
+                            // Update URL hash
+                            history.pushState(null, '', `#${targetSection}`);
+                        });
+                    });
+
+                    // Handle initial load and hash changes
+                    function handleHashChange() {
+                        const hash = window.location.hash.slice(1) || 'basic-principles';
+                        updateActiveTab(hash);
+                    }
+
+                    window.addEventListener('hashchange', handleHashChange);
+                    handleHashChange(); // Handle initial load
+                });
+            </script>
+        </section>
+
+        <section id="calculations" class="content-section mt-8">
+            <header class="mb-6">
+                <h2 class="text-2xl font-semibold text-gray-900 flex items-center">
+                    <i class="fas fa-calculator text-green-500 mr-3"></i>
+                    Calculations in Electrolysis
+                </h2>
+                <p class="text-gray-600 mt-2">Understanding and applying Faraday's Laws in electrolysis calculations</p>
+            </header>
+
+            <div class="space-y-6">
+                <!-- Faraday's First Law -->
+                <div class="bg-white rounded-lg shadow-sm overflow-hidden">
+                    <div class="p-6 bg-gradient-to-r from-green-50 to-green-100">
+                        <h3 class="text-lg font-semibold text-gray-900">Faraday's First Law</h3>
+                        <p class="text-sm text-gray-600 mt-2">The mass of a substance deposited or liberated at an electrode is directly proportional to the quantity of electricity passed through the electrolyte.</p>
+                    </div>
+
+                    <div class="p-6">
+                        <!-- Formula Section -->
+                        <div class="bg-gray-50 rounded-lg p-4 mb-6">
+                            <h4 class="font-medium text-gray-900 mb-3">Key Formula</h4>
+                            <div class="formula bg-white p-4 rounded shadow-sm text-center">
+                                <span class="text-xl font-medium text-gray-900">m = (It × M)/(nF)</span>
+                            </div>
+                        </div>
+
+                        <!-- Worked example moved here from Answers -->
+                        <div class="bg-white rounded-lg p-4">
+                            <h4 class="font-medium text-gray-900 mb-2">Worked example: Mass of lead produced</h4>
+                            <p class="text-sm text-gray-700">Calculate the mass of lead produced when a current of 2.0 A passes for 30 minutes during the electrolysis of PbBr<sub>2</sub> (Pb<sup>2+</sup> + 2e<sup>-</sup> → Pb).</p>
+                            <ul class="list-disc pl-5 mt-2 text-sm text-gray-700">
+                                <li>I = 2.0 A</li>
+                                <li>t = 30 min = 30 × 60 = 1800 s</li>
+                                <li>M (Pb) = 207.2 g mol<sup>-1</sup></li>
+                                <li>n = 2</li>
+                                <li>F = 96,500 C mol<sup>-1</sup></li>
+                            </ul>
+                            <p class="mt-2 text-sm text-gray-700"><strong>Calculation:</strong></p>
+                            <div class="formula mt-2">m = (2.0 × 1800 × 207.2) / (2 × 96500) ≈ 3.87 g</div>
+                            <p class="text-sm text-gray-600 mt-1">So about 3.87 g of lead will be deposited.</p>
+                        </div>
+
+                        <!-- Variables Explanation -->
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div class="space-y-3">
+                                <div class="flex items-start gap-3 bg-white p-3 rounded shadow-sm">
+                                    <span class="font-mono text-green-600 font-medium">m</span>
+                                    <div>
+                                        <p class="font-medium text-gray-900">Mass deposited</p>
+                                        <p class="text-sm text-gray-600">Measured in grams (g)</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start gap-3 bg-white p-3 rounded shadow-sm">
+                                    <span class="font-mono text-green-600 font-medium">I</span>
+                                    <div>
+                                        <p class="font-medium text-gray-900">Current</p>
+                                        <p class="text-sm text-gray-600">Measured in amperes (A)</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start gap-3 bg-white p-3 rounded shadow-sm">
+                                    <span class="font-mono text-green-600 font-medium">t</span>
+                                    <div>
+                                        <p class="font-medium text-gray-900">Time</p>
+                                        <p class="text-sm text-gray-600">Measured in seconds (s)</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="space-y-3">
+                                <div class="flex items-start gap-3 bg-white p-3 rounded shadow-sm">
+                                    <span class="font-mono text-green-600 font-medium">M</span>
+                                    <div>
+                                        <p class="font-medium text-gray-900">Molar Mass</p>
+                                        <p class="text-sm text-gray-600">In g/mol</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start gap-3 bg-white p-3 rounded shadow-sm">
+                                    <span class="font-mono text-green-600 font-medium">n</span>
+                                    <div>
+                                        <p class="font-medium text-gray-900">Valency of Ion</p>
+                                        <p class="text-sm text-gray-600">Number of electrons transferred</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start gap-3 bg-white p-3 rounded shadow-sm">
+                                    <span class="font-mono text-green-600 font-medium">F</span>
+                                    <div>
+                                        <p class="font-medium text-gray-900">Faraday's Constant</p>
+                                        <p class="text-sm text-gray-600">96,500 C/mol</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Interactive Calculator -->
+                <div class="bg-white rounded-lg shadow-sm overflow-hidden">
+                    <div class="p-6 bg-gradient-to-r from-blue-50 to-blue-100">
+                        <h3 class="text-lg font-semibold text-gray-900">Electrolysis Calculator</h3>
+                        <p class="text-sm text-gray-600 mt-2">Calculate mass of substance deposited during electrolysis</p>
+                    </div>
+
+                    <div class="p-6">
+                        <form id="electrolysisCalc" class="grid md:grid-cols-2 gap-6">
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Current (A)</label>
+                                    <input type="number" id="current" step="0.1" min="0"
+                                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    >
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Time (minutes)</label>
+                                    <input type="number" id="time" step="1" min="0"
+                                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    >
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Molar Mass (g/mol)</label>
+                                    <input type="number" id="molarMass" step="0.1" min="0"
+                                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    >
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Valency</label>
+                                    <input type="number" id="valency" step="1" min="1"
+                                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    >
+                                </div>
+                            </div>
+
+                            <div class="space-y-4">
+                                <button type="button" onclick="calculateMass()"
+                                    class="w-full bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors"
+                                >
+                                    Calculate
+                                </button>
+                                
+                                <div class="bg-gray-50 p-4 rounded-lg">
+                                    <h4 class="font-medium text-gray-900 mb-2">Result</h4>
+                                    <div id="result" class="text-2xl font-medium text-blue-600">0.00 g</div>
+                                </div>
+
+                                <div class="bg-yellow-50 p-4 rounded-lg">
+                                    <h4 class="font-medium text-yellow-800 mb-2">Quick Tips</h4>
+                                    <ul class="text-sm text-yellow-700 space-y-1">
+                                        <li>• Remember to convert time to seconds</li>
+                                        <li>• Check valency of ions carefully</li>
+                                        <li>• Use correct molar mass units</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <script>
+                function calculateMass() {
+                    const current = parseFloat(document.getElementById('current').value);
+                    const time = parseFloat(document.getElementById('time').value) * 60; // Convert to seconds
+                    const molarMass = parseFloat(document.getElementById('molarMass').value);
+                    const valency = parseFloat(document.getElementById('valency').value);
+                    const F = 96500; // Faraday's constant
+
+                    if (current && time && molarMass && valency) {
+                        const mass = (current * time * molarMass) / (valency * F);
+                        document.getElementById('result').textContent = mass.toFixed(3) + ' g';
+                    } else {
+                        document.getElementById('result').textContent = 'Please fill all fields';
+                    }
+                }
+            </script>
+        </section>
+
+        <section id="exam-tips" class="content-section mt-8">
+            <header class="mb-6">
+                <h2 class="text-2xl font-semibold text-gray-900 flex items-center">
+                    <i class="fas fa-lightbulb text-yellow-500 mr-3"></i>
+                    Exam Tips and Common Questions
+                </h2>
+                <p class="text-gray-600 mt-2">Key points to focus on for IGCSE and WAEC examinations</p>
+            </header>
+
+            <div class="grid md:grid-cols-2 gap-6">
+                <!-- IGCSE Focus Points -->
+                <div class="bg-white rounded-lg shadow-sm overflow-hidden">
+                    <div class="p-6 bg-gradient-to-r from-blue-50 to-blue-100">
+                        <div class="flex items-center gap-3">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Cambridge_Assessment_International_Education_brand.svg/220px-Cambridge_Assessment_International_Education_brand.svg.png" 
+                                 alt="IGCSE Logo" 
+                                 class="w-12 h-12 object-contain"
+                            >
+                            <h3 class="text-lg font-semibold text-gray-900">IGCSE Focus Points</h3>
+                        </div>
+                    </div>
+
+                    <div class="p-6">
+                        <div class="space-y-4">
+                            <div class="flex items-start gap-3">
+                                <div class="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0 mt-1">
+                                    <span class="text-blue-600 text-sm font-medium">1</span>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium text-gray-900">Molten vs Aqueous Electrolysis</h4>
+                                    <p class="text-sm text-gray-600 mt-1">Understand key differences in products and processes</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start gap-3">
+                                <div class="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0 mt-1">
+                                    <span class="text-blue-600 text-sm font-medium">2</span>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium text-gray-900">Ion Discharge Order</h4>
+                                    <p class="text-sm text-gray-600 mt-1">Memorize preferential discharge sequence for both electrodes</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start gap-3">
+                                <div class="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0 mt-1">
+                                    <span class="text-blue-600 text-sm font-medium">3</span>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium text-gray-900">Half Equations</h4>
+                                    <p class="text-sm text-gray-600 mt-1">Practice writing and balancing oxidation and reduction equations</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start gap-3">
+                                <div class="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0 mt-1">
+                                    <span class="text-blue-600 text-sm font-medium">4</span>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium text-gray-900">Industrial Applications</h4>
+                                    <p class="text-sm text-gray-600 mt-1">Know the details of aluminum extraction and chloralkali process</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-6 bg-blue-50 rounded-lg p-4">
+                            <h4 class="font-medium text-blue-900 mb-2">Common Pitfalls</h4>
+                            <ul class="space-y-2 text-sm text-blue-800">
+                                <li class="flex items-start gap-2">
+                                    <i class="fas fa-exclamation-circle text-blue-500 mt-1"></i>
+                                    <span>Confusing cathode and anode processes</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <i class="fas fa-exclamation-circle text-blue-500 mt-1"></i>
+                                    <span>Forgetting state symbols in equations</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- WAEC Focus Points -->
+                <div class="bg-white rounded-lg shadow-sm overflow-hidden">
+                    <div class="p-6 bg-gradient-to-r from-green-50 to-green-100">
+                        <div class="flex items-center gap-3">
+                            <img src="https://www.waecdirect.org/images/waec-logo.png" 
+                                 alt="WAEC Logo" 
+                                 class="w-12 h-12 object-contain"
+                            >
+                            <h3 class="text-lg font-semibold text-gray-900">WAEC Focus Points</h3>
+                        </div>
+                    </div>
+
+                    <div class="p-6">
+                        <div class="space-y-4">
+                            <div class="flex items-start gap-3">
+                                <div class="w-6 h-6 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0 mt-1">
+                                    <span class="text-green-600 text-sm font-medium">1</span>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium text-gray-900">Faraday's Laws Calculations</h4>
+                                    <p class="text-sm text-gray-600 mt-1">Master quantitative aspects and unit conversions</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start gap-3">
+                                <div class="w-6 h-6 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0 mt-1">
+                                    <span class="text-green-600 text-sm font-medium">2</span>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium text-gray-900">Electroplating</h4>
+                                    <p class="text-sm text-gray-600 mt-1">Understand process steps and industrial applications</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start gap-3">
+                                <div class="w-6 h-6 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0 mt-1">
+                                    <span class="text-green-600 text-sm font-medium">3</span>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium text-gray-900">Product Prediction</h4>
+                                    <p class="text-sm text-gray-600 mt-1">Know expected products for common electrolytes</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start gap-3">
+                                <div class="w-6 h-6 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0 mt-1">
+                                    <span class="text-green-600 text-sm font-medium">4</span>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium text-gray-900">Practical Applications</h4>
+                                    <p class="text-sm text-gray-600 mt-1">Be able to explain real-world uses and processes</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-6 bg-green-50 rounded-lg p-4">
+                            <h4 class="font-medium text-green-900 mb-2">Examination Strategy</h4>
+                            <ul class="space-y-2 text-sm text-green-800">
+                                <li class="flex items-start gap-2">
+                                    <i class="fas fa-check-circle text-green-500 mt-1"></i>
+                                    <span>Start with calculation questions - they have fixed marks</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <i class="fas fa-check-circle text-green-500 mt-1"></i>
+                                    <span>Include practical observations in your answers</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-6 bg-yellow-50 rounded-lg p-4">
+                    <h4 class="font-medium">How to use these notes</h4>
+                    <p class="text-sm text-yellow-800 mt-2">Before answering a question: identify if the electrolyte is molten or aqueous, list ions present (include H⁺/OH⁻ from water), then apply reactivity (for cathode), concentration (for anode), and electrode-nature rules to predict products and write half-equations.</p>
+                </div>
+            </div>
+
+            <!-- Section Navigation -->
+            <div class="flex justify-between items-center mt-8 mb-4">
+                <button onclick="previousSection()" class="flex items-center px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors">
+                    <i class="fas fa-chevron-left mr-2"></i>
+                    Previous Section
+                </button>
+                <button onclick="nextSection()" class="flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                    Next Section
+                    <i class="fas fa-chevron-right ml-2"></i>
+                </button>
+            </div>
+
+            <!-- Study Resources -->
+            <div class="mt-8 bg-white rounded-lg shadow-sm p-6">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">Additional Resources</h3>
+                <div class="grid md:grid-cols-3 gap-4">
+                    <a href="#" class="block p-4 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors">
+                        <div class="flex items-center gap-3">
+                            <i class="fas fa-book text-purple-500 text-xl"></i>
+                            <div>
+                                <h4 class="font-medium text-gray-900">Past Papers</h4>
+                                <p class="text-sm text-gray-600">Practice with previous exams</p>
+                            </div>
+                        </div>
+                    </a>
+                    
+                    <a href="#" class="block p-4 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors">
+                        <div class="flex items-center gap-3">
+                            <i class="fas fa-video text-blue-500 text-xl"></i>
+                            <div>
+                                <h4 class="font-medium text-gray-900">Video Tutorials</h4>
+                                <p class="text-sm text-gray-600">Visual explanations</p>
+                            </div>
+                        </div>
+                    </a>
+                    
+                    <a href="#" class="block p-4 bg-green-50 rounded-lg hover:bg-green-100 transition-colors">
+                        <div class="flex items-center gap-3">
+                            <i class="fas fa-users text-green-500 text-xl"></i>
+                            <div>
+                                <h4 class="font-medium text-gray-900">Study Groups</h4>
+                                <p class="text-sm text-gray-600">Join discussion forums</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section id="answers" class="content-section mt-8">
+            <header class="mb-6">
+                <h2 class="text-2xl font-semibold text-gray-900 flex items-center">
+                    <i class="fas fa-clipboard-list text-teal-500 mr-3"></i>
+                    Answers & Worked Solutions
+                </h2>
+                <p class="text-gray-600 mt-2">Concise theory, short answers and worked examples to help you answer the exam questions in your photos.</p>
+            </header>
+
+            <div class="space-y-6">
+                <!-- Definitions -->
+                <div class="bg-white rounded-lg shadow-sm p-6">
+                    <h3 class="text-lg font-semibold mb-3">Key Definitions</h3>
+                    <ul class="list-disc pl-5 space-y-2 text-sm text-gray-700">
+                        <li><strong>Electrolyte</strong> — A substance that produces ions in solution or when molten and therefore conducts electricity.</li>
+                        <li><strong>Electrode</strong> — A conductor (anode or cathode) through which current enters or leaves the electrolyte.</li>
+                        <li><strong>Anode</strong> — The positive electrode where oxidation occurs (anions give up electrons).</li>
+                        <li><strong>Cathode</strong> — The negative electrode where reduction occurs (cations gain electrons).</li>
+                        <li><strong>Primary cell</strong> — A non-rechargeable electrochemical cell. <strong>Secondary cell</strong> — A rechargeable cell.</li>
+                    </ul>
+                </div>
+
+                <!-- Short Q&A -->
+                <div class="bg-white rounded-lg shadow-sm p-6">
+                    <h3 class="text-lg font-semibold mb-3">Short Q&amp;A (extracted from common exam prompts)</h3>
+                    <div class="grid md:grid-cols-2 gap-4 text-sm text-gray-700">
+                        <div>
+                            <h4 class="font-medium">Why does pure water not conduct well?</h4>
+                            <p class="mt-1">Pure water has a very low concentration of H<sub>3</sub>O<sup>+</sup>/OH<sup>-</sup> ions (autoionisation is 10<sup>-7</sup> mol L<sup>-1</sup>), so it is a poor conductor. Adding an electrolyte increases ion concentration and conductivity.</p>
+                        </div>
+
+                        <div>
+                            <h4 class="font-medium">Why does solid NaCl not conduct?</h4>
+                            <p class="mt-1">Ions in a solid ionic lattice are fixed in place and cannot move; therefore solid NaCl does not conduct electricity. When molten or dissolved, ions are free to move and conduct.</p>
+                        </div>
+
+                        <div>
+                            <h4 class="font-medium">Predicting products at electrodes (short rules)</h4>
+                            <ul class="list-disc pl-5 mt-1">
+                                <li><strong>Cathode (reduction)</strong>: the least reactive metal ion (or H<sup>+</sup> if metal is more reactive) is discharged.</li>
+                                <li><strong>Anode (oxidation)</strong>: halide ions (Cl<sup>-</sup>, Br<sup>-</sup>, I<sup>-</sup>) are discharged in preference to OH<sup>-</sup> when present at sufficient concentration (concentrated halide → halogen gas). If halide is absent or dilute, OH<sup>-</sup> is oxidized to O<sub>2</sub>.</li>
+                            </ul>
+                        </div>
+
+                        <div>
+                            <h4 class="font-medium">Effect of concentration (dilute vs concentrated NaCl)</h4>
+                            <p class="mt-1">Concentrated brine (high [Cl<sup>-</sup>]) → chlorine gas at anode. Dilute NaCl (low [Cl<sup>-</sup]) → oxygen at anode (from OH<sup>-</sup> oxidation), hydrogen usually at cathode (from H<sup>+</sup>/water).</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Worked Solutions -->
+                <div class="bg-white rounded-lg shadow-sm p-6">
+                    <h3 class="text-lg font-semibold mb-3">Worked examples (from your photos)</h3>
+
+                    <h4 class="font-medium mt-2">1) Electrolysis of molten lead(II) bromide (PbBr<sub>2</sub>)</h4>
+                    <p class="text-sm text-gray-700 mt-1">Molten ionic compound — only ions present. At the cathode Pb<sup>2+</sup> is reduced; at the anode Br<sup>-</sup> is oxidized.</p>
+                    <div class="mt-2 text-sm text-gray-700">
+                        <p><strong>Cathode:</strong> Pb<sup>2+</sup> + 2e<sup>-</sup> → Pb (s)</p>
+                        <p><strong>Anode:</strong> 2Br<sup>-</sup> → Br<sub>2</sub> (g) + 2e<sup>-</sup></p>
+                    </div>
+                        <!-- Calculation example removed (moved to Calculations section) -->
+
+                    <h4 class="font-medium mt-4">3) Half-equations and observations for common cells</h4>
+                    <p class="text-sm text-gray-700 mt-1"><strong>Electrolysis of aqueous NaCl (dilute):</strong></p>
+                    <p class="text-sm text-gray-700">Cathode: 2H<sub>2</sub>O + 2e<sup>-</sup> → H<sub>2</sub> + 2OH<sup>-</sup> (hydrogen produced). Anode: 4OH<sup>-</sup> → O<sub>2</sub> + 2H<sub>2</sub>O + 4e<sup>-</sup> (oxygen produced).</p>
+
+                    <p class="text-sm text-gray-700 mt-2"><strong>Electrolysis of concentrated NaCl (brine):</strong> Anode: 2Cl<sup>-</sup> → Cl<sub>2</sub> + 2e<sup>-</sup> (chlorine produced). Cathode: H<sub>2</sub> as above (unless a less reactive metal ion is present).</p>
+
+                    <h4 class="font-medium mt-4">4) Graphite electrodes — advantages &amp; disadvantages</h4>
+                    <ul class="list-disc pl-5 mt-1 text-sm text-gray-700">
+                        <li><strong>Advantages:</strong> inert (do not take part chemically in many electrolyses), inexpensive, good conductor.</li>
+                        <li><strong>Disadvantages:</strong> can oxidise slowly at the anode (forming CO/CO<sub>2</sub> or causing electrode wear), may contaminate product in some cases and are brittle.</li>
+                    </ul>
+                </div>
+
+                <!-- Helpful Tables -->
+                <div class="bg-white rounded-lg shadow-sm p-6">
+                    <h3 class="text-lg font-semibold mb-3">Quick-reference table (products)</h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-left text-gray-700">
+                            <thead>
+                                <tr>
+                                    <th class="py-2">Electrolyte</th>
+                                    <th class="py-2">Cathode (reduction)</th>
+                                    <th class="py-2">Anode (oxidation)</th>
+                                    <th class="py-2">Notes</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="py-2">Molten PbBr<sub>2</sub></td>
+                                    <td class="py-2">Pb (s)</td>
+                                    <td class="py-2">Br<sub>2</sub> (g)</td>
+                                    <td class="py-2">Molten = only ions available</td>
+                                </tr>
+                                <tr class="bg-gray-50">
+                                    <td class="py-2">Aqueous NaCl (dilute)</td>
+                                    <td class="py-2">H<sub>2</sub> (g)</td>
+                                    <td class="py-2">O<sub>2</sub> (g)</td>
+                                    <td class="py-2">OH<sup>-</sup> oxidation at anode competes with Cl<sup>-</sup></td>
+                                </tr>
+                                <tr>
+                                    <td class="py-2">Aqueous NaCl (concentrated)</td>
+                                    <td class="py-2">H<sub>2</sub> (g)</td>
+                                    <td class="py-2">Cl<sub>2</sub> (g)</td>
+                                    <td class="py-2">High [Cl<sup>-</sup>] favours chlorine evolution</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // Array of section IDs in order
+        const sectionOrder = [
+            'basic-principles',
+            'simulations',
+            'electrode-processes',
+            'industrial-applications',
+            'practice-questions',
+            'calculations',
+            'exam-tips'
+        ];
+
+        // Function to navigate to the next section
+        function nextSection() {
+            const currentSection = getCurrentSection();
+            const currentIndex = sectionOrder.indexOf(currentSection);
+            if (currentIndex < sectionOrder.length - 1) {
+                const nextSectionId = sectionOrder[currentIndex + 1];
+                navigateToSection(nextSectionId);
+            }
+        }
+
+        // Function to navigate to the previous section
+        function previousSection() {
+            const currentSection = getCurrentSection();
+            const currentIndex = sectionOrder.indexOf(currentSection);
+            if (currentIndex > 0) {
+                const prevSectionId = sectionOrder[currentIndex - 1];
+                navigateToSection(prevSectionId);
+            }
+        }
+
+        // Function to get current active section
+        function getCurrentSection() {
+            const activeSection = document.querySelector('.content-section:not(.hidden)');
+            return activeSection ? activeSection.id : sectionOrder[0];
+        }
+
+        // Function to navigate to a specific section
+        function navigateToSection(sectionId) {
+            const targetLink = document.querySelector(`.nav-link[data-section="${sectionId}"]`);
+            if (targetLink) {
+                targetLink.click();
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get all sections and nav links
+            const sections = document.querySelectorAll('.content-section');
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sectionHeaders = {
+                'basic-principles': 'Understanding the fundamental concepts of electrolysis',
+                'simulations': 'Hands-on virtual experiments to understand electrolysis processes',
+                'electrode-processes': 'Understanding ion behavior and discharge order at electrodes',
+                'industrial-applications': 'Real-world applications of electrolysis in industry',
+                'practice-questions': 'IGCSE and WAEC level questions to test your understanding',
+                'calculations': 'Understanding and applying Faraday\'s Laws in electrolysis calculations',
+                'exam-tips': 'Key points to focus on for IGCSE and WAEC examinations'
+            };
+
+            // Hide all sections except the first one
+            sections.forEach((section, index) => {
+                if (index !== 0) {
+                    section.classList.add('hidden');
+                }
+            });
+
+            // Update page title based on active section
+            function updatePageInfo(sectionId) {
+                const headerTextElement = document.querySelector('#section-description');
+                if (headerTextElement) {
+                    headerTextElement.textContent = sectionHeaders[sectionId] || '';
+                }
+            }
+
+            // Add click event listeners to nav links
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+
+                    // Remove active class from all links
+                    navLinks.forEach(l => l.classList.remove('active', 'bg-gray-100'));
+
+                    // Add active class to clicked link
+                    link.classList.add('active', 'bg-gray-100');
+
+                    // Hide all sections
+                    sections.forEach(section => section.classList.add('hidden'));
+
+                    // Show the selected section
+                    const sectionId = link.getAttribute('data-section');
+                    const targetSection = document.getElementById(sectionId);
+                    if (targetSection) {
+                        targetSection.classList.remove('hidden');
+                        updatePageInfo(sectionId);
+                        
+                        // Smooth scroll to section
+                        targetSection.scrollIntoView({ behavior: 'smooth' });
+                    }
+                });
+            });
+
+            // Set initial page info
+            updatePageInfo('basic-principles');
+        });
+    </script>
+
+    <style>
+        .nav-link {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link.active {
+            background-color: var(--active-bg, rgb(243, 244, 246));
+        }
+        
+        .nav-link.active[data-section="basic-principles"] {
+            --active-bg: rgb(239, 246, 255);
+            color: rgb(37, 99, 235);
+        }
+        
+        .nav-link.active[data-section="simulations"] {
+            --active-bg: rgb(238, 242, 255);
+            color: rgb(79, 70, 229);
+        }
+        
+        .nav-link.active[data-section="electrode-processes"] {
+            --active-bg: rgb(245, 243, 255);
+            color: rgb(124, 58, 237);
+        }
+        
+        .nav-link.active[data-section="industrial-applications"] {
+            --active-bg: rgb(249, 250, 251);
+            color: rgb(31, 41, 55);
+        }
+        
+        .nav-link.active[data-section="practice-questions"] {
+            --active-bg: rgb(253, 242, 248);
+            color: rgb(219, 39, 119);
+        }
+        
+        .nav-link.active[data-section="calculations"] {
+            --active-bg: rgb(240, 253, 244);
+            color: rgb(22, 163, 74);
+        }
+        
+        .nav-link.active[data-section="exam-tips"] {
+            --active-bg: rgb(254, 252, 232);
+            color: rgb(202, 138, 4);
+        }
+        
+        .content-section {
+            transition: opacity 0.3s ease-in-out;
+            max-width: 100%;
+            margin: 0 auto;
+        }
+        
+        .content-section.hidden {
+            display: none;
+            opacity: 0;
+        }
+        
+        .content-section:not(.hidden) {
+            display: block;
+            opacity: 1;
+        }
+
+        .main-content {
+            max-width: 100%;
+            width: 100%;
+            overflow-x: hidden;
+        }
+
+        @media (min-width: 768px) {
+            .content-section {
+                max-width: 800px;
+            }
+        }
+
+        .formula {
+            max-width: 100%;
+            overflow-x: auto;
+        }
+    </style>
+</body>
+</html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Electric Charges & Electrostatics | Physics</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .content-card {
+      -webkit-backdrop-filter: blur(16px);
+      backdrop-filter: blur(16px);
+      background: rgba(255, 255, 255, 0.75);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
+    }
+    .formula { font-family: 'Georgia', serif; background:#f8fafc; padding:.5rem; border-radius:.25rem }
+  </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-6">
+  <div class="max-w-4xl mx-auto">
+    <nav class="mb-6">
+      <a href="index.html" class="text-blue-600 hover:text-blue-700">← Back to Electricity</a>
+    </nav>
+
+    <article class="content-card rounded-xl p-8">
+      <header class="mb-6">
+        <h1 class="text-2xl font-bold text-gray-800 mb-2">Electric Charges & Electrostatics</h1>
+        <p class="text-gray-600">Basic properties of electric charge, Coulomb's law, electric field and potential at an introductory level.</p>
+      </header>
+
+      <section class="mb-6">
+        <h2 class="text-lg font-semibold mb-2">Key concepts</h2>
+        <ul class="list-disc list-inside text-gray-700 space-y-1">
+          <li>Charge is quantized and conserved.</li>
+          <li>Like charges repel, unlike charges attract.</li>
+          <li>Coulomb's law: force between point charges.
+            <div class="mt-2 formula">F = k * |q1 * q2| / r²</div>
+          </li>
+          <li>Electric field E = F/q (vector field) and electric potential V = work per unit charge.</li>
+        </ul>
+      </section>
+
+      <section class="mb-6">
+        <h2 class="text-lg font-semibold mb-2">Worked example</h2>
+        <p class="text-gray-700">Two charges +2 μC and -3 μC are 0.5 m apart. Find the magnitude of the force between them (use k = 9×10^9 N·m²/C²).</p>
+        <ol class="list-decimal list-inside text-gray-700 mt-2 space-y-1">
+          <li>Convert microcoulombs to coulombs: q1 = 2e-6 C, q2 = -3e-6 C.</li>
+          <li>Apply Coulomb's law: F = k|q1q2|/r² = 9e9 * (6e-12) / 0.25 = 9e9 * 2.4e-11 = 0.216 N.</li>
+          <li>Direction: attractive (opposite signs).</li>
+        </ol>
+      </section>
+
+      <section class="mb-6">
+        <h2 class="text-lg font-semibold mb-2">Practice questions</h2>
+        <ol class="list-decimal list-inside text-gray-700 space-y-2">
+          <li>Calculate the electric field at 0.2 m from a point charge of +5 μC.</li>
+          <li>Two like charges of 10 μC each are placed 1 m apart. Calculate the force.</li>
+          <li>Find the potential difference between two points 0.1 m and 0.3 m from a +1 μC charge.</li>
+        </ol>
+      </section>
+
+      <section>
+        <h2 class="text-lg font-semibold mb-2">Solutions (brief)</h2>
+        <ol class="list-decimal list-inside text-gray-700 space-y-1">
+          <li>E = kq/r² = 9e9 * 5e-6 / 0.04 = 1.125e6 N/C.</li>
+          <li>F = kq²/r² = 9e9 * (1e-10) / 1 = 9e-1 = 0.9 N.</li>
+          <li>ΔV = kq(1/r1 - 1/r2) = 9e9*1e-6*(10 - 3.333) ≈ 60 000 V (approx.).</li>
+        </ol>
+      </section>
+    </article>
+  </div>
+<!-- Topic Quiz System -->
+<script src="/js/topic-quiz-loader.js"></script>
+<script src="/js/topic-quiz-injector.js"></script>
+</body>
+</html>

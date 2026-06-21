@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Balancing Redox Equations | Chemistry</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <style> 
+    body{font-family:Inter, sans-serif}
+    .content-card{-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);background:rgba(255,255,255,0.95);border:1px solid rgba(255,255,255,0.2);} 
+    .accordion-content{max-height:0;overflow:hidden;transition:max-height 0.3s ease-out;}
+    .accordion-content.open{max-height:2500px;}
+    .step-card{transition:all 0.2s ease;}
+    .step-card:hover{transform:translateX(4px);}
+  </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-violet-50 to-purple-100 p-4 md:p-6">
+  <div class="max-w-4xl mx-auto">
+    <nav class="mb-4"><a href="index.html" class="text-blue-600 hover:text-blue-800 transition"><i class="fas fa-arrow-left mr-2"></i>Back to Electrochemistry & Redox</a></nav>
+    
+    <article class="content-card rounded-xl p-6 md:p-8 shadow-lg">
+      <!-- Header -->
+      <div class="border-b pb-4 mb-6">
+        <h1 class="text-2xl md:text-3xl font-bold text-gray-800 mb-2">
+          <i class="fas fa-balance-scale text-purple-500 mr-3"></i>Balancing Redox Equations
+        </h1>
+        <p class="text-gray-600">Mastering the half-reaction method for balancing complex redox equations in acidic and basic conditions.</p>
+      </div>
+
+      <!-- Learning Objectives -->
+      <div class="bg-blue-50 border-l-4 border-blue-500 p-4 rounded-r-lg mb-6">
+        <h3 class="font-semibold text-blue-800 mb-2"><i class="fas fa-bullseye mr-2"></i>Learning Objectives</h3>
+        <ul class="text-blue-700 text-sm space-y-1">
+          <li>• Identify oxidation and reduction half-reactions</li>
+          <li>• Balance redox equations using the half-reaction method</li>
+          <li>• Balance equations in acidic conditions</li>
+          <li>• Adapt balanced equations for basic conditions</li>
+        </ul>
+      </div>
+
+      <!-- Section 1: The Half-Reaction Method -->
+      <section class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <span class="bg-violet-100 text-violet-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">1</span>
+          The Half-Reaction Method
+        </h2>
+        
+        <div class="bg-gray-50 p-5 rounded-lg mb-4">
+          <p class="text-gray-700 mb-3">The <strong class="text-violet-600">half-reaction method</strong> breaks down the redox equation into two separate half-reactions (oxidation and reduction), balances each individually, then combines them.</p>
+          
+          <div class="bg-white p-4 rounded-lg border border-gray-200 mt-3">
+            <p class="font-semibold text-gray-800 mb-3">Key Steps Overview:</p>
+            <div class="space-y-2">
+              <div class="flex items-center">
+                <span class="bg-violet-100 text-violet-700 rounded-full w-6 h-6 flex items-center justify-center mr-3 text-xs font-bold">1</span>
+                <p class="text-gray-700 text-sm">Identify and separate oxidation and reduction half-reactions</p>
+              </div>
+              <div class="flex items-center">
+                <span class="bg-violet-100 text-violet-700 rounded-full w-6 h-6 flex items-center justify-center mr-3 text-xs font-bold">2</span>
+                <p class="text-gray-700 text-sm">Balance all atoms except O and H</p>
+              </div>
+              <div class="flex items-center">
+                <span class="bg-violet-100 text-violet-700 rounded-full w-6 h-6 flex items-center justify-center mr-3 text-xs font-bold">3</span>
+                <p class="text-gray-700 text-sm">Balance O atoms using H₂O</p>
+              </div>
+              <div class="flex items-center">
+                <span class="bg-violet-100 text-violet-700 rounded-full w-6 h-6 flex items-center justify-center mr-3 text-xs font-bold">4</span>
+                <p class="text-gray-700 text-sm">Balance H atoms using H⁺ (acidic) or H₂O/OH⁻ (basic)</p>
+              </div>
+              <div class="flex items-center">
+                <span class="bg-violet-100 text-violet-700 rounded-full w-6 h-6 flex items-center justify-center mr-3 text-xs font-bold">5</span>
+                <p class="text-gray-700 text-sm">Balance charge using electrons (e⁻)</p>
+              </div>
+              <div class="flex items-center">
+                <span class="bg-violet-100 text-violet-700 rounded-full w-6 h-6 flex items-center justify-center mr-3 text-xs font-bold">6</span>
+                <p class="text-gray-700 text-sm">Multiply half-reactions to equalize electrons</p>
+              </div>
+              <div class="flex items-center">
+                <span class="bg-violet-100 text-violet-700 rounded-full w-6 h-6 flex items-center justify-center mr-3 text-xs font-bold">7</span>
+                <p class="text-gray-700 text-sm">Add half-reactions and simplify</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Visual Flowchart -->
+        <div class="bg-white p-4 rounded-lg border border-gray-200 mb-4">
+          <div class="text-center">
+            <svg viewBox="0 0 400 180" class="w-full max-w-md mx-auto">
+              <!-- Start -->
+              <rect x="150" y="5" width="100" height="25" fill="#8b5cf6" rx="12"/>
+              <text x="200" y="22" text-anchor="middle" fill="white" font-size="10" font-weight="bold">Unbalanced Equation</text>
+              
+              <!-- Arrow down -->
+              <line x1="200" y1="30" x2="200" y2="45" stroke="#8b5cf6" stroke-width="2"/>
+              
+              <!-- Split box -->
+              <rect x="50" y="50" width="120" height="35" fill="#fee2e2" stroke="#ef4444" stroke-width="2" rx="5"/>
+              <text x="110" y="65" text-anchor="middle" fill="#dc2626" font-size="9" font-weight="bold">Oxidation</text>
+              <text x="110" y="78" text-anchor="middle" fill="#dc2626" font-size="8">Half-reaction</text>
+              
+              <rect x="230" y="50" width="120" height="35" fill="#dbeafe" stroke="#3b82f6" stroke-width="2" rx="5"/>
+              <text x="290" y="65" text-anchor="middle" fill="#2563eb" font-size="9" font-weight="bold">Reduction</text>
+              <text x="290" y="78" text-anchor="middle" fill="#2563eb" font-size="8">Half-reaction</text>
+              
+              <!-- Split arrows -->
+              <path d="M 200 45 L 110 50" fill="none" stroke="#8b5cf6" stroke-width="2"/>
+              <path d="M 200 45 L 290 50" fill="none" stroke="#8b5cf6" stroke-width="2"/>
+              
+              <!-- Balance each -->
+              <rect x="50" y="95" width="120" height="25" fill="#fef3c7" stroke="#f59e0b" stroke-width="1" rx="3"/>
+              <text x="110" y="112" text-anchor="middle" fill="#92400e" font-size="8">Balance atoms & e⁻</text>
+              
+              <rect x="230" y="95" width="120" height="25" fill="#fef3c7" stroke="#f59e0b" stroke-width="1" rx="3"/>
+              <text x="290" y="112" text-anchor="middle" fill="#92400e" font-size="8">Balance atoms & e⁻</text>
+              
+              <!-- Merge arrows -->
+              <path d="M 110 120 L 200 135" fill="none" stroke="#8b5cf6" stroke-width="2"/>
+              <path d="M 290 120 L 200 135" fill="none" stroke="#8b5cf6" stroke-width="2"/>
+              
+              <!-- Combine -->
+              <rect x="130" y="140" width="140" height="35" fill="#dcfce7" stroke="#22c55e" stroke-width="2" rx="5"/>
+              <text x="200" y="155" text-anchor="middle" fill="#16a34a" font-size="9" font-weight="bold">Combine & Simplify</text>
+              <text x="200" y="168" text-anchor="middle" fill="#16a34a" font-size="8">Balanced Equation</text>
+            </svg>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 2: Balancing in Acidic Conditions -->
+      <section class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <span class="bg-violet-100 text-violet-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">2</span>
+          Balancing in Acidic Conditions
+        </h2>
+        
+        <div class="bg-gray-50 p-5 rounded-lg mb-4">
+          <p class="text-gray-700 mb-3">In acidic solution, we use <strong class="text-violet-600">H₂O</strong> to balance oxygen and <strong class="text-violet-600">H⁺</strong> to balance hydrogen.</p>
+          
+          <div class="bg-red-50 p-4 rounded-lg border border-red-200">
+            <p class="text-red-800 text-sm"><i class="fas fa-lightbulb mr-2 text-yellow-500"></i><strong>Memory Tip:</strong> In acidic conditions, if you need oxygen, add H₂O. If you need hydrogen, add H⁺.</p>
+          </div>
+        </div>
+
+        <!-- Worked Example 1 -->
+        <div class="border border-gray-200 rounded-lg overflow-hidden mb-4">
+          <button class="accordion-btn w-full p-4 bg-violet-50 text-left font-semibold text-violet-800 flex justify-between items-center hover:bg-violet-100 transition">
+            <span><i class="fas fa-flask mr-2 text-green-500"></i>Worked Example: Acidic Solution</span>
+            <i class="fas fa-chevron-down transform transition-transform"></i>
+          </button>
+          <div class="accordion-content">
+            <div class="p-5">
+              <p class="font-medium text-gray-800 mb-3">Balance: MnO₄⁻ + Fe²⁺ → Mn²⁺ + Fe³⁺ (acidic)</p>
+              
+              <div class="space-y-3">
+                <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-violet-500">
+                  <p class="text-sm text-gray-600"><strong>Step 1:</strong> Identify half-reactions</p>
+                  <p class="text-red-700 font-mono mt-1 text-sm">Oxidation: Fe²⁺ → Fe³⁺</p>
+                  <p class="text-blue-700 font-mono text-sm">Reduction: MnO₄⁻ → Mn²⁺</p>
+                </div>
+                
+                <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-violet-400">
+                  <p class="text-sm text-gray-600"><strong>Step 2:</strong> Balance oxidation half-reaction</p>
+                  <p class="text-violet-700 font-mono mt-1 text-sm">Fe²⁺ → Fe³⁺ + e⁻</p>
+                  <p class="text-gray-500 text-xs mt-1">(Fe already balanced, just add electron)</p>
+                </div>
+                
+                <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-violet-400">
+                  <p class="text-sm text-gray-600"><strong>Step 3:</strong> Balance reduction half-reaction (O then H then charge)</p>
+                  <p class="text-violet-700 font-mono mt-1 text-sm">MnO₄⁻ → Mn²⁺</p>
+                  <p class="text-violet-700 font-mono text-sm">MnO₄⁻ → Mn²⁺ + 4H₂O (balance O)</p>
+                  <p class="text-violet-700 font-mono text-sm">MnO₄⁻ + 8H⁺ → Mn²⁺ + 4H₂O (balance H)</p>
+                  <p class="text-violet-700 font-mono text-sm">MnO₄⁻ + 8H⁺ + 5e⁻ → Mn²⁺ + 4H₂O (balance charge)</p>
+                </div>
+                
+                <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-violet-400">
+                  <p class="text-sm text-gray-600"><strong>Step 4:</strong> Equalize electrons (5 × oxidation)</p>
+                  <p class="text-violet-700 font-mono mt-1 text-sm">5Fe²⁺ → 5Fe³⁺ + 5e⁻</p>
+                  <p class="text-violet-700 font-mono text-sm">MnO₄⁻ + 8H⁺ + 5e⁻ → Mn²⁺ + 4H₂O</p>
+                </div>
+                
+                <div class="bg-green-100 p-3 rounded-lg">
+                  <p class="text-green-800 font-semibold"><i class="fas fa-check-circle mr-2"></i>Final Balanced Equation:</p>
+                  <p class="text-green-700 font-mono">MnO₄⁻ + 5Fe²⁺ + 8H⁺ → Mn²⁺ + 5Fe³⁺ + 4H₂O</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Worked Example 2 -->
+        <div class="border border-gray-200 rounded-lg overflow-hidden mb-4">
+          <button class="accordion-btn w-full p-4 bg-pink-50 text-left font-semibold text-pink-800 flex justify-between items-center hover:bg-pink-100 transition">
+            <span><i class="fas fa-flask mr-2 text-green-500"></i>Worked Example: Dichromate</span>
+            <i class="fas fa-chevron-down transform transition-transform"></i>
+          </button>
+          <div class="accordion-content">
+            <div class="p-5">
+              <p class="font-medium text-gray-800 mb-3">Balance: Cr₂O₇²⁻ + I⁻ → Cr³⁺ + I₂ (acidic)</p>
+              
+              <div class="space-y-3">
+                <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-pink-500">
+                  <p class="text-sm text-gray-600"><strong>Step 1:</strong> Identify half-reactions</p>
+                  <p class="text-red-700 font-mono mt-1 text-sm">Oxidation: I⁻ → I₂</p>
+                  <p class="text-blue-700 font-mono text-sm">Reduction: Cr₂O₇²⁻ → Cr³⁺</p>
+                </div>
+                
+                <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-pink-400">
+                  <p class="text-sm text-gray-600"><strong>Step 2:</strong> Balance oxidation</p>
+                  <p class="text-pink-700 font-mono mt-1 text-sm">2I⁻ → I₂ + 2e⁻</p>
+                </div>
+                
+                <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-pink-400">
+                  <p class="text-sm text-gray-600"><strong>Step 3:</strong> Balance reduction</p>
+                  <p class="text-pink-700 font-mono mt-1 text-sm">Cr₂O₇²⁻ → 2Cr³⁺ (balance Cr)</p>
+                  <p class="text-pink-700 font-mono text-sm">Cr₂O₇²⁻ → 2Cr³⁺ + 7H₂O (balance O)</p>
+                  <p class="text-pink-700 font-mono text-sm">Cr₂O₇²⁻ + 14H⁺ → 2Cr³⁺ + 7H₂O (balance H)</p>
+                  <p class="text-pink-700 font-mono text-sm">Cr₂O₇²⁻ + 14H⁺ + 6e⁻ → 2Cr³⁺ + 7H₂O (balance charge)</p>
+                </div>
+                
+                <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-pink-400">
+                  <p class="text-sm text-gray-600"><strong>Step 4:</strong> Equalize electrons (multiply oxidation by 3)</p>
+                  <p class="text-pink-700 font-mono mt-1 text-sm">6I⁻ → 3I₂ + 6e⁻</p>
+                </div>
+                
+                <div class="bg-green-100 p-3 rounded-lg">
+                  <p class="text-green-800 font-semibold"><i class="fas fa-check-circle mr-2"></i>Final Balanced Equation:</p>
+                  <p class="text-green-700 font-mono">Cr₂O₇²⁻ + 6I⁻ + 14H⁺ → 2Cr³⁺ + 3I₂ + 7H₂O</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 3: Balancing in Basic Conditions -->
+      <section class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <span class="bg-violet-100 text-violet-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">3</span>
+          Balancing in Basic Conditions
+        </h2>
+        
+        <div class="bg-gray-50 p-5 rounded-lg mb-4">
+          <p class="text-gray-700 mb-3">For basic solutions, first balance as if in acidic conditions, then neutralize the H⁺ ions by adding OH⁻ to both sides.</p>
+          
+          <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
+            <p class="text-blue-800 text-sm"><i class="fas fa-info-circle mr-2"></i><strong>Key Rule:</strong> Add the same number of OH⁻ as H⁺ to BOTH sides. H⁺ + OH⁻ → H₂O</p>
+          </div>
+        </div>
+
+        <!-- Worked Example 3 -->
+        <div class="border border-gray-200 rounded-lg overflow-hidden mb-4">
+          <button class="accordion-btn w-full p-4 bg-indigo-50 text-left font-semibold text-indigo-800 flex justify-between items-center hover:bg-indigo-100 transition">
+            <span><i class="fas fa-flask mr-2 text-green-500"></i>Worked Example: Basic Solution</span>
+            <i class="fas fa-chevron-down transform transition-transform"></i>
+          </button>
+          <div class="accordion-content">
+            <div class="p-5">
+              <p class="font-medium text-gray-800 mb-3">Balance: MnO₄⁻ + I⁻ → MnO₂ + I₂ (basic)</p>
+              
+              <div class="space-y-3">
+                <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-indigo-500">
+                  <p class="text-sm text-gray-600"><strong>Step 1:</strong> Balance as if acidic first</p>
+                  <p class="text-indigo-700 font-mono mt-1 text-sm">Oxidation: 2I⁻ → I₂ + 2e⁻</p>
+                  <p class="text-indigo-700 font-mono text-sm">Reduction: MnO₄⁻ + 4H⁺ + 3e⁻ → MnO₂ + 2H₂O</p>
+                </div>
+                
+                <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-indigo-400">
+                  <p class="text-sm text-gray-600"><strong>Step 2:</strong> Equalize electrons (multiply by 3 and 2)</p>
+                  <p class="text-indigo-700 font-mono mt-1 text-sm">6I⁻ → 3I₂ + 6e⁻</p>
+                  <p class="text-indigo-700 font-mono text-sm">2MnO₄⁻ + 8H⁺ + 6e⁻ → 2MnO₂ + 4H₂O</p>
+                </div>
+                
+                <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-indigo-400">
+                  <p class="text-sm text-gray-600"><strong>Step 3:</strong> Add half-reactions (acidic form)</p>
+                  <p class="text-indigo-700 font-mono mt-1 text-sm">2MnO₄⁻ + 6I⁻ + 8H⁺ → 2MnO₂ + 3I₂ + 4H₂O</p>
+                </div>
+                
+                <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-indigo-400">
+                  <p class="text-sm text-gray-600"><strong>Step 4:</strong> Neutralize H⁺ by adding 8OH⁻ to both sides</p>
+                  <p class="text-indigo-700 font-mono mt-1 text-sm">2MnO₄⁻ + 6I⁻ + 8H⁺ + 8OH⁻ → 2MnO₂ + 3I₂ + 4H₂O + 8OH⁻</p>
+                  <p class="text-indigo-700 font-mono text-sm">2MnO₄⁻ + 6I⁻ + 8H₂O → 2MnO₂ + 3I₂ + 4H₂O + 8OH⁻</p>
+                </div>
+                
+                <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-indigo-400">
+                  <p class="text-sm text-gray-600"><strong>Step 5:</strong> Simplify (cancel 4H₂O)</p>
+                  <p class="text-indigo-700 font-mono mt-1 text-sm">2MnO₄⁻ + 6I⁻ + 4H₂O → 2MnO₂ + 3I₂ + 8OH⁻</p>
+                </div>
+                
+                <div class="bg-green-100 p-3 rounded-lg">
+                  <p class="text-green-800 font-semibold"><i class="fas fa-check-circle mr-2"></i>Final Balanced Equation (Basic):</p>
+                  <p class="text-green-700 font-mono">2MnO₄⁻ + 6I⁻ + 4H₂O → 2MnO₂ + 3I₂ + 8OH⁻</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 4: Quick Reference and Tips -->
+      <section class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <span class="bg-violet-100 text-violet-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">4</span>
+          Quick Reference & Common Mistakes
+        </h2>
+        
+        <div class="grid md:grid-cols-2 gap-4 mb-4">
+          <div class="bg-green-50 p-4 rounded-lg border border-green-200">
+            <h4 class="font-semibold text-green-800 mb-2"><i class="fas fa-check-circle mr-2"></i>Remember</h4>
+            <ul class="text-green-700 text-sm space-y-1">
+              <li>• Balance atoms first, then charge</li>
+              <li>• Electrons go on the more positive side</li>
+              <li>• Check that electrons lost = electrons gained</li>
+              <li>• Verify: atoms and charge balanced on both sides</li>
+            </ul>
+          </div>
+          
+          <div class="bg-red-50 p-4 rounded-lg border border-red-200">
+            <h4 class="font-semibold text-red-800 mb-2"><i class="fas fa-times-circle mr-2"></i>Common Mistakes</h4>
+            <ul class="text-red-700 text-sm space-y-1">
+              <li>• Forgetting to balance O and H atoms</li>
+              <li>• Not multiplying by correct factor for electrons</li>
+              <li>• Adding OH⁻ to only one side (basic conditions)</li>
+              <li>• Canceling incorrectly when simplifying</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Summary Table -->
+        <div class="bg-white p-4 rounded-lg border border-gray-200">
+          <h4 class="font-semibold text-gray-800 mb-3"><i class="fas fa-table mr-2 text-blue-500"></i>Summary: Acidic vs Basic Conditions</h4>
+          <div class="overflow-x-auto">
+            <table class="w-full text-sm border-collapse">
+              <thead>
+                <tr class="bg-gray-100">
+                  <th class="border border-gray-300 p-2 text-left">Aspect</th>
+                  <th class="border border-gray-300 p-2 text-center">Acidic Conditions</th>
+                  <th class="border border-gray-300 p-2 text-center">Basic Conditions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="border border-gray-300 p-2">Balance O</td>
+                  <td class="border border-gray-300 p-2 text-center">Add H₂O</td>
+                  <td class="border border-gray-300 p-2 text-center">Add H₂O</td>
+                </tr>
+                <tr class="bg-gray-50">
+                  <td class="border border-gray-300 p-2">Balance H</td>
+                  <td class="border border-gray-300 p-2 text-center">Add H⁺</td>
+                  <td class="border border-gray-300 p-2 text-center">First add H⁺, then neutralize with OH⁻</td>
+                </tr>
+                <tr>
+                  <td class="border border-gray-300 p-2">Final check</td>
+                  <td class="border border-gray-300 p-2 text-center">H⁺ should appear on one side</td>
+                  <td class="border border-gray-300 p-2 text-center">OH⁻ should appear; no H⁺</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- Practice Problems -->
+      <section class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <i class="fas fa-pencil-alt text-blue-600 mr-3"></i>
+          Practice Problems
+        </h2>
+        
+        <div class="space-y-4">
+          <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+            <p class="font-medium text-gray-800 mb-2">1. Balance in acidic solution:</p>
+            <p class="font-mono text-gray-700">H₂O₂ + Fe²⁺ → Fe³⁺ + H₂O</p>
+            <details class="mt-2">
+              <summary class="text-sm text-blue-600 cursor-pointer hover:text-blue-800">Show Solution</summary>
+              <div class="mt-2 text-sm text-gray-700">
+                <p>Oxidation: 2Fe²⁺ → 2Fe³⁺ + 2e⁻</p>
+                <p>Reduction: H₂O₂ + 2H⁺ + 2e⁻ → 2H₂O</p>
+                <p class="font-semibold mt-2">H₂O₂ + 2Fe²⁺ + 2H⁺ → 2Fe³⁺ + 2H₂O</p>
+              </div>
+            </details>
+          </div>
+          
+          <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+            <p class="font-medium text-gray-800 mb-2">2. Balance in acidic solution:</p>
+            <p class="font-mono text-gray-700">MnO₄⁻ + C₂O₄²⁻ → Mn²⁺ + CO₂</p>
+            <details class="mt-2">
+              <summary class="text-sm text-blue-600 cursor-pointer hover:text-blue-800">Show Solution</summary>
+              <div class="mt-2 text-sm text-gray-700">
+                <p>Oxidation: C₂O₄²⁻ → 2CO₂ + 2e⁻</p>
+                <p>Reduction: MnO₄⁻ + 8H⁺ + 5e⁻ → Mn²⁺ + 4H₂O</p>
+                <p>Multiply oxidation by 5, reduction by 2</p>
+                <p class="font-semibold mt-2">2MnO₄⁻ + 5C₂O₄²⁻ + 16H⁺ → 2Mn²⁺ + 10CO₂ + 8H₂O</p>
+              </div>
+            </details>
+          </div>
+          
+          <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+            <p class="font-medium text-gray-800 mb-2">3. Balance in basic solution:</p>
+            <p class="font-mono text-gray-700">Cl₂ → Cl⁻ + ClO⁻</p>
+            <details class="mt-2">
+              <summary class="text-sm text-blue-600 cursor-pointer hover:text-blue-800">Show Solution</summary>
+              <div class="mt-2 text-sm text-gray-700">
+                <p>This is a disproportionation reaction (Cl is both oxidized and reduced)</p>
+                <p>Reduction: Cl₂ + 2e⁻ → 2Cl⁻</p>
+                <p>Oxidation: Cl₂ + 4H₂O → 2ClO⁻ + 8H⁺ + 6e⁻</p>
+                <p>For basic: multiply oxidation by 3, add 8OH⁻ to both sides</p>
+                <p class="font-semibold mt-2">3Cl₂ + 6OH⁻ → 5Cl⁻ + ClO₃⁻ + 3H₂O</p>
+                <p class="text-xs text-gray-500 mt-1">Note: ClO⁻ disproportionates further to ClO₃⁻ in basic solution</p>
+              </div>
+            </details>
+          </div>
+          
+          <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+            <p class="font-medium text-gray-800 mb-2">4. Balance in acidic solution:</p>
+            <p class="font-mono text-gray-700">NO₃⁻ + Cu → NO₂ + Cu²⁺</p>
+            <details class="mt-2">
+              <summary class="text-sm text-blue-600 cursor-pointer hover:text-blue-800">Show Solution</summary>
+              <div class="mt-2 text-sm text-gray-700">
+                <p>Oxidation: Cu → Cu²⁺ + 2e⁻</p>
+                <p>Reduction: NO₃⁻ + 2H⁺ + e⁻ → NO₂ + H₂O</p>
+                <p>Multiply oxidation by 1, reduction by 2</p>
+                <p class="font-semibold mt-2">2NO₃⁻ + Cu + 4H⁺ → 2NO₂ + Cu²⁺ + 2H₂O</p>
+              </div>
+            </details>
+          </div>
+        </div>
+      </section>
+
+      <!-- Key Takeaways -->
+      <div class="bg-gradient-to-r from-violet-50 to-purple-50 p-5 rounded-lg border border-violet-200">
+        <h3 class="font-semibold text-violet-800 mb-3"><i class="fas fa-star mr-2"></i>Key Takeaways</h3>
+        <ul class="text-violet-700 text-sm space-y-2">
+          <li>• Separate the reaction into oxidation and reduction half-reactions</li>
+          <li>• Balance atoms in order: main element → O (H₂O) → H (H⁺) → charge (e⁻)</li>
+          <li>• Equalize electrons before combining half-reactions</li>
+          <li>• For basic conditions: first balance as acidic, then add OH⁻ to neutralize H⁺</li>
+          <li>• Always verify that both atoms and charges are balanced in the final equation</li>
+        </ul>
+      </div>
+    </article>
+  </div>
+
+  <script>
+    // Accordion functionality
+    document.querySelectorAll('.accordion-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const content = btn.nextElementSibling;
+        const icon = btn.querySelector('.fa-chevron-down');
+        
+        content.classList.toggle('open');
+        icon.classList.toggle('rotate-180');
+      });
+    });
+  </script>
+
+<!-- Topic Quiz System -->
+<script src="/js/topic-quiz-loader.js"></script>
+<script src="/js/topic-quiz-injector.js"></script>
+</body>
+</html>

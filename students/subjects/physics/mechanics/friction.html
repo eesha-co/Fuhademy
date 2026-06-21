@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Friction | Physics Mechanics</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .content-card {
+            -webkit-backdrop-filter: blur(16px);
+            backdrop-filter: blur(16px);
+            background: rgba(255, 255, 255, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-6">
+    <div class="max-w-6xl mx-auto">
+        <nav class="mb-8">
+            <a href="./" class="text-blue-600 hover:text-blue-700">← Back to Mechanics</a>
+        </nav>
+
+        <div class="content-card rounded-xl p-8">
+            <header class="mb-12">
+                <h1 class="text-3xl font-bold text-gray-800 mb-4">Friction</h1>
+                <p class="text-lg text-gray-600">Understanding the force that resists relative motion between surfaces</p>
+            </header>
+
+            <div class="grid gap-8">
+                <!-- Types of Friction -->
+                <section>
+                    <h2 class="text-xl font-semibold text-gray-800 mb-4">Types of Friction</h2>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="bg-white/50 rounded-lg p-6">
+                            <h3 class="font-medium text-gray-800 mb-3">Static Friction</h3>
+                            <ul class="space-y-2 text-gray-700">
+                                <li>• Acts when object is stationary</li>
+                                <li>• Maximum value: fs ≤ μsN</li>
+                                <li>• Prevents motion initiation</li>
+                                <li>• Variable magnitude up to maximum</li>
+                            </ul>
+                        </div>
+                        <div class="bg-white/50 rounded-lg p-6">
+                            <h3 class="font-medium text-gray-800 mb-3">Kinetic Friction</h3>
+                            <ul class="space-y-2 text-gray-700">
+                                <li>• Acts during motion</li>
+                                <li>• Constant value: fk = μkN</li>
+                                <li>• Opposes ongoing motion</li>
+                                <li>• Generally less than static friction</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Friction Coefficients -->
+                <section>
+                    <h2 class="text-xl font-semibold text-gray-800 mb-4">Friction Coefficients</h2>
+                    <div class="bg-white/50 rounded-lg p-6">
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <h3 class="font-medium text-gray-800 mb-3">Static Coefficient (μs)</h3>
+                                <ul class="space-y-2 text-gray-700">
+                                    <li>• Wood on wood: 0.25-0.50</li>
+                                    <li>• Metal on metal: 0.15-0.60</li>
+                                    <li>• Rubber on concrete: 0.60-0.85</li>
+                                    <li>• Ice on ice: 0.10</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h3 class="font-medium text-gray-800 mb-3">Kinetic Coefficient (μk)</h3>
+                                <ul class="space-y-2 text-gray-700">
+                                    <li>• Wood on wood: 0.20</li>
+                                    <li>• Metal on metal: 0.15</li>
+                                    <li>• Rubber on concrete: 0.50</li>
+                                    <li>• Ice on ice: 0.03</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Laws and Properties -->
+                <section>
+                    <h2 class="text-xl font-semibold text-gray-800 mb-4">Laws and Properties</h2>
+                    <div class="bg-white/50 rounded-lg p-6">
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <h3 class="font-medium text-gray-800 mb-3">Basic Laws</h3>
+                                <ul class="space-y-2 text-gray-700">
+                                    <li>• Proportional to normal force</li>
+                                    <li>• Independent of contact area</li>
+                                    <li>• Depends on surface properties</li>
+                                    <li>• Always parallel to surface</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h3 class="font-medium text-gray-800 mb-3">Important Properties</h3>
+                                <ul class="space-y-2 text-gray-700">
+                                    <li>• Direction opposes motion/tendency</li>
+                                    <li>• μs > μk (usually)</li>
+                                    <li>• Temperature dependent</li>
+                                    <li>• Surface cleanliness matters</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Applications -->
+                <section>
+                    <h2 class="text-xl font-semibold text-gray-800 mb-4">Applications</h2>
+                    <div class="grid md:grid-cols-3 gap-6">
+                        <div class="bg-white/50 rounded-lg p-6">
+                            <h3 class="font-medium text-gray-800 mb-3">Transportation</h3>
+                            <ul class="space-y-2 text-gray-700">
+                                <li>• Tire traction</li>
+                                <li>• Brake systems</li>
+                                <li>• Road design</li>
+                                <li>• Railway wheels</li>
+                            </ul>
+                        </div>
+                        <div class="bg-white/50 rounded-lg p-6">
+                            <h3 class="font-medium text-gray-800 mb-3">Engineering</h3>
+                            <ul class="space-y-2 text-gray-700">
+                                <li>• Bearings</li>
+                                <li>• Lubricants</li>
+                                <li>• Machine design</li>
+                                <li>• Material processing</li>
+                            </ul>
+                        </div>
+                        <div class="bg-white/50 rounded-lg p-6">
+                            <h3 class="font-medium text-gray-800 mb-3">Daily Life</h3>
+                            <ul class="space-y-2 text-gray-700">
+                                <li>• Walking</li>
+                                <li>• Writing</li>
+                                <li>• Sports</li>
+                                <li>• Household items</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Problem-Solving Examples -->
+                <section>
+                    <h2 class="text-xl font-semibold text-gray-800 mb-4">Problem-Solving Examples</h2>
+                    <div class="bg-white/50 rounded-lg p-6">
+                        <div class="space-y-6">
+                            <div>
+                                <h3 class="font-medium text-gray-800 mb-3">Example 1: Block on Incline</h3>
+                                <p class="text-gray-700">Find the minimum coefficient of static friction needed to prevent a block from sliding down a 30° incline.</p>
+                                <div class="mt-2 pl-4 text-sm text-gray-600">
+                                    <p>Solution approach:</p>
+                                    <ol class="list-decimal pl-4 space-y-1">
+                                        <li>Draw force diagram</li>
+                                        <li>Resolve forces parallel and perpendicular to incline</li>
+                                        <li>Apply equilibrium conditions</li>
+                                        <li>Solve for μs</li>
+                                    </ol>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="font-medium text-gray-800 mb-3">Example 2: Pulling a Block</h3>
+                                <p class="text-gray-700">Calculate the force needed to pull a 10kg block across a horizontal surface with μk = 0.2.</p>
+                                <div class="mt-2 pl-4 text-sm text-gray-600">
+                                    <p>Key points:</p>
+                                    <ul class="list-disc pl-4 space-y-1">
+                                        <li>Normal force = weight</li>
+                                        <li>Kinetic friction opposes motion</li>
+                                        <li>Use F = μkN</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+<!-- Topic Quiz System -->
+<script src="/js/topic-quiz-loader.js"></script>
+<script src="/js/topic-quiz-injector.js"></script>
+</body>
+</html>

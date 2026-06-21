@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Biology — Bio-Agriculture</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+</head>
+<body class="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-100 font-inter">
+  <nav class="fixed inset-x-0 top-0 bg-white/60 backdrop-blur-sm border-b border-blue-100 z-50">
+    <div class="max-w-6xl mx-auto px-4 py-3">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-4">
+          <nav class="text-sm text-blue-600">
+            <a href="../student-dashboard.html" class="hover:underline">Dashboard</a>
+            <span class="mx-2">/</span>
+            <a href="biology.html" class="hover:underline">Biology</a>
+            <span class="mx-2">/</span>
+            <span class="font-semibold">Bio-Agriculture</span>
+          </nav>
+        </div>
+        <div class="flex items-center gap-3">
+          <div class="relative">
+            <i class="fas fa-search text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
+            <input aria-label="Search" class="pl-10 pr-3 py-2 rounded-lg border border-slate-200 bg-white" placeholder="Search biology topics" />
+          </div>
+          <img src="/assets/images/logo.png" alt="logo" class="h-10 w-auto" />
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <main class="max-w-6xl mx-auto px-4 pt-24 pb-12">
+    <header class="text-center mb-6">
+      <h1 class="text-3xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-700 to-blue-400">Bio-Agriculture</h1>
+      <p class="text-gray-600 mt-2">Agricultural biology and food security</p>
+    </header>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <a href="#" onclick="openModal('Relevance of Biology to agriculture')" class="block rounded-xl bg-white/60 backdrop-blur-sm shadow-sm border p-5 hover:shadow-md transition group">
+        <h3 class="font-semibold text-blue-700 group-hover:text-blue-500">Relevance of Biology to agriculture</h3>
+      </a>
+      <a href="#" onclick="openModal('Pests & Diseases of crops')" class="block rounded-xl bg-white/60 backdrop-blur-sm shadow-sm border p-5 hover:shadow-md transition group">
+        <h3 class="font-semibold text-blue-700 group-hover:text-blue-500">Pests & Diseases of crops</h3>
+      </a>
+      <a href="#" onclick="openModal('Food Shortage')" class="block rounded-xl bg-white/60 backdrop-blur-sm shadow-sm border p-5 hover:shadow-md transition group">
+        <h3 class="font-semibold text-blue-700 group-hover:text-blue-500">Food Shortage</h3>
+      </a>
+    </div>
+  </main>
+
+  <!-- Modal -->
+  <div id="modal" class="hidden fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50">
+    <div class="flex items-center justify-center min-h-screen px-4">
+      <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-xl relative">
+        <div class="flex justify-between items-center mb-4">
+          <h2 id="modalTitle" class="text-xl font-semibold text-blue-700">Sub-topics:</h2>
+          <button onclick="closeModal()" class="text-slate-400 hover:text-slate-600" title="Close">
+            <span class="sr-only">Close</span>
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        <div id="modalContent" class="space-y-4"></div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const subtopics = {
+      'Relevance of Biology to agriculture': [
+        { name: 'Application of biology in agriculture and medicine', link: 'biology-explanation.html?topic=Application%20of%20biology%20in%20agriculture%20and%20medicine' },
+        { name: 'determine heritable characters, analyze inheritance, apply principles in real life', link: 'biology-explanation.html?topic=determine%20heritable%20characters%2C%20analyze%20inheritance%2C%20apply%20principles%20in%20real%20life' }
+      ],
+      'Pests & Diseases of crops': [
+        { name: 'Diseases, pollution, conservation, game reserves, health agencies', link: 'biology-explanation.html?topic=Diseases%2C%20pollution%2C%20conservation%2C%20game%20reserves%2C%20health%20agencies' },
+        { name: 'identify disease conditions, pollution types, conservation methods, and agencies', link: 'biology-explanation.html?topic=identify%20disease%20conditions%2C%20pollution%20types%2C%20conservation%20methods%2C%20and%20agencies' }
+      ],
+      'Food Shortage': [
+        { name: 'Soil types, structure, components, fertility, conservation', link: 'biology-explanation.html?topic=Soil%20types%2C%20structure%2C%20components%2C%20fertility%2C%20conservation' },
+        { name: 'identify soil properties, relate to plant growth, apply conservation methods', link: 'biology-explanation.html?topic=identify%20soil%20properties%2C%20relate%20to%20plant%20growth%2C%20apply%20conservation%20methods' }
+      ]
+    };
+    function openModal(topic) {
+      document.getElementById('modal').classList.remove('hidden');
+      document.getElementById('modalTitle').textContent = 'Sub-topics: ' + topic;
+      const content = subtopics[topic] || [];
+      document.getElementById('modalContent').innerHTML = content.map(s => 
+        `<div class="flex items-center justify-between gap-4 p-3 rounded-lg hover:bg-slate-50">
+          <span class="text-slate-600">${s.name}</span>
+          <a href="${s.link}" class="flex-shrink-0 px-4 py-2 text-sm font-medium text-blue-600 hover:text-blue-500 bg-blue-50 hover:bg-blue-100 rounded-lg transition">
+            Start Learning
+          </a>
+        </div>`
+      ).join('');
+    }
+    function closeModal() {
+      document.getElementById('modal').classList.add('hidden');
+    }
+    window.onclick = function(event) {
+      const modal = document.getElementById('modal');
+      if(event.target === modal) closeModal();
+    }
+  </script>
+<!-- Topic Quiz System -->
+<script src="/js/topic-quiz-loader.js"></script>
+<script src="/js/topic-quiz-injector.js"></script>
+</body>
+</html>
+

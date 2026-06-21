@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Debug - Check Subjects</title>
+</head>
+<body>
+    <h1>Subject Loading Debug</h1>
+    <div id="result">Loading scripts...</div>
+    
+    <!-- Load all question files in same order as cbt.html -->
+    <script src="js/maths-questions.js"></script>
+    <script src="js/english-questions.js"></script>
+    <script src="js/physics-questions.js"></script>
+    <script src="js/chem-questions.js"></script>
+    <script src="js/economics-questions.js"></script>
+    <script src="js/biology-questions.js"></script>
+    
+    <script>
+        var resultDiv = document.getElementById('result');
+        
+        resultDiv.innerHTML += '<br><br>Checking jambQuestions...';
+        resultDiv.innerHTML += '<br>typeof jambQuestions: ' + typeof jambQuestions;
+        
+        if (typeof jambQuestions !== 'undefined') {
+            var subjects = Object.keys(jambQuestions);
+            resultDiv.innerHTML += '<br><br><strong>Subjects loaded: ' + subjects.length + '</strong>';
+            resultDiv.innerHTML += '<br>Subjects: ' + subjects.join(', ');
+            
+            for (var subj of subjects) {
+                var data = jambQuestions[subj];
+                var yearCount = data.years ? data.years.length : 0;
+                var qCount = 0;
+                if (data.questionsByYear) {
+                    for (var year in data.questionsByYear) {
+                        qCount += data.questionsByYear[year].length;
+                    }
+                }
+                resultDiv.innerHTML += '<br> - ' + subj + ': ' + yearCount + ' years, ' + qCount + ' questions';
+            }
+        } else {
+            resultDiv.innerHTML += '<br><span style="color:red">ERROR: jambQuestions is not defined!</span>';
+        }
+    </script>
+</body>
+</html>

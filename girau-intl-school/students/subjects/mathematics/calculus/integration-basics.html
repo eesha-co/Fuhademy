@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Integration Basics — Calculus</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>.card{background:#fff;padding:1rem;border-radius:10px;box-shadow:0 10px 30px rgba(2,6,23,0.06)} .muted{color:#374151}</style>
+</head>
+<body class="bg-rose-50 font-sans">
+  <header class="bg-rose-600 text-white py-3 mb-6"><div class="max-w-6xl mx-auto px-4 flex items-center justify-between"><div class="font-semibold">Integration Basics</div><a href="index.html" class="text-white/90">Back</a></div></header>
+
+  <main class="max-w-6xl mx-auto px-4 space-y-6">
+    <section class="card"><h2 class="text-lg font-semibold">Antiderivatives & area</h2><div class="muted mt-2">Integration reverses differentiation. ∫ x^n dx = x^{n+1}/(n+1) + C. Definite integrals compute area under curves.</div></section>
+
+    <section class="card">
+      <h2 class="text-lg font-semibold">Visual — area under curve</h2>
+      <div class="mt-3 muted">Area between curve and x-axis from a to b equals definite integral ∫_a^b f(x) dx.</div>
+      <div class="mt-4 flex justify-center">
+        <svg width="420" height="140" xmlns="http://www.w3.org/2000/svg">
+          <path d="M20,120 C80,80 140,40 200,30 260,40 320,70 380,100" fill="none" stroke="#fb7185" stroke-width="2"/>
+          <rect x="60" y="60" width="80" height="60" fill="#fecaca" opacity="0.6"/>
+          <text x="80" y="140" font-size="11" fill="#374151">Example area (a→b)</text>
+        </svg>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2 class="text-lg font-semibold">Worked examples</h2>
+      <ol class="list-decimal list-inside mt-3 muted">
+        <li>∫ x^2 dx = x^3/3 + C.</li>
+        <li>Definite: ∫_0^1 x dx = 1/2.</li>
+        <li>∫ 3x^2 dx = x^3 + C (constant multiple).</li>
+        <li>Compute ∫_0^2 x^3 dx = [x^4/4]_0^2 = 16/4 = 4.</li>
+      </ol>
+    </section>
+
+    <section class="card">
+      <h2 class="text-lg font-semibold">Practice</h2>
+      <div class="grid md:grid-cols-2 gap-4 mt-3">
+        <div class="p-3 bg-gray-50 rounded"><div class="font-medium">1) Integrate ∫ 3x^2 dx</div><input id="int1" class="mt-2 p-2 border rounded w-full" placeholder="e.g., x^3 + C"><div class="mt-2 flex gap-2"><button id="inc1" class="px-3 py-1 bg-rose-600 text-white rounded">Check</button><button id="inh1" class="px-3 py-1 border rounded">Hint</button></div><div id="ifb1" class="mt-2 text-sm"></div></div>
+
+        <div class="p-3 bg-gray-50 rounded"><div class="font-medium">2) Evaluate ∫_0^1 x dx</div><input id="int2" class="mt-2 p-2 border rounded w-full" placeholder="e.g., 1/2"><div class="mt-2 flex gap-2"><button id="inc2" class="px-3 py-1 bg-rose-600 text-white rounded">Check</button><button id="inh2" class="px-3 py-1 border rounded">Hint</button></div><div id="ifb2" class="mt-2 text-sm"></div></div>
+      </div>
+    </section>
+
+    <div class="text-right"><button id="intQuiz" class="bg-rose-600 text-white px-4 py-2 rounded">Quick Quiz</button></div>
+  </main>
+
+  <div id="intModal" class="hidden fixed inset-0 bg-black/40 z-40 flex items-center justify-center"><div class="bg-white rounded p-6 max-w-md w-full"><div id="intContent"></div><div class="mt-4 text-right"><button id="intClose" class="px-3 py-1 border rounded">Close</button></div></div></div>
+
+  <script>
+    function norm(s){ return (s||'').toString().trim().replace(/\s+/g,''); }
+    document.getElementById('inc1').addEventListener('click', ()=>{ const v=norm(document.getElementById('int1').value).toLowerCase(); const fb=document.getElementById('ifb1'); if(v.includes('x^3')||v.includes('x3')) fb.innerHTML='<span style="color:#16a34a">Correct — x^3 + C</span>'; else fb.innerHTML='<span style="color:#e11d48">Try: follow power rule increase exponent by 1 and divide</span>'; });
+    document.getElementById('inh1').addEventListener('click', ()=> alert('Hint: ∫ x^n dx = x^{n+1}/(n+1)'));
+
+    document.getElementById('inc2').addEventListener('click', ()=>{ const v=norm(document.getElementById('int2').value); const fb=document.getElementById('ifb2'); if(v==='1/2' || v==='0.5') fb.innerHTML='<span style="color:#16a34a">Correct — 1/2</span>'; else fb.innerHTML='<span style="color:#e11d48">Try again — use [x^2/2]_0^1</span>'; });
+    document.getElementById('inh2').addEventListener('click', ()=> alert('Hint: antiderivative of x is x^2/2'));
+
+    const pool=[
+      {q:'∫ x dx = ?', a:['x^2/2']},
+      {q:'∫ 2x dx = ?', a:['x^2']},
+      {q:'∫ 3x^2 dx = ?', a:['x^3']},
+      {q:'Evaluate ∫_0^2 x^3 dx = ?', a:['4']}
+    ];
+    function show(){ let i=0,score=0; const modal=document.getElementById('intModal'); const content=document.getElementById('intContent'); modal.classList.remove('hidden'); function next(){ if(i>=pool.length){ content.innerHTML=`<div class="font-bold">Done</div><div>Score: ${score}/${pool.length}</div>`; return; } const cur=pool[i]; content.innerHTML=`<div class="font-semibold">${cur.q}</div><input id="qa" class="mt-3 p-2 border rounded w-full"><div class="mt-3"><button id="subq" class="px-3 py-1 bg-rose-600 text-white rounded">Submit</button></div><div id="qfb" class="mt-2"></div>`; document.getElementById('subq').onclick=()=>{ const a=(document.getElementById('qa').value||'').trim(); if(cur.a.includes(a)) { score++; document.getElementById('qfb').innerHTML='<span style="color:#16a34a">Correct</span>'; } else document.getElementById('qfb').innerHTML=`<span style="color:#e11d48">Wrong — ${cur.a[0]}</span>`; i++; setTimeout(next,700); }; }
+    next(); }
+    document.getElementById('intQuiz').addEventListener('click', show);
+    document.getElementById('intClose').addEventListener('click', ()=> document.getElementById('intModal').classList.add('hidden'));
+  </script>
+<!-- Topic Quiz System -->
+<script src="/js/topic-quiz-loader.js"></script>
+<script src="/js/topic-quiz-injector.js"></script>
+</body>
+</html>

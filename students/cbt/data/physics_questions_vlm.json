@@ -1,0 +1,404 @@
+{
+  "2010": [
+    {
+      "id": "phy_2010_1",
+      "question_num": 1,
+      "y_start": 60,
+      "y_end": 295,
+      "has_diagram": false,
+      "image": "images/physics_questions_vlm/2010_q1.png"
+    },
+    {
+      "id": "phy_2010_2",
+      "question_num": 2,
+      "y_start": 295,
+      "y_end": 525,
+      "has_diagram": false,
+      "image": "images/physics_questions_vlm/2010_q2.png"
+    },
+    {
+      "id": "phy_2010_3",
+      "question_num": 3,
+      "y_start": 525,
+      "y_end": 925,
+      "has_diagram": true,
+      "image": "images/physics_questions_vlm/2010_q3.png"
+    },
+    {
+      "id": "phy_2010_4",
+      "question_num": 4,
+      "y_start": 40,
+      "y_end": 310,
+      "has_diagram": false,
+      "image": "images/physics_questions_vlm/2010_q4.png"
+    },
+    {
+      "id": "phy_2010_5",
+      "question_num": 5,
+      "y_start": 330,
+      "y_end": 700,
+      "has_diagram": false,
+      "image": "images/physics_questions_vlm/2010_q5.png"
+    },
+    {
+      "id": "phy_2010_6",
+      "question_num": 6,
+      "y_start": 730,
+      "y_end": 1080,
+      "has_diagram": true,
+      "image": "images/physics_questions_vlm/2010_q6.png"
+    },
+    {
+      "id": "phy_2010_7",
+      "question_num": 7,
+      "y_start": 770,
+      "y_end": 930,
+      "has_diagram": false,
+      "image": "images/physics_questions_vlm/2010_q7.png"
+    },
+    {
+      "id": "phy_2010_8",
+      "question_num": 8,
+      "y_start": 400,
+      "y_end": 720,
+      "has_diagram": false,
+      "image": "images/physics_questions_vlm/2010_q8.png"
+    },
+    {
+      "id": "phy_2010_9",
+      "question_num": 9,
+      "y_start": 500,
+      "y_end": 820,
+      "has_diagram": false,
+      "image": "images/physics_questions_vlm/2010_q9.png"
+    },
+    {
+      "id": "phy_2010_10",
+      "question_num": 10,
+      "y_start": 1100,
+      "y_end": 1420,
+      "has_diagram": false,
+      "image": "images/physics_questions_vlm/2010_q10.png"
+    },
+    {
+      "id": "phy_2010_11",
+      "question_num": 11,
+      "y_start": 1200,
+      "y_end": 1520,
+      "has_diagram": false,
+      "image": "images/physics_questions_vlm/2010_q11.png"
+    },
+    {
+      "id": "phy_2010_12",
+      "question_num": 12,
+      "y_start": 1750,
+      "y_end": 2070,
+      "has_diagram": false,
+      "image": "images/physics_questions_vlm/2010_q12.png"
+    },
+    {
+      "id": "phy_2010_13",
+      "question_num": 13,
+      "y_start": 1800,
+      "y_end": 2120,
+      "has_diagram": false,
+      "image": "images/physics_questions_vlm/2010_q13.png"
+    },
+    {
+      "id": "phy_2010_14",
+      "question_num": 14,
+      "y_start": 33,
+      "y_end": 551,
+      "has_diagram": false,
+      "image": "images/physics_questions_vlm/2010_q14.png"
+    },
+    {
+      "id": "phy_2010_15",
+      "question_num": 15,
+      "y_start": 321,
+      "y_end": 951,
+      "has_diagram": false,
+      "image": "images/physics_questions_vlm/2010_q15.png"
+    },
+    {
+      "id": "phy_2010_16",
+      "question_num": 16,
+      "y_start": 671,
+      "y_end": 1421,
+      "has_diagram": false,
+      "image": "images/physics_questions_vlm/2010_q16.png"
+    },
+    {
+      "id": "phy_2010_17",
+      "question_num": 17,
+      "y_start": 1321,
+      "y_end": 2111,
+      "has_diagram": false,
+      "image": "images/physics_questions_vlm/2010_q17.png"
+    },
+    {
+      "id": "phy_2010_18",
+      "question_num": 18,
+      "y_start": 1631,
+      "y_end": 2221,
+      "has_diagram": false,
+      "image": "images/physics_questions_vlm/2010_q18.png"
+    },
+    {
+      "id": "phy_2010_19",
+      "question_num": 19,
+      "y_start": 40,
+      "y_end": 450,
+      "has_diagram": false,
+      "image": "images/physics_questions_vlm/2010_q19.png"
+    },
+    {
+      "id": "phy_2010_20",
+      "question_num": 20,
+      "y_start": 450,
+      "y_end": 790,
+      "has_diagram": false,
+      "image": "images/physics_questions_vlm/2010_q20.png"
+    },
+    {
+      "id": "phy_2010_21",
+      "question_num": 21,
+      "y_start": 780,
+      "y_end": 930,
+      "has_diagram": false,
+      "image": "images/physics_questions_vlm/2010_q21.png"
+    },
+    {
+      "id": "phy_2010_22",
+      "question_num": 22,
+      "y_start": 930,
+      "y_end": 1070,
+      "has_diagram": false,
+      "image": "images/physics_questions_vlm/2010_q22.png"
+    },
+    {
+      "id": "phy_2010_23",
+      "question_num": 23,
+      "y_start": 1070,
+      "y_end": 1830,
+      "has_diagram": false,
+      "image": "images/physics_questions_vlm/2010_q23.png"
+    },
+    {
+      "id": "phy_2010_24",
+      "question_num": 24,
+      "y_start": 30,
+      "y_end": 295,
+      "has_diagram": false,
+      "image": "images/physics_questions_vlm/2010_q24.png"
+    },
+    {
+      "id": "phy_2010_25",
+      "question_num": 25,
+      "y_start": 300,
+      "y_end": 590,
+      "has_diagram": false,
+      "image": "images/physics_questions_vlm/2010_q25.png"
+    },
+    {
+      "id": "phy_2010_26",
+      "question_num": 26,
+      "y_start": 595,
+      "y_end": 870,
+      "has_diagram": false,
+      "image": "images/physics_questions_vlm/2010_q26.png"
+    },
+    {
+      "id": "phy_2010_27",
+      "question_num": 27,
+      "y_start": 875,
+      "y_end": 1165,
+      "has_diagram": false,
+      "image": "images/physics_questions_vlm/2010_q27.png"
+    },
+    {
+      "id": "phy_2010_28",
+      "question_num": 28,
+      "y_start": 1170,
+      "y_end": 1460,
+      "has_diagram": false,
+      "image": "images/physics_questions_vlm/2010_q28.png"
+    },
+    {
+      "id": "phy_2010_29",
+      "question_num": 29,
+      "y_start": 1465,
+      "y_end": 2210,
+      "has_diagram": false,
+      "image": "images/physics_questions_vlm/2010_q29.png"
+    },
+    {
+      "id": "phy_2010_30",
+      "question_num": 30,
+      "y_start": 30,
+      "y_end": 100,
+      "has_diagram": false,
+      "image": "images/physics_questions_vlm/2010_q30.png"
+    },
+    {
+      "id": "phy_2010_31",
+      "question_num": 31,
+      "y_start": 95,
+      "y_end": 200,
+      "has_diagram": false,
+      "image": "images/physics_questions_vlm/2010_q31.png"
+    },
+    {
+      "id": "phy_2010_32",
+      "question_num": 32,
+      "y_start": 195,
+      "y_end": 440,
+      "has_diagram": false,
+      "image": "images/physics_questions_vlm/2010_q32.png"
+    },
+    {
+      "id": "phy_2010_33",
+      "question_num": 33,
+      "y_start": 425,
+      "y_end": 680,
+      "has_diagram": false,
+      "image": "images/physics_questions_vlm/2010_q33.png"
+    },
+    {
+      "id": "phy_2010_34",
+      "question_num": 34,
+      "y_start": 480,
+      "y_end": 940,
+      "has_diagram": true,
+      "image": "images/physics_questions_vlm/2010_q34.png"
+    },
+    {
+      "id": "phy_2010_35",
+      "question_num": 35,
+      "y_start": 730,
+      "y_end": 930,
+      "has_diagram": false,
+      "image": "images/physics_questions_vlm/2010_q35.png"
+    },
+    {
+      "id": "phy_2010_36",
+      "question_num": 36,
+      "y_start": 40,
+      "y_end": 200,
+      "has_diagram": false,
+      "image": "images/physics_questions_vlm/2010_q36.png"
+    },
+    {
+      "id": "phy_2010_37",
+      "question_num": 37,
+      "y_start": 200,
+      "y_end": 380,
+      "has_diagram": false,
+      "image": "images/physics_questions_vlm/2010_q37.png"
+    },
+    {
+      "id": "phy_2010_38",
+      "question_num": 38,
+      "y_start": 370,
+      "y_end": 840,
+      "has_diagram": true,
+      "image": "images/physics_questions_vlm/2010_q38.png"
+    },
+    {
+      "id": "phy_2010_39",
+      "question_num": 39,
+      "y_start": 390,
+      "y_end": 890,
+      "has_diagram": true,
+      "image": "images/physics_questions_vlm/2010_q39.png"
+    },
+    {
+      "id": "phy_2010_40",
+      "question_num": 40,
+      "y_start": 40,
+      "y_end": 420,
+      "has_diagram": false,
+      "image": "images/physics_questions_vlm/2010_q40.png"
+    },
+    {
+      "id": "phy_2010_41",
+      "question_num": 41,
+      "y_start": 430,
+      "y_end": 770,
+      "has_diagram": false,
+      "image": "images/physics_questions_vlm/2010_q41.png"
+    },
+    {
+      "id": "phy_2010_42",
+      "question_num": 42,
+      "y_start": 780,
+      "y_end": 950,
+      "has_diagram": false,
+      "image": "images/physics_questions_vlm/2010_q42.png"
+    },
+    {
+      "id": "phy_2010_43",
+      "question_num": 43,
+      "y_start": 960,
+      "y_end": 1150,
+      "has_diagram": false,
+      "image": "images/physics_questions_vlm/2010_q43.png"
+    },
+    {
+      "id": "phy_2010_44",
+      "question_num": 44,
+      "y_start": 1160,
+      "y_end": 1410,
+      "has_diagram": false,
+      "image": "images/physics_questions_vlm/2010_q44.png"
+    },
+    {
+      "id": "phy_2010_45",
+      "question_num": 45,
+      "y_start": 1420,
+      "y_end": 1660,
+      "has_diagram": false,
+      "image": "images/physics_questions_vlm/2010_q45.png"
+    },
+    {
+      "id": "phy_2010_46",
+      "question_num": 46,
+      "y_start": 30,
+      "y_end": 260,
+      "has_diagram": true,
+      "image": "images/physics_questions_vlm/2010_q46.png"
+    },
+    {
+      "id": "phy_2010_47",
+      "question_num": 47,
+      "y_start": 270,
+      "y_end": 490,
+      "has_diagram": false,
+      "image": "images/physics_questions_vlm/2010_q47.png"
+    },
+    {
+      "id": "phy_2010_48",
+      "question_num": 48,
+      "y_start": 630,
+      "y_end": 850,
+      "has_diagram": false,
+      "image": "images/physics_questions_vlm/2010_q48.png"
+    },
+    {
+      "id": "phy_2010_49",
+      "question_num": 49,
+      "y_start": 840,
+      "y_end": 1060,
+      "has_diagram": false,
+      "image": "images/physics_questions_vlm/2010_q49.png"
+    },
+    {
+      "id": "phy_2010_50",
+      "question_num": 50,
+      "y_start": 1050,
+      "y_end": 1270,
+      "has_diagram": false,
+      "image": "images/physics_questions_vlm/2010_q50.png"
+    }
+  ]
+}

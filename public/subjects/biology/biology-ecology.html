@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ecology - Biology</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @keyframes fade-in-up { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-fade-in-up { animation: fade-in-up 0.5s ease-out forwards; }
+        .section-card { background: white; border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: 1px solid #e5e7eb; }
+        .topic-card { transition: all 0.3s ease; }
+        .topic-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <nav class="bg-white shadow-sm fixed top-0 w-full z-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center">
+                    <a href="index.html" class="text-teal-600 hover:text-teal-800 mr-4"><i class="fas fa-arrow-left"></i></a>
+                    <h1 class="text-xl font-semibold text-gray-900"><i class="fas fa-globe-africa text-teal-500 mr-2"></i>Ecology</h1>
+                </div>
+                <div class="text-sm text-gray-600">Biology Topics</div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="pt-20 pb-8 px-4 max-w-6xl mx-auto">
+        <div class="bg-teal-50 border-l-4 border-teal-500 p-4 rounded-r-lg mb-6 animate-fade-in-up">
+            <h3 class="font-semibold text-teal-800 mb-2"><i class="fas fa-info-circle mr-2"></i>Introduction to Ecology</h3>
+            <p class="text-teal-700 text-sm">Ecology is the study of interactions between organisms and their environment. It covers ecosystems, populations, communities, and the biosphere.</p>
+        </div>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <a href="ecology/ecological-concepts.html" class="topic-card section-card animate-fade-in-up block">
+                <div class="flex items-center mb-3">
+                    <span class="bg-green-100 text-green-600 w-10 h-10 rounded-full flex items-center justify-center mr-3"><i class="fas fa-sitemap"></i></span>
+                    <h3 class="font-semibold text-gray-800">Ecological Concepts</h3>
+                </div>
+                <p class="text-gray-600 text-sm mb-3">Levels of organization, biotic and abiotic factors, ecological terms.</p>
+                <div class="flex flex-wrap gap-1">
+                    <span class="bg-green-50 text-green-600 text-xs px-2 py-1 rounded">Ecosystem</span>
+                    <span class="bg-green-50 text-green-600 text-xs px-2 py-1 rounded">Habitat</span>
+                </div>
+            </a>
+
+            <a href="ecology/population-ecology.html" class="topic-card section-card animate-fade-in-up block">
+                <div class="flex items-center mb-3">
+                    <span class="bg-blue-100 text-blue-600 w-10 h-10 rounded-full flex items-center justify-center mr-3"><i class="fas fa-users"></i></span>
+                    <h3 class="font-semibold text-gray-800">Population Ecology</h3>
+                </div>
+                <p class="text-gray-600 text-sm mb-3">Population size, growth, factors affecting populations, sampling methods.</p>
+                <div class="flex flex-wrap gap-1">
+                    <span class="bg-blue-50 text-blue-600 text-xs px-2 py-1 rounded">Quadrats</span>
+                    <span class="bg-blue-50 text-blue-600 text-xs px-2 py-1 rounded">Mark-Release</span>
+                </div>
+            </a>
+
+            <a href="ecology/ecosystem-function.html" class="topic-card section-card animate-fade-in-up block">
+                <div class="flex items-center mb-3">
+                    <span class="bg-orange-100 text-orange-600 w-10 h-10 rounded-full flex items-center justify-center mr-3"><i class="fas fa-recycle"></i></span>
+                    <h3 class="font-semibold text-gray-800">Ecosystem Function</h3>
+                </div>
+                <p class="text-gray-600 text-sm mb-3">Food chains, food webs, energy flow, nutrient cycles.</p>
+                <div class="flex flex-wrap gap-1">
+                    <span class="bg-orange-50 text-orange-600 text-xs px-2 py-1 rounded">Food Chains</span>
+                    <span class="bg-orange-50 text-orange-600 text-xs px-2 py-1 rounded">Carbon Cycle</span>
+                </div>
+            </a>
+
+            <a href="ecology/habitat-studies.html" class="topic-card section-card animate-fade-in-up block">
+                <div class="flex items-center mb-3">
+                    <span class="bg-purple-100 text-purple-600 w-10 h-10 rounded-full flex items-center justify-center mr-3"><i class="fas fa-microscope"></i></span>
+                    <h3 class="font-semibold text-gray-800">Habitat Studies</h3>
+                </div>
+                <p class="text-gray-600 text-sm mb-3">Different habitats and how organisms adapt to them.</p>
+                <div class="flex flex-wrap gap-1">
+                    <span class="bg-purple-50 text-purple-600 text-xs px-2 py-1 rounded">Adaptations</span>
+                    <span class="bg-purple-50 text-purple-600 text-xs px-2 py-1 rounded">Competition</span>
+                </div>
+            </a>
+
+            <a href="biology-topic-pests-and-diseases-of-crops.html" class="topic-card section-card animate-fade-in-up block">
+                <div class="flex items-center mb-3">
+                    <span class="bg-red-100 text-red-600 w-10 h-10 rounded-full flex items-center justify-center mr-3"><i class="fas fa-bug"></i></span>
+                    <h3 class="font-semibold text-gray-800">Pests & Diseases</h3>
+                </div>
+                <p class="text-gray-600 text-sm mb-3">Crop pests, diseases, and control methods in agriculture.</p>
+                <div class="flex flex-wrap gap-1">
+                    <span class="bg-red-50 text-red-600 text-xs px-2 py-1 rounded">Pest Control</span>
+                    <span class="bg-red-50 text-red-600 text-xs px-2 py-1 rounded">Diseases</span>
+                </div>
+            </a>
+
+            <a href="biology-topic-food-shortage.html" class="topic-card section-card animate-fade-in-up block">
+                <div class="flex items-center mb-3">
+                    <span class="bg-yellow-100 text-yellow-600 w-10 h-10 rounded-full flex items-center justify-center mr-3"><i class="fas fa-wheat-awn"></i></span>
+                    <h3 class="font-semibold text-gray-800">Food Shortage</h3>
+                </div>
+                <p class="text-gray-600 text-sm mb-3">Causes and solutions for food security issues globally.</p>
+                <div class="flex flex-wrap gap-1">
+                    <span class="bg-yellow-50 text-yellow-600 text-xs px-2 py-1 rounded">Food Security</span>
+                    <span class="bg-yellow-50 text-yellow-600 text-xs px-2 py-1 rounded">Solutions</span>
+                </div>
+            </a>
+        </div>
+
+        <div class="mt-8 bg-gradient-to-r from-teal-50 to-green-50 p-5 rounded-lg border border-teal-200 animate-fade-in-up">
+            <h3 class="font-semibold text-teal-800 mb-3"><i class="fas fa-lightbulb mr-2"></i>Key Concepts in Ecology</h3>
+            <div class="grid md:grid-cols-2 gap-4 text-sm text-teal-700">
+                <div>
+                    <p class="font-medium text-teal-800 mb-1">Trophic Levels:</p>
+                    <p>Producers → Primary consumers → Secondary consumers → Decomposers</p>
+                </div>
+                <div>
+                    <p class="font-medium text-teal-800 mb-1">Energy Flow:</p>
+                    <p>Only 10% of energy transfers between trophic levels</p>
+                </div>
+                <div>
+                    <p class="font-medium text-teal-800 mb-1">Carbon Cycle:</p>
+                    <p>Photosynthesis ↔ Respiration, Decomposition, Combustion</p>
+                </div>
+                <div>
+                    <p class="font-medium text-teal-800 mb-1">Nitrogen Cycle:</p>
+                    <p>Nitrogen fixation → Nitrification → Denitrification</p>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

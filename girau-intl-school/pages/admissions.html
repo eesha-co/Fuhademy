@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Apply to Girau International School. Admissions open for Creche, Nursery, Primary, and Secondary programs.">
+    <title>Admissions | Girau International School | Kaduna, Nigeria</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="icon" type="image/png" href="../images/favicon.png">
+    <style>
+        .page-hero {
+            background: var(--gradient-hero);
+            padding: 10rem 0 5rem;
+            text-align: center;
+            color: white;
+            position: relative;
+        }
+        
+        .page-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(circle at 30% 70%, rgba(255,255,255,0.1) 0%, transparent 50%);
+        }
+        
+        .page-hero-content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .page-title {
+            font-family: var(--font-secondary);
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        
+        .breadcrumb {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            font-size: 0.9375rem;
+            opacity: 0.9;
+        }
+        
+        .breadcrumb a {
+            color: var(--primary-lighter);
+        }
+        
+        .breadcrumb span {
+            opacity: 0.7;
+        }
+        
+        .admission-banner {
+            background: var(--accent-color);
+            color: white;
+            padding: 1.5rem 0;
+            text-align: center;
+        }
+        
+        .admission-banner h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .admission-banner p {
+            font-size: 1rem;
+            opacity: 0.95;
+        }
+        
+        .process-section {
+            background: var(--bg-light);
+        }
+        
+        .process-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+        }
+        
+        .process-card {
+            background: var(--bg-lighter);
+            padding: 2rem;
+            border-radius: var(--radius-xl);
+            text-align: center;
+            box-shadow: var(--shadow-md);
+            position: relative;
+            transition: all var(--transition-base);
+        }
+        
+        .process-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-xl);
+        }
+        
+        .process-number {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 40px;
+            background: var(--gradient-primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.125rem;
+        }
+        
+        .process-icon {
+            width: 70px;
+            height: 70px;
+            background: var(--primary-lightest);
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 1rem auto;
+        }
+        
+        .process-icon i {
+            font-size: 1.75rem;
+            color: var(--primary-color);
+        }
+        
+        .process-card h3 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 0.75rem;
+        }
+        
+        .process-card p {
+            font-size: 0.875rem;
+            color: var(--text-light);
+        }
+        
+        .requirements-section {
+            background: var(--bg-lighter);
+        }
+        
+        .requirements-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+        }
+        
+        .requirements-list {
+            background: var(--bg-lighter);
+            padding: 2.5rem;
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .requirements-list h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .requirements-list h3 i {
+            color: var(--primary-color);
+        }
+        
+        .requirements-list ul {
+            list-style: none;
+        }
+        
+        .requirements-list ul li {
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--border-light);
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+        }
+        
+        .requirements-list ul li:last-child {
+            border-bottom: none;
+        }
+        
+        .requirements-list ul li i {
+            color: var(--primary-color);
+            margin-top: 0.25rem;
+        }
+        
+        .fee-section {
+            background: var(--bg-light);
+        }
+        
+        .fee-table-wrapper {
+            overflow-x: auto;
+            margin-top: 2rem;
+        }
+        
+        .fee-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--bg-lighter);
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+        }
+        
+        .fee-table th {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 1.25rem 1rem;
+            text-align: left;
+            font-weight: 600;
+        }
+        
+        .fee-table td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-light);
+        }
+        
+        .fee-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .fee-table tr:hover {
+            background: var(--primary-lightest);
+        }
+        
+        .form-section {
+            background: var(--bg-lighter);
+        }
+        
+        .application-form {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--bg-lighter);
+            padding: 3rem;
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .form-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .form-header h3 {
+            font-size: 1.75rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+        }
+        
+        .form-header p {
+            color: var(--text-light);
+        }
+        
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group.full-width {
+            grid-column: span 2;
+        }
+        
+        .form-group label {
+            display: block;
+            font-weight: 500;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+        }
+        
+        .form-group label span {
+            color: var(--error-color);
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            font-size: 0.9375rem;
+            color: var(--text-dark);
+            transition: all var(--transition-base);
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.1);
+        }
+        
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        .form-group .error-message {
+            color: var(--error-color);
+            font-size: 0.8125rem;
+            margin-top: 0.25rem;
+        }
+        
+        .form-submit {
+            text-align: center;
+            margin-top: 2rem;
+        }
+        
+        .success-message {
+            background: var(--success-color);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        
+        .faq-section {
+            background: var(--bg-light);
+        }
+        
+        .faq-list {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .faq-item {
+            background: var(--bg-lighter);
+            margin-bottom: 1rem;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+        }
+        
+        .faq-question {
+            width: 100%;
+            padding: 1.25rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            color: var(--text-dark);
+            text-align: left;
+            transition: all var(--transition-base);
+        }
+        
+        .faq-question:hover {
+            color: var(--primary-color);
+        }
+        
+        .faq-question i {
+            transition: transform var(--transition-base);
+        }
+        
+        .faq-item.active .faq-question i {
+            transform: rotate(180deg);
+        }
+        
+        .faq-answer {
+            padding: 0 1.5rem;
+            max-height: 0;
+            overflow: hidden;
+            transition: all var(--transition-base);
+        }
+        
+        .faq-item.active .faq-answer {
+            padding: 0 1.5rem 1.5rem;
+            max-height: 500px;
+        }
+        
+        .faq-answer p {
+            color: var(--text-light);
+            line-height: 1.7;
+        }
+        
+        @media (max-width: 992px) {
+            .process-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .requirements-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .page-title {
+                font-size: 2rem;
+            }
+            
+            .process-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-group.full-width {
+                grid-column: span 1;
+            }
+            
+            .application-form {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div class="container">
+            <div class="top-bar-content">
+                <div class="top-bar-left">
+                    <span><i class="fas fa-map-marker-alt"></i> Plot 283621 Road B, Beside MPH Estate, Millennium City, Kaduna</span>
+                    <span><i class="fas fa-clock"></i> Mon - Fri: 7:30AM - 4:00PM</span>
+                </div>
+                <div class="top-bar-right">
+                    <span><i class="fas fa-phone"></i> +234 706 776 4310</span>
+                    <span><i class="fas fa-envelope"></i> info@girauintlschool.com</span>
+                    <div class="social-links">
+                        <a href="https://www.facebook.com/girau.school" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://www.instagram.com/girau_intl_school" target="_blank"><i class="fab fa-instagram"></i></a>
+                        <a href="https://www.tiktok.com/@girauinternationalschool" target="_blank"><i class="fab fa-tiktok"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="header" id="header">
+        <div class="container">
+            <nav class="navbar">
+                <a href="../index.html" class="logo">
+                    <div class="logo-icon">
+                        <span class="logo-text">GIS</span>
+                    </div>
+                    <div class="logo-full">
+                        <span class="logo-name">Girau International</span>
+                        <span class="logo-subtitle">School</span>
+                    </div>
+                </a>
+                
+                <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+                    <span class="hamburger"></span>
+                </button>
+                
+                <ul class="nav-menu" id="navMenu">
+                    <li class="nav-item"><a href="../index.html" class="nav-link">Home</a></li>
+                    <li class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle">About Us <i class="fas fa-chevron-down"></i></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="about.html">Our Story</a></li>
+                            <li><a href="mission.html">Mission & Vision</a></li>
+                            <li><a href="leadership.html">Leadership</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle">Academics <i class="fas fa-chevron-down"></i></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="curriculum.html">Curriculum</a></li>
+                            <li><a href="creche.html">Creche</a></li>
+                            <li><a href="nursery.html">Nursery</a></li>
+                            <li><a href="primary.html">Primary</a></li>
+                            <li><a href="secondary.html">Secondary</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item"><a href="admissions.html" class="nav-link active">Admissions</a></li>
+                    <li class="nav-item"><a href="gallery.html" class="nav-link">Gallery</a></li>
+                    <li class="nav-item"><a href="news.html" class="nav-link">News & Events</a></li>
+                    <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
+                    <li class="nav-item">
+                        <a href="apply.html" class="btn btn-primary nav-cta">Apply Now</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Admission Banner -->
+    <div class="admission-banner">
+        <div class="container">
+            <h3><i class="fas fa-bell"></i> Admissions Open for 2025/2026 Academic Session!</h3>
+            <p>Secure your child's future with quality education at Girau International School</p>
+        </div>
+    </div>
+
+    <!-- Page Hero -->
+    <section class="page-hero">
+        <div class="container">
+            <div class="page-hero-content">
+                <h1 class="page-title">Admissions</h1>
+                <nav class="breadcrumb">
+                    <a href="../index.html">Home</a>
+                    <span>/</span>
+                    <span>Admissions</span>
+                </nav>
+            </div>
+        </div>
+    </section>
+
+    <!-- Admission Process Section -->
+    <section class="process-section section">
+        <div class="container">
+            <div class="section-header text-center">
+                <span class="section-tag">How to Apply</span>
+                <h2 class="section-title">Admission Process</h2>
+                <p class="section-subtitle">Simple steps to enroll your child at Girau International School</p>
+            </div>
+            <div class="process-grid">
+                <div class="process-card">
+                    <span class="process-number">1</span>
+                    <div class="process-icon">
+                        <i class="fas fa-file-alt"></i>
+                    </div>
+                    <h3>Obtain Form</h3>
+                    <p>Purchase admission form from the school office or download online</p>
+                </div>
+                <div class="process-card">
+                    <span class="process-number">2</span>
+                    <div class="process-icon">
+                        <i class="fas fa-pen"></i>
+                    </div>
+                    <h3>Submit Form</h3>
+                    <p>Complete and submit the form with all required documents</p>
+                </div>
+                <div class="process-card">
+                    <span class="process-number">3</span>
+                    <div class="process-icon">
+                        <i class="fas fa-clipboard-check"></i>
+                    </div>
+                    <h3>Entrance Exam</h3>
+                    <p>Child sits for the entrance examination on scheduled date</p>
+                </div>
+                <div class="process-card">
+                    <span class="process-number">4</span>
+                    <div class="process-icon">
+                        <i class="fas fa-user-check"></i>
+                    </div>
+                    <h3>Admission</h3>
+                    <p>Successful candidates receive admission letter</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Requirements Section -->
+    <section class="requirements-section section">
+        <div class="container">
+            <div class="section-header text-center">
+                <span class="section-tag">What You Need</span>
+                <h2 class="section-title">Admission Requirements</h2>
+                <p class="section-subtitle">Required documents for enrollment</p>
+            </div>
+            <div class="requirements-grid">
+                <div class="requirements-list">
+                    <h3><i class="fas fa-folder-open"></i> General Requirements</h3>
+                    <ul>
+                        <li>
+                            <i class="fas fa-check"></i>
+                            <span>Completed admission form</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-check"></i>
+                            <span>2 recent passport photographs</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-check"></i>
+                            <span>Birth certificate (original and photocopy)</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-check"></i>
+                            <span>Previous school report/transcript</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-check"></i>
+                            <span>Transfer certificate (if applicable)</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-check"></i>
+                            <span>Immunization record</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="requirements-list">
+                    <h3><i class="fas fa-user-graduate"></i> Age Requirements</h3>
+                    <ul>
+                        <li>
+                            <i class="fas fa-check"></i>
+                            <span>Creche: 3 months - 2 years</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-check"></i>
+                            <span>Nursery: 2 - 5 years</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-check"></i>
+                            <span>Primary 1: 5 - 6 years</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-check"></i>
+                            <span>Primary 2-6: Appropriate age progression</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-check"></i>
+                            <span>JSS 1: 10 - 12 years</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-check"></i>
+                            <span>SSS 1: 13 - 15 years</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Application Form Section -->
+    <section class="form-section section" id="apply-form">
+        <div class="container">
+            <div class="section-header text-center">
+                <span class="section-tag">Apply Now</span>
+                <h2 class="section-title">Online Application Form</h2>
+                <p class="section-subtitle">Begin your child's journey with us</p>
+            </div>
+            <form class="application-form" id="admissionForm">
+                <div class="form-header">
+                    <h3>Student Information</h3>
+                    <p>Fill in the details accurately</p>
+                </div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>First Name <span>*</span></label>
+                        <input type="text" name="firstName" required placeholder="Enter first name">
+                    </div>
+                    <div class="form-group">
+                        <label>Last Name <span>*</span></label>
+                        <input type="text" name="lastName" required placeholder="Enter last name">
+                    </div>
+                    <div class="form-group">
+                        <label>Date of Birth <span>*</span></label>
+                        <input type="date" name="dob" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Gender <span>*</span></label>
+                        <select name="gender" required>
+                            <option value="">Select gender</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Class Applying For <span>*</span></label>
+                        <select name="classApplying" required>
+                            <option value="">Select class</option>
+                            <option value="creche">Creche</option>
+                            <option value="nursery">Nursery</option>
+                            <option value="primary">Primary</option>
+                            <option value="secondary">Secondary</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Previous School</label>
+                        <input type="text" name="prevSchool" placeholder="Enter previous school name">
+                    </div>
+                </div>
+                
+                <div class="form-header" style="margin-top: 2rem;">
+                    <h3>Parent/Guardian Information</h3>
+                    <p>Contact details of parent or guardian</p>
+                </div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Parent/Guardian Name <span>*</span></label>
+                        <input type="text" name="parentName" required placeholder="Full name">
+                    </div>
+                    <div class="form-group">
+                        <label>Relationship <span>*</span></label>
+                        <select name="relationship" required>
+                            <option value="">Select relationship</option>
+                            <option value="father">Father</option>
+                            <option value="mother">Mother</option>
+                            <option value="guardian">Guardian</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Phone Number <span>*</span></label>
+                        <input type="tel" name="phone" required placeholder="+234 XXX XXX XXXX">
+                    </div>
+                    <div class="form-group">
+                        <label>Email Address <span>*</span></label>
+                        <input type="email" name="email" required placeholder="email@example.com">
+                    </div>
+                    <div class="form-group full-width">
+                        <label>Home Address <span>*</span></label>
+                        <textarea name="address" required placeholder="Enter complete address"></textarea>
+                    </div>
+                </div>
+                
+                <div class="form-submit">
+                    <button type="submit" class="btn btn-primary btn-lg">
+                        Submit Application <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq-section section">
+        <div class="container">
+            <div class="section-header text-center">
+                <span class="section-tag">Questions</span>
+                <h2 class="section-title">Frequently Asked Questions</h2>
+            </div>
+            <div class="faq-list">
+                <div class="faq-item">
+                    <button class="faq-question">
+                        What is the admission process?
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>The admission process involves obtaining and completing the admission form, submitting required documents, taking an entrance examination, and upon successful completion, receiving an admission letter. The entire process is designed to be straightforward and transparent.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">
+                        What curriculum does the school follow?
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Girau International School follows a blended Nigerian and British curriculum. This unique approach ensures students are well-prepared for both local examinations (WAEC, NECO) and international opportunities.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">
+                        What are the school hours?
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>School hours are from 7:30 AM to 4:00 PM, Monday through Friday. Students are expected to arrive by 7:30 AM for morning assembly. After-school activities and extra lessons may extend to 5:00 PM.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">
+                        Does the school offer transportation?
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Yes, the school provides safe and reliable transportation services covering various routes within Kaduna. Our buses are well-maintained and driven by experienced, trained drivers.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">
+                        What extracurricular activities are available?
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>We offer a wide range of extracurricular activities including sports (football, basketball, athletics), clubs (debate, drama, music, art), and special programs like public speaking, coding, and leadership development.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-content">
+                <h2>Have Questions? We're Here to Help</h2>
+                <p>Contact our admissions team for personalized assistance</p>
+                <div class="cta-buttons">
+                    <a href="contact.html" class="btn btn-white btn-lg">
+                        Contact Us <i class="fas fa-phone"></i>
+                    </a>
+                    <a href="tel:+2347067764310" class="btn btn-outline-white btn-lg">
+                        <i class="fas fa-phone-alt"></i> +234 706 776 4310
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-top">
+            <div class="container">
+                <div class="footer-grid">
+                    <div class="footer-col footer-about">
+                        <a href="../index.html" class="footer-logo">
+                            <div class="logo-icon">
+                                <span class="logo-text">GIS</span>
+                            </div>
+                            <div class="logo-full">
+                                <span class="logo-name">Girau International</span>
+                                <span class="logo-subtitle">School</span>
+                            </div>
+                        </a>
+                        <p>Taking learners to higher ground with equipped facilities to aid creativity and productivity.</p>
+                        <div class="footer-social">
+                            <a href="https://www.facebook.com/girau.school" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                            <a href="https://www.instagram.com/girau_intl_school" target="_blank"><i class="fab fa-instagram"></i></a>
+                            <a href="https://www.tiktok.com/@girauinternationalschool" target="_blank"><i class="fab fa-tiktok"></i></a>
+                        </div>
+                    </div>
+                    <div class="footer-col">
+                        <h4>Quick Links</h4>
+                        <ul>
+                            <li><a href="about.html">About Us</a></li>
+                            <li><a href="curriculum.html">Curriculum</a></li>
+                            <li><a href="admissions.html">Admissions</a></li>
+                            <li><a href="gallery.html">Gallery</a></li>
+                            <li><a href="news.html">News & Events</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-col">
+                        <h4>Programs</h4>
+                        <ul>
+                            <li><a href="creche.html">Creche</a></li>
+                            <li><a href="nursery.html">Nursery</a></li>
+                            <li><a href="primary.html">Primary</a></li>
+                            <li><a href="secondary.html">Secondary</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-col footer-contact">
+                        <h4>Contact Us</h4>
+                        <ul>
+                            <li>
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>Plot 283621 Road B, Beside MPH Estate, Millennium City, Kaduna</span>
+                            </li>
+                            <li>
+                                <i class="fas fa-phone"></i>
+                                <a href="tel:+2347067764310">+234 706 776 4310</a>
+                            </li>
+                            <li>
+                                <i class="fas fa-envelope"></i>
+                                <a href="mailto:info@girauintlschool.com">info@girauintlschool.com</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="container">
+                <div class="footer-bottom-content">
+                    <p>&copy; 2025 Girau International School. All Rights Reserved.</p>
+                    <div class="footer-links">
+                        <a href="privacy.html">Privacy Policy</a>
+                        <a href="terms.html">Terms of Service</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top -->
+    <a href="#" class="back-to-top" id="backToTop">
+        <i class="fas fa-chevron-up"></i>
+    </a>
+
+    <script src="../js/main.js"></script>
+    <script>
+        // FAQ Accordion
+        document.querySelectorAll('.faq-question').forEach(button => {
+            button.addEventListener('click', () => {
+                const faqItem = button.parentElement;
+                const isActive = faqItem.classList.contains('active');
+                
+                // Close all FAQ items
+                document.querySelectorAll('.faq-item').forEach(item => {
+                    item.classList.remove('active');
+                });
+                
+                // Open clicked item if it wasn't active
+                if (!isActive) {
+                    faqItem.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

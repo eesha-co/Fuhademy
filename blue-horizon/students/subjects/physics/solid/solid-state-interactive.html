@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Solid State - Interactive</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>body{font-family:Inter,system-ui,sans-serif}.lattice{display:grid;grid-template-columns:repeat(var(--cols),24px);gap:6px}.atom{width:24px;height:24px;border-radius:50%;background:#60a5fa}</style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+  <nav class="bg-blue-700 p-4 text-white">Solid State Physics</nav>
+  <div class="p-6 max-w-6xl mx-auto">
+    <div class="bg-white p-6 rounded shadow">
+      <h2 class="font-bold mb-4">Crystal Lattice &amp; Band Structure Demo</h2>
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm">Lattice size (n × n)</label>
+          <input id="size" type="range" min="3" max="12" value="8" class="w-full" />
+          <div class="text-sm mt-2">n = <span id="sizeVal">8</span></div>
+
+          <label class="block text-sm mt-4">Tight-binding hopping (t)</label>
+          <input id="hopping" type="range" min="0" max="10" value="4" class="w-full" />
+          <div class="text-sm mt-2">t = <span id="tVal">4</span></div>
+
+          <button id="toggleBands" class="mt-4 px-3 py-2 bg-blue-600 text-white rounded">Show Bands</button>
+        </div>
+        <div>
+          <div id="lattice" class="border rounded p-4" style="height:300px;overflow:auto"></div>
+        </div>
+      </div>
+
+      <div id="bands" class="mt-4 bg-gray-50 p-4 rounded hidden"><canvas id="bandCanvas" width="600" height="220" class="w-full"></canvas></div>
+    </div>
+  </div>
+
+  <script>
+    const sizeEl = document.getElementById('size'); const sizeVal = document.getElementById('sizeVal'); const latticeDiv = document.getElementById('lattice');
+    const tEl = document.getElementById('hopping'); const tVal = document.getElementById('tVal'); const bandsDiv = document.getElementById('bands'); const bandCanvas = document.getElementById('bandCanvas'); const bctx = bandCanvas.getContext('2d');
+
+    function renderLattice(n){ latticeDiv.style.setProperty('--cols', n); latticeDiv.innerHTML = ''; for(let i=0;i<n*n;i++){ const a = document.createElement('div'); a.className='atom'; latticeDiv.appendChild(a); } }
+
+    function drawBands(t){ bctx.clearRect(0,0,bandCanvas.width,bandCanvas.height); const W = bandCanvas.width, H = bandCanvas.height; bctx.strokeStyle='#111'; bctx.beginPath(); for(let k=0;k<W;k++){ const x = k/W * Math.PI*2; // simple cosine dispersion
+        const E = -2 * t * Math.cos(x); const py = H/2 - (E/(2*t))* (H/3); if(k===0) bctx.moveTo(k,py); else bctx.lineTo(k,py); } bctx.stroke(); }
+
+    sizeEl.addEventListener('input', ()=>{ const n = Number(sizeEl.value); sizeVal.textContent = n; renderLattice(n); });
+    tEl.addEventListener('input', ()=>{ tVal.textContent = tEl.value; if(!bandsDiv.classList.contains('hidden')) drawBands(Number(tEl.value)); });
+    document.getElementById('toggleBands').addEventListener('click', ()=>{ bandsDiv.classList.toggle('hidden'); drawBands(Number(tEl.value)); });
+
+    // init
+    sizeVal.textContent = sizeEl.value; tVal.textContent = tEl.value; renderLattice(Number(sizeEl.value));
+    window.addEventListener('resize', ()=>{ bandCanvas.width = bandCanvas.offsetWidth; drawBands(Number(tEl.value)); }); bandCanvas.width = bandCanvas.offsetWidth; drawBands(Number(tEl.value));
+  </script>
+<!-- Topic Quiz System -->
+<script src="/js/topic-quiz-loader.js"></script>
+<script src="/js/topic-quiz-injector.js"></script>
+</body>
+</html>

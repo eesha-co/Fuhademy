@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thermal Physics - Physics</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @keyframes fade-in-up { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-fade-in-up { animation: fade-in-up 0.5s ease-out forwards; }
+        .section-card { background: white; border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: 1px solid #e5e7eb; }
+        .topic-card { transition: all 0.3s ease; }
+        .topic-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <nav class="bg-white shadow-sm fixed top-0 w-full z-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center">
+                    <a href="index.html" class="text-orange-600 hover:text-orange-800 mr-4"><i class="fas fa-arrow-left"></i></a>
+                    <h1 class="text-xl font-semibold text-gray-900"><i class="fas fa-fire text-orange-500 mr-2"></i>Thermal Physics</h1>
+                </div>
+                <div class="text-sm text-gray-600">Physics Topics</div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="pt-20 pb-8 px-4 max-w-6xl mx-auto">
+        <div class="bg-orange-50 border-l-4 border-orange-500 p-4 rounded-r-lg mb-6 animate-fade-in-up">
+            <h3 class="font-semibold text-orange-800 mb-2"><i class="fas fa-info-circle mr-2"></i>Introduction to Thermal Physics</h3>
+            <p class="text-orange-700 text-sm">Thermal physics deals with heat, temperature, and their effects on matter. It includes thermodynamics, heat transfer, and the behavior of gases.</p>
+        </div>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <a href="thermal/heat-temperature.html" class="topic-card section-card animate-fade-in-up block">
+                <div class="flex items-center mb-3">
+                    <span class="bg-red-100 text-red-600 w-10 h-10 rounded-full flex items-center justify-center mr-3"><i class="fas fa-thermometer-half"></i></span>
+                    <h3 class="font-semibold text-gray-800">Heat & Temperature</h3>
+                </div>
+                <p class="text-gray-600 text-sm mb-3">Temperature scales, heat capacity, specific heat capacity.</p>
+                <div class="flex flex-wrap gap-1">
+                    <span class="bg-red-50 text-red-600 text-xs px-2 py-1 rounded">Temperature</span>
+                    <span class="bg-red-50 text-red-600 text-xs px-2 py-1 rounded">Heat Capacity</span>
+                </div>
+            </a>
+
+            <a href="thermal/heat-transfer.html" class="topic-card section-card animate-fade-in-up block">
+                <div class="flex items-center mb-3">
+                    <span class="bg-orange-100 text-orange-600 w-10 h-10 rounded-full flex items-center justify-center mr-3"><i class="fas fa-exchange-alt"></i></span>
+                    <h3 class="font-semibold text-gray-800">Heat Transfer</h3>
+                </div>
+                <p class="text-gray-600 text-sm mb-3">Conduction, convection, and radiation mechanisms.</p>
+                <div class="flex flex-wrap gap-1">
+                    <span class="bg-orange-50 text-orange-600 text-xs px-2 py-1 rounded">Conduction</span>
+                    <span class="bg-orange-50 text-orange-600 text-xs px-2 py-1 rounded">Convection</span>
+                </div>
+            </a>
+
+            <a href="thermal/gas-laws.html" class="topic-card section-card animate-fade-in-up block">
+                <div class="flex items-center mb-3">
+                    <span class="bg-blue-100 text-blue-600 w-10 h-10 rounded-full flex items-center justify-center mr-3"><i class="fas fa-wind"></i></span>
+                    <h3 class="font-semibold text-gray-800">Gas Laws</h3>
+                </div>
+                <p class="text-gray-600 text-sm mb-3">Boyle's law, Charles' law, pressure law, ideal gas equation.</p>
+                <div class="flex flex-wrap gap-1">
+                    <span class="bg-blue-50 text-blue-600 text-xs px-2 py-1 rounded">Boyle's Law</span>
+                    <span class="bg-blue-50 text-blue-600 text-xs px-2 py-1 rounded">Charles' Law</span>
+                </div>
+            </a>
+
+            <a href="thermal/thermodynamics.html" class="topic-card section-card animate-fade-in-up block">
+                <div class="flex items-center mb-3">
+                    <span class="bg-purple-100 text-purple-600 w-10 h-10 rounded-full flex items-center justify-center mr-3"><i class="fas fa-cog"></i></span>
+                    <h3 class="font-semibold text-gray-800">Thermodynamics</h3>
+                </div>
+                <p class="text-gray-600 text-sm mb-3">Laws of thermodynamics, heat engines, entropy.</p>
+                <div class="flex flex-wrap gap-1">
+                    <span class="bg-purple-50 text-purple-600 text-xs px-2 py-1 rounded">Laws</span>
+                    <span class="bg-purple-50 text-purple-600 text-xs px-2 py-1 rounded">Entropy</span>
+                </div>
+            </a>
+
+            <a href="thermal/calorimetry.html" class="topic-card section-card animate-fade-in-up block">
+                <div class="flex items-center mb-3">
+                    <span class="bg-green-100 text-green-600 w-10 h-10 rounded-full flex items-center justify-center mr-3"><i class="fas fa-flask"></i></span>
+                    <h3 class="font-semibold text-gray-800">Calorimetry</h3>
+                </div>
+                <p class="text-gray-600 text-sm mb-3">Measuring heat changes, specific heat capacity experiments.</p>
+                <div class="flex flex-wrap gap-1">
+                    <span class="bg-green-50 text-green-600 text-xs px-2 py-1 rounded">Experiments</span>
+                    <span class="bg-green-50 text-green-600 text-xs px-2 py-1 rounded">Latent Heat</span>
+                </div>
+            </a>
+
+            <a href="thermo/thermodynamics-interactive.html" class="topic-card section-card animate-fade-in-up block">
+                <div class="flex items-center mb-3">
+                    <span class="bg-teal-100 text-teal-600 w-10 h-10 rounded-full flex items-center justify-center mr-3"><i class="fas fa-laptop"></i></span>
+                    <h3 class="font-semibold text-gray-800">Interactive Simulations</h3>
+                </div>
+                <p class="text-gray-600 text-sm mb-3">PhET simulations for exploring thermal physics.</p>
+                <div class="flex flex-wrap gap-1">
+                    <span class="bg-teal-50 text-teal-600 text-xs px-2 py-1 rounded">PhET</span>
+                    <span class="bg-teal-50 text-teal-600 text-xs px-2 py-1 rounded">Interactive</span>
+                </div>
+            </a>
+        </div>
+
+        <div class="mt-8 bg-gradient-to-r from-orange-50 to-red-50 p-5 rounded-lg border border-orange-200 animate-fade-in-up">
+            <h3 class="font-semibold text-orange-800 mb-3"><i class="fas fa-lightbulb mr-2"></i>Key Concepts in Thermal Physics</h3>
+            <div class="grid md:grid-cols-2 gap-4 text-sm text-orange-700">
+                <div>
+                    <p class="font-medium text-orange-800 mb-1">Ideal Gas Equation:</p>
+                    <p class="font-mono">PV = nRT = NkT</p>
+                </div>
+                <div>
+                    <p class="font-medium text-orange-800 mb-1">Specific Heat Capacity:</p>
+                    <p class="font-mono">Q = mcΔT</p>
+                </div>
+                <div>
+                    <p class="font-medium text-orange-800 mb-1">Latent Heat:</p>
+                    <p class="font-mono">Q = mL (fusion or vaporization)</p>
+                </div>
+                <div>
+                    <p class="font-medium text-orange-800 mb-1">First Law of Thermodynamics:</p>
+                    <p class="font-mono">ΔU = Q - W</p>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

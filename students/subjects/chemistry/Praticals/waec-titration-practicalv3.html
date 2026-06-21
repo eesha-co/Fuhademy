@@ -1,0 +1,2748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WAEC Chemistry Practical - Titration Simulator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .apparatus-container {
+            position: relative;
+            min-height: 600px;
+            background: #f3f4f6;
+            border-radius: 8px;
+        }
+
+        .glassware {
+            position: absolute;
+            transition: all 0.3s;
+        }
+
+        .cleaning-animation {
+            animation: clean 1s ease-in-out;
+        }
+
+        .rinsing-animation {
+            animation: rinse 1.5s ease-in-out;
+        }
+
+        .filling-animation {
+            animation: fill 2s ease-in-out;
+        }
+
+        @keyframes clean {
+            0% { transform: scale(1); }
+            25% { transform: scale(1.05); background: rgba(147, 197, 253, 0.2); }
+            75% { transform: scale(1.05); background: rgba(147, 197, 253, 0.2); }
+            100% { transform: scale(1); background: transparent; }
+        }
+
+        @keyframes rinse {
+            0% { transform: rotate(0deg); }
+            25% { transform: rotate(45deg); }
+            75% { transform: rotate(-45deg); }
+            100% { transform: rotate(0deg); }
+        }
+
+        @keyframes fill {
+            0% { height: 0%; }
+            100% { height: 100%; }
+        }
+
+        .burette {
+            width: 40px;
+            height: 400px;
+            background: transparent;
+            border: 2px solid #93c5fd;
+            position: relative;
+        }
+
+        .burette-liquid {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: transparent;
+            height: 100%;
+            transition: height 0.5s;
+        }
+        
+        .feedback-popup {
+            position: absolute;
+            background: white;
+            border-radius: 4px;
+            padding: 8px 12px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            font-size: 14px;
+            z-index: 10;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .feedback-popup.show {
+            opacity: 1;
+        }
+
+        .pipette {
+            width: 20px;
+            height: 300px;
+            background: transparent;
+            border: 2px solid #93c5fd;
+        }
+
+        .conical-flask {
+            width: 150px;
+            height: 200px;
+            background: transparent;
+            border: 2px solid #93c5fd;
+            border-radius: 0 0 75px 75px;
+        }
+
+        .flask-liquid {
+            position: absolute;
+            bottom: 0;
+            left: 2px;
+            right: 2px;
+            height: 80px;
+            background: transparent;
+            border-radius: 0 0 73px 73px;
+            transition: background-color 0.3s;
+        }
+
+        .meniscus {
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            background: #93c5fd;
+            transition: top 0.5s;
+        }
+
+        .reading-scale {
+            position: absolute;
+            right: -25px;
+            top: 0;
+            height: 100%;
+            width: 20px;
+            font-size: 12px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .droplet {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: currentColor;
+            border-radius: 50%;
+            animation: drop 1s linear;
+        }
+
+        @keyframes drop {
+            from { transform: translateY(0); }
+            to { transform: translateY(200px); }
+        }
+
+        .step-instruction {
+            background: #fef3c7;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .step-instruction.active {
+            background: #d1fae5;
+            border: 2px solid #059669;
+        }
+
+        /* Inline procedure header styles - presentable single-line chips */
+        #procedure-steps.procedure-steps-inline {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+            flex-wrap: nowrap; /* keep steps on single horizontal line; allows horizontal scroll on small screens */
+            overflow-x: auto;
+            padding: 0.25rem 0;
+        }
+
+        .procedure-step {
+            white-space: nowrap;
+            padding: 0.45rem 0.9rem;
+            border-radius: 9999px;
+            background: #fef3c7;
+            border: 1px solid #f59e0b;
+            color: #92400e;
+            font-weight: 600;
+            font-size: 0.95rem;
+            flex: 0 0 auto;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+        }
+
+        .procedure-step.active {
+            background: #d1fae5;
+            border-color: #059669;
+            color: #065f46;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+        }
+
+        .procedure-step:hover {
+            transform: translateY(-2px);
+            transition: transform 120ms ease-out;
+        }
+
+        /* Slightly smaller chips on very small screens */
+        @media (max-width:640px) {
+            .procedure-step { padding: 0.35rem 0.6rem; font-size: 0.85rem; }
+        }
+
+        /* Mobile-specific adjustments */
+        @media (max-width:480px) {
+            /* Apparatus scaling for small screens */
+            .apparatus-container { min-height: 380px; padding: 0.5rem; }
+            .burette { height: 300px; width: 34px; }
+            .burette .meniscus { height:2px; }
+            .pipette { height: 240px; }
+            .conical-flask { width: 120px; height: 160px; }
+            .flask-liquid { height: 56px; left: 4px; right: 4px; }
+
+            /* Procedure header: keep as a single line with horizontal scrolling and slightly smaller chips */
+            #procedure-steps.procedure-steps-inline { gap: 0.4rem; padding: 0.15rem 0; }
+            .procedure-step { font-size: 0.8rem; padding: 0.3rem 0.5rem; }
+
+            /* Guide panel stacks and becomes compact */
+            .procedure-guide { font-size: 0.92rem; padding: 0.75rem; }
+            .guide-actions { display:flex; gap:0.4rem; }
+            .guide-actions button { flex: 1 1 48%; padding: 0.45rem; font-size: 0.9rem }
+
+            /* Make control buttons full width for ergonomics */
+            .grid.grid-cols-2 .btn, .grid.grid-cols-2 button { width: 100%; }
+
+            /* Popup: position lower for mobile and full-width friendly */
+            .step-popup { left: 50%; transform: translateX(-50%); top: auto; bottom: 10%; min-width: 300px; }
+            .step-popup .popup-actions { flex-direction: row; gap: 0.5rem; }
+        }
+
+        /* Procedure guide panel */
+        .procedure-guide {
+            background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+            border: 1px solid rgba(15, 23, 42, 0.04);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 0.75rem;
+            font-size: 0.95rem;
+            color: #0f172a;
+        }
+
+        .guide-actions button {
+            background: #0ea5a4;
+            color: white;
+            padding: 0.35rem 0.6rem;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            margin-right: 0.4rem;
+        }
+
+        .guide-actions button.secondary {
+            background: #374151;
+        }
+
+        /* Step completion popup */
+        .step-popup {
+            position: fixed;
+            left: 50%;
+            top: 20%;
+            transform: translateX(-50%);
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 8px 32px rgba(2,6,23,0.12);
+            padding: 1rem 1.25rem;
+            z-index: 99999;
+            min-width: 320px;
+            max-width: 90%;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 180ms ease-in-out, top 220ms ease;
+        }
+        .step-popup.show {
+            opacity: 1;
+            pointer-events: auto;
+            top: 18%;
+        }
+        .step-popup .popup-actions { margin-top: 0.6rem; display:flex; gap:0.5rem; justify-content:flex-end; }
+        .step-popup .btn { padding: 0.45rem 0.8rem; border-radius: 6px; border: none; cursor: pointer; font-weight:600 }
+        .step-popup .btn.primary { background: #10b981; color: #fff }
+        .step-popup .btn.ghost { background: #f3f4f6; color: #111827 }
+    </style>
+</head>
+<body class="bg-gray-100 p-4">
+    <div class="max-w-7xl mx-auto">
+        <!-- Header Section with Calculator -->
+        <div class="bg-gradient-to-r from-teal-600 to-blue-600 text-white p-4 rounded-lg shadow mb-6 flex justify-between items-center">
+            <div>
+                <h1 class="text-3xl font-bold m-0">WAEC Chemistry Practical - Titration</h1>
+                <p class="text-sm mt-1 opacity-90">Master titration techniques with interactive simulation and real WAEC questions</p>
+            </div>
+            
+            <!-- Calculation Helper Dropdown in Header -->
+            <div class="relative">
+                <button id="header-calc-btn" class="bg-white text-blue-600 px-4 py-2 rounded-lg font-semibold hover:bg-gray-100 flex items-center gap-2 whitespace-nowrap" onclick="toggleHeaderCalcPanel()">
+                    📊 Calculator
+                </button>
+                <div id="header-calc-panel" class="absolute top-full right-0 mt-2 w-80 bg-white text-gray-800 rounded-lg shadow-2xl border border-gray-200 hidden z-[1100]">
+                    <div class="bg-blue-600 text-white p-3 flex justify-between items-center rounded-t-lg cursor-pointer" onclick="toggleHeaderCalcContent()">
+                        <h3 class="font-semibold m-0">Calculation Helper</h3>
+                        <span id="header-calc-arrow">▼</span>
+                    </div>
+                    
+                    <div id="header-calc-content" class="p-4 overflow-y-auto max-h-96 space-y-4">
+                        <!-- Molarity Calculator -->
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Molarity Calculator</label>
+                            <div class="space-y-2">
+                                <input type="number" step="0.01" id="gpl-input" placeholder="g/dm³" class="w-full p-2 border rounded text-sm" />
+                                <input type="number" step="0.01" id="mm-input" placeholder="Molar mass" class="w-full p-2 border rounded text-sm" />
+                                <button onclick="calculateMolarityFromInputs()" class="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600 text-sm">Calculate Molarity</button>
+                                <div id="molarity-result" class="text-sm"></div>
+                            </div>
+                        </div>
+
+                        <!-- Percentage Purity Calculator -->
+                        <div class="border-t pt-3">
+                            <label class="block text-sm font-medium mb-2">Percentage Purity</label>
+                            <div class="space-y-2">
+                                <input type="number" step="0.01" id="actual-input" placeholder="Actual mass" class="w-full p-2 border rounded text-sm" />
+                                <input type="number" step="0.01" id="theoretical-input" placeholder="Theoretical mass" class="w-full p-2 border rounded text-sm" />
+                                <button onclick="calculatePurityFromInputs()" class="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600 text-sm">Calculate Purity</button>
+                                <div id="purity-result" class="text-sm"></div>
+                            </div>
+                        </div>
+
+                        <!-- Moles Calculator -->
+                        <div class="border-t pt-3">
+                            <label class="block text-sm font-medium mb-2">Number of Moles</label>
+                            <div class="space-y-2">
+                                <input type="number" step="0.001" id="conc-input" placeholder="Molarity" class="w-full p-2 border rounded text-sm" />
+                                <input type="number" step="0.1" id="vol-input" placeholder="Volume (cm³)" class="w-full p-2 border rounded text-sm" />
+                                <button onclick="calculateMolesFromInputs()" class="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600 text-sm">Calculate Moles</button>
+                                <div id="moles-result" class="text-sm"></div>
+                            </div>
+                        </div>
+
+                        <!-- Molar Mass Calculator -->
+                        <div class="border-t pt-3">
+                            <label class="block text-sm font-medium mb-2">Molar Mass Calculator</label>
+                            <div class="space-y-2">
+                                <select id="element-select" class="w-full p-2 border rounded text-sm">
+                                    <option value="">Select element</option>
+                                    <option value="H:1">H (1)</option>
+                                    <option value="C:12">C (12)</option>
+                                    <option value="N:14">N (14)</option>
+                                    <option value="O:16">O (16)</option>
+                                    <option value="Na:23">Na (23)</option>
+                                    <option value="Mg:24">Mg (24)</option>
+                                    <option value="P:31">P (31)</option>
+                                    <option value="S:32">S (32)</option>
+                                    <option value="Cl:35.5">Cl (35.5)</option>
+                                    <option value="K:39">K (39)</option>
+                                    <option value="Ca:40">Ca (40)</option>
+                                </select>
+                                <div class="flex gap-2">
+                                    <input type="number" id="atoms-input" placeholder="# atoms" class="flex-1 p-2 border rounded text-sm" min="1" value="1" />
+                                    <button onclick="addElementToFormula()" class="px-3 py-2 bg-green-500 text-white rounded hover:bg-green-600 text-sm">Add</button>
+                                </div>
+                                <div id="formula-display" class="p-2 border rounded min-h-[2.5rem] bg-gray-50 text-sm"></div>
+                                <button onclick="calculateMolarMass()" class="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600 text-sm">Calculate Molar Mass</button>
+                                <div id="mass-result" class="text-sm"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mode Selector -->
+        <div class="bg-white p-4 rounded-lg shadow mb-6">
+            <div class="flex items-center justify-center gap-4">
+                <button id="learning-mode" class="px-6 py-3 bg-teal-600 text-white font-semibold rounded-lg shadow hover:bg-teal-700 active mode-btn">
+                    Learning Mode
+                    <div class="text-xs mt-1 opacity-80">Step-by-step tutorial with guidance</div>
+                </button>
+                <button id="practice-mode" class="px-6 py-3 bg-gray-600 text-white font-semibold rounded-lg shadow hover:bg-gray-700 mode-btn">
+                    Practice Mode
+                    <div class="text-xs mt-1 opacity-80">Real WAEC practical questions</div>
+                </button>
+            </div>
+            <div id="mode-description" class="mt-4 text-sm text-gray-600 text-center"></div>
+        </div>
+
+        <!-- Practice Mode Question Bank -->
+        <div id="practice-question" class="bg-white p-6 rounded-lg shadow mb-6 hidden">
+            <!-- Timer for exam conditions -->
+            <div id="exam-timer" class="hidden mb-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <span class="font-semibold">Time Remaining:</span>
+                        <span id="timer-display" class="ml-2 font-mono">2:45:00</span>
+                    </div>
+                    <div class="space-x-2">
+                        <button id="start-timer" class="px-3 py-1 bg-green-600 text-white text-sm rounded hover:bg-green-700">Start</button>
+                        <button id="pause-timer" class="px-3 py-1 bg-yellow-600 text-white text-sm rounded hover:bg-yellow-700" disabled>Pause</button>
+                        <button id="reset-timer" class="px-3 py-1 bg-red-600 text-white text-sm rounded hover:bg-red-700" disabled>Reset</button>
+                    </div>
+                </div>
+                <div class="mt-2 text-sm text-gray-600">Standard WAEC practical duration: 2 hours 45 minutes</div>
+            </div>
+
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-lg font-semibold">WAEC Chemistry Practical Question</h2>
+                <select id="question-selector" class="border rounded px-3 py-1 text-sm">
+                    <option value="2004">WASSCE June 2004</option>
+                    <option value="2003">WASSCE June 2003</option>
+                    <option value="2002">WASSCE June 2002</option>
+                    <option value="2001">WASSCE June 2001</option>
+                    <option value="2000">WASSCE June 2000</option>
+                </select>
+            </div>
+            
+            <!-- Question Content -->
+            <div id="question-content" class="practice-content space-y-4">
+                <div class="bg-blue-50 p-4 rounded-lg">
+                    <p class="mb-2"><strong>Given:</strong></p>
+                    <div id="given-content"></div>
+                </div>
+                <div>
+                    <p class="mb-2"><strong>Requirements:</strong></p>
+                    <div id="requirements-content"></div>
+                </div>
+                <div class="mt-4">
+                    <p class="mb-2"><strong>Reaction:</strong></p>
+                    <div id="reaction-content" class="p-3 bg-gray-50 rounded font-mono text-sm"></div>
+                </div>
+
+                <!-- Student answer form (dynamically generated per question) -->
+                <div id="answer-area" class="mt-4 p-4 rounded-lg bg-white border">
+                    <h3 class="text-lg font-semibold mb-2">Your Answers</h3>
+                    <div id="answer-form" class="space-y-3">
+                        <!-- JS will populate form fields for each requirement -->
+                    </div>
+                    <div class="mt-3 flex gap-2">
+                        <button id="save-answers-btn" class="px-3 py-2 bg-blue-600 text-white rounded">Save Answers</button>
+                        <button id="submit-answers-btn" class="px-3 py-2 bg-green-600 text-white rounded">Submit Answers</button>
+                        <button id="load-answers-btn" class="px-3 py-2 bg-gray-200 text-gray-800 rounded">Load Saved</button>
+                    </div>
+                    <div id="answers-status" class="mt-2 text-sm text-gray-600"></div>
+                </div>
+
+                <div class="mt-4 bg-yellow-50 p-4 rounded-lg">
+                    <p class="font-medium mb-2">Important Notes:</p>
+                    <ul class="list-disc ml-6 space-y-1 text-sm">
+                        <li>Record all burette readings to 2 decimal places</li>
+                        <li>Record your pipette volume</li>
+                        <li>Perform one rough and three accurate titrations</li>
+                        <li>Show all calculations in your answer book</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="space-y-4">
+            <!-- Procedure Steps header (full width) -->
+            <div class="bg-white p-4 rounded-lg shadow">
+                <h2 class="text-xl font-semibold mb-4">Procedure Steps</h2>
+                <div id="procedure-steps" class="procedure-steps-inline">
+                    <!-- Procedure shown as a single-line header with chips; details removed for compact presentation -->
+                    <div class="procedure-step active" id="step1">1. Clean all glassware with distilled water</div>
+                    <div class="procedure-step" id="step2">2. Rinse burette with titrant solution</div>
+                    <div class="procedure-step" id="step3">3. Rinse pipette with analyte solution</div>
+                    <div class="procedure-step" id="step4">4. Fill burette with titrant</div>
+                    <div class="procedure-step" id="step5">5. Select analyte (base) & measure 25cm³</div>
+                    <div class="procedure-step" id="step6">6. Add indicator to conical flask</div>
+                    <div class="procedure-step" id="step7">7. Perform titration</div>
+                </div>
+
+                <!-- Step-by-step guide: concise instructions and how-to-use the simulator -->
+                <div id="procedure-guide" class="procedure-guide">
+                    <h3 class="text-lg font-semibold mb-2">Step-by-step guide — how to use the simulator</h3>
+                    <div id="procedure-guide-content">
+                        <!-- Default content shows instructions for step 1 -->
+                        <p><strong>1. Clean all glassware</strong> — Use the "Clean Burette", "Clean Pipette" and "Clean Flask" buttons to simulate rinsing with distilled water. Ensure each button shows the green ✓ state before proceeding.</p>
+                        <p class="mt-2 text-sm text-gray-600">Tip: Click any step chip above to jump to its instructions.</p>
+                    </div>
+                    <div class="mt-3 guide-actions">
+                        <button onclick="moveToStep(1)">Show Step 1</button>
+                        <button class="secondary" onclick="moveToStep(7)">Jump to Titration</button>
+                    </div>
+                    <div class="mt-3 text-sm text-gray-600">
+                        <label style="display:inline-flex;align-items:center;gap:0.5rem;">
+                            <input id="auto-advance-steps" type="checkbox" style="width:16px;height:16px;" />
+                            <span>Auto-advance steps when completed (show confirmation popup)</span>
+                        </label>
+                        <div class="text-xs text-gray-400 mt-1">When enabled, the guide will show a confirmation popup and then advance the guide. To skip the popup entirely, enable "Auto-proceed" below.</div>
+                        <label style="display:inline-flex;align-items:center;gap:0.5rem;margin-top:0.5rem;">
+                            <input id="skip-popup-auto-proceed" type="checkbox" style="width:16px;height:16px;" />
+                            <span>Auto-proceed (skip confirmation popup)</span>
+                        </label>
+                        <div class="text-xs text-gray-400 mt-1">When enabled, the simulator will immediately proceed to the next step and auto-trigger the recommended action.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-6">
+                <!-- Left: Simulation area -->
+                <div class="md:col-span-2 space-y-4">
+                    <div class="apparatus-container bg-white p-4 rounded-lg shadow">
+                        <div id="burette-stand" class="absolute left-1/4 top-0 bottom-0 w-8 bg-gray-700"></div>
+                        <div id="burette" class="glassware burette" style="left: 28%; top: 50px;">
+                            <div class="burette-liquid"></div>
+                            <div class="meniscus" style="top: 0%"></div>
+                            <div class="reading-scale"></div>
+                        </div>
+                        <div id="pipette" class="glassware pipette" style="left: 45%; top: 150px;"></div>
+                        <div id="conical-flask" class="glassware conical-flask" style="left: 28%; bottom: 50px;">
+                            <div class="flask-liquid"></div>
+                        </div>
+                        <!-- Working area: shows selected reagents and apparatus labels -->
+                        <div id="working-area" style="position:absolute; right:12px; top:12px; width:200px; background: rgba(255,255,255,0.9); padding:8px; border-radius:6px; box-shadow:0 1px 3px rgba(0,0,0,0.1); font-size:13px;">
+                            <strong>Working Area</strong>
+                            <div id="selected-reagents" class="mt-2 text-sm text-gray-700">
+                                <div id="sel-titrant">Titrant: <em>None</em></div>
+                                <div id="sel-analyte" class="mt-1">Analyte: <em>None</em></div>
+                                <div id="sel-indicator" class="mt-1">Indicator: <em>None</em></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: Controls + Current Task + Readings -->
+                <div class="space-y-4">
+                    <div class="bg-white p-4 rounded-lg shadow">
+                        <div class="grid grid-cols-1 gap-4">
+                            <div>
+                                <h3 class="font-semibold mb-2">Reagents</h3>
+                                <label class="block text-sm mb-1">Titrant</label>
+                                <select id="titrant-select" onchange="selectTitrant(this.value)" class="w-full border px-2 py-1 rounded mb-2">
+                                    <option value="">-- choose titrant --</option>
+                                    <optgroup label="Acids">
+                                        <option value="HCl">HCl (0.1M)</option>
+                                        <option value="H2SO4">H2SO4 (0.1M)</option>
+                                        <option value="HNO3">HNO3 (0.1M)</option>
+                                        <option value="CH3COOH">CH3COOH (0.1M)</option>
+                                    </optgroup>
+                                </select>
+
+                                <label class="block text-sm mb-1">Indicator</label>
+                                <select id="indicator-select" onchange="selectIndicator(this.value)" class="w-full border px-2 py-1 rounded">
+                                    <option value="">-- choose indicator --</option>
+                                    <option value="Phenolphthalein">Phenolphthalein</option>
+                                    <option value="Methyl orange">Methyl orange</option>
+                                    <option value="KMnO4 (self-indicating)">KMnO4 (self-indicating)</option>
+                                </select>
+                                
+                                <!-- New analyte dropdown: choose the base (analyte) to pipette into the flask -->
+                                <label class="block text-sm mb-1 mt-3">Analyte (to pipette)</label>
+                                <select id="analyte-select" onchange="selectAnalyte(this.value)" class="w-full border px-2 py-1 rounded">
+                                    <option value="">-- choose analyte (base) --</option>
+                                    <option value="NaOH">NaOH (0.1M)</option>
+                                    <option value="KOH">KOH (0.1M)</option>
+                                    <option value="Ca(OH)2">Ca(OH)2 (0.1M)</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <h3 class="font-semibold mb-2">Actions</h3>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <button onclick="cleanGlassware('burette')" id="btn-clean-burette" class="w-full bg-blue-500 text-white px-2 py-2 rounded text-sm">Clean Burette</button>
+                                    <button onclick="cleanGlassware('pipette')" id="btn-clean-pipette" class="w-full bg-blue-500 text-white px-2 py-2 rounded text-sm">Clean Pipette</button>
+                                    <button onclick="cleanGlassware('flask')" id="btn-clean-flask" class="w-full bg-blue-500 text-white px-2 py-2 rounded text-sm">Clean Flask</button>
+                                    <button onclick="rinseBurette()" id="btn-rinse-burette" class="w-full bg-yellow-500 text-white px-2 py-2 rounded text-sm">Rinse Burette</button>
+                                    <button onclick="rinsePipette()" id="btn-rinse-pipette" class="w-full bg-purple-500 text-white px-2 py-2 rounded text-sm">Rinse Pipette</button>
+                                    <button onclick="fillBurette()" id="btn-fill-burette" class="w-full bg-yellow-600 text-white px-2 py-2 rounded text-sm">Fill Burette</button>
+                                    <button onclick="measureAnalyte()" id="btn-measure-analyte" class="w-full bg-purple-600 text-white px-2 py-2 rounded text-sm">Measure 25cm³</button>
+                                        <button onclick="focusAnalyte()" id="btn-select-analyte" class="w-full bg-gray-500 text-white px-2 py-2 rounded text-sm">Select Analyte</button>
+                                        <button onclick="addIndicator()" id="btn-add-indicator" class="w-full bg-pink-500 text-white px-2 py-2 rounded text-sm">Add Indicator</button>
+                                    <button onclick="addDrop()" id="btn-add-drop" class="w-full bg-green-500 text-white px-2 py-2 rounded text-sm">Add Drop</button>
+                                    <button onclick="swirl()" id="btn-swirl" class="w-full bg-indigo-500 text-white px-2 py-2 rounded text-sm">Swirl Flask</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Current Task panel removed as requested -->
+
+                    <!-- Readings Table (right column) -->
+                    <div class="bg-white p-4 rounded-lg shadow">
+                        <!-- existing readings table content remains here -->
+                        <div id="trial-tracker" class="mb-3 p-2 rounded border bg-yellow-50 text-sm" style="display:flex;align-items:center;gap:0.6rem;">
+                            <span style="font-weight:600;color:#92400e;">Active trial:</span>
+                            <span id="trial-label" style="font-weight:700;color:#065f46;">Rough</span>
+                            <small id="trial-hint" style="margin-left:auto;color:#6b7280;">Fill Rough first, then 1st → 2nd → 3rd</small>
+                        </div>
+                        <h2 class="text-xl font-semibold mb-4">Burette Readings</h2>
+                        <table class="w-full mb-4 border" style="border-collapse:collapse;">
+                            <thead>
+                                <tr class="bg-gray-50">
+                                    <th class="px-3 py-2 border">&nbsp;</th>
+                                    <th class="px-3 py-2 border">Rough</th>
+                                    <th class="px-3 py-2 border">1st Reading</th>
+                                    <th class="px-3 py-2 border">2nd Reading</th>
+                                    <th class="px-3 py-2 border">3rd Reading</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="px-3 py-2 font-medium border">Final volume</td>
+                                    <td class="px-3 py-2 border"><input id="final-rough" class="w-full border px-2 py-1 rounded text-sm" placeholder="-" /></td>
+                                    <td class="px-3 py-2 border"><input id="final-1" class="w-full border px-2 py-1 rounded text-sm" placeholder="-" /></td>
+                                    <td class="px-3 py-2 border"><input id="final-2" class="w-full border px-2 py-1 rounded text-sm" placeholder="-" /></td>
+                                    <td class="px-3 py-2 border"><input id="final-3" class="w-full border px-2 py-1 rounded text-sm" placeholder="-" /></td>
+                                </tr>
+                                <tr>
+                                    <td class="px-3 py-2 font-medium border">Initial volume</td>
+                                    <td class="px-3 py-2 border"><input id="initial-rough" class="w-full border px-2 py-1 rounded text-sm" value="0.00" /></td>
+                                    <td class="px-3 py-2 border"><input id="initial-1" class="w-full border px-2 py-1 rounded text-sm" value="10.00" /></td>
+                                    <td class="px-3 py-2 border"><input id="initial-2" class="w-full border px-2 py-1 rounded text-sm" value="0.00" /></td>
+                                    <td class="px-3 py-2 border"><input id="initial-3" class="w-full border px-2 py-1 rounded text-sm" value="15.00" /></td>
+                                </tr>
+                                <tr>
+                                    <td class="px-3 py-2 font-medium border">Volume A used</td>
+                                    <td class="px-3 py-2 border"><input id="used-rough" class="w-full border px-2 py-1 rounded text-sm bg-gray-50" readonly /></td>
+                                    <td class="px-3 py-2 border"><input id="used-1" class="w-full border px-2 py-1 rounded text-sm bg-gray-50" readonly /></td>
+                                    <td class="px-3 py-2 border"><input id="used-2" class="w-full border px-2 py-1 rounded text-sm bg-gray-50" readonly /></td>
+                                    <td class="px-3 py-2 border"><input id="used-3" class="w-full border px-2 py-1 rounded text-sm bg-gray-50" readonly /></td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <!-- Calculations and simulation controls removed per request -->
+
+                        <button id="submit-readings" class="w-full bg-green-600 text-white px-4 py-2 rounded">Submit Readings</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Mode, timer and question state
+        let currentMode = 'learning'; // 'learning' or 'practice'
+        let timerInterval = null;
+        let timerPaused = false;
+        let remainingTime = 2 * 60 * 60 + 45 * 60; // 2h45m in seconds
+        // Auto-titration state (learning mode)
+        let autoTitrating = false;
+        let autoTitrationTimeout = null;
+        const AUTO_TITRATION_DELAY = 900; // ms between drops + swirl
+
+        // Timer functions
+        function formatTime(seconds) {
+            const h = Math.floor(seconds / 3600);
+            const m = Math.floor((seconds % 3600) / 60);
+            const s = seconds % 60;
+            return `${h}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+        }
+
+        function updateTimerDisplay() {
+            const display = document.getElementById('timer-display');
+            if (display) display.textContent = formatTime(remainingTime);
+        }
+
+        function startTimer() {
+            if (timerInterval) return;
+            const startBtn = document.getElementById('start-timer');
+            const pauseBtn = document.getElementById('pause-timer');
+            const resetBtn = document.getElementById('reset-timer');
+            
+            startBtn.disabled = true;
+            pauseBtn.disabled = false;
+            resetBtn.disabled = false;
+            timerPaused = false;
+
+            timerInterval = setInterval(() => {
+                if (remainingTime > 0 && !timerPaused) {
+                    remainingTime--;
+                    updateTimerDisplay();
+                    // Warning at 15 minutes and 5 minutes
+                    if (remainingTime === 900) alert('15 minutes remaining!');
+                    if (remainingTime === 300) alert('5 minutes remaining!');
+                }
+                if (remainingTime === 0) {
+                    clearInterval(timerInterval);
+                    timerInterval = null;
+                    alert('Time is up! Please submit your work.');
+                }
+            }, 1000);
+        }
+
+        function pauseTimer() {
+            const pauseBtn = document.getElementById('pause-timer');
+            if (timerInterval && !timerPaused) {
+                timerPaused = true;
+                pauseBtn.textContent = 'Resume';
+                pauseBtn.classList.replace('bg-yellow-600', 'bg-green-600');
+            } else if (timerInterval) {
+                timerPaused = false;
+                pauseBtn.textContent = 'Pause';
+                pauseBtn.classList.replace('bg-green-600', 'bg-yellow-600');
+            }
+        }
+
+        function resetTimer() {
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+            }
+            remainingTime = 2 * 60 * 60 + 45 * 60;
+            updateTimerDisplay();
+            timerPaused = false;
+            const startBtn = document.getElementById('start-timer');
+            const pauseBtn = document.getElementById('pause-timer');
+            const resetBtn = document.getElementById('reset-timer');
+            if (startBtn) startBtn.disabled = false;
+            if (pauseBtn) {
+                pauseBtn.disabled = true;
+                pauseBtn.textContent = 'Pause';
+                pauseBtn.classList.replace('bg-green-600', 'bg-yellow-600');
+            }
+            if (resetBtn) resetBtn.disabled = true;
+        }
+
+        // Calculation Helper Functions
+        function calculateMolarity(gPerL, molarMass) {
+            return gPerL / molarMass;
+        }
+
+        function calculatePercentPurity(actual, theoretical) {
+            return (actual / theoretical) * 100;
+        }
+
+        function calculateMoles(molarity, volume) {
+            return molarity * (volume / 1000); // volume in cm³ to dm³
+        }
+
+        function calculateMolarMass(massInGrams, moles) {
+            return massInGrams / moles;
+        }
+
+        // Input handler functions for calculation helper
+        function calculateMolarityFromInputs() {
+            const gpl = parseFloat(document.getElementById('gpl-input').value);
+            const mm = parseFloat(document.getElementById('mm-input').value);
+            const resultDiv = document.getElementById('molarity-result');
+
+            if (isNaN(gpl) || isNaN(mm)) {
+                resultDiv.innerHTML = '<span class="text-red-600">Please enter valid numbers</span>';
+                return;
+            }
+
+            if (mm <= 0) {
+                resultDiv.innerHTML = '<span class="text-red-600">Molar mass must be greater than zero</span>';
+                return;
+            }
+
+            const molarity = calculateMolarity(gpl, mm);
+            resultDiv.innerHTML = `
+                <div class="bg-green-50 border border-green-200 rounded p-2">
+                    <div class="font-medium text-green-800">Result:</div>
+                    <div>Molarity = ${molarity.toFixed(3)} mol dm⁻³</div>
+                    <div class="text-xs text-green-600 mt-1">Formula: Molarity = g dm⁻³ ÷ Molar mass</div>
+                </div>`;
+        }
+
+        function calculatePurityFromInputs() {
+            const actual = parseFloat(document.getElementById('actual-input').value);
+            const theoretical = parseFloat(document.getElementById('theoretical-input').value);
+            const resultDiv = document.getElementById('purity-result');
+
+            if (isNaN(actual) || isNaN(theoretical)) {
+                resultDiv.innerHTML = '<span class="text-red-600">Please enter valid numbers</span>';
+                return;
+            }
+
+            if (theoretical <= 0) {
+                resultDiv.innerHTML = '<span class="text-red-600">Theoretical mass must be greater than zero</span>';
+                return;
+            }
+
+            const purity = calculatePercentPurity(actual, theoretical);
+            resultDiv.innerHTML = `
+                <div class="bg-green-50 border border-green-200 rounded p-2">
+                    <div class="font-medium text-green-800">Result:</div>
+                    <div>Percentage purity = ${purity.toFixed(2)}%</div>
+                    <div class="text-xs text-green-600 mt-1">Formula: % purity = (Actual mass ÷ Theoretical mass) × 100</div>
+                </div>`;
+        }
+
+        function calculateMolesFromInputs() {
+            const conc = parseFloat(document.getElementById('conc-input').value);
+            const vol = parseFloat(document.getElementById('vol-input').value);
+            const resultDiv = document.getElementById('moles-result');
+
+            if (isNaN(conc) || isNaN(vol)) {
+                resultDiv.innerHTML = '<span class="text-red-600">Please enter valid numbers</span>';
+                return;
+            }
+
+            if (conc < 0 || vol < 0) {
+                resultDiv.innerHTML = '<span class="text-red-600">Values cannot be negative</span>';
+                return;
+            }
+
+            const moles = calculateMoles(conc, vol);
+            resultDiv.innerHTML = `
+                <div class="bg-green-50 border border-green-200 rounded p-2">
+                    <div class="font-medium text-green-800">Result:</div>
+                    <div>Number of moles = ${moles.toFixed(4)} mol</div>
+                    <div class="text-xs text-green-600 mt-1">Formula: Moles = Molarity × (Volume in cm³ ÷ 1000)</div>
+                </div>`;
+        }
+
+        // State for molar mass calculator
+        let currentFormula = [];
+
+        function toggleCalcHelper() {
+            const content = document.getElementById('calc-helper-content');
+            const arrow = document.getElementById('calc-helper-arrow');
+            if (content.classList.contains('hidden')) {
+                content.classList.remove('hidden');
+                arrow.textContent = '▲';
+            } else {
+                content.classList.add('hidden');
+                arrow.textContent = '▼';
+            }
+        }
+
+        // Floating widget functions removed — calculator is now in header panel.
+
+        function toggleHeaderCalcPanel() {
+            const panel = document.getElementById('header-calc-panel');
+            panel.classList.toggle('hidden');
+        }
+
+        function toggleHeaderCalcContent() {
+            const content = document.getElementById('header-calc-content');
+            const arrow = document.getElementById('header-calc-arrow');
+            content.classList.toggle('hidden');
+            arrow.textContent = content.classList.contains('hidden') ? '▶' : '▼';
+        }
+
+        function addElementToFormula() {
+            const select = document.getElementById('element-select');
+            const atomsInput = document.getElementById('atoms-input');
+            const displayDiv = document.getElementById('formula-display');
+            
+            if (!select.value) {
+                return;
+            }
+
+            const [element, mass] = select.value.split(':');
+            const atoms = parseInt(atomsInput.value) || 1;
+
+            currentFormula.push({ element, mass: parseFloat(mass), atoms });
+            updateFormulaDisplay();
+        }
+
+        function updateFormulaDisplay() {
+            const displayDiv = document.getElementById('formula-display');
+            const resultDiv = document.getElementById('mass-result');
+            resultDiv.innerHTML = ''; // Clear previous result
+
+            if (currentFormula.length === 0) {
+                displayDiv.innerHTML = '<span class="text-gray-400">Add elements to calculate molar mass</span>';
+                return;
+            }
+
+            let formula = currentFormula.map(({ element, atoms }) => 
+                `${element}${atoms > 1 ? `<sub>${atoms}</sub>` : ''}`
+            ).join('');
+
+            displayDiv.innerHTML = `
+                <div class="flex justify-between items-center">
+                    <div class="chemical-formula">${formula}</div>
+                    <button onclick="clearFormula()" class="text-red-500 hover:text-red-600 text-sm">Clear</button>
+                </div>`;
+        }
+
+        function clearFormula() {
+            currentFormula = [];
+            updateFormulaDisplay();
+        }
+
+        function calculateMolarMass() {
+            const resultDiv = document.getElementById('mass-result');
+            
+            if (currentFormula.length === 0) {
+                resultDiv.innerHTML = '<span class="text-red-600">Please add elements first</span>';
+                return;
+            }
+
+            const totalMass = currentFormula.reduce((sum, { mass, atoms }) => 
+                sum + (mass * atoms), 0);
+
+            resultDiv.innerHTML = `
+                <div class="bg-green-50 border border-green-200 rounded p-2">
+                    <div class="font-medium text-green-800">Result:</div>
+                    <div>Molar mass = ${totalMass.toFixed(1)} g mol⁻¹</div>
+                    <div class="text-xs text-green-600 mt-1">
+                        Calculation: ${currentFormula.map(({ element, mass, atoms }) => 
+                            `${element} (${mass} × ${atoms})`).join(' + ')}
+                    </div>
+                </div>`;
+        }
+
+        // WAEC Question Bank
+        const waecQuestions = {
+            '2023': {
+                given: `A is a solution of HCl containing 7.30 g dm⁻³. B is a solution containing 10.6 g dm⁻³ of Na₂CO₃.`,
+                requirements: [
+                    "Calculate the concentration of A in mol dm⁻³",
+                    "Calculate the concentration of B in mol dm⁻³",
+                    "Calculate the number of moles of CO₂ produced",
+                    "Calculate the mass of NaCl formed"
+                ],
+                reaction: "2HCl (aq) + Na₂CO₃ (aq) → 2NaCl (aq) + H₂O (l) + CO₂ (g)",
+                data: { H: 1, O: 16, Na: 23, Cl: 35.5, C: 12 }
+            },
+            '2022': {
+                given: `A is 0.150 mol dm⁻³ H₂SO₄ solution. B is a solution of NaOH containing x g dm⁻³.`,
+                requirements: [
+                    "Calculate the concentration of B in mol dm⁻³",
+                    "Calculate x",
+                    "Calculate the mass of Na₂SO₄ formed"
+                ],
+                reaction: "H₂SO₄ (aq) + 2NaOH (aq) → Na₂SO₄ (aq) + 2H₂O (l)",
+                data: { H: 1, O: 16, Na: 23, S: 32 }
+            },
+            '2021': {
+                given: `A is a solution of Na₂S₂O₃. B is a solution of iodine containing 2.0 g of KIO₃ per dm³.`,
+                requirements: [
+                    "Calculate the concentration of iodine in mol dm⁻³",
+                    "Calculate the mass of Na₂S₂O₃ that would react"
+                ],
+                reaction: "2Na₂S₂O₃ → Na₂S₄O₆ + 2NaI",
+                data: { Na: 23, S: 32, O: 16, I: 127 }
+            },
+            '2020': {
+                given: `A is 0.100 mol dm⁻³ H₂SO₄. B contains 4.0 g of KOH per dm³.`,
+                requirements: [
+                    "Calculate the concentration of B in mol dm⁻³",
+                    "Calculate the mass of K₂SO₄ formed",
+                    "Calculate the percentage yield if 3.8g was obtained"
+                ],
+                reaction: "H₂SO₄ (aq) + 2KOH (aq) → K₂SO₄ (aq) + 2H₂O (l)",
+                data: { H: 1, O: 16, K: 39, S: 32 }
+            },
+            '2004': {
+                given: `A is a solution of HCl containing 5.0 g dm⁻³. B is a solution of impure KOH containing 6.50 g dm⁻³.`,
+                requirements: [
+                    "Calculate the concentration of A in mol dm⁻³",
+                    "Calculate the concentration of B in mol dm⁻³",
+                    "Calculate the percentage purity of KOH in B",
+                    "Calculate the mass of NaCl formed"
+                ],
+                reaction: "HCl (aq) + KOH (aq) → KCl (aq) + H₂O (l)",
+                data: {
+                    H: 1,
+                    C: 12.0,
+                    O: 16.0,
+                    K: 39.0,
+                    Cl: 35.5,
+                    KOH: "56.0 mol⁻¹"
+                }
+            },
+            '2003': {
+                given: `A is a solution of HCl containing 7.30 g dm⁻³. B is a solution of X₂CO₃ containing 10.6 g dm⁻³.`,
+                requirements: [
+                    "Calculate the concentration of A in mol dm⁻³",
+                    "Calculate the concentration of B in mol dm⁻³",
+                    "Calculate the molar mass of X₂CO₃",
+                    "Calculate the relative atomic mass of X"
+                ],
+                reaction: "X₂CO₃ + 2HCl → 2XCl + H₂O + CO₂",
+                data: {
+                    H: 1,
+                    C: 12,
+                    O: 16,
+                    Cl: "35.5 mol⁻¹"
+                }
+            },
+            '2002': {
+                given: `A is 0.125 mol dm⁻³ H₂SO₄ solution. B is an aqueous solution containing x g dm⁻³ of KOH.`,
+                requirements: [
+                    "Calculate the average volume of A used",
+                    "Calculate the concentration of B in mol dm⁻³",
+                    "Calculate the concentration of B in g dm⁻³",
+                    "Calculate the value of x"
+                ],
+                reaction: "H₂SO₄ (aq) + 2KOH(aq) → K₂SO₄(aq) + 2H₂O(l)",
+                data: {
+                    H: 1,
+                    O: 16,
+                    K: 39
+                }
+            },
+            '2001': {
+                given: `A is 0.100 mol dm⁻³ HCl solution. B is a solution containing 6.0 g dm⁻³ of KHCOO.`,
+                requirements: [
+                    "Calculate the concentration of KHCOO in mol dm⁻³",
+                    "Calculate the concentration of H₂SO₄ in mol dm⁻³ in the mixture",
+                    "Calculate the percentage by mass of KHCOO in the mixture"
+                ],
+                reaction: "HCl (aq) + KHCOO (aq) → KCl (aq) + H₂O (l) + CO₂ (g)"
+            },
+            '2000': {
+                given: `A is a solution of HCl containing 6.0 g dm⁻³. B is a solution containing B g dm⁻³ of potassium trioxocarbonate (IV).`,
+                requirements: [
+                    "Calculate the concentration of HCl in mol dm⁻³",
+                    "Calculate the concentration of K₂CO₃ in mol dm⁻³",
+                    "Calculate the concentration of potassium ions in mol dm⁻³ of B",
+                    "Calculate the value of B in g dm⁻³"
+                ],
+                reaction: "2HCl (aq) + K₂CO₃ (aq) → 2KCl (aq) + H₂O (l) + CO₂ (g)",
+                data: {
+                    H: 1,
+                    Cl: 35.5,
+                    K: 39,
+                    C: 12,
+                    O: 16
+                }
+            }
+        };        // Mode switching functions
+        // Load a specific WAEC question
+        function loadWaecQuestion(year) {
+            const question = waecQuestions[year];
+            if (!question) return;
+
+            const givenEl = document.getElementById('given-content');
+            const reqEl = document.getElementById('requirements-content');
+            const reactionEl = document.getElementById('reaction-content');
+
+            // Load given information
+            givenEl.innerHTML = `<div class="text-sm space-y-2">
+                <p>${question.given}</p>
+                ${question.data ? `<div class="mt-2 font-mono text-xs">
+                    Given: ${Object.entries(question.data).map(([k,v]) => `${k} = ${v}`).join(', ')}
+                </div>` : ''}
+            </div>`;
+
+            // Load requirements
+            reqEl.innerHTML = `<ol class="list-decimal ml-6 space-y-2">
+                ${question.requirements.map(req => `<li>${req}</li>`).join('')}
+            </ol>`;
+
+            // Load reaction equation
+            reactionEl.innerHTML = question.reaction;
+
+            // Update endpoint volume based on question type
+            const endpoint = getEndpointForQuestion(year);
+            const seEl = document.getElementById('sim-endpoint-volume');
+            if (seEl) seEl.value = endpoint;
+            endpointVolume = endpoint;
+
+            // Render the student answer form for this question and attempt to load any saved answers
+            try { renderAnswerForm(year); } catch (e) { console.warn('renderAnswerForm failed', e); }
+            try { loadSavedAnswers(year); } catch (e) { /* non-fatal */ }
+
+            // Hook up save/load/submit buttons (listeners guarded to avoid duplicate handlers)
+            const saveBtn = document.getElementById('save-answers-btn');
+            const submitBtn = document.getElementById('submit-answers-btn');
+            const loadBtn = document.getElementById('load-answers-btn');
+            if (saveBtn && !saveBtn.dataset.bound) {
+                saveBtn.addEventListener('click', () => saveAnswers(year));
+                saveBtn.dataset.bound = '1';
+            }
+            if (submitBtn && !submitBtn.dataset.bound) {
+                submitBtn.addEventListener('click', () => submitAnswers(year));
+                submitBtn.dataset.bound = '1';
+            }
+            if (loadBtn && !loadBtn.dataset.bound) {
+                loadBtn.addEventListener('click', () => loadSavedAnswers(year));
+                loadBtn.dataset.bound = '1';
+            }
+        }
+
+        // --- Answer form helpers: render, save, load, submit (store locally for now) ---
+        function renderAnswerForm(year) {
+            const form = document.getElementById('answer-form');
+            if (!form) return;
+            form.innerHTML = '';
+            const q = waecQuestions[year];
+            if (!q || !q.requirements || q.requirements.length === 0) {
+                form.innerHTML = '<div class="text-sm text-gray-500">No answer fields for this question.</div>';
+                return;
+            }
+            q.requirements.forEach((req, i) => {
+                const id = `answer-${year}-${i}`;
+                const wrap = document.createElement('div');
+                wrap.className = 'answer-field';
+                wrap.innerHTML = `
+                    <label class="block font-medium mb-1">${(i+1)}. ${req}</label>
+                    <textarea id="${id}" rows="3" class="w-full p-2 border rounded" placeholder="Type your answer here..."></textarea>
+                `;
+                form.appendChild(wrap);
+            });
+            // clear status
+            const status = document.getElementById('answers-status'); if (status) status.textContent = '';
+        }
+
+        function _answersStorageKey(year) { return `waec_answers_${year}`; }
+
+        function saveAnswers(year) {
+            const q = waecQuestions[year];
+            if (!q || !q.requirements) return;
+            const payload = { year, savedAt: Date.now(), answers: {} };
+            q.requirements.forEach((_, i) => {
+                const el = document.getElementById(`answer-${year}-${i}`);
+                payload.answers[i] = el ? el.value : '';
+            });
+            try {
+                localStorage.setItem(_answersStorageKey(year), JSON.stringify(payload));
+                const status = document.getElementById('answers-status'); if (status) status.textContent = 'Answers saved locally.';
+            } catch (e) {
+                console.warn('saveAnswers failed', e);
+                const status = document.getElementById('answers-status'); if (status) status.textContent = 'Failed to save answers (storage error).';
+            }
+        }
+
+        function loadSavedAnswers(year) {
+            const raw = localStorage.getItem(_answersStorageKey(year));
+            const status = document.getElementById('answers-status');
+            if (!raw) {
+                if (status) status.textContent = 'No saved answers for this year.';
+                return;
+            }
+            try {
+                const payload = JSON.parse(raw);
+                if (!payload || !payload.answers) { if (status) status.textContent = 'No saved answers found.'; return; }
+                Object.keys(payload.answers).forEach(k => {
+                    const el = document.getElementById(`answer-${year}-${k}`);
+                    if (el) el.value = payload.answers[k] || '';
+                });
+                if (status) status.textContent = `Loaded saved answers (${new Date(payload.savedAt).toLocaleString()}).`;
+            } catch (e) {
+                console.warn('loadSavedAnswers failed', e);
+                if (status) status.textContent = 'Failed to load saved answers.';
+            }
+        }
+
+        function submitAnswers(year) {
+            // For now submission simply saves and marks as submitted locally.
+            saveAnswers(year);
+            try {
+                localStorage.setItem(_answersStorageKey(year) + '_submitted', '1');
+                const status = document.getElementById('answers-status'); if (status) status.textContent = 'Answers submitted (saved locally).';
+            } catch (e) {
+                console.warn('submitAnswers failed', e);
+                const status = document.getElementById('answers-status'); if (status) status.textContent = 'Failed to submit answers.';
+            }
+        }
+
+        // Helper to get appropriate endpoint volume based on question
+        function getEndpointForQuestion(year) {
+            const defaults = {
+                '2004': 24.80, // HCl + KOH
+                '2003': 25.20, // HCl + X₂CO₃
+                '2002': 12.40, // H₂SO₄ + 2KOH
+                '2001': 24.90, // HCl + KHCOO
+                '2000': 24.80  // 2HCl + K₂CO₃
+            };
+            return defaults[year] || 24.80;
+        }
+
+        function switchMode(mode) {
+            currentMode = mode;
+            // if leaving learning mode, stop any automated titration in progress
+            if (mode !== 'learning') try { stopAutoTitration(); } catch (e) {}
+            const learningBtn = document.getElementById('learning-mode');
+            const practiceBtn = document.getElementById('practice-mode');
+            const descEl = document.getElementById('mode-description');
+            const questionEl = document.getElementById('practice-question');
+            const procedureGuide = document.getElementById('procedure-guide');
+            const procedureSteps = document.getElementById('procedure-steps');
+            
+            // Update button states
+            learningBtn.classList.toggle('active', mode === 'learning');
+            learningBtn.classList.toggle('bg-teal-600', mode === 'learning');
+            learningBtn.classList.toggle('bg-gray-600', mode !== 'learning');
+            
+            practiceBtn.classList.toggle('active', mode === 'practice');
+            practiceBtn.classList.toggle('bg-teal-600', mode === 'practice');
+            practiceBtn.classList.toggle('bg-gray-600', mode !== 'practice');
+            
+            // Update mode description
+            descEl.textContent = mode === 'learning' ? 
+                'Tutorial mode with step-by-step guidance. Perfect for learning the titration process.' :
+                'Solve actual WAEC practical questions. No tutorials - test your skills in exam conditions.';
+            
+            // Toggle question visibility
+            questionEl.classList.toggle('hidden', mode === 'learning');
+            
+            // Toggle guide visibility
+            if (procedureGuide) procedureGuide.style.display = mode === 'learning' ? 'block' : 'none';
+            if (procedureSteps) procedureSteps.style.display = mode === 'learning' ? 'flex' : 'none';
+            
+            // Reset simulator state
+            resetSimulator();
+            
+            // Load first WAEC question in practice mode
+            if (mode === 'practice') {
+                const selector = document.getElementById('question-selector');
+                const timer = document.getElementById('exam-timer');
+                if (selector) loadWaecQuestion(selector.value);
+                if (timer) {
+                    timer.classList.remove('hidden');
+                    resetTimer();
+                }
+            } else {
+                const timer = document.getElementById('exam-timer');
+                if (timer) {
+                    timer.classList.add('hidden');
+                    if (timerInterval) {
+                        clearInterval(timerInterval);
+                        timerInterval = null;
+                    }
+                }
+            }
+            
+            // Set up question selector listener
+            const selector = document.getElementById('question-selector');
+            if (selector) {
+                selector.onchange = (e) => loadWaecQuestion(e.target.value);
+            }
+        }
+        
+        // Reset simulator to initial state
+        function resetSimulator() {
+            // Ensure any auto-titration is stopped when resetting
+            try { stopAutoTitration(); } catch (e) {}
+            currentStep = 1;
+            glasswareCleaned = {
+                burette: false,
+                pipette: false,
+                flask: false
+            };
+            experimentState = {
+                buretteRinsed: false,
+                pipetteRinsed: false,
+                titrantAdded: false,
+                analyteAdded: false,
+                indicatorAdded: false,
+                titrantSelected: '',
+                analyteSelected: '',
+                indicatorSelected: '',
+                endpointReached: false,
+                trialsCompleted: false
+            };
+            
+            // Reset burette
+            currentVolume = 50.00;
+            cumulativeDispensed = 0.0;
+            
+            // Clear readings table
+            ['rough','1','2','3'].forEach(col => {
+                const fin = document.getElementById('final-' + col);
+                const used = document.getElementById('used-' + col);
+                if (fin) fin.value = '';
+                if (used) used.value = '';
+            });
+            
+            // Reset apparatus visuals
+            const buretteLiquid = document.querySelector('.burette-liquid');
+            const flaskLiquid = document.querySelector('.flask-liquid');
+            if (buretteLiquid) {
+                buretteLiquid.style.background = 'transparent';
+                buretteLiquid.style.height = '100%';
+            }
+            if (flaskLiquid) flaskLiquid.style.background = 'transparent';
+            
+            // Reset all buttons to initial state
+            const buttons = document.querySelectorAll('button[onclick]');
+            buttons.forEach(btn => {
+                btn.disabled = false;
+                btn.classList.remove('bg-green-500', 'bg-gray-300', 'opacity-60', 'cursor-not-allowed');
+                const action = btn.getAttribute('onclick');
+                if (action.includes('cleanGlassware')) btn.classList.add('bg-blue-500');
+                if (action.includes('rinseBurette')) btn.classList.add('bg-yellow-500');
+                if (action.includes('rinsePipette')) btn.classList.add('bg-purple-500');
+                if (action.includes('fillBurette')) btn.classList.add('bg-yellow-600');
+                if (action.includes('measureAnalyte')) btn.classList.add('bg-purple-600');
+                if (action.includes('addIndicator')) btn.classList.add('bg-pink-500');
+                if (action.includes('addDrop')) btn.classList.add('bg-green-500');
+                if (action.includes('swirl')) btn.classList.add('bg-indigo-500');
+                // Reset button text
+                if (action.includes('cleanGlassware("burette")')) btn.textContent = 'Clean Burette';
+                if (action.includes('cleanGlassware("pipette")')) btn.textContent = 'Clean Pipette';
+                if (action.includes('cleanGlassware("flask")')) btn.textContent = 'Clean Flask';
+                if (action.includes('rinseBurette')) btn.textContent = 'Rinse Burette';
+                if (action.includes('rinsePipette')) btn.textContent = 'Rinse Pipette';
+                if (action.includes('fillBurette')) btn.textContent = 'Fill Burette';
+                if (action.includes('measureAnalyte')) btn.textContent = 'Measure 25cm³';
+                if (action.includes('addIndicator')) btn.textContent = 'Add Indicator';
+                if (action.includes('addDrop')) btn.textContent = 'Add Drop';
+                if (action.includes('swirl')) btn.textContent = 'Swirl Flask';
+            });
+            
+            // Reset dropdowns
+            const titrantSelect = document.getElementById('titrant-select');
+            const indicatorSelect = document.getElementById('indicator-select');
+            if (titrantSelect) {
+                titrantSelect.value = '';
+                titrantSelect.disabled = false;
+                titrantSelect.classList.remove('opacity-60', 'cursor-not-allowed');
+            }
+            if (indicatorSelect) {
+                indicatorSelect.value = '';
+                indicatorSelect.disabled = false;
+                indicatorSelect.classList.remove('opacity-60', 'cursor-not-allowed');
+            }
+            
+            // Update displays
+            updateVolumeDisplay();
+            if (currentMode === 'learning') {
+                moveToStep(1);
+                try { setActiveTrial('rough'); } catch(e) {}
+            }
+            
+            // Remove any popups
+            const popup = document.querySelector('.step-popup');
+            if (popup) popup.remove();
+        }
+        
+        // Bind mode buttons
+        document.getElementById('learning-mode').addEventListener('click', () => switchMode('learning'));
+        document.getElementById('practice-mode').addEventListener('click', () => switchMode('practice'));
+        
+        // --- Timer control bindings: ensure the Start/Pause/Reset buttons call the timer functions ---
+        (function bindTimerControls(){
+            const startBtn = document.getElementById('start-timer');
+            const pauseBtn = document.getElementById('pause-timer');
+            const resetBtn = document.getElementById('reset-timer');
+
+            if (startBtn && !startBtn.dataset.bound) {
+                startBtn.addEventListener('click', startTimer);
+                startBtn.dataset.bound = '1';
+            }
+            if (pauseBtn && !pauseBtn.dataset.bound) {
+                pauseBtn.addEventListener('click', pauseTimer);
+                pauseBtn.dataset.bound = '1';
+            }
+            if (resetBtn && !resetBtn.dataset.bound) {
+                resetBtn.addEventListener('click', resetTimer);
+                resetBtn.dataset.bound = '1';
+            }
+
+            // Initialize timer display so the user sees the full time before starting
+            try { updateTimerDisplay(); } catch (e) { /* ignore if elements not present yet */ }
+        })();
+        
+        let currentStep = 1;
+        let glasswareCleaned = {
+            burette: false,
+            pipette: false,
+            flask: false
+        };
+    let currentVolume = 50.00;
+    let readings = [];
+    // cumulative volume dispensed from burette (cm³)
+    let cumulativeDispensed = 0.0;
+    // each 'Add Drop' simulates 0.50 cm³ (adjusted for WAEC practical)
+    let dropVolume = 0.50;
+    // Endpoint volumes for different setups (cm³)
+    const setupEndpoints = {
+        'HCl + Methyl orange': 24.80,
+        'H2SO4 + Methyl orange': 12.40,
+        'HNO3 + Methyl orange': 24.80,
+        'CH3COOH + Methyl orange': 25.20,
+        'KOH + Phenolphthalein': 25.00,
+        'NaOH + Phenolphthalein': 24.90,
+        'Ca(OH)2 + Phenolphthalein': 12.45,
+        'KMnO4 + none': 24.75  // KMnO4 is self-indicating
+    };
+    // Centralized titrant colour map (used across the simulator)
+    const titrantColors = {
+        'HCl': 'rgba(220, 38, 38, 0.7)',      // Bright red for HCl
+        'H2SO4': 'rgba(234, 88, 12, 0.7)',    // Orange-red for H2SO4
+        'HNO3': 'rgba(190, 24, 93, 0.7)',     // Purple-red for HNO3
+        'CH3COOH': 'rgba(251, 146, 60, 0.7)', // Orange for weak acid
+        'NaOH': 'rgba(37, 99, 235, 0.7)',     // Deep blue for NaOH
+        'KOH': 'rgba(5, 150, 105, 0.7)',      // Teal for KOH
+        'Ca(OH)2': 'rgba(6, 182, 212, 0.7)',  // Cyan for Ca(OH)2
+        'KMnO4': 'rgba(147, 51, 234, 0.7)'    // Purple for KMnO4
+    };
+
+    let endpointVolume = 24.80; // default, will be updated based on setup
+        let experimentState = {
+            buretteRinsed: false,
+            pipetteRinsed: false,
+            titrantAdded: false,
+            analyteAdded: false,
+            indicatorAdded: false,
+            titrantSelected: '',
+            analyteSelected: '',
+            indicatorSelected: '',
+            endpointReached: false
+        };
+
+        // Functions for each practical step
+        function rinseBurette() {
+            if (currentStep !== 2 || !experimentState.titrantSelected) {
+                alert(experimentState.titrantSelected ? 'Complete the current step first!' : 'Select a titrant first!');
+                return;
+            }
+
+            const burette = document.getElementById('burette');
+            
+            // Add rinsing animation
+            burette.classList.add('rinsing-animation');
+            setTimeout(() => burette.classList.remove('rinsing-animation'), 1500);
+            
+            // Show feedback
+            showFeedback(burette, `Rinsing burette with ${experimentState.titrantSelected}...`);
+
+            const button = document.querySelector(`button[onclick="rinseBurette()"]`);
+            button.classList.remove('bg-yellow-500');
+            button.classList.add('bg-green-500');
+            button.innerHTML = '✓ Burette Rinsed';
+            button.disabled = true;
+            experimentState.buretteRinsed = true;
+
+            // Brief flash of color to show rinse
+            const buretteLiquid = document.querySelector('.burette-liquid');
+            buretteLiquid.style.background = 'rgba(147, 197, 253, 0.3)';
+            setTimeout(() => buretteLiquid.style.background = 'transparent', 1500);
+
+            setTimeout(() => showStepPopup(`Burette rinsed with ${experimentState.titrantSelected}. Proceed to next step?`), 1600);
+        }
+
+        function rinsePipette() {
+            if (currentStep !== 3) {
+                alert('Complete the current step first!');
+                return;
+            }
+
+            // Require the user to choose an analyte before rinsing the pipette
+            if (!experimentState.analyteSelected) {
+                const sel = document.getElementById('analyte-select');
+                showFeedback(sel || document.body, 'Please select an analyte (base) from the dropdown before rinsing the pipette.', 2200);
+                if (sel) sel.focus();
+                return;
+            }
+
+            const pipette = document.getElementById('pipette');
+            
+            // Add rinsing animation
+            pipette.classList.add('rinsing-animation');
+            setTimeout(() => pipette.classList.remove('rinsing-animation'), 1500);
+            
+            // Show feedback
+            showFeedback(pipette, 'Rinsing pipette with analyte solution...');
+
+            const button = document.querySelector(`button[onclick="rinsePipette()"]`);
+            button.classList.remove('bg-purple-500');
+            button.classList.add('bg-green-500');
+            button.innerHTML = '✓ Pipette Rinsed';
+            button.disabled = true;
+            experimentState.pipetteRinsed = true;
+
+            setTimeout(() => showStepPopup('Pipette rinsed with analyte solution. Proceed to next step?'), 1600);
+        }
+
+        function fillBurette() {
+            if (currentStep !== 4 || !experimentState.buretteRinsed) {
+                alert(experimentState.buretteRinsed ? 'Complete the current step first!' : 'Rinse burette first!');
+                return;
+            }
+
+            const burette = document.getElementById('burette');
+            const buretteLiquid = document.querySelector('.burette-liquid');
+            
+            // Show filling animation
+            buretteLiquid.style.height = '0%';
+            setTimeout(() => {
+                buretteLiquid.classList.add('filling-animation');
+                buretteLiquid.style.height = '100%';
+                
+                // Show color based on selected titrant - use same keys as selectTitrant()
+                // Use centralized titrantColors map so the color matches the selected titrant
+                buretteLiquid.style.background = titrantColors[experimentState.titrantSelected] || 'rgba(250, 204, 21, 0.5)';
+                // Reset the logical current volume to full and update meniscus/reading display
+                currentVolume = 50.00;
+                try { updateVolumeDisplay(); } catch (e) { /* ignore if not ready */ }
+            }, 100);
+
+            // Show feedback
+            showFeedback(burette, `Filling burette with ${experimentState.titrantSelected}...`, 2500);
+
+            const button = document.querySelector(`button[onclick="fillBurette()"]`);
+            button.classList.remove('bg-yellow-500');
+            button.classList.add('bg-green-500');
+            button.innerHTML = '✓ Burette Filled';
+            button.disabled = true;
+            experimentState.titrantAdded = true;
+
+            // Update readings table initial reading when burette is filled
+            // NOTE: auto-filling of readings has been removed — readings must be entered manually by the student.
+
+            setTimeout(() => showStepPopup(`Burette filled with ${experimentState.titrantSelected}. Proceed to next step?`), 2600);
+        }
+
+        function measureAnalyte() {
+            if (currentStep !== 5) {
+                alert('Complete the current step first!');
+                return;
+            }
+            if (!experimentState.analyteSelected) {
+                const sel = document.getElementById('analyte-select');
+                showFeedback(sel || document.body, 'Select an analyte (base) from the dropdown before measuring.', 2000);
+                return;
+            }
+
+            const pipette = document.getElementById('pipette');
+            const flask = document.getElementById('conical-flask');
+            const flaskLiquid = document.querySelector('.flask-liquid');
+            
+            // Animate pipette measurement
+            pipette.style.transform = 'translateX(50px)';
+            setTimeout(() => {
+                showFeedback(pipette, 'Drawing up 25cm³ of analyte...', 1500);
+                pipette.style.transform = 'translateX(0)';
+                
+                setTimeout(() => {
+                    // Show analyte being added to flask using a faint base colour depending on analyte
+                    const analyte = experimentState.analyteSelected;
+                    const colorMap = { 'NaOH': 'rgba(37, 99, 235, 0.25)', 'KOH': 'rgba(5,150,105,0.25)', 'Ca(OH)2': 'rgba(6,182,212,0.20)' };
+                    flaskLiquid.style.background = colorMap[analyte] || 'rgba(147,197,253,0.3)';
+                    showFeedback(flask, `Delivering ${analyte} to flask...`, 1500);
+                }, 1500);
+            }, 1000);
+
+            const button = document.querySelector(`button[onclick="measureAnalyte()"]`);
+            button.classList.remove('bg-purple-500');
+            button.classList.add('bg-green-500');
+            button.innerHTML = '✓ Analyte Measured';
+            button.disabled = true;
+            experimentState.analyteAdded = true;
+
+            setTimeout(() => showStepPopup('Analyte measured and delivered to flask. Proceed to next step?'), 3100);
+        }
+
+        function showFeedback(element, message, duration = 2000) {
+            const popup = document.createElement('div');
+            popup.className = 'feedback-popup';
+            popup.textContent = message;
+
+            // Position popup near the element
+            const rect = element.getBoundingClientRect();
+            const container = document.querySelector('.apparatus-container');
+            const containerRect = container.getBoundingClientRect();
+
+            popup.style.left = (rect.left - containerRect.left + rect.width/2) + 'px';
+            popup.style.top = (rect.top - containerRect.top - 30) + 'px';
+            
+            container.appendChild(popup);
+            setTimeout(() => popup.classList.add('show'), 10);
+            
+            setTimeout(() => {
+                popup.classList.remove('show');
+                setTimeout(() => popup.remove(), 300);
+            }, duration);
+        }
+
+        // Step completion modal: shows what the user just did and guides them to the guide panel.
+        // Clicking "Proceed" advances the guide and scrolls the guide panel into view. The function
+        // still respects the two-level auto preferences: "auto-advance-steps" (show popup then auto-proceed)
+        // and "skip-popup-auto-proceed" (skip popup and proceed immediately).
+        function showStepPopup(message, opts = {}) {
+            // In practice mode, only show critical popups
+            if (currentMode === 'practice' && !opts.critical) return;
+
+            const { autoProceed = false, autoClose = false, timeout = 0 } = opts;
+            const confirmCheckbox = document.getElementById('auto-advance-steps');
+            const skipCheckbox = document.getElementById('skip-popup-auto-proceed');
+            const skipImmediate = skipCheckbox && skipCheckbox.checked;
+            const wantsAutoAdvance = (confirmCheckbox && confirmCheckbox.checked) || (typeof autoProceed === 'boolean' && autoProceed);
+            const shouldAutoProceed = (currentMode === 'learning') && (skipImmediate || wantsAutoAdvance);
+
+            // If skipImmediate is enabled, skip the modal: advance and show guide immediately.
+            if (skipImmediate) {
+                try {
+                    moveToNextStep();
+                    // scroll guide into view and briefly highlight it
+                    const guide = document.getElementById('procedure-guide');
+                    if (guide) {
+                        setTimeout(() => { try { guide.scrollIntoView({ behavior: 'smooth', block: 'center' }); guide.style.boxShadow = '0 0 0 4px rgba(16,185,129,0.06)'; setTimeout(() => guide.style.boxShadow = '', 600); } catch (e) {} }, 120);
+                    }
+                    // when the user also wants auto-triggering, run recommended control
+                    if (wantsAutoAdvance) setTimeout(() => { try { autoTriggerForStep(currentStep); } catch (e) {} }, 220);
+                } catch (e) { /* ignore */ }
+                return null;
+            }
+
+            // remove any existing non-persistent popup. If a persistent popup exists (e.g. endpoint), leave it visible and do not open a new one.
+            const existing = document.querySelector('.step-popup');
+            if (existing && existing.dataset && existing.dataset.persistent === 'true') {
+                // A persistent popup is active; do not show another modal on top of it.
+                return null;
+            }
+            if (existing) existing.remove();
+
+            // Build modal content
+            const popup = document.createElement('div');
+            popup.className = 'step-popup';
+            popup.innerHTML = `
+                <div class="popup-body">
+                    <h3 style="margin:0 0 .4rem;font-size:1.05rem;">Step completed</h3>
+                    <div class="popup-message" style="color:#0f172a;font-size:0.95rem;">${message}</div>
+                </div>`;
+
+            const actions = document.createElement('div');
+            actions.className = 'popup-actions';
+
+            const btnClose = document.createElement('button');
+            btnClose.className = 'btn ghost';
+            btnClose.textContent = 'Close';
+            btnClose.onclick = () => { popup.classList.remove('show'); setTimeout(() => popup.remove(), 220); };
+
+            const btnNext = document.createElement('button');
+            btnNext.className = 'btn primary';
+            btnNext.textContent = 'Proceed';
+            btnNext.onclick = () => {
+                popup.classList.remove('show');
+                setTimeout(() => {
+                    try { popup.remove(); } catch (e) {}
+                    // advance the guide
+                    try { moveToNextStep(); } catch (e) {}
+                    // ensure guide content is visible to the user
+                    const guide = document.getElementById('procedure-guide');
+                    if (guide) {
+                        try { guide.scrollIntoView({ behavior: 'smooth', block: 'center' }); guide.style.boxShadow = '0 0 0 4px rgba(16,185,129,0.06)'; setTimeout(() => guide.style.boxShadow = '', 600); } catch (e) {}
+                    }
+                    // auto-trigger recommended controls only when the user opted in
+                    if (shouldAutoProceed) {
+                        setTimeout(() => { try { autoTriggerForStep(currentStep); } catch (e) {} }, 250);
+                    }
+                }, 220);
+            };
+
+            actions.appendChild(btnClose);
+            actions.appendChild(btnNext);
+            popup.appendChild(actions);
+
+            document.body.appendChild(popup);
+            // animate in
+            setTimeout(() => popup.classList.add('show'), 10);
+
+            // If caller explicitly requested autoProceed and preferences allow, auto-click Proceed after a delay
+            if (shouldAutoProceed && autoProceed) {
+                const delay = timeout || 700;
+                setTimeout(() => btnNext.click(), delay);
+            } else if (autoClose && timeout > 0) {
+                setTimeout(() => { if (popup.parentNode) { popup.classList.remove('show'); setTimeout(() => popup.remove(), 220); } }, timeout);
+            }
+
+            return popup;
+        }
+
+        // Show an instruction popup with a custom proceed callback (does not auto-advance steps)
+        function showInstructionPopup(message, proceedCallback, opts = {}) {
+            // remove any existing non-persistent popup. If a persistent popup exists (e.g. endpoint), keep it and do not open a new one.
+            const existing = document.querySelector('.step-popup');
+            if (existing && existing.dataset && existing.dataset.persistent === 'true') {
+                // A persistent popup is active; do not open another instruction popup on top of it.
+                return null;
+            }
+            if (existing) existing.remove();
+
+            const popup = document.createElement('div');
+            popup.className = 'step-popup';
+            // Support variant styling (e.g. titration endpoint)
+            const variant = opts && opts.variant ? opts.variant : '';
+            if (variant) popup.classList.add(variant);
+            // If this is a titration (endpoint) popup we want it to persist until dismissed
+            if (variant === 'titration') {
+                try { popup.dataset.persistent = 'true'; } catch(e) {}
+            }
+            popup.innerHTML = `
+                <div class="popup-body">
+                    <h3 style="margin:0 0 .4rem;font-size:1.05rem;">Action required</h3>
+                    <div class="popup-message" style="color:#0f172a;font-size:0.95rem; white-space:pre-line;">${message}</div>
+                </div>`;
+
+            const actions = document.createElement('div');
+            actions.className = 'popup-actions';
+
+            const btnClose = document.createElement('button');
+            btnClose.className = 'btn ghost';
+            btnClose.textContent = 'Close';
+            btnClose.onclick = () => { popup.classList.remove('show'); setTimeout(() => popup.remove(), 220); };
+
+            const btnNext = document.createElement('button');
+            btnNext.className = 'btn primary';
+            btnNext.textContent = 'Proceed';
+            btnNext.onclick = () => {
+                // If this is a titration popup, show the endpoint reading on the page when the user clicks Proceed
+                try {
+                    if (opts && opts.variant === 'titration') {
+                        try {
+                            const key = getNextEmptyFinalCol();
+                            // prefer currentVolume if available, otherwise compute from 50 - cumulativeDispensed
+                            const val = (typeof currentVolume === 'number' ? currentVolume : (50 - cumulativeDispensed)).toFixed(2);
+                            displayEndpointReading(val, key);
+                        } catch (e) { /* ignore display errors */ }
+                    }
+                } catch (e) {}
+
+                popup.classList.remove('show');
+                setTimeout(() => {
+                    try { popup.remove(); } catch (e) {}
+                    try { if (typeof proceedCallback === 'function') proceedCallback(); } catch (e) {}
+                }, 220);
+            };
+
+            actions.appendChild(btnClose);
+            actions.appendChild(btnNext);
+            popup.appendChild(actions);
+            document.body.appendChild(popup);
+            // If this is a titration popup, add an accessible focus ring and announce style
+            if (variant === 'titration') {
+                try { popup.setAttribute('role', 'alertdialog'); popup.setAttribute('aria-live', 'polite'); } catch(e){}
+            }
+            setTimeout(() => popup.classList.add('show'), 10);
+            return popup;
+        }
+
+        function cleanGlassware(item) {
+            if (currentMode === 'learning' && currentStep !== 1) {
+                alert('Complete the current step first!');
+                return;
+            }
+
+            const glasswareElement = document.getElementById(item === 'burette' ? 'burette' : 
+                                                          item === 'pipette' ? 'pipette' : 'conical-flask');
+            
+            // Add cleaning animation
+            glasswareElement.classList.add('cleaning-animation');
+            setTimeout(() => glasswareElement.classList.remove('cleaning-animation'), 1000);
+
+            // Show feedback message
+            showFeedback(glasswareElement, `Cleaning ${item} with distilled water...`);
+
+            // Visual feedback for button
+            const button = document.querySelector(`button[onclick="cleanGlassware('${item}')"]`);
+            button.classList.remove('bg-blue-500');
+            button.classList.add('bg-green-500');
+            button.innerHTML = `✓ ${item.charAt(0).toUpperCase() + item.slice(1)} Cleaned`;
+            button.disabled = true;
+
+            // Update practical status
+            glasswareCleaned[item] = true;
+
+            // Show laboratory instruction
+            const labInstruction = document.createElement('div');
+            labInstruction.className = 'mt-2 text-sm text-gray-600 italic';
+            labInstruction.textContent = `In the actual WAEC practical: Rinse the ${item} thoroughly with distilled water 2-3 times.`;
+            button.parentNode.appendChild(labInstruction);
+            
+            // Show a popup for the completed cleaning action. If all glassware are cleaned, show a summary message.
+            const allClean = Object.values(glasswareCleaned).every(v => v);
+            const msg = allClean ? 'All glassware cleaned. Ensure no contamination before proceeding. Proceed to next step?' : `${item.charAt(0).toUpperCase() + item.slice(1)} cleaned. Proceed when ready.`;
+            setTimeout(() => {
+                try { showStepPopup(msg); } catch (e) { /* ignore */ }
+            }, 500);
+        }
+
+        function addSolution(type) {
+            const button = document.querySelector(`button[onclick="addSolution('${type}')"]`);
+            
+            if (type === 'titrant' && currentStep === 2) {
+                experimentState.buretteRinsed = true;
+                button.classList.remove('bg-yellow-500');
+                button.classList.add('bg-green-500');
+                button.innerHTML = '✓ Titrant Added';
+                button.disabled = true;
+
+                // Show WAEC practical instruction
+                const labInstruction = document.createElement('div');
+                labInstruction.className = 'mt-2 text-sm text-gray-600 italic';
+                labInstruction.textContent = 'In the actual WAEC practical: Rinse burette with small portions of titrant solution, swirling to coat all inner surfaces. Discard rinse solution.';
+                button.parentNode.appendChild(labInstruction);
+
+                setTimeout(() => {
+                    showStepPopup('Titrant added to setup. Proceed to next step?');
+                }, 1000);
+
+            } else {
+                alert('Complete the current step first!');
+            }
+        }
+
+        function addIndicator() {
+            if (currentStep !== 6 || !experimentState.indicatorSelected) {
+                alert(experimentState.indicatorSelected ? 'Complete previous steps first!' : 'Select an indicator first!');
+                return;
+            }
+
+            const flask = document.getElementById('conical-flask');
+            const flaskLiquid = document.querySelector('.flask-liquid');
+
+            // Dispense two small indicator drops (visual only) with a short interval
+            const drops = [];
+            function createDrop(offsetPercent) {
+                const d = document.createElement('div');
+                d.className = 'droplet';
+                d.style.backgroundColor = getIndicatorColor(experimentState.indicatorSelected, true);
+                // spread the two drops slightly so they look distinct
+                d.style.left = `calc(50% + ${offsetPercent}px)`;
+                d.style.top = '30%';
+                flask.appendChild(d);
+                drops.push(d);
+                // remove after short visible time
+                setTimeout(() => { try { d.remove(); } catch (e) {} }, 1200);
+            }
+
+            // Show feedback that indicator is being added
+            showFeedback(flask, `Adding ${experimentState.indicatorSelected} (2 drops)...`, 1900);
+
+            // First drop immediately, second after 300ms
+            createDrop(-8);
+            setTimeout(() => createDrop(8), 300);
+
+            // After both drops have been 'delivered', apply faint indicator colour and lock selection
+            setTimeout(() => {
+                // Apply faint indicator colour to simulate mixing and time delay in practical
+                flaskLiquid.style.background = getIndicatorColor(experimentState.indicatorSelected);
+
+                // Lock the indicator selection to reflect 'fixed per setup' behaviour in WAEC practical
+                const sel = document.getElementById('indicator-select');
+                if (sel) {
+                    sel.disabled = true;
+                    sel.classList.add('opacity-60', 'cursor-not-allowed');
+                }
+
+                const btn = document.querySelector('button[onclick="addIndicator()"]');
+                if (btn) {
+                    btn.classList.remove('bg-pink-500');
+                    btn.classList.add('bg-green-500');
+                    btn.innerHTML = '✓ Indicator Added';
+                    btn.disabled = true;
+                }
+
+                experimentState.indicatorAdded = true;
+
+                // Show WAEC practical instruction after animation
+                try { showStepPopup('Indicator added (2 drops) and fixed for this setup. Proceed to next step?'); } catch (e) {}
+            }, 1400);
+        }
+
+        function getIndicatorColor(indicator, concentrated = false) {
+            const colors = {
+                'Phenolphthalein': concentrated ? 'rgba(244,114,182,0.9)' : 'rgba(244,114,182,0.3)',
+                'Methyl orange': concentrated ? 'rgba(255,165,0,0.9)' : 'rgba(255,165,0,0.5)', // Orange
+                'KMnO4 (self-indicating)': concentrated ? 'rgba(167,139,250,0.9)' : 'rgba(167,139,250,0.3)'
+            };
+            return colors[indicator] || (concentrated ? 'rgba(52,211,153,0.9)' : 'rgba(52,211,153,0.3)');
+        }
+
+        function addDrop(isAuto = false) {
+            if (currentStep !== 7) {
+                alert('Complete previous steps first!');
+                return;
+            }
+
+            // In learning mode, clicking Add Drop will start/stop an automatic titration
+            if (!isAuto && currentMode === 'learning') {
+                // If already auto-titrating, this click should stop it (toggle behavior)
+                if (autoTitrating) {
+                    try { stopAutoTitration(); } catch (e) {}
+                    return;
+                }
+                // Immediately add the first drop and swirl visually, then start automated sequence
+                try { addDrop(true); } catch (e) {}
+                try { swirl(); } catch (e) {}
+                try { startAutoTitration(); } catch (e) {}
+                return;
+            }
+
+            // simulate dispensing a small fixed volume
+            cumulativeDispensed = +(cumulativeDispensed + dropVolume).toFixed(2);
+            currentVolume = Math.max(0, currentVolume - dropVolume);
+            updateVolumeDisplay();
+
+            // Create visible drop using titrant colour (if selected)
+            const droplet = document.createElement('div');
+            droplet.className = 'droplet';
+            droplet.style.left = '30%';
+            droplet.style.top = '60px';
+            // prefer titrant colour for droplet, fallback to indicator
+            const buretteLiquid = document.querySelector('.burette-liquid');
+            const dropColor = window.getComputedStyle(buretteLiquid).backgroundColor || getIndicatorColor(experimentState.indicatorSelected, true);
+            droplet.style.backgroundColor = dropColor;
+            document.querySelector('.apparatus-container').appendChild(droplet);
+
+            // Show small feedback on burette
+            showFeedback(document.getElementById('burette'), `Dispensed ${(cumulativeDispensed).toFixed(2)} cm³`, 900);
+
+            setTimeout(() => droplet.remove(), 900);
+
+            // AUTO-FILL DISABLED:
+            // The simulator no longer writes final/used readings into the readings table automatically.
+            // Students must record the final burette reading manually in the table and then click
+            // "Submit Readings" to compute the used/average values.
+
+            // Update flask colour progressively based on dispensed volume and chosen indicator
+            updateFlaskColor();
+        }
+
+        // start automatic titration (learning mode only)
+        function startAutoTitration(delayMs = AUTO_TITRATION_DELAY) {
+            if (autoTitrating) return;
+            if (currentMode !== 'learning') return;
+            autoTitrating = true;
+            const addDropBtn = document.querySelector('button[onclick="addDrop()"]');
+            const swirlBtn = document.querySelector('button[onclick="swirl()"]');
+            // Update Add Drop button to show auto-mode is running (don't fully disable so user can stop)
+            if (addDropBtn) {
+                addDropBtn.textContent = 'Stop Auto';
+                addDropBtn.classList.remove('bg-green-500');
+                addDropBtn.classList.add('bg-red-600');
+                addDropBtn.dataset.auto = '1';
+            }
+            // Optionally disable swirl to avoid manual interference
+            if (swirlBtn) { swirlBtn.disabled = true; }
+
+            function step() {
+                // safety stop: if not learning mode or we reached endpoint, stop
+                if (!autoTitrating || currentMode !== 'learning') { stopAutoTitration(); return; }
+                if (experimentState.endpointReached) { stopAutoTitration(); return; }
+
+                // add a drop and swirl
+                try { addDrop(true); } catch (e) { /* ignore */ }
+                try { swirl(); } catch (e) { /* ignore */ }
+
+                // if endpoint reached, stop
+                if (experimentState.endpointReached) { stopAutoTitration(); return; }
+
+                // schedule next step
+                autoTitrationTimeout = setTimeout(step, delayMs);
+            }
+
+            // schedule the first automated step after the configured delay (so user can see each drop/swirl)
+            autoTitrationTimeout = setTimeout(step, delayMs);
+        }
+
+        function stopAutoTitration() {
+            autoTitrating = false;
+            if (autoTitrationTimeout) { clearTimeout(autoTitrationTimeout); autoTitrationTimeout = null; }
+            const addDropBtn = document.querySelector('button[onclick="addDrop()"]');
+            const swirlBtn = document.querySelector('button[onclick="swirl()"]');
+            // Reset Add Drop button to normal state
+            if (addDropBtn) {
+                addDropBtn.textContent = 'Add Drop';
+                addDropBtn.classList.remove('bg-red-600');
+                addDropBtn.classList.add('bg-green-500');
+                addDropBtn.dataset.auto = '0';
+            }
+            // Re-enable swirl button
+            if (swirlBtn) { swirlBtn.disabled = false; }
+        }
+
+        function updateVolumeDisplay() {
+            document.querySelector('.meniscus').style.top = 
+                ((50 - currentVolume) / 50 * 100) + '%';
+        }
+
+        function parseRGBA(str) {
+            // parse strings like 'rgba(244,114,182,0.3)' or 'rgb(244,114,182)'
+            if (!str) return {r:0,g:0,b:0,a:0};
+            const rgba = str.replace(/\s+/g,'').match(/rgba?\((\d+),(\d+),(\d+)(?:,(\d*\.?\d+))?\)/i);
+            if (!rgba) return {r:0,g:0,b:0,a:0};
+            return { r: parseInt(rgba[1],10), g: parseInt(rgba[2],10), b: parseInt(rgba[3],10), a: rgba[4] ? parseFloat(rgba[4]) : 1 };
+        }
+
+        function interpolateColors(startColorStr, endColorStr, progress) {
+            const s = parseRGBA(startColorStr);
+            const e = parseRGBA(endColorStr);
+            const p = Math.max(0, Math.min(1, progress));
+            const r = Math.round(s.r + (e.r - s.r) * p);
+            const g = Math.round(s.g + (e.g - s.g) * p);
+            const b = Math.round(s.b + (e.b - s.b) * p);
+            const a = +(s.a + (e.a - s.a) * p).toFixed(2);
+            return `rgba(${r},${g},${b},${a})`;
+        }
+
+        function updateFlaskColor() {
+            const flaskLiquid = document.querySelector('.flask-liquid');
+            if (!flaskLiquid) return;
+
+            // If an indicator is selected, blend from indicator base to endpoint colour
+            const indicator = experimentState.indicatorSelected;
+            const titrant = experimentState.titrantSelected;
+
+            // Base colour = indicator faint colour (if chosen) else analyte default
+            const base = indicator === 'Methyl orange' ? 'rgba(255,165,0,0.5)' : // Orange for methyl orange
+                      (getIndicatorColor(indicator) || 'rgba(147,197,253,0.3)');
+            // endpoint stronger colour - yellow for methyl orange, concentrated color for others
+            const endpoint = indicator === 'Methyl orange' ? 'rgba(255,255,0,0.6)' : // Yellow at endpoint
+                         (getIndicatorColor(indicator, true) || 'rgba(52,211,153,0.9)');
+
+            // Check if we've reached the endpoint (within 0.2 cm³)
+            const atEndpoint = Math.abs(cumulativeDispensed - endpointVolume) <= 0.2;
+            
+            // Only show color change when we hit the exact endpoint volume
+            let mixed;
+            if (atEndpoint && !experimentState.endpointReached) {
+                // First time reaching endpoint - show dramatic color change
+                mixed = endpoint;
+                experimentState.endpointReached = true;
+                try { stopAutoTitration(); } catch (e) { /* ignore */ }
+                // Show feedback about endpoint reached
+                showFeedback(document.getElementById('conical-flask'), 'Color change observed! Record your final reading.', 2500);
+
+                // Determine which titration the user is completing (rough / 1 / 2 / 3)
+                const nextEmpty = getNextEmptyFinalCol();
+                const labelMap = { rough: 'Rough', '1': '1st Reading', '2': '2nd Reading', '3': '3rd Reading' };
+                const trialLabel = labelMap[nextEmpty] || nextEmpty;
+                const isRough = nextEmpty === 'rough';
+
+                // Highlight the next empty final column and update the active trial tracker
+                try { highlightNextFinalCol(nextEmpty); } catch (e) { try { highlightNextFinalCol(); } catch(e){} }
+                try { setActiveTrial(nextEmpty); } catch (e) { /* ignore if tracker not available yet */ }
+
+                let instruction = `Endpoint reached!\n\n`;
+                instruction += `IMPORTANT: This is your ${trialLabel} titration.\n`;
+                instruction += `Record the final burette reading now in the highlighted "${trialLabel}" column.`;
+
+                if (isRough) {
+                    instruction += ` This rough titration helps you estimate where the endpoint lies for the following accurate titrations.`;
+                }
+
+                instruction += `\n\nAfter recording the reading:\n1) Click Proceed\n2) Refill the burette\n3) Perform the next titration`;
+
+                // If there are still remaining accurate titrations after this one, remind the user.
+                const remaining = ['1','2','3'].filter(c => {
+                    const el = document.getElementById('final-' + c);
+                    return el && (!el.value || el.value.trim() === '');
+                });
+                if (remaining.length > 0 && !isRough) {
+                    instruction += `\n\nYou still need to complete: ${remaining.map(c => labelMap[c]).join(', ')}.`;
+                } else if (remaining.length === 0 && !isRough) {
+                    instruction += `\n\nYou have collected all accurate titrations. Click Submit Readings when finished.`;
+                }
+
+                showInstructionPopup(instruction, () => {
+                    // When user clicks Proceed, prepare for next trial (reset counters and guide)
+                    try { prepareForNextTrial(); } catch (e) { /* ensure popup callback doesn't throw */ }
+                }, { variant: 'titration' });
+
+            } else if (experimentState.endpointReached) {
+                // Keep endpoint color after reached
+                mixed = endpoint;
+            } else {
+                // Before endpoint - show base color with subtle variation
+                const subtleProgress = Math.max(0, Math.min(0.3, cumulativeDispensed / endpointVolume));
+                mixed = interpolateColors(base, base, subtleProgress);
+            }
+            flaskLiquid.style.background = mixed;
+
+            if (atEndpoint) {
+                showFeedback(document.getElementById('conical-flask'), 'Approaching end point...', 1400);
+            }
+        }
+
+        function swirl() {
+            const flask = document.querySelector('#conical-flask');
+            flask.style.transform = 'rotate(20deg)';
+
+            // Show mixing feedback
+            showFeedback(flask, 'Mixing solution...', 800);
+
+            // brief visual tilt back and forth
+            setTimeout(() => {
+                flask.style.transform = 'rotate(-20deg)';
+                setTimeout(() => {
+                    flask.style.transform = 'rotate(0deg)';
+                }, 200);
+            }, 200);
+
+            // mixing improves apparent colour change but SHOULD NOT alter the dispensed volume
+            // (swirl mixes the solution; it doesn't add titrant). Do not modify cumulativeDispensed here.
+            if (cumulativeDispensed > 0 && cumulativeDispensed < endpointVolume) {
+                // Recompute flask colour to reflect improved mixing visually without changing volumes
+                try { updateFlaskColor(); } catch (e) { /* ignore */ }
+            }
+        }
+
+        // Select a titrant to use in the simulation
+        function selectTitrant(value) {
+            const display = document.getElementById('sel-titrant');
+            const buretteLiquid = document.querySelector('.burette-liquid');
+            if (!value) {
+                display.innerHTML = 'Titrant: <em>None</em>';
+                buretteLiquid.style.background = 'transparent';
+                experimentState.titrantAdded = false;
+                return;
+            }
+
+            display.innerHTML = `Titrant: <strong>${value}</strong>`;
+            experimentState.titrantSelected = value;
+
+            // simple color mapping for visualization
+            // Simple titrant metadata (type used for indicator compatibility checks)
+            const titrantTypes = {
+                'HCl': 'acid',
+                'H2SO4': 'acid',
+                'HNO3': 'acid',
+                'CH3COOH': 'acid',
+                'NaOH': 'base',
+                'KOH': 'base',
+                'Ca(OH)2': 'base',
+                'KMnO4': 'oxidizer'
+            };
+
+            // Use centralized titrantColors map so colour stays consistent across the simulation
+            buretteLiquid.style.background = titrantColors[value] || 'rgba(250, 204, 21, 0.5)';
+            // record titrant type for later compatibility checks
+            experimentState.titrantType = titrantTypes[value] || '';
+
+            // If we're at the correct step (5 - fill burette), mark as added
+            if (currentStep === 5) {
+                experimentState.titrantAdded = true;
+                // mark visual hint in UI
+                const sel = document.getElementById('titrant-select');
+                sel.classList.add('border-green-500');
+            }
+        }
+
+        // Select an indicator to use
+        function selectIndicator(value) {
+            const display = document.getElementById('sel-indicator');
+            const flaskLiquid = document.querySelector('.flask-liquid');
+            // If an indicator has already been added (fixed per setup), don't allow changing it
+            if (experimentState.indicatorAdded) {
+                const sel = document.getElementById('indicator-select');
+                showFeedback(sel || document.body, 'Indicator is fixed for this setup and cannot be changed.', 2200);
+                return;
+            }
+            if (!value) {
+                display.innerHTML = 'Indicator: <em>None</em>';
+                experimentState.indicatorAdded = false;
+                return;
+            }
+
+            // Compatibility map: which titrant types the indicator is suitable for
+            const indicatorCompatibility = {
+                'Phenolphthalein': ['base'], // best for titrations where titrant is a base (strong base endpoints)
+                'Methyl orange': ['acid'],   // best for titrations where titrant is an acid (strong acid endpoints)
+                'KMnO4 (self-indicating)': ['acid','base','oxidizer'] // self-indicating / oxidizer works broadly
+            };
+
+            // If a titrant is already selected, validate indicator compatibility
+            const tType = experimentState.titrantType || (experimentState.titrantSelected ? (experimentState.titrantSelected.includes('KMnO4') ? 'oxidizer' : '') : '');
+            if (tType) {
+                const allowed = indicatorCompatibility[value] || [];
+                if (!allowed.includes(tType)) {
+                    // give helpful feedback and do not set the indicator
+                    const sel = document.getElementById('indicator-select');
+                    showFeedback(sel || document.body, `${value} is not the best choice with the selected titrant (${experimentState.titrantSelected || 'unknown'}). Choose a compatible indicator (e.g. ${allowed.join(' or ') || 'KMnO4'}).`, 3000);
+                    // keep indicator unset
+                    display.innerHTML = 'Indicator: <em>None</em>';
+                    experimentState.indicatorSelected = '';
+                    return;
+                }
+            }
+
+            // Record the selected indicator but do NOT change flask colour yet.
+            // The visible colour appears only when Add Indicator is clicked (to simulate the real practical timing).
+            display.innerHTML = `Indicator: <strong>${value}</strong>`;
+            experimentState.indicatorSelected = value;
+            
+            // Set the endpoint volume based on the titrant-indicator combination
+            const setupKey = experimentState.titrantSelected === 'KMnO4' ? 
+                'KMnO4 + none' : 
+                `${experimentState.titrantSelected} + ${value}`;
+            endpointVolume = setupEndpoints[setupKey] || 24.80; // fallback to default if combination not found
+            experimentState.endpointReached = false; // reset endpoint status for new setup
+        }
+
+        // Select an analyte (base) to pipette into the flask
+        function selectAnalyte(value) {
+            const display = document.getElementById('sel-analyte');
+            if (!value) {
+                if (display) display.innerHTML = 'Analyte: <em>None</em>';
+                experimentState.analyteSelected = '';
+                return;
+            }
+            if (display) display.innerHTML = `Analyte: <strong>${value}</strong>`;
+            experimentState.analyteSelected = value;
+            // Mark visual hint (small border) on the dropdown when selected
+            const sel = document.getElementById('analyte-select');
+            if (sel) sel.classList.add('border-green-500');
+        }
+
+        function focusAnalyte() {
+            const sel = document.getElementById('analyte-select');
+            if (sel) {
+                sel.focus();
+                showFeedback(sel, 'Choose the analyte (base) to pipette into the flask.', 1800);
+            } else {
+                showFeedback(document.body, 'Analyte selector not found.', 1600);
+            }
+        }
+
+        function moveToNextStep() {
+            // Safely advance the current step, update UI and guide
+            const prevChip = document.querySelector(`#step${currentStep}`);
+            if (prevChip) prevChip.classList.remove('active');
+            currentStep = Math.min(7, currentStep + 1);
+            const newChip = document.querySelector(`#step${currentStep}`);
+            if (newChip) {
+                newChip.classList.add('active');
+                // ensure the chip is visible on narrow screens
+                try { newChip.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' }); } catch(e) {}
+            }
+            updateCurrentTask();
+            // update the procedure guide content to the new step
+            try { showProcedureGuide(currentStep); } catch (e) { /* ignore if guide not ready */ }
+        }
+
+        function updateCurrentTask() {
+            const tasks = [
+                'Clean all glassware thoroughly with distilled water',
+                'Rinse burette with titrant solution',
+                'Rinse pipette with analyte solution',
+                'Fill burette with titrant',
+                'Select analyte (base) and measure 25cm³',
+                'Add indicator to conical flask',
+                'Perform titration'
+            ];
+            const el = document.querySelector('#current-task');
+            if (el) el.textContent = tasks[currentStep - 1];
+        }
+
+        // Initialize reading scale
+        const scale = document.querySelector('.reading-scale');
+        for (let i = 0; i <= 50; i += 5) {
+            const mark = document.createElement('div');
+            mark.textContent = i;
+            scale.appendChild(mark);
+        }
+
+        // --- Procedure guide: mapping of step details and chip interaction ---
+        const procedureDetails = {
+            1: `<strong>1. Clean all glassware</strong> — Use the "Clean Burette", "Clean Pipette" and "Clean Flask" buttons to rinse with distilled water. Wait until each button shows a ✓ and is disabled before moving on.`,
+            2: `<strong>2. Rinse burette with titrant</strong> — Select the titrant from the "Titrant" dropdown, then click "Rinse Burette" to simulate coating the burette's interior.`,
+            3: `<strong>3. Rinse pipette with analyte</strong> — Select the analyte from the "Analyte (to pipette)" dropdown first, then click "Rinse Pipette" to clean the pipette with the chosen analyte.`,
+            4: `<strong>4. Set up and fill burette</strong> — Click "Fill Burette" to top up the burette. Make sure the initial reading is recorded in the readings table (usually 0.00 after setting).`,
+            5: `<strong>5. Select analyte and measure</strong> — Choose the analyte (base) from the "Analyte (to pipette)" dropdown, then use "Measure 25cm³" to draw the chosen analyte into the pipette and deliver it to the conical flask. Confirm the flask shows the analyte colour.`,
+            6: `<strong>6. Add indicator</strong> — Choose "Methyl orange" (or the required indicator) and click "Add Indicator". The flask will show the indicator's base colour.`,
+            7: `<strong>7. Perform titration</strong> — Use "Add Drop" to dispense titrant. Each click dispenses the configured drop volume. Swirl after a few drops using "Swirl Flask". Stop when the persistent colour change is observed (the guide shows the target endpoint volume). Record final burette reading in the table.`
+        };
+
+        function showProcedureGuide(step) {
+            const panel = document.getElementById('procedure-guide-content');
+            if (!panel) return;
+            panel.innerHTML = procedureDetails[step] || '<em>No details available for this step.</em>';
+        }
+
+        function moveToStep(n) {
+            if (typeof n !== 'number' || n < 1) return;
+            // clamp to available steps (1..7)
+            const step = Math.max(1, Math.min(7, n));
+            // update visual chips
+            document.querySelectorAll('.procedure-step').forEach(chip => {
+                chip.classList.remove('active');
+            });
+            const chipEl = document.getElementById('step' + step);
+            if (chipEl) chipEl.classList.add('active');
+            // update currentStep state and visible task
+            currentStep = step;
+            updateCurrentTask();
+            // update guide panel content
+            showProcedureGuide(step);
+        }
+
+        // Auto-trigger recommended simulator control for a given step (called after moving to that step)
+        function autoTriggerForStep(step) {
+            try {
+                switch(step) {
+                    case 2: // Rinse burette — requires titrant selected
+                        if (experimentState.titrantSelected) {
+                            const btn = document.querySelector('button[onclick="rinseBurette()"]');
+                            if (btn && !btn.disabled) btn.click();
+                        } else {
+                            const sel = document.getElementById('titrant-select');
+                            if (sel) { sel.focus(); showFeedback(sel, 'Please choose a titrant before rinsing the burette', 1800); }
+                        }
+                        break;
+                    case 3: // Rinse pipette — ensure analyte selected
+                        if (experimentState.analyteSelected) {
+                            (function(){ const btn = document.querySelector('button[onclick="rinsePipette()"]'); if (btn && !btn.disabled) btn.click(); })();
+                        } else {
+                            const sel = document.getElementById('analyte-select'); if (sel) { sel.focus(); showFeedback(sel, 'Please choose an analyte (base) before rinsing the pipette.', 1800); }
+                        }
+                        break;
+                    case 4: // Fill burette — ensure burette rinsed
+                        if (experimentState.buretteRinsed) {
+                            const btn = document.querySelector('button[onclick="fillBurette()"]'); if (btn && !btn.disabled) btn.click();
+                        } else {
+                            const el = document.querySelector('button[onclick="rinseBurette()"]') || document.getElementById('burette');
+                            showFeedback(el || document.body, 'Rinse the burette first (select titrant and rinse).', 1800);
+                        }
+                        break;
+                    case 5: // Measure analyte — ensure analyte selected
+                        if (experimentState.analyteSelected) {
+                            (function(){ const btn = document.querySelector('button[onclick="measureAnalyte()"]'); if (btn && !btn.disabled) btn.click(); })();
+                        } else {
+                            const sel = document.getElementById('analyte-select'); if (sel) { sel.focus(); showFeedback(sel, 'Please choose an analyte (base) before measuring.', 1800); }
+                        }
+                        break;
+                    case 6: // Add indicator
+                        if (experimentState.indicatorSelected) {
+                            const btn = document.querySelector('button[onclick="addIndicator()"]'); if (btn && !btn.disabled) btn.click();
+                        } else {
+                            const sel = document.getElementById('indicator-select'); if (sel) { sel.focus(); showFeedback(sel, 'Please choose an indicator before adding it.', 1600); }
+                        }
+                        break;
+                    case 7: // Perform titration — focus Add Drop
+                        const addDropBtn = document.querySelector('button[onclick="addDrop()"]');
+                        if (addDropBtn) { addDropBtn.focus(); showFeedback(addDropBtn, 'Use "Add Drop" to dispense titrant. Swirl frequently.', 1400); }
+                        break;
+                    default:
+                        break;
+                }
+            } catch (e) { console.warn('autoTriggerForStep failed', e); }
+        }
+
+        // Bind click handlers for chips so users can jump to a step and see instructions
+        document.querySelectorAll('.procedure-step').forEach(chip => {
+            chip.addEventListener('click', (e) => {
+                const id = chip.id || '';
+                const m = id.match(/step(\d+)/);
+                if (m) {
+                    const s = parseInt(m[1], 10);
+                    moveToStep(s);
+                }
+            });
+        });
+
+        // initialize guide with step 1
+        showProcedureGuide(1);
+    // initialize active trial tracker based on next empty final column
+    try { setActiveTrial(getNextEmptyFinalCol() || 'rough'); } catch (e) { /* ignore */ }
+        // Restore auto-advance preference from localStorage
+        try {
+            const pref = localStorage.getItem('sim_auto_advance_steps');
+            const cb = document.getElementById('auto-advance-steps');
+            if (cb) {
+                cb.checked = pref === '1';
+                cb.addEventListener('change', (e) => {
+                    localStorage.setItem('sim_auto_advance_steps', e.target.checked ? '1' : '0');
+                });
+            }
+            const prefSkip = localStorage.getItem('sim_auto_proceed_immediate');
+            const cbSkip = document.getElementById('skip-popup-auto-proceed');
+            if (cbSkip) {
+                cbSkip.checked = prefSkip === '1';
+                cbSkip.addEventListener('change', (e) => {
+                    localStorage.setItem('sim_auto_proceed_immediate', e.target.checked ? '1' : '0');
+                });
+            }
+        } catch (e) { /* ignore storage errors */ }
+
+        // Hook up Submit Readings button
+        // Helper: compute used for a column index (rough,1,2,3)
+        function computeUsed(col) {
+            const init = document.getElementById('initial-' + col);
+            const fin = document.getElementById('final-' + col);
+            const used = document.getElementById('used-' + col);
+            if (!init || !fin || !used) return;
+            const iVal = parseFloat(init.value);
+            const fVal = parseFloat(fin.value);
+            if (!isNaN(iVal) && !isNaN(fVal)) {
+                const v = (fVal - iVal).toFixed(2);
+                used.value = v;
+            } else {
+                used.value = '';
+            }
+            computeAverage();
+        }
+
+        // Compute average from 1st,2nd,3rd used readings (ignore rough)
+        function computeAverage() {
+            const u1 = parseFloat(document.getElementById('used-1').value) || NaN;
+            const u2 = parseFloat(document.getElementById('used-2').value) || NaN;
+            const u3 = parseFloat(document.getElementById('used-3').value) || NaN;
+            const arr = [u1,u2,u3].filter(v => !isNaN(v));
+            const avgInput = document.getElementById('avg-volume');
+            if (arr.length === 0) {
+                if (avgInput) avgInput.value = '';
+                return;
+            }
+            const sum = arr.reduce((s,x) => s + x, 0);
+            if (avgInput) avgInput.value = (sum / arr.length).toFixed(2);
+        }
+
+        // Helper: return next empty final column key in order ['rough','1','2','3'] or null
+        function getNextEmptyFinalCol() {
+            const cols = ['rough','1','2','3'];
+            for (let c of cols) {
+                const fin = document.getElementById('final-' + c);
+                if (fin && (!fin.value || fin.value.trim() === '')) return c;
+            }
+            return null;
+        }
+
+        // Highlight next empty final column to guide the student
+        function highlightNextFinalCol() {
+            // clear previous highlights
+            ['rough','1','2','3'].forEach(c => {
+                const el = document.getElementById('final-' + c);
+                if (el) el.style.boxShadow = '';
+            });
+            const next = getNextEmptyFinalCol();
+            if (!next) return;
+            const el = document.getElementById('final-' + next);
+            if (el) {
+                el.style.boxShadow = '0 0 0 4px rgba(250, 204, 21, 0.25)';
+                try { el.focus(); } catch (e) {}
+            }
+        }
+
+        // Set the on-page active trial tracker (Rough / 1st / 2nd / 3rd)
+        function setActiveTrial(key) {
+            const labelMap = { rough: 'Rough', '1': '1st Reading', '2': '2nd Reading', '3': '3rd Reading' };
+            const labelEl = document.getElementById('trial-label');
+            const tracker = document.getElementById('trial-tracker');
+            const hint = document.getElementById('trial-hint');
+            if (labelEl) labelEl.textContent = labelMap[key] || '—';
+            if (tracker) {
+                // gentle visual cue depending on trial type
+                if (key === 'rough') {
+                    tracker.style.background = '#fff7ed'; // warm for rough
+                    tracker.style.borderColor = '#f59e0b';
+                } else {
+                    tracker.style.background = '#ecfeff'; // cool for accurate runs
+                    tracker.style.borderColor = '#10b981';
+                }
+            }
+            if (hint) {
+                hint.textContent = key === 'rough' ? 'Fill Rough first, then 1st → 2nd → 3rd' : 'Perform this accurate titration and record the final reading';
+            }
+        }
+
+        // Display the endpoint reading on the page (persistent until dismissed)
+        function displayEndpointReading(value, trialKey) {
+            try {
+                // remove existing endpoint display if present
+                const prev = document.getElementById('endpoint-display');
+                if (prev) prev.remove();
+
+                const tracker = document.getElementById('trial-tracker') || document.body;
+                const labelMap = { rough: 'Rough', '1': '1st Reading', '2': '2nd Reading', '3': '3rd Reading' };
+                const label = labelMap[trialKey] || 'Final';
+
+                const el = document.createElement('div');
+                el.id = 'endpoint-display';
+                el.className = 'endpoint-display rounded border p-2 text-sm bg-white shadow';
+                el.innerHTML = `<div style="display:flex;align-items:center;gap:0.5rem;">
+                    <div style="flex:1"><strong>Endpoint (${label}):</strong> <span id="endpoint-value">${value} cm³</span></div>
+                    <button aria-label="Dismiss endpoint" class="btn ghost" id="endpoint-dismiss">✕</button>
+                </div>`;
+
+                // Append to tracker area for visibility
+                try { tracker.appendChild(el); } catch (e) { document.body.appendChild(el); }
+
+                // Dismiss handler
+                const b = document.getElementById('endpoint-dismiss');
+                if (b) b.addEventListener('click', () => { try { el.remove(); } catch (e) {} });
+            } catch (e) { /* ignore display errors */ }
+        }
+
+        // Prepare for next titration trial: reset dispensed volume and guide the user to refill
+        function prepareForNextTrial() {
+            // reset dispensed counter for the next trial
+            cumulativeDispensed = 0.0;
+            // reset endpoint flag so flask colour changes will trigger again
+            experimentState.endpointReached = false;
+
+            // Determine if there are any remaining titrations to perform
+            const next = getNextEmptyFinalCol();
+            // If there are no remaining final columns (i.e. all trials recorded), disable repeat controls
+            if (!next) {
+                // Disable refill/measure/add controls to prevent further actions after 3rd titration
+                const selectors = [
+                    'button[onclick="rinseBurette()"]',
+                    'button[onclick="rinsePipette()"]',
+                    'button[onclick="fillBurette()"]',
+                    'button[onclick="measureAnalyte()"]',
+                    'button[onclick="addIndicator()"]',
+                    'button[onclick="addDrop()"]',
+                    'button[onclick="swirl()"]'
+                ];
+                selectors.forEach(sel => {
+                    const btn = document.querySelector(sel);
+                    if (btn) {
+                        try {
+                            btn.disabled = true;
+                            btn.classList.remove('bg-yellow-500','bg-yellow-600','bg-purple-600','bg-green-500','bg-pink-500');
+                            btn.classList.add('bg-gray-300','opacity-60','cursor-not-allowed');
+                        } catch (e) {}
+                    }
+                });
+
+                // Also disable indicator selector
+                const indSel = document.getElementById('indicator-select');
+                if (indSel) { indSel.disabled = true; indSel.classList.add('opacity-60','cursor-not-allowed'); }
+
+                // Mark in state that titrations are complete
+                experimentState.trialsCompleted = true;
+
+                // Inform the user that all titrations are complete and suggest submitting readings
+                const b = document.getElementById('burette');
+                showFeedback(b || document.body, 'All titrations completed (Rough, 1st, 2nd, 3rd). Controls disabled — click Submit Readings to compute volumes and average.', 4200);
+
+                // Highlight none and update tracker to blank
+                highlightNextFinalCol();
+                try { setActiveTrial(null); } catch (e) {}
+
+                // Move guide to final step (review/submit) for clarity
+                try { moveToStep(7); } catch (e) {}
+
+                return; // nothing more to prepare
+            }
+
+            // Otherwise, there are remaining titrations — re-enable controls needed for repeating the titration (refill + measure fresh analyte)
+            const fillBtn = document.querySelector('button[onclick="fillBurette()"]');
+            if (fillBtn) {
+                fillBtn.disabled = false;
+                fillBtn.classList.remove('bg-green-500','bg-gray-300','opacity-60','cursor-not-allowed');
+                fillBtn.classList.add('bg-yellow-600');
+                fillBtn.innerHTML = 'Fill Burette';
+            }
+
+            const measureBtn = document.querySelector('button[onclick="measureAnalyte()"]');
+            if (measureBtn) {
+                measureBtn.disabled = false;
+                measureBtn.classList.remove('bg-green-500','bg_gray-300','opacity-60','cursor-not-allowed');
+                measureBtn.classList.add('bg-purple-600');
+                measureBtn.innerHTML = 'Measure 25cm³';
+            }
+
+            // Re-enable the indicator control so the user can add indicator for the next titration
+            const indicatorBtn = document.querySelector('button[onclick="addIndicator()"]');
+            if (indicatorBtn) {
+                indicatorBtn.disabled = false;
+                indicatorBtn.classList.remove('bg-green-500','bg-gray-300','opacity-60','cursor-not-allowed');
+                indicatorBtn.classList.add('bg-pink-500');
+                indicatorBtn.innerHTML = 'Add Indicator';
+            }
+            // Re-enable the indicator selector so users can change or re-select if needed
+            const indSel2 = document.getElementById('indicator-select');
+            if (indSel2) {
+                indSel2.disabled = false;
+                indSel2.classList.remove('opacity-60','cursor-not-allowed');
+            }
+            // Mark indicator as not currently added for the new titration cycle
+            experimentState.indicatorAdded = false;
+
+            // guide the user by highlighting the next empty column and update tracker
+            highlightNextFinalCol();
+            try { setActiveTrial(getNextEmptyFinalCol()); } catch (e) {}
+
+            // suggest to user to refill the burette before repeating
+            const b2 = document.getElementById('burette');
+            showFeedback(b2 || document.body, 'Prepared for the next trial: refill the burette and measure fresh analyte before performing the next titration. Record the final reading in the highlighted column.', 3600);
+
+            // focus the Fill Burette button to make the next action obvious
+            try { if (fillBtn) fillBtn.focus(); } catch (e) {}
+
+            // Move the procedure guide back to step 4 (Fill burette) so the simulator
+            // allows filling the burette as the next action after a rough titration.
+            try { moveToStep(4); } catch (e) { /* fail silently if moveToStep not ready */ }
+        }
+
+        // Check if all final slots have values; if so, show instructions on what to put in each column
+        function checkAllTrialsFilled() {
+            const cols = ['rough','1','2','3'];
+            const allFilled = cols.every(c => {
+                const el = document.getElementById('final-' + c);
+                return el && el.value && el.value.trim() !== '';
+            });
+            if (allFilled) {
+                showTitrationColumnInstructions();
+            }
+        }
+
+        function showTitrationColumnInstructions() {
+            const msg = `You have final readings for Rough, 1st, 2nd and 3rd titrations.
+
+Please enter the corresponding INITIAL and FINAL burette readings for each trial:
+- Initial volume: the reading on the burette BEFORE you start the titration (record to 2 d.p.).
+- Final volume: the reading AFTER the colour change is observed and titration stopped (record to 2 d.p.).
+- Volume used: Final - Initial (the simulator will compute this when you click Submit Readings).
+
+Column guidance:
+- Rough: a preliminary titration to estimate the endpoint (coarse). Record its initial and final readings here.
+- 1st Reading, 2nd Reading, 3rd Reading: perform accurate titrations — take care with dropwise addition near the endpoint. These three are used to compute the average (ignore Rough for average).
+
+When you have entered the INITIAL and FINAL readings for each column, click "Submit Readings" to compute the volumes used and the average.`;
+            // Use existing modal helper to show instructions
+            const popup = showStepPopup(msg, { autoProceed: false, autoClose: false });
+            return popup;
+        }
+
+                // Attach listeners to final/initial inputs to auto-calc used and detect when all trials are recorded
+                ['rough','1','2','3'].forEach(col => {
+                    const fin = document.getElementById('final-' + col);
+                    const init = document.getElementById('initial-' + col);
+                    if (fin) fin.addEventListener('input', () => { computeUsed(col); checkAllTrialsFilled(); try { setActiveTrial(getNextEmptyFinalCol()); } catch(e) {} });
+                    if (init) init.addEventListener('input', () => { computeUsed(col); });
+                });
+
+        // Hook up Submit Readings button
+        document.getElementById('submit-readings').addEventListener('click', () => {
+            computeUsed('1'); computeUsed('2'); computeUsed('3');
+            computeAverage();
+            alert('Readings submitted. Average computed from 1st-3rd readings.');
+        });
+
+        // Handle task completion button
+        document.querySelector('#task-complete').addEventListener('click', () => {
+            if (currentStep === 4 || currentStep === 5 || currentStep === 6) {
+                experimentState.setupComplete = true;
+                moveToNextStep();
+            }
+        });
+
+        // Simulation controls binding (drop volume and endpoint volume)
+        const simDropInput = document.getElementById('sim-drop-volume');
+        const simEndpointInput = document.getElementById('sim-endpoint-volume');
+        if (simDropInput) {
+            simDropInput.addEventListener('input', (e) => {
+                const v = parseFloat(e.target.value);
+                if (!isNaN(v) && v > 0) dropVolume = v;
+            });
+        }
+        if (simEndpointInput) {
+            simEndpointInput.addEventListener('input', (e) => {
+                const v = parseFloat(e.target.value);
+                if (!isNaN(v) && v > 0) endpointVolume = v;
+            });
+        }
+    </script>
+
+    <style>
+/* Mode buttons */
+.mode-btn.active {
+    position: relative;
+}
+.mode-btn.active::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40%;
+    height: 3px;
+    background: currentColor;
+    border-radius: 2px;
+}
+
+/* Practice mode question styling */
+.practice-content {
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+.practice-content ul li,
+.practice-content ol li {
+    margin-bottom: 0.5rem;
+}
+
+  #cortex-ai-chat-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0;
+    border: none;
+    z-index: 1000;
+  }
+
+  #cortex-ai-chat-popup {
+    position: fixed;
+    bottom: 90px;
+    right: 20px;
+    width: 380px;
+    height: 500px;
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0px 4px 16px rgba(0,0,0,0.4);
+    display: none;
+    z-index: 1000;
+  }
+</style>
+
+<style>
+/* Titration / endpoint popup styling */
+.step-popup.titration {
+    --bg: linear-gradient(180deg,#ffefef,#ffdddd);
+}
+.step-popup.titration .popup-body {
+    background: #fff5f5; /* pale red */
+    border: 1px solid #fecaca; /* light red border */
+    padding: 0.6rem 0.8rem;
+    border-radius: 8px;
+    box-shadow: 0 8px 30px rgba(220,38,38,0.12);
+}
+.step-popup.titration .popup-body h3 { color: #b91c1c; }
+.step-popup.titration .popup-message { color: #7f1d1d; }
+.step-popup.titration .btn.primary { background:#dc2626; border-color:#b91c1c; }
+.step-popup.titration .btn.ghost { color:#7f1d1d; border-color:transparent; background:transparent; }
+.step-popup.titration.show { transform: translateY(0); }
+
+/* Compact container & positioning for titration popup */
+.step-popup.titration {
+    position: fixed;
+    top: 96px;
+    right: 20px;
+    width: 320px;
+    max-width: calc(100% - 40px);
+    z-index: 1200;
+    transform: translateY(-8px);
+    transition: transform .18s ease, opacity .18s ease;
+    opacity: 1;
+}
+.step-popup.titration .popup-actions { display:flex; gap:0.5rem; justify-content:flex-end; padding-top:0.4rem; }
+.step-popup.titration .popup-message { font-size:0.9rem; line-height:1.15; }
+</style>
+
+<div id="cortex-ai-chat-button" role="button" aria-label="Open Cortex AI chat">
+  <img src="cortex-ai.svg" alt="Cortex AI" class="cortex-icon" style="width:72px;height:72px;box-shadow:0 4px 16px rgba(0,0,0,0.20);border-radius:16px;transition:transform 0.18s cubic-bezier(.4,2,.6,1),box-shadow 0.18s;cursor:pointer;" onmouseover="this.style.transform='scale(1.12)';this.style.boxShadow='0 8px 32px rgba(0,0,0,0.28)';" onmouseout="this.style.transform='scale(1)';this.style.boxShadow='0 4px 16px rgba(0,0,0,0.20)';" onmousedown="this.style.transform='scale(0.96)';" onmouseup="this.style.transform='scale(1.12)';" />
+</div>
+
+<!-- Floating calculation widget removed: calculator is available in the header panel -->
+<iframe 
+  id="cortex-ai-chat-popup"  
+  src="https://app.edcafe.ai/chatbots/69071564fd623b831789af02">
+</iframe>
+
+<script>
+  const button = document.getElementById("cortex-ai-chat-button");
+  const popup = document.getElementById("cortex-ai-chat-popup");
+    button.addEventListener("click", () => {
+        popup.style.display = (popup.style.display === "none" || popup.style.display === "") 
+            ? "block" 
+            : "none";
+    });
+
+    // adjustCalcWidgetForCortex removed (no floating calc widget present)
+</script>
+<!-- Topic Quiz System -->
+<script src="/js/topic-quiz-loader.js"></script>
+<script src="/js/topic-quiz-injector.js"></script>
+</body>
+</html>

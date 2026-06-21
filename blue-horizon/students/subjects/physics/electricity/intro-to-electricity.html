@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Introduction to Electricity</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>body{font-family:Inter, sans-serif;background:#f8fafc}.card{backdrop-filter:blur(8px);background:rgba(255,255,255,0.95);border:1px solid rgba(0,0,0,0.04);}</style>
+</head>
+<body>
+  <header class="bg-white shadow-sm sticky top-0 z-40">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <a href="../index.html" class="text-gray-600 hover:text-gray-900"><i class="fas fa-arrow-left"></i></a>
+        <h1 id="topicTitle" class="text-lg font-semibold">Introduction to Electricity</h1>
+      </div>
+      <div class="flex items-center gap-4">
+        <div class="text-sm text-gray-600">Progress: <span id="progressPercent">0%</span></div>
+        <div class="w-40 h-2 bg-gray-200 rounded-full"><div id="progressBar" class="step-progress h-2 bg-blue-600 rounded-full" style="width:0%"></div></div>
+      </div>
+    </div>
+  </header>
+
+  <main class="pt-6 pb-16">
+    <div class="max-w-6xl mx-auto px-4 grid md:grid-cols-12 gap-6">
+      <aside class="md:col-span-3">
+        <div class="card p-4 rounded-lg sticky top-24">
+          <h3 class="font-semibold mb-3">Steps</h3>
+          <ul id="stepsList" class="space-y-2 text-sm text-gray-700"></ul>
+        </div>
+      </aside>
+
+      <section class="md:col-span-9 space-y-6">
+        <div class="card p-6 rounded-lg" id="stepContainer"></div>
+
+        <div class="card p-6 rounded-lg" id="resourcesContainer">
+          <h3 class="font-semibold mb-4">Resources</h3>
+          <div id="resourcesGrid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <div class="fixed bottom-0 left-0 right-0 bg-white border-t">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between">
+      <button id="prevStepBtn" class="text-gray-600 px-3 py-2 rounded disabled:opacity-50" disabled><i class="fas fa-chevron-left mr-1"></i>Previous</button>
+      <div class="flex gap-3">
+        <button id="startQuizBtn" class="px-3 py-2 bg-yellow-100 text-yellow-800 rounded">Take Quiz</button>
+        <button id="nextStepBtn" class="px-3 py-2 bg-blue-600 text-white rounded">Next <i class="fas fa-chevron-right ml-1"></i></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quiz Modal -->
+  <div id="quizModal" class="hidden fixed inset-0 z-50 bg-black bg-opacity-50 flex items-start justify-center p-6">
+    <div class="bg-white w-full max-w-2xl rounded-lg p-6">
+      <div class="flex justify-between items-center mb-4"><h3 class="font-semibold">Quick Quiz</h3><button id="closeQuiz" class="text-gray-600">&times;</button></div>
+      <div id="quizContent"></div>
+    </div>
+  </div>
+
+  <script>
+    // Page-specific data (rendered by the canonical runner below)
+    window.topicData = {
+      title: 'Introduction to Electricity',
+      steps: [
+        {
+          title: 'What is Electricity?',
+          content: [
+            `<h2 class="text-2xl font-semibold mb-3">What is Electricity?</h2>`,
+            `<p class="text-gray-700">Electricity is the movement of electric charge. It appears in nature (lightning) and can be produced to power devices. Key concepts: charge, current, voltage and resistance.</p>`
+          ],
+          resources: []
+        },
+        {
+          title: 'Current & Voltage',
+          content: [
+            `<h2 class="text-2xl font-semibold mb-3">Current & Voltage</h2>`,
+            `<p class="text-gray-700">Current (I) measures the flow of charge per second. Voltage (V) is the potential difference that drives current. A simple analogy: voltage is the push, current is the flow.</p>`,
+            `<div class="mt-4 bg-gray-50 p-4 rounded"><strong>Equation:</strong> V = I × R (Ohm\'s Law)</div>`
+          ]
+        },
+        {
+          title: 'Ohm\'s Law (Simulation)',
+          content: [
+            `<h2 class="text-2xl font-semibold mb-3">Ohm\'s Law — Interactive</h2>`,
+            `<p class="text-gray-700">Use the embedded simulator to change voltage and resistance and observe how current changes.</p>`,
+            `<div class="mt-4"><iframe src="../electricity/ohms-law_en.html" class="w-full h-72 border rounded" frameborder="0"></iframe></div>`
+          ]
+        },
+        {
+          title: 'Worked Example',
+          content: [
+            `<h2 class="text-2xl font-semibold mb-3">Worked Example</h2>`,
+            `<p class="text-gray-700">A resistor of 10 Ω is connected to a 5 V battery. Calculate the current.</p>`,
+            `<ol class="list-decimal pl-5 text-gray-700"><li>Use V = IR → I = V / R</li><li>Substitute: I = 5 / 10 = 0.5 A</li></ol>`
+          ]
+        },
+        {
+          title: 'Practice Problems',
+          content: [
+            `<h2 class="text-2xl font-semibold mb-3">Practice</h2>`,
+            `<ol class="list-decimal pl-5 text-gray-700"><li>Find current when V=12V and R=3Ω.</li><li>A device draws 2 A at 6 V. What is its resistance?</li></ol>`
+          ]
+        }
+      ],
+      resources: [
+        {type:'simulation', title:'Ohm\'s Law Simulator', description:'Interactive module', url:'../electricity/ohms-law_en.html'},
+        {type:'video', title:'Intro to Current & Voltage', description:'Short explainer', url:'https://www.youtube.com/embed/0fj1D8f2f0Q'}
+      ],
+      quiz: {
+        question: 'If V = 9 V and R = 3 Ω, what is the current?',
+        options: ['1 A','2 A','3 A','0.33 A'],
+        correct: 1,
+        explanation: 'I = V/R → 9/3 = 3 A (index 2).'
+      }
+    };
+
+    // Runner adapted from canonical template
+    const topic = window.topicData;
+    document.getElementById('topicTitle').textContent = topic.title || 'Topic';
+    const stepsList = document.getElementById('stepsList');
+    const stepContainer = document.getElementById('stepContainer');
+    const resourcesGrid = document.getElementById('resourcesGrid');
+    const progressBar = document.getElementById('progressBar');
+    const progressPercent = document.getElementById('progressPercent');
+    let currentIndex = 0;
+
+    function renderSteps(){
+      stepsList.innerHTML = '';
+      topic.steps.forEach((s,i)=>{
+        const a = document.createElement('a');
+        a.href = '#'; a.dataset.index = i; a.className = (i===0? 'block p-2 rounded bg-blue-50 text-blue-600':'block p-2 rounded hover:bg-gray-100 text-gray-700');
+        a.innerHTML = s.title; const li = document.createElement('li'); li.appendChild(a); stepsList.appendChild(li);
+      });
+    }
+
+    function showStep(i){
+      currentIndex = i; const s = topic.steps[i]; stepContainer.innerHTML = s ? s.content.join('\n') : '<p class="text-gray-700">No content.</p>';
+      const percent = topic.steps.length>1? Math.round((i/(topic.steps.length-1))*100):0; progressBar.style.width = percent + '%'; progressPercent.textContent = percent + '%';
+      document.querySelectorAll('#stepsList a').forEach(a=>a.classList.remove('bg-blue-50','text-blue-600'));
+      const active = document.querySelector(`#stepsList a[data-index="${i}"]`); if(active) active.classList.add('bg-blue-50','text-blue-600');
+    }
+
+    function renderResources(){
+      resourcesGrid.innerHTML = '';
+      (topic.resources||[]).forEach(r=>{const d=document.createElement('div');d.className='p-4 border rounded';d.innerHTML=`<h4 class="font-semibold text-sm mb-2">${r.title}</h4><p class="text-xs text-gray-600 mb-2">${r.description||''}</p>${r.type==='video'? `<iframe src="${r.url}" class="w-full h-32" frameborder="0"></iframe>`:`<a href="${r.url}" target="_blank" class="text-blue-600">Open</a>`}`;resourcesGrid.appendChild(d);});
+    }
+
+    document.addEventListener('click',(e)=>{
+      if(e.target.matches('#stepsList a')){e.preventDefault();showStep(Number(e.target.dataset.index));}
+      if(e.target.id==='nextStepBtn'){ if(currentIndex < topic.steps.length-1) showStep(currentIndex+1); }
+      if(e.target.id==='prevStepBtn'){ if(currentIndex>0) showStep(currentIndex-1); }
+      if(e.target.id==='startQuizBtn'){ document.getElementById('quizModal').classList.remove('hidden'); renderQuiz(); }
+      if(e.target.id==='closeQuiz'){ document.getElementById('quizModal').classList.add('hidden'); }
+    });
+
+    function renderQuiz(){
+      const q=topic.quiz; if(!q){ document.getElementById('quizContent').innerHTML='<p class="text-gray-700">No quiz set.</p>'; return; }
+      const html = [`<p class="font-semibold">${q.question}</p>`]; q.options.forEach((opt, idx)=> html.push(`<div class="mt-2"><button data-opt="${idx}" class="px-3 py-2 border rounded opt-btn">${opt}</button></div>`)); html.push('<div class="mt-4 text-sm text-gray-700" id="quizResult"></div>'); document.getElementById('quizContent').innerHTML = html.join('');
+      document.querySelectorAll('.opt-btn').forEach(b=> b.addEventListener('click', (ev)=>{ const picked=Number(ev.currentTarget.dataset.opt); const res=document.getElementById('quizResult'); if(picked===q.correct){ res.innerHTML=`<span class="text-green-700 font-semibold">Correct.</span> ${q.explanation||''}` } else { res.innerHTML=`<span class="text-red-700 font-semibold">Incorrect.</span> ${q.explanation||''}` } }));
+    }
+
+    renderSteps(); showStep(0); renderResources();
+  </script>
+<!-- Topic Quiz System -->
+<script src="/js/topic-quiz-loader.js"></script>
+<script src="/js/topic-quiz-injector.js"></script>
+</body>
+</html>
+
+            feedbackIcon.innerHTML = isCorrect 
+              ? `<i class="fas fa-check-circle text-green-500"></i>` 
+              : `<i class="fas fa-times-circle text-red-500"></i>`;
+            
+            if(isCorrect) {
+                input.disabled = true;
+                checkBtn.disabled = true;
+                input.classList.add('bg-green-50');
+            } else {
+                input.classList.add('bg-red-50');
+            }
+          });
+        });
+      }
+
+      // Independent Practice Quiz Logic
+      const checkIndependentBtn = document.getElementById('check-independent-answer');
+      if (checkIndependentBtn) {
+        checkIndependentBtn.addEventListener('click', () => {
+          const finalAnswerInput = document.getElementById('final-answer');
+          const feedbackDiv = document.getElementById('independent-feedback');
+          const userAnswer = finalAnswerInput.value.trim().replace(/\s+/g, '');
+          const correctAnswers = ["x=3,x=5", "x=5,x=3"];
+          
+          const isCorrect = correctAnswers.includes(userAnswer);
+
+          if (isCorrect) {
+            feedbackDiv.innerHTML = `<p class="text-green-600 font-semibold"><i class="fas fa-check-circle"></i> Correct! The roots are indeed x=3 and x=5.</p>`;
+            finalAnswerInput.classList.add('bg-green-50');
+            finalAnswerInput.disabled = true;
+          } else {
+            feedbackDiv.innerHTML = `<p class="text-red-600 font-semibold"><i class="fas fa-times-circle"></i> Not quite. Remember to find two numbers that multiply to +15 and add to -8. They should be -3 and -5.</p>`;
+            finalAnswerInput.classList.add('bg-red-50');
+          }
+        });
+      }
+
+      // Completing the Square Quiz Logic
+      const startQuizBtnSquare = document.getElementById('start-quiz-btn-square');
+      const quizContainerSquare = document.getElementById('quiz-container-square');
+      if (startQuizBtnSquare) {
+        startQuizBtnSquare.addEventListener('click', () => {
+          quizContainerSquare.classList.remove('hidden');
+          startQuizBtnSquare.classList.add('hidden');
+        });
+        const quizStepsSquare = quizContainerSquare.querySelectorAll('[data-step-square]');
+        const correctAnswersSquare = {
+          1: ["x²+4x=5", "x^2+4x=5"],
+          2: ["2²=4", "2^2=4", "4"],
+          3: ["x²+4x+4=5+4", "x^2+4x+4=5+4"],
+          4: ["(x+2)²=9", "(x+2)^2=9"],
+          5: ["x+2=±3", "x+2=+3", "x+2=-3", "x+2=3orx+2=-3", "x+2=3,x+2=-3"],
+          6: ["x=1,x=-5", "x=-5,x=1"]
+        };
+        quizStepsSquare.forEach(step => {
+          const checkBtn = step.querySelector('button');
+          const input = step.querySelector('input');
+          const feedbackIcon = step.querySelector('.feedback-icon');
+          const stepNum = step.dataset.stepSquare;
+          checkBtn.addEventListener('click', () => {
+            const userAnswer = input.value.trim().replace(/\s+/g, '');
+            const correctAnswer = correctAnswersSquare[stepNum];
+            let isCorrect = false;
+            if (Array.isArray(correctAnswer)) {
+              const normalizedCorrectAnswers = correctAnswer.map(ans => ans.replace(/\s+/g, ''));
+              isCorrect = normalizedCorrectAnswers.includes(userAnswer);
+            } else {
+              isCorrect = userAnswer === correctAnswer.replace(/\s+/g, '');
+            }
+            feedbackIcon.innerHTML = isCorrect 
+              ? `<i class="fas fa-check-circle text-green-500"></i>` 
+              : `<i class="fas fa-times-circle text-red-500"></i>`;
+            if(isCorrect) {
+                input.disabled = true;
+                checkBtn.disabled = true;
+                input.classList.add('bg-green-50');
+            } else {
+                input.classList.add('bg-red-50');
+            }
+          });
+        });
+      }
+      // Completing the Square Independent Practice
+      const checkIndependentBtnSquare = document.getElementById('check-independent-answer-square');
+      if (checkIndependentBtnSquare) {
+        checkIndependentBtnSquare.addEventListener('click', () => {
+          const finalAnswerInput = document.getElementById('final-answer-square');
+          const feedbackDiv = document.getElementById('independent-feedback-square');
+          const userAnswer = finalAnswerInput.value.trim().replace(/\s+/g, '');
+          const correctAnswers = ["x=-2,x=-8", "x=-8,x=-2"];
+          const isCorrect = correctAnswers.includes(userAnswer);
+          if (isCorrect) {
+            feedbackDiv.innerHTML = `<p class="text-green-600 font-semibold"><i class="fas fa-check-circle"></i> Correct! The roots are x = -2 and x = -8.</p>`;
+            finalAnswerInput.classList.add('bg-green-50');
+            finalAnswerInput.disabled = true;
+          } else {
+            feedbackDiv.innerHTML = `<p class="text-red-600 font-semibold"><i class="fas fa-times-circle"></i> Not quite. Remember to complete the square and solve for x.</p>`;
+            finalAnswerInput.classList.add('bg-red-50');
+          }
+        });
+      }
+      // Formula Quiz Logic
+      const startQuizBtnFormula = document.getElementById('start-quiz-btn-formula');
+      const quizContainerFormula = document.getElementById('quiz-container-formula');
+      if (startQuizBtnFormula) {
+        startQuizBtnFormula.addEventListener('click', () => {
+          quizContainerFormula.classList.remove('hidden');
+          startQuizBtnFormula.classList.add('hidden');
+        });
+        const quizStepsFormula = quizContainerFormula.querySelectorAll('[data-step-formula]');
+        const correctAnswersFormula = {
+          1: ["a=1,b=-2,c=-8", "a=1 b=-2 c=-8", "a=1,b=-2,c=-8"],
+          2: ["(-2)²-4*1*(-8)=36", "(-2)^2-4*1*-8=36", "4-(-32)=36", "4+32=36", "36"],
+          3: ["x=[2±sqrt(36)]/2", "x=[2±6]/2", "x=[2+6]/2,x=[2-6]/2"],
+          4: ["x=4,x=-2", "x=-2,x=4"]
+        };
+        quizStepsFormula.forEach(step => {
+          const checkBtn = step.querySelector('button');
+          const input = step.querySelector('input');
+          const feedbackIcon = step.querySelector('.feedback-icon');
+          const stepNum = step.dataset.stepFormula;
+          checkBtn.addEventListener('click', () => {
+            const userAnswer = input.value.trim().replace(/\s+/g, '');
+            const correctAnswer = correctAnswersFormula[stepNum];
+            let isCorrect = false;
+            if (Array.isArray(correctAnswer)) {
+              const normalizedCorrectAnswers = correctAnswer.map(ans => ans.replace(/\s+/g, ''));
+              isCorrect = normalizedCorrectAnswers.includes(userAnswer);
+            } else {
+              isCorrect = userAnswer === correctAnswer.replace(/\s+/g, '');
+            }
+            feedbackIcon.innerHTML = isCorrect 
+              ? `<i class="fas fa-check-circle text-green-500"></i>` 
+              : `<i class="fas fa-times-circle text-red-500"></i>`;
+            if(isCorrect) {
+                input.disabled = true;
+                checkBtn.disabled = true;
+                input.classList.add('bg-green-50');
+            } else {
+                input.classList.add('bg-red-50');
+            }
+          });
+        });
+      }
+      // Formula Independent Practice
+      const checkIndependentBtnFormula = document.getElementById('check-independent-answer-formula');
+      if (checkIndependentBtnFormula) {
+        checkIndependentBtnFormula.addEventListener('click', () => {
+          const finalAnswerInput = document.getElementById('final-answer-formula');
+          const feedbackDiv = document.getElementById('independent-feedback-formula');
+          const userAnswer = finalAnswerInput.value.trim().replace(/\s+/g, '');
+          const correctAnswers = ["x=2,x=-5", "x=-5,x=2"];
+          const isCorrect = correctAnswers.includes(userAnswer);
+          if (isCorrect) {
+            feedbackDiv.innerHTML = `<p class="text-green-600 font-semibold"><i class="fas fa-check-circle"></i> Correct! The roots are x = 2 and x = -5.</p>`;
+            finalAnswerInput.classList.add('bg-green-50');
+            finalAnswerInput.disabled = true;
+          } else {
+            feedbackDiv.innerHTML = `<p class="text-red-600 font-semibold"><i class="fas fa-times-circle"></i> Not quite. Remember to use the quadratic formula and solve for x.</p>`;
+            finalAnswerInput.classList.add('bg-red-50');
+          }
+        });
+      }
+    });
+  </script>
+  <style>
+    .sidebar li{
+      margin-bottom: 10px;
+    }
+    .sidebar a{
+      color: #acbff1;
+    }
+    .sidebar:hover{
+      color:blue;
+    }
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(30, 41, 59, 0.45);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-box {
+      background: #fff;
+      border-radius: 14px;
+      box-shadow: 0 4px 32px 0 rgba(99,102,241,0.13);
+      padding: 2rem 2.5rem 1.5rem 2.5rem;
+      min-width: 320px;
+      max-width: 90vw;
+      position: relative;
+      animation: modalIn 0.2s cubic-bezier(.4,0,.2,1);
+    }
+    @keyframes modalIn {
+      from { transform: translateY(40px) scale(0.97); opacity: 0; }
+      to { transform: none; opacity: 1; }
+    }
+    .modal-close {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: #6366f1;
+      cursor: pointer;
+    }
+    .modal-content {
+      margin-top: 1rem;
+      color: #444;
+    }
+  </style>
+    <!-- Topic Quiz System -->
+<script src="/js/topic-quiz-loader.js"></script>
+<script src="/js/topic-quiz-injector.js"></script>
+</body>
+</html>

@@ -1,0 +1,1329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matter - Learning Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @keyframes fade-in-up {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in-up { animation: fade-in-up 0.5s ease-out forwards; }
+        .step-progress { transition: width 0.3s ease-in-out; }
+        .resource-card { transition: transform 0.2s; }
+        .resource-card:hover { transform: translateY(-4px); }
+        .step-button.active { background-color: #EFF6FF; color: #2563EB; }
+        .quiz-option.selected { border-color: #2563EB; background-color: #EFF6FF; }
+        .quiz-option.correct { border-color: #16A34A; background-color: #F0FDF4; }
+        .quiz-option.incorrect { background-color: #fff5f5; border-color: #e53e3e; }
+        
+        /* Mode switcher styles */
+        #modeLearnBtn.active { background-color: #EFF6FF; color: #2563EB; }
+        #modeAIBtn { position: relative; cursor: not-allowed; opacity: 0.7; }
+
+        /* Mobile sidebar */
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 40;
+        }
+        .sidebar-overlay.show { display: block; }
+
+        /* Simulation container - larger size */
+        .simulation-container {
+            position: relative;
+            width: 100%;
+            height: 800px;
+            overflow: hidden;
+            border-radius: 8px;
+            background: #f9fafb;
+        }
+        .simulation-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Video container - responsive */
+        .video-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 8px;
+            background: #f9fafb;
+        }
+        .video-container iframe {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        @media (max-width: 768px) {
+            .desktop-sidebar { display: none; }
+            .mobile-sidebar {
+                position: fixed;
+                top: 0; left: -280px;
+                width: 280px;
+                height: 100%;
+                background: white;
+                z-index: 50;
+                transition: left 0.3s ease;
+                overflow-y: auto;
+                box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+            }
+            .mobile-sidebar.show { left: 0; }
+            .simulation-container { height: 400px; }
+            
+            /* Intro text mobile */
+            .intro-text {
+                padding: 0.875rem 1rem;
+                margin-bottom: 1rem;
+            }
+            .intro-text p {
+                font-size: 0.9375rem;
+                line-height: 1.5;
+            }
+            
+            /* Section card mobile */
+            .section-card {
+                padding: 1rem;
+                margin-bottom: 1rem;
+                border-radius: 8px;
+            }
+            
+            /* Click hint mobile */
+            .click-hint {
+                font-size: 0.8125rem;
+                margin-top: 12px;
+                padding: 8px 0;
+            }
+            .click-hint svg {
+                width: 14px;
+                height: 14px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .simulation-container { height: 320px; }
+            
+            .intro-text {
+                padding: 0.75rem;
+                margin-bottom: 0.75rem;
+                border-radius: 0 6px 6px 0;
+            }
+            .intro-text p {
+                font-size: 0.875rem;
+            }
+            
+            .section-card {
+                padding: 0.875rem;
+                margin-bottom: 0.875rem;
+            }
+            
+            .click-hint {
+                font-size: 0.75rem;
+                gap: 4px;
+            }
+            
+            /* Mode switcher on small screens */
+            #modeLearnBtn, #modeAIBtn {
+                padding: 0.5rem 0.75rem;
+                font-size: 0.8125rem;
+            }
+            #modeLearnBtn i, #modeAIBtn i {
+                display: none;
+            }
+            .coming-soon-badge {
+                font-size: 8px;
+                padding: 2px 6px;
+                margin-left: 4px;
+            }
+        }
+
+        /* General mobile improvements */
+        @media (max-width: 768px) {
+            /* Main content padding */
+            main {
+                padding-top: 4.5rem;
+                padding-bottom: 5rem;
+            }
+            
+            /* Step container */
+            #stepContainer {
+                padding: 1rem;
+                margin-bottom: 0.5rem;
+            }
+            
+            /* Resources section */
+            #resourcesContainer {
+                padding: 1rem;
+            }
+            #resourcesGrid {
+                gap: 0.75rem;
+            }
+            .resource-card {
+                padding: 0.875rem;
+            }
+            
+            /* Bottom navigation */
+            .fixed.bottom-0 {
+                padding: 0.5rem 0;
+            }
+            .fixed.bottom-0 button {
+                padding: 0.5rem 1rem;
+                font-size: 0.875rem;
+            }
+            
+            /* Header adjustments */
+            nav .text-xl {
+                font-size: 1rem;
+            }
+            
+            /* Grid layout mobile */
+            .grid.md\:grid-cols-2 {
+                gap: 0.75rem;
+            }
+            
+            /* Video container */
+            .video-container {
+                margin: 0 -0.5rem;
+                border-radius: 0;
+            }
+            
+            /* Typography adjustments */
+            .section-card h3 {
+                font-size: 1rem !important;
+                margin-bottom: 0.75rem !important;
+            }
+            .section-card p {
+                font-size: 0.875rem !important;
+            }
+            .section-card strong {
+                font-size: 0.9375rem;
+            }
+            
+            /* States of matter grid */
+            .section-card .grid {
+                gap: 0.5rem;
+            }
+            .section-card .grid > div {
+                padding: 0.75rem;
+            }
+            .section-card .grid > div p {
+                font-size: 0.8125rem;
+            }
+            
+            /* Lists */
+            .section-card ol, .section-card ul {
+                padding-left: 1.25rem;
+            }
+            .section-card li {
+                font-size: 0.875rem;
+                margin-bottom: 0.5rem;
+            }
+        }
+
+        /* Coming Soon Badge */
+        .coming-soon-badge {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+            font-size: 10px;
+            padding: 2px 8px;
+            border-radius: 9999px;
+            margin-left: 8px;
+            text-transform: uppercase;
+            font-weight: 600;
+            animation: pulse 2s infinite;
+            white-space: nowrap;
+            display: inline-block;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        /* Intro text styling */
+        .intro-text {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            border-left: 4px solid #3b82f6;
+            padding: 1rem 1.25rem;
+            border-radius: 0 8px 8px 0;
+            margin-bottom: 1.5rem;
+        }
+        .intro-text p {
+            color: #1e40af;
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        /* Continue button */
+        .continue-btn {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+            padding: 0.75rem 2rem;
+            border-radius: 9999px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.2s;
+            box-shadow: 0 4px 14px rgba(59, 130, 246, 0.4);
+        }
+        .continue-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.5);
+        }
+
+        /* Section card */
+        .section-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            border: 1px solid #e5e7eb;
+        }
+
+        /* Click to continue hint - simple gray style */
+        .click-hint {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            color: #9ca3af;
+            font-size: 0.875rem;
+            font-weight: 400;
+            cursor: pointer;
+            margin-top: 16px;
+        }
+        .click-hint svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        /* Content area cursor */
+        #stepContainer.clickable {
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Top Navigation -->
+    <nav class="bg-white shadow-sm fixed top-0 w-full z-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center">
+                    <button id="mobileMenuBtn" class="text-gray-600 hover:text-gray-900 mr-3 md:hidden" aria-label="Menu">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                    <h1 id="topicTitle" class="text-xl font-semibold text-gray-900">Matter</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="text-sm text-gray-600 hidden sm:block">
+                        Progress: <span id="progressPercent">0%</span>
+                    </div>
+                    <div class="w-24 sm:w-32 h-2 bg-gray-200 rounded-full">
+                        <div id="progressBar" class="step-progress h-2 bg-blue-500 rounded-full" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Sidebar Overlay -->
+    <div id="sidebarOverlay" class="sidebar-overlay"></div>
+
+    <!-- Mobile Sidebar -->
+    <div id="mobileSidebar" class="mobile-sidebar">
+        <div class="p-4">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="font-semibold text-lg">Learning Steps</h3>
+                <button id="closeSidebarBtn" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            <ul id="mobileStepsList" class="space-y-2"></ul>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="pt-20 pb-24">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-12 gap-6">
+                <!-- Left Sidebar - Steps (Desktop) -->
+                <div class="md:col-span-3 desktop-sidebar">
+                    <div class="bg-white rounded-lg shadow-sm p-4 sticky top-20">
+                        <h3 class="font-semibold mb-4">Learning Steps</h3>
+                        <ul id="stepsList" class="space-y-2"></ul>
+                    </div>
+                </div>
+
+                <!-- Main Content Area -->
+                <div class="md:col-span-9">
+                    <!-- Mode Switcher -->
+                    <div class="bg-white rounded-lg shadow-sm p-4 mb-6">
+                        <div class="flex space-x-4">
+                            <button id="modeLearnBtn" class="flex-1 px-4 py-2 rounded-lg font-medium transition-all duration-200 active bg-blue-50 text-blue-600 hover:bg-blue-50">
+                                <i class="fas fa-book mr-2"></i>Learn Yourself
+                            </button>
+                            <button id="modeAIBtn" class="flex-1 px-4 py-2 rounded-lg font-medium transition-all duration-200 text-gray-600 relative whitespace-nowrap" title="Coming Soon">
+                                <i class="fas fa-robot mr-2"></i>AI-Powered Learning
+                                <span class="coming-soon-badge">Coming Soon</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Current Step Content -->
+                    <div id="stepContainer" class="bg-white rounded-lg shadow-sm p-6 mb-6"></div>
+
+                    <!-- Resources Section -->
+                    <div id="resourcesContainer" class="bg-white rounded-lg shadow-sm p-6">
+                        <h3 class="text-lg font-semibold mb-4">Resources</h3>
+                        <div id="resourcesGrid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Bottom Navigation -->
+    <div class="fixed bottom-0 w-full bg-white border-t border-gray-200 z-40">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between py-4">
+                <button id="prevStepBtn" class="px-4 py-2 text-gray-600 hover:text-gray-900 disabled:opacity-50 disabled:cursor-not-allowed">
+                    <i class="fas fa-chevron-left mr-2"></i>Previous
+                </button>
+                <button id="nextStepBtn" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed">
+                    Continue<i class="fas fa-chevron-right ml-2"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Resource Modal -->
+    <div id="resourceModal" class="hidden fixed inset-0 bg-gray-800 bg-opacity-75 overflow-y-auto h-full w-full z-50 flex items-center justify-center p-4">
+        <div class="relative mx-auto p-5 border w-full max-w-5xl shadow-lg rounded-md bg-white">
+            <div class="flex justify-between items-center pb-3 border-b">
+                <h3 id="resourceModalTitle" class="text-xl font-semibold">Resource</h3>
+                <button id="closeResourceModal" class="text-gray-600 hover:text-gray-900 text-2xl font-bold">&times;</button>
+            </div>
+            <div id="resourceModalContent" class="mt-4"></div>
+        </div>
+    </div>
+
+    <!-- Quiz Modal -->
+    <div id="quizModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50 p-4">
+        <div class="relative top-10 md:top-20 mx-auto p-5 border w-full max-w-2xl shadow-lg rounded-md bg-white">
+            <div id="quizContent" class="p-4 md:p-6"></div>
+        </div>
+    </div>
+
+    <script>
+        let currentStepIndex = 0;
+        let currentChunkIndex = 0;
+        let stepsCompleted = [];
+
+        const topicData = {
+            title: "The Nature of Matter",
+            steps: [
+                {
+                    id: "definition",
+                    title: "What is Matter?",
+                    type: "note",
+                    chunks: [
+                        {
+                            intro: "Let's start with a fundamental question: What exactly is matter? This is the foundation of everything we'll learn in this topic.",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-atom text-blue-500 mr-3"></i>What is Matter?
+                                    </h3>
+                                    <p class="text-gray-700 leading-relaxed">Matter is anything that has <strong>mass</strong> and <strong>occupies space</strong>. Everything you can see, touch, or feel physically is made of matter. It's built from tiny particles called atoms, and when these atoms bond, they form molecules — the building blocks of everything in the universe.</p>
+                                </div>
+                            `
+                        },
+                        {
+                            intro: "Great! Now that you understand what matter is, let's explore the four basic states in which matter can exist. Each state has unique characteristics based on how the particles are arranged.",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-layer-group text-blue-500 mr-3"></i>The Four Basic States of Matter
+                                    </h3>
+                                    <p class="text-gray-700 mb-4">Matter can exist in different states depending on the arrangement and energy of its particles:</p>
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div class="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-500">
+                                            <strong class="text-blue-600 text-lg">1. Solid</strong>
+                                            <p class="text-gray-700 mt-2">Particles are tightly packed and vibrate in place. Cohesive forces are very strong. Examples: ice, rock, metal.</p>
+                                        </div>
+                                        <div class="bg-cyan-50 p-4 rounded-lg border-l-4 border-cyan-500">
+                                            <strong class="text-cyan-600 text-lg">2. Liquid</strong>
+                                            <p class="text-gray-700 mt-2">Particles are loosely packed and can slide past one another. Cohesive force is weaker. Examples: water, oil, mercury.</p>
+                                        </div>
+                                        <div class="bg-gray-100 p-4 rounded-lg border-l-4 border-gray-500">
+                                            <strong class="text-gray-600 text-lg">3. Gas</strong>
+                                            <p class="text-gray-700 mt-2">Particles are far apart and move freely. Cohesive force is very weak. Examples: air, steam, helium.</p>
+                                        </div>
+                                        <div class="bg-orange-50 p-4 rounded-lg border-l-4 border-orange-500">
+                                            <strong class="text-orange-600 text-lg">4. Plasma</strong>
+                                            <p class="text-gray-700 mt-2">A hot, ionized gas where atoms break apart into ions and electrons. Examples: the sun, lightning, neon signs.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            `
+                        },
+                        {
+                            intro: "The best way to understand states of matter is to see them in action! This interactive simulation lets you explore how particles behave differently in solids, liquids, and gases. Try heating and cooling the substance to see the changes!",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-laptop-code text-blue-500 mr-3"></i>Interactive Simulation
+                                    </h3>
+                                    <p class="text-gray-700 mb-4">Explore how particles behave in different states of matter. Change the temperature and see what happens!</p>
+                                    <div class="bg-gray-50 p-4 rounded-lg border">
+                                        <div class="simulation-container">
+                                            <iframe src="https://phet.colorado.edu/sims/html/states-of-matter-basics/latest/states-of-matter-basics_en.html"></iframe>
+                                        </div>
+                                    </div>
+                                </div>
+                            `
+                        },
+                        {
+                            intro: "Now let's watch a video that explains these concepts in more detail. This will help reinforce what you've learned from the simulation.",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-play-circle text-blue-500 mr-3"></i>Video Explanation
+                                    </h3>
+                                    <div class="bg-gray-50 p-4 rounded-lg border">
+                                        <div class="video-container">
+                                            <iframe src="https://www.youtube.com/embed/ELchwUIlWa8" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                        </div>
+                                    </div>
+                                </div>
+                            `
+                        },
+                        {
+                            intro: "Before we move on, let's think critically about what we've learned. Here's an interesting question to ponder...",
+                            content: `
+                                <div class="bg-yellow-50 border-l-4 border-yellow-500 p-5 rounded-r-lg">
+                                    <h4 class="font-semibold mb-2 text-lg"><i class="fas fa-lightbulb text-yellow-600 mr-2"></i>Critical Thinking: Is Light a Form of Matter?</h4>
+                                    <p class="text-gray-700">To qualify as matter, something must have mass. Light has no mass. Therefore, <strong>light is not matter</strong>. Instead, light is a form of energy (electromagnetic radiation).</p>
+                                    <p class="text-gray-600 mt-3 text-sm">This distinction is important in physics — not everything in the universe is matter!</p>
+                                </div>
+                            `
+                        }
+                    ],
+                    resources: [
+                        { type: "video", title: "Introduction to Matter", description: "A 5-min overview.", url: "https://www.youtube.com/embed/k3rNqH5n-fA" },
+                        { type: "simulation", title: "States of Matter Lab", description: "Interactive particle simulation.", url: "https://phet.colorado.edu/sims/html/states-of-matter-basics/latest/states-of-matter-basics_en.html" }
+                    ],
+                    quiz: {
+                        question: "Which of the following is a required property for something to be considered matter?",
+                        options: ["It must be visible", "It must have mass", "It must be a solid", "It must contain water"],
+                        correct: 1,
+                        explanation: "The definition of matter is anything that has mass and occupies space. Visibility is not a requirement."
+                    }
+                },
+                {
+                    id: "kinetic-theory",
+                    title: "Kinetic Theory of Matter",
+                    type: "note",
+                    chunks: [
+                        {
+                            intro: "Now that we know what matter is, let's understand HOW particles in matter behave. The Kinetic Theory is the key to explaining many phenomena we observe in everyday life!",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-atom text-blue-500 mr-3"></i>The Kinetic Theory of Matter
+                                    </h3>
+                                    <p class="mb-4 text-gray-700">The Kinetic Theory explains how particles behave in all forms of matter. Understanding this theory helps us explain many phenomena we observe in everyday life.</p>
+                                </div>
+                            `
+                        },
+                        {
+                            intro: "Here are the six key principles of the Kinetic Theory. Take your time to understand each one — they all connect to explain how matter behaves!",
+                            content: `
+                                <div class="section-card">
+                                    <div class="bg-blue-50 p-5 rounded-lg">
+                                        <h4 class="font-semibold mb-4 text-blue-800 text-lg">Key Principles of Kinetic Theory:</h4>
+                                        <ol class="list-decimal pl-6 space-y-3 text-gray-700">
+                                            <li><strong>All matter is made up of tiny particles</strong> (atoms or molecules).</li>
+                                            <li>These particles are in <strong>constant, random motion</strong>.</li>
+                                            <li>They collide with each other and with the walls of their container, <strong>creating pressure</strong>.</li>
+                                            <li>There are <strong>spaces between the particles</strong>. These spaces increase when matter is heated, leading to expansion.</li>
+                                            <li>Forces of attraction, called <strong>cohesive forces</strong>, exist between the particles.</li>
+                                            <li>The <strong>temperature</strong> of matter is a measure of the average kinetic energy of its particles. Higher temperature means higher kinetic energy and faster movement.</li>
+                                        </ol>
+                                    </div>
+                                </div>
+                            `
+                        },
+                        {
+                            intro: "Let's watch a video that brings the Kinetic Theory to life with visual demonstrations.",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-play-circle text-blue-500 mr-3"></i>Video Explanation
+                                    </h3>
+                                    <div class="bg-gray-50 p-4 rounded-lg border">
+                                        <div class="video-container">
+                                            <iframe src="https://www.youtube.com/embed/1Rxx4p22X-g" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                        </div>
+                                    </div>
+                                </div>
+                            `
+                        },
+                        {
+                            intro: "Here's an important concept to remember as we continue our journey through matter...",
+                            content: `
+                                <div class="bg-green-50 border-l-4 border-green-500 p-5 rounded-r-lg">
+                                    <h4 class="font-semibold mb-2 text-lg"><i class="fas fa-info-circle text-green-600 mr-2"></i>Remember</h4>
+                                    <p class="text-gray-700">The kinetic energy of particles is directly related to temperature. When you heat a substance, you're giving the particles more energy to move faster!</p>
+                                </div>
+                            `
+                        }
+                    ],
+                    resources: [
+                        { type: "video", title: "Kinetic Theory Explained", description: "Visualizing particle motion.", url: "https://www.youtube.com/embed/8-i_gH4_y6s" }
+                    ],
+                    quiz: {
+                        question: "According to the Kinetic Theory, what is temperature a measure of?",
+                        options: ["The number of particles", "The space between particles", "The average kinetic energy of particles", "The cohesive force"],
+                        correct: 2,
+                        explanation: "Temperature is directly proportional to the average kinetic energy of the particles. Hotter particles move faster."
+                    }
+                },
+                {
+                    id: "state-changes",
+                    title: "How Matter Changes State",
+                    type: "note",
+                    chunks: [
+                        {
+                            intro: "Have you ever wondered how ice melts into water, or how water boils into steam? Let's explore the fascinating process of how matter transforms from one state to another!",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-sync-alt text-blue-500 mr-3"></i>From Solid to Plasma
+                                    </h3>
+                                    <p class="mb-4 text-gray-700">Matter can transform from one state to another when energy is added or removed. These transformations happen because of changes in the kinetic energy of particles, which affects their cohesive forces.</p>
+                                </div>
+                            `
+                        },
+                        {
+                            intro: "Let's look at the three main transformations step by step. Pay attention to what happens to the particles in each case!",
+                            content: `
+                                <div class="section-card">
+                                    <ol class="relative border-l-4 border-blue-300 space-y-6 pl-6">
+                                        <li class="ml-4">
+                                            <div class="absolute w-4 h-4 bg-blue-500 rounded-full -left-2 border-4 border-white shadow"></div>
+                                            <h4 class="font-semibold text-lg text-blue-700">Solid to Liquid (Melting)</h4>
+                                            <p class="text-gray-700 mt-2">When heat is applied to a solid, particles gain kinetic energy and vibrate more. This weakens the cohesive forces, allowing the solid to melt into a liquid. The temperature at which this happens is called the <strong>melting point</strong>.</p>
+                                        </li>
+                                        <li class="ml-4">
+                                            <div class="absolute w-4 h-4 bg-cyan-500 rounded-full -left-2 border-4 border-white shadow"></div>
+                                            <h4 class="font-semibold text-lg text-cyan-700">Liquid to Gas (Vaporization)</h4>
+                                            <p class="text-gray-700 mt-2">With more heat, particles in a liquid move faster, breaking the remaining cohesive forces. The liquid turns into a gas, where particles move freely. This can happen through <strong>evaporation</strong> (at the surface) or <strong>boiling</strong> (throughout the liquid).</p>
+                                        </li>
+                                        <li class="ml-4">
+                                            <div class="absolute w-4 h-4 bg-orange-500 rounded-full -left-2 border-4 border-white shadow"></div>
+                                            <h4 class="font-semibold text-lg text-orange-700">Gas to Plasma</h4>
+                                            <p class="text-gray-700 mt-2">At very high temperatures, the heat is so intense that it breaks the atoms themselves. Electrons are stripped away, creating a hot, ionized gas called <strong>plasma</strong>. This is what stars are made of!</p>
+                                        </li>
+                                    </ol>
+                                </div>
+                            `
+                        },
+                        {
+                            intro: "Now it's your turn to experiment! This simulator lets you add or remove heat and watch matter transform between states. Try it out!",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-laptop-code text-blue-500 mr-3"></i>Phase Change Simulator
+                                    </h3>
+                                    <p class="text-gray-700 mb-4">Experiment with adding or removing heat to see how matter transforms between states:</p>
+                                    <div class="bg-gray-50 p-4 rounded-lg border">
+                                        <div class="simulation-container">
+                                            <iframe src="https://phet.colorado.edu/sims/html/states-of-matter/latest/states-of-matter_en.html"></iframe>
+                                        </div>
+                                    </div>
+                                </div>
+                            `
+                        }
+                    ],
+                    resources: [
+                        { type: "simulation", title: "Phase Change Simulator", description: "Add or remove heat to see what happens.", url: "https://phet.colorado.edu/sims/html/states-of-matter/latest/states-of-matter_en.html" }
+                    ],
+                    quiz: {
+                        question: "What is the primary effect of adding heat to a substance?",
+                        options: ["It increases cohesive forces", "It increases the kinetic energy of particles", "It makes the substance heavier", "It creates new atoms"],
+                        correct: 1,
+                        explanation: "Adding heat increases the thermal energy, which translates to higher kinetic energy, causing particles to move faster."
+                    }
+                },
+                {
+                    id: "forces",
+                    title: "Cohesion and Adhesion",
+                    type: "note",
+                    chunks: [
+                        {
+                            intro: "Have you ever wondered why water droplets stick together, or why some liquids form beads while others spread out? The answer lies in two important forces: cohesion and adhesion!",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-hand-holding-water text-blue-500 mr-3"></i>Forces of Attraction
+                                    </h3>
+                                    <p class="mb-4 text-gray-700">Have you ever wondered why water droplets stick together, or why some liquids form beads while others spread out? The answer lies in two important forces: <strong>cohesion</strong> and <strong>adhesion</strong>.</p>
+                                </div>
+                            `
+                        },
+                        {
+                            intro: "Let's understand these two forces side by side. They might sound similar, but they have very different effects!",
+                            content: `
+                                <div class="section-card">
+                                    <div class="grid md:grid-cols-2 gap-6">
+                                        <div class="bg-blue-50 p-5 rounded-lg border-2 border-blue-200">
+                                            <div class="flex items-center mb-3">
+                                                <i class="fas fa-circle-notch text-blue-500 text-2xl mr-3"></i>
+                                                <h4 class="font-semibold text-xl text-blue-700">Cohesion</h4>
+                                            </div>
+                                            <p class="text-gray-700">The force of attraction between molecules of the <strong>same substance</strong>.</p>
+                                            <div class="bg-white p-3 mt-3 rounded-lg">
+                                                <p class="text-sm text-gray-600"><strong>Analogy:</strong> "Self-love" — molecules loving themselves so much they stick together.</p>
+                                                <p class="text-sm text-blue-600 mt-2"><strong>Example:</strong> Mercury forms beads because its atoms are strongly attracted to each other.</p>
+                                            </div>
+                                        </div>
+                                        <div class="bg-green-50 p-5 rounded-lg border-2 border-green-200">
+                                            <div class="flex items-center mb-3">
+                                                <i class="fas fa-link text-green-500 text-2xl mr-3"></i>
+                                                <h4 class="font-semibold text-xl text-green-700">Adhesion</h4>
+                                            </div>
+                                            <p class="text-gray-700">The force of attraction between molecules of <strong>different substances</strong>.</p>
+                                            <div class="bg-white p-3 mt-3 rounded-lg">
+                                                <p class="text-sm text-gray-600"><strong>Analogy:</strong> "Love for others" — molecules preferring to stick to different surfaces.</p>
+                                                <p class="text-sm text-green-600 mt-2"><strong>Example:</strong> Water spreads on glass because it's attracted to the glass surface.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            `
+                        },
+                        {
+                            intro: "Here's a classic comparison: Why does water wet glass, but mercury doesn't? The answer shows us cohesion and adhesion in action!",
+                            content: `
+                                <div class="section-card">
+                                    <div class="bg-purple-50 p-5 rounded-lg">
+                                        <h4 class="font-semibold text-lg mb-3 text-purple-800"><i class="fas fa-question-circle mr-2"></i>Why does water wet glass, but mercury doesn't?</h4>
+                                        <div class="grid md:grid-cols-2 gap-4">
+                                            <div class="bg-white p-4 rounded-lg">
+                                                <p class="font-semibold text-blue-600">Water:</p>
+                                                <p class="text-gray-700 text-sm mt-1">Has <strong>weak cohesion</strong> but <strong>strong adhesion</strong>. Its molecules are more attracted to the glass than to each other, so it spreads out and "wets" the glass.</p>
+                                            </div>
+                                            <div class="bg-white p-4 rounded-lg">
+                                                <p class="font-semibold text-gray-600">Mercury:</p>
+                                                <p class="text-gray-700 text-sm mt-1">Has <strong>extremely strong cohesion</strong> but <strong>weak adhesion</strong>. Its atoms are so strongly attracted to each other that they pull inward, forming beads.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            `
+                        },
+                        {
+                            intro: "Let's watch a video demonstration that shows these forces in action with real experiments!",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-play-circle text-blue-500 mr-3"></i>Video Demonstration
+                                    </h3>
+                                    <div class="bg-gray-50 p-4 rounded-lg border">
+                                        <div class="video-container">
+                                            <iframe src="https://www.youtube.com/embed/0e-f-0L246I" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                        </div>
+                                    </div>
+                                </div>
+                            `
+                        }
+                    ],
+                    resources: [
+                        { type: "video", title: "Cohesion vs. Adhesion", description: "See examples with water and mercury.", url: "https://www.youtube.com/embed/lRssY6n_e3E" }
+                    ],
+                    quiz: {
+                        question: "A drop of mercury forms a bead on a surface because it has:",
+                        options: ["High adhesion, low cohesion", "High adhesion, high cohesion", "Low adhesion, high cohesion", "Low adhesion, low cohesion"],
+                        correct: 2,
+                        explanation: "Mercury's strong cohesive forces pull its atoms tightly together, overcoming the weak adhesive forces with the surface."
+                    }
+                },
+                {
+                    id: "surface-tension",
+                    title: "Surface Tension",
+                    type: "note",
+                    chunks: [
+                        {
+                            intro: "Have you ever seen a water strider gliding effortlessly across a pond? Or noticed how small metal paper clips can float on water? The secret behind these amazing feats is surface tension!",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-water text-blue-500 mr-3"></i>Surface Tension
+                                    </h3>
+                                    <p class="mb-4 text-gray-700">Have you ever seen a water strider gliding effortlessly across a pond? Or noticed how small metal paper clips can float on water? The secret behind these amazing feats is <strong>surface tension</strong>.</p>
+                                </div>
+                            `
+                        },
+                        {
+                            intro: "Let's understand what surface tension really is and how it works at the molecular level.",
+                            content: `
+                                <div class="section-card">
+                                    <div class="bg-blue-50 border-l-4 border-blue-500 p-5 rounded-r-lg mb-6">
+                                        <h4 class="font-semibold mb-2 text-blue-800 text-lg">Definition</h4>
+                                        <p class="text-gray-700">Surface tension is a property of liquids where the surface acts like a thin, stretched elastic skin. It's caused by the <strong>cohesive forces</strong> between liquid molecules. At the surface, molecules are pulled inwards by their neighbors, creating a tight film.</p>
+                                    </div>
+                                    <div class="bg-gray-50 p-5 rounded-lg">
+                                        <h4 class="font-semibold mb-3"><i class="fas fa-cogs text-gray-600 mr-2"></i>How It Works:</h4>
+                                        <p class="text-gray-700">Molecules inside the liquid are pulled equally in all directions. However, molecules at the surface have no molecules above them, so they are pulled more strongly <strong>inwards and sideways</strong> by their neighbors. This inward pull creates tension and minimizes the surface area.</p>
+                                    </div>
+                                </div>
+                            `
+                        },
+                        {
+                            intro: "Let's watch surface tension in action with some fascinating demonstrations!",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-play-circle text-blue-500 mr-3"></i>Video Demonstration
+                                    </h3>
+                                    <div class="bg-gray-50 p-4 rounded-lg border">
+                                        <div class="video-container">
+                                            <iframe src="https://www.youtube.com/embed/o_p_x22S5-I" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                        </div>
+                                    </div>
+                                </div>
+                            `
+                        },
+                        {
+                            intro: "Here's a fun fact about surface tension that you might find surprising!",
+                            content: `
+                                <div class="bg-yellow-50 border-l-4 border-yellow-500 p-5 rounded-r-lg">
+                                    <h4 class="font-semibold mb-2 text-lg"><i class="fas fa-lightbulb text-yellow-600 mr-2"></i>Did You Know?</h4>
+                                    <p class="text-gray-700">Surface tension is also why soap bubbles form perfect spheres! A sphere has the smallest possible surface area for a given volume, so the surface tension pulls the bubble into this shape to minimize its surface energy.</p>
+                                </div>
+                            `
+                        }
+                    ],
+                    resources: [
+                        { type: "video", title: "Insects Walking on Water", description: "Slow-motion video of surface tension in action.", url: "https://www.youtube.com/embed/ZdqB-2v2YyY" }
+                    ],
+                    quiz: {
+                        question: "Surface tension is primarily caused by:",
+                        options: ["Adhesive forces", "Gravity", "Kinetic energy", "Cohesive forces"],
+                        correct: 3,
+                        explanation: "The cohesive forces between liquid molecules, especially the inward pull on surface molecules, create surface tension."
+                    }
+                },
+                {
+                    id: "capillarity",
+                    title: "Capillarity & Meniscus",
+                    type: "note",
+                    chunks: [
+                        {
+                            intro: "Have you ever wondered how plants drink water through their roots and stems? Or why paper towels can soak up spills? The answer is capillarity — a fascinating process where liquids can climb up or sink down in narrow spaces!",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-arrow-up text-blue-500 mr-3"></i>Capillarity (Capillary Action)
+                                    </h3>
+                                    <p class="mb-4 text-gray-700">Have you ever wondered how plants drink water through their roots and stems? Or why paper towels can soak up spills? The answer is <strong>capillarity</strong> — a fascinating process where liquids can climb up or sink down in narrow spaces.</p>
+                                </div>
+                            `
+                        },
+                        {
+                            intro: "Let's understand how capillarity works. It's the result of adhesion, cohesion, and surface tension working together!",
+                            content: `
+                                <div class="section-card">
+                                    <div class="bg-blue-50 p-5 rounded-lg">
+                                        <h4 class="font-semibold mb-3 text-blue-800 text-lg">How Capillarity Works:</h4>
+                                        <p class="text-gray-700 mb-4">Capillarity is the result of the combined powers of <strong>adhesion, cohesion, and surface tension</strong>. When a narrow tube is placed in a liquid:</p>
+                                        <div class="grid md:grid-cols-2 gap-4">
+                                            <div class="bg-white p-4 rounded-lg">
+                                                <p class="font-semibold text-blue-600"><i class="fas fa-arrow-up mr-2"></i>Rise (e.g., Water)</p>
+                                                <p class="text-gray-700 text-sm mt-1">If <strong>adhesion is stronger than cohesion</strong>, the liquid is pulled up the walls of the tube. Water climbs up a paper towel because its adhesion to the fibers is strong.</p>
+                                            </div>
+                                            <div class="bg-white p-4 rounded-lg">
+                                                <p class="font-semibold text-gray-600"><i class="fas fa-arrow-down mr-2"></i>Fall (e.g., Mercury)</p>
+                                                <p class="text-gray-700 text-sm mt-1">If <strong>cohesion is stronger than adhesion</strong>, the liquid pulls itself inward and the level in the tube falls below the outside level.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            `
+                        },
+                        {
+                            intro: "Let's watch capillary action in action! This video shows some amazing demonstrations.",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-play-circle text-blue-500 mr-3"></i>Watch Capillary Action
+                                    </h3>
+                                    <div class="bg-gray-50 p-4 rounded-lg border">
+                                        <div class="video-container">
+                                            <iframe src="https://www.youtube.com/embed/CT3dG9-48W8" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                        </div>
+                                    </div>
+                                </div>
+                            `
+                        },
+                        {
+                            intro: "Now let's learn about the meniscus — the curve you see at the surface of liquids in tubes. This is very important for reading measurements in chemistry labs!",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-tint text-blue-500 mr-3"></i>The Meniscus
+                                    </h3>
+                                    <p class="mb-4 text-gray-700">The meniscus is the curve in the upper surface of a liquid in a tube. The shape depends on the balance between cohesion and adhesion:</p>
+                                    <div class="grid md:grid-cols-2 gap-6">
+                                        <div class="bg-green-50 p-5 rounded-lg border-2 border-green-200">
+                                            <h4 class="font-semibold text-lg text-green-700"><i class="fas fa-smile mr-2"></i>Concave Meniscus (Water)</h4>
+                                            <p class="text-gray-700 mt-2">Curves <strong>downward</strong> (like a smile). Adhesion is stronger, pulling the liquid up at the edges.</p>
+                                            <div class="bg-white p-2 mt-3 rounded text-center">
+                                                <span class="text-4xl">⌒</span>
+                                            </div>
+                                        </div>
+                                        <div class="bg-red-50 p-5 rounded-lg border-2 border-red-200">
+                                            <h4 class="font-semibold text-lg text-red-700"><i class="fas fa-frown mr-2"></i>Convex Meniscus (Mercury)</h4>
+                                            <p class="text-gray-700 mt-2">Curves <strong>upward</strong> (like a frown). Cohesion is stronger, pulling the liquid into a bead.</p>
+                                            <div class="bg-white p-2 mt-3 rounded text-center">
+                                                <span class="text-4xl">⌒</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            `
+                        },
+                        {
+                            intro: "Before we wrap up, here are some real-world applications of capillarity that you encounter every day!",
+                            content: `
+                                <div class="section-card">
+                                    <div class="bg-purple-50 p-5 rounded-lg mb-4">
+                                        <h4 class="font-semibold mb-3 text-purple-800 text-lg"><i class="fas fa-flask mr-2"></i>Real-World Applications</h4>
+                                        <ul class="list-disc pl-6 space-y-2 text-gray-700">
+                                            <li><strong>Plants</strong> use capillary action to transport water from roots to leaves</li>
+                                            <li><strong>Paper towels</strong> absorb spills through tiny spaces between fibers</li>
+                                            <li><strong>Wicks in candles</strong> draw up melted wax to fuel the flame</li>
+                                            <li><strong>Blood</strong> moves through tiny vessels in our bodies</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            `
+                        },
+                        {
+                            intro: "Here's a fun experiment you can try at home to see capillarity in action!",
+                            content: `
+                                <div class="bg-yellow-50 border-l-4 border-yellow-500 p-5 rounded-r-lg">
+                                    <h4 class="font-semibold mb-2 text-lg"><i class="fas fa-flask text-yellow-600 mr-2"></i>Fun Experiment!</h4>
+                                    <p class="text-gray-700">Try this at home: Place a white carnation in water with food coloring. Through capillary action, the flower will change color as the colored water moves up its stem!</p>
+                                </div>
+                            `
+                        }
+                    ],
+                    resources: [
+                        { type: "image", title: "Meniscus Diagram", description: "Comparing concave and convex meniscus.", url: "https://i.imgur.com/kF4Y3gH.png" }
+                    ],
+                    quiz: {
+                        question: "Water forms a concave meniscus in a glass tube because:",
+                        options: ["Its cohesion is stronger than its adhesion", "It is less dense than glass", "Its adhesion to the glass is stronger than its cohesion", "It has low surface tension"],
+                        correct: 2,
+                        explanation: "Water molecules are more attracted to the glass (adhesion) than to each other (cohesion), causing them to 'climb' the sides of the tube."
+                    }
+                }
+            ]
+        };
+
+        const stepsListEl = document.getElementById('stepsList');
+        const mobileStepsListEl = document.getElementById('mobileStepsList');
+        const stepContainerEl = document.getElementById('stepContainer');
+        const resourcesGridEl = document.getElementById('resourcesGrid');
+        const progressBar = document.getElementById('progressBar');
+        const progressPercent = document.getElementById('progressPercent');
+        const prevStepBtn = document.getElementById('prevStepBtn');
+        const nextStepBtn = document.getElementById('nextStepBtn');
+        const resourceModalEl = document.getElementById('resourceModal');
+        const resourceModalTitleEl = document.getElementById('resourceModalTitle');
+        const resourceModalContentEl = document.getElementById('resourceModalContent');
+        const closeResourceModalBtn = document.getElementById('closeResourceModal');
+        const quizModalEl = document.getElementById('quizModal');
+        const quizContentEl = document.getElementById('quizContent');
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileSidebar = document.getElementById('mobileSidebar');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+        const closeSidebarBtn = document.getElementById('closeSidebarBtn');
+        const modeAIBtn = document.getElementById('modeAIBtn');
+
+        // AI Mode shows coming soon alert
+        modeAIBtn.addEventListener('click', () => {
+            alert('🚀 AI-Powered Learning is coming soon!\n\nStay tuned for an interactive learning experience with AI tutoring, personalized lessons, and real-time Q&A.');
+        });
+
+        // Mobile sidebar handlers
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileSidebar.classList.add('show');
+            sidebarOverlay.classList.add('show');
+        });
+
+        closeSidebarBtn.addEventListener('click', () => {
+            mobileSidebar.classList.remove('show');
+            sidebarOverlay.classList.remove('show');
+        });
+
+        sidebarOverlay.addEventListener('click', () => {
+            mobileSidebar.classList.remove('show');
+            sidebarOverlay.classList.remove('show');
+        });
+
+        function initializePage() {
+            document.getElementById('topicTitle').textContent = topicData.title;
+            renderStepsList();
+            loadStep(0, 0);
+        }
+
+        function renderStepsList() {
+            const renderList = (container) => {
+                container.innerHTML = '';
+                topicData.steps.forEach((step, index) => {
+                    const isCompleted = stepsCompleted.includes(step.id);
+                    const li = document.createElement('li');
+                    li.innerHTML = `
+                        <button data-index="${index}" class="step-button w-full text-left px-3 py-2 rounded flex items-center justify-between text-gray-600 hover:bg-gray-50 ${index === currentStepIndex ? 'active' : ''}">
+                            <span class="flex items-center text-sm">
+                                <i class="fas fa-book mr-2"></i>
+                                ${step.title}
+                            </span>
+                            ${isCompleted ? '<i class="fas fa-check-circle text-green-500"></i>' : ''}
+                        </button>
+                    `;
+                    container.appendChild(li);
+                });
+                container.querySelectorAll('.step-button').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        loadStep(parseInt(e.currentTarget.dataset.index), 0, true); // Start with intro
+                        mobileSidebar.classList.remove('show');
+                        sidebarOverlay.classList.remove('show');
+                    });
+                });
+            };
+            
+            renderList(stepsListEl);
+            renderList(mobileStepsListEl);
+        }
+
+        let showingIntro = true; // Track if we're showing intro or content
+
+        function loadStep(index, chunkIndex = 0, showIntroFirst = true) {
+            currentStepIndex = index;
+            currentChunkIndex = chunkIndex;
+            showingIntro = showIntroFirst;
+            const step = topicData.steps[index];
+            const chunks = step.chunks;
+            const chunk = chunks[chunkIndex];
+            const isLastChunk = chunkIndex >= chunks.length - 1;
+            const isCompleted = stepsCompleted.includes(step.id);
+            
+            let html = '';
+            
+            if (showingIntro) {
+                // Show only the intro/preamble first
+                html = `
+                    <div class="animate-fade-in-up">
+                        <div class="intro-text">
+                            <p>${chunk.intro}</p>
+                        </div>
+                    </div>
+                    <div class="click-hint" onclick="showChunkContent(event)">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M18 11V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0"/>
+                            <path d="M14 10V4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v2"/>
+                            <path d="M10 10.5V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v8"/>
+                            <path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"/>
+                        </svg>
+                        Click anywhere to continue...
+                    </div>
+                `;
+                stepContainerEl.classList.add('clickable');
+                stepContainerEl.onclick = (e) => {
+                    if (e.target.closest('.click-hint')) return;
+                    showChunkContent(e);
+                };
+            } else {
+                // Show the content
+                html = `
+                    <div class="animate-fade-in-up">
+                        ${chunk.content}
+                    </div>
+                `;
+                
+                // Add click hint for advancing to next chunk (except on last chunk)
+                if (!isLastChunk) {
+                    html += `
+                        <div class="click-hint" onclick="advanceToNextChunk(event)">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M18 11V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0"/>
+                                <path d="M14 10V4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v2"/>
+                                <path d="M10 10.5V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v8"/>
+                                <path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"/>
+                            </svg>
+                            Click anywhere to continue...
+                        </div>
+                    `;
+                    stepContainerEl.classList.add('clickable');
+                    stepContainerEl.onclick = (e) => {
+                        if (e.target.tagName === 'IFRAME' || 
+                            e.target.tagName === 'BUTTON' || 
+                            e.target.tagName === 'A' ||
+                            e.target.closest('button') ||
+                            e.target.closest('a') ||
+                            e.target.closest('.click-hint')) {
+                            return;
+                        }
+                        advanceToNextChunk(e);
+                    };
+                } else {
+                    stepContainerEl.classList.remove('clickable');
+                    stepContainerEl.onclick = null;
+                }
+            }
+            
+            stepContainerEl.innerHTML = html;
+
+            // Render resources
+            resourcesGridEl.innerHTML = '';
+            if (!showingIntro && step.resources && step.resources.length > 0) {
+                step.resources.forEach(res => {
+                    const icon = res.type === 'video' ? 'fa-play-circle' : (res.type === 'simulation' ? 'fa-laptop-code' : 'fa-image');
+                    const card = document.createElement('div');
+                    card.className = 'resource-card bg-gray-50 rounded-lg p-4 cursor-pointer hover:shadow-md';
+                    card.innerHTML = `
+                        <div class="text-blue-500 mb-3"><i class="fas ${icon} text-2xl"></i></div>
+                        <h4 class="font-medium mb-1">${res.title}</h4>
+                        <p class="text-sm text-gray-600">${res.description}</p>
+                    `;
+                    card.onclick = () => openResource(res);
+                    resourcesGridEl.appendChild(card);
+                });
+                document.getElementById('resourcesContainer').style.display = 'block';
+            } else {
+                document.getElementById('resourcesContainer').style.display = 'none';
+            }
+            
+            updateNavButtons(chunks);
+            renderStepsList();
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function showChunkContent(e) {
+            if (e) e.stopPropagation();
+            loadStep(currentStepIndex, currentChunkIndex, false);
+        }
+
+        function advanceToNextChunk(e) {
+            if (e) e.stopPropagation();
+            const step = topicData.steps[currentStepIndex];
+            const chunks = step.chunks;
+            const isLastChunk = currentChunkIndex >= chunks.length - 1;
+            
+            if (!isLastChunk) {
+                loadStep(currentStepIndex, currentChunkIndex + 1, true); // Start with intro
+            }
+        }
+
+        function updateNavButtons(chunks) {
+            const step = topicData.steps[currentStepIndex];
+            const totalChunks = chunks ? chunks.length : 1;
+            const isLastChunk = currentChunkIndex >= totalChunks - 1;
+            const isCompleted = stepsCompleted.includes(step.id);
+            
+            // Previous button
+            prevStepBtn.disabled = currentStepIndex === 0 && currentChunkIndex === 0;
+            if (currentChunkIndex > 0) {
+                prevStepBtn.innerHTML = '<i class="fas fa-chevron-left mr-2"></i>Previous';
+            } else {
+                prevStepBtn.innerHTML = '<i class="fas fa-chevron-left mr-2"></i>Previous';
+            }
+            
+            // Next button
+            nextStepBtn.disabled = false;
+            if (!isLastChunk) {
+                nextStepBtn.innerHTML = 'Continue<i class="fas fa-arrow-right ml-2"></i>';
+            } else if (currentStepIndex === topicData.steps.length - 1 && isCompleted) {
+                nextStepBtn.innerHTML = 'Finish <i class="fas fa-check ml-2"></i>';
+            } else if (isCompleted) {
+                nextStepBtn.innerHTML = 'Next Topic<i class="fas fa-chevron-right ml-2"></i>';
+            } else {
+                nextStepBtn.innerHTML = 'Take Quiz<i class="fas fa-question-circle ml-2"></i>';
+            }
+        }
+        
+        function openResource(resource) {
+            resourceModalTitleEl.textContent = resource.title;
+            if (resource.type === 'video') {
+                resourceModalContentEl.innerHTML = `<div class="video-container"><iframe src="${resource.url}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>`;
+            } else if (resource.type === 'simulation') {
+                resourceModalContentEl.innerHTML = `<div class="simulation-container" style="height: 85vh;"><iframe src="${resource.url}"></iframe></div>`;
+            } else if (resource.type === 'image') {
+                resourceModalContentEl.innerHTML = `<img src="${resource.url}" alt="${resource.title}" class="w-full h-auto rounded-lg">`;
+            }
+            resourceModalEl.classList.remove('hidden');
+        }
+
+        function showQuiz() {
+            const step = topicData.steps[currentStepIndex];
+            if (!step.quiz) return;
+
+            let optionsHtml = step.quiz.options.map((opt, index) => `
+                <label class="quiz-option flex items-center space-x-3 p-3 rounded-lg border hover:bg-gray-50 cursor-pointer">
+                    <input type="radio" name="quizOption" value="${index}" class="h-4 w-4 text-blue-600">
+                    <span>${opt}</span>
+                </label>
+            `).join('');
+
+            quizContentEl.innerHTML = `
+                <h3 class="text-xl font-semibold mb-4">Knowledge Check: ${step.title}</h3>
+                <p class="mb-4">${step.quiz.question}</p>
+                <div id="quizOptions" class="space-y-2">${optionsHtml}</div>
+                <div id="quizFeedback" class="hidden mt-4"></div>
+                <div class="mt-6 flex justify-end">
+                    <button id="submitQuizBtn" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">Submit Answer</button>
+                    <button id="closeQuizBtn" class="hidden ml-2 px-4 py-2 bg-gray-200 text-gray-800 rounded-lg">Close</button>
+                </div>
+            `;
+            quizModalEl.classList.remove('hidden');
+
+            document.getElementById('submitQuizBtn').addEventListener('click', submitQuiz);
+            document.getElementById('closeQuizBtn').addEventListener('click', () => {
+                quizModalEl.classList.add('hidden');
+                if (stepsCompleted.includes(step.id) && currentStepIndex < topicData.steps.length - 1) {
+                    loadStep(currentStepIndex + 1, 0, true); // Start with intro
+                }
+            });
+        }
+
+        function submitQuiz() {
+            const step = topicData.steps[currentStepIndex];
+            const selectedOption = document.querySelector('input[name="quizOption"]:checked');
+            if (!selectedOption) {
+                alert('Please select an answer!');
+                return;
+            }
+
+            const answerIndex = parseInt(selectedOption.value);
+            const isCorrect = answerIndex === step.quiz.correct;
+            const feedbackEl = document.getElementById('quizFeedback');
+            
+            document.querySelectorAll('.quiz-option').forEach((opt, index) => {
+                opt.classList.remove('selected');
+                if (index === step.quiz.correct) opt.classList.add('correct');
+                if (index === answerIndex && !isCorrect) opt.classList.add('incorrect');
+            });
+            
+            if (isCorrect) {
+                feedbackEl.innerHTML = `<div class="p-4 bg-green-50 text-green-700 rounded-lg"><strong class="font-semibold">✓ Correct!</strong> ${step.quiz.explanation}</div>`;
+                if (!stepsCompleted.includes(step.id)) {
+                    stepsCompleted.push(step.id);
+                }
+                updateProgress();
+            } else {
+                feedbackEl.innerHTML = `<div class="p-4 bg-red-50 text-red-700 rounded-lg"><strong class="font-semibold">✗ Not quite.</strong> ${step.quiz.explanation}</div>`;
+            }
+            
+            feedbackEl.classList.remove('hidden');
+            document.getElementById('submitQuizBtn').style.display = 'none';
+            document.getElementById('closeQuizBtn').textContent = isCorrect ? 'Continue' : 'Try Again';
+            document.getElementById('closeQuizBtn').style.display = 'block';
+            updateNavButtons(step.chunks);
+        }
+        
+        function updateProgress() {
+            const progress = (stepsCompleted.length / topicData.steps.length) * 100;
+            progressBar.style.width = `${progress}%`;
+            progressPercent.textContent = `${Math.round(progress)}%`;
+            renderStepsList();
+        }
+
+        prevStepBtn.addEventListener('click', () => {
+            const step = topicData.steps[currentStepIndex];
+            
+            if (showingIntro && currentChunkIndex > 0) {
+                // Go to previous chunk's content (not intro)
+                loadStep(currentStepIndex, currentChunkIndex - 1, false);
+            } else if (!showingIntro) {
+                // Go back to intro of current chunk
+                loadStep(currentStepIndex, currentChunkIndex, true);
+            } else if (currentStepIndex > 0) {
+                // Go to previous step's last chunk content
+                const prevStep = topicData.steps[currentStepIndex - 1];
+                loadStep(currentStepIndex - 1, prevStep.chunks.length - 1, false);
+            }
+        });
+
+        nextStepBtn.addEventListener('click', () => {
+            const step = topicData.steps[currentStepIndex];
+            const chunks = step.chunks;
+            const isLastChunk = currentChunkIndex >= chunks.length - 1;
+            const isCompleted = stepsCompleted.includes(step.id);
+            
+            if (showingIntro) {
+                // Show content of current chunk
+                loadStep(currentStepIndex, currentChunkIndex, false);
+            } else if (!isLastChunk) {
+                // Go to next chunk's intro
+                loadStep(currentStepIndex, currentChunkIndex + 1, true);
+            } else if (isCompleted) {
+                if (currentStepIndex < topicData.steps.length - 1) {
+                    loadStep(currentStepIndex + 1, 0, true);
+                } else {
+                    alert('🎉 Congratulations! You have completed this topic!');
+                }
+            } else {
+                showQuiz();
+            }
+        });
+
+        closeResourceModalBtn.addEventListener('click', () => resourceModalEl.classList.add('hidden'));
+        
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                resourceModalEl.classList.add('hidden');
+                quizModalEl.classList.add('hidden');
+                mobileSidebar.classList.remove('show');
+                sidebarOverlay.classList.remove('show');
+            }
+        });
+
+        // Close modal when clicking outside
+        resourceModalEl.addEventListener('click', (e) => {
+            if (e.target === resourceModalEl) {
+                resourceModalEl.classList.add('hidden');
+            }
+        });
+
+        quizModalEl.addEventListener('click', (e) => {
+            if (e.target === quizModalEl) {
+                quizModalEl.classList.add('hidden');
+            }
+        });
+
+        // Initialize on load
+        initializePage();
+    </script>
+<!-- Topic Quiz System -->
+<script src="/js/topic-quiz-loader.js"></script>
+<script src="/js/topic-quiz-injector.js"></script>
+</body>
+</html>

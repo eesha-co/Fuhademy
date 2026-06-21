@@ -1,0 +1,352 @@
+Rewrite (or analyze) repository history
+
+    git-filter-repo destructively rewrites history (unless --analyze or
+    --dry-run are given) according to specified rules.  It refuses to do any
+    rewriting unless either run from a clean fresh clone, or --force was
+    given.
+
+    Basic Usage:
+      git-filter-repo --analyze
+      git-filter-repo [FILTER/RENAME/CONTROL OPTIONS]
+
+    See EXAMPLES section for details.
+
+Analysis:
+  --analyze             Analyze repository history and create a report that
+                        may be useful in determining what to filter in a
+                        subsequent run. Will not modify your repo.
+  --report-dir DIR_OR_FILE
+                        Directory to write report, defaults to
+                        GIT_DIR/filter_repo/analysis,refuses to run if exists,
+                        --force delete existing dir first.
+
+Filtering based on paths (see also --filename-callback):
+  These options specify the paths to select.  Note that much like git
+  itself, renames are NOT followed so you may need to specify multiple
+  paths, e.g. `--path olddir/ --path newdir/`
+
+  --invert-paths        Invert the selection of files from the specified
+                        --path-{match,glob,regex} options below, i.e. only
+                        select files matching none of those options.
+  --path-match, --path DIR_OR_FILE
+                        Exact paths (files or directories) to include in
+                        filtered history. Multiple --path options can be
+                        specified to get a union of paths.
+  --path-glob GLOB      Glob of paths to include in filtered history. Multiple
+                        --path-glob options can be specified to get a union of
+                        paths.
+  --path-regex REGEX    Regex of paths to include in filtered history.
+                        Multiple --path-regex options can be specified to get
+                        a union of paths
+  --use-base-name       Match on file base name instead of full path from the
+                        top of the repo. Incompatible with --path-rename, and
+                        incompatible with matching against directory names.
+
+Renaming based on paths (see also --filename-callback):
+  --path-rename, --path-rename-match OLD_NAME:NEW_NAME
+                        Path to rename; if filename or directory matches
+                        OLD_NAME rename to NEW_NAME. Multiple --path-rename
+                        options can be specified. NOTE: If you combine
+                        filtering options with renaming ones, do not rely on a
+                        rename argument to select paths; you also need a
+                        filter to select them.
+
+Path shortcuts:
+  --paths-from-file FILENAME
+                        Specify several path filtering and renaming
+                        directives, one per line. Lines with '==>' in them
+                        specify path renames, and lines can begin with
+                        'literal:' (the default), 'glob:', or 'regex:' to
+                        specify different matching styles. Blank lines and
+                        lines starting with a '#' are ignored.
+  --subdirectory-filter DIRECTORY
+                        Only look at history that touches the given
+                        subdirectory and treat that directory as the project
+                        root. Equivalent to using '--path DIRECTORY/ --path-
+                        rename DIRECTORY/:'
+  --to-subdirectory-filter DIRECTORY
+                        Treat the project root as if it were under DIRECTORY.
+                        Equivalent to using '--path-rename :DIRECTORY/'
+
+Content editing filters (see also --blob-callback):
+  --replace-text EXPRESSIONS_FILE
+                        A file with expressions that, if found, will be
+                        replaced. By default, each expression is treated as
+                        literal text, but 'regex:' and 'glob:' prefixes are
+                        supported. You can end the line with '==>' and some
+                        replacement text to choose a replacement choice other
+                        than the default of '***REMOVED***'.
+  --strip-blobs-bigger-than SIZE
+                        Strip blobs (files) bigger than specified size (e.g.
+                        '5M', '2G', etc)
+  --strip-blobs-with-ids BLOB-ID-FILENAME
+                        Read git object ids from each line of the given file,
+                        and strip all of them from history
+
+Renaming of refs (see also --refname-callback):
+  --tag-rename OLD:NEW  Rename tags starting with OLD to start with NEW. For
+                        example, --tag-rename foo:bar will rename tag
+                        foo-1.2.3 to bar-1.2.3; either OLD or NEW can be
+                        empty.
+
+Filtering of commit messages (see also --message-callback):
+  --replace-message EXPRESSIONS_FILE
+                        A file with expressions that, if found in commit or
+                        tag messages, will be replaced. This file uses the
+                        same syntax as --replace-text.
+  --preserve-commit-hashes
+                        By default, since commits are rewritten and thus gain
+                        new hashes, references to old commit hashes in commit
+                        messages are replaced with new commit hashes
+                        (abbreviated to the same length as the old reference).
+                        Use this flag to turn off updating commit hashes in
+                        commit messages.
+  --preserve-commit-encoding
+                        Do not reencode commit messages into UTF-8. By
+                        default, if the commit object specifies an encoding
+                        for the commit message, the message is re-encoded into
+                        UTF-8.
+
+Filtering of names & emails (see also --name-callback and --email-callback):
+  --mailmap FILENAME    Use specified mailmap file (see git-shortlog(1) for
+                        details on the format) when rewriting author,
+                        committer, and tagger names and emails. If the
+                        specified file is part of git history, historical
+                        versions of the file will be ignored; only the current
+                        contents are consulted.
+  --use-mailmap         Same as: '--mailmap .mailmap'
+
+Parent rewriting:
+  --replace-refs {delete-no-add,delete-and-add,update-no-add,update-or-add,update-and-add,old-default}
+                        How to handle replace refs (see git-replace(1)).
+                        Replace refs can be added during the history rewrite
+                        as a way to allow users to pass old commit IDs (from
+                        before git-filter-repo was run) to git commands and
+                        have git know how to translate those old commit IDs to
+                        the new (post-rewrite) commit IDs. Also, replace refs
+                        that existed before the rewrite can either be deleted
+                        or updated. The choices to pass to --replace-refs thus
+                        need to specify both what to do with existing refs and
+                        what to do with commit rewrites. Thus 'update-and-add'
+                        means to update existing replace refs, and for any
+                        commit rewrite (even if already pointed at by a
+                        replace ref) add a new refs/replace/ reference to map
+                        from the old commit ID to the new commit ID. The
+                        default is update-no-add, meaning update existing
+                        replace refs but do not add any new ones. There is
+                        also a special 'old-default' option for picking the
+                        default used in versions prior to git-filter-
+                        repo-2.45, namely 'update-and-add' upon the first run
+                        of git-filter-repo in a repository and 'update-or-add'
+                        if running git-filter-repo again on a repository.
+  --prune-empty {always,auto,never}
+                        Whether to prune empty commits. 'auto' (the default)
+                        means only prune commits which become empty (not
+                        commits which were empty in the original repo, unless
+                        their parent was pruned). When the parent of a commit
+                        is pruned, the first non-pruned ancestor becomes the
+                        new parent.
+  --prune-degenerate {always,auto,never}
+                        Since merge commits are needed for history topology,
+                        they are typically exempt from pruning. However, they
+                        can become degenerate with the pruning of other
+                        commits (having fewer than two parents, having one
+                        commit serve as both parents, or having one parent as
+                        the ancestor of the other.) If such merge commits have
+                        no file changes, they can be pruned. The default
+                        ('auto') is to only prune empty merge commits which
+                        become degenerate (not which started as such).
+  --no-ff               Even if the first parent is or becomes an ancestor of
+                        another parent, do not prune it. This modifies how
+                        --prune-degenerate behaves, and may be useful in
+                        projects who always use merge --no-ff.
+
+Generic callback code snippets:
+  --filename-callback FUNCTION_BODY_OR_FILE
+                        Python code body for processing filenames; see
+                        CALLBACKS sections below.
+  --file-info-callback FUNCTION_BODY_OR_FILE
+                        Python code body for processing file and metadata; see
+                        CALLBACKS sections below.
+  --message-callback FUNCTION_BODY_OR_FILE
+                        Python code body for processing messages (both commit
+                        messages and tag messages); see CALLBACKS section
+                        below.
+  --name-callback FUNCTION_BODY_OR_FILE
+                        Python code body for processing names of people; see
+                        CALLBACKS section below.
+  --email-callback FUNCTION_BODY_OR_FILE
+                        Python code body for processing emails addresses; see
+                        CALLBACKS section below.
+  --refname-callback FUNCTION_BODY_OR_FILE
+                        Python code body for processing refnames; see
+                        CALLBACKS section below.
+  --blob-callback FUNCTION_BODY_OR_FILE
+                        Python code body for processing blob objects; see
+                        CALLBACKS section below.
+  --commit-callback FUNCTION_BODY_OR_FILE
+                        Python code body for processing commit objects; see
+                        CALLBACKS section below.
+  --tag-callback FUNCTION_BODY_OR_FILE
+                        Python code body for processing tag objects. Note that
+                        lightweight tags have no tag object and are thus not
+                        handled by this callback. See CALLBACKS section below.
+  --reset-callback FUNCTION_BODY_OR_FILE
+                        Python code body for processing reset objects; see
+                        CALLBACKS section below.
+
+Sensitive Data Removal Handling:
+  --sensitive-data-removal, --sdr
+                        This rewrite is intended to remove sensitive data from
+                        a repository. Gather extra information from the
+                        rewrite needed to provide additional instructions on
+                        how to clean up other copies.
+  --no-fetch            By default, --sensitive-data-removal will trigger a
+                        mirror-like fetch of all refs from origin, discarding
+                        local changes, but ensuring that _all_ fetchable refs
+                        that hold on to the sensitve data are rewritten. This
+                        flag removes that fetch, risking that other refs
+                        continue holding on to the sensitive data. This option
+                        is implied by --partial or any flag that implies
+                        --partial.
+
+Location to filter from/to:
+  Specifying alternate source or target locations implies --partial,
+  except that the normal default for --replace-refs is used.  However,
+  unlike normal uses of --partial, this doesn't risk mixing old and new
+  history since the old and new histories are in different repositories.
+
+  --source SOURCE       Git repository to read from
+  --target TARGET       Git repository to overwrite with filtered history
+
+Ordering of commits:
+  --date-order          Processes commits in commit timestamp order.
+
+Miscellaneous options:
+  --help, -h            Show this help message and exit.
+  --version             Display filter-repo's version and exit.
+  --proceed             Avoid triggering the no-arguments-specified check.
+  --force, -f           Rewrite repository history even if the current repo
+                        does not look like a fresh clone. History rewriting is
+                        irreversible (and includes immediate pruning of
+                        reflogs and old objects), so be cautious about using
+                        this flag.
+  --partial             Do a partial history rewrite, resulting in the mixture
+                        of old and new history. This disables rewriting
+                        refs/remotes/origin/* to refs/heads/*, disables
+                        removing of the 'origin' remote, disables removing
+                        unexported refs, disables expiring the reflog, and
+                        disables the automatic post-filter gc. Also, this
+                        modifies --tag-rename and --refname-callback options
+                        such that instead of replacing old refs with new
+                        refnames, it will instead create new refs and keep the
+                        old ones around. Use with caution.
+  --no-gc               Do not run 'git gc' after filtering.
+  --refs REFS [REFS ...]
+                        Limit history rewriting to the specified refs. Implies
+                        --partial. In addition to the normal caveats of
+                        --partial (mixing old and new history, no automatic
+                        remapping of refs/remotes/origin/* to refs/heads/*,
+                        etc.), this also may cause problems for pruning of
+                        degenerate empty merge commits when negative revisions
+                        are specified.
+  --dry-run             Do not change the repository. Run `git fast-export`
+                        and filter its output, and save both the original and
+                        the filtered version for comparison. This also
+                        disables rewriting commit messages due to not knowing
+                        new commit IDs and disables filtering of some empty
+                        commits due to inability to query the fast-import
+                        backend.
+  --debug               Print additional information about operations being
+                        performed and commands being run. When used together
+                        with --dry-run, also show extra information about what
+                        would be run.
+  --stdin               Instead of running `git fast-export` and filtering its
+                        output, filter the fast-export stream from stdin. The
+                        stdin must be in the expected input format (e.g. it
+                        needs to include original-oid directives).
+  --quiet               Pass --quiet to other git commands called
+
+CALLBACKS
+
+    Most callback functions are of the same general format.  For a command line
+    argument like
+      --foo-callback 'BODY'
+
+    the following code will be compiled and called:
+      def foo_callback(foo):
+        BODY
+
+    The exception on callbacks is the --file-info-callback, which will be
+    discussed further below.
+
+    Given the callback style, we can thus make a simple callback to replace
+    'Jon' with 'John' in author/committer/tagger names:
+      git filter-repo --name-callback 'return name.replace(b"Jon", b"John")'
+
+    To remove all 'Tested-by' tags in commit (or tag) messages:
+      git filter-repo --message-callback 'return re.sub(br"\nTested-by:.*", "", message)'
+
+    To remove all .DS_Store files:
+      git filter-repo --filename-callback 'return None if os.path.basename(filename) == b".DS_Store" else filename'
+
+    Note that if BODY resolves to a filename, then the contents of that file
+    will be used as the BODY in the callback function.
+
+    The --file-info-callback has a more involved function callback; for it the
+    following code will be compiled and called:
+      def file_info_callback(filename, mode, blob_id, value):
+        BODY
+
+    It is designed to be used in cases where filtering depends on both
+    filename and contents (and maybe mode).  It is called for file changes
+    other than deletions (since deletions have no file contents to operate
+    on).  This callback is expected to return a tuple of (filename, mode,
+    blob_id).  It can make use of the following functions from the value
+    instance:
+      value.get_contents_by_identifier(blob_id) -> contents (bytestring)
+      value.get_size_by_identifier(blob_id) -> size_of_blob (int)
+      value.insert_file_with_contents(contents) -> blob_id
+      value.is_binary(contents) -> bool
+      value.apply_replace_text(contents) -> new_contents (bytestring)
+    and can read/write the following data member from the value instance:
+      value.data (dict)
+
+    The filename can be used for renaming the file similar to
+    --filename-callback (or None to drop the change), and mode is one
+    of b'100644', b'100755', b'120000', or b'160000'.
+
+    For more detailed examples and explanations AND caveats, see
+      https://htmlpreview.github.io/?https://github.com/newren/git-filter-repo/blob/docs/html/git-filter-repo.html#CALLBACKS
+
+EXAMPLES
+
+    To get a bunch of reports mentioning renames that have occurred in
+    your repo and listing sizes of objects aggregated by any of path,
+    directory, extension, or blob-id:
+      git filter-repo --analyze
+
+    (These reports can help you choose how to filter your repo; it can
+    be useful to re-run this command after filtering to regenerate the
+    report and verify the changes look correct.)
+
+    To extract the history that touched just 'guides' and 'tools/releases':
+      git filter-repo --path guides/ --path tools/releases
+
+    To remove foo.zip and bar/baz/zips from every revision in history:
+      git filter-repo --path foo.zip --path bar/baz/zips/ --invert-paths
+
+    To replace the text 'password' with 'p455w0rd':
+      git filter-repo --replace-text <(echo "password==>p455w0rd")
+
+    To use the current version of the .mailmap file to update authors,
+    committers, and taggers throughout history and make it permanent:
+      git filter-repo --use-mailmap
+
+    To extract the history of 'src/', rename all files to have a new leading
+    directory 'my-module' (e.g. src/foo.java -> my-module/src/foo.java), and
+    add a 'my-module-' prefix to all tags:
+      git filter-repo --path src/ --to-subdirectory-filter my-module --tag-rename '':'my-module-'
+
+    For more detailed examples and explanations, see
+      https://htmlpreview.github.io/?https://github.com/newren/git-filter-repo/blob/docs/html/git-filter-repo.html#EXAMPLES

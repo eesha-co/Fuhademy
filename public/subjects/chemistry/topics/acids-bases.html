@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acids and Bases - Chemistry | Juanova Cortex</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        .quiz-option { transition: all 0.2s ease; }
+        .quiz-option:hover { transform: translateX(4px); }
+        .quiz-option.selected { border-color: #0ea5e9; background-color: #f0f9ff; }
+        .quiz-option.correct { border-color: #22c55e; background-color: #f0fdf4; }
+        .quiz-option.incorrect { border-color: #ef4444; background-color: #fef2f2; }
+        .reading-progress { position: fixed; top: 0; left: 0; height: 3px; background: linear-gradient(90deg, #0ea5e9, #0284c7); z-index: 100; transition: width 0.1s; }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+    </style>
+</head>
+<body class="bg-slate-50 min-h-screen">
+    <!-- Reading Progress Bar -->
+    <div class="reading-progress" id="readingProgress" style="width: 0%"></div>
+
+    <!-- Header -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-50">
+        <div class="max-w-5xl mx-auto px-4 py-3">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-4">
+                    <a href="../chemistry.html" class="text-slate-400 hover:text-slate-600">
+                        <i class="fas fa-arrow-left"></i>
+                    </a>
+                    <div>
+                        <nav class="text-xs text-slate-400 mb-1">
+                            <a href="../../../student-dashboard.html" class="hover:text-sky-600">Dashboard</a>
+                            <span class="mx-1">/</span>
+                            <a href="../chemistry.html" class="hover:text-sky-600">Chemistry</a>
+                            <span class="mx-1">/</span>
+                            <span class="text-slate-600">Acids and Bases</span>
+                        </nav>
+                        <h1 class="text-lg font-bold text-slate-800">Acids and Bases</h1>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4">
+                    <!-- Study Timer -->
+                    <div class="flex items-center gap-2 bg-sky-50 px-3 py-1.5 rounded-lg">
+                        <i class="fas fa-clock text-sky-500"></i>
+                        <span id="studyTimer" class="font-mono font-medium text-slate-700">0:00</span>
+                    </div>
+                    <button onclick="toggleBookmark()" class="p-2 text-slate-400 hover:text-amber-500" title="Bookmark">
+                        <i class="far fa-bookmark" id="bookmarkIcon"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-5xl mx-auto px-4 py-8">
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+            <!-- Content Area -->
+            <div class="lg:col-span-3">
+                <!-- Topic Introduction -->
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden mb-6">
+                    <div class="bg-gradient-to-r from-yellow-400 to-amber-500 p-6 text-white">
+                        <div class="flex items-center gap-3 mb-2">
+                            <span class="text-3xl">🧪</span>
+                            <div>
+                                <h2 class="text-2xl font-bold">Acids and Bases</h2>
+                                <p class="text-yellow-100 text-sm">Estimated time: 20 minutes</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="p-6 prose prose-slate max-w-none" id="topicContent">
+                        <!-- Learning Objectives -->
+                        <div class="bg-sky-50 border border-sky-100 rounded-xl p-4 mb-6 not-prose">
+                            <h3 class="font-semibold text-sky-800 mb-2 flex items-center gap-2">
+                                <i class="fas fa-target"></i> Learning Objectives
+                            </h3>
+                            <ul class="text-sm text-sky-700 space-y-1 ml-4 list-disc">
+                                <li>Define acids and bases using different theories</li>
+                                <li>Identify properties of acids and bases</li>
+                                <li>Understand pH scale and its applications</li>
+                                <li>Write and balance neutralization reactions</li>
+                            </ul>
+                        </div>
+
+                        <!-- Main Content -->
+                        <h2 class="text-xl font-bold text-slate-800 mb-4">1. What are Acids and Bases?</h2>
+                        
+                        <p class="text-slate-600 mb-4">
+                            Acids and bases are two important classes of chemical compounds that have significant roles in chemistry, biology, and industry. Understanding their properties and behavior is fundamental to many areas of science.
+                        </p>
+
+                        <h3 class="text-lg font-semibold text-slate-800 mt-6 mb-3">1.1 Definition of Acids</h3>
+                        
+                        <p class="text-slate-600 mb-4">An <strong>acid</strong> is a substance that:</p>
+                        
+                        <ul class="text-slate-600 space-y-2 mb-4 ml-4 list-disc">
+                            <li>Tastes sour (but never taste chemicals in the lab!)</li>
+                            <li>Turns blue litmus paper red</li>
+                            <li>Reacts with metals to produce hydrogen gas</li>
+                            <li>Reacts with bases to form salt and water (neutralization)</li>
+                            <li>Has a pH less than 7</li>
+                        </ul>
+
+                        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 my-4 not-prose">
+                            <p class="text-sm text-yellow-800">
+                                <strong>Examples of acids:</strong> Hydrochloric acid (HCl), Sulfuric acid (H₂SO₄), Citric acid (in lemons), Acetic acid (in vinegar)
+                            </p>
+                        </div>
+
+                        <h3 class="text-lg font-semibold text-slate-800 mt-6 mb-3">1.2 Definition of Bases</h3>
+                        
+                        <p class="text-slate-600 mb-4">A <strong>base</strong> is a substance that:</p>
+                        
+                        <ul class="text-slate-600 space-y-2 mb-4 ml-4 list-disc">
+                            <li>Tastes bitter</li>
+                            <li>Feels soapy or slippery</li>
+                            <li>Turns red litmus paper blue</li>
+                            <li>Reacts with acids to form salt and water</li>
+                            <li>Has a pH greater than 7</li>
+                        </ul>
+
+                        <div class="bg-green-50 border-l-4 border-green-400 p-4 my-4 not-prose">
+                            <p class="text-sm text-green-800">
+                                <strong>Examples of bases:</strong> Sodium hydroxide (NaOH), Potassium hydroxide (KOH), Ammonia solution (NH₃), Calcium hydroxide (lime water)
+                            </p>
+                        </div>
+
+                        <h2 class="text-xl font-bold text-slate-800 mt-8 mb-4">2. Theories of Acids and Bases</h2>
+
+                        <h3 class="text-lg font-semibold text-slate-800 mt-6 mb-3">2.1 Arrhenius Theory (1884)</h3>
+                        
+                        <p class="text-slate-600 mb-4">
+                            According to Svante Arrhenius:
+                        </p>
+                        
+                        <div class="bg-slate-100 rounded-lg p-4 mb-4 not-prose">
+                            <ul class="space-y-2 text-slate-700">
+                                <li><strong>Acid:</strong> A substance that produces H⁺ ions when dissolved in water</li>
+                                <li><strong>Base:</strong> A substance that produces OH⁻ ions when dissolved in water</li>
+                            </ul>
+                        </div>
+
+                        <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4 not-prose">
+                            <p class="text-sm font-medium text-blue-800 mb-2">Example:</p>
+                            <code class="text-blue-700">HCl(aq) → H⁺(aq) + Cl⁻(aq)  (Acid)</code><br>
+                            <code class="text-blue-700">NaOH(aq) → Na⁺(aq) + OH⁻(aq)  (Base)</code>
+                        </div>
+
+                        <h3 class="text-lg font-semibold text-slate-800 mt-6 mb-3">2.2 Bronsted-Lowry Theory (1923)</h3>
+                        
+                        <p class="text-slate-600 mb-4">
+                            This theory provides a broader definition:
+                        </p>
+                        
+                        <ul class="text-slate-600 space-y-2 mb-4 ml-4 list-disc">
+                            <li><strong>Acid:</strong> A proton (H⁺) donor</li>
+                            <li><strong>Base:</strong> A proton (H⁺) acceptor</li>
+                        </ul>
+
+                        <h3 class="text-lg font-semibold text-slate-800 mt-6 mb-3">2.3 Lewis Theory (1923)</h3>
+                        
+                        <p class="text-slate-600 mb-4">
+                            Gilbert Lewis proposed an even broader definition:
+                        </p>
+                        
+                        <ul class="text-slate-600 space-y-2 mb-4 ml-4 list-disc">
+                            <li><strong>Acid:</strong> An electron pair acceptor</li>
+                            <li><strong>Base:</strong> An electron pair donor</li>
+                        </ul>
+
+                        <h2 class="text-xl font-bold text-slate-800 mt-8 mb-4">3. The pH Scale</h2>
+
+                        <p class="text-slate-600 mb-4">
+                            The pH scale is a measure of the acidity or alkalinity of a solution. It ranges from 0 to 14:
+                        </p>
+
+                        <div class="bg-gradient-to-r from-red-500 via-yellow-400 to-blue-600 h-8 rounded-lg mb-4 not-prose"></div>
+                        
+                        <div class="grid grid-cols-3 gap-4 text-center text-sm mb-6 not-prose">
+                            <div class="bg-red-50 p-3 rounded-lg">
+                                <p class="font-bold text-red-600">pH 0-6</p>
+                                <p class="text-red-500">Acidic</p>
+                            </div>
+                            <div class="bg-green-50 p-3 rounded-lg">
+                                <p class="font-bold text-green-600">pH 7</p>
+                                <p class="text-green-500">Neutral</p>
+                            </div>
+                            <div class="bg-blue-50 p-3 rounded-lg">
+                                <p class="font-bold text-blue-600">pH 8-14</p>
+                                <p class="text-blue-500">Alkaline</p>
+                            </div>
+                        </div>
+
+                        <p class="text-slate-600 mb-4">
+                            The pH is calculated using: <strong>pH = -log[H⁺]</strong>
+                        </p>
+
+                        <h2 class="text-xl font-bold text-slate-800 mt-8 mb-4">4. Neutralization Reactions</h2>
+
+                        <p class="text-slate-600 mb-4">
+                            When an acid reacts with a base, they neutralize each other to form salt and water:
+                        </p>
+
+                        <div class="bg-slate-800 text-white p-4 rounded-lg font-mono text-center mb-4 not-prose">
+                            Acid + Base → Salt + Water<br>
+                            HCl + NaOH → NaCl + H₂O
+                        </div>
+
+                        <h2 class="text-xl font-bold text-slate-800 mt-8 mb-4">5. Summary</h2>
+
+                        <div class="bg-slate-50 rounded-xl p-4 not-prose">
+                            <table class="w-full text-sm">
+                                <thead>
+                                    <tr class="border-b border-slate-200">
+                                        <th class="text-left py-2 text-slate-600">Property</th>
+                                        <th class="text-left py-2 text-red-600">Acids</th>
+                                        <th class="text-left py-2 text-blue-600">Bases</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-slate-600">
+                                    <tr class="border-b border-slate-100">
+                                        <td class="py-2">pH range</td>
+                                        <td class="py-2">Less than 7</td>
+                                        <td class="py-2">Greater than 7</td>
+                                    </tr>
+                                    <tr class="border-b border-slate-100">
+                                        <td class="py-2">Litmus test</td>
+                                        <td class="py-2">Blue → Red</td>
+                                        <td class="py-2">Red → Blue</td>
+                                    </tr>
+                                    <tr class="border-b border-slate-100">
+                                        <td class="py-2">Taste</td>
+                                        <td class="py-2">Sour</td>
+                                        <td class="py-2">Bitter</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-2">Examples</td>
+                                        <td class="py-2">HCl, H₂SO₄</td>
+                                        <td class="py-2">NaOH, NH₃</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quiz Section -->
+                <div id="quizSection" class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
+                    <div class="flex items-center justify-between mb-6">
+                        <h2 class="text-xl font-bold text-slate-800">📝 Topic Quiz</h2>
+                        <span id="quizProgress" class="text-sm text-slate-500">Question 1 of 5</span>
+                    </div>
+
+                    <!-- Quiz Questions -->
+                    <div id="quizContainer">
+                        <!-- Question will be rendered here -->
+                    </div>
+
+                    <!-- Quiz Results (hidden initially) -->
+                    <div id="quizResults" class="hidden">
+                        <div class="text-center py-8">
+                            <div id="scoreCircle" class="w-32 h-32 rounded-full mx-auto mb-4 flex items-center justify-center text-4xl font-bold text-white">
+                                <!-- Score will be rendered -->
+                            </div>
+                            <h3 id="scoreMessage" class="text-2xl font-bold text-slate-800 mb-2"></h3>
+                            <p id="scoreDetails" class="text-slate-500 mb-6"></p>
+                            
+                            <div class="flex justify-center gap-4">
+                                <button onclick="retryQuiz()" class="px-6 py-2 bg-sky-600 text-white rounded-lg hover:bg-sky-700 transition-colors">
+                                    <i class="fas fa-redo mr-2"></i>Try Again
+                                </button>
+                                <a href="../chemistry.html" class="px-6 py-2 bg-slate-100 text-slate-700 rounded-lg hover:bg-slate-200 transition-colors">
+                                    Back to Topics
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="lg:col-span-1">
+                <!-- Topic Navigation -->
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-4 mb-6 sticky top-24">
+                    <h3 class="font-semibold text-slate-800 mb-3">Topic Progress</h3>
+                    
+                    <div class="space-y-2 text-sm">
+                        <div class="flex items-center gap-2 text-emerald-600">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Introduction</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-sky-600 font-medium">
+                            <i class="fas fa-circle"></i>
+                            <span>Acids and Bases</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-slate-400">
+                            <i class="far fa-circle"></i>
+                            <span>pH Calculations</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-slate-400">
+                            <i class="far fa-circle"></i>
+                            <span>Neutralization</span>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4 pt-4 border-t border-slate-100">
+                        <div class="flex justify-between text-sm mb-1">
+                            <span class="text-slate-500">Progress</span>
+                            <span class="font-medium text-slate-700">25%</span>
+                        </div>
+                        <div class="h-2 bg-slate-100 rounded-full overflow-hidden">
+                            <div class="h-full bg-sky-500 rounded-full" style="width: 25%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-4">
+                    <h3 class="font-semibold text-slate-800 mb-3">Quick Actions</h3>
+                    
+                    <div class="space-y-2">
+                        <button onclick="markAsComplete()" class="w-full text-left px-3 py-2 text-sm text-slate-600 hover:bg-slate-50 rounded-lg flex items-center gap-2">
+                            <i class="fas fa-check text-emerald-500"></i>
+                            Mark as Complete
+                        </button>
+                        <button onclick="downloadNotes()" class="w-full text-left px-3 py-2 text-sm text-slate-600 hover:bg-slate-50 rounded-lg flex items-center gap-2">
+                            <i class="fas fa-download text-sky-500"></i>
+                            Download Notes
+                        </button>
+                        <button onclick="scrollToQuiz()" class="w-full text-left px-3 py-2 text-sm text-slate-600 hover:bg-slate-50 rounded-lg flex items-center gap-2">
+                            <i class="fas fa-edit text-amber-500"></i>
+                            Take Quiz
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 mt-12">
+        <div class="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between">
+            <a href="../chemistry.html" class="text-slate-500 hover:text-slate-700 text-sm">
+                <i class="fas fa-arrow-left mr-1"></i> Back to Chemistry
+            </a>
+            <a href="ph-calculations.html" class="text-sky-600 hover:text-sky-700 text-sm font-medium">
+                Next: pH Calculations <i class="fas fa-arrow-right ml-1"></i>
+            </a>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="../../js/study-tracker.js"></script>
+    <script>
+        // ============================================
+        // TOPIC CONFIGURATION
+        // ============================================
+        const TOPIC_CONFIG = {
+            subject: 'Chemistry',
+            topic: 'Acids and Bases',
+            subjectId: 'chemistry',
+            topicId: 'acids-bases',
+            
+            // Quiz questions
+            quizQuestions: [
+                {
+                    question: "What ion is produced when an acid dissolves in water according to Arrhenius theory?",
+                    options: ["OH⁻", "H⁺", "Na⁺", "Cl⁻"],
+                    correct: 1,
+                    explanation: "According to Arrhenius, acids produce H⁺ (hydrogen ions) when dissolved in water."
+                },
+                {
+                    question: "What color does blue litmus paper turn in the presence of an acid?",
+                    options: ["Blue", "Red", "Green", "Yellow"],
+                    correct: 1,
+                    explanation: "Blue litmus paper turns red in acidic solutions."
+                },
+                {
+                    question: "What is the pH of a neutral solution?",
+                    options: ["0", "7", "14", "1"],
+                    correct: 1,
+                    explanation: "A neutral solution has a pH of 7, indicating equal concentrations of H⁺ and OH⁻ ions."
+                },
+                {
+                    question: "What are the products of a neutralization reaction?",
+                    options: ["Acid and base", "Salt and water", "Hydrogen and oxygen", "Metal and gas"],
+                    correct: 1,
+                    explanation: "Neutralization produces salt and water: Acid + Base → Salt + Water"
+                },
+                {
+                    question: "According to Bronsted-Lowry theory, what is a base?",
+                    options: ["Proton donor", "Proton acceptor", "Electron donor", "Electron acceptor"],
+                    correct: 1,
+                    explanation: "Bronsted-Lowry theory defines a base as a proton (H⁺) acceptor."
+                }
+            ]
+        };
+
+        // ============================================
+        // QUIZ STATE
+        // ============================================
+        let quizState = {
+            currentQuestion: 0,
+            answers: [],
+            started: false,
+            completed: false
+        };
+
+        // ============================================
+        // INITIALIZATION
+        // ============================================
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Initialize study tracker
+            if (window.StudyTracker) {
+                await window.StudyTracker.init();
+                await window.StudyTracker.startSession(
+                    TOPIC_CONFIG.subject,
+                    TOPIC_CONFIG.topic
+                );
+            }
+            
+            // Start timer display
+            startTimerDisplay();
+            
+            // Initialize quiz
+            renderQuestion();
+            
+            // Reading progress
+            initReadingProgress();
+            
+            // Load bookmark state
+            loadBookmark();
+        });
+
+        // ============================================
+        // TIMER DISPLAY
+        // ============================================
+        let timerInterval;
+
+        function startTimerDisplay() {
+            timerInterval = setInterval(() => {
+                if (window.StudyTracker) {
+                    const time = window.StudyTracker.getCurrentTimeFormatted();
+                    document.getElementById('studyTimer').textContent = time;
+                }
+            }, 1000);
+        }
+
+        // ============================================
+        // READING PROGRESS
+        // ============================================
+        function initReadingProgress() {
+            window.addEventListener('scroll', () => {
+                const scrollTop = window.scrollY;
+                const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+                const progress = (scrollTop / docHeight) * 100;
+                document.getElementById('readingProgress').style.width = `${Math.min(progress, 100)}%`;
+            });
+        }
+
+        // ============================================
+        // QUIZ FUNCTIONS
+        // ============================================
+        function renderQuestion() {
+            const container = document.getElementById('quizContainer');
+            const q = TOPIC_CONFIG.quizQuestions[quizState.currentQuestion];
+            
+            container.innerHTML = `
+                <div class="mb-6">
+                    <p class="text-lg text-slate-800 font-medium mb-4">${quizState.currentQuestion + 1}. ${q.question}</p>
+                    
+                    <div class="space-y-3">
+                        ${q.options.map((opt, i) => `
+                            <button onclick="selectAnswer(${i})" 
+                                class="quiz-option w-full text-left p-4 border-2 border-slate-200 rounded-xl hover:border-sky-300 transition-colors"
+                                id="option-${i}">
+                                <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-slate-100 text-slate-600 font-medium mr-3">
+                                    ${String.fromCharCode(65 + i)}
+                                </span>
+                                <span class="text-slate-700">${opt}</span>
+                            </button>
+                        `).join('')}
+                    </div>
+                </div>
+                
+                <div class="flex justify-between items-center pt-4 border-t border-slate-100">
+                    <button onclick="previousQuestion()" 
+                        class="px-4 py-2 text-slate-500 hover:text-slate-700 ${quizState.currentQuestion === 0 ? 'invisible' : ''}">
+                        <i class="fas fa-arrow-left mr-1"></i> Previous
+                    </button>
+                    <button onclick="nextQuestion()" id="nextBtn"
+                        class="px-6 py-2 bg-sky-600 text-white rounded-lg hover:bg-sky-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                        ${quizState.answers[quizState.currentQuestion] === undefined ? 'disabled' : ''}>
+                        ${quizState.currentQuestion === TOPIC_CONFIG.quizQuestions.length - 1 ? 'Submit Quiz' : 'Next'}
+                        <i class="fas fa-arrow-right ml-1"></i>
+                    </button>
+                </div>
+            `;
+            
+            // Update progress
+            document.getElementById('quizProgress').textContent = 
+                `Question ${quizState.currentQuestion + 1} of ${TOPIC_CONFIG.quizQuestions.length}`;
+            
+            // Restore previous selection if any
+            if (quizState.answers[quizState.currentQuestion] !== undefined) {
+                const prevSelected = quizState.answers[quizState.currentQuestion];
+                document.getElementById(`option-${prevSelected}`)?.classList.add('selected');
+            }
+        }
+
+        function selectAnswer(index) {
+            // Clear previous selection
+            document.querySelectorAll('.quiz-option').forEach(el => el.classList.remove('selected'));
+            
+            // Set new selection
+            document.getElementById(`option-${index}`).classList.add('selected');
+            quizState.answers[quizState.currentQuestion] = index;
+            
+            // Enable next button
+            document.getElementById('nextBtn').disabled = false;
+        }
+
+        function nextQuestion() {
+            if (quizState.answers[quizState.currentQuestion] === undefined) return;
+            
+            if (quizState.currentQuestion < TOPIC_CONFIG.quizQuestions.length - 1) {
+                quizState.currentQuestion++;
+                renderQuestion();
+            } else {
+                submitQuiz();
+            }
+        }
+
+        function previousQuestion() {
+            if (quizState.currentQuestion > 0) {
+                quizState.currentQuestion--;
+                renderQuestion();
+            }
+        }
+
+        async function submitQuiz() {
+            // Calculate score
+            let correct = 0;
+            TOPIC_CONFIG.quizQuestions.forEach((q, i) => {
+                if (quizState.answers[i] === q.correct) correct++;
+            });
+            
+            const score = Math.round((correct / TOPIC_CONFIG.quizQuestions.length) * 100);
+            
+            // Record to tracker
+            if (window.StudyTracker) {
+                await window.StudyTracker.recordQuiz(
+                    TOPIC_CONFIG.subject,
+                    TOPIC_CONFIG.topic,
+                    score,
+                    TOPIC_CONFIG.quizQuestions.length,
+                    correct
+                );
+            }
+            
+            // Show results
+            showResults(score, correct);
+        }
+
+        function showResults(score, correct) {
+            document.getElementById('quizContainer').classList.add('hidden');
+            document.getElementById('quizResults').classList.remove('hidden');
+            
+            const circle = document.getElementById('scoreCircle');
+            circle.textContent = `${score}%`;
+            circle.style.background = score >= 70 ? '#22c55e' : score >= 50 ? '#f59e0b' : '#ef4444';
+            
+            const message = document.getElementById('scoreMessage');
+            const details = document.getElementById('scoreDetails');
+            
+            if (score >= 80) {
+                message.textContent = '🎉 Excellent!';
+                details.textContent = `You got ${correct} out of ${TOPIC_CONFIG.quizQuestions.length} questions correct. Great understanding!`;
+            } else if (score >= 60) {
+                message.textContent = '👍 Good Job!';
+                details.textContent = `You got ${correct} out of ${TOPIC_CONFIG.quizQuestions.length} questions correct. Keep practicing!`;
+            } else {
+                message.textContent = '📚 Keep Learning!';
+                details.textContent = `You got ${correct} out of ${TOPIC_CONFIG.quizQuestions.length} questions correct. Review the topic and try again.`;
+            }
+            
+            // Update quiz progress
+            document.getElementById('quizProgress').textContent = 'Quiz Completed!';
+        }
+
+        function retryQuiz() {
+            quizState = {
+                currentQuestion: 0,
+                answers: [],
+                started: false,
+                completed: false
+            };
+            
+            document.getElementById('quizContainer').classList.remove('hidden');
+            document.getElementById('quizResults').classList.add('hidden');
+            renderQuestion();
+        }
+
+        function scrollToQuiz() {
+            document.getElementById('quizSection').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // ============================================
+        // BOOKMARK
+        // ============================================
+        function toggleBookmark() {
+            const icon = document.getElementById('bookmarkIcon');
+            const isBookmarked = icon.classList.contains('fas');
+            
+            if (isBookmarked) {
+                icon.classList.remove('fas');
+                icon.classList.add('far');
+                localStorage.removeItem(`bookmark_${TOPIC_CONFIG.topicId}`);
+            } else {
+                icon.classList.remove('far');
+                icon.classList.add('fas');
+                icon.classList.add('text-amber-500');
+                localStorage.setItem(`bookmark_${TOPIC_CONFIG.topicId}`, 'true');
+            }
+        }
+
+        function loadBookmark() {
+            const icon = document.getElementById('bookmarkIcon');
+            if (localStorage.getItem(`bookmark_${TOPIC_CONFIG.topicId}`)) {
+                icon.classList.remove('far');
+                icon.classList.add('fas', 'text-amber-500');
+            }
+        }
+
+        // ============================================
+        // OTHER FUNCTIONS
+        // ============================================
+        function markAsComplete() {
+            alert('Topic marked as complete! Your progress has been saved.');
+        }
+
+        function downloadNotes() {
+            alert('Notes download feature coming soon!');
+        }
+
+        // Cleanup on page leave
+        window.addEventListener('beforeunload', () => {
+            if (window.StudyTracker) {
+                window.StudyTracker.endSession();
+            }
+        });
+    </script>
+</body>
+</html>

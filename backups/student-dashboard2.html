@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Favicon -->
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Dashboard - EduNext</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <link href="css/dashboard.css" rel="stylesheet">
+  <script type="module" src="js/dashboard.js" defer></script>
+</head>
+<body>
+  <!-- Loading State -->
+  <div id="loading" class="fixed inset-0 flex items-center justify-center bg-white z-50" style="display: none;">
+    <div class="text-center">
+      <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto"></div>
+      <p class="mt-4 text-gray-600">Loading your dashboard...</p>
+    </div>
+  </div>
+
+  <!-- Error State -->
+  <div id="error" class="fixed inset-0 flex items-center justify-center bg-white z-50" style="display: none;">
+    <div class="text-center p-8">
+      <div class="text-red-500 text-5xl mb-4">
+        <i class="fas fa-exclamation-circle"></i>
+      </div>
+      <h2 class="text-2xl font-bold text-gray-800 mb-4">Error</h2>
+      <p id="error-message" class="text-gray-600 mb-6">An error occurred loading your dashboard.</p>
+      <button onclick="window.location.reload()" class="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors">
+        Try Again
+      </button>
+    </div>
+  </div>
+
+  <div class="layout flex min-h-screen">
+    <aside class="bg-white/80 backdrop-blur-lg shadow-xl min-h-screen w-64 flex flex-col px-4 py-6 border-r border-gray-200">
+      <a href="#" class="flex items-center gap-3 mb-8">
+  <img src="/assets/images/logo.png" alt="Logo" class="h-12 w-12 object-contain rounded-full shadow-lg border-2 border-blue-600">
+        <span class="text-2xl font-extrabold text-blue-700 tracking-tight">Prep100</span>
+      </a>
+      <nav class="flex flex-col gap-2 text-gray-700 font-medium">
+        <a href="/students/student-dashboard.html" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-blue-50 transition active:bg-blue-100 sidebar__item">
+          <i class="fas fa-home text-blue-600"></i> Home
+        </a>
+  <a href="/students/news-feed-gemini.html" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-blue-50 transition sidebar__item">
+          <i class="fas fa-newspaper text-pink-500"></i> News Feed
+        </a>
+        <a href="/students/ai-tutor-chatbot.html" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-blue-50 transition sidebar__item">
+          <i class="fas fa-robot text-purple-500"></i> AI Tutor
+        </a>
+        <a href="/students/study-plan" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-blue-50 transition sidebar__item">
+          <i class="fas fa-calendar-alt text-green-500"></i> Study Plan
+        </a>
+        <a href="/students/smart-note" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-blue-50 transition sidebar__item">
+          <i class="fas fa-sticky-note text-yellow-500"></i> Smart Notes
+        </a>
+        <a href="/students/video-library" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-blue-50 transition sidebar__item">
+          <i class="fas fa-video text-red-500"></i> Video Library
+        </a>
+        <a href="practice-exams.html" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-blue-50 transition sidebar__item">
+          <i class="fas fa-file-alt text-indigo-500"></i> Mock Exams
+        </a>
+        <a href="practice-exams.html" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-blue-50 transition sidebar__item">
+          <i class="fas fa-pencil-alt text-orange-500"></i> Practice Exams
+        </a>
+        <a href="notifications.html" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-blue-50 transition sidebar__item">
+          <i class="fas fa-bell text-pink-600"></i> Notifications
+        </a>
+        <a href="student-live-session.html" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-blue-50 transition sidebar__item">
+          <i class="fas fa-chalkboard-teacher text-blue-400"></i> Join Live Session
+        </a>
+        <a href="#" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-blue-50 transition sidebar__item">
+          <i class="fas fa-book-open text-teal-600"></i> All Formula
+        </a>
+        <a href="#" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-blue-50 transition sidebar__item">
+          <i class="fas fa-book-reader text-amber-600"></i> Dictionary
+        </a>
+      </nav>
+    </aside>
+
+    <!-- Error State - Only shown when needed -->
+    <div id="error-state" class="fixed inset-0 bg-white z-50 hidden items-center justify-center">
+      <div class="text-center p-8">
+        <i class="fas fa-exclamation-circle text-red-500 text-4xl mb-4"></i>
+        <h2 class="text-xl font-bold text-gray-800 mb-2">Access Error</h2>
+        <p id="error-message" class="text-gray-600 mb-4">Redirecting to login...</p>
+      </div>
+    </div>
+
+    <main class="flex-1 bg-gradient-to-br from-blue-50 to-white min-h-screen p-8 main-content">
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
+        <div class="flex-1 flex items-center relative max-w-xl">
+          <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-lg"></i>
+          <input type="text" class="w-full pl-12 pr-4 py-3 rounded-full border-2 border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 bg-white text-gray-700 text-base shadow-sm transition" placeholder="What would you like to learn...">
+          </div>
+          <div class="flex items-center gap-4">
+            <div id="user-info" class="flex items-center gap-4">
+              <span id="student-level" class="bg-blue-100 text-blue-700 px-4 py-1 rounded-full font-semibold text-sm shadow">Loading...</span>
+              <span id="student-name" class="font-semibold text-gray-700">Loading...</span>
+              <button class="relative p-2 rounded-full hover:bg-blue-100 transition">
+                <i class="fas fa-bell text-blue-600 text-lg"></i>
+                <span class="absolute -top-1 -right-1 bg-pink-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold shadow" id="notification-count">0</span>
+              </button>
+              <img id="user-avatar" src="../assets/images/unnamed.jpg" alt="User" class="h-10 w-10 rounded-full border-2 border-blue-500 shadow">
+            </div>
+          </div>
+        </div>
+
+        <!-- Firebase Scripts -->
+        <script type="module">
+          import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+          import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+          import { 
+            getFirestore, 
+            collection, 
+            doc, 
+            getDoc, 
+            getDocs, 
+            query, 
+            where,
+            setDoc,
+            updateDoc,
+            serverTimestamp 
+          } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+          
+          import { firebaseConfig } from '../../js/firebase-config.js';
+          import { initializeAppCheck, ReCaptchaV3Provider } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app-check.js";
+
+          const app = initializeApp(firebaseConfig);
+          const auth = getAuth(app);
+          const db = getFirestore(app);
+
+          try {
+            initializeAppCheck(app, {
+              provider: new ReCaptchaV3Provider(firebaseConfig.recaptchaSiteKey),
+              isTokenAutoRefreshEnabled: true
+            });
+          } catch (err) {
+            console.warn('App Check not configured:', err.message);
+          }
+          
+          // Get DOM elements
+          const mainContent = document.querySelector('main');
+          const sidebar = document.querySelector('aside');
+          
+          // Function to show the main content
+          function showDashboard() {
+            console.log('Showing dashboard...');
+            // Show the main content and sidebar
+            const mainContent = document.querySelector('main');
+            const sidebar = document.querySelector('aside');
+            if (mainContent) {
+              mainContent.style.visibility = 'visible';
+              mainContent.style.opacity = '1';
+            }
+            if (sidebar) {
+              sidebar.style.visibility = 'visible';
+              sidebar.style.opacity = '1';
+            }
+            // Initialize the dashboard data
+            updateDashboard();
+          }
+          
+          // Helper functions
+          function setText(id, value) {
+            const el = document.getElementById(id);
+            if (el) el.textContent = value;
+          }
+          
+          function setImage(id, src) {
+            const el = document.getElementById(id);
+            if (el) el.src = src;
+          }
+          
+          // Helper: update element style width if exists
+          function setBarWidth(id, value) {
+            const el = document.getElementById(id);
+            if (el) el.style.width = value;
+          }
+
+          // Immediately check authentication state
+          console.log('Checking authentication...');
+          
+          // Function to update dashboard UI
+          function updateDashboard(userData) {
+            // Update user info
+            const userNameEl = document.getElementById('user-name');
+            if (userNameEl) {
+              userNameEl.textContent = userData.displayName || userData.email;
+            }
+            
+            // Update progress bars if they exist
+            if (userData.progress) {
+              Object.entries(userData.progress).forEach(([subject, value]) => {
+                updateProgress(subject + '-progress', value + '%');
+              });
+            }
+            
+            // Update other dashboard elements
+            const lastLoginEl = document.getElementById('last-login');
+            if (lastLoginEl && userData.lastLogin) {
+              const lastLogin = userData.lastLogin.toDate();
+              lastLoginEl.textContent = lastLogin.toLocaleDateString();
+            }
+          }
+          
+          // Function to show error state
+          function showError(message) {
+            const errorState = document.getElementById('error-state');
+            const errorMessage = document.getElementById('error-message');
+            const authLoading = document.getElementById('auth-loading');
+            
+            if (errorMessage) errorMessage.textContent = message;
+            if (errorState) {
+              errorState.style.display = 'flex';
+              authLoading.style.display = 'none';
+            }
+          }
+
+          // Main initialization function
+          async function initializeDashboard(user) {
+            if (!user || !user.uid) {
+              console.log('No user data, redirecting to login');
+              window.location.replace('../general/login.html');
+              return;
+            }
+            
+            try {
+              // Try to get user data
+              const userRef = doc(db, 'students', user.uid);
+              const userDoc = await getDoc(userRef);
+              
+              if (!userDoc.exists()) {
+                console.log('Creating new student profile');
+                await setDoc(userRef, {
+                  email: user.email,
+                  displayName: user.displayName || '',
+                  photoURL: user.photoURL || '',
+                  createdAt: serverTimestamp(),
+                  lastLogin: serverTimestamp(),
+                  isActive: true
+                });
+                return initializeDashboard(user); // Retry after creating profile
+              }
+                
+              // If student profile doesn't exist, create it
+              if (!userDoc.exists()) {
+                await setDoc(userRef, {
+                  email: user.email,
+                  displayName: user.displayName || '',
+                  photoURL: user.photoURL || '',
+                  createdAt: serverTimestamp(),
+                  lastLogin: serverTimestamp(),
+                  isActive: true
+                });
+                
+                // Fetch the newly created profile
+                const newUserDoc = await getDoc(userRef);
+                if (!newUserDoc.exists()) {
+                  throw new Error('Failed to create student profile');
+                }
+                return newUserDoc.data();
+              }
+              
+              // Update last login time
+              await setDoc(userRef, {
+                lastLogin: serverTimestamp()
+              }, { merge: true });
+              
+              return userDoc.data();
+              
+            } catch (error) {
+              console.error('Error initializing dashboard:', error);
+              
+              if (error.code === 'permission-denied') {
+                console.log('Permission denied, redirecting to login');
+                window.location.replace('../general/login.html');
+                return;
+              }
+              
+              // For other errors, show error message but keep trying
+              const errorElement = document.getElementById('error-message');
+              if (errorElement) {
+                errorElement.textContent = error.message || 'An error occurred. Please try again.';
+              }
+              
+              // If there's a permission error, redirect to login after a delay
+              if (error.code === 'permission-denied' || error.code === 'unauthenticated') {
+                setTimeout(() => {
+                  window.location.replace('../general/login.html');
+                }, 3000);
+              }
+              
+              throw error;
+            }
+              
+              if (!userDoc.exists()) {
+
+                // Create new student profile
+                try {
+                  await setDoc(userRef, {
+                    email: user.email,
+                    createdAt: serverTimestamp(),
+                    lastLogin: serverTimestamp(),
+                    isActive: true
+                  });
+                  
+                  // Fetch the newly created profile
+                  const newUserDoc = await getDoc(userRef);
+                  const userData = newUserDoc.data();
+                  await loadDashboardData(userData);
+                } catch (err) {
+                  console.error('Error creating profile:', err);
+                  showError('Failed to create profile. Please try again.');
+                  return;
+                }
+              } else {
+                const userData = userDoc.data();
+              
+              // Update UI with user info
+              setText('student-name', userData.name || 'Student');
+              setText('student-level', userData.level || 'SS 3/WAEC');
+              
+              // Set avatar
+              const avatarUrl = userData.avatarUrl || 
+                `https://ui-avatars.com/api/?name=${encodeURIComponent(userData.name || 'Student')}&background=2563eb&color=fff`;
+              setImage('user-avatar', avatarUrl);
+              // Load activity data
+              const activityRef = doc(db, 'student_activities', user.uid);
+              const activityDoc = await getDoc(activityRef);
+              const activityData = activityDoc.exists() ? 
+                activityDoc.data() : 
+                await createInitialActivityData(user.uid);
+
+              // Show main content
+              document.getElementById('auth-loading').style.display = 'none';
+              document.querySelector('main').classList.add('visible');
+              document.querySelector('aside').classList.add('visible');
+
+              // Update dashboard data
+              await loadDashboardData(user.uid);
+              
+            } catch (error) {
+              console.error('Error initializing dashboard:', error);
+              showError(error.message || 'Unable to load dashboard. Please try again.');
+            }
+          }
+
+          // Auth state listener
+          onAuthStateChanged(auth, async (user) => {
+            try {
+              console.log('Auth state changed:', user ? 'User logged in' : 'No user');
+              
+              if (!user) {
+                console.log('No user, redirecting to login...');
+                window.location.replace('../general/login.html');
+                return;
+              }
+              
+              // Try to initialize and get user data
+              const userData = await initializeDashboard(user);
+              
+              if (!userData) {
+                throw new Error('Unable to load user profile');
+              }
+              
+              // Load personalized dashboard data
+              await loadDashboardData(user.uid);
+              
+              // Show content and update UI
+              if (mainContent) mainContent.style.visibility = 'visible';
+              if (sidebar) sidebar.style.visibility = 'visible';
+              document.getElementById('auth-loading').style.display = 'none';
+              document.getElementById('error').style.display = 'none';
+              document.getElementById('dashboard').style.display = 'block';
+              document.querySelector('main').classList.add('visible');
+              document.querySelector('aside').classList.add('visible');
+              
+              // Update dashboard with user data
+              updateDashboard(userData);
+              
+            } catch (error) {
+              console.error('Error in auth state change:', error);
+              
+              if (error.code === 'permission-denied') {
+                console.log('Permission denied, redirecting to login');
+                window.location.replace('../general/login.html');
+                return;
+              }
+              
+              // For other errors, show error message
+              const errorElement = document.getElementById('error-message');
+              if (errorElement) {
+                errorElement.textContent = error.message || 'An error occurred. Please try again.';
+              }
+              
+              // Update display for error state
+              document.getElementById('auth-loading').style.display = 'none';
+              document.getElementById('error').style.display = 'block';
+              document.getElementById('dashboard').style.display = 'none';
+            }
+          });
+
+          async function loadDashboardData(userId) {
+            if (!userId) {
+              console.error('No user ID provided to loadDashboardData');
+              throw new Error('User ID is required to load dashboard data');
+            }
+            
+            try {
+              console.log('Loading dashboard data for user:', userId);
+              
+              // Get user's activity data
+              const activityRef = doc(db, 'student_activities', userId);
+              const activityDoc = await getDoc(activityRef);
+              
+              let activityData;
+              
+              // If no activity data exists, create initial data
+              if (!activityDoc.exists()) {
+                activityData = {
+                  weeklyProgress: 0,
+                  completedTasks: 0,
+                  totalTasks: 0,
+                  mockTests: [],
+                  lastUpdated: serverTimestamp()
+                };
+                
+                await setDoc(activityRef, activityData);
+              } else {
+                activityData = activityDoc.data();
+              }
+              
+              console.log('Activity data loaded:', activityData);
+              
+              // Safely update UI elements
+              const updateUIElement = (elementId, value) => {
+                const element = document.getElementById(elementId);
+                if (element) {
+                  element.textContent = value;
+                } else {
+                  console.warn(`Element with id ${elementId} not found`);
+                }
+              };
+              
+              // Update progress bars and statistics with animation
+              animateProgress('ai-weekly-bar', activityData.weeklyProgress || 0);
+              updateUIElement('ai-weekly-progress', `${activityData.weeklyProgress || 0}%`);
+              updateUIElement('ai-weekly-tasks', 
+                `${activityData.completedTasks || 0}/${activityData.totalTasks || 0} Tasks Completed`);
+              
+              // Update mock test scores with animation
+              if (activityData.mockTests?.length > 0) {
+                const average = activityData.mockTests.reduce((sum, test) => sum + test.score, 0) / activityData.mockTests.length;
+                animateProgress('ai-mock-bar', average);
+                updateUIElement('ai-mock-score', `${Math.round(average)}%`);
+                updateUIElement('ai-mock-label', 'Average Score Across Subjects');
+              } else {
+                animateProgress('ai-mock-bar', 0);
+                updateUIElement('ai-mock-score', '0%');
+                updateUIElement('ai-mock-label', 'No Mock Tests Taken');
+              }
+              
+              return activityData;
+            } catch (error) {
+              console.error('Error loading dashboard data:', error);
+              throw error; // Let the caller handle the error display
+            }
+              }
+              
+              // Update welcome message with time-appropriate greeting
+          }
+          
+          // Helper function to create initial activity data for new users
+          async function createInitialActivityData(userId) {
+            const initialData = {
+              weeklyProgress: 0,
+              completedTasks: 0,
+              totalTasks: 25,
+              lastLogin: new Date().toISOString(),
+              mockTests: []
+            };
+            
+            try {
+              await setDoc(doc(db, 'student_activities', userId), initialData);
+              return initialData;
+            } catch (error) {
+              console.error('Error creating initial activity data:', error);
+              throw error;
+            }
+          }
+          
+          // Helper function to animate progress bars
+          function animateProgress(elementId, targetValue) {
+            const element = document.getElementById(elementId);
+            if (!element) return;
+            
+            let currentWidth = 0;
+            const animationDuration = 1000; // 1 second
+            const steps = 60; // 60fps
+            const increment = targetValue / steps;
+            const stepDuration = animationDuration / steps;
+            
+            const animation = setInterval(() => {
+              if (currentWidth >= targetValue) {
+                clearInterval(animation);
+                element.style.width = `${targetValue}%`;
+                return;
+              }
+              
+              currentWidth += increment;
+              element.style.width = `${currentWidth}%`;
+            }, stepDuration);
+
+          function generateWelcomeMessage(activityData) {
+            const hour = new Date().getHours();
+            let timeBasedGreeting = 'Hello';
+            if (hour < 12) timeBasedGreeting = 'Good morning';
+            else if (hour < 18) timeBasedGreeting = 'Good afternoon';
+            else timeBasedGreeting = 'Good evening';
+            if (!activityData.lastLogin) {
+              return `${timeBasedGreeting}! Welcome to your personalized learning dashboard.`;
+            }
+            const progress = activityData.weeklyProgress || 0;
+            if (progress > 75) {
+              return `${timeBasedGreeting}! You're doing great! Keep up the excellent work!`;
+            } else if (progress > 50) {
+              return `${timeBasedGreeting}! You're making good progress. Let's aim even higher!`;
+            } else {
+              return `${timeBasedGreeting}! Ready to boost your progress today?`;
+            }
+          }
+
+          }
+          
+          // Helper function for text updates
+          function setText(elementId, text) {
+            const element = document.getElementById(elementId);
+            if (element) {
+              element.textContent = text;
+            }
+          }
+          
+          // Helper function to generate welcome message
+          function generateWelcomeMessage(userData) {
+            const hour = new Date().getHours();
+            let timeBasedGreeting = 'Hello';
+            
+            if (hour < 12) timeBasedGreeting = 'Good morning';
+            else if (hour < 18) timeBasedGreeting = 'Good afternoon';
+            else timeBasedGreeting = 'Good evening';
+            
+            if (!userData) {
+              return `${timeBasedGreeting}! Welcome to your personalized learning dashboard.`;
+            }
+            
+            const progress = userData.weeklyProgress || 0;
+            if (progress > 75) {
+              return `${timeBasedGreeting}! You're doing great! Keep up the excellent work!`;
+            } else if (progress > 50) {
+              return `${timeBasedGreeting}! You're making good progress. Let's aim higher!`;
+            } else {
+              return `${timeBasedGreeting}! Ready to boost your progress today?`;
+            }
+          }
+          
+          // Initialize the dashboard functionality
+          try {
+            // Initialize Firebase app and services
+            const app = initializeApp(firebaseConfig);
+            const auth = getAuth(app);
+            const db = getFirestore(app);
+            
+            // Set custom settings for Firestore
+            const settings = {
+              ignoreUndefinedProperties: true
+            };
+            initializeFirestore(app, settings);
+            
+            // Listen for auth state changes
+            onAuthStateChanged(auth, async (user) => {
+              try {
+                if (!user) {
+                  console.log('No user, redirecting to login...');
+                  window.location.replace('../general/login.html');
+                  return;
+                }
+                
+                // Try to initialize dashboard with user data
+                const userData = await initializeDashboard(user);
+                if (!userData) {
+                  throw new Error('Unable to load user profile');
+                }
+                
+                // Show welcome message
+                const welcomeMsg = generateWelcomeMessage(userData);
+                setText('ai-welcome-message', welcomeMsg);
+                
+                // Load and update notifications
+                const notificationsQuery = query(
+                  collection(db, 'notifications'),
+                  where('userId', '==', user.uid),
+                  where('read', '==', false)
+                );
+                
+                const notifications = await getDocs(notificationsQuery);
+                const notificationCount = notifications.size;
+                
+                const countElement = document.getElementById('notification-count');
+                if (countElement) {
+                  countElement.textContent = notificationCount.toString();
+                  countElement.classList.toggle('animate-pulse', notificationCount > 0);
+                }
+                
+              } catch (error) {
+                console.error('Error in auth state change:', error);
+                const errorElement = document.getElementById('error-message');
+                if (errorElement) {
+                  errorElement.textContent = error.message || 'An error occurred. Please try again.';
+                }
+                document.getElementById('auth-loading').style.display = 'none';
+                document.getElementById('error').style.display = 'block';
+                document.getElementById('dashboard').style.display = 'none';
+              }
+            });
+            
+          } catch (error) {
+            console.error('Fatal initialization error:', error);
+            const errorElement = document.getElementById('error-message');
+            if (errorElement) {
+              errorElement.textContent = 'Failed to initialize application. Please refresh the page.';
+            }
+          }
+        </script>
+        
+        <div class="relative h-[230px] mb-12 overflow-hidden" id="sliding-banner-container">
+        <!-- Welcome Banner -->
+        <div id="welcome-banner" class="absolute inset-0 transition-all duration-700 ease-in-out translate-x-0 opacity-100 z-20">
+          <div class="rounded-3xl bg-gradient-to-r from-blue-600 to-blue-400 text-white p-8 shadow-xl relative overflow-hidden h-full flex items-center">
+            <div class="relative z-10 max-w-xl">
+              <h1 class="text-3xl md:text-4xl font-extrabold mb-2">Ready to Excel?</h1>
+              <p id="ai-welcome-message" class="text-lg opacity-90 mb-6 text-blue-100">Analyzing your learning journey...</p>
+              <button class="border border-white text-white px-6 py-2 rounded-full font-semibold hover:bg-white hover:text-blue-600 transition" onclick="document.getElementById('subjects-section').scrollIntoView({ behavior: 'smooth' });">Continue Learning</button>
+            </div>
+            <img src="/assets/images/hero-platform.png" class="absolute right-0 top-0 h-full w-1/3 object-cover opacity-20 z-0 hidden md:block" alt="Banner" />
+          </div>
+        </div>
+        <!-- Daily Learning Quest Banner -->
+        <div id="quest-banner" class="absolute inset-0 transition-all duration-700 ease-in-out translate-x-full opacity-0 z-10">
+          <div class="bg-gradient-to-r from-green-400 to-blue-400 rounded-3xl p-8 flex flex-col md:flex-row items-center justify-between gap-6 shadow-lg h-full">
+            <div>
+              <h3 class="text-xl font-bold text-white mb-2 flex items-center gap-2"><i class="fas fa-trophy text-yellow-300"></i> Daily Learning Quest</h3>
+              <p id="ai-quest-desc" class="text-white mb-2">Loading your personalized quest...</p>
+              <ul id="ai-quest-tasks" class="list-disc list-inside text-white/90 mb-2">
+                <li class="text-white/60">Loading tasks...</li>
+              </ul>
+              <span id="ai-quest-progress" class="inline-block bg-white/80 text-blue-700 font-bold px-4 py-1 rounded-full text-sm shadow">Progress: ...</span>
+            </div>
+            <button id="ai-quest-reward-btn" class="bg-yellow-300 text-blue-900 font-bold px-6 py-2 rounded-full shadow hover:bg-yellow-400 transition" disabled>Claim Reward</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+        <div class="bg-white rounded-2xl p-6 shadow flex flex-col gap-2">
+          <div class="flex items-center justify-between mb-2">
+            <span class="font-semibold text-gray-800">Weekly Progress</span>
+            <i class="fas fa-chart-line text-blue-600"></i>
+          </div>
+          <div id="ai-weekly-progress" class="text-3xl font-bold text-blue-600">...</div>
+          <div id="ai-weekly-tasks" class="text-gray-500 text-sm mb-2">Loading...</div>
+          <div class="w-full h-2 bg-blue-100 rounded-full overflow-hidden">
+            <div id="ai-weekly-bar" class="progress-bar"></div>
+          </div>
+        </div>
+        <div class="bg-white rounded-2xl p-6 shadow flex flex-col gap-2">
+          <div class="flex items-center justify-between mb-2">
+            <span class="font-semibold text-gray-800">Mock Tests Score</span>
+            <i class="fas fa-star text-yellow-400"></i>
+          </div>
+          <div id="ai-mock-score" class="text-3xl font-bold text-yellow-500">...</div>
+          <div id="ai-mock-label" class="text-gray-500 text-sm mb-2">Loading...</div>
+          <div class="w-full h-2 bg-yellow-100 rounded-full overflow-hidden">
+            <div id="ai-mock-bar" class="progress-bar"></div>
+          </div>
+        </div>
+      </div>
+
+      <section class="mb-12" id="subjects-section">
+        <div class="flex items-center justify-between mb-6">
+          <h2 class="text-2xl font-bold text-gray-800">Your Subjects</h2>
+          <button class="border border-blue-500 text-blue-600 px-5 py-1.5 rounded-full font-semibold hover:bg-blue-50 transition" id="view-all-subjects">View All</button>
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+          <a href="subjects/mathematics.html" class="flex flex-col items-center justify-center gap-2 p-6 rounded-2xl font-bold text-white text-lg shadow-lg bg-gradient-to-br from-blue-600 to-blue-400 hover:scale-105 transition subject-card">
+            <i class="fas fa-square-root-alt text-3xl"></i>
+            MATHEMATICS
+          </a>
+          <a href="subjects/biology.html" class="flex flex-col items-center justify-center gap-2 p-6 rounded-2xl font-bold text-white text-lg shadow-lg bg-gradient-to-br from-green-500 to-green-300 hover:scale-105 transition subject-card">
+            <i class="fas fa-dna text-3xl"></i>
+            BIOLOGY
+          </a>
+          <a href="subjects/chemistry.html" class="flex flex-col items-center justify-center gap-2 p-6 rounded-2xl font-bold text-white text-lg shadow-lg bg-gradient-to-br from-pink-500 to-pink-300 hover:scale-105 transition subject-card">
+            <i class="fas fa-flask text-3xl"></i>
+            CHEMISTRY
+          </a>
+          <a href="subjects/physics.html" class="flex flex-col items-center justify-center gap-2 p-6 rounded-2xl font-bold text-white text-lg shadow-lg bg-gradient-to-br from-yellow-500 to-yellow-300 hover:scale-105 transition subject-card">
+            <i class="fas fa-atom text-3xl"></i>
+            PHYSICS
+          </a>
+          <a href="subjects/english.html" class="flex flex-col items-center justify-center gap-2 p-6 rounded-2xl font-bold text-white text-lg shadow-lg bg-gradient-to-br from-indigo-500 to-indigo-300 hover:scale-105 transition subject-card">
+            <i class="fas fa-book text-3xl"></i>
+            ENGLISH
+          </a>
+          <a href="subjects/literature.html" class="flex flex-col items-center justify-center gap-2 p-6 rounded-2xl font-bold text-white text-lg shadow-lg bg-gradient-to-br from-purple-500 to-purple-300 hover:scale-105 transition subject-card">
+            <i class="fas fa-feather text-3xl"></i>
+            LITERATURE
+          </a>
+          <a href="subjects/government.html" class="flex flex-col items-center justify-center gap-2 p-6 rounded-2xl font-bold text-white text-lg shadow-lg bg-gradient-to-br from-red-500 to-red-300 hover:scale-105 transition subject-card hidden-subject">
+            <i class="fas fa-landmark text-3xl"></i>
+            GOVERNMENT
+          </a>
+          <a href="subjects/economics.html" class="flex flex-col items-center justify-center gap-2 p-6 rounded-2xl font-bold text-white text-lg shadow-lg bg-gradient-to-br from-teal-500 to-teal-300 hover:scale-105 transition subject-card hidden-subject">
+            <i class="fas fa-chart-pie text-3xl"></i>
+            ECONOMICS
+          </a>
+          <a href="subjects/commerce.html" class="flex flex-col items-center justify-center gap-2 p-6 rounded-2xl font-bold text-white text-lg shadow-lg bg-gradient-to-br from-orange-500 to-orange-300 hover:scale-105 transition subject-card hidden-subject">
+            <i class="fas fa-balance-scale text-3xl"></i>
+            COMMERCE
+          </a>
+          <a href="subjects/accounting.html" class="flex flex-col items-center justify-center gap-2 p-6 rounded-2xl font-bold text-white text-lg shadow-lg bg-gradient-to-br from-gray-700 to-gray-400 hover:scale-105 transition subject-card hidden-subject">
+            <i class="fas fa-calculator text-3xl"></i>
+            ACCOUNTING
+          </a>
+        </div>
+      </section>
+
+
+      <!-- Floating Toolbar -->
+      <div id="floating-toolbar" class="fixed bottom-8 right-8 z-50 flex flex-col gap-3 items-end">
+  <button onclick="openModal('ai-tutor-modal')" title="Open AI Tutor" class="bg-purple-600 hover:bg-purple-700 text-white rounded-full shadow-lg p-4 flex items-center gap-2 text-lg font-bold"><i class="fas fa-robot"></i></button>
+  <button onclick="openModal('notes-modal')" title="Open Smart Notes" class="bg-yellow-500 hover:bg-yellow-600 text-white rounded-full shadow-lg p-4 flex items-center gap-2 text-lg font-bold"><i class="fas fa-sticky-note"></i></button>
+  <button onclick="openModal('dictionary-modal')" title="Open Dictionary" class="bg-amber-600 hover:bg-amber-700 text-white rounded-full shadow-lg p-4 flex items-center gap-2 text-lg font-bold"><i class="fas fa-book-reader"></i></button>
+      </div>
+
+      <!-- WhatsApp Community Modal -->
+  <div id="whatsapp-modal" class="fixed inset-0 z-[200] hidden items-center justify-center bg-black/40 transition-all">
+        <div class="bg-white rounded-2xl shadow-2xl p-8 max-w-md w-full relative animate-slide-in">
+          <button onclick="closeModal('whatsapp-modal')" title="Close" class="absolute top-3 right-3 text-gray-400 hover:text-gray-700 text-2xl"><i class="fas fa-times"></i></button>
+          <div class="flex flex-col items-center text-center gap-4">
+            <i class="fab fa-whatsapp text-green-500 text-5xl"></i>
+            <h3 class="text-2xl font-bold text-gray-800">Join Our WhatsApp Community!</h3>
+            <p class="text-gray-600">Connect with fellow students, get updates, and access exclusive resources. Click below to join our WhatsApp group now!</p>
+            <a href="https://chat.whatsapp.com/JMSYNLdXvTd0XNpDtcp4CK?mode=ac_t" target="_blank" rel="noopener" class="bg-green-500 hover:bg-green-600 text-white font-bold px-6 py-3 rounded-full flex items-center gap-2 text-lg shadow transition"><i class="fab fa-whatsapp"></i> Join WhatsApp Group</a>
+          </div>
+        </div>
+      </div>
+      <div id="ai-tutor-modal" class="hidden fixed top-1/2 left-1/2 z-[100] bg-white rounded-2xl shadow-2xl p-6 w-96 max-w-full -translate-x-1/2 -translate-y-1/2 cursor-move">
+        <div class="flex justify-between items-center mb-4">
+          <h4 class="font-bold text-lg text-purple-700"><i class="fas fa-robot"></i> AI Tutor</h4>
+          <button onclick="closeModal('ai-tutor-modal')" title="Close" class="text-gray-400 hover:text-gray-700"><i class="fas fa-times"></i></button>
+        </div>
+        <p class="text-gray-600 mb-2">Ask the AI Tutor anything about your subjects!</p>
+        <input type="text" class="w-full border rounded px-3 py-2 mb-2" placeholder="Type your question...">
+        <button class="bg-purple-600 text-white px-4 py-2 rounded w-full">Ask</button>
+      </div>
+      <div id="notes-modal" class="hidden fixed top-1/2 left-1/2 z-[100] bg-white rounded-2xl shadow-2xl p-6 w-96 max-w-full -translate-x-1/2 -translate-y-1/2 cursor-move">
+        <div class="flex justify-between items-center mb-4">
+          <h4 class="font-bold text-lg text-yellow-600"><i class="fas fa-sticky-note"></i> Smart Notes</h4>
+          <button onclick="closeModal('notes-modal')" title="Close" class="text-gray-400 hover:text-gray-700"><i class="fas fa-times"></i></button>
+        </div>
+        <textarea class="w-full border rounded px-3 py-2 mb-2" rows="4" placeholder="Write your note..."></textarea>
+        <button class="bg-yellow-500 text-white px-4 py-2 rounded w-full">Save Note</button>
+      </div>
+      <div id="dictionary-modal" class="hidden fixed top-1/2 left-1/2 z-[100] bg-white rounded-2xl shadow-2xl p-6 w-96 max-w-full -translate-x-1/2 -translate-y-1/2 cursor-move">
+        <div class="flex justify-between items-center mb-4">
+          <h4 class="font-bold text-lg text-amber-700"><i class="fas fa-book-reader"></i> Dictionary</h4>
+          <button onclick="closeModal('dictionary-modal')" title="Close" class="text-gray-400 hover:text-gray-700"><i class="fas fa-times"></i></button>
+        </div>
+        <input type="text" class="w-full border rounded px-3 py-2 mb-2" placeholder="Search for a word...">
+        <button class="bg-amber-600 text-white px-4 py-2 rounded w-full">Search</button>
+      </div>
+
+      <script>
+        // Show WhatsApp modal on dashboard load (only once per session)
+        window.addEventListener('DOMContentLoaded', function() {
+          var modal = document.getElementById('whatsapp-modal');
+          if (!sessionStorage.getItem('whatsappModalShown')) {
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            sessionStorage.setItem('whatsappModalShown', '1');
+          } else {
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+          }
+        });
+        // Ensure closeModal works for WhatsApp modal
+        function closeModal(id) {
+          var modal = document.getElementById(id);
+          if (modal) {
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+          }
+        }
+        // --- AI Dashboard Dynamic Data (replace with your AI integration) ---
+        async function fetchAIDashboardData() {
+          // Simulate API call delay
+          await new Promise(r => setTimeout(r, 1200));
+          // TODO: Replace this with your AI API call and response parsing
+          // Example response structure:
+          return {
+            welcomeMessage: "Your personalized learning journey continues. You've completed 72% of your weekly goals!",
+            questDesc: "Complete your daily quest to earn XP and unlock rewards!",
+            questTasks: [
+              { text: "Finish 3 practice questions", done: true },
+              { text: "Watch 2 video lessons", done: false },
+              { text: "Update your study plan", done: false }
+            ],
+            questProgress: "Progress: 1/3",
+            questRewardAvailable: false,
+            weeklyProgress: 72,
+            weeklyTasks: "18/25 Tasks Completed",
+            mockScore: 81,
+            mockLabel: "Average Score Across Subjects"
+          };
+        }
+
+        async function updateAIDashboard() {
+          const data = await fetchAIDashboardData();
+          // Welcome
+          document.getElementById('ai-welcome-message').textContent = data.welcomeMessage;
+          // Quest
+          document.getElementById('ai-quest-desc').textContent = data.questDesc;
+          const questTasks = document.getElementById('ai-quest-tasks');
+          questTasks.innerHTML = '';
+          data.questTasks.forEach(task => {
+            const li = document.createElement('li');
+            li.textContent = task.text;
+            if (task.done) li.classList.add('line-through', 'opacity-60');
+            questTasks.appendChild(li);
+          });
+          document.getElementById('ai-quest-progress').textContent = data.questProgress;
+          const rewardBtn = document.getElementById('ai-quest-reward-btn');
+          rewardBtn.disabled = !data.questRewardAvailable;
+          // Weekly Progress
+          document.getElementById('ai-weekly-progress').textContent = data.weeklyProgress + '%';
+          document.getElementById('ai-weekly-tasks').textContent = data.weeklyTasks;
+          document.getElementById('ai-weekly-bar').style.width = data.weeklyProgress + '%';
+          // Mock Test
+          document.getElementById('ai-mock-score').textContent = data.mockScore + '%';
+          document.getElementById('ai-mock-label').textContent = data.mockLabel;
+          document.getElementById('ai-mock-bar').style.width = data.mockScore + '%';
+        }
+        updateAIDashboard();
+
+        // Sliding banner logic
+        let showWelcome = true;
+        setInterval(() => {
+          showWelcome = !showWelcome;
+          const welcome = document.getElementById('welcome-banner');
+          const quest = document.getElementById('quest-banner');
+          if (showWelcome) {
+            welcome.classList.remove('translate-x-full', 'opacity-0', 'z-10');
+            welcome.classList.add('translate-x-0', 'opacity-100', 'z-20');
+            quest.classList.remove('translate-x-0', 'opacity-100', 'z-20');
+            quest.classList.add('translate-x-full', 'opacity-0', 'z-10');
+          } else {
+            welcome.classList.remove('translate-x-0', 'opacity-100', 'z-20');
+            welcome.classList.add('translate-x-full', 'opacity-0', 'z-10');
+            quest.classList.remove('translate-x-full', 'opacity-0', 'z-10');
+            quest.classList.add('translate-x-0', 'opacity-100', 'z-20');
+          }
+        }, 5000);
+        // Modal logic
+        function openModal(id) {
+          document.getElementById(id).classList.remove('hidden');
+        }
+        function closeModal(id) {
+          document.getElementById(id).classList.add('hidden');
+        }
+        // Draggable modals
+        document.querySelectorAll('.cursor-move').forEach(modal => {
+          let isDragging = false, startX, startY, initialX, initialY;
+          modal.addEventListener('mousedown', function(e) {
+            if (e.target.tagName === 'BUTTON' || e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+            isDragging = true;
+            startX = e.clientX;
+            startY = e.clientY;
+            const rect = modal.getBoundingClientRect();
+            initialX = rect.left;
+            initialY = rect.top;
+            document.body.style.userSelect = 'none';
+          });
+          window.addEventListener('mousemove', function(e) {
+            if (!isDragging) return;
+            let dx = e.clientX - startX;
+            let dy = e.clientY - startY;
+            modal.style.left = initialX + dx + 'px';
+            modal.style.top = initialY + dy + 'px';
+            modal.style.transform = 'none';
+          });
+          window.addEventListener('mouseup', function() {
+            isDragging = false;
+            document.body.style.userSelect = '';
+          });
+        });
+        // Study plan enforcement
+        document.querySelectorAll('.subject-card').forEach(card => {
+          card.addEventListener('click', function(e) {
+            if (!localStorage.getItem('hasStudyPlan')) {
+              e.preventDefault();
+              alert('Please create your Study Plan before accessing subjects!');
+              window.location.href = 'study-plan.html';
+            }
+          });
+        });
+      </script>
+    </main>
+  </div>
+
+  <script>
+    // Add active class to current nav item
+    document.addEventListener('DOMContentLoaded', function() {
+      const currentPath = window.location.pathname;
+      const navItems = document.querySelectorAll('.sidebar__item');
+      navItems.forEach(item => {
+        if (item.getAttribute('href') === currentPath.split('/').pop()) {
+          item.classList.add('active');
+        }
+      });
+
+      const viewAllBtn = document.getElementById('view-all-subjects');
+      viewAllBtn.addEventListener('click', function() {
+        const hiddenSubjects = document.querySelectorAll('.hidden-subject');
+        hiddenSubjects.forEach(subject => {
+          subject.style.display = 'flex';
+        });
+        viewAllBtn.style.display = 'none';
+      });
+    });
+  </script>
+</body>
+</html>

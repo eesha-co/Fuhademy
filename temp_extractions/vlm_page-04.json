@@ -1,0 +1,28 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "Q10: A machine of velocity ratio 6 requires an effort of 400N to raise | Diagram: no\nQ11: If a wire 30cm long is extended to 30.5cm by a force of | Diagram: no\nQ12: In a hydraulic press, the pump piston exerts a pressure of | Diagram: no\nQ13: The accurate measurement of the relative density of a substance | Diagram: no\nQ14: A hydrometer is an instrument used in measuring | Diagram: no\nQ15: One special advantage of alcohol water over mercury as a | Diagram: no",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1774106428,
+  "id": "20260321232020d07e6d23ad47468e",
+  "model": "glm-4.6v",
+  "object": "chat.completion",
+  "request_id": "20260321232020d07e6d23ad47468e",
+  "usage": {
+    "completion_tokens": 128,
+    "completion_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "prompt_tokens": 5065,
+    "prompt_tokens_details": {
+      "cached_tokens": 4
+    },
+    "total_tokens": 5193
+  }
+}

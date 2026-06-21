@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="/assets/images/logo.png" />
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Economics - Units</title>
+  <link rel="stylesheet" href="../styles.css" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+  <style>
+    .main-content { max-width: 900px; margin: 40px auto 0 auto; background: #fff; border-radius: 16px; box-shadow: 0 2px 8px rgba(30,41,59,0.07); padding: 2.5rem 2rem 2rem 2rem; min-height: 80vh; display: flex; flex-direction: column; }
+    .back-btn { display: inline-flex; align-items: center; gap: 0.5rem; background: #f1f5f9; color: #1e293b; border: none; border-radius: 8px; padding: 0.5rem 1.2rem; font-size: 1rem; font-weight: 500; cursor: pointer; margin-bottom: 2rem; box-shadow: 0 1px 4px rgba(30,41,59,0.05); transition: background 0.2s, color 0.2s; text-decoration: none; }
+    .back-btn:hover { background: #e0e7ef; color: #1a73e8; }
+    h1 { font-size: 1.5rem; font-weight: 600; color: #1a73e8; margin-bottom: 1.5rem; }
+    .topic-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.3rem; }
+    .topic-card { background: #fff; border-radius: 12px; box-shadow: 0 2px 8px rgba(30,41,59,0.07); padding: 1.5rem 1rem; display: flex; flex-direction: column; gap: 0.7rem; font-size: 1.05rem; color: #1e293b; font-weight: 500; text-decoration: none; transition: box-shadow 0.2s; cursor: pointer; }
+    .topic-card:hover { box-shadow: 0 4px 16px rgba(26,115,232,0.13); color: #1a73e8; }
+    .topic-title { font-weight: 600; font-size: 1.1rem; color: #1a73e8; text-decoration: none; }
+    @media (max-width: 600px) { .main-content { padding: 1rem 0.5rem; } .topic-list { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+    !..make a modal appear. it should give proper attribution to Phet simulations..!
+  <main class="main-content">
+    <a href="../student-dashboard.html" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
+    <h1>Economics</h1>
+    <div class="topic-list">
+      <a class="topic-card" href="economics-topic.html?unit=intro">
+        <div class="topic-title">Introduction to Economics</div>
+        <div class="topic-desc">Basic concepts, scope, and methods</div>
+      </a>
+      <a class="topic-card" href="economics-topic.html?unit=micro">
+        <div class="topic-title">Microeconomics</div>
+        <div class="topic-desc">Demand, supply, market structures</div>
+      </a>
+      <a class="topic-card" href="economics-topic.html?unit=macro">
+        <div class="topic-title">Macroeconomics</div>
+        <div class="topic-desc">National income, money, banking, inflation</div>
+      </a>
+      <a class="topic-card" href="economics-topic.html?unit=public">
+        <div class="topic-title">Public Finance</div>
+        <div class="topic-desc">Government revenue, expenditure, taxation</div>
+      </a>
+      <a class="topic-card" href="economics-topic.html?unit=development">
+        <div class="topic-title">Economic Development & Planning</div>
+        <div class="topic-desc">Growth, development, planning, international trade</div>
+      </a>
+      <a class="topic-card" href="economics-topic.html?unit=applied">
+        <div class="topic-title">Applied Economics</div>
+        <div class="topic-desc">Agriculture, industry, population, environment</div>
+      </a>
+    </div>
+  </main>
+</body>
+</html>
+      font-size: 1.2rem;
+      pointer-events: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 24px;
+      width: 24px;
+    }
+    .topics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 28px;
+    }
+    .topic-card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      padding: 32px 24px 24px 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      transition: box-shadow 0.2s;
+      min-height: 120px;
+    }
+    .topic-card:hover {
+      box-shadow: 0 4px 16px rgba(26,115,232,0.08);
+    }
+    .topic-title {
+      font-size: 1.15rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: #1a73e8;
+      text-decoration: none;
+    }
+    .topic-desc {
+      font-size: 0.95rem;
+      color: #555;
+    }
+    @media (max-width: 700px) {
+      .sidebar { width: 100px; }
+      .main { margin-left: 100px; padding: 16px; }
+      .topbar h1 { font-size: 1.2rem; }
+      .search-box { width: 140px; }
+      .topics-grid { grid-template-columns: 1fr; gap: 16px; }
+      .topic-card { padding: 16px; }
+    }
+  </style>
+  <script>
+    const topics = [
+      "Economics as a science",
+      "Basic Concepts: Wants, Scarcity, choice, scale of preference, opportunity cost, Rationality, production, distribution, consumption.",
+      "Economic problems of; What, how, and for whom to produce and efficiency of resource use.",
+      "Application of PPF to solution of economic problems.",
+      "Economic Systems",
+      "Types; free enterprise centrally planned and mixed economies",
+      "Solutions to economic problems under different systems",
+      "Contemporary issues in economic systems (economic reforms e.g deregulation, banking sector consolidation, cash policy reform).",
+      "Methods and Tools of Economic Analysis",
+      "Scientific Approach: inductive and deductive methods, positive and normative reasoning",
+      "Basic Tools: tables, charts and graphs, measures of central tendency: mean, median and mode, and their applications, measures of dispersion; variance, standard deviation, range and their applications; merits and demerits of the tools.",
+      "The Theory of Demand",
+      "Meaning and determinants of demand",
+      "Demand schedules and curves",
+      "Distinction between change in quantity demanded and change in demand.",
+      "Types of demand: Composite, derived, competitive and joint demand",
+      "Types, nature and determinants of elasticity and their measurement - price, income and cross elasticity of demand",
+      "Importance of elasticity of demand to consumers, producers and government.",
+      "The Theory of Consumer Behaviour",
+      "Utility (cardinal, ordinal, total average and marginal utilities)",
+      "Indifference curve and budget line.",
+      "Diminishing marginal utility and the law of demand.",
+      "Consumer equilibrium using the indifference curve and marginal analyses.",
+      "Effects of shift in the budget line and the indifference curve.",
+      "Consumer surplus and its applications.",
+      "The Theory of Supply",
+      "Meaning and determinants of supply",
+      "Supply schedules and supply curves",
+      "Distinction between change in quantity supplied and change in supply",
+      "Types of Supply: Joint/complementary, competitive and composite",
+      "Elasticity of Supply: determinants, measurements, nature and applications",
+      "The Theory of Price Determination",
+      "The concepts of market and price",
+      "Functions of the price system",
+      "Equilibrium price and quantity in product and factor markets",
+      "Price legislation and its effects",
+      "Effects of changes in supply and demand on equilibrium price and quantity.",
+      "The Theory of Production",
+      "Meaning and types of production",
+      "Concepts of production and their interrelationships (TP, AP, MP and the law of variable proportion).",
+      "Division of labour and specialization",
+      "Scale of Production: Internal and external economies of scale and their implications.",
+      "Production functions and returns to scale",
+      "Producers' equilibrium isoquant - isocost and marginal analyses.",
+      "Factors affecting productivity."
+    ];
+    function renderTopics(filter = "") {
+      const grid = document.getElementById('topicsGrid');
+      grid.innerHTML = "";
+      topics.filter(t => t.toLowerCase().includes(filter.toLowerCase())).forEach((topic, idx) => {
+        grid.innerHTML += `
+          <div class="topic-card">
+            <a class="topic-title" href="economics-explanation.html?topic=${encodeURIComponent(topic)}">${topic}</a>
+            <div class="topic-desc">Chapter ${idx+1}</div>
+          </div>
+        `;
+      });
+    }
+    function filterTopics() {
+      const val = document.getElementById('searchInput').value;
+      renderTopics(val);
+    }
+    renderTopics();
+  </script>
+</body>
+</html>
+

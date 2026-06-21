@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fluids - Physics</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @keyframes fade-in-up { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-fade-in-up { animation: fade-in-up 0.5s ease-out forwards; }
+        .section-card { background: white; border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: 1px solid #e5e7eb; }
+        .topic-card { transition: all 0.3s ease; }
+        .topic-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <nav class="bg-white shadow-sm fixed top-0 w-full z-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center">
+                    <a href="index.html" class="text-cyan-600 hover:text-cyan-800 mr-4"><i class="fas fa-arrow-left"></i></a>
+                    <h1 class="text-xl font-semibold text-gray-900"><i class="fas fa-water text-cyan-500 mr-2"></i>Fluids</h1>
+                </div>
+                <div class="text-sm text-gray-600">Physics Topics</div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="pt-20 pb-8 px-4 max-w-6xl mx-auto">
+        <div class="bg-cyan-50 border-l-4 border-cyan-500 p-4 rounded-r-lg mb-6 animate-fade-in-up">
+            <h3 class="font-semibold text-cyan-800 mb-2"><i class="fas fa-info-circle mr-2"></i>Introduction to Fluids</h3>
+            <p class="text-cyan-700 text-sm">Fluid mechanics studies the behavior of liquids and gases. It covers pressure, density, buoyancy, fluid flow, and applications in everyday life and engineering.</p>
+        </div>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <a href="fluids/pressure.html" class="topic-card section-card animate-fade-in-up block">
+                <div class="flex items-center mb-3">
+                    <span class="bg-blue-100 text-blue-600 w-10 h-10 rounded-full flex items-center justify-center mr-3"><i class="fas fa-compress-arrows-alt"></i></span>
+                    <h3 class="font-semibold text-gray-800">Pressure</h3>
+                </div>
+                <p class="text-gray-600 text-sm mb-3">Pressure in fluids, atmospheric pressure, Pascal's principle, hydraulic systems.</p>
+                <div class="flex flex-wrap gap-1">
+                    <span class="bg-blue-50 text-blue-600 text-xs px-2 py-1 rounded">Pascal's Law</span>
+                    <span class="bg-blue-50 text-blue-600 text-xs px-2 py-1 rounded">Hydraulics</span>
+                </div>
+            </a>
+
+            <a href="fluids/buoyancy.html" class="topic-card section-card animate-fade-in-up block">
+                <div class="flex items-center mb-3">
+                    <span class="bg-green-100 text-green-600 w-10 h-10 rounded-full flex items-center justify-center mr-3"><i class="fas fa-anchor"></i></span>
+                    <h3 class="font-semibold text-gray-800">Buoyancy</h3>
+                </div>
+                <p class="text-gray-600 text-sm mb-3">Archimedes' principle, floating and sinking, density determination.</p>
+                <div class="flex flex-wrap gap-1">
+                    <span class="bg-green-50 text-green-600 text-xs px-2 py-1 rounded">Archimedes</span>
+                    <span class="bg-green-50 text-green-600 text-xs px-2 py-1 rounded">Floating</span>
+                </div>
+            </a>
+
+            <a href="fluids/surface-tension.html" class="topic-card section-card animate-fade-in-up block">
+                <div class="flex items-center mb-3">
+                    <span class="bg-purple-100 text-purple-600 w-10 h-10 rounded-full flex items-center justify-center mr-3"><i class="fas fa-tint"></i></span>
+                    <h3 class="font-semibold text-gray-800">Surface Tension</h3>
+                </div>
+                <p class="text-gray-600 text-sm mb-3">Cohesive forces, capillary action, applications in nature.</p>
+                <div class="flex flex-wrap gap-1">
+                    <span class="bg-purple-50 text-purple-600 text-xs px-2 py-1 rounded">Capillarity</span>
+                    <span class="bg-purple-50 text-purple-600 text-xs px-2 py-1 rounded">Cohesion</span>
+                </div>
+            </a>
+
+            <a href="fluids/viscosity.html" class="topic-card section-card animate-fade-in-up block">
+                <div class="flex items-center mb-3">
+                    <span class="bg-orange-100 text-orange-600 w-10 h-10 rounded-full flex items-center justify-center mr-3"><i class="fas fa-oil-can"></i></span>
+                    <h3 class="font-semibold text-gray-800">Viscosity</h3>
+                </div>
+                <p class="text-gray-600 text-sm mb-3">Fluid resistance to flow, Stokes' law, terminal velocity.</p>
+                <div class="flex flex-wrap gap-1">
+                    <span class="bg-orange-50 text-orange-600 text-xs px-2 py-1 rounded">Stokes' Law</span>
+                    <span class="bg-orange-50 text-orange-600 text-xs px-2 py-1 rounded">Flow</span>
+                </div>
+            </a>
+
+            <a href="fluids/bernoulli.html" class="topic-card section-card animate-fade-in-up block">
+                <div class="flex items-center mb-3">
+                    <span class="bg-red-100 text-red-600 w-10 h-10 rounded-full flex items-center justify-center mr-3"><i class="fas fa-plane"></i></span>
+                    <h3 class="font-semibold text-gray-800">Bernoulli's Principle</h3>
+                </div>
+                <p class="text-gray-600 text-sm mb-3">Fluid flow, pressure and velocity relationship, aerodynamics.</p>
+                <div class="flex flex-wrap gap-1">
+                    <span class="bg-red-50 text-red-600 text-xs px-2 py-1 rounded">Aerodynamics</span>
+                    <span class="bg-red-50 text-red-600 text-xs px-2 py-1 rounded">Lift</span>
+                </div>
+            </a>
+
+            <a href="fluids/fluid-dynamics-interactive.html" class="topic-card section-card animate-fade-in-up block">
+                <div class="flex items-center mb-3">
+                    <span class="bg-teal-100 text-teal-600 w-10 h-10 rounded-full flex items-center justify-center mr-3"><i class="fas fa-laptop"></i></span>
+                    <h3 class="font-semibold text-gray-800">Interactive Simulations</h3>
+                </div>
+                <p class="text-gray-600 text-sm mb-3">PhET simulations for exploring fluid mechanics.</p>
+                <div class="flex flex-wrap gap-1">
+                    <span class="bg-teal-50 text-teal-600 text-xs px-2 py-1 rounded">PhET</span>
+                    <span class="bg-teal-50 text-teal-600 text-xs px-2 py-1 rounded">Interactive</span>
+                </div>
+            </a>
+        </div>
+
+        <div class="mt-8 bg-gradient-to-r from-cyan-50 to-blue-50 p-5 rounded-lg border border-cyan-200 animate-fade-in-up">
+            <h3 class="font-semibold text-cyan-800 mb-3"><i class="fas fa-lightbulb mr-2"></i>Key Concepts in Fluids</h3>
+            <div class="grid md:grid-cols-2 gap-4 text-sm text-cyan-700">
+                <div>
+                    <p class="font-medium text-cyan-800 mb-1">Pressure:</p>
+                    <p class="font-mono">P = F/A = hρg (fluid column)</p>
+                </div>
+                <div>
+                    <p class="font-medium text-cyan-800 mb-1">Archimedes' Principle:</p>
+                    <p class="font-mono">Upthrust = Weight of displaced fluid = ρVg</p>
+                </div>
+                <div>
+                    <p class="font-medium text-cyan-800 mb-1">Bernoulli's Equation:</p>
+                    <p class="font-mono">P + ½ρv² + ρgh = constant</p>
+                </div>
+                <div>
+                    <p class="font-medium text-cyan-800 mb-1">Stokes' Law:</p>
+                    <p class="font-mono">F = 6πηrv (drag on sphere)</p>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

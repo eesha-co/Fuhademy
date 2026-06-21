@@ -1,0 +1,28 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "2010 JAMB PHYSICS QUESTIONS  \n1. Which Physics Question Paper Type is given to you?  \nA. Type A  \nB. Type B  \nC. Type C  \nD. Type D  \n\n2. Two cars moving in the same direction have speeds of 100kmh⁻¹ and 130kmh⁻¹. What is the velocity of the faster car as measured by an observer in the slower car?  \nA. 130 kmh⁻¹  \nB. 230 kmh⁻¹  \nC. 200 kmh⁻¹  \nD. 30 kmh⁻¹  \n\n3.  \n[Diagram: A velocity-time graph with axes labeled \"v/m\" (vertical) and \"t/s\" (horizontal). The graph shows a line starting at point E on the vertical axis, rising to point F, then horizontal to point G, then descending to point H on the horizontal axis.]  \nThe diagram above shows a velocity-time graph. The statement that is true about this motion is that, the car  \nA. decelerates between points F and H  \nB. accelerates between points F and G  \nC. has a constant speed between points E and  \nD. has no acceleration between point F and G.  \n\n4. A stone and a feather dropped from the same height above the earth surface. Ignoring air resistance, which of the following is correct?  \nA. The stone and feather will both reach the ground at the same time.  \nB. The stone will reach the ground first  \nC. The feather will reach the ground first  \nD. The feather will be blown away by the wind while stone will drop steadily.  \n\nwww.toppers.com.ng",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1774105880,
+  "id": "202603212311055bd1a2ed0fc84372",
+  "model": "glm-4.6v",
+  "object": "chat.completion",
+  "request_id": "202603212311055bd1a2ed0fc84372",
+  "usage": {
+    "completion_tokens": 353,
+    "completion_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "prompt_tokens": 5058,
+    "prompt_tokens_details": {
+      "cached_tokens": 4
+    },
+    "total_tokens": 5411
+  }
+}

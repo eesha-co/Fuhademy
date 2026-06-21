@@ -1,0 +1,28 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "Q1: Which Physics Question Paper Type is given to you? | Diagram: no\nQ2: Two cars moving in the same direction have speeds of 100kmh⁻¹ and 130kmh⁻¹. What is the velocity of the faster car as measured by an observer in the slower car? | Diagram: no\nQ3: The diagram above shows a velocity-time graph. The | Diagram: yes\nQ4: A stone and a feather dropped from the same height above the earth surface. Ignoring air resistance, which of the following is correct? | Diagram: no",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1774106393,
+  "id": "202603212319463a4e690d4eb5466f",
+  "model": "glm-4.6v",
+  "object": "chat.completion",
+  "request_id": "202603212319463a4e690d4eb5466f",
+  "usage": {
+    "completion_tokens": 125,
+    "completion_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "prompt_tokens": 5065,
+    "prompt_tokens_details": {
+      "cached_tokens": 4
+    },
+    "total_tokens": 5190
+  }
+}

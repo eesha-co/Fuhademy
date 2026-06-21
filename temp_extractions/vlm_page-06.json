@@ -1,0 +1,28 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "Q21: A vapour is said to be saturated when | Diagram: no\nQ22: The pressure of one mole of an ideal gas of volume 10⁻²m³ at a temperature of 27⁰C is ..... [Molar gas constant = 8.3 Jmol⁻¹K⁻¹] | Diagram: no\nQ23: Which of the following has no effect on radiation? | Diagram: no\nQ24: The wavelength of a wave travelling with a velocity of 420ms⁻¹ is 42m. What is its period? | Diagram: no\nQ25: The sound of an electric bell dies down slowly when air is slowly pumped out from a bottle because | Diagram: no",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1774106458,
+  "id": "202603212320512094bae6fc0f4ee1",
+  "model": "glm-4.6v",
+  "object": "chat.completion",
+  "request_id": "202603212320512094bae6fc0f4ee1",
+  "usage": {
+    "completion_tokens": 155,
+    "completion_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "prompt_tokens": 5065,
+    "prompt_tokens_details": {
+      "cached_tokens": 102
+    },
+    "total_tokens": 5220
+  }
+}

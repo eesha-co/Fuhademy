@@ -1,0 +1,2885 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Periodic Table Overview - Learning Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @keyframes fade-in-up {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in-up { animation: fade-in-up 0.5s ease-out forwards; }
+        .step-progress { transition: width 0.3s ease-in-out; }
+        .resource-card { transition: transform 0.2s; }
+        .resource-card:hover { transform: translateY(-4px); }
+        .step-button.active { background-color: #FEF3C7; color: #D97706; border-color: #F59E0B; }
+        
+        /* Mobile sidebar */
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 40;
+        }
+        .sidebar-overlay.show { display: block; }
+
+        /* Electron orbit animations */
+        @keyframes orbit1 {
+            from { transform: rotateX(70deg) rotateZ(0deg); }
+            to { transform: rotateX(70deg) rotateZ(360deg); }
+        }
+        @keyframes orbit2 {
+            from { transform: rotateX(60deg) rotateY(30deg) rotateZ(0deg); }
+            to { transform: rotateX(60deg) rotateY(30deg) rotateZ(360deg); }
+        }
+        @keyframes orbit3 {
+            from { transform: rotateX(75deg) rotateY(-25deg) rotateZ(0deg); }
+            to { transform: rotateX(75deg) rotateY(-25deg) rotateZ(360deg); }
+        }
+        @keyframes orbit4 {
+            from { transform: rotateX(65deg) rotateY(45deg) rotateZ(0deg); }
+            to { transform: rotateX(65deg) rotateY(45deg) rotateZ(360deg); }
+        }
+        .electron-orbit-1 { animation: orbit1 3s linear infinite; transform-origin: 200px 150px; }
+        .electron-orbit-2 { animation: orbit2 4s linear infinite; transform-origin: 200px 150px; }
+        .electron-orbit-3 { animation: orbit3 2.5s linear infinite; transform-origin: 200px 150px; }
+        .electron-orbit-4 { animation: orbit4 5s linear infinite; transform-origin: 200px 150px; }
+
+        /* Intro text styling */
+        .intro-text {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border-left: 4px solid #f59e0b;
+            padding: 1rem 1.25rem;
+            border-radius: 0 8px 8px 0;
+            margin-bottom: 1.5rem;
+        }
+        .intro-text p {
+            color: #92400e;
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        /* Continue button */
+        .continue-btn {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: white;
+            padding: 0.75rem 2rem;
+            border-radius: 9999px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.2s;
+            box-shadow: 0 4px 14px rgba(245, 158, 11, 0.4);
+        }
+        .continue-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(245, 158, 11, 0.5);
+        }
+
+        /* Section card */
+        .section-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            border: 1px solid #e5e7eb;
+        }
+
+        /* Click hint - more prominent button style */
+        .click-hint {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            color: #92400e;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 24px;
+            padding: 12px 24px;
+            border-radius: 12px;
+            border: 2px solid #f59e0b;
+            transition: all 0.3s ease;
+            animation: pulse-hint 2s infinite;
+        }
+        .click-hint:hover {
+            background: linear-gradient(135deg, #fde68a 0%, #fcd34d 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4);
+        }
+        
+        @keyframes pulse-hint {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.4); }
+            50% { box-shadow: 0 0 0 8px rgba(245, 158, 11, 0); }
+        }
+        
+        /* Step complete indicator */
+        .step-complete-hint {
+            background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+            border: 2px solid #10b981;
+            color: #065f46;
+            padding: 16px 24px;
+            border-radius: 12px;
+            text-align: center;
+            margin-top: 24px;
+        }
+        .step-complete-hint .arrow {
+            animation: bounce-down 1s infinite;
+        }
+        @keyframes bounce-down {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(8px); }
+        }
+
+        /* Content area cursor */
+        #stepContainer.clickable {
+            cursor: pointer;
+        }
+
+        /* Custom Periodic Table */
+        .periodic-table-container {
+            font-family: 'Inter', sans-serif;
+            overflow-x: auto;
+            padding: 10px;
+        }
+        .periodic-table {
+            display: grid;
+            grid-template-columns: repeat(18, minmax(32px, 1fr));
+            gap: 2px;
+            max-width: 100%;
+        }
+        .element-cell {
+            aspect-ratio: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 10px;
+            position: relative;
+        }
+        .element-cell:hover {
+            transform: scale(1.2);
+            z-index: 10;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        .element-cell .symbol {
+            font-weight: bold;
+            font-size: 12px;
+        }
+        .element-cell .number {
+            font-size: 7px;
+            opacity: 0.7;
+        }
+        .element-cell.metal { background: linear-gradient(135deg, #93c5fd, #60a5fa); color: #1e3a5f; }
+        .element-cell.nonmetal { background: linear-gradient(135deg, #86efac, #4ade80); color: #14532d; }
+        .element-cell.metalloid { background: linear-gradient(135deg, #fde68a, #fbbf24); color: #78350f; }
+        .element-cell.noble { background: linear-gradient(135deg, #c4b5fd, #a78bfa); color: #4c1d95; }
+        .element-cell.alkali { background: linear-gradient(135deg, #fca5a5, #f87171); color: #7f1d1d; }
+        .element-cell.alkaline { background: linear-gradient(135deg, #fdba74, #fb923c); color: #7c2d12; }
+        .element-cell.halogen { background: linear-gradient(135deg, #5eead4, #2dd4bf); color: #134e4a; }
+        .element-cell.transition { background: linear-gradient(135deg, #93c5fd, #3b82f6); color: #1e3a5f; }
+        .element-cell.lanthanide { background: linear-gradient(135deg, #f9a8d4, #f472b6); color: #831843; }
+        .element-cell.actinide { background: linear-gradient(135deg, #d8b4fe, #c084fc); color: #581c87; }
+        .element-cell.empty { background: transparent; cursor: default; }
+        .element-cell.empty:hover { transform: none; box-shadow: none; }
+        
+        /* Element Info Panel */
+        .element-info-panel {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            border-radius: 12px;
+            padding: 1rem;
+            margin-top: 1rem;
+            border: 2px solid #f59e0b;
+            display: none;
+        }
+        .element-info-panel.active { display: block; }
+        
+        /* Legend */
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 11px;
+        }
+        .legend-color {
+            width: 16px;
+            height: 16px;
+            border-radius: 3px;
+        }
+
+        @media (max-width: 768px) {
+            .desktop-sidebar { display: none; }
+            .mobile-sidebar {
+                position: fixed;
+                top: 0; left: -280px;
+                width: 280px;
+                height: 100%;
+                background: white;
+                z-index: 50;
+                transition: left 0.3s ease;
+                overflow-y: auto;
+                box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+            }
+            .mobile-sidebar.show { left: 0; }
+            
+            .intro-text {
+                padding: 0.875rem 1rem;
+                margin-bottom: 1rem;
+            }
+            .intro-text p {
+                font-size: 0.9375rem;
+            }
+            
+            .section-card {
+                padding: 1rem;
+                margin-bottom: 1rem;
+            }
+            
+            .periodic-table {
+                grid-template-columns: repeat(18, minmax(24px, 1fr));
+                gap: 1px;
+            }
+            .element-cell .symbol { font-size: 9px; }
+            .element-cell .number { font-size: 6px; }
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Top Navigation -->
+    <nav class="bg-white shadow-sm fixed top-0 w-full z-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center">
+                    <button id="mobileMenuBtn" class="text-gray-600 hover:text-gray-900 mr-3 md:hidden" aria-label="Menu">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                    <a href="index.html" class="flex items-center gap-2 text-gray-600 hover:text-gray-900">
+                        <i class="fas fa-arrow-left"></i>
+                        <h1 id="topicTitle" class="text-lg md:text-xl font-semibold text-gray-900">Periodic Table Overview</h1>
+                    </a>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="text-sm text-gray-600 hidden sm:block">
+                        Progress: <span id="progressPercent">0%</span>
+                    </div>
+                    <div class="w-24 sm:w-32 h-2 bg-gray-200 rounded-full">
+                        <div id="progressBar" class="step-progress h-2 bg-amber-500 rounded-full" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Sidebar Overlay -->
+    <div id="sidebarOverlay" class="sidebar-overlay"></div>
+
+    <!-- Mobile Sidebar -->
+    <div id="mobileSidebar" class="mobile-sidebar">
+        <div class="p-4">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="font-semibold text-lg">Learning Steps</h3>
+                <button id="closeSidebarBtn" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            <ul id="mobileStepsList" class="space-y-2"></ul>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="pt-20 pb-24">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-12 gap-6">
+                <!-- Left Sidebar - Steps (Desktop) -->
+                <div class="md:col-span-3 desktop-sidebar">
+                    <div class="bg-white rounded-lg shadow-sm p-4 sticky top-20">
+                        <h3 class="font-semibold mb-4">Learning Steps</h3>
+                        <ul id="stepsList" class="space-y-2"></ul>
+                    </div>
+                </div>
+
+                <!-- Main Content Area -->
+                <div class="md:col-span-9">
+                    <!-- Current Step Content -->
+                    <div id="stepContainer" class="bg-white rounded-lg shadow-sm p-6 mb-6"></div>
+
+                    <!-- Resources Section -->
+                    <div id="resourcesContainer" class="bg-white rounded-lg shadow-sm p-6 hidden">
+                        <h3 class="text-lg font-semibold mb-4">Resources</h3>
+                        <div id="resourcesGrid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Bottom Navigation -->
+    <div class="fixed bottom-0 w-full bg-white border-t border-gray-200 z-40">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between py-4">
+                <button id="prevStepBtn" class="px-4 py-2 text-gray-600 hover:text-gray-900 disabled:opacity-50 disabled:cursor-not-allowed">
+                    <i class="fas fa-chevron-left mr-2"></i>Previous
+                </button>
+                <button id="nextStepBtn" class="px-4 py-2 bg-amber-500 text-white rounded-lg hover:bg-amber-600 disabled:opacity-50 disabled:cursor-not-allowed">
+                    Continue<i class="fas fa-chevron-right ml-2"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentStepIndex = 0;
+        let currentChunkIndex = 0;
+        let stepsCompleted = [];
+        let topicTracker = null;
+
+        // Element data for interactive periodic table
+        const elementsData = [
+            // Period 1
+            { z: 1, symbol: 'H', name: 'Hydrogen', mass: '1.008', category: 'nonmetal', group: 1, period: 1 },
+            { z: 2, symbol: 'He', name: 'Helium', mass: '4.003', category: 'noble', group: 18, period: 1 },
+            // Period 2
+            { z: 3, symbol: 'Li', name: 'Lithium', mass: '6.941', category: 'alkali', group: 1, period: 2 },
+            { z: 4, symbol: 'Be', name: 'Beryllium', mass: '9.012', category: 'alkaline', group: 2, period: 2 },
+            { z: 5, symbol: 'B', name: 'Boron', mass: '10.81', category: 'metalloid', group: 13, period: 2 },
+            { z: 6, symbol: 'C', name: 'Carbon', mass: '12.01', category: 'nonmetal', group: 14, period: 2 },
+            { z: 7, symbol: 'N', name: 'Nitrogen', mass: '14.01', category: 'nonmetal', group: 15, period: 2 },
+            { z: 8, symbol: 'O', name: 'Oxygen', mass: '16.00', category: 'nonmetal', group: 16, period: 2 },
+            { z: 9, symbol: 'F', name: 'Fluorine', mass: '19.00', category: 'halogen', group: 17, period: 2 },
+            { z: 10, symbol: 'Ne', name: 'Neon', mass: '20.18', category: 'noble', group: 18, period: 2 },
+            // Period 3
+            { z: 11, symbol: 'Na', name: 'Sodium', mass: '22.99', category: 'alkali', group: 1, period: 3 },
+            { z: 12, symbol: 'Mg', name: 'Magnesium', mass: '24.31', category: 'alkaline', group: 2, period: 3 },
+            { z: 13, symbol: 'Al', name: 'Aluminium', mass: '26.98', category: 'metal', group: 13, period: 3 },
+            { z: 14, symbol: 'Si', name: 'Silicon', mass: '28.09', category: 'metalloid', group: 14, period: 3 },
+            { z: 15, symbol: 'P', name: 'Phosphorus', mass: '30.97', category: 'nonmetal', group: 15, period: 3 },
+            { z: 16, symbol: 'S', name: 'Sulfur', mass: '32.07', category: 'nonmetal', group: 16, period: 3 },
+            { z: 17, symbol: 'Cl', name: 'Chlorine', mass: '35.45', category: 'halogen', group: 17, period: 3 },
+            { z: 18, symbol: 'Ar', name: 'Argon', mass: '39.95', category: 'noble', group: 18, period: 3 },
+            // Period 4
+            { z: 19, symbol: 'K', name: 'Potassium', mass: '39.10', category: 'alkali', group: 1, period: 4 },
+            { z: 20, symbol: 'Ca', name: 'Calcium', mass: '40.08', category: 'alkaline', group: 2, period: 4 },
+            { z: 21, symbol: 'Sc', name: 'Scandium', mass: '44.96', category: 'transition', group: 3, period: 4 },
+            { z: 22, symbol: 'Ti', name: 'Titanium', mass: '47.87', category: 'transition', group: 4, period: 4 },
+            { z: 23, symbol: 'V', name: 'Vanadium', mass: '50.94', category: 'transition', group: 5, period: 4 },
+            { z: 24, symbol: 'Cr', name: 'Chromium', mass: '52.00', category: 'transition', group: 6, period: 4 },
+            { z: 25, symbol: 'Mn', name: 'Manganese', mass: '54.94', category: 'transition', group: 7, period: 4 },
+            { z: 26, symbol: 'Fe', name: 'Iron', mass: '55.85', category: 'transition', group: 8, period: 4 },
+            { z: 27, symbol: 'Co', name: 'Cobalt', mass: '58.93', category: 'transition', group: 9, period: 4 },
+            { z: 28, symbol: 'Ni', name: 'Nickel', mass: '58.69', category: 'transition', group: 10, period: 4 },
+            { z: 29, symbol: 'Cu', name: 'Copper', mass: '63.55', category: 'transition', group: 11, period: 4 },
+            { z: 30, symbol: 'Zn', name: 'Zinc', mass: '65.38', category: 'transition', group: 12, period: 4 },
+            { z: 31, symbol: 'Ga', name: 'Gallium', mass: '69.72', category: 'metal', group: 13, period: 4 },
+            { z: 32, symbol: 'Ge', name: 'Germanium', mass: '72.63', category: 'metalloid', group: 14, period: 4 },
+            { z: 33, symbol: 'As', name: 'Arsenic', mass: '74.92', category: 'metalloid', group: 15, period: 4 },
+            { z: 34, symbol: 'Se', name: 'Selenium', mass: '78.97', category: 'nonmetal', group: 16, period: 4 },
+            { z: 35, symbol: 'Br', name: 'Bromine', mass: '79.90', category: 'halogen', group: 17, period: 4 },
+            { z: 36, symbol: 'Kr', name: 'Krypton', mass: '83.80', category: 'noble', group: 18, period: 4 },
+            // Period 5 (first few)
+            { z: 37, symbol: 'Rb', name: 'Rubidium', mass: '85.47', category: 'alkali', group: 1, period: 5 },
+            { z: 38, symbol: 'Sr', name: 'Strontium', mass: '87.62', category: 'alkaline', group: 2, period: 5 },
+            { z: 39, symbol: 'Y', name: 'Yttrium', mass: '88.91', category: 'transition', group: 3, period: 5 },
+            // Add more elements as needed...
+        ];
+
+        // Generate periodic table HTML
+        function generatePeriodicTable() {
+            let html = '<div class="periodic-table">';
+            
+            // Create 7 periods x 18 groups grid
+            for (let period = 1; period <= 7; period++) {
+                for (let group = 1; group <= 18; group++) {
+                    // Find element at this position
+                    const element = elementsData.find(e => e.period === period && e.group === group);
+                    
+                    if (element) {
+                        html += `
+                            <div class="element-cell ${element.category}" 
+                                 onclick="showElementInfo(${element.z})"
+                                 title="${element.name}">
+                                <span class="number">${element.z}</span>
+                                <span class="symbol">${element.symbol}</span>
+                            </div>
+                        `;
+                    } else {
+                        // Check if this is a placeholder position (lanthanides/actinides gap)
+                        if (period === 6 && group === 3) {
+                            html += `<div class="element-cell lanthanide" onclick="showLanthanides()" title="Lanthanides">
+                                <span class="number">57-71</span>
+                                <span class="symbol">La-Lu</span>
+                            </div>`;
+                        } else if (period === 7 && group === 3) {
+                            html += `<div class="element-cell actinide" onclick="showActinides()" title="Actinides">
+                                <span class="number">89-103</span>
+                                <span class="symbol">Ac-Lr</span>
+                            </div>`;
+                        } else {
+                            html += `<div class="element-cell empty"></div>`;
+                        }
+                    }
+                }
+            }
+            
+            html += '</div>';
+            return html;
+        }
+
+        // Show element information
+        function showElementInfo(atomicNumber) {
+            const element = elementsData.find(e => e.z === atomicNumber);
+            if (!element) return;
+            
+            const panel = document.getElementById('elementInfoPanel');
+            if (panel) {
+                panel.innerHTML = `
+                    <div class="flex items-center gap-4">
+                        <div class="text-4xl font-bold text-amber-800">${element.symbol}</div>
+                        <div>
+                            <h4 class="text-xl font-bold text-amber-900">${element.name}</h4>
+                            <p class="text-amber-700">Atomic Number: ${element.z}</p>
+                            <p class="text-amber-700">Atomic Mass: ${element.mass}</p>
+                            <p class="text-amber-700">Category: ${element.category.charAt(0).toUpperCase() + element.category.slice(1)}</p>
+                            <p class="text-amber-700">Group: ${element.group} | Period: ${element.period}</p>
+                        </div>
+                    </div>
+                `;
+                panel.classList.add('active');
+            }
+        }
+
+        function showLanthanides() {
+            const panel = document.getElementById('elementInfoPanel');
+            if (panel) {
+                panel.innerHTML = `
+                    <div class="text-center">
+                        <h4 class="text-xl font-bold text-pink-800 mb-2">Lanthanides (Elements 57-71)</h4>
+                        <p class="text-pink-700">The lanthanides are a series of 15 metallic elements. They are known as "rare earth elements" and are used in electronics, magnets, and catalysts.</p>
+                        <p class="text-pink-600 mt-2">Examples: Lanthanum (La), Cerium (Ce), Neodymium (Nd)</p>
+                    </div>
+                `;
+                panel.classList.add('active');
+            }
+        }
+
+        function showActinides() {
+            const panel = document.getElementById('elementInfoPanel');
+            if (panel) {
+                panel.innerHTML = `
+                    <div class="text-center">
+                        <h4 class="text-xl font-bold text-purple-800 mb-2">Actinides (Elements 89-103)</h4>
+                        <p class="text-purple-700">The actinides are radioactive elements. Most are synthetic (man-made). Uranium and Plutonium are used in nuclear reactors.</p>
+                        <p class="text-purple-600 mt-2">Examples: Actinium (Ac), Uranium (U), Plutonium (Pu)</p>
+                    </div>
+                `;
+                panel.classList.add('active');
+            }
+        }
+
+        const topicData = {
+            title: "The Periodic Table",
+            steps: [
+                {
+                    id: "introduction",
+                    title: "What is the Periodic Table?",
+                    type: "note",
+                    chunks: [
+                        {
+                            intro: "Welcome to your journey through the Periodic Table! This is one of the most important tools in chemistry - it's like a map that helps us understand all the elements in the universe. Let's begin!",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-table text-amber-500 mr-3"></i>The Periodic Table
+                                    </h3>
+                                    <p class="text-gray-700 leading-relaxed mb-4">The <strong class="text-amber-600">Periodic Table</strong> is a systematic arrangement of all known chemical elements in order of their atomic numbers. It was developed by <strong>Dmitri Mendeleev</strong> in 1869, who noticed patterns in the properties of elements.</p>
+                                    <div class="bg-amber-50 p-4 rounded-lg border-l-4 border-amber-500">
+                                        <p class="text-amber-800"><i class="fas fa-lightbulb mr-2"></i><strong>Key Insight:</strong> Elements in the same column (group) have similar chemical properties because they have the same number of valence electrons!</p>
+                                    </div>
+                                </div>
+                            `
+                        },
+                        {
+                            intro: "Let's look at how the periodic table is organized. It has horizontal rows called periods and vertical columns called groups. Understanding this structure is key to predicting element behavior!",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-th text-amber-500 mr-3"></i>Structure of the Periodic Table
+                                    </h3>
+                                    <div class="grid md:grid-cols-2 gap-4 mb-4">
+                                        <div class="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-500">
+                                            <h4 class="font-semibold text-blue-700 mb-2">Periods (Rows)</h4>
+                                            <ul class="text-gray-700 text-sm space-y-1">
+                                                <li>• <strong>7 periods</strong> numbered 1-7</li>
+                                                <li>• Elements in same period have same number of electron shells</li>
+                                                <li>• Period number = number of electron shells</li>
+                                            </ul>
+                                        </div>
+                                        <div class="bg-green-50 p-4 rounded-lg border-l-4 border-green-500">
+                                            <h4 class="font-semibold text-green-700 mb-2">Groups (Columns)</h4>
+                                            <ul class="text-gray-700 text-sm space-y-1">
+                                                <li>• <strong>18 groups</strong> numbered 1-18</li>
+                                                <li>• Elements in same group have similar properties</li>
+                                                <li>• Group number relates to valence electrons</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="bg-gray-50 p-4 rounded-lg">
+                                        <p class="text-sm text-gray-600"><i class="fas fa-info-circle text-blue-500 mr-2"></i>The position of an element tells us about its electron configuration and chemical behavior!</p>
+                                    </div>
+                                </div>
+                            `
+                        },
+                        {
+                            intro: "Now let's explore the periodic table interactively! Click on any element to see its properties. Notice how elements in the same group share similar properties!",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-laptop-code text-amber-500 mr-3"></i>Interactive Periodic Table
+                                    </h3>
+                                    <p class="text-gray-700 mb-4">Click on any element to see its details. Notice the colors representing different categories!</p>
+                                    
+                                    <!-- Legend -->
+                                    <div class="flex flex-wrap gap-3 mb-4 p-3 bg-gray-50 rounded-lg">
+                                        <div class="legend-item"><div class="legend-color" style="background: linear-gradient(135deg, #fca5a5, #f87171);"></div>Alkali Metals</div>
+                                        <div class="legend-item"><div class="legend-color" style="background: linear-gradient(135deg, #fdba74, #fb923c);"></div>Alkaline Earth</div>
+                                        <div class="legend-item"><div class="legend-color" style="background: linear-gradient(135deg, #93c5fd, #3b82f6);"></div>Transition Metals</div>
+                                        <div class="legend-item"><div class="legend-color" style="background: linear-gradient(135deg, #86efac, #4ade80);"></div>Non-metals</div>
+                                        <div class="legend-item"><div class="legend-color" style="background: linear-gradient(135deg, #fde68a, #fbbf24);"></div>Metalloids</div>
+                                        <div class="legend-item"><div class="legend-color" style="background: linear-gradient(135deg, #5eead4, #2dd4bf);"></div>Halogens</div>
+                                        <div class="legend-item"><div class="legend-color" style="background: linear-gradient(135deg, #c4b5fd, #a78bfa);"></div>Noble Gases</div>
+                                    </div>
+                                    
+                                    <div class="periodic-table-container">
+                                        ${generatePeriodicTable()}
+                                    </div>
+                                    
+                                    <div id="elementInfoPanel" class="element-info-panel"></div>
+                                </div>
+                            `
+                        }
+                    ]
+                },
+                {
+                    id: "metals-nonmetals",
+                    title: "Metals, Non-metals & Metalloids",
+                    type: "note",
+                    chunks: [
+                        {
+                            intro: "Elements are broadly classified into three categories based on their properties. Let's explore each category and learn how to identify them on the periodic table!",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-shapes text-amber-500 mr-3"></i>Three Main Categories
+                                    </h3>
+                                    <p class="text-gray-700 mb-4">Elements can be classified based on their physical and chemical properties:</p>
+                                    
+                                    <div class="space-y-4">
+                                        <!-- Metals -->
+                                        <div class="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-500">
+                                            <div class="flex items-center mb-2">
+                                                <div class="w-10 h-10 bg-blue-200 rounded-full flex items-center justify-center mr-3">
+                                                    <i class="fas fa-coins text-blue-600"></i>
+                                                </div>
+                                                <h4 class="font-semibold text-lg text-blue-800">Metals</h4>
+                                                <span class="ml-auto text-sm bg-blue-200 px-2 py-1 rounded">~80% of elements</span>
+                                            </div>
+                                            <div class="grid md:grid-cols-2 gap-2 text-sm text-gray-700">
+                                                <div><strong>Physical:</strong> Shiny, malleable, ductile, good conductors</div>
+                                                <div><strong>Chemical:</strong> Lose electrons, form positive ions, basic oxides</div>
+                                            </div>
+                                            <p class="text-xs text-blue-600 mt-2">Examples: Fe, Cu, Au, Na, Mg, Al</p>
+                                        </div>
+                                        
+                                        <!-- Non-metals -->
+                                        <div class="bg-green-50 p-4 rounded-lg border-l-4 border-green-500">
+                                            <div class="flex items-center mb-2">
+                                                <div class="w-10 h-10 bg-green-200 rounded-full flex items-center justify-center mr-3">
+                                                    <i class="fas fa-leaf text-green-600"></i>
+                                                </div>
+                                                <h4 class="font-semibold text-lg text-green-800">Non-metals</h4>
+                                            </div>
+                                            <div class="grid md:grid-cols-2 gap-2 text-sm text-gray-700">
+                                                <div><strong>Physical:</strong> Dull, brittle, poor conductors</div>
+                                                <div><strong>Chemical:</strong> Gain electrons, form negative ions, acidic oxides</div>
+                                            </div>
+                                            <p class="text-xs text-green-600 mt-2">Examples: C, N, O, S, Cl, Br, I</p>
+                                        </div>
+                                        
+                                        <!-- Metalloids -->
+                                        <div class="bg-yellow-50 p-4 rounded-lg border-l-4 border-yellow-500">
+                                            <div class="flex items-center mb-2">
+                                                <div class="w-10 h-10 bg-yellow-200 rounded-full flex items-center justify-center mr-3">
+                                                    <i class="fas fa-exchange-alt text-yellow-600"></i>
+                                                </div>
+                                                <h4 class="font-semibold text-lg text-yellow-800">Metalloids</h4>
+                                            </div>
+                                            <div class="text-sm text-gray-700">
+                                                <strong>Properties:</strong> Have characteristics of both metals and non-metals. They are semiconductors.
+                                            </div>
+                                            <p class="text-xs text-yellow-600 mt-2">Examples: Si, Ge, As, Sb, Te</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            `
+                        },
+                        {
+                            intro: "Let's see where these elements are located on the periodic table. There's a clear pattern! The 'staircase' line separates metals from non-metals.",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-map text-amber-500 mr-3"></i>Position on the Periodic Table
+                                    </h3>
+                                    <div class="bg-gray-50 p-4 rounded-lg mb-4">
+                                        <div class="grid md:grid-cols-3 gap-4 text-center">
+                                            <div class="bg-blue-100 p-3 rounded-lg">
+                                                <div class="text-3xl mb-2">⬅️</div>
+                                                <p class="font-semibold text-blue-800">Metals</p>
+                                                <p class="text-xs text-gray-600">Left side & center</p>
+                                            </div>
+                                            <div class="bg-yellow-100 p-3 rounded-lg">
+                                                <div class="text-3xl mb-2">↗️</div>
+                                                <p class="font-semibold text-yellow-800">Metalloids</p>
+                                                <p class="text-xs text-gray-600">Along diagonal line</p>
+                                            </div>
+                                            <div class="bg-green-100 p-3 rounded-lg">
+                                                <div class="text-3xl mb-2">➡️</div>
+                                                <p class="font-semibold text-green-800">Non-metals</p>
+                                                <p class="text-xs text-gray-600">Right side</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="bg-amber-50 p-4 rounded-lg border border-amber-200">
+                                        <p class="text-amber-800"><i class="fas fa-lightbulb mr-2"></i><strong>Remember:</strong> The diagonal 'staircase' line (from Boron to Astatine) separates metals from non-metals. Elements along this line are metalloids!</p>
+                                    </div>
+                                </div>
+                            `
+                        },
+                        {
+                            intro: "Now let's test your understanding with some practice problems!",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-question-circle text-amber-500 mr-3"></i>Quick Check
+                                    </h3>
+                                    
+                                    <div class="space-y-4">
+                                        <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+                                            <p class="font-medium text-gray-800 mb-2">1. Classify the following as metal, non-metal, or metalloid: Sodium (Na), Silicon (Si), Chlorine (Cl)</p>
+                                            <details class="mt-2">
+                                                <summary class="text-sm text-blue-600 cursor-pointer hover:text-blue-800">Check Answer</summary>
+                                                <div class="mt-2 text-sm text-gray-700 bg-white p-3 rounded">
+                                                    <p><strong>Sodium (Na):</strong> Metal (left side, shiny, conducts electricity)</p>
+                                                    <p><strong>Silicon (Si):</strong> Metalloid (on the diagonal line, semiconductor)</p>
+                                                    <p><strong>Chlorine (Cl):</strong> Non-metal (right side, gas, poor conductor)</p>
+                                                </div>
+                                            </details>
+                                        </div>
+                                        
+                                        <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+                                            <p class="font-medium text-gray-800 mb-2">2. Why is silicon used in computer chips?</p>
+                                            <details class="mt-2">
+                                                <summary class="text-sm text-blue-600 cursor-pointer hover:text-blue-800">Check Answer</summary>
+                                                <div class="mt-2 text-sm text-gray-700 bg-white p-3 rounded">
+                                                    <p>Silicon is a <strong>metalloid</strong>, meaning it has properties of both metals and non-metals. It is a <strong>semiconductor</strong> - it can conduct electricity under certain conditions, which is essential for controlling electrical signals in computer chips.</p>
+                                                </div>
+                                            </details>
+                                        </div>
+                                    </div>
+                                </div>
+                            `
+                        }
+                    ]
+                },
+                {
+                    id: "groups-periods",
+                    title: "Important Groups & Families",
+                    type: "note",
+                    chunks: [
+                        {
+                            intro: "Certain groups on the periodic table have special names and very distinctive properties. These are often called 'families'. Let's learn about the most important ones!",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-users text-amber-500 mr-3"></i>Special Families
+                                    </h3>
+                                    <p class="text-gray-700 mb-4">Some groups have special names because their elements share very similar properties:</p>
+                                    
+                                    <div class="space-y-3">
+                                        <!-- Alkali Metals -->
+                                        <div class="bg-red-50 p-4 rounded-lg border-l-4 border-red-500">
+                                            <div class="flex items-center justify-between">
+                                                <h4 class="font-semibold text-red-800">Group 1: Alkali Metals</h4>
+                                                <span class="text-sm bg-red-200 px-2 py-1 rounded">Li, Na, K, Rb, Cs, Fr</span>
+                                            </div>
+                                            <ul class="text-sm text-gray-700 mt-2 grid md:grid-cols-2 gap-1">
+                                                <li>• Very reactive (react with water!)</li>
+                                                <li>• Soft (can be cut with knife)</li>
+                                                <li>• Low melting points</li>
+                                                <li>• Form +1 ions</li>
+                                            </ul>
+                                        </div>
+                                        
+                                        <!-- Alkaline Earth -->
+                                        <div class="bg-orange-50 p-4 rounded-lg border-l-4 border-orange-500">
+                                            <div class="flex items-center justify-between">
+                                                <h4 class="font-semibold text-orange-800">Group 2: Alkaline Earth Metals</h4>
+                                                <span class="text-sm bg-orange-200 px-2 py-1 rounded">Be, Mg, Ca, Sr, Ba, Ra</span>
+                                            </div>
+                                            <ul class="text-sm text-gray-700 mt-2 grid md:grid-cols-2 gap-1">
+                                                <li>• Reactive (but less than Group 1)</li>
+                                                <li>• Harder than alkali metals</li>
+                                                <li>• Higher melting points</li>
+                                                <li>• Form +2 ions</li>
+                                            </ul>
+                                        </div>
+                                        
+                                        <!-- Halogens -->
+                                        <div class="bg-teal-50 p-4 rounded-lg border-l-4 border-teal-500">
+                                            <div class="flex items-center justify-between">
+                                                <h4 class="font-semibold text-teal-800">Group 17: Halogens</h4>
+                                                <span class="text-sm bg-teal-200 px-2 py-1 rounded">F, Cl, Br, I, At</span>
+                                            </div>
+                                            <ul class="text-sm text-gray-700 mt-2 grid md:grid-cols-2 gap-1">
+                                                <li>• Most reactive non-metals</li>
+                                                <li>• Diatomic (F₂, Cl₂, etc.)</li>
+                                                <li>• Colorful vapors</li>
+                                                <li>• Form -1 ions</li>
+                                            </ul>
+                                        </div>
+                                        
+                                        <!-- Noble Gases -->
+                                        <div class="bg-purple-50 p-4 rounded-lg border-l-4 border-purple-500">
+                                            <div class="flex items-center justify-between">
+                                                <h4 class="font-semibold text-purple-800">Group 18: Noble Gases</h4>
+                                                <span class="text-sm bg-purple-200 px-2 py-1 rounded">He, Ne, Ar, Kr, Xe, Rn</span>
+                                            </div>
+                                            <ul class="text-sm text-gray-700 mt-2 grid md:grid-cols-2 gap-1">
+                                                <li>• Unreactive (inert)</li>
+                                                <li>• Full outer electron shell</li>
+                                                <li>• Colorless gases</li>
+                                                <li>• Monatomic</li>
+                                            </ul>
+                                        </div>
+                                        
+                                        <!-- Transition Metals -->
+                                        <div class="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-500">
+                                            <div class="flex items-center justify-between">
+                                                <h4 class="font-semibold text-blue-800">Groups 3-12: Transition Metals</h4>
+                                                <span class="text-sm bg-blue-200 px-2 py-1 rounded">Fe, Cu, Zn, Ag, Au, etc.</span>
+                                            </div>
+                                            <ul class="text-sm text-gray-700 mt-2 grid md:grid-cols-2 gap-1">
+                                                <li>• Variable oxidation states</li>
+                                                <li>• Form colored compounds</li>
+                                                <li>• Good catalysts</li>
+                                                <li>• High melting points</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            `
+                        },
+                        {
+                            intro: "Here's a quick memory trick to remember the reactivity series of some important groups...",
+                            content: `
+                                <div class="bg-gradient-to-r from-amber-50 to-yellow-50 p-5 rounded-lg border border-amber-200">
+                                    <h4 class="font-semibold text-amber-800 mb-3"><i class="fas fa-brain mr-2"></i>Memory Tricks</h4>
+                                    
+                                    <div class="mb-4">
+                                        <p class="font-medium text-gray-800 mb-2">Alkali Metals Reactivity (most to least):</p>
+                                        <p class="text-lg font-bold text-red-700">"Krazy Na-Li Cs Friends Really-Rare"</p>
+                                        <p class="text-sm text-gray-600 mt-1">K > Na > Li > Cs > Rb > Fr (reactivity decreases down group)</p>
+                                    </div>
+                                    
+                                    <div>
+                                        <p class="font-medium text-gray-800 mb-2">Halogens Reactivity (most to least):</p>
+                                        <p class="text-lg font-bold text-teal-700">"First Class Boats Is Always-Time"</p>
+                                        <p class="text-sm text-gray-600 mt-1">F > Cl > Br > I > At (reactivity decreases down group)</p>
+                                    </div>
+                                </div>
+                            `
+                        }
+                    ]
+                },
+                {
+                    id: "atomic-structure",
+                    title: "Atomic Number & Mass",
+                    type: "note",
+                    chunks: [
+                        {
+                            intro: "Let's explore the structure of an atom! Interact with the simulation below - click on the particles to learn about them. Watch how protons and neutrons cluster in the center (nucleus) while electrons orbit around.",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-atom text-amber-500 mr-3"></i>Interactive Atom Structure
+                                    </h3>
+                                    
+                                    <!-- Interactive Atom SVG -->
+                                    <div class="bg-gradient-to-br from-slate-900 to-slate-800 rounded-xl p-4 mb-4" onclick="event.stopPropagation()">
+                                        <svg id="atomStructureSVG" viewBox="0 0 400 300" class="w-full max-w-md mx-auto">
+                                            <!-- Electron orbits (visual only) -->
+                                            <ellipse cx="200" cy="150" rx="120" ry="45" fill="none" stroke="rgba(100,150,255,0.15)" stroke-width="1" stroke-dasharray="5,5" transform="rotate(-20 200 150)"/>
+                                            <ellipse cx="200" cy="150" rx="120" ry="45" fill="none" stroke="rgba(100,150,255,0.15)" stroke-width="1" stroke-dasharray="5,5" transform="rotate(20 200 150)"/>
+                                            <ellipse cx="200" cy="150" rx="120" ry="45" fill="none" stroke="rgba(100,150,255,0.15)" stroke-width="1" stroke-dasharray="5,5" transform="rotate(60 200 150)"/>
+                                            
+                                            <!-- Nucleus glow -->
+                                            <defs>
+                                                <radialGradient id="nucleusGlow">
+                                                    <stop offset="0%" stop-color="#ef4444" stop-opacity="0.6"/>
+                                                    <stop offset="100%" stop-color="#ef4444" stop-opacity="0"/>
+                                                </radialGradient>
+                                            </defs>
+                                            <circle cx="200" cy="150" r="50" fill="url(#nucleusGlow)"/>
+                                            
+                                            <!-- Nucleus -->
+                                            <g id="nucleusGroup">
+                                                <!-- Protons (red with +) -->
+                                                <g class="proton cursor-pointer" onclick="event.stopPropagation(); showParticleInfo('proton')">
+                                                    <circle cx="190" cy="140" r="12" fill="#ef4444" stroke="#fca5a5" stroke-width="2"/>
+                                                    <text x="190" y="145" text-anchor="middle" fill="white" font-size="14" font-weight="bold">+</text>
+                                                </g>
+                                                <g class="proton cursor-pointer" onclick="event.stopPropagation(); showParticleInfo('proton')">
+                                                    <circle cx="210" cy="145" r="12" fill="#ef4444" stroke="#fca5a5" stroke-width="2"/>
+                                                    <text x="210" y="150" text-anchor="middle" fill="white" font-size="14" font-weight="bold">+</text>
+                                                </g>
+                                                <g class="proton cursor-pointer" onclick="event.stopPropagation(); showParticleInfo('proton')">
+                                                    <circle cx="200" cy="160" r="12" fill="#ef4444" stroke="#fca5a5" stroke-width="2"/>
+                                                    <text x="200" y="165" text-anchor="middle" fill="white" font-size="14" font-weight="bold">+</text>
+                                                </g>
+                                                <g class="proton cursor-pointer" onclick="event.stopPropagation(); showParticleInfo('proton')">
+                                                    <circle cx="195" cy="155" r="12" fill="#ef4444" stroke="#fca5a5" stroke-width="2"/>
+                                                    <text x="195" y="160" text-anchor="middle" fill="white" font-size="14" font-weight="bold">+</text>
+                                                </g>
+                                                <g class="proton cursor-pointer" onclick="event.stopPropagation(); showParticleInfo('proton')">
+                                                    <circle cx="205" cy="135" r="12" fill="#ef4444" stroke="#fca5a5" stroke-width="2"/>
+                                                    <text x="205" y="140" text-anchor="middle" fill="white" font-size="14" font-weight="bold">+</text>
+                                                </g>
+                                                <g class="proton cursor-pointer" onclick="event.stopPropagation(); showParticleInfo('proton')">
+                                                    <circle cx="188" cy="158" r="12" fill="#ef4444" stroke="#fca5a5" stroke-width="2"/>
+                                                    <text x="188" y="163" text-anchor="middle" fill="white" font-size="14" font-weight="bold">+</text>
+                                                </g>
+                                                <!-- Neutrons (gray with n) -->
+                                                <g class="neutron cursor-pointer" onclick="event.stopPropagation(); showParticleInfo('neutron')">
+                                                    <circle cx="200" cy="142" r="12" fill="#6b7280" stroke="#d1d5db" stroke-width="2"/>
+                                                    <text x="200" y="147" text-anchor="middle" fill="white" font-size="11" font-weight="bold">n</text>
+                                                </g>
+                                                <g class="neutron cursor-pointer" onclick="event.stopPropagation(); showParticleInfo('neutron')">
+                                                    <circle cx="215" cy="155" r="12" fill="#6b7280" stroke="#d1d5db" stroke-width="2"/>
+                                                    <text x="215" y="160" text-anchor="middle" fill="white" font-size="11" font-weight="bold">n</text>
+                                                </g>
+                                                <g class="neutron cursor-pointer" onclick="event.stopPropagation(); showParticleInfo('neutron')">
+                                                    <circle cx="185" cy="148" r="12" fill="#6b7280" stroke="#d1d5db" stroke-width="2"/>
+                                                    <text x="185" y="153" text-anchor="middle" fill="white" font-size="11" font-weight="bold">n</text>
+                                                </g>
+                                                <g class="neutron cursor-pointer" onclick="event.stopPropagation(); showParticleInfo('neutron')">
+                                                    <circle cx="205" cy="165" r="12" fill="#6b7280" stroke="#d1d5db" stroke-width="2"/>
+                                                    <text x="205" y="170" text-anchor="middle" fill="white" font-size="11" font-weight="bold">n</text>
+                                                </g>
+                                                <g class="neutron cursor-pointer" onclick="event.stopPropagation(); showParticleInfo('neutron')">
+                                                    <circle cx="195" cy="130" r="12" fill="#6b7280" stroke="#d1d5db" stroke-width="2"/>
+                                                    <text x="195" y="135" text-anchor="middle" fill="white" font-size="11" font-weight="bold">n</text>
+                                                </g>
+                                                <g class="neutron cursor-pointer" onclick="event.stopPropagation(); showParticleInfo('neutron')">
+                                                    <circle cx="212" cy="138" r="12" fill="#6b7280" stroke="#d1d5db" stroke-width="2"/>
+                                                    <text x="212" y="143" text-anchor="middle" fill="white" font-size="11" font-weight="bold">n</text>
+                                                </g>
+                                            </g>
+                                            
+                                            <!-- Orbiting Electrons - positioned on orbit paths -->
+                                            <g class="electron-orbit-1">
+                                                <circle cx="320" cy="150" r="8" fill="#3b82f6" stroke="#93c5fd" stroke-width="2" class="cursor-pointer" onclick="event.stopPropagation(); showParticleInfo('electron')"/>
+                                            </g>
+                                            <g class="electron-orbit-2">
+                                                <circle cx="320" cy="150" r="8" fill="#3b82f6" stroke="#93c5fd" stroke-width="2" class="cursor-pointer" onclick="event.stopPropagation(); showParticleInfo('electron')"/>
+                                            </g>
+                                            <g class="electron-orbit-3">
+                                                <circle cx="320" cy="150" r="8" fill="#3b82f6" stroke="#93c5fd" stroke-width="2" class="cursor-pointer" onclick="event.stopPropagation(); showParticleInfo('electron')"/>
+                                            </g>
+                                            <g class="electron-orbit-4">
+                                                <circle cx="320" cy="150" r="8" fill="#3b82f6" stroke="#93c5fd" stroke-width="2" class="cursor-pointer" onclick="event.stopPropagation(); showParticleInfo('electron')"/>
+                                            </g>
+                                            
+                                            <!-- Labels -->
+                                            <text x="200" y="285" text-anchor="middle" fill="#94a3b8" font-size="12">Carbon Atom (C)</text>
+                                        </svg>
+                                        
+                                        <!-- Legend -->
+                                        <div class="flex justify-center gap-4 mt-2 text-xs">
+                                            <div class="flex items-center gap-1">
+                                                <div class="w-4 h-4 rounded-full bg-red-500"></div>
+                                                <span class="text-red-300">Proton (+)</span>
+                                            </div>
+                                            <div class="flex items-center gap-1">
+                                                <div class="w-4 h-4 rounded-full bg-gray-500"></div>
+                                                <span class="text-gray-300">Neutron (0)</span>
+                                            </div>
+                                            <div class="flex items-center gap-1">
+                                                <div class="w-4 h-4 rounded-full bg-blue-500"></div>
+                                                <span class="text-blue-300">Electron (−)</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Info Panel -->
+                                    <div id="particleInfoPanel" class="bg-blue-50 p-4 rounded-lg border border-blue-200 mb-4">
+                                        <h4 class="font-semibold text-blue-800 mb-2">👆 Click on any particle above to learn more!</h4>
+                                        <p class="text-sm text-gray-700">Notice in the simulation:</p>
+                                        <ul class="text-sm text-gray-700 mt-2 space-y-1">
+                                            <li>• <strong class="text-red-600">Red particles (Protons)</strong> are clustered in the center with neutrons - this is the <strong>nucleus</strong></li>
+                                            <li>• <strong class="text-gray-600">Gray particles (Neutrons)</strong> are also in the nucleus, mixed with protons</li>
+                                            <li>• <strong class="text-blue-600">Blue particles (Electrons)</strong> orbit around the nucleus in paths called "shells"</li>
+                                        </ul>
+                                    </div>
+                                    
+                                    <div class="bg-amber-50 p-4 rounded-lg border-l-4 border-amber-500">
+                                        <p class="text-amber-800"><i class="fas fa-lightbulb mr-2"></i><strong>What you're seeing:</strong> The atom is mostly empty space! The nucleus (center) contains protons and neutrons, while electrons zoom around it at high speeds.</p>
+                                    </div>
+                                </div>
+                            `
+                        },
+                        {
+                            intro: "Now let's explore the Atomic Number (Z). Use the interactive simulation below - change the number of protons and watch what happens to the element identity!",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-fingerprint text-amber-500 mr-3"></i>Atomic Number (Z) - Interactive
+                                    </h3>
+                                    
+                                    <div class="bg-gradient-to-br from-blue-50 to-indigo-100 p-4 rounded-xl mb-4">
+                                        <div class="text-center mb-4">
+                                            <div class="inline-block bg-white px-6 py-3 rounded-lg shadow-lg border-2 border-blue-300">
+                                                <div class="text-4xl font-bold text-blue-700" id="zValueDisplay">6</div>
+                                                <div class="text-sm text-gray-600">Atomic Number (Z)</div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Interactive Z selector -->
+                                        <div class="bg-white rounded-lg p-4 mb-4">
+                                            <label class="block text-sm font-medium text-gray-700 mb-2">Adjust Atomic Number (Z):</label>
+                                            <input type="range" id="protonSlider" min="1" max="20" value="6" class="w-full h-3 bg-blue-200 rounded-lg appearance-none cursor-pointer" oninput="updateZAtom(this.value)">
+                                            <div class="flex justify-between text-xs text-gray-500 mt-1">
+                                                <span>1 (H)</span>
+                                                <span>10 (Ne)</span>
+                                                <span>20 (Ca)</span>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Atom visualization -->
+                                        <div class="flex justify-center mb-4">
+                                            <svg id="zAtomSVG" viewBox="0 0 200 200" class="w-48 h-48">
+                                                <!-- Nucleus background -->
+                                                <defs>
+                                                    <radialGradient id="nucleusGradientZ">
+                                                        <stop offset="0%" stop-color="#fbbf24"/>
+                                                        <stop offset="100%" stop-color="#f59e0b"/>
+                                                    </radialGradient>
+                                                </defs>
+                                                <circle cx="100" cy="100" r="35" fill="url(#nucleusGradientZ)"/>
+                                                <!-- Protons will be drawn here -->
+                                                <g id="protonCircles"></g>
+                                                <!-- Electron shells -->
+                                                <circle cx="100" cy="100" r="60" fill="none" stroke="#3b82f6" stroke-width="1" stroke-dasharray="4,2" opacity="0.5"/>
+                                                <circle cx="100" cy="100" r="85" fill="none" stroke="#3b82f6" stroke-width="1" stroke-dasharray="4,2" opacity="0.3"/>
+                                                <!-- Electrons will be drawn here -->
+                                                <g id="electronCircles"></g>
+                                            </svg>
+                                        </div>
+                                        
+                                        <!-- Element Info -->
+                                        <div id="elementInfoZ" class="bg-white rounded-lg p-4 text-center">
+                                            <div class="text-5xl font-bold text-gray-800 mb-1" id="elementSymbolZ">C</div>
+                                            <div class="text-xl text-gray-600" id="elementNameZ">Carbon</div>
+                                            <div class="text-sm text-gray-500 mt-2">
+                                                <span id="protonCountZ">6</span> protons | 
+                                                <span id="electronCountZ">6</span> electrons (neutral)
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Explanation based on simulation -->
+                                    <div class="bg-white p-4 rounded-lg border mb-4">
+                                        <h4 class="font-semibold text-gray-800 mb-3">📖 What the simulation shows:</h4>
+                                        <div class="space-y-3 text-gray-700">
+                                            <p><strong>Watch carefully:</strong> As you move the slider, you're changing the number of <strong class="text-red-600">protons</strong> in the nucleus.</p>
+                                            <p><strong>Notice:</strong> The <strong class="text-blue-700">element changes!</strong> This proves that:</p>
+                                            <div class="bg-blue-50 p-3 rounded-lg border-l-4 border-blue-500">
+                                                <p class="font-semibold text-blue-800">Z (Atomic Number) = Number of Protons</p>
+                                                <p class="text-sm text-gray-600 mt-1">The atomic number IDENTIFIES the element!</p>
+                                            </div>
+                                            <p><strong>Also notice:</strong> In the neutral atom shown, the number of <strong class="text-blue-600">electrons</strong> equals the number of <strong class="text-red-600">protons</strong>.</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="bg-amber-50 p-4 rounded-lg border-l-4 border-amber-500">
+                                        <p class="text-amber-800"><i class="fas fa-key mr-2"></i><strong>Key Insight:</strong> No two elements have the same atomic number. If Z = 6, it's ALWAYS Carbon - never anything else! The atomic number is like the element's fingerprint.</p>
+                                    </div>
+                                </div>
+                            `
+                        },
+                        {
+                            intro: "Let's understand the key relationships involving atomic number (Z). These are essential for solving problems!",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-link text-amber-500 mr-3"></i>Atomic Number - Key Relationships
+                                    </h3>
+                                    
+                                    <div class="bg-gradient-to-r from-blue-50 to-indigo-50 p-5 rounded-lg border border-blue-200 mb-4">
+                                        <h4 class="font-semibold text-blue-800 mb-3 text-center text-lg">What is Atomic Number (Z)?</h4>
+                                        <div class="bg-white p-4 rounded-lg text-center mb-4">
+                                            <p class="text-gray-700 mb-2">The <strong class="text-blue-700">Atomic Number (Z)</strong> is the number of <strong class="text-red-600">protons</strong> in the nucleus of an atom.</p>
+                                            <div class="bg-blue-100 p-3 rounded-lg mt-3">
+                                                <p class="text-xl font-bold text-blue-800">Z = Number of Protons</p>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="grid md:grid-cols-2 gap-4">
+                                            <div class="bg-white p-4 rounded-lg border-l-4 border-red-500">
+                                                <h5 class="font-semibold text-red-700 mb-2">🔴 Z tells us Protons</h5>
+                                                <p class="text-sm text-gray-600">If Z = 6, the atom has <strong>6 protons</strong> in its nucleus. This NEVER changes for a given element.</p>
+                                            </div>
+                                            <div class="bg-white p-4 rounded-lg border-l-4 border-blue-500">
+                                                <h5 class="font-semibold text-blue-700 mb-2">🔵 In a Neutral Atom: Electrons = Protons</h5>
+                                                <p class="text-sm text-gray-600">If Z = 6, a neutral atom has <strong>6 electrons</strong> orbiting the nucleus (same as protons).</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="bg-white p-4 rounded-lg border mb-4">
+                                        <h4 class="font-semibold text-gray-800 mb-3">📋 Important Formulas for Atomic Number:</h4>
+                                        <div class="space-y-3">
+                                            <div class="bg-red-50 p-3 rounded border-l-4 border-red-500">
+                                                <p class="font-mono"><strong class="text-red-700">Finding Protons:</strong> Protons = Z (Atomic Number)</p>
+                                                <p class="text-xs text-gray-500 mt-1">Example: If Z = 11, then protons = 11</p>
+                                            </div>
+                                            <div class="bg-blue-50 p-3 rounded border-l-4 border-blue-500">
+                                                <p class="font-mono"><strong class="text-blue-700">Finding Electrons (neutral atom):</strong> Electrons = Protons = Z</p>
+                                                <p class="text-xs text-gray-500 mt-1">Example: If Z = 11, then electrons = 11 (in neutral atom)</p>
+                                            </div>
+                                            <div class="bg-green-50 p-3 rounded border-l-4 border-green-500">
+                                                <p class="font-mono"><strong class="text-green-700">Identifying the Element:</strong> Look up Z on the periodic table!</p>
+                                                <p class="text-xs text-gray-500 mt-1">Example: Z = 11 → Sodium (Na)</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-300">
+                                        <h4 class="font-semibold text-amber-800 mb-2">⚠️ Important Note about Ions:</h4>
+                                        <p class="text-gray-700 text-sm">In a <strong>neutral atom</strong>, electrons = protons. But in an <strong>ion</strong>, the number of electrons changes:</p>
+                                        <ul class="text-sm text-gray-600 mt-2 space-y-1">
+                                            <li>• <strong>Positive ion (cation):</strong> Lost electrons → fewer electrons than protons</li>
+                                            <li>• <strong>Negative ion (anion):</strong> Gained electrons → more electrons than protons</li>
+                                        </ul>
+                                        <p class="text-sm text-amber-700 mt-2"><strong>Remember:</strong> Z (atomic number) = protons ALWAYS, but electrons only equal protons in neutral atoms!</p>
+                                    </div>
+                                </div>
+                            `
+                        },
+                        {
+                            intro: "Now let's practice what we've learned about atomic number! First, we'll work through one together, then you try on your own.",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-pencil-alt text-amber-500 mr-3"></i>Practice: Atomic Number (Z)
+                                    </h3>
+                                    
+                                    <!-- Guided Practice -->
+                                    <div class="bg-green-50 p-4 rounded-lg border border-green-200 mb-4">
+                                        <h4 class="font-semibold text-green-800 mb-3">📝 Guided Practice - Let's solve this together:</h4>
+                                        <p class="text-gray-800 mb-3 font-medium">An element X has atomic number 13. How many protons and electrons does it have (in a neutral atom)? Identify the element.</p>
+                                        
+                                        <div id="guided-practice-z" class="space-y-4">
+                                            <!-- Step 1 -->
+                                            <div class="bg-white p-3 rounded-lg border">
+                                                <p class="text-sm text-gray-600 mb-2"><strong>Step 1:</strong> What is the atomic number (Z)?</p>
+                                                <div class="flex items-center gap-3">
+                                                    <input type="text" id="step1-z" placeholder="Enter Z..." class="flex-grow p-2 border rounded-md text-sm">
+                                                    <button onclick="checkStepZ(1)" class="px-4 py-2 bg-green-200 text-green-700 rounded-md hover:bg-green-300 text-sm font-medium">Check</button>
+                                                </div>
+                                                <p id="feedback1-z" class="text-xs mt-2"></p>
+                                            </div>
+                                            
+                                            <!-- Step 2 -->
+                                            <div class="bg-white p-3 rounded-lg border">
+                                                <p class="text-sm text-gray-600 mb-2"><strong>Step 2:</strong> How many protons? (Protons = Z)</p>
+                                                <div class="flex items-center gap-3">
+                                                    <input type="text" id="step2-z" placeholder="Enter protons..." class="flex-grow p-2 border rounded-md text-sm">
+                                                    <button onclick="checkStepZ(2)" class="px-4 py-2 bg-green-200 text-green-700 rounded-md hover:bg-green-300 text-sm font-medium">Check</button>
+                                                </div>
+                                                <p id="feedback2-z" class="text-xs mt-2"></p>
+                                            </div>
+                                            
+                                            <!-- Step 3 -->
+                                            <div class="bg-white p-3 rounded-lg border">
+                                                <p class="text-sm text-gray-600 mb-2"><strong>Step 3:</strong> How many electrons in a neutral atom?</p>
+                                                <div class="flex items-center gap-3">
+                                                    <input type="text" id="step3-z" placeholder="Enter electrons..." class="flex-grow p-2 border rounded-md text-sm">
+                                                    <button onclick="checkStepZ(3)" class="px-4 py-2 bg-green-200 text-green-700 rounded-md hover:bg-green-300 text-sm font-medium">Check</button>
+                                                </div>
+                                                <p id="feedback3-z" class="text-xs mt-2"></p>
+                                            </div>
+                                            
+                                            <!-- Step 4 -->
+                                            <div class="bg-white p-3 rounded-lg border">
+                                                <p class="text-sm text-gray-600 mb-2"><strong>Step 4:</strong> Identify the element (use the periodic table or memory):</p>
+                                                <div class="flex items-center gap-3">
+                                                    <input type="text" id="step4-z" placeholder="Enter element name or symbol..." class="flex-grow p-2 border rounded-md text-sm">
+                                                    <button onclick="checkStepZ(4)" class="px-4 py-2 bg-green-200 text-green-700 rounded-md hover:bg-green-300 text-sm font-medium">Check</button>
+                                                </div>
+                                                <p id="feedback4-z" class="text-xs mt-2"></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Independent Practice -->
+                                    <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                                        <h4 class="font-semibold text-blue-800 mb-3">🎯 Independent Practice - Now you try!</h4>
+                                        <p class="text-gray-600 text-sm mb-3">Solve these problems on your own. Show your workings and provide your final answer.</p>
+                                        
+                                        <!-- Problem 1 -->
+                                        <div class="bg-white p-4 rounded-lg border mb-4">
+                                            <p class="font-medium text-gray-800 mb-3">1. An element has atomic number 17. How many protons and electrons does it have (neutral atom)? What element is it?</p>
+                                            <div class="space-y-3">
+                                                <div>
+                                                    <label class="block text-sm font-medium text-gray-700 mb-1">Your Workings</label>
+                                                    <textarea id="workingsZ1" rows="3" class="w-full p-2 border rounded-md text-sm" placeholder="Show your steps here...
+1. Z = ...
+2. Protons = Z = ...
+3. Electrons = Protons (neutral) = ...
+4. Element = ..."></textarea>
+                                                </div>
+                                                <div class="grid grid-cols-3 gap-2">
+                                                    <div>
+                                                        <label class="block text-sm font-medium text-gray-700 mb-1">Protons</label>
+                                                        <input type="text" id="protonsZ1" placeholder="17" class="w-full p-2 border rounded-md text-sm">
+                                                    </div>
+                                                    <div>
+                                                        <label class="block text-sm font-medium text-gray-700 mb-1">Electrons</label>
+                                                        <input type="text" id="electronsZ1" placeholder="17" class="w-full p-2 border rounded-md text-sm">
+                                                    </div>
+                                                    <div>
+                                                        <label class="block text-sm font-medium text-gray-700 mb-1">Element</label>
+                                                        <input type="text" id="elementZ1" placeholder="Chlorine" class="w-full p-2 border rounded-md text-sm">
+                                                    </div>
+                                                </div>
+                                                <button onclick="checkIndependentZ(1)" class="w-full bg-blue-600 text-white font-semibold py-2 rounded-md hover:bg-blue-700 transition">Check Answer</button>
+                                                <p id="independent-feedback-z1" class="text-sm mt-2"></p>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Problem 2 -->
+                                        <div class="bg-white p-4 rounded-lg border mb-4">
+                                            <p class="font-medium text-gray-800 mb-3">2. An atom has 20 protons. What is its atomic number? What element is it? How many electrons in a neutral atom?</p>
+                                            <div class="space-y-3">
+                                                <div>
+                                                    <label class="block text-sm font-medium text-gray-700 mb-1">Your Workings</label>
+                                                    <textarea id="workingsZ2" rows="3" class="w-full p-2 border rounded-md text-sm" placeholder="Hint: Z = number of protons..."></textarea>
+                                                </div>
+                                                <div class="grid grid-cols-3 gap-2">
+                                                    <div>
+                                                        <label class="block text-sm font-medium text-gray-700 mb-1">Atomic No. (Z)</label>
+                                                        <input type="text" id="zAnswer2" placeholder="20" class="w-full p-2 border rounded-md text-sm">
+                                                    </div>
+                                                    <div>
+                                                        <label class="block text-sm font-medium text-gray-700 mb-1">Element</label>
+                                                        <input type="text" id="elementZ2" placeholder="Calcium" class="w-full p-2 border rounded-md text-sm">
+                                                    </div>
+                                                    <div>
+                                                        <label class="block text-sm font-medium text-gray-700 mb-1">Electrons</label>
+                                                        <input type="text" id="electronsZ2" placeholder="20" class="w-full p-2 border rounded-md text-sm">
+                                                    </div>
+                                                </div>
+                                                <button onclick="checkIndependentZ(2)" class="w-full bg-blue-600 text-white font-semibold py-2 rounded-md hover:bg-blue-700 transition">Check Answer</button>
+                                                <p id="independent-feedback-z2" class="text-sm mt-2"></p>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Problem 3 -->
+                                        <div class="bg-white p-4 rounded-lg border">
+                                            <p class="font-medium text-gray-800 mb-3">3. Sodium (Na) has atomic number 11. A sodium ion (Na⁺) has lost one electron. How many protons and electrons does Na⁺ have?</p>
+                                            <div class="space-y-3">
+                                                <div>
+                                                    <label class="block text-sm font-medium text-gray-700 mb-1">Your Workings</label>
+                                                    <textarea id="workingsZ3" rows="3" class="w-full p-2 border rounded-md text-sm" placeholder="Hint: Protons stay the same, but electrons change...
+Neutral Na: 11 protons, 11 electrons
+Na⁺ (lost 1 electron): 11 protons, ? electrons"></textarea>
+                                                </div>
+                                                <div class="grid grid-cols-2 gap-2">
+                                                    <div>
+                                                        <label class="block text-sm font-medium text-gray-700 mb-1">Protons in Na⁺</label>
+                                                        <input type="text" id="protonsZ3" placeholder="11" class="w-full p-2 border rounded-md text-sm">
+                                                    </div>
+                                                    <div>
+                                                        <label class="block text-sm font-medium text-gray-700 mb-1">Electrons in Na⁺</label>
+                                                        <input type="text" id="electronsZ3" placeholder="10" class="w-full p-2 border rounded-md text-sm">
+                                                    </div>
+                                                </div>
+                                                <button onclick="checkIndependentZ(3)" class="w-full bg-blue-600 text-white font-semibold py-2 rounded-md hover:bg-blue-700 transition">Check Answer</button>
+                                                <p id="independent-feedback-z3" class="text-sm mt-2"></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            `
+                        },
+                        {
+                            intro: "Now let's explore the Mass Number (A). Use this interactive simulation to see how protons and neutrons combine to give the mass number. Try the practice questions below!",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-weight-hanging text-amber-500 mr-3"></i>Mass Number (A) - Interactive
+                                    </h3>
+                                    
+                                    <div class="bg-gradient-to-br from-green-50 to-emerald-100 p-4 rounded-xl mb-4">
+                                        
+                                        <!-- Standard Element Notation Model -->
+                                        <div class="text-center mb-6">
+                                            <p class="text-sm text-gray-600 mb-2 font-medium">Standard Element Notation:</p>
+                                            <div class="inline-flex items-center justify-center bg-white px-8 py-4 rounded-xl shadow-lg border-2 border-emerald-300">
+                                                <div class="relative" style="min-width: 60px;">
+                                                    <!-- Mass Number (A) - superscript left -->
+                                                    <span class="absolute -top-3 -left-1 text-lg font-bold text-green-600" id="massNotationTop">21</span>
+                                                    <!-- Element Symbol -->
+                                                    <span class="text-5xl font-bold text-gray-800" id="elementNotationSymbol">Sc</span>
+                                                    <!-- Atomic Number (Z) - subscript left -->
+                                                    <span class="absolute -bottom-1 -left-1 text-lg font-bold text-blue-600" id="atomicNotationBottom">15</span>
+                                                </div>
+                                            </div>
+                                            <p class="text-xs text-gray-500 mt-2">
+                                                <span class="text-green-600 font-semibold">A (Mass Number)</span> is the superscript, 
+                                                <span class="text-blue-600 font-semibold">Z (Atomic Number)</span> is the subscript
+                                            </p>
+                                        </div>
+                                        
+                                        <!-- Formula Display -->
+                                        <div class="text-center mb-4">
+                                            <div class="inline-flex items-center gap-4 bg-white px-6 py-4 rounded-lg shadow-lg border-2 border-green-300">
+                                                <div class="text-center">
+                                                    <div class="text-3xl font-bold text-green-700" id="aValueDisplay">21</div>
+                                                    <div class="text-xs text-gray-600">Mass Number (A)</div>
+                                                </div>
+                                                <div class="text-2xl text-gray-400">=</div>
+                                                <div class="text-center">
+                                                    <div class="text-3xl font-bold text-red-600" id="zPartDisplay">15</div>
+                                                    <div class="text-xs text-gray-600">Protons (= Z)</div>
+                                                </div>
+                                                <div class="text-2xl text-gray-400">+</div>
+                                                <div class="text-center">
+                                                    <div class="text-3xl font-bold text-gray-600" id="nPartDisplay">6</div>
+                                                    <div class="text-xs text-gray-600">Neutrons (N)</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Controls -->
+                                        <div class="grid md:grid-cols-2 gap-4 mb-4">
+                                            <div class="bg-white rounded-lg p-3">
+                                                <label class="block text-sm font-medium text-red-700 mb-1">Atomic Number (Z):</label>
+                                                <input type="range" id="protonSliderA" min="1" max="20" value="15" class="w-full h-2 bg-red-200 rounded-lg appearance-none cursor-pointer" oninput="updateMassNumber()">
+                                                <div class="text-center text-red-700 font-bold" id="protonValA">15</div>
+                                            </div>
+                                            <div class="bg-white rounded-lg p-3">
+                                                <label class="block text-sm font-medium text-gray-700 mb-1">Neutrons (N):</label>
+                                                <input type="range" id="neutronSliderA" min="0" max="30" value="6" class="w-full h-2 bg-gray-300 rounded-lg appearance-none cursor-pointer" oninput="updateMassNumber()">
+                                                <div class="text-center text-gray-700 font-bold" id="neutronValA">6</div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Visual representation -->
+                                        <div class="bg-white rounded-lg p-4">
+                                            <div class="flex justify-center items-center gap-2 flex-wrap">
+                                                <div class="text-center">
+                                                    <div class="flex flex-wrap justify-center gap-1 mb-2" id="protonDotsA" style="max-width: 100px;"></div>
+                                                    <span class="text-xs text-red-600">Protons</span>
+                                                </div>
+                                                <div class="text-xl text-gray-400">+</div>
+                                                <div class="text-center">
+                                                    <div class="flex flex-wrap justify-center gap-1 mb-2" id="neutronDotsA" style="max-width: 100px;"></div>
+                                                    <span class="text-xs text-gray-600">Neutrons</span>
+                                                </div>
+                                                <div class="text-xl text-gray-400">=</div>
+                                                <div class="text-center">
+                                                    <div class="flex flex-wrap justify-center gap-1 mb-2" id="totalDotsA" style="max-width: 150px;"></div>
+                                                    <span class="text-xs text-green-600">In Nucleus (A)</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Element name -->
+                                        <div class="mt-4 text-center">
+                                            <p class="text-sm text-gray-600" id="notationExplain">This is Scandium-21 (²¹Sc)</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Explanation -->
+                                    <div class="bg-white p-4 rounded-lg border mb-4">
+                                        <h4 class="font-semibold text-gray-800 mb-3">📖 What the simulation shows:</h4>
+                                        <div class="space-y-3 text-gray-700">
+                                            <p><strong>Move the sliders</strong> to change the number of protons and neutrons.</p>
+                                            <p><strong>Watch the formula:</strong> A = Z + N (Mass number = Protons + Neutrons)</p>
+                                            <p><strong>Notice:</strong> The <span class="text-green-600 font-semibold">green total</span> shows all particles in the nucleus - this is the mass number!</p>
+                                            <p><strong>Why not electrons?</strong> Electrons have ~1/1836 the mass of a proton - they're too light to count!</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="bg-red-50 p-4 rounded-lg border-l-4 border-red-500">
+                                        <h4 class="font-semibold text-red-800 mb-2">📝 Exam-Style Question:</h4>
+                                        <p class="text-gray-700 mb-2">Set the sliders to answer this question:</p>
+                                        <p class="font-medium text-gray-800">"An element X has atomic number 13 and 14 neutrons. Calculate its mass number."</p>
+                                        <details class="mt-2">
+                                            <summary class="text-sm text-blue-600 cursor-pointer hover:text-blue-800">Check your answer</summary>
+                                            <div class="mt-2 text-sm text-gray-700 bg-white p-3 rounded">
+                                                <p><strong>Step 1:</strong> Z = 13 (atomic number = protons)</p>
+                                                <p><strong>Step 2:</strong> N = 14 (neutrons)</p>
+                                                <p><strong>Step 3:</strong> A = Z + N = 13 + 14 = <strong class="text-green-600">27</strong></p>
+                                                <p class="mt-2">This is <strong>Aluminium-27 (²⁷Al)</strong></p>
+                                            </div>
+                                        </details>
+                                    </div>
+                                </div>
+                            `
+                        },
+                        {
+                            intro: "Now let's learn about mass number - which tells us about the total particles in the nucleus. This is where protons and neutrons come together!",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-weight-hanging text-amber-500 mr-3"></i>Mass Number (A)
+                                    </h3>
+                                    
+                                    <div class="bg-gradient-to-r from-green-50 to-emerald-50 p-5 rounded-lg mb-4 border border-green-200">
+                                        <div class="text-center mb-3">
+                                            <span class="text-2xl font-bold text-green-700">A = Protons + Neutrons</span>
+                                        </div>
+                                        <p class="text-gray-700 text-center">Mass number is the <strong>total</strong> number of protons and neutrons in the nucleus.</p>
+                                    </div>
+                                    
+                                    <div class="bg-white p-4 rounded-lg border mb-4">
+                                        <h4 class="font-semibold text-gray-800 mb-3">The Key Formula</h4>
+                                        <div class="bg-gray-100 p-4 rounded-lg text-center">
+                                            <p class="text-xl font-mono font-bold text-gray-800">Mass Number (A) = Atomic Number (Z) + Number of Neutrons</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="bg-amber-50 p-4 rounded-lg border-l-4 border-amber-500 mb-4">
+                                        <p class="text-amber-800"><i class="fas fa-calculator mr-2"></i><strong>Why only protons and neutrons?</strong> Electrons have very little mass (about 1/1836 of a proton's mass), so they don't contribute significantly to the total mass of an atom!</p>
+                                    </div>
+                                    
+                                    <div class="bg-white p-4 rounded-lg border">
+                                        <h4 class="font-semibold text-gray-800 mb-3">Example: Carbon-12</h4>
+                                        <div class="flex items-center justify-center gap-4">
+                                            <div class="text-center">
+                                                <div class="text-4xl font-bold text-gray-800">¹²C</div>
+                                                <div class="text-sm text-gray-600">Carbon-12</div>
+                                            </div>
+                                            <div class="text-gray-500">=</div>
+                                            <div class="bg-red-100 px-4 py-2 rounded-lg text-center">
+                                                <div class="font-bold text-red-700">6 protons</div>
+                                                <div class="text-xs text-gray-600">(Z = 6)</div>
+                                            </div>
+                                            <div class="text-gray-500">+</div>
+                                            <div class="bg-gray-200 px-4 py-2 rounded-lg text-center">
+                                                <div class="font-bold text-gray-700">6 neutrons</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            `
+                        },
+                        {
+                            intro: "Let's see how atomic number, protons, electrons, neutrons, and mass number all relate to each other. Understanding these relationships is key to solving problems!",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-link text-amber-500 mr-3"></i>Key Relationships
+                                    </h3>
+                                    
+                                    <div class="bg-gradient-to-r from-amber-50 to-yellow-50 p-4 rounded-lg border border-amber-200 mb-4">
+                                        <h4 class="font-semibold text-amber-800 mb-3">For a Neutral Atom:</h4>
+                                        <div class="grid md:grid-cols-2 gap-3">
+                                            <div class="bg-white p-3 rounded-lg">
+                                                <p class="text-center font-mono text-lg">
+                                                    <span class="text-blue-600">Protons</span> = <span class="text-purple-600">Atomic Number (Z)</span>
+                                                </p>
+                                            </div>
+                                            <div class="bg-white p-3 rounded-lg">
+                                                <p class="text-center font-mono text-lg">
+                                                    <span class="text-blue-600">Protons</span> = <span class="text-green-600">Electrons</span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="bg-gray-50 p-4 rounded-lg border mb-4">
+                                        <h4 class="font-semibold text-gray-800 mb-3">Important Formulas to Remember:</h4>
+                                        <div class="space-y-3">
+                                            <div class="bg-white p-3 rounded border-l-4 border-blue-500">
+                                                <p class="font-mono"><strong class="text-blue-700">Finding Protons:</strong> Protons = Z (Atomic Number)</p>
+                                            </div>
+                                            <div class="bg-white p-3 rounded border-l-4 border-green-500">
+                                                <p class="font-mono"><strong class="text-green-700">Finding Electrons:</strong> Electrons = Protons (in neutral atom)</p>
+                                            </div>
+                                            <div class="bg-white p-3 rounded border-l-4 border-gray-500">
+                                                <p class="font-mono"><strong class="text-gray-700">Finding Neutrons:</strong> Neutrons = A - Z (Mass Number - Atomic Number)</p>
+                                            </div>
+                                            <div class="bg-white p-3 rounded border-l-4 border-purple-500">
+                                                <p class="font-mono"><strong class="text-purple-700">Finding Mass Number:</strong> A = Z + Neutrons</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="bg-white p-4 rounded-lg border-2 border-amber-300">
+                                        <h4 class="font-semibold text-gray-800 mb-3 text-center">Complete Picture of an Atom</h4>
+                                        <div class="overflow-x-auto">
+                                            <table class="w-full text-sm">
+                                                <thead>
+                                                    <tr class="bg-amber-100">
+                                                        <th class="p-2 text-left">Element</th>
+                                                        <th class="p-2 text-center">Z</th>
+                                                        <th class="p-2 text-center">Protons</th>
+                                                        <th class="p-2 text-center">Electrons</th>
+                                                        <th class="p-2 text-center">Neutrons</th>
+                                                        <th class="p-2 text-center">A (Mass #)</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr class="border-b">
+                                                        <td class="p-2 font-semibold">Hydrogen</td>
+                                                        <td class="p-2 text-center text-blue-600">1</td>
+                                                        <td class="p-2 text-center">1</td>
+                                                        <td class="p-2 text-center">1</td>
+                                                        <td class="p-2 text-center">0</td>
+                                                        <td class="p-2 text-center text-green-600">1</td>
+                                                    </tr>
+                                                    <tr class="border-b bg-gray-50">
+                                                        <td class="p-2 font-semibold">Carbon</td>
+                                                        <td class="p-2 text-center text-blue-600">6</td>
+                                                        <td class="p-2 text-center">6</td>
+                                                        <td class="p-2 text-center">6</td>
+                                                        <td class="p-2 text-center">6</td>
+                                                        <td class="p-2 text-center text-green-600">12</td>
+                                                    </tr>
+                                                    <tr class="border-b">
+                                                        <td class="p-2 font-semibold">Oxygen</td>
+                                                        <td class="p-2 text-center text-blue-600">8</td>
+                                                        <td class="p-2 text-center">8</td>
+                                                        <td class="p-2 text-center">8</td>
+                                                        <td class="p-2 text-center">8</td>
+                                                        <td class="p-2 text-center text-green-600">16</td>
+                                                    </tr>
+                                                    <tr class="bg-gray-50">
+                                                        <td class="p-2 font-semibold">Sodium</td>
+                                                        <td class="p-2 text-center text-blue-600">11</td>
+                                                        <td class="p-2 text-center">11</td>
+                                                        <td class="p-2 text-center">11</td>
+                                                        <td class="p-2 text-center">12</td>
+                                                        <td class="p-2 text-center text-green-600">23</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            `
+                        },
+                        {
+                            intro: "Now let's practice with the type of questions you'll see in exams. These calculation problems are very common!",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-calculator text-amber-500 mr-3"></i>Mass Number Calculations
+                                    </h3>
+                                    
+                                    <div class="bg-red-50 p-4 rounded-lg border-l-4 border-red-500 mb-4">
+                                        <h4 class="font-semibold text-red-800 mb-2">Most Common Exam Question Type:</h4>
+                                        <p class="text-gray-700">"An element X has atomic number Z and N neutrons. Calculate its mass number."</p>
+                                    </div>
+                                    
+                                    <div class="bg-white p-4 rounded-lg border mb-4">
+                                        <h4 class="font-semibold text-gray-800 mb-3">Step-by-Step Solution Method:</h4>
+                                        <ol class="space-y-2 text-gray-700">
+                                            <li class="flex items-start gap-2">
+                                                <span class="bg-amber-200 rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold text-amber-800">1</span>
+                                                <span><strong>Identify the atomic number (Z)</strong> = number of protons</span>
+                                            </li>
+                                            <li class="flex items-start gap-2">
+                                                <span class="bg-amber-200 rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold text-amber-800">2</span>
+                                                <span><strong>Identify the number of neutrons (N)</strong></span>
+                                            </li>
+                                            <li class="flex items-start gap-2">
+                                                <span class="bg-amber-200 rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold text-amber-800">3</span>
+                                                <span><strong>Calculate mass number:</strong> A = Z + N</span>
+                                            </li>
+                                        </ol>
+                                    </div>
+                                    
+                                    <div class="bg-gradient-to-r from-green-50 to-emerald-50 p-4 rounded-lg border border-green-200">
+                                        <h4 class="font-semibold text-green-800 mb-3">Worked Example:</h4>
+                                        <div class="bg-white p-4 rounded-lg">
+                                            <p class="font-medium text-gray-800 mb-3">An element X has atomic number 13 and 14 neutrons. Calculate its mass number.</p>
+                                            <div class="space-y-2 text-gray-700">
+                                                <p><strong>Given:</strong></p>
+                                                <ul class="ml-4 list-disc">
+                                                    <li>Atomic number (Z) = 13</li>
+                                                    <li>Number of neutrons (N) = 14</li>
+                                                </ul>
+                                                <p><strong>Solution:</strong></p>
+                                                <div class="bg-gray-100 p-3 rounded font-mono">
+                                                    <p>Mass Number (A) = Z + N</p>
+                                                    <p>A = 13 + 14</p>
+                                                    <p class="text-green-600 font-bold">A = 27</p>
+                                                </div>
+                                                <p class="text-sm text-gray-600 mt-2">The element is <strong>Aluminium (Al)</strong> with mass number 27, written as ²⁷Al</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            `
+                        },
+                        {
+                            intro: "Let's practice with more examples - this will help you master these calculations! First, we'll work through one together, then you try on your own.",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-pencil-alt text-amber-500 mr-3"></i>Practice: Calculating Mass Number
+                                    </h3>
+                                    
+                                    <!-- Guided Practice -->
+                                    <div class="bg-green-50 p-4 rounded-lg border border-green-200 mb-4">
+                                        <h4 class="font-semibold text-green-800 mb-3">📝 Guided Practice - Let's solve this together:</h4>
+                                        <p class="text-gray-800 mb-3 font-medium">An element X has atomic number 20 and has 20 neutrons. Calculate its mass number.</p>
+                                        
+                                        <div id="guided-practice-mass" class="space-y-4">
+                                            <!-- Step 1 -->
+                                            <div class="bg-white p-3 rounded-lg border">
+                                                <p class="text-sm text-gray-600 mb-2"><strong>Step 1:</strong> What is the atomic number (Z)?</p>
+                                                <div class="flex items-center gap-3">
+                                                    <input type="text" id="step1-mass" placeholder="Enter Z..." class="flex-grow p-2 border rounded-md text-sm">
+                                                    <button onclick="checkStepMass(1)" class="px-4 py-2 bg-green-200 text-green-700 rounded-md hover:bg-green-300 text-sm font-medium">Check</button>
+                                                </div>
+                                                <p id="feedback1-mass" class="text-xs mt-2"></p>
+                                            </div>
+                                            
+                                            <!-- Step 2 -->
+                                            <div class="bg-white p-3 rounded-lg border">
+                                                <p class="text-sm text-gray-600 mb-2"><strong>Step 2:</strong> How many neutrons (N)?</p>
+                                                <div class="flex items-center gap-3">
+                                                    <input type="text" id="step2-mass" placeholder="Enter N..." class="flex-grow p-2 border rounded-md text-sm">
+                                                    <button onclick="checkStepMass(2)" class="px-4 py-2 bg-green-200 text-green-700 rounded-md hover:bg-green-300 text-sm font-medium">Check</button>
+                                                </div>
+                                                <p id="feedback2-mass" class="text-xs mt-2"></p>
+                                            </div>
+                                            
+                                            <!-- Step 3 -->
+                                            <div class="bg-white p-3 rounded-lg border">
+                                                <p class="text-sm text-gray-600 mb-2"><strong>Step 3:</strong> Calculate Mass Number (A = Z + N)</p>
+                                                <div class="flex items-center gap-3">
+                                                    <input type="text" id="step3-mass" placeholder="Enter A..." class="flex-grow p-2 border rounded-md text-sm">
+                                                    <button onclick="checkStepMass(3)" class="px-4 py-2 bg-green-200 text-green-700 rounded-md hover:bg-green-300 text-sm font-medium">Check</button>
+                                                </div>
+                                                <p id="feedback3-mass" class="text-xs mt-2"></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Independent Practice -->
+                                    <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                                        <h4 class="font-semibold text-blue-800 mb-3">🎯 Independent Practice - Now you try!</h4>
+                                        <p class="text-gray-600 text-sm mb-3">Solve these problems on your own. Show your workings and provide your final answer.</p>
+                                        
+                                        <!-- Problem 1 -->
+                                        <div class="bg-white p-4 rounded-lg border mb-4">
+                                            <p class="font-medium text-gray-800 mb-3">1. An element has atomic number 11 and 12 neutrons. Calculate its mass number and identify the element.</p>
+                                            <div class="space-y-3">
+                                                <div>
+                                                    <label class="block text-sm font-medium text-gray-700 mb-1">Your Workings</label>
+                                                    <textarea id="workings1" rows="3" class="w-full p-2 border rounded-md text-sm" placeholder="Show your steps here...
+1. Z = ...
+2. N = ...
+3. A = Z + N = ..."></textarea>
+                                                </div>
+                                                <div>
+                                                    <label class="block text-sm font-medium text-gray-700 mb-1">Final Answer (Mass Number)</label>
+                                                    <input type="text" id="answer1" placeholder="e.g., A = 23" class="w-full p-2 border rounded-md text-sm">
+                                                </div>
+                                                <button onclick="checkIndependentAnswer(1, 23)" class="w-full bg-blue-600 text-white font-semibold py-2 rounded-md hover:bg-blue-700 transition">Check Answer</button>
+                                                <p id="independent-feedback1" class="text-sm mt-2"></p>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Problem 2 -->
+                                        <div class="bg-white p-4 rounded-lg border mb-4">
+                                            <p class="font-medium text-gray-800 mb-3">2. An element X with atomic number 17 has 18 neutrons. Calculate its mass number.</p>
+                                            <div class="space-y-3">
+                                                <div>
+                                                    <label class="block text-sm font-medium text-gray-700 mb-1">Your Workings</label>
+                                                    <textarea id="workings2" rows="3" class="w-full p-2 border rounded-md text-sm" placeholder="Show your steps here..."></textarea>
+                                                </div>
+                                                <div>
+                                                    <label class="block text-sm font-medium text-gray-700 mb-1">Final Answer (Mass Number)</label>
+                                                    <input type="text" id="answer2" placeholder="e.g., A = 35" class="w-full p-2 border rounded-md text-sm">
+                                                </div>
+                                                <button onclick="checkIndependentAnswer(2, 35)" class="w-full bg-blue-600 text-white font-semibold py-2 rounded-md hover:bg-blue-700 transition">Check Answer</button>
+                                                <p id="independent-feedback2" class="text-sm mt-2"></p>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Problem 3 -->
+                                        <div class="bg-white p-4 rounded-lg border">
+                                            <p class="font-medium text-gray-800 mb-3">3. An atom has 26 protons and 30 neutrons. What is its atomic number and mass number?</p>
+                                            <div class="space-y-3">
+                                                <div>
+                                                    <label class="block text-sm font-medium text-gray-700 mb-1">Your Workings</label>
+                                                    <textarea id="workings3" rows="3" class="w-full p-2 border rounded-md text-sm" placeholder="Show your steps here...
+Hint: Z = number of protons"></textarea>
+                                                </div>
+                                                <div class="grid grid-cols-2 gap-2">
+                                                    <div>
+                                                        <label class="block text-sm font-medium text-gray-700 mb-1">Atomic Number (Z)</label>
+                                                        <input type="text" id="answer3z" placeholder="e.g., 26" class="w-full p-2 border rounded-md text-sm">
+                                                    </div>
+                                                    <div>
+                                                        <label class="block text-sm font-medium text-gray-700 mb-1">Mass Number (A)</label>
+                                                        <input type="text" id="answer3a" placeholder="e.g., 56" class="w-full p-2 border rounded-md text-sm">
+                                                    </div>
+                                                </div>
+                                                <button onclick="checkIndependentAnswer3()" class="w-full bg-blue-600 text-white font-semibold py-2 rounded-md hover:bg-blue-700 transition">Check Answer</button>
+                                                <p id="independent-feedback3" class="text-sm mt-2"></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            `
+                        },
+                        {
+                            intro: "Let's also learn how to find the number of neutrons when we know the mass number and atomic number - this is the reverse calculation!",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-exchange-alt text-amber-500 mr-3"></i>Finding Neutrons
+                                    </h3>
+                                    
+                                    <div class="bg-purple-50 p-4 rounded-lg border-l-4 border-purple-500 mb-4">
+                                        <h4 class="font-semibold text-purple-800 mb-2">Rearranging the Formula:</h4>
+                                        <p class="text-gray-700">If you know the mass number (A) and atomic number (Z), you can find neutrons:</p>
+                                        <div class="bg-white p-3 rounded mt-2 text-center font-mono text-lg">
+                                            Neutrons (N) = Mass Number (A) - Atomic Number (Z)
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="bg-white p-4 rounded-lg border mb-4">
+                                        <h4 class="font-semibold text-gray-800 mb-3">Worked Example:</h4>
+                                        <p class="text-gray-700 mb-2">An atom of Uranium-238 has atomic number 92. How many neutrons does it have?</p>
+                                        <div class="space-y-2 text-gray-700">
+                                            <div class="bg-gray-100 p-3 rounded font-mono">
+                                                <p>Neutrons = A - Z</p>
+                                                <p>Neutrons = 238 - 92</p>
+                                                <p class="text-purple-600 font-bold">Neutrons = 146</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Interactive Practice for Neutrons -->
+                                    <div class="bg-green-50 p-4 rounded-lg border border-green-200 mb-4">
+                                        <h4 class="font-semibold text-green-800 mb-3">📝 Guided Practice:</h4>
+                                        <p class="text-gray-800 mb-3 font-medium">An atom of Nitrogen-14 has atomic number 7. How many neutrons does it have?</p>
+                                        
+                                        <div class="space-y-4">
+                                            <!-- Step 1 -->
+                                            <div class="bg-white p-3 rounded-lg border">
+                                                <p class="text-sm text-gray-600 mb-2"><strong>Step 1:</strong> What is the mass number (A)?</p>
+                                                <div class="flex items-center gap-3">
+                                                    <input type="text" id="step1-neutron" placeholder="Enter A..." class="flex-grow p-2 border rounded-md text-sm">
+                                                    <button onclick="checkStepNeutron(1)" class="px-4 py-2 bg-green-200 text-green-700 rounded-md hover:bg-green-300 text-sm font-medium">Check</button>
+                                                </div>
+                                                <p id="feedback1-neutron" class="text-xs mt-2"></p>
+                                            </div>
+                                            
+                                            <!-- Step 2 -->
+                                            <div class="bg-white p-3 rounded-lg border">
+                                                <p class="text-sm text-gray-600 mb-2"><strong>Step 2:</strong> What is the atomic number (Z)?</p>
+                                                <div class="flex items-center gap-3">
+                                                    <input type="text" id="step2-neutron" placeholder="Enter Z..." class="flex-grow p-2 border rounded-md text-sm">
+                                                    <button onclick="checkStepNeutron(2)" class="px-4 py-2 bg-green-200 text-green-700 rounded-md hover:bg-green-300 text-sm font-medium">Check</button>
+                                                </div>
+                                                <p id="feedback2-neutron" class="text-xs mt-2"></p>
+                                            </div>
+                                            
+                                            <!-- Step 3 -->
+                                            <div class="bg-white p-3 rounded-lg border">
+                                                <p class="text-sm text-gray-600 mb-2"><strong>Step 3:</strong> Calculate Neutrons (N = A - Z)</p>
+                                                <div class="flex items-center gap-3">
+                                                    <input type="text" id="step3-neutron" placeholder="Enter N..." class="flex-grow p-2 border rounded-md text-sm">
+                                                    <button onclick="checkStepNeutron(3)" class="px-4 py-2 bg-green-200 text-green-700 rounded-md hover:bg-green-300 text-sm font-medium">Check</button>
+                                                </div>
+                                                <p id="feedback3-neutron" class="text-xs mt-2"></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Independent Practice -->
+                                    <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                                        <h4 class="font-semibold text-blue-800 mb-3">🎯 Independent Practice:</h4>
+                                        
+                                        <div class="bg-white p-4 rounded-lg border">
+                                            <p class="font-medium text-gray-800 mb-3">Chlorine-35 has atomic number 17. How many protons, electrons (in neutral atom), and neutrons does it have?</p>
+                                            <div class="space-y-3">
+                                                <div>
+                                                    <label class="block text-sm font-medium text-gray-700 mb-1">Your Workings</label>
+                                                    <textarea id="workingsNeutron" rows="3" class="w-full p-2 border rounded-md text-sm" placeholder="Show your steps here...
+Protons = Z = ...
+Electrons = Protons (neutral atom) = ...
+Neutrons = A - Z = ..."></textarea>
+                                                </div>
+                                                <div class="grid grid-cols-3 gap-2">
+                                                    <div>
+                                                        <label class="block text-sm font-medium text-gray-700 mb-1">Protons</label>
+                                                        <input type="text" id="protonsAnswer" placeholder="17" class="w-full p-2 border rounded-md text-sm">
+                                                    </div>
+                                                    <div>
+                                                        <label class="block text-sm font-medium text-gray-700 mb-1">Electrons</label>
+                                                        <input type="text" id="electronsAnswer" placeholder="17" class="w-full p-2 border rounded-md text-sm">
+                                                    </div>
+                                                    <div>
+                                                        <label class="block text-sm font-medium text-gray-700 mb-1">Neutrons</label>
+                                                        <input type="text" id="neutronsAnswer" placeholder="18" class="w-full p-2 border rounded-md text-sm">
+                                                    </div>
+                                                </div>
+                                                <button onclick="checkNeutronPractice()" class="w-full bg-blue-600 text-white font-semibold py-2 rounded-md hover:bg-blue-700 transition">Check Answer</button>
+                                                <p id="neutron-feedback" class="text-sm mt-2"></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            `
+                        },
+                        {
+                            intro: "Excellent progress! Now let's see how the periodic table is arranged by atomic number.",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-sort-numeric-up text-amber-500 mr-3"></i>Periodic Table Arrangement
+                                    </h3>
+                                    
+                                    <div class="bg-gray-50 p-4 rounded-lg mb-4">
+                                        <p class="text-gray-700 mb-3">Elements are arranged in order of increasing atomic number:</p>
+                                        <div class="flex items-center justify-center gap-2 flex-wrap">
+                                            <span class="bg-red-100 px-3 py-2 rounded font-mono">H (1)</span>
+                                            <span class="text-gray-400">→</span>
+                                            <span class="bg-purple-100 px-3 py-2 rounded font-mono">He (2)</span>
+                                            <span class="text-gray-400">→</span>
+                                            <span class="bg-red-100 px-3 py-2 rounded font-mono">Li (3)</span>
+                                            <span class="text-gray-400">→</span>
+                                            <span class="bg-orange-100 px-3 py-2 rounded font-mono">Be (4)</span>
+                                            <span class="text-gray-400">→</span>
+                                            <span class="text-gray-500">...continues...</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="bg-white p-4 rounded-lg border">
+                                        <h4 class="font-semibold text-gray-800 mb-2">Reading Element Boxes</h4>
+                                        <div class="flex items-center justify-center">
+                                            <div class="bg-gray-100 p-4 rounded-lg text-center" style="width: 120px;">
+                                                <div class="text-xs text-gray-500">6</div>
+                                                <div class="text-2xl font-bold text-gray-800">C</div>
+                                                <div class="text-xs text-gray-600">Carbon</div>
+                                                <div class="text-xs text-gray-400">12.01</div>
+                                            </div>
+                                            <div class="ml-4 text-sm text-gray-600">
+                                                <p><strong>Top:</strong> Atomic number (6)</p>
+                                                <p><strong>Center:</strong> Symbol (C)</p>
+                                                <p><strong>Bottom:</strong> Name & Atomic mass</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            `
+                        }
+                    ]
+                },
+                {
+                    id: "summary",
+                    title: "Summary & Practice",
+                    type: "note",
+                    chunks: [
+                        {
+                            intro: "Great job reaching the end! Let's summarize everything we've learned about the periodic table.",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-star text-amber-500 mr-3"></i>Key Takeaways
+                                    </h3>
+                                    
+                                    <div class="bg-gradient-to-r from-amber-50 to-yellow-50 p-5 rounded-lg border border-amber-200">
+                                        <ul class="text-gray-700 space-y-3">
+                                            <li class="flex items-start">
+                                                <span class="bg-amber-200 rounded-full p-1 mr-3 mt-0.5"><i class="fas fa-check text-amber-700 text-xs"></i></span>
+                                                <span>The <strong>Periodic Table</strong> arranges elements by increasing atomic number</span>
+                                            </li>
+                                            <li class="flex items-start">
+                                                <span class="bg-amber-200 rounded-full p-1 mr-3 mt-0.5"><i class="fas fa-check text-amber-700 text-xs"></i></span>
+                                                <span><strong>Periods (rows)</strong> = number of electron shells; <strong>Groups (columns)</strong> = similar properties</span>
+                                            </li>
+                                            <li class="flex items-start">
+                                                <span class="bg-amber-200 rounded-full p-1 mr-3 mt-0.5"><i class="fas fa-check text-amber-700 text-xs"></i></span>
+                                                <span><strong>Metals</strong> (left), <strong>Non-metals</strong> (right), <strong>Metalloids</strong> (along diagonal)</span>
+                                            </li>
+                                            <li class="flex items-start">
+                                                <span class="bg-amber-200 rounded-full p-1 mr-3 mt-0.5"><i class="fas fa-check text-amber-700 text-xs"></i></span>
+                                                <span>Special families: <strong>Alkali metals (G1)</strong>, <strong>Halogens (G17)</strong>, <strong>Noble gases (G18)</strong></span>
+                                            </li>
+                                            <li class="flex items-start">
+                                                <span class="bg-amber-200 rounded-full p-1 mr-3 mt-0.5"><i class="fas fa-check text-amber-700 text-xs"></i></span>
+                                                <span><strong>Atomic number</strong> = protons; <strong>Mass number</strong> = protons + neutrons</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            `
+                        },
+                        {
+                            intro: "Ready to test your knowledge? Complete the quiz to finish this topic!",
+                            content: `
+                                <div class="bg-white p-6 rounded-lg border-2 border-amber-300 text-center">
+                                    <div class="w-20 h-20 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                        <i class="fas fa-trophy text-amber-500 text-3xl"></i>
+                                    </div>
+                                    <h3 class="text-xl font-bold text-gray-800 mb-2">Ready for the Quiz!</h3>
+                                    <p class="text-gray-600 mb-4">You've completed all the learning sections. Click the button below to take the quiz and mark this topic as complete.</p>
+                                    <button id="startQuizBtn" class="continue-btn">
+                                        <i class="fas fa-clipboard-check"></i>
+                                        Start Quiz
+                                    </button>
+                                </div>
+                            `
+                        }
+                    ]
+                }
+            ]
+        };
+
+        // Initialize the learning system
+        function init() {
+            buildStepsList();
+            loadStep(0);
+            setupEventListeners();
+        }
+
+        function buildStepsList() {
+            const stepsList = document.getElementById('stepsList');
+            const mobileStepsList = document.getElementById('mobileStepsList');
+            
+            let html = '';
+            topicData.steps.forEach((step, index) => {
+                html += `
+                    <li>
+                        <button class="step-button w-full text-left px-3 py-2 rounded-lg text-sm border transition-all ${index === 0 ? 'active' : 'border-transparent hover:bg-gray-50'}" 
+                                data-step="${index}">
+                            <span class="inline-block w-6 h-6 rounded-full bg-gray-200 text-center text-xs leading-6 mr-2">${index + 1}</span>
+                            ${step.title}
+                        </button>
+                    </li>
+                `;
+            });
+            
+            stepsList.innerHTML = html;
+            mobileStepsList.innerHTML = html;
+        }
+
+        function loadStep(stepIndex) {
+            currentStepIndex = stepIndex;
+            currentChunkIndex = 0;
+            
+            const step = topicData.steps[stepIndex];
+            const container = document.getElementById('stepContainer');
+            
+            document.querySelectorAll('.step-button').forEach((btn, idx) => {
+                if (idx === stepIndex) {
+                    btn.classList.add('active', 'border-amber-300');
+                } else {
+                    btn.classList.remove('active', 'border-amber-300');
+                }
+            });
+            
+            loadChunk(stepIndex, 0);
+            
+            document.getElementById('prevStepBtn').disabled = stepIndex === 0;
+            
+            const nextBtn = document.getElementById('nextStepBtn');
+            if (stepIndex === topicData.steps.length - 1) {
+                nextBtn.innerHTML = 'Complete <i class="fas fa-check ml-2"></i>';
+            } else {
+                nextBtn.innerHTML = 'Continue <i class="fas fa-chevron-right ml-2"></i>';
+            }
+            
+            updateProgress();
+            
+            if (topicTracker && step.id) {
+                topicTracker.markSectionViewed(step.id);
+            }
+        }
+
+        function loadChunk(stepIndex, chunkIndex) {
+            const step = topicData.steps[stepIndex];
+            const chunk = step.chunks[chunkIndex];
+            const container = document.getElementById('stepContainer');
+            
+            let html = '';
+            
+            if (chunk.intro) {
+                html += `<div class="intro-text animate-fade-in-up"><p>${chunk.intro}</p></div>`;
+            }
+            
+            html += chunk.content;
+            
+            // Add chunk progress indicator
+            const totalChunks = step.chunks.length;
+            const chunkProgress = `<div class="text-center text-sm text-gray-400 mb-2">Section ${chunkIndex + 1} of ${totalChunks}</div>`;
+            html = chunkProgress + html;
+            
+            if (chunkIndex < step.chunks.length - 1) {
+                // Not the last chunk - show "Continue" button
+                html += `
+                    <div class="click-hint" onclick="event.stopPropagation(); nextChunk();">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                        <span>Click to continue to next section</span>
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </div>
+                `;
+                // Don't make container clickable - only the button should trigger navigation
+                container.classList.remove('clickable');
+                container.onclick = null;
+            } else {
+                // Last chunk of this step - show "Continue to next topic" hint
+                if (stepIndex < topicData.steps.length - 1) {
+                    const nextStepName = topicData.steps[stepIndex + 1].title;
+                    html += `
+                        <div class="step-complete-hint">
+                            <p class="font-semibold text-lg mb-2">✅ Section Complete!</p>
+                            <p class="text-sm mb-2">You've finished this part. Click the <strong>"Continue"</strong> button below to go to:</p>
+                            <p class="font-bold text-emerald-700">"${nextStepName}"</p>
+                            <div class="arrow mt-3">
+                                <svg class="w-8 h-8 mx-auto text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+                                </svg>
+                            </div>
+                        </div>
+                    `;
+                }
+                container.classList.remove('clickable');
+                container.onclick = null;
+            }
+            
+            container.innerHTML = html;
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function nextChunk() {
+            const step = topicData.steps[currentStepIndex];
+            if (currentChunkIndex < step.chunks.length - 1) {
+                currentChunkIndex++;
+                loadChunk(currentStepIndex, currentChunkIndex);
+            }
+        }
+
+        function updateProgress() {
+            const progress = ((currentStepIndex + 1) / topicData.steps.length) * 100;
+            document.getElementById('progressBar').style.width = `${progress}%`;
+            document.getElementById('progressPercent').textContent = `${Math.round(progress)}%`;
+        }
+
+        function setupEventListeners() {
+            document.querySelectorAll('.step-button').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const stepIndex = parseInt(btn.dataset.step);
+                    loadStep(stepIndex);
+                });
+            });
+            
+            document.getElementById('prevStepBtn').addEventListener('click', () => {
+                if (currentStepIndex > 0) {
+                    loadStep(currentStepIndex - 1);
+                }
+            });
+            
+            document.getElementById('nextStepBtn').addEventListener('click', () => {
+                const step = topicData.steps[currentStepIndex];
+                
+                if (currentChunkIndex < step.chunks.length - 1) {
+                    nextChunk();
+                    return;
+                }
+                
+                if (currentStepIndex < topicData.steps.length - 1) {
+                    loadStep(currentStepIndex + 1);
+                } else {
+                    if (window.TopicQuizInstance) {
+                        window.TopicQuizInstance.start();
+                    }
+                }
+            });
+            
+            document.getElementById('mobileMenuBtn').addEventListener('click', () => {
+                document.getElementById('mobileSidebar').classList.add('show');
+                document.getElementById('sidebarOverlay').classList.add('show');
+            });
+            
+            document.getElementById('closeSidebarBtn').addEventListener('click', () => {
+                document.getElementById('mobileSidebar').classList.remove('show');
+                document.getElementById('sidebarOverlay').classList.remove('show');
+            });
+            
+            document.getElementById('sidebarOverlay').addEventListener('click', () => {
+                document.getElementById('mobileSidebar').classList.remove('show');
+                document.getElementById('sidebarOverlay').classList.remove('show');
+            });
+            
+            document.getElementById('startQuizBtn')?.addEventListener('click', () => {
+                if (window.TopicQuizInstance) {
+                    window.TopicQuizInstance.start();
+                } else if (window.periodicTableQuiz) {
+                    window.periodicTableQuiz.start();
+                }
+            });
+        }
+
+        // ========================================
+        // Practice Score Tracking System
+        // ========================================
+        
+        const PracticeTracker = {
+            topicId: 'periodic-table-overview',
+            practiceScores: {
+                atomicNumber: { correct: 0, total: 0, details: [] },
+                massNumber: { correct: 0, total: 0, details: [] },
+                neutrons: { correct: 0, total: 0, details: [] }
+            },
+            quizScore: null,
+            
+            init() {
+                // Load saved practice scores
+                this.loadScores();
+            },
+            
+            loadScores() {
+                const saved = localStorage.getItem(`practice_${this.topicId}`);
+                if (saved) {
+                    try {
+                        const data = JSON.parse(saved);
+                        this.practiceScores = data.practiceScores || this.practiceScores;
+                        this.quizScore = data.quizScore;
+                    } catch (e) {
+                        console.warn('Failed to load practice scores:', e);
+                    }
+                }
+            },
+            
+            saveScores() {
+                localStorage.setItem(`practice_${this.topicId}`, JSON.stringify({
+                    practiceScores: this.practiceScores,
+                    quizScore: this.quizScore,
+                    lastUpdated: new Date().toISOString()
+                }));
+            },
+            
+            recordAnswer(category, questionId, isCorrect, userAnswer) {
+                if (!this.practiceScores[category]) {
+                    this.practiceScores[category] = { correct: 0, total: 0, details: [] };
+                }
+                
+                this.practiceScores[category].total++;
+                if (isCorrect) {
+                    this.practiceScores[category].correct++;
+                }
+                
+                this.practiceScores[category].details.push({
+                    questionId,
+                    isCorrect,
+                    userAnswer,
+                    timestamp: new Date().toISOString()
+                });
+                
+                this.saveScores();
+                this.updateProgressDisplay();
+            },
+            
+            recordQuizScore(score, total) {
+                this.quizScore = { score, total, percentage: Math.round((score / total) * 100) };
+                this.saveScores();
+                this.updateProgressDisplay();
+            },
+            
+            getPracticePercentage() {
+                let totalCorrect = 0;
+                let totalQuestions = 0;
+                
+                Object.values(this.practiceScores).forEach(category => {
+                    totalCorrect += category.correct;
+                    totalQuestions += category.total;
+                });
+                
+                if (totalQuestions === 0) return null;
+                return Math.round((totalCorrect / totalQuestions) * 100);
+            },
+            
+            getCombinedScore() {
+                const practicePercent = this.getPracticePercentage();
+                const results = {
+                    practice: practicePercent,
+                    quiz: this.quizScore ? this.quizScore.percentage : null,
+                    combined: null,
+                    practiceDetails: this.practiceScores,
+                    quizDetails: this.quizScore
+                };
+                
+                // Calculate combined average (practice = 40%, quiz = 60%)
+                if (practicePercent !== null && this.quizScore) {
+                    results.combined = Math.round((practicePercent * 0.4) + (this.quizScore.percentage * 0.6));
+                } else if (practicePercent !== null) {
+                    results.combined = practicePercent;
+                } else if (this.quizScore) {
+                    results.combined = this.quizScore.percentage;
+                }
+                
+                return results;
+            },
+            
+            updateProgressDisplay() {
+                // Update any progress display elements
+                const practicePercent = this.getPracticePercentage();
+                
+                // Show practice score in summary section if exists
+                const practiceScoreEl = document.getElementById('practice-score-display');
+                if (practiceScoreEl && practicePercent !== null) {
+                    const totalCorrect = Object.values(this.practiceScores).reduce((sum, cat) => sum + cat.correct, 0);
+                    const totalQuestions = Object.values(this.practiceScores).reduce((sum, cat) => sum + cat.total, 0);
+                    practiceScoreEl.innerHTML = `
+                        <div class="bg-blue-50 p-4 rounded-lg border border-blue-200 mb-4">
+                            <h4 class="font-semibold text-blue-800 mb-2">📊 Practice Progress</h4>
+                            <p class="text-2xl font-bold text-blue-600">${practicePercent}%</p>
+                            <p class="text-sm text-gray-600">${totalCorrect} out of ${totalQuestions} practice questions correct</p>
+                        </div>
+                    `;
+                }
+            }
+        };
+        
+        // Initialize practice tracker
+        PracticeTracker.init();
+
+        // ========================================
+        // Interactive Simulation Functions
+        // ========================================
+        
+        // Element data for simulations
+        const elementNames = {
+            1: {symbol: 'H', name: 'Hydrogen'},
+            2: {symbol: 'He', name: 'Helium'},
+            3: {symbol: 'Li', name: 'Lithium'},
+            4: {symbol: 'Be', name: 'Beryllium'},
+            5: {symbol: 'B', name: 'Boron'},
+            6: {symbol: 'C', name: 'Carbon'},
+            7: {symbol: 'N', name: 'Nitrogen'},
+            8: {symbol: 'O', name: 'Oxygen'},
+            9: {symbol: 'F', name: 'Fluorine'},
+            10: {symbol: 'Ne', name: 'Neon'},
+            11: {symbol: 'Na', name: 'Sodium'},
+            12: {symbol: 'Mg', name: 'Magnesium'},
+            13: {symbol: 'Al', name: 'Aluminium'},
+            14: {symbol: 'Si', name: 'Silicon'},
+            15: {symbol: 'P', name: 'Phosphorus'},
+            16: {symbol: 'S', name: 'Sulfur'},
+            17: {symbol: 'Cl', name: 'Chlorine'},
+            18: {symbol: 'Ar', name: 'Argon'},
+            19: {symbol: 'K', name: 'Potassium'},
+            20: {symbol: 'Ca', name: 'Calcium'}
+        };
+        
+        const elementSymbols = {
+            1: 'H', 2: 'He', 3: 'Li', 4: 'Be', 5: 'B', 6: 'C', 7: 'N', 8: 'O', 9: 'F', 10: 'Ne',
+            11: 'Na', 12: 'Mg', 13: 'Al', 14: 'Si', 15: 'P', 16: 'S', 17: 'Cl', 18: 'Ar', 19: 'K', 20: 'Ca'
+        };
+        
+        const elementFullNames = {
+            1: 'Hydrogen', 2: 'Helium', 3: 'Lithium', 4: 'Beryllium', 5: 'Boron', 6: 'Carbon', 7: 'Nitrogen', 8: 'Oxygen', 9: 'Fluorine', 10: 'Neon',
+            11: 'Sodium', 12: 'Magnesium', 13: 'Aluminium', 14: 'Silicon', 15: 'Phosphorus', 16: 'Sulfur', 17: 'Chlorine', 18: 'Argon', 19: 'Potassium', 20: 'Calcium'
+        };
+        
+        // Show particle info when clicked
+        window.showParticleInfo = function(particle) {
+            event.stopPropagation();
+            const panel = document.getElementById('particleInfoPanel');
+            if (!panel) return;
+            
+            const info = {
+                proton: {
+                    title: '🔴 Proton (p⁺)',
+                    color: 'red',
+                    content: '<p class="text-gray-700 mb-2"><strong>Charge:</strong> Positive (+1)</p>' +
+                             '<p class="text-gray-700 mb-2"><strong>Location:</strong> In the nucleus (center)</p>' +
+                             '<p class="text-gray-700 mb-2"><strong>Mass:</strong> 1 atomic mass unit (amu)</p>' +
+                             '<p class="text-gray-700"><strong>Key Point:</strong> The NUMBER OF PROTONS determines which element it is! Change the protons, change the element.</p>'
+                },
+                neutron: {
+                    title: '⚪ Neutron (n⁰)',
+                    color: 'gray',
+                    content: '<p class="text-gray-700 mb-2"><strong>Charge:</strong> Neutral (0)</p>' +
+                             '<p class="text-gray-700 mb-2"><strong>Location:</strong> In the nucleus (center)</p>' +
+                             '<p class="text-gray-700 mb-2"><strong>Mass:</strong> 1 atomic mass unit (amu)</p>' +
+                             '<p class="text-gray-700"><strong>Key Point:</strong> Neutrons add mass but don\'t change the element. Different numbers of neutrons create ISOTOPES of the same element.</p>'
+                },
+                electron: {
+                    title: '🔵 Electron (e⁻)',
+                    color: 'blue',
+                    content: '<p class="text-gray-700 mb-2"><strong>Charge:</strong> Negative (−1)</p>' +
+                             '<p class="text-gray-700 mb-2"><strong>Location:</strong> Orbiting the nucleus in shells</p>' +
+                             '<p class="text-gray-700 mb-2"><strong>Mass:</strong> Very tiny! ≈ 1/1836 of a proton</p>' +
+                             '<p class="text-gray-700"><strong>Key Point:</strong> Electrons determine chemical behavior. In a neutral atom, electrons = protons.</p>'
+                }
+            };
+            
+            panel.innerHTML = '<h4 class="font-semibold text-' + info[particle].color + '-800 mb-3">' + info[particle].title + '</h4>' + info[particle].content;
+            panel.className = 'bg-' + info[particle].color + '-50 p-4 rounded-lg border border-' + info[particle].color + '-200 mb-4';
+        };
+        
+        // Initialize electron orbit animation
+        function initElectronOrbits() {
+            const svg = document.getElementById('atomStructureSVG');
+            if (!svg) return;
+            
+            // Remove existing animated electrons
+            const existingElectrons = svg.querySelectorAll('.animated-electron');
+            existingElectrons.forEach(e => e.remove());
+            
+            // Create orbiting electrons with JavaScript
+            const electronCount = 4;
+            const orbits = [
+                { rx: 120, ry: 45, rotation: -20, speed: 3 },
+                { rx: 120, ry: 45, rotation: 20, speed: 4 },
+                { rx: 120, ry: 45, rotation: 60, speed: 2.5 },
+                { rx: 120, ry: 45, rotation: -60, speed: 3.5 }
+            ];
+            
+            orbits.forEach((orbit, i) => {
+                const angle = (i * 90) * Math.PI / 180; // Start at different positions
+                animateElectron(svg, orbit.rx, orbit.ry, orbit.rotation, orbit.speed, angle, i);
+            });
+        }
+        
+        function animateElectron(svg, rx, ry, rotation, speed, startAngle, index) {
+            // Create electron element
+            const electron = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+            electron.setAttribute('r', '8');
+            electron.setAttribute('fill', '#3b82f6');
+            electron.setAttribute('stroke', '#93c5fd');
+            electron.setAttribute('stroke-width', '2');
+            electron.setAttribute('class', 'animated-electron cursor-pointer');
+            electron.style.cursor = 'pointer';
+            electron.onclick = function(e) { 
+                e.stopPropagation(); 
+                showParticleInfo('electron'); 
+            };
+            svg.appendChild(electron);
+            
+            let angle = startAngle;
+            const cx = 200, cy = 150; // Center of atom
+            const rotRad = rotation * Math.PI / 180;
+            
+            function update() {
+                angle += 0.02 * (3 / speed);
+                
+                // Calculate position on ellipse
+                let x = rx * Math.cos(angle);
+                let y = ry * Math.sin(angle);
+                
+                // Apply rotation
+                const rotX = x * Math.cos(rotRad) - y * Math.sin(rotRad);
+                const rotY = x * Math.sin(rotRad) + y * Math.cos(rotRad);
+                
+                electron.setAttribute('cx', cx + rotX);
+                electron.setAttribute('cy', cy + rotY);
+                
+                requestAnimationFrame(update);
+            }
+            
+            update();
+        }
+        
+        // Update Z atom visualization
+        window.updateZAtom = function(z) {
+            z = parseInt(z);
+            const zDisplay = document.getElementById('zValueDisplay');
+            const symbolDisplay = document.getElementById('elementSymbolZ');
+            const nameDisplay = document.getElementById('elementNameZ');
+            const protonCount = document.getElementById('protonCountZ');
+            const electronCount = document.getElementById('electronCountZ');
+            
+            if (zDisplay) zDisplay.textContent = z;
+            if (symbolDisplay && elementNames[z]) symbolDisplay.textContent = elementNames[z].symbol;
+            if (nameDisplay && elementNames[z]) nameDisplay.textContent = elementNames[z].name;
+            if (protonCount) protonCount.textContent = z;
+            if (electronCount) electronCount.textContent = z;
+            
+            // Draw protons
+            const protonGroup = document.getElementById('protonCircles');
+            if (protonGroup) {
+                protonGroup.innerHTML = '';
+                const maxShow = Math.min(z, 10);
+                for(let i = 0; i < maxShow; i++) {
+                    const angle = (i / maxShow) * 2 * Math.PI;
+                    const r = 15;
+                    const x = 100 + r * Math.cos(angle);
+                    const y = 100 + r * Math.sin(angle);
+                    const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                    circle.setAttribute('cx', x);
+                    circle.setAttribute('cy', y);
+                    circle.setAttribute('r', '8');
+                    circle.setAttribute('fill', '#ef4444');
+                    circle.setAttribute('stroke', '#fca5a5');
+                    circle.setAttribute('stroke-width', '1');
+                    protonGroup.appendChild(circle);
+                }
+                if(z > 10) {
+                    const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                    text.setAttribute('x', '100');
+                    text.setAttribute('y', '105');
+                    text.setAttribute('text-anchor', 'middle');
+                    text.setAttribute('fill', 'white');
+                    text.setAttribute('font-size', '10');
+                    text.setAttribute('font-weight', 'bold');
+                    text.textContent = '+' + z;
+                    protonGroup.appendChild(text);
+                }
+            }
+            
+            // Draw electrons
+            const electronGroup = document.getElementById('electronCircles');
+            if (electronGroup) {
+                electronGroup.innerHTML = '';
+                const shells = [2, 8, 8, 2];
+                let remaining = z;
+                let shellIndex = 0;
+                let radius = 60;
+                
+                while(remaining > 0 && shellIndex < shells.length) {
+                    const electronsInShell = Math.min(remaining, shells[shellIndex]);
+                    for(let i = 0; i < electronsInShell; i++) {
+                        const angle = (i / electronsInShell) * 2 * Math.PI - Math.PI/2;
+                        const x = 100 + radius * Math.cos(angle);
+                        const y = 100 + radius * Math.sin(angle);
+                        const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                        circle.setAttribute('cx', x);
+                        circle.setAttribute('cy', y);
+                        circle.setAttribute('r', '5');
+                        circle.setAttribute('fill', '#3b82f6');
+                        circle.setAttribute('stroke', '#93c5fd');
+                        circle.setAttribute('stroke-width', '1');
+                        electronGroup.appendChild(circle);
+                    }
+                    remaining -= electronsInShell;
+                    shellIndex++;
+                    radius += 25;
+                }
+            }
+        };
+        
+        // Update mass number simulation
+        window.updateMassNumber = function() {
+            const zSlider = document.getElementById('protonSliderA');
+            const nSlider = document.getElementById('neutronSliderA');
+            if (!zSlider || !nSlider) return;
+            
+            const z = parseInt(zSlider.value);
+            const n = parseInt(nSlider.value);
+            const a = z + n;
+            
+            // Update slider values display
+            const protonVal = document.getElementById('protonValA');
+            const neutronVal = document.getElementById('neutronValA');
+            if (protonVal) protonVal.textContent = z;
+            if (neutronVal) neutronVal.textContent = n;
+            
+            // Update formula display
+            const zPart = document.getElementById('zPartDisplay');
+            const nPart = document.getElementById('nPartDisplay');
+            const aDisplay = document.getElementById('aValueDisplay');
+            if (zPart) zPart.textContent = z;
+            if (nPart) nPart.textContent = n;
+            if (aDisplay) aDisplay.textContent = a;
+            
+            // Update element notation model
+            const massNotationTop = document.getElementById('massNotationTop');
+            const atomicNotationBottom = document.getElementById('atomicNotationBottom');
+            const symbolNotation = document.getElementById('elementNotationSymbol');
+            const notationExplain = document.getElementById('notationExplain');
+            
+            if (massNotationTop) massNotationTop.textContent = a;
+            if (atomicNotationBottom) atomicNotationBottom.textContent = z;
+            if (symbolNotation && elementSymbols[z]) symbolNotation.textContent = elementSymbols[z];
+            if (notationExplain && elementFullNames[z]) {
+                notationExplain.textContent = 'This is ' + elementFullNames[z] + '-' + a + ' (' + superscriptNum(a) + elementSymbols[z] + ')';
+            }
+            
+            // Draw dots function
+            function drawDots(containerId, count, colorClass) {
+                const container = document.getElementById(containerId);
+                if (!container) return;
+                container.innerHTML = '';
+                const displayCount = Math.min(count, 20);
+                for(let i = 0; i < displayCount; i++) {
+                    const dot = document.createElement('div');
+                    dot.className = 'w-3 h-3 rounded-full ' + colorClass;
+                    container.appendChild(dot);
+                }
+                if(count > 20) {
+                    const more = document.createElement('div');
+                    more.className = 'text-xs text-gray-500';
+                    more.textContent = '+' + (count - 20);
+                    container.appendChild(more);
+                }
+            }
+            
+            drawDots('protonDotsA', z, 'bg-red-500');
+            drawDots('neutronDotsA', n, 'bg-gray-400');
+            drawDots('totalDotsA', a, 'bg-green-500');
+        };
+        
+        // Helper function to create superscript numbers
+        function superscriptNum(num) {
+            const superscripts = {'0': '⁰', '1': '¹', '2': '²', '3': '³', '4': '⁴', '5': '⁵', '6': '⁶', '7': '⁷', '8': '⁸', '9': '⁹'};
+            return String(num).split('').map(d => superscripts[d] || d).join('');
+        }
+
+        // ========================================
+        // Interactive Practice Functions
+        // ========================================
+        
+        // Atomic Number Practice - Guided
+        window.checkStepZ = function(step) {
+            const feedback = document.getElementById('feedback' + step + '-z');
+            const input = document.getElementById('step' + step + '-z');
+            if (!feedback || !input) return;
+            
+            const value = input.value.trim().toLowerCase();
+            let correct = false;
+            let message = '';
+            
+            if (step === 1) {
+                correct = value === '13';
+                message = correct ? '✅ Correct! Z = 13' : '❌ Not quite. The atomic number (Z) is given as 13.';
+            } else if (step === 2) {
+                correct = value === '13';
+                message = correct ? '✅ Correct! Protons = Z = 13' : '❌ Not quite. Protons = Z = 13.';
+            } else if (step === 3) {
+                correct = value === '13';
+                message = correct ? '✅ Correct! In a neutral atom, electrons = protons = 13' : '❌ Not quite. In a neutral atom, electrons = protons = 13.';
+            } else if (step === 4) {
+                correct = value === 'aluminium' || value === 'aluminum' || value === 'al';
+                message = correct ? '✅ Correct! Z = 13 is Aluminium (Al)!' : '❌ Not quite. Z = 13 is Aluminium (Al). Check the periodic table!';
+            }
+            
+            feedback.innerHTML = message;
+            feedback.className = 'text-xs mt-2 ' + (correct ? 'text-green-600 font-medium' : 'text-red-600');
+        };
+        
+        // Atomic Number Practice - Independent
+        window.checkIndependentZ = function(problemNum) {
+            if (problemNum === 1) {
+                const protonsInput = document.getElementById('protonsZ1');
+                const electronsInput = document.getElementById('electronsZ1');
+                const elementInput = document.getElementById('elementZ1');
+                const feedback = document.getElementById('independent-feedback-z1');
+                
+                if (!protonsInput || !electronsInput || !elementInput || !feedback) return;
+                
+                const protons = protonsInput.value.trim();
+                const electrons = electronsInput.value.trim();
+                const element = elementInput.value.trim().toLowerCase();
+                
+                const pCorrect = protons === '17';
+                const eCorrect = electrons === '17';
+                const elementCorrect = element === 'chlorine' || element === 'cl';
+                const allCorrect = pCorrect && eCorrect && elementCorrect;
+                
+                // Record answer
+                PracticeTracker.recordAnswer('atomicNumber', 'ind-z-1', allCorrect, { protons, electrons, element });
+                
+                if (allCorrect) {
+                    feedback.innerHTML = '✅ <strong>Perfect!</strong> Protons = 17, Electrons = 17, Element = Chlorine (Cl). Well done!';
+                    feedback.className = 'text-sm mt-2 text-green-600 font-medium';
+                } else {
+                    let hint = '❌ Check: Protons = Z = 17, Electrons = Protons = 17 (neutral), Element = Chlorine (Z=17)';
+                    feedback.innerHTML = hint;
+                    feedback.className = 'text-sm mt-2 text-red-600';
+                }
+            } else if (problemNum === 2) {
+                const zInput = document.getElementById('zAnswer2');
+                const elementInput = document.getElementById('elementZ2');
+                const electronsInput = document.getElementById('electronsZ2');
+                const feedback = document.getElementById('independent-feedback-z2');
+                
+                if (!zInput || !elementInput || !electronsInput || !feedback) return;
+                
+                const z = zInput.value.trim();
+                const element = elementInput.value.trim().toLowerCase();
+                const electrons = electronsInput.value.trim();
+                
+                const zCorrect = z === '20';
+                const elementCorrect = element === 'calcium' || element === 'ca';
+                const eCorrect = electrons === '20';
+                const allCorrect = zCorrect && elementCorrect && eCorrect;
+                
+                // Record answer
+                PracticeTracker.recordAnswer('atomicNumber', 'ind-z-2', allCorrect, { z, element, electrons });
+                
+                if (allCorrect) {
+                    feedback.innerHTML = '✅ <strong>Perfect!</strong> Z = 20, Element = Calcium (Ca), Electrons = 20. Excellent!';
+                    feedback.className = 'text-sm mt-2 text-green-600 font-medium';
+                } else {
+                    feedback.innerHTML = '❌ Check: Z = protons = 20, Element = Calcium (Z=20), Electrons = protons = 20';
+                    feedback.className = 'text-sm mt-2 text-red-600';
+                }
+            } else if (problemNum === 3) {
+                const protonsInput = document.getElementById('protonsZ3');
+                const electronsInput = document.getElementById('electronsZ3');
+                const feedback = document.getElementById('independent-feedback-z3');
+                
+                if (!protonsInput || !electronsInput || !feedback) return;
+                
+                const protons = protonsInput.value.trim();
+                const electrons = electronsInput.value.trim();
+                
+                const pCorrect = protons === '11';
+                const eCorrect = electrons === '10';
+                const allCorrect = pCorrect && eCorrect;
+                
+                // Record answer
+                PracticeTracker.recordAnswer('atomicNumber', 'ind-z-3', allCorrect, { protons, electrons });
+                
+                if (allCorrect) {
+                    feedback.innerHTML = '✅ <strong>Excellent!</strong> Na⁺ has 11 protons (unchanged) and 10 electrons (lost 1). You understand ions!';
+                    feedback.className = 'text-sm mt-2 text-green-600 font-medium';
+                } else if (pCorrect) {
+                    feedback.innerHTML = '⚠️ Protons are correct (11), but Na⁺ lost 1 electron, so electrons = 11 - 1 = 10';
+                    feedback.className = 'text-sm mt-2 text-amber-600';
+                } else {
+                    feedback.innerHTML = '❌ Remember: Protons stay at 11 (Z=11), but Na⁺ lost 1 electron → 10 electrons';
+                    feedback.className = 'text-sm mt-2 text-red-600';
+                }
+            }
+        };
+        
+        // Mass Number Practice - Guided
+        window.checkStepMass = function(step) {
+            const feedback = document.getElementById('feedback' + step + '-mass');
+            const input = document.getElementById('step' + step + '-mass');
+            if (!feedback || !input) return;
+            
+            const value = input.value.trim();
+            let correct = false;
+            let message = '';
+            
+            if (step === 1) {
+                correct = value === '20';
+                message = correct ? '✅ Correct! Z = 20' : '❌ Not quite. The atomic number (Z) is given as 20.';
+            } else if (step === 2) {
+                correct = value === '20';
+                message = correct ? '✅ Correct! N = 20' : '❌ Not quite. The number of neutrons (N) is given as 20.';
+            } else if (step === 3) {
+                correct = value === '40';
+                message = correct ? '✅ Correct! A = Z + N = 20 + 20 = 40. This is Calcium-40 (⁴⁰Ca)!' : '❌ Not quite. Mass Number = Z + N = 20 + 20 = 40.';
+            }
+            
+            feedback.innerHTML = message;
+            feedback.className = 'text-xs mt-2 ' + (correct ? 'text-green-600 font-medium' : 'text-red-600');
+        };
+        
+        // Mass Number Practice - Independent
+        window.checkIndependentAnswer = function(problemNum, correctAnswer) {
+            const input = document.getElementById('answer' + problemNum);
+            const feedback = document.getElementById('independent-feedback' + problemNum);
+            if (!input || !feedback) return;
+            
+            const value = input.value.trim();
+            // Extract numbers from the answer
+            const numbers = value.match(/\d+/g);
+            const answer = numbers ? parseInt(numbers[numbers.length - 1]) : null;
+            const isCorrect = answer === correctAnswer;
+            
+            // Record answer
+            PracticeTracker.recordAnswer('massNumber', 'ind-mass-' + problemNum, isCorrect, { value, answer });
+            
+            if (isCorrect) {
+                feedback.innerHTML = '✅ <strong>Correct!</strong> Well done!';
+                feedback.className = 'text-sm mt-2 text-green-600 font-medium';
+            } else {
+                feedback.innerHTML = '❌ Not quite. Check your calculation: A = Z + N';
+                feedback.className = 'text-sm mt-2 text-red-600';
+            }
+        };
+        
+        // Problem 3 - has both Z and A
+        window.checkIndependentAnswer3 = function() {
+            const zInput = document.getElementById('answer3z');
+            const aInput = document.getElementById('answer3a');
+            const feedback = document.getElementById('independent-feedback3');
+            if (!zInput || !aInput || !feedback) return;
+            
+            const z = zInput.value.trim();
+            const a = aInput.value.trim();
+            
+            const zCorrect = z === '26';
+            const aCorrect = a === '56';
+            const allCorrect = zCorrect && aCorrect;
+            
+            // Record answer
+            PracticeTracker.recordAnswer('massNumber', 'ind-mass-3', allCorrect, { z, a });
+            
+            if (allCorrect) {
+                feedback.innerHTML = '✅ <strong>Correct!</strong> Z = 26 (Iron) and A = 56. This is Iron-56 (⁵⁶Fe)!';
+                feedback.className = 'text-sm mt-2 text-green-600 font-medium';
+            } else if (zCorrect) {
+                feedback.innerHTML = '⚠️ Z is correct (26), but A = 26 + 30 = 56. Try again!';
+                feedback.className = 'text-sm mt-2 text-amber-600';
+            } else if (aCorrect) {
+                feedback.innerHTML = '⚠️ A is correct (56), but Z = number of protons = 26. Try again!';
+                feedback.className = 'text-sm mt-2 text-amber-600';
+            } else {
+                feedback.innerHTML = '❌ Z = number of protons = 26, and A = Z + N = 26 + 30 = 56';
+                feedback.className = 'text-sm mt-2 text-red-600';
+            }
+        };
+        
+        // Neutron Practice - Guided
+        window.checkStepNeutron = function(step) {
+            const feedback = document.getElementById('feedback' + step + '-neutron');
+            const input = document.getElementById('step' + step + '-neutron');
+            if (!feedback || !input) return;
+            
+            const value = input.value.trim();
+            let correct = false;
+            let message = '';
+            
+            if (step === 1) {
+                correct = value === '14';
+                message = correct ? '✅ Correct! A = 14 (from Nitrogen-14)' : '❌ Not quite. The mass number is 14 (from Nitrogen-14).';
+            } else if (step === 2) {
+                correct = value === '7';
+                message = correct ? '✅ Correct! Z = 7' : '❌ Not quite. The atomic number (Z) is given as 7.';
+            } else if (step === 3) {
+                correct = value === '7';
+                message = correct ? '✅ Correct! N = A - Z = 14 - 7 = 7 neutrons!' : '❌ Not quite. Neutrons = A - Z = 14 - 7 = 7.';
+            }
+            
+            feedback.innerHTML = message;
+            feedback.className = 'text-xs mt-2 ' + (correct ? 'text-green-600 font-medium' : 'text-red-600');
+        };
+        
+        // Neutron Practice - Independent
+        window.checkNeutronPractice = function() {
+            const protonsInput = document.getElementById('protonsAnswer');
+            const electronsInput = document.getElementById('electronsAnswer');
+            const neutronsInput = document.getElementById('neutronsAnswer');
+            const feedback = document.getElementById('neutron-feedback');
+            
+            if (!protonsInput || !electronsInput || !neutronsInput || !feedback) return;
+            
+            const protons = protonsInput.value.trim();
+            const electrons = electronsInput.value.trim();
+            const neutrons = neutronsInput.value.trim();
+            
+            const pCorrect = protons === '17';
+            const eCorrect = electrons === '17';
+            const nCorrect = neutrons === '18';
+            
+            let message = '';
+            let allCorrect = pCorrect && eCorrect && nCorrect;
+            
+            // Record answer
+            PracticeTracker.recordAnswer('neutrons', 'ind-neutron-1', allCorrect, { protons, electrons, neutrons });
+            
+            if (allCorrect) {
+                message = '✅ <strong>Perfect!</strong> Protons = 17, Electrons = 17, Neutrons = 18. This is Chlorine-35 (³⁵Cl)!';
+                feedback.className = 'text-sm mt-2 text-green-600 font-medium';
+            } else {
+                message = '❌ Check your answers: Protons = Z = 17, Electrons = Protons (neutral) = 17, Neutrons = A - Z = 35 - 17 = 18';
+                feedback.className = 'text-sm mt-2 text-red-600';
+            }
+            
+            feedback.innerHTML = message;
+        };
+
+        init();
+    </script>
+
+    <!-- Topic Tracking and Quiz System -->
+    <script type="module">
+        import { TopicTracker } from '/js/topic-tracker.js';
+        import { TopicQuiz } from '/js/topic-quiz.js';
+
+        const quizQuestions = [
+            {
+                question: "Who developed the first periodic table?",
+                options: ["John Dalton", "Dmitri Mendeleev", "Niels Bohr", "J.J. Thomson"],
+                correct: 1,
+                explanation: "Dmitri Mendeleev developed the periodic table in 1869 and even predicted undiscovered elements."
+            },
+            {
+                question: "What do elements in the same group have in common?",
+                options: ["Same number of electron shells", "Similar chemical properties", "Same atomic mass", "Same number of neutrons"],
+                correct: 1,
+                explanation: "Elements in the same group have similar chemical properties because they have the same number of valence electrons."
+            },
+            {
+                question: "Where are metals located on the periodic table?",
+                options: ["Right side", "Left side and center", "Top only", "Bottom only"],
+                correct: 1,
+                explanation: "Metals are found on the left side and center of the periodic table, making up about 80% of all elements."
+            },
+            {
+                question: "Which group contains the noble gases?",
+                options: ["Group 1", "Group 2", "Group 17", "Group 18"],
+                correct: 3,
+                explanation: "Group 18 contains the noble gases (He, Ne, Ar, Kr, Xe, Rn), which are unreactive due to their full outer electron shells."
+            },
+            {
+                question: "What does the atomic number of an element represent?",
+                options: ["Number of neutrons", "Number of protons", "Mass of the atom", "Number of electrons"],
+                correct: 1,
+                explanation: "The atomic number equals the number of protons in the nucleus, which determines the element's identity."
+            },
+            {
+                question: "Which of these is a metalloid?",
+                options: ["Sodium", "Chlorine", "Silicon", "Iron"],
+                correct: 2,
+                explanation: "Silicon is a metalloid - it has properties of both metals and non-metals and is used in semiconductors."
+            },
+            {
+                question: "What happens to reactivity as you go down Group 1 (alkali metals)?",
+                options: ["Decreases", "Increases", "Stays the same", "Becomes zero"],
+                correct: 1,
+                explanation: "Reactivity increases down Group 1 because the outer electron is further from the nucleus and easier to lose."
+            },
+            {
+                question: "The diagonal line on the periodic table separates:",
+                options: ["Metals from non-metals", "Solids from gases", "Metals from metalloids", "Non-metals from noble gases"],
+                correct: 0,
+                explanation: "The diagonal 'staircase' line from boron to astatine separates metals (left) from non-metals (right)."
+            }
+        ];
+
+        const tracker = new TopicTracker({
+            topicId: 'periodic-table-overview',
+            topicTitle: 'Periodic Table Overview',
+            subject: 'chemistry',
+            sections: ['introduction', 'metals-nonmetals', 'groups-periods', 'atomic-structure', 'summary'],
+            quizRequired: true
+        });
+
+        const quiz = new TopicQuiz({
+            topicId: 'periodic-table-overview',
+            topicTitle: 'Periodic Table Overview',
+            subject: 'chemistry',
+            questions: quizQuestions,
+            passingScore: 60,
+            tracker: tracker
+        });
+
+        // Connect quiz to PracticeTracker for combined scoring
+        const originalShowResults = quiz.showResults.bind(quiz);
+        quiz.showResults = async function() {
+            await originalShowResults();
+            
+            // Record quiz score to PracticeTracker
+            PracticeTracker.recordQuizScore(this.score, this.questions.length);
+            
+            // Show combined score
+            const combinedScore = PracticeTracker.getCombinedScore();
+            const content = document.getElementById('quiz-content');
+            if (content && combinedScore) {
+                const practicePercent = combinedScore.practice || 0;
+                const quizPercent = combinedScore.quiz || 0;
+                const totalCombined = combinedScore.combined || 0;
+                
+                content.innerHTML += `
+                    <div class="mt-6 p-4 bg-gradient-to-r from-purple-50 to-indigo-50 rounded-xl border-2 border-purple-200">
+                        <h4 class="font-bold text-lg text-purple-800 mb-3 text-center">📊 Your Complete Score Summary</h4>
+                        <div class="grid grid-cols-3 gap-4 text-center">
+                            <div class="bg-white p-3 rounded-lg">
+                                <p class="text-xs text-gray-500 mb-1">Practice Questions</p>
+                                <p class="text-2xl font-bold ${practicePercent >= 60 ? 'text-green-600' : 'text-amber-600'}">${practicePercent !== null ? practicePercent + '%' : 'N/A'}</p>
+                                <p class="text-xs text-gray-400">(40% weight)</p>
+                            </div>
+                            <div class="bg-white p-3 rounded-lg">
+                                <p class="text-xs text-gray-500 mb-1">Quiz</p>
+                                <p class="text-2xl font-bold ${quizPercent >= 60 ? 'text-green-600' : 'text-amber-600'}">${quizPercent}%</p>
+                                <p class="text-xs text-gray-400">(60% weight)</p>
+                            </div>
+                            <div class="bg-white p-3 rounded-lg border-2 border-purple-300">
+                                <p class="text-xs text-gray-500 mb-1">Combined Score</p>
+                                <p class="text-2xl font-bold ${totalCombined >= 60 ? 'text-green-600' : 'text-red-600'}">${totalCombined}%</p>
+                                <p class="text-xs text-gray-400">Final Grade</p>
+                            </div>
+                        </div>
+                        ${totalCombined >= 60 ? 
+                            '<p class="text-center text-green-600 font-medium mt-3">🎉 Congratulations! You passed this topic!</p>' : 
+                            '<p class="text-center text-amber-600 font-medium mt-3">📚 Keep practicing! Review the material and try again.</p>'
+                        }
+                    </div>
+                `;
+            }
+        };
+
+        // Make quiz accessible globally
+        window.periodicTableQuiz = quiz;
+        window.topicTracker = tracker;
+        
+        // Also expose for Start Quiz button
+        window.TopicQuizInstance = quiz;
+        
+        // Integration with ChemistryQuiz handler for saving to topic_quiz_results
+        // This saves quiz results to Supabase for dashboard goals tracking
+        const originalSaveResults = quiz.saveResults?.bind(quiz);
+        if (originalSaveResults) {
+            quiz.saveResults = async function(percentage, passed) {
+                await originalSaveResults(percentage, passed);
+            };
+        }
+        
+        // Enhanced showResults that also saves to ChemistryQuiz
+        const baseShowResults = quiz.showResults.bind(quiz);
+        quiz.showResults = async function() {
+            await baseShowResults();
+            
+            // Save to ChemistryQuiz handler (which saves to topic_quiz_results table)
+            if (window.ChemistryQuiz && this.isCompleted) {
+                await window.ChemistryQuiz.saveQuizResult({
+                    topicId: 'periodic-table-overview',
+                    topicTitle: 'Periodic Table Overview',
+                    score: this.score,
+                    totalQuestions: this.questions.length,
+                    percentage: Math.round((this.score / this.questions.length) * 100),
+                    passed: this.score / this.questions.length >= 0.6,
+                    answers: this.answers || []
+                });
+            }
+        };
+    </script>
+    
+    <!-- Chemistry Subject Quiz Handler - Saves results to topic_quiz_results table -->
+    <script src="../subject-quiz-handler.js"></script>
+</body>
+</html>

@@ -1,0 +1,68 @@
+[
+  {
+    "id": "2004-q1",
+    "year": 2004,
+    "title": "WASSCE 2004 - Question 1",
+    "content": "All your burette readings (initial and final), as well as the size of your pipette, must be recorded but no account of experimental procedure is required.\n\nA is a solution of HCl containing 5.0 g dm⁻³.\nB is a solution of impure KOH containing 6.50 g dm⁻³.\n\n(a) Put A into the burette and titrate it against 20.0 cm³ or 25.0 cm³ portions of B using methyl orange as indicator.\n\nThe equation for the reaction is:\nHCl(aq) + KOH(aq) → KCl(aq) + H₂O(l)\n\n(b) From your results and the information provided above, calculate the:\n(i) concentration of A in mol dm⁻³\n(ii) concentration of B in mol dm⁻³\n(iii) percentage purity of KOH in B\n\n[H = 1; Cl = 35.5; K = 39.0; O = 16.0]",
+    "expectedResults": {
+      "averageTitre": 18.2,
+      "concA": 0.137,
+      "concB": 0.116
+    }
+  },
+  {
+    "id": "2003-q1",
+    "year": 2003,
+    "title": "WASSCE 2003 - Question 1",
+    "content": "All your burette readings (initial and final), as well as the size of your pipette, must be recorded.\n\nA is a solution of HCl containing 7.30 g dm⁻³.\nB is a solution of X₂CO₃ containing 10.6 g dm⁻³.\n\n(a) Put A into the burette and titrate it against 20.0 cm³ or 25.0 cm³ portions of B using methyl orange as indicator.\n\nThe equation for the reaction is:\nX₂CO₃ + 2HCl → 2XCl + H₂O + CO₂\n\n(b) Calculate the:\n(i) concentration of A in mol dm⁻³\n(ii) concentration of B in mol dm⁻³\n(iii) molar mass of X₂CO₃\n(iv) relative atomic mass of X\n\n[H = 1; C = 12; O = 16; Cl = 35.5]",
+    "expectedResults": {
+      "averageTitre": 20.0,
+      "concA": 0.2,
+      "concB": 0.1
+    }
+  },
+  {
+    "id": "2002-q1",
+    "year": 2002,
+    "title": "WASSCE 2002 - Question 1",
+    "content": "All your burette readings (initial and final), as well as the size of your pipette, must be recorded.\n\nA is 0.125 mol dm⁻³ H₂SO₄ solution.\nB is an aqueous solution containing x g dm⁻³ of KOH.\n\n(a) Put A into the burette and titrate it against 20.0 cm³ or 25.0 cm³ portions of B using methyl orange as indicator.\n\nThe equation for the reaction is:\nH₂SO₄(aq) + 2KOH(aq) → K₂SO₄(aq) + 2H₂O(l)\n\n(b) Calculate the:\n(i) average volume of A used\n(ii) concentration of B in mol dm⁻³\n(iii) concentration of B in g dm⁻³\n(iv) value of x\n\n[H = 1; O = 16; K = 39; S = 32]",
+    "expectedResults": {
+      "averageTitre": 23.8,
+      "concA": 0.125,
+      "concB": 0.119
+    }
+  },
+  {
+    "id": "2007-q1",
+    "year": 2007,
+    "title": "WASSCE 2007 - Question 1",
+    "content": "All your burette readings (initial and final) as well as the size of your pipette, must be recorded.\n\nA is a solution of HCl.\nB is a solution containing 3.80 g of Na₂CO₃ per 500 cm³ of solution.\n\n(a) Put A into the burette and titrate it against 25.0 cm³ portions of B using methyl orange as indicator. Repeat the titration to obtain consistent titres.\n\nThe equation for the reaction is:\nNa₂CO₃(aq) + 2HCl(aq) → 2NaCl(aq) + H₂O(l) + CO₂(g)\n\n(b) Calculate the:\n(i) concentration of B in mol dm⁻³\n(ii) concentration of A in mol dm⁻³\n\n[H = 1; C = 12; O = 16; Na = 23; Cl = 35.5]",
+    "expectedResults": {
+      "averageTitre": 22.6,
+      "concA": 0.067,
+      "concB": 0.076
+    }
+  },
+  {
+    "id": "2009-q1",
+    "year": 2009,
+    "title": "WASSCE 2009 - Question 1",
+    "content": "Burette readings (initial and final) must be given to two decimal places. Volume of pipette used must also be recorded.\n\nA is a solution of HCl.\nB is a solution of Na₂CO₃·XH₂O containing 13.50 g per dm³.\n\n(a) Put A into the burette and titrate it against 25.0 cm³ portions of B using methyl orange as indicator. Repeat the titration to obtain consistent titres.\n\nThe equation for the reaction is:\nNa₂CO₃ + 2HCl → 2NaCl + H₂O + CO₂\n\n(b) Calculate the:\n(i) concentration of B in mol dm⁻³\n(ii) molar mass of Na₂CO₃·XH₂O\n(iii) value of X\n\n[H = 1; C = 12; O = 16; Na = 23; Cl = 35.5]",
+    "expectedResults": {
+      "averageTitre": 19.5,
+      "concA": 0.1,
+      "concB": 0.078
+    }
+  },
+  {
+    "id": "2011-q1",
+    "year": 2011,
+    "title": "WASSCE 2011 - Question 1",
+    "content": "Burette readings (initial and final) must be given to two decimal places.\n\nA is a 0.100 mol dm⁻³ solution of an acid H₂Y.\nB is a solution of KOH containing 2.8 g per 500 cm³.\n\n(a) Put A into the burette and titrate it against 20.0 cm³ or 25.0 cm³ portions of B using methyl orange as indicator. Repeat the titration to obtain consistent titres.\n\n(b) Calculate the:\n(i) number of moles of acid in the average titre\n(ii) number of moles of KOH in the volume of B pipetted\n(iii) mole ratio of acid to base in the reaction\n\n[H = 1.00; O = 16.0; K = 39.0]",
+    "expectedResults": {
+      "averageTitre": 25.0,
+      "concA": 0.1,
+      "concB": 0.1
+    }
+  }
+]

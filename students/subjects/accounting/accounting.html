@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <!-- dedupe: removed duplicate favicon/manifest block -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Accounting - JUANOVA CORTEX</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(59, 130, 246, 0.1);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 
+                       0 2px 4px -1px rgba(0, 0, 0, 0.06),
+                       0 0 0 1px rgba(255, 255, 255, 0.2) inset;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .card:hover {
+            transform: translateY(-4px) scale(1.01);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 
+                       0 10px 10px -5px rgba(0, 0, 0, 0.04),
+                       0 0 0 1px rgba(59, 130, 246, 0.2) inset,
+                       0 0 20px rgba(59, 130, 246, 0.15);
+            border-color: rgba(59, 130, 246, 0.3);
+        }
+
+        .glow-effect {
+            position: relative;
+        }
+
+        .glow-effect::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: inherit;
+            box-shadow: 0 0 30px rgba(59, 130, 246, 0.15);
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: -1;
+        }
+
+        .glow-effect:hover::after {
+            opacity: 1;
+        }
+
+        .section-title {
+            background: linear-gradient(135deg, #1D4ED8, #60A5FA);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 2.5rem;
+            font-weight: 800;
+            text-align: center;
+            padding: 1rem 0;
+        }
+
+        .icon-gradient {
+            background: linear-gradient(135deg, #1D4ED8, #60A5FA);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            padding: 1.5rem;
+        }
+
+        .progress-bar {
+            height: 4px;
+            background: #E5E7EB;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #1D4ED8, #60A5FA);
+            transition: width 0.3s ease;
+        }
+
+        .accent-border {
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-blue-100 via-white to-blue-50">
+      !..make a modal appear. it should give proper attribution to Phet simulations..!
+    <!-- Navigation Bar -->
+    <nav class="fixed top-0 left-0 right-0 glass-effect border-b border-blue-100 z-50">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <a href="../student-dashboard.html" class="text-blue-600 hover:text-blue-800 transition">
+                        <i class="fas fa-arrow-left"></i>
+                        <span class="ml-2">Back to Dashboard</span>
+                    </a>
+                </div>
+                <div class="flex items-center gap-4">
+                    <button class="px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition">
+                        <i class="fas fa-graduation-cap mr-2"></i>
+                        Track Progress
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container mx-auto px-4 pt-20 pb-12">
+        <!-- Header Section -->
+        <header class="text-center mb-12">
+            <div class="flex justify-center mb-6">
+                <img src="../../assets/images/logo.png" alt="JUANOVA CORTEX Logo" 
+                     class="h-24 w-auto drop-shadow-xl animate-pulse">
+            </div>
+            <h1 class="section-title mb-4">Accounting Course</h1>
+            <p class="text-xl text-blue-600 font-medium">Master fundamental accounting principles and practices</p>
+        </header>
+
+        <!-- Divisions Grid -->
+        <div class="grid-container mb-12">
+            <!-- Fundamentals & Ethics -->
+            <div class="card glow-effect rounded-2xl p-6 cursor-pointer" onclick="navigateToTopics('fundamentals')">
+                <i class="fas fa-book-open text-4xl icon-gradient mb-4"></i>
+                <h3 class="text-xl font-bold text-gray-900 mb-3">Fundamentals & Ethics</h3>
+                <p class="text-gray-600 text-sm mb-4">Core concepts and professional standards</p>
+                <ul class="text-sm text-gray-700 space-y-2 mb-4">
+                    <li class="flex items-center gap-2">
+                        <i class="fas fa-check text-blue-500"></i>
+                        Nature and Significance
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <i class="fas fa-check text-blue-500"></i>
+                        Ethics in Accounting
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <i class="fas fa-check text-blue-500"></i>
+                        IT in Accounting
+                    </li>
+                </ul>
+                <div class="mt-auto">
+                    <div class="flex items-center justify-between text-sm text-gray-500 mb-3">
+                        <span class="flex items-center gap-2">
+                            <i class="fas fa-book"></i>
+                            3 Topics
+                        </span>
+                        <span class="flex items-center gap-2">
+                            <i class="fas fa-clock"></i>
+                            6h
+                        </span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Core Accounting Principles -->
+            <div class="card glow-effect rounded-2xl p-6 cursor-pointer" onclick="navigateToTopics('core-principles')">
+                <i class="fas fa-balance-scale text-4xl icon-gradient mb-4"></i>
+                <h3 class="text-xl font-bold text-gray-900 mb-3">Core Accounting Principles</h3>
+                <p class="text-gray-600 text-sm mb-4">Essential double-entry and control systems</p>
+                <ul class="text-sm text-gray-700 space-y-2 mb-4">
+                    <li class="flex items-center gap-2">
+                        <i class="fas fa-check text-blue-500"></i>
+                        Double Entry System
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <i class="fas fa-check text-blue-500"></i>
+                        Control Accounts
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <i class="fas fa-check text-blue-500"></i>
+                        Incomplete Records
+                    </li>
+                </ul>
+                <div class="mt-auto">
+                    <div class="flex items-center justify-between text-sm text-gray-500 mb-3">
+                        <span class="flex items-center gap-2">
+                            <i class="fas fa-book"></i>
+                            3 Topics
+                        </span>
+                        <span class="flex items-center gap-2">
+                            <i class="fas fa-clock"></i>
+                            8h
+                        </span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Financial Operations -->
+            <div class="card glow-effect rounded-2xl p-6 cursor-pointer" onclick="navigateToTopics('financial-ops')">
+                <i class="fas fa-cash-register text-4xl icon-gradient mb-4"></i>
+                <h3 class="text-xl font-bold text-gray-900 mb-3">Financial Operations</h3>
+                <p class="text-gray-600 text-sm mb-4">Day-to-day financial management</p>
+                <ul class="text-sm text-gray-700 space-y-2 mb-4">
+                    <li class="flex items-center gap-2">
+                        <i class="fas fa-check text-blue-500"></i>
+                        Cashbook Management
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <i class="fas fa-check text-blue-500"></i>
+                        Bank Reconciliation
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <i class="fas fa-check text-blue-500"></i>
+                        Stock Valuation
+                    </li>
+                </ul>
+                <div class="mt-auto">
+                    <div class="flex items-center justify-between text-sm text-gray-500 mb-3">
+                        <span class="flex items-center gap-2">
+                            <i class="fas fa-book"></i>
+                            3 Topics
+                        </span>
+                        <span class="flex items-center gap-2">
+                            <i class="fas fa-clock"></i>
+                            6h
+                        </span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Business Accounting -->
+            <div class="card glow-effect rounded-2xl p-6 cursor-pointer" onclick="navigateToTopics('business-accounting')">
+                <i class="fas fa-building text-4xl icon-gradient mb-4"></i>
+                <h3 class="text-xl font-bold text-gray-900 mb-3">Business Accounting</h3>
+                <p class="text-gray-600 text-sm mb-4">Complete business financial management</p>
+                <ul class="text-sm text-gray-700 space-y-2 mb-4">
+                    <li class="flex items-center gap-2">
+                        <i class="fas fa-check text-blue-500"></i>
+                        Sole Trader Accounts
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <i class="fas fa-check text-blue-500"></i>
+                        Manufacturing
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <i class="fas fa-check text-blue-500"></i>
+                        Departmental
+                    </li>
+                </ul>
+                <div class="mt-auto">
+                    <div class="flex items-center justify-between text-sm text-gray-500 mb-3">
+                        <span class="flex items-center gap-2">
+                            <i class="fas fa-book"></i>
+                            3 Topics
+                        </span>
+                        <span class="flex items-center gap-2">
+                            <i class="fas fa-clock"></i>
+                            8h
+                        </span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Advanced Business Structures -->
+            <div class="card glow-effect rounded-2xl p-6 cursor-pointer" onclick="navigateToTopics('advanced-structures')">
+                <i class="fas fa-sitemap text-4xl icon-gradient mb-4"></i>
+                <h3 class="text-xl font-bold text-gray-900 mb-3">Advanced Business Structures</h3>
+                <p class="text-gray-600 text-sm mb-4">Complex business organizations</p>
+                <ul class="text-sm text-gray-700 space-y-2 mb-4">
+                    <li class="flex items-center gap-2">
+                        <i class="fas fa-check text-blue-500"></i>
+                        Partnership
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <i class="fas fa-check text-blue-500"></i>
+                        Company Accounts
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <i class="fas fa-check text-blue-500"></i>
+                        Branch & Joint Ventures
+                    </li>
+                </ul>
+                <div class="mt-auto">
+                    <div class="flex items-center justify-between text-sm text-gray-500 mb-3">
+                        <span class="flex items-center gap-2">
+                            <i class="fas fa-book"></i>
+                            4 Topics
+                        </span>
+                        <span class="flex items-center gap-2">
+                            <i class="fas fa-clock"></i>
+                            10h
+                        </span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Specialized Accounting -->
+            <div class="card glow-effect rounded-2xl p-6 cursor-pointer" onclick="navigateToTopics('specialized')">
+                <i class="fas fa-university text-4xl icon-gradient mb-4"></i>
+                <h3 class="text-xl font-bold text-gray-900 mb-3">Specialized Accounting</h3>
+                <p class="text-gray-600 text-sm mb-4">Non-profit and public sector accounting</p>
+                <ul class="text-sm text-gray-700 space-y-2 mb-4">
+                    <li class="flex items-center gap-2">
+                        <i class="fas fa-check text-blue-500"></i>
+                        Non-Profit Organizations
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <i class="fas fa-check text-blue-500"></i>
+                        Public Sector
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <i class="fas fa-check text-blue-500"></i>
+                        Special Considerations
+                    </li>
+                </ul>
+                <div class="mt-auto">
+                    <div class="flex items-center justify-between text-sm text-gray-500 mb-3">
+                        <span class="flex items-center gap-2">
+                            <i class="fas fa-book"></i>
+                            2 Topics
+                        </span>
+                        <span class="flex items-center gap-2">
+                            <i class="fas fa-clock"></i>
+                            6h
+                        </span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Study Resources Card -->
+            <div class="card glow-effect rounded-2xl p-6">
+                <i class="fas fa-lightbulb text-4xl text-yellow-500 mb-4"></i>
+                <h3 class="text-xl font-bold text-gray-900 mb-3">Study Resources</h3>
+                <p class="text-gray-600 text-sm mb-6">Tools and resources to enhance your learning</p>
+                <div class="space-y-3">
+                    <button onclick="openTool('calculator')" 
+                            class="w-full py-2 px-4 rounded-xl bg-gradient-to-r from-blue-500 to-blue-700 text-white 
+                                   font-medium text-sm flex items-center justify-center gap-2 hover:from-blue-600 
+                                   hover:to-blue-800 transition-all shadow-lg transform hover:scale-105">
+                        <i class="fas fa-calculator"></i>
+                        <span>Financial Calculator</span>
+                    </button>
+                    <button onclick="openTool('notes')" 
+                            class="w-full py-2 px-4 rounded-xl bg-gradient-to-r from-yellow-500 to-yellow-700 text-white 
+                                   font-medium text-sm flex items-center justify-center gap-2 hover:from-yellow-600 
+                                   hover:to-yellow-800 transition-all shadow-lg transform hover:scale-105">
+                        <i class="fas fa-sticky-note"></i>
+                        <span>Smart Notes</span>
+                    </button>
+                    <button onclick="openTool('flashcards')" 
+                            class="w-full py-2 px-4 rounded-xl bg-gradient-to-r from-green-500 to-green-700 text-white 
+                                   font-medium text-sm flex items-center justify-center gap-2 hover:from-green-600 
+                                   hover:to-green-800 transition-all shadow-lg transform hover:scale-105">
+                        <i class="fas fa-cards-blank"></i>
+                        <span>Flashcards</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tips Section -->
+        <section class="card glass-effect rounded-2xl p-8 mx-auto max-w-4xl">
+            <h2 class="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+                <i class="fas fa-lightbulb text-yellow-500"></i>
+                Study Tips
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="flex items-start gap-3">
+                    <i class="fas fa-check-circle text-green-500 mt-1 text-xl"></i>
+                    <p class="text-gray-700">Master fundamentals before advancing to complex topics</p>
+                </div>
+                <div class="flex items-start gap-3">
+                    <i class="fas fa-check-circle text-green-500 mt-1 text-xl"></i>
+                    <p class="text-gray-700">Practice double entry exercises daily</p>
+                </div>
+                <div class="flex items-start gap-3">
+                    <i class="fas fa-check-circle text-green-500 mt-1 text-xl"></i>
+                    <p class="text-gray-700">Use the financial calculator for complex calculations</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        function openTool(toolType) {
+            switch (toolType) {
+                case 'calculator':
+                    window.location.href = '../tools/financial-calculator.html';
+                    break;
+                case 'notes':
+                    window.location.href = '../tools/smart-notes.html';
+                    break;
+                case 'flashcards':
+                    window.location.href = '../tools/flashcards.html';
+                    break;
+            }
+        }
+
+        function navigateToTopics(unit) {
+            window.location.href = `accounting-topic.html?unit=${unit}`;
+        }
+
+        // Initialize progress bars with animation
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(() => {
+                const progressBars = document.querySelectorAll('.progress-fill');
+                progressBars.forEach(bar => {
+                    bar.style.width = '0%';
+                });
+            }, 500);
+        });
+    </script>
+</body>
+</html>

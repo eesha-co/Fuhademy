@@ -1,0 +1,28 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "Q26: During a thunderstorm, the sound is heard over a long time. This phenomenon is referred to as | Diagram: no\nQ27: The velocity of sound in air at 16°C is 340ms⁻¹. What will it be when the pressure is doubled and its temperature raised to 127°C? | Diagram: no\nQ28: In comparing the camera and the human eye, the film of the camera functions as the | Diagram: no\nQ29: An object 4 cm high is placed 15 cm from a concave mirror of focal length 5 cm. The size of the image is | Diagram: no\nQ30: An object is embedded in a block of ice, 10cm below the plane surface. If the refractive index of the ice is 1.50, the apparent depth of the object below the surface is | Diagram: no\nQ31: Which of the following is used for the correction of short-sightedness? | Diagram: no",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1774106478,
+  "id": "20260321232106b1787d0cdf1f46da",
+  "model": "glm-4.6v",
+  "object": "chat.completion",
+  "request_id": "20260321232106b1787d0cdf1f46da",
+  "usage": {
+    "completion_tokens": 209,
+    "completion_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "prompt_tokens": 5065,
+    "prompt_tokens_details": {
+      "cached_tokens": 4
+    },
+    "total_tokens": 5274
+  }
+}

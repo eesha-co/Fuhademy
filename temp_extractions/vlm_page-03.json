@@ -1,0 +1,28 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "Q1: A car moves with an initial velocity of 25 ms⁻¹ and reaches a velocity of 45 ms⁻¹ in 10s. What is the acceleration of the car? | Diagram: no\nQ2: Which of the following options represents positions of stable equilibrium? | Diagram: no\nQ3: An object is weighed at different locations on the earth. What will be the right observation? | Diagram: no\nQ4: A bob of weight 0.1N hangs from a massless string of length 50cm. A variable horizontal force which increases from zero is applied to pull the bob until the string makes an angle of 600 with the vertical. The work done is | Diagram: no\nQ5: The diagram above represents balls in an undulating surface. | Diagram: yes\nQ6: The surfaces of conveyor belts are made rough so as to | Diagram: no",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1774106411,
+  "id": "20260321232000511c5d314c1446e5",
+  "model": "glm-4.6v",
+  "object": "chat.completion",
+  "request_id": "20260321232000511c5d314c1446e5",
+  "usage": {
+    "completion_tokens": 191,
+    "completion_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "prompt_tokens": 5065,
+    "prompt_tokens_details": {
+      "cached_tokens": 4
+    },
+    "total_tokens": 5256
+  }
+}

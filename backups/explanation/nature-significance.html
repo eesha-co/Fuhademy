@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Nature and Significance of Accounting - JUANOVA CORTEX</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <link rel="stylesheet" href="../../../styles/subject-common.css" />
+</head>
+<body class="min-h-screen bg-gradient-to-br from-blue-100 via-white to-blue-50">
+    <!-- Navigation Bar -->
+    <nav class="fixed top-0 left-0 right-0 glass-effect border-b border-blue-100 z-50">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <a href="../accounting-topic.html?division=fundamentals" class="text-blue-600 hover:text-blue-800 transition">
+                        <i class="fas fa-arrow-left"></i>
+                        <span class="ml-2">Back to Topics</span>
+                    </a>
+                </div>
+                <div class="flex items-center gap-4">
+                    <button id="prevTopicBtn" class="nav-button" disabled>
+                        <i class="fas fa-chevron-left mr-2"></i>Previous
+                    </button>
+                    <button id="nextTopicBtn" class="nav-button">
+                        Next<i class="fas fa-chevron-right ml-2"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container mx-auto px-4 pt-20 pb-12">
+        <!-- Topic Header -->
+        <header class="mb-8">
+            <h1 class="section-title mb-4">Nature and Significance of Accounting</h1>
+            <div class="flex items-center gap-4 text-sm text-gray-600 mb-4">
+                <span><i class="far fa-clock mr-1"></i>45 minutes</span>
+                <span><i class="fas fa-signal mr-1"></i>Beginner</span>
+                <span><i class="fas fa-tasks mr-1"></i><span id="progressText">0% Complete</span></span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill progress-fill-0" id="progressBar"></div>
+            </div>
+        </header>
+
+        <!-- Content Navigation -->
+        <div class="flex gap-6">
+            <!-- Sidebar Navigation -->
+            <aside class="hidden lg:block w-64 sticky top-24 h-[calc(100vh-6rem)] overflow-y-auto glass-effect rounded-2xl p-4">
+                <h2 class="font-bold text-lg mb-4">Contents</h2>
+                <nav id="sidebarNav" class="space-y-2">
+                    <!-- Will be populated by JavaScript -->
+                </nav>
+            </aside>
+
+            <!-- Main Content Area -->
+            <div class="flex-grow max-w-3xl">
+                <div id="contentContainer" class="space-y-6">
+                    <section data-section-id="introduction">
+                        <h2>Introduction to Accounting</h2>
+                        <p>Accounting is often referred to as the "language of business." It provides a systematic way to record, classify, and summarize financial transactions and interpret their results.</p>
+                    </section>
+
+                    <section data-section-id="definition">
+                        <h2>Definition and Scope</h2>
+                        <p>The American Accounting Association defines accounting as "the process of identifying, measuring, and communicating economic information to permit informed judgments and decisions by users of the information."</p>
+                        <div class="explanation">
+                            <strong>Key Components:</strong>
+                            <ul>
+                                <li>Identifying: Recognition of business transactions</li>
+                                <li>Measuring: Quantifying transactions in monetary terms</li>
+                                <li>Communicating: Presenting information to stakeholders</li>
+                            </ul>
+                        </div>
+                    </section>
+                    
+                    <!-- More sections will be dynamically loaded from content module -->
+                </div>
+
+                <!-- Questions Section -->
+                <div id="questionsContainer" class="mt-12 space-y-8">
+                    <h2 class="text-2xl font-bold mb-6">Practice Questions</h2>
+                    <!-- Questions will be populated by JavaScript -->
+                </div>
+
+                <!-- Navigation Footer -->
+                <footer class="mt-12 flex justify-between items-center">
+                    <button id="prevTopicBtnFooter" class="nav-button" disabled>
+                        <i class="fas fa-chevron-left mr-2"></i>Previous Topic
+                    </button>
+                    <button id="nextTopicBtnFooter" class="nav-button">
+                        Next Topic<i class="fas fa-chevron-right ml-2"></i>
+                    </button>
+                </footer>
+            </div>
+        </div>
+    </main>
+
+    <!-- Import Scripts -->
+    <script type="module">
+        import { renderContent } from '../functions/content-renderer.js';
+        import { renderQuestions } from '../functions/questions.js';
+        import { initializeProgress, updateProgressUI } from '../functions/progress.js';
+        import { initializeNavigation } from '../functions/navigation.js';
+        import content from '../../content/divisions/fundamentals/topics/nature-significance/content.js';
+        import questions from '../../content/divisions/fundamentals/topics/nature-significance/questions.js';
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                // Initialize components
+                await renderContent('contentContainer', content);
+                await renderQuestions('questionsContainer', questions);
+                await initializeProgress('nature-significance');
+                await initializeNavigation('fundamentals', 'nature-significance');
+                updateProgressUI();
+
+                // Handle scroll spy
+                setupScrollSpy();
+            } catch (error) {
+                console.error('Error initializing page:', error);
+            }
+        });
+
+        // Setup scroll spy for table of contents
+        function setupScrollSpy() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const sectionId = entry.target.dataset.sectionId;
+                        updateActiveSection(sectionId);
+                    }
+                });
+            }, { threshold: 0.2 });
+
+            // Observe all sections
+            document.querySelectorAll('[data-section-id]').forEach(section => {
+                observer.observe(section);
+            });
+        }
+
+        // Update active section in table of contents
+        function updateActiveSection(sectionId) {
+            document.querySelectorAll('.toc-link').forEach(link => {
+                link.classList.remove('active');
+                if (link.dataset.sectionLink === sectionId) {
+                    link.classList.add('active');
+                }
+            });
+        }
+    </script>
+</body>
+</html>
+

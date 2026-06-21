@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Favicon -->
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mock Exams - Prep100</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50">
+    <div class="flex min-h-screen">
+        <!-- Sidebar -->
+        <aside class="fixed top-0 left-0 h-screen bg-white/80 backdrop-blur-lg shadow-xl w-72 flex flex-col px-4 py-6 border-r border-gray-200 overflow-y-auto z-50">
+            <div class="sticky top-0 bg-white/95 backdrop-blur-lg z-10 py-2 mb-8">
+                <a href="#" class="flex items-center gap-3">
+                    <img src="/assets/images/logo.png" alt="Logo" class="h-16 w-16 object-contain rounded-full shadow-2xl border-4 border-blue-700">
+                    <span class="text-3xl font-extrabold text-blue-800 tracking-tight font-serif italic drop-shadow-lg">JUANOVA CORTEX</span>
+                </a>
+            </div>
+            <nav class="flex flex-col gap-2 text-gray-700 font-medium">
+                <a href="student-dashboard.html" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-blue-50 transition"><i class="fas fa-home"></i> Home</a>
+                <a href="news-feed-gemini.html" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-blue-50 transition"><i class="fas fa-newspaper text-pink-500"></i> News Feed</a>
+                <a href="ai-tutor-chatbot.html" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-blue-50 transition"><i class="fas fa-robot text-purple-500"></i> AI Tutor</a>
+                <a href="smart-note.html" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-blue-50 transition"><i class="fas fa-sticky-note text-yellow-500"></i> Smart Notes</a>
+                <a href="study-plan.html" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-blue-50 transition"><i class="fas fa-calendar-alt text-green-500"></i> Study Plan</a>
+                <a href="video-library.html" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-blue-50 transition"><i class="fas fa-video text-red-500"></i> Video Library</a>
+                <a href="practice-exams.html" class="flex items-center gap-3 px-4 py-2 rounded-lg bg-blue-50 text-blue-600"><i class="fas fa-file-alt text-indigo-500"></i> Mock Exams</a>
+                <a href="practice-exams.html" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-blue-50 transition"><i class="fas fa-pencil-alt text-orange-500"></i> Practice Exams</a>
+                <a href="notifications.html" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-blue-50 transition"><i class="fas fa-bell text-pink-600"></i> Notifications</a>
+                <a href="student-live-session.html" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-blue-50 transition"><i class="fas fa-chalkboard-teacher text-blue-400"></i> Join Live Session</a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 p-8 ml-72">
+            <!-- Top Bar -->
+            <div class="flex items-center justify-between mb-8">
+                <div class="flex-1 max-w-xl relative">
+                    <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                    <input type="text" class="w-full pl-12 pr-4 py-3 rounded-full border-2 border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 bg-white" placeholder="Search mock exams, subjects, or topics...">
+                </div>
+                <div class="flex items-center gap-4">
+                    <span class="bg-blue-100 text-blue-700 px-4 py-1 rounded-full font-semibold text-sm">SS 3</span>
+                    <span class="font-semibold text-gray-700">Student</span>
+                    <div class="relative">
+                        <button class="p-2 rounded-full hover:bg-blue-100 transition" aria-label="Notifications">
+                            <i class="fas fa-bell text-blue-600 text-lg"></i>
+                            <span class="absolute -top-1 -right-1 bg-pink-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold">3</span>
+                        </button>
+                    </div>
+                    <img src="../assets/images/unnamed.jpg" alt="User" class="h-10 w-10 rounded-full border-2 border-blue-500">
+                </div>
+            </div>
+
+            <!-- Welcome Banner -->
+            <div class="rounded-3xl bg-gradient-to-r from-blue-600 to-blue-400 text-white p-8 shadow-xl mb-8">
+                <div class="max-w-xl">
+                    <h1 class="text-3xl font-extrabold mb-2">Mock Exams</h1>
+                    <p class="text-blue-100 mb-4">Timed mock exams designed to simulate the real test environment. Track your progress and improve with each attempt.</p>
+                    <div class="flex gap-3">
+                        <button class="border border-white text-white px-5 py-2 rounded-full font-semibold hover:bg-white hover:text-blue-600 transition">Start a Full Mock</button>
+                        <button class="bg-white text-blue-600 px-5 py-2 rounded-full font-semibold hover:bg-gray-50 transition">Browse Topics</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mock exams list -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-white rounded-2xl p-6 shadow hover:shadow-lg transition">
+                    <div class="flex items-start justify-between">
+                        <div>
+                            <h3 class="text-xl font-bold text-gray-800">Mathematics</h3>
+                            <p class="text-sm text-gray-500 mt-1">25 questions — 60 minutes</p>
+                            <div class="mt-4 flex items-center gap-2">
+                                <span class="text-xs bg-blue-100 text-blue-700 px-3 py-1 rounded-full">WAEC</span>
+                                <span class="text-xs bg-gray-100 text-gray-700 px-3 py-1 rounded-full">Topic: Algebra</span>
+                            </div>
+                        </div>
+                        <div class="flex flex-col items-end gap-3">
+                            <div class="text-sm text-gray-500">Avg score</div>
+                            <div class="text-2xl font-bold text-blue-600">72%</div>
+                        </div>
+                    </div>
+                    <div class="mt-6 flex items-center justify-between">
+                        <button class="px-4 py-2 bg-blue-600 text-white rounded-lg">Start</button>
+                        <button class="px-3 py-2 text-sm text-gray-600 hover:text-gray-800">View details</button>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl p-6 shadow hover:shadow-lg transition">
+                    <div class="flex items-start justify-between">
+                        <div>
+                            <h3 class="text-xl font-bold text-gray-800">Biology</h3>
+                            <p class="text-sm text-gray-500 mt-1">20 questions — 50 minutes</p>
+                            <div class="mt-4 flex items-center gap-2">
+                                <span class="text-xs bg-green-100 text-green-700 px-3 py-1 rounded-full">WAEC</span>
+                                <span class="text-xs bg-gray-100 text-gray-700 px-3 py-1 rounded-full">Topic: Cells</span>
+                            </div>
+                        </div>
+                        <div class="flex flex-col items-end gap-3">
+                            <div class="text-sm text-gray-500">Avg score</div>
+                            <div class="text-2xl font-bold text-green-600">68%</div>
+                        </div>
+                    </div>
+                    <div class="mt-6 flex items-center justify-between">
+                        <button class="px-4 py-2 bg-green-600 text-white rounded-lg">Start</button>
+                        <button class="px-3 py-2 text-sm text-gray-600 hover:text-gray-800">View details</button>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl p-6 shadow hover:shadow-lg transition">
+                    <div class="flex items-start justify-between">
+                        <div>
+                            <h3 class="text-xl font-bold text-gray-800">Chemistry</h3>
+                            <p class="text-sm text-gray-500 mt-1">22 questions — 55 minutes</p>
+                            <div class="mt-4 flex items-center gap-2">
+                                <span class="text-xs bg-pink-100 text-pink-700 px-3 py-1 rounded-full">WAEC</span>
+                                <span class="text-xs bg-gray-100 text-gray-700 px-3 py-1 rounded-full">Topic: Stoichiometry</span>
+                            </div>
+                        </div>
+                        <div class="flex flex-col items-end gap-3">
+                            <div class="text-sm text-gray-500">Avg score</div>
+                            <div class="text-2xl font-bold text-pink-600">71%</div>
+                        </div>
+                    </div>
+                    <div class="mt-6 flex items-center justify-between">
+                        <button class="px-4 py-2 bg-pink-600 text-white rounded-lg">Start</button>
+                        <button class="px-3 py-2 text-sm text-gray-600 hover:text-gray-800">View details</button>
+                    </div>
+                </div>
+
+                <!-- More mock exam cards can be added here -->
+            </div>
+        </main>
+    </div>
+</body>
+</html>

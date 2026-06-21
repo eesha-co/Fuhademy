@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Air Pollution & Control - Chemistry</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @keyframes fade-in-up {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in-up { animation: fade-in-up 0.5s ease-out forwards; }
+        .section-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            border: 1px solid #e5e7eb;
+        }
+        .video-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 8px;
+            background: #f9fafb;
+        }
+        .video-container iframe {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Header -->
+    <nav class="bg-white shadow-sm fixed top-0 w-full z-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center">
+                    <a href="index.html" class="text-emerald-600 hover:text-emerald-800 mr-4">
+                        <i class="fas fa-arrow-left"></i>
+                    </a>
+                    <h1 class="text-xl font-semibold text-gray-900">Air Pollution & Control</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="text-sm text-gray-600 hidden sm:block">
+                        Progress: <span id="progressPercent">0%</span>
+                    </div>
+                    <div class="w-24 sm:w-32 h-2 bg-gray-200 rounded-full">
+                        <div id="progressBar" class="h-2 bg-emerald-500 rounded-full transition-all duration-300" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="pt-20 pb-8 px-4 max-w-5xl mx-auto">
+        <!-- Learning Objectives -->
+        <div class="bg-emerald-50 border-l-4 border-emerald-500 p-4 rounded-r-lg mb-6 animate-fade-in-up">
+            <h3 class="font-semibold text-emerald-800 mb-2"><i class="fas fa-bullseye mr-2"></i>Learning Objectives</h3>
+            <ul class="text-emerald-700 text-sm space-y-1">
+                <li>• Identify major air pollutants and their sources</li>
+                <li>• Explain the causes and effects of acid rain</li>
+                <li>• Describe the greenhouse effect and global warming</li>
+                <li>• Explain photochemical smog formation</li>
+                <li>• Describe methods for controlling air pollution</li>
+            </ul>
+        </div>
+
+        <!-- Section 1: Introduction -->
+        <div class="section-card animate-fade-in-up">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <span class="bg-emerald-100 text-emerald-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">1</span>
+                What is Air Pollution?
+            </h2>
+            
+            <p class="text-gray-700 mb-4"><strong>Air pollution</strong> is the introduction of harmful substances into the atmosphere, causing damage to living organisms and the environment.</p>
+            
+            <div class="bg-red-50 p-4 rounded-lg border-l-4 border-red-500 mb-4">
+                <h4 class="font-semibold text-red-700 mb-2"><i class="fas fa-exclamation-triangle mr-2"></i>Why is Air Pollution a Problem?</h4>
+                <ul class="text-gray-600 text-sm space-y-1">
+                    <li>• Causes respiratory diseases in humans and animals</li>
+                    <li>• Damages crops and reduces agricultural yields</li>
+                    <li>• Contributes to climate change and global warming</li>
+                    <li>• Causes acid rain that damages buildings and ecosystems</li>
+                    <li>• Depletes the ozone layer</li>
+                </ul>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-4">
+                <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                    <h4 class="font-semibold text-blue-700 mb-2"><i class="fas fa-industry mr-2"></i>Primary Pollutants</h4>
+                    <p class="text-gray-600 text-sm">Released directly from sources:</p>
+                    <ul class="text-gray-600 text-sm mt-2 space-y-1">
+                        <li>• Carbon monoxide (CO)</li>
+                        <li>• Nitrogen oxides (NOₓ)</li>
+                        <li>• Sulfur dioxide (SO₂)</li>
+                        <li>• Particulate matter (PM)</li>
+                    </ul>
+                </div>
+                <div class="bg-purple-50 p-4 rounded-lg border border-purple-200">
+                    <h4 class="font-semibold text-purple-700 mb-2"><i class="fas fa-flask mr-2"></i>Secondary Pollutants</h4>
+                    <p class="text-gray-600 text-sm">Formed by chemical reactions:</p>
+                    <ul class="text-gray-600 text-sm mt-2 space-y-1">
+                        <li>• Ozone (O₃) at ground level</li>
+                        <li>• Acid rain (H₂SO₄, HNO₃)</li>
+                        <li>• Photochemical smog</li>
+                        <li>• Secondary particulates</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 2: Major Air Pollutants -->
+        <div class="section-card animate-fade-in-up">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <span class="bg-emerald-100 text-emerald-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">2</span>
+                Major Air Pollutants
+            </h2>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm border-collapse">
+                    <thead>
+                        <tr class="bg-emerald-50">
+                            <th class="border border-gray-200 p-3 text-left">Pollutant</th>
+                            <th class="border border-gray-200 p-3 text-left">Formula</th>
+                            <th class="border border-gray-200 p-3 text-left">Sources</th>
+                            <th class="border border-gray-200 p-3 text-left">Effects</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="border border-gray-200 p-3 font-medium">Carbon Monoxide</td>
+                            <td class="border border-gray-200 p-3">CO</td>
+                            <td class="border border-gray-200 p-3">Vehicle exhaust, incomplete combustion</td>
+                            <td class="border border-gray-200 p-3">Reduces oxygen transport in blood; fatal at high levels</td>
+                        </tr>
+                        <tr class="bg-gray-50">
+                            <td class="border border-gray-200 p-3 font-medium">Sulfur Dioxide</td>
+                            <td class="border border-gray-200 p-3">SO₂</td>
+                            <td class="border border-gray-200 p-3">Burning fossil fuels, volcanic eruptions</td>
+                            <td class="border border-gray-200 p-3">Acid rain, respiratory problems</td>
+                        </tr>
+                        <tr>
+                            <td class="border border-gray-200 p-3 font-medium">Nitrogen Oxides</td>
+                            <td class="border border-gray-200 p-3">NOₓ</td>
+                            <td class="border border-gray-200 p-3">Vehicle engines, power plants</td>
+                            <td class="border border-gray-200 p-3">Smog, acid rain, ozone formation</td>
+                        </tr>
+                        <tr class="bg-gray-50">
+                            <td class="border border-gray-200 p-3 font-medium">Particulate Matter</td>
+                            <td class="border border-gray-200 p-3">PM</td>
+                            <td class="border border-gray-200 p-3">Dust, smoke, construction, vehicles</td>
+                            <td class="border border-gray-200 p-3">Lung diseases, reduced visibility</td>
+                        </tr>
+                        <tr>
+                            <td class="border border-gray-200 p-3 font-medium">Volatile Organic Compounds</td>
+                            <td class="border border-gray-200 p-3">VOCs</td>
+                            <td class="border border-gray-200 p-3">Paints, solvents, fuel evaporation</td>
+                            <td class="border border-gray-200 p-3">Smog formation, health effects</td>
+                        </tr>
+                        <tr class="bg-gray-50">
+                            <td class="border border-gray-200 p-3 font-medium">Ground-level Ozone</td>
+                            <td class="border border-gray-200 p-3">O₃</td>
+                            <td class="border border-gray-200 p-3">NOₓ + VOCs in sunlight</td>
+                            <td class="border border-gray-200 p-3">Respiratory irritation, crop damage</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Section 3: Acid Rain -->
+        <div class="section-card animate-fade-in-up">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <span class="bg-emerald-100 text-emerald-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">3</span>
+                Acid Rain
+            </h2>
+
+            <div class="bg-yellow-50 p-4 rounded-lg border-l-4 border-yellow-500 mb-4">
+                <p class="text-yellow-800 font-medium"><strong>Acid rain</strong> is rain with a pH below 5.6, caused by sulfur and nitrogen oxides reacting with water in the atmosphere.</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-4 mb-4">
+                <div class="bg-orange-50 p-4 rounded-lg border border-orange-200">
+                    <h4 class="font-semibold text-orange-700 mb-2"><i class="fas fa-cloud-rain mr-2"></i>Formation</h4>
+                    <p class="text-gray-600 text-sm mb-2"><strong>From Sulfur Dioxide:</strong></p>
+                    <div class="bg-white p-2 rounded text-sm font-mono mb-2">
+                        SO₂ + H₂O → H₂SO₃<br>
+                        2H₂SO₃ + O₂ → 2H₂SO₄
+                    </div>
+                    <p class="text-gray-600 text-sm mb-2"><strong>From Nitrogen Oxides:</strong></p>
+                    <div class="bg-white p-2 rounded text-sm font-mono">
+                        2NO₂ + H₂O → HNO₂ + HNO₃<br>
+                        2NO₂ + H₂O + ½O₂ → 2HNO₃
+                    </div>
+                </div>
+                <div class="bg-red-50 p-4 rounded-lg border border-red-200">
+                    <h4 class="font-semibold text-red-700 mb-2"><i class="fas fa-skull-crossbones mr-2"></i>Effects</h4>
+                    <ul class="text-gray-600 text-sm space-y-2">
+                        <li><strong>Lakes & Rivers:</strong> Lowers pH, kills fish and aquatic life</li>
+                        <li><strong>Forests:</strong> Damages leaves, leaches nutrients from soil</li>
+                        <li><strong>Buildings:</strong> Erodes limestone and marble structures</li>
+                        <li><strong>Human Health:</strong> Respiratory problems</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-500">
+                <h4 class="font-semibold text-blue-700 mb-2"><i class="fas fa-building mr-2"></i>Effect on Buildings</h4>
+                <p class="text-gray-600 text-sm mb-2">Acid rain reacts with calcium carbonate in limestone and marble:</p>
+                <div class="bg-white p-2 rounded text-sm font-mono">
+                    CaCO₃ + H₂SO₄ → CaSO₄ + H₂O + CO₂
+                </div>
+                <p class="text-gray-600 text-sm mt-2">This causes statues and buildings to erode and crumble over time.</p>
+            </div>
+        </div>
+
+        <!-- Section 4: Greenhouse Effect -->
+        <div class="section-card animate-fade-in-up">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <span class="bg-emerald-100 text-emerald-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">4</span>
+                Greenhouse Effect & Global Warming
+            </h2>
+
+            <div class="bg-teal-50 p-4 rounded-lg border-l-4 border-teal-500 mb-4">
+                <p class="text-teal-800 font-medium">The <strong>greenhouse effect</strong> is a natural process where certain gases trap heat in the atmosphere. Human activities have enhanced this effect, causing global warming.</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-4 mb-4">
+                <div class="bg-green-50 p-4 rounded-lg border border-green-200">
+                    <h4 class="font-semibold text-green-700 mb-2 text-center"><i class="fas fa-check-circle mr-2"></i>Natural Greenhouse Effect</h4>
+                    <ul class="text-gray-600 text-sm space-y-1">
+                        <li>• Essential for life on Earth</li>
+                        <li>• Keeps Earth ~33°C warmer</li>
+                        <li>• Without it, Earth would be frozen</li>
+                        <li>• Caused by water vapor, CO₂, CH₄ naturally</li>
+                    </ul>
+                </div>
+                <div class="bg-red-50 p-4 rounded-lg border border-red-200">
+                    <h4 class="font-semibold text-red-700 mb-2 text-center"><i class="fas fa-times-circle mr-2"></i>Enhanced Greenhouse Effect</h4>
+                    <ul class="text-gray-600 text-sm space-y-1">
+                        <li>• Caused by human activities</li>
+                        <li>• Rising global temperatures</li>
+                        <li>• Melting ice caps, rising sea levels</li>
+                        <li>• Extreme weather events</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="bg-gray-50 p-4 rounded-lg">
+                <h4 class="font-semibold text-gray-700 mb-3"><i class="fas fa-smog mr-2"></i>Main Greenhouse Gases</h4>
+                <div class="grid md:grid-cols-4 gap-2 text-sm">
+                    <div class="bg-white p-3 rounded-lg border text-center">
+                        <p class="font-bold text-gray-800">CO₂</p>
+                        <p class="text-xs text-gray-500">Burning fossil fuels, deforestation</p>
+                    </div>
+                    <div class="bg-white p-3 rounded-lg border text-center">
+                        <p class="font-bold text-gray-800">CH₄</p>
+                        <p class="text-xs text-gray-500">Livestock, rice paddies, landfills</p>
+                    </div>
+                    <div class="bg-white p-3 rounded-lg border text-center">
+                        <p class="font-bold text-gray-800">N₂O</p>
+                        <p class="text-xs text-gray-500">Fertilizers, industrial processes</p>
+                    </div>
+                    <div class="bg-white p-3 rounded-lg border text-center">
+                        <p class="font-bold text-gray-800">CFCs</p>
+                        <p class="text-xs text-gray-500">Refrigerants, aerosols</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 5: Photochemical Smog -->
+        <div class="section-card animate-fade-in-up">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <span class="bg-emerald-100 text-emerald-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">5</span>
+                Photochemical Smog
+            </h2>
+
+            <div class="bg-amber-50 p-4 rounded-lg border-l-4 border-amber-500 mb-4">
+                <p class="text-amber-800 font-medium"><strong>Photochemical smog</strong> is a type of air pollution formed when sunlight reacts with nitrogen oxides and volatile organic compounds (VOCs) in the atmosphere.</p>
+            </div>
+
+            <div class="bg-purple-50 p-4 rounded-lg border border-purple-200 mb-4">
+                <h4 class="font-semibold text-purple-700 mb-2"><i class="fas fa-sun mr-2"></i>Formation Process</h4>
+                <ol class="text-gray-600 text-sm space-y-2">
+                    <li><span class="bg-purple-200 text-purple-800 w-5 h-5 rounded-full inline-flex items-center justify-center text-xs mr-2 font-bold">1</span>NO₂ (from vehicles) absorbs UV light → NO + O·</li>
+                    <li><span class="bg-purple-200 text-purple-800 w-5 h-5 rounded-full inline-flex items-center justify-center text-xs mr-2 font-bold">2</span>O· + O₂ → O₃ (ozone)</li>
+                    <li><span class="bg-purple-200 text-purple-800 w-5 h-5 rounded-full inline-flex items-center justify-center text-xs mr-2 font-bold">3</span>VOCs + NOₓ + sunlight → Peroxyacyl nitrates (PANs)</li>
+                    <li><span class="bg-purple-200 text-purple-800 w-5 h-5 rounded-full inline-flex items-center justify-center text-xs mr-2 font-bold">4</span>Mixture of O₃, PANs, NOₓ forms brown haze (smog)</li>
+                </ol>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-4">
+                <div class="bg-red-50 p-4 rounded-lg border border-red-200">
+                    <h4 class="font-semibold text-red-700 mb-2">Health Effects</h4>
+                    <ul class="text-gray-600 text-sm space-y-1">
+                        <li>• Eye and throat irritation</li>
+                        <li>• Respiratory problems</li>
+                        <li>• Aggravates asthma</li>
+                        <li>• Reduced lung function</li>
+                    </ul>
+                </div>
+                <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                    <h4 class="font-semibold text-blue-700 mb-2">Conditions for Formation</h4>
+                    <ul class="text-gray-600 text-sm space-y-1">
+                        <li>• High traffic density</li>
+                        <li>• Strong sunlight (UV radiation)</li>
+                        <li>• Temperature inversion</li>
+                        <li>• Low wind speed</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 6: Control Methods -->
+        <div class="section-card animate-fade-in-up">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <span class="bg-emerald-100 text-emerald-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">6</span>
+                Air Pollution Control Methods
+            </h2>
+
+            <div class="grid md:grid-cols-2 gap-4 mb-4">
+                <div class="bg-green-50 p-4 rounded-lg border-l-4 border-green-500">
+                    <h4 class="font-semibold text-green-700 mb-2"><i class="fas fa-car mr-2"></i>Vehicle Emissions</h4>
+                    <ul class="text-gray-600 text-sm space-y-1">
+                        <li>• <strong>Catalytic converters:</strong> Convert CO, NOₓ to CO₂, N₂</li>
+                        <li>• <strong>Lean-burn engines:</strong> More efficient combustion</li>
+                        <li>• <strong>Electric vehicles:</strong> Zero tailpipe emissions</li>
+                        <li>• <strong>Improved fuel quality:</strong> Low-sulfur fuels</li>
+                    </ul>
+                </div>
+                <div class="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-500">
+                    <h4 class="font-semibold text-blue-700 mb-2"><i class="fas fa-industry mr-2"></i>Industrial Controls</h4>
+                    <ul class="text-gray-600 text-sm space-y-1">
+                        <li>• <strong>Scrubbers:</strong> Remove SO₂ using lime slurry</li>
+                        <li>• <strong>Electrostatic precipitators:</strong> Remove particulates</li>
+                        <li>• <strong>Fabric filters:</strong> Capture fine particles</li>
+                        <li>• <strong>Flue gas desulfurization:</strong> Remove sulfur compounds</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-4">
+                <div class="bg-purple-50 p-4 rounded-lg border-l-4 border-purple-500">
+                    <h4 class="font-semibold text-purple-700 mb-2"><i class="fas fa-leaf mr-2"></i>Alternative Energy</h4>
+                    <ul class="text-gray-600 text-sm space-y-1">
+                        <li>• Solar and wind power</li>
+                        <li>• Hydroelectric power</li>
+                        <li>• Nuclear energy</li>
+                        <li>• Biofuels from sustainable sources</li>
+                    </ul>
+                </div>
+                <div class="bg-orange-50 p-4 rounded-lg border-l-4 border-orange-500">
+                    <h4 class="font-semibold text-orange-700 mb-2"><i class="fas fa-gavel mr-2"></i>Regulations</h4>
+                    <ul class="text-gray-600 text-sm space-y-1">
+                        <li>• Emission standards for vehicles</li>
+                        <li>• Industrial emission limits</li>
+                        <li>• Air quality monitoring</li>
+                        <li>• Carbon taxes and trading schemes</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 7: Video -->
+        <div class="section-card animate-fade-in-up">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <span class="bg-emerald-100 text-emerald-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">7</span>
+                Video: Air Pollution Explained
+            </h2>
+            
+            <div class="bg-gray-50 p-4 rounded-lg border">
+                <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/e6rglsLy1Ys" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 8: Practice Problems -->
+        <div class="section-card animate-fade-in-up">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-pencil-alt text-emerald-600 mr-3"></i>
+                Practice Questions
+            </h2>
+
+            <div class="space-y-4">
+                <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+                    <p class="font-medium text-gray-800 mb-2">1. Write equations to show how sulfur dioxide forms acid rain.</p>
+                    <details class="mt-2">
+                        <summary class="text-sm text-blue-600 cursor-pointer hover:text-blue-800">Show Answer</summary>
+                        <div class="mt-2 text-sm text-gray-700">
+                            <strong>Step 1:</strong> SO₂ dissolves in water<br>
+                            SO₂ + H₂O → H₂SO₃ (sulfurous acid)<br><br>
+                            <strong>Step 2:</strong> Oxidation to sulfuric acid<br>
+                            2H₂SO₃ + O₂ → 2H₂SO₄ (sulfuric acid)
+                        </div>
+                    </details>
+                </div>
+
+                <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+                    <p class="font-medium text-gray-800 mb-2">2. Explain how a catalytic converter reduces vehicle emissions.</p>
+                    <details class="mt-2">
+                        <summary class="text-sm text-blue-600 cursor-pointer hover:text-blue-800">Show Answer</summary>
+                        <div class="mt-2 text-sm text-gray-700">
+                            A catalytic converter contains platinum, palladium, and rhodium catalysts that:
+                            <ul class="list-disc list-inside mt-1">
+                                <li><strong>Oxidation reactions:</strong> 2CO + O₂ → 2CO₂ and CₙH₂ₙ₊₂ + O₂ → CO₂ + H₂O</li>
+                                <li><strong>Reduction reactions:</strong> 2NO → N₂ + O₂ and 2NO₂ → N₂ + 2O₂</li>
+                            </ul>
+                            These convert harmful gases (CO, NOₓ, hydrocarbons) into less harmful products (CO₂, N₂, H₂O).
+                        </div>
+                    </details>
+                </div>
+
+                <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+                    <p class="font-medium text-gray-800 mb-2">3. Why is ground-level ozone considered a pollutant while stratospheric ozone is beneficial?</p>
+                    <details class="mt-2">
+                        <summary class="text-sm text-blue-600 cursor-pointer hover:text-blue-800">Show Answer</summary>
+                        <div class="mt-2 text-sm text-gray-700">
+                            <strong>Stratospheric ozone (ozone layer):</strong> Located 15-35 km up, it absorbs harmful UV radiation from the sun, protecting living organisms from DNA damage.<br><br>
+                            <strong>Ground-level ozone:</strong> A component of photochemical smog that causes respiratory problems, eye irritation, and damages crops. It's harmful because we breathe it directly.
+                        </div>
+                    </details>
+                </div>
+
+                <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+                    <p class="font-medium text-gray-800 mb-2">4. Describe how a flue gas desulfurization (FGD) system works.</p>
+                    <details class="mt-2">
+                        <summary class="text-sm text-blue-600 cursor-pointer hover:text-blue-800">Show Answer</summary>
+                        <div class="mt-2 text-sm text-gray-700">
+                            FGD systems (scrubbers) remove SO₂ from power plant emissions:
+                            <ol class="list-decimal list-inside mt-1 space-y-1">
+                                <li>Flue gas containing SO₂ passes through a scrubber</li>
+                                <li>Spray of limestone slurry (CaCO₃) or lime (CaO) reacts with SO₂</li>
+                                <li>CaCO₃ + SO₂ → CaSO₃ + CO₂</li>
+                                <li>CaSO₃ is oxidized to CaSO₄ (gypsum)</li>
+                                <li>Gypsum can be sold for construction materials</li>
+                            </ol>
+                            This removes 90-97% of SO₂ from emissions.
+                        </div>
+                    </details>
+                </div>
+            </div>
+        </div>
+
+        <!-- Key Takeaways -->
+        <div class="bg-gradient-to-r from-emerald-50 to-teal-50 p-5 rounded-lg border border-emerald-200 animate-fade-in-up">
+            <h3 class="font-semibold text-emerald-800 mb-3"><i class="fas fa-star mr-2"></i>Key Takeaways</h3>
+            <ul class="text-emerald-700 text-sm space-y-2">
+                <li>• Primary pollutants: CO, SO₂, NOₓ, particulates; Secondary: O₃, acid rain, smog</li>
+                <li>• Acid rain: SO₂ + H₂O → H₂SO₄; NOₓ + H₂O → HNO₃ (pH < 5.6)</li>
+                <li>• Greenhouse gases: CO₂, CH₄, N₂O, CFCs trap heat and cause global warming</li>
+                <li>• Photochemical smog: NOₓ + VOCs + sunlight → O₃ + PANs</li>
+                <li>• Controls: Catalytic converters, scrubbers, electrostatic precipitators, alternative energy</li>
+            </ul>
+        </div>
+
+        <!-- Navigation -->
+        <div class="flex justify-between items-center mt-8">
+            <a href="index.html" class="px-4 py-2 text-gray-600 hover:text-gray-900">
+                <i class="fas fa-chevron-left mr-2"></i>Previous
+            </a>
+            <a href="water-pollution.html" class="px-4 py-2 bg-emerald-500 text-white rounded-lg hover:bg-emerald-600">
+                Next: Water Pollution<i class="fas fa-chevron-right ml-2"></i>
+            </a>
+        </div>
+    </main>
+
+    <script>
+        // Progress tracking
+        let progress = 0;
+        const totalSections = 8;
+        
+        function updateProgress() {
+            const percentage = Math.round((progress / totalSections) * 100);
+            document.getElementById('progressPercent').textContent = percentage + '%';
+            document.getElementById('progressBar').style.width = percentage + '%';
+        }
+
+        // Intersection Observer for progress
+        const sections = document.querySelectorAll('.section-card');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    progress = Array.from(sections).indexOf(entry.target) + 1;
+                    updateProgress();
+                }
+            });
+        }, { threshold: 0.5 });
+
+        sections.forEach(section => observer.observe(section));
+    </script>
+
+<!-- Topic Quiz System -->
+<script src="/js/topic-quiz-loader.js"></script>
+<script src="/js/topic-quiz-injector.js"></script>
+</body>
+</html>

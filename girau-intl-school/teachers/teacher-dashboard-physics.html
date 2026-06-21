@@ -1,0 +1,167 @@
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Physics — Teacher Dashboard</title>
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+    <!-- Tailwind CDN for quick styling (safe for static pages) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://8x8.vc/vpaas-magic-cookie-29d1aa3d1dd04579a28364a8dfdabc89/external_api.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+      /* small project-specific tweaks */
+      .sidebar-width { width: 260px; }
+      .brand { font-weight: 700; letter-spacing: -0.01em; }
+      @media (max-width: 1024px) {
+        .sidebar-width {
+          position: fixed;
+          left: 0;
+          top: 0;
+          bottom: 0;
+          z-index: 40;
+          transform: translateX(-100%);
+          transition: transform 0.3s ease-in-out;
+        }
+        .sidebar-width.open {
+          transform: translateX(0);
+        }
+      }
+    </style>
+  </head>
+  <body class="bg-slate-50 text-slate-800 min-h-screen">
+    <div class="flex">
+      <!-- Mobile menu button -->
+      <div class="lg:hidden fixed top-4 left-4 z-50">
+        <button id="toggleSidebar" class="p-2 rounded-md bg-slate-800 text-white hover:bg-slate-700" title="Toggle sidebar" aria-label="Toggle sidebar">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+
+      <!-- Sidebar -->
+      <aside id="sidebar" class="sidebar-width h-screen bg-slate-900 text-slate-100 p-6 flex flex-col">
+        <div class="flex items-center gap-3 mb-6">
+          <div class="w-12 h-12 bg-white rounded-lg flex items-center justify-center text-slate-900">CT</div>
+          <div>
+            <div class="brand text-lg">Cortex Tutor</div>
+            <div class="text-xs text-slate-300">Physics — Teacher</div>
+          </div>
+        </div>
+        <nav class="flex flex-col gap-2 text-sm">
+          <a href="teacher-dashboard-physics.html" class="px-3 py-2 rounded-md bg-slate-800 hover:bg-slate-700">Dashboard</a>
+          <a href="physics dashboard/physics-live-session.html" class="px-3 py-2 rounded-md hover:bg-slate-800">Live Session</a>
+          <a href="physics dashboard/experiments.html" class="px-3 py-2 rounded-md hover:bg-slate-800">Experiments</a>
+          <a href="physics dashboard/simulations.html" class="px-3 py-2 rounded-md hover:bg-slate-800">Simulations</a>
+          <a href="physics dashboard/assessments.html" class="px-3 py-2 rounded-md hover:bg-slate-800">Assessments</a>
+          <a href="physics dashboard/media-library.html" class="px-3 py-2 rounded-md hover:bg-slate-800">Media Library</a>
+          <a href="physics dashboard/syllabus-physics.html" class="px-3 py-2 rounded-md hover:bg-slate-800">Syllabus</a>
+        </nav>
+        <div class="mt-auto text-xs text-slate-400">Tip: Use the Live Session to present experiments & simulations.</div>
+      </aside>
+
+      <!-- Main content -->
+      <main class="flex-1 p-8">
+        <header class="flex items-center justify-between mb-6">
+          <h1 class="text-2xl font-semibold">Physics — Dashboard</h1>
+          <div class="flex items-center gap-3">
+            <button id="start-live" class="px-4 py-2 bg-indigo-600 text-white rounded-md">Start Live Session</button>
+            <button id="share-screen" class="px-3 py-2 border rounded-md">Share Screen</button>
+          </div>
+        </header>
+
+        <section class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="col-span-2 bg-white rounded-lg shadow p-6">
+            <h2 class="text-lg font-medium mb-3">Lesson progress</h2>
+            <p class="text-sm text-slate-600 mb-4">Quick view of syllabus coverage and upcoming lessons.</p>
+            <div class="space-y-3">
+              <div class="flex items-center justify-between">
+                <div>
+                  <div class="text-sm">Mechanics — Chapter 3</div>
+                  <div class="text-xs text-slate-500">2 of 6 lessons</div>
+                </div>
+                <div class="text-sm text-slate-700">33%</div>
+              </div>
+              <div class="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
+                <div class="h-2 bg-indigo-500" style="width:33%"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-lg shadow p-6">
+            <h3 class="font-medium mb-2">Quick Tools</h3>
+            <ul class="text-sm space-y-2">
+              <li><a href="physics dashboard/simulations.html" class="text-indigo-600">Simulations</a></li>
+              <li><a href="physics dashboard/experiments.html" class="text-indigo-600">Experiments</a></li>
+              <li><a href="physics dashboard/media-library.html" class="text-indigo-600">Media Library</a></li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="bg-white rounded-lg shadow p-4">
+            <h4 class="font-semibold mb-2">Upcoming Classes</h4>
+            <ul class="text-sm space-y-2 text-slate-600">
+              <li>Today • 10:00 — Mechanics (30m)</li>
+              <li>Tomorrow • 14:00 — Waves (45m)</li>
+            </ul>
+          </div>
+          <div class="bg-white rounded-lg shadow p-4">
+            <h4 class="font-semibold mb-2">Notes</h4>
+            <p class="text-sm text-slate-600">Quick reminders for the next lesson.</p>
+          </div>
+          <div class="bg-white rounded-lg shadow p-4">
+            <h4 class="font-semibold mb-2">Resources</h4>
+            <a href="https://phet.colorado.edu/" target="_blank" rel="noopener" class="text-indigo-600 text-sm">PhET Simulations</a>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script>
+      // Sidebar toggle functionality
+      const sidebar = document.getElementById('sidebar');
+      const toggleBtn = document.getElementById('toggleSidebar');
+      const mainContent = document.querySelector('main');
+
+      toggleBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        sidebar.classList.toggle('open');
+      });
+
+      mainContent.addEventListener('click', () => {
+        if (window.innerWidth < 1024 && sidebar.classList.contains('open')) {
+          sidebar.classList.remove('open');
+        }
+      });
+
+      // Small handlers
+      document.getElementById('start-live').addEventListener('click', function(){
+        window.location.href = 'physics dashboard/physics-live-session.html';
+      });
+      document.getElementById('share-screen').addEventListener('click', async function(){
+        // best-effort share: prefer Jitsi API if present on the page, otherwise try getDisplayMedia
+        if (window.JitsiMeetExternalAPI) {
+          // Try toggleShareScreen on an existing iframe instance; host page does not create instance here
+          alert('Open a live session first, then use the Share Screen control inside the live session window.');
+          return;
+        }
+        if (navigator.mediaDevices && navigator.mediaDevices.getDisplayMedia) {
+          try { await navigator.mediaDevices.getDisplayMedia({video:true}); alert('Screen sharing started (preview only)'); } catch(e) { alert('Screen share was cancelled or blocked.'); }
+        } else {
+          alert('Screen sharing is not supported on this browser. Use a desktop Chrome/Firefox or the mobile app.');
+        }
+      });
+    </script>
+  
+    <p style="font-size:0.9rem; margin-top:0.5rem; text-align:center;">Simulation by <a href="https://phet.colorado.edu">Phet Interactive Simulations, University of Colorado Boulder</a>, licensed under CC-BY-4.0.</p>
+</body>
+</html>

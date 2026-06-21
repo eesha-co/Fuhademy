@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="/assets/images/logo.png" />
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Accounting Topic Explanation - JUANOVA CORTEX</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.9);
+            -webkit-backdrop-filter: blur(8px);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(59, 130, 246, 0.1);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 
+                       0 2px 4px -1px rgba(0, 0, 0, 0.06),
+                       0 0 0 1px rgba(255, 255, 255, 0.2) inset;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .section-title {
+            background: linear-gradient(135deg, #1D4ED8, #60A5FA);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 2.5rem;
+            font-weight: 800;
+            text-align: center;
+            padding: 1rem 0;
+        }
+
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.9);
+            -webkit-backdrop-filter: blur(8px);
+            backdrop-filter: blur(8px);
+        }
+
+        .subtopic-nav {
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            margin-bottom: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .subtopic-nav:hover {
+            background: rgba(59, 130, 246, 0.1);
+        }
+
+        .subtopic-nav.active {
+            background: rgba(59, 130, 246, 0.1);
+            border-left: 3px solid #2563EB;
+        }
+
+        .progress-bar {
+            height: 4px;
+            background: #E5E7EB;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #1D4ED8, #60A5FA);
+            transition: width 0.3s ease;
+        }
+
+        /* Rich text content styling */
+        .prose {
+            max-width: none;
+        }
+
+        .prose h2 {
+            color: #1F2937;
+            font-size: 1.875rem;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .prose h3 {
+            color: #374151;
+            font-size: 1.5rem;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+        }
+
+        .prose p {
+            color: #4B5563;
+            margin-bottom: 1rem;
+            line-height: 1.75;
+        }
+
+        .prose ul {
+            list-style-type: disc;
+            padding-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .prose li {
+            color: #4B5563;
+            margin-bottom: 0.5rem;
+        }
+
+        .key-point {
+            background: rgba(59, 130, 246, 0.1);
+            border-left: 4px solid #2563EB;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0.5rem;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-blue-100 via-white to-blue-50">
+    <!-- Navigation Bar -->
+    <nav class="fixed top-0 left-0 right-0 glass-effect border-b border-blue-100 z-50">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <a href="accounting-topic.html" class="text-blue-600 hover:text-blue-800 transition">
+                        <i class="fas fa-arrow-left"></i>
+                        <span class="ml-2">Back to Topics</span>
+                    </a>
+                </div>
+                <div class="flex items-center gap-4">
+                    <button class="px-4 py-2 rounded-lg border border-green-600 text-green-600 hover:bg-green-50 transition">
+                        <i class="fas fa-bookmark mr-2"></i>
+                        Save Progress
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container mx-auto px-4 pt-20 pb-12">
+        <!-- Topic Header -->
+        <header class="mb-12">
+            <h1 class="section-title mb-4" id="topicTitle">Loading Topic...</h1>
+            <div class="flex items-center justify-center gap-6 text-gray-600">
+                <span class="flex items-center gap-2">
+                    <i class="fas fa-clock"></i>
+                    <span id="duration">20 mins</span>
+                </span>
+                <span class="flex items-center gap-2">
+                    <i class="fas fa-chart-line"></i>
+                    <span id="difficulty">Intermediate</span>
+                </span>
+            </div>
+        </header>
+
+        <!-- Main Content Area -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Left Sidebar - Navigation -->
+            <div class="lg:col-span-1">
+                <div class="card rounded-2xl p-6 sticky top-24">
+                    <h2 class="text-xl font-bold text-gray-900 mb-4">Topic Outline</h2>
+                    <div class="space-y-1" id="topicOutline">
+                        <!-- Subtopics will be populated by JavaScript -->
+                    </div>
+                    
+                    <!-- Learning Progress -->
+                    <div class="mt-6 pt-6 border-t border-gray-200">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-3">Your Progress</h3>
+                        <div class="space-y-3">
+                            <div>
+                                <div class="flex justify-between text-sm text-gray-600 mb-1">
+                                    <span>Topic Progress</span>
+                                    <span id="progressPercent">0%</span>
+                                </div>
+                                <div class="h-2 bg-gray-200 rounded-full">
+                                    <div class="h-full bg-blue-500 rounded-full" style="width: 0%" id="progressBar"></div>
+                                </div>
+                            </div>
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-600">
+                                    <i class="fas fa-check-circle mr-1"></i>
+                                    Completed Sections
+                                </span>
+                                <span class="text-gray-800 font-medium" id="completedSections">0/4</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="lg:col-span-2 space-y-6">
+                <!-- Content Section -->
+                <div class="card rounded-2xl p-8" id="contentSection">
+                    <div class="prose max-w-none">
+                        <!-- Content will be populated by JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Key Points & Examples -->
+                <div class="card rounded-2xl p-8">
+                    <h3 class="text-xl font-bold text-gray-900 mb-6">Key Points & Examples</h3>
+                    <div class="space-y-6" id="keyPoints">
+                        <!-- Key points will be populated by JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Interactive Elements -->
+                <div class="card rounded-2xl p-8">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-xl font-bold text-gray-900">Practice Questions</h3>
+                        <button class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition" onclick="checkAnswers()">
+                            Check Answers
+                        </button>
+                    </div>
+                    <div class="space-y-6" id="practiceQuestions">
+                        <!-- Questions will be populated by JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Resources -->
+                <div class="card rounded-2xl p-8">
+                    <h3 class="text-xl font-bold text-gray-900 mb-6">Learning Resources</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="resources">
+                        <!-- Resources will be populated by JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Next Steps -->
+                <div class="card rounded-2xl p-8 bg-gradient-to-br from-blue-50 to-white">
+                    <h3 class="text-xl font-bold text-gray-900 mb-4">Next Steps</h3>
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-4">
+                            <button id="prevTopicBtn" class="px-4 py-2 border border-blue-600 text-blue-600 rounded-lg hover:bg-blue-50 transition flex items-center gap-2">
+                                <i class="fas fa-arrow-left"></i>
+                                Previous Topic
+                            </button>
+                            <button id="nextTopicBtn" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition flex items-center gap-2">
+                                Next Topic
+                                <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </div>
+                        <button class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition flex items-center gap-2">
+                            <i class="fas fa-check"></i>
+                            Mark as Complete
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Get the topic from URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const unit = urlParams.get('unit') || 'fundamentals';
+        const topic = urlParams.get('topic') || 'nature-significance';
+        const subtopic = urlParams.get('subtopic') || 'development';
+
+        // Topic data structure (this would typically come from an API)
+        const topicData = {
+            fundamentals: {
+                'nature-significance': {
+                    title: "Nature and Significance of Accounting",
+                    duration: "2 hours",
+                    difficulty: "Beginner",
+                    subtopics: [
+                        {
+                            id: 'development',
+                            title: "Development of Accounting",
+                            content: `
+                                <h2>Development of Accounting</h2>
+                                <p>Accounting has evolved from simple record-keeping to a comprehensive system of financial information management. The modern practice includes:</p>
+                                <ul>
+                                    <li>Financial Accounting</li>
+                                    <li>Cost Accounting</li>
+                                    <li>Management Accounting</li>
+                                    <li>Auditing</li>
+                                    <li>Taxation</li>
+                                </ul>
+                            `,
+                            keyPoints: [
+                                {
+                                    title: "Historical Development",
+                                    content: "Double-entry bookkeeping was first documented by Luca Pacioli in 1494."
+                                },
+                                {
+                                    title: "Modern Evolution",
+                                    content: "Technology has transformed accounting from manual to computerized systems."
+                                }
+                            ]
+                        },
+                        {
+                            id: 'objectives',
+                            title: "Objectives and Principles",
+                            content: `
+                                <h2>Objectives of Accounting</h2>
+                                <p>The main objectives of accounting are:</p>
+                                <ul>
+                                    <li>Recording financial transactions systematically</li>
+                                    <li>Determining financial position</li>
+                                    <li>Providing information for decision-making</li>
+                                    <li>Meeting legal requirements</li>
+                                </ul>
+                            `
+                        }
+                    ],
+                    questions: [
+                        {
+                            question: "What was the significant contribution of Luca Pacioli to accounting?",
+                            options: [
+                                "Introduction of calculators",
+                                "Documentation of double-entry bookkeeping",
+                                "Creation of financial statements",
+                                "Development of accounting software"
+                            ],
+                            correct: 1
+                        }
+                    ],
+                    resources: [
+                        {
+                            title: "Video Lecture",
+                            icon: "fas fa-video",
+                            link: "#",
+                            color: "text-red-500"
+                        },
+                        {
+                            title: "Study Notes",
+                            icon: "fas fa-book",
+                            link: "#",
+                            color: "text-blue-500"
+                        }
+                    ]
+                }
+            }
+        };
+
+        function initializePage() {
+            const topicContent = topicData[unit]?.[topic];
+            if (!topicContent) {
+                console.error('Topic not found');
+                return;
+            }
+
+            // Set header information
+            document.getElementById('topicTitle').textContent = topicContent.title;
+            document.getElementById('duration').textContent = topicContent.duration;
+            document.getElementById('difficulty').textContent = topicContent.difficulty;
+
+            // Populate outline
+            const outlineContainer = document.getElementById('topicOutline');
+            outlineContainer.innerHTML = topicContent.subtopics.map(st => `
+                <div class="subtopic-nav ${st.id === subtopic ? 'active' : ''}" 
+                     onclick="loadSubtopic('${st.id}')">
+                    <div class="flex items-center justify-between">
+                        <span class="text-gray-700">${st.title}</span>
+                        <i class="fas fa-check text-blue-500 ${st.completed ? '' : 'opacity-0'}"></i>
+                    </div>
+                </div>
+            `).join('');
+
+            // Load current subtopic content
+            const currentSubtopic = topicContent.subtopics.find(st => st.id === subtopic);
+            if (currentSubtopic) {
+                document.getElementById('contentSection').querySelector('.prose').innerHTML = 
+                    currentSubtopic.content;
+
+                if (currentSubtopic.keyPoints) {
+                    document.getElementById('keyPoints').innerHTML = currentSubtopic.keyPoints.map(kp => `
+                        <div class="key-point">
+                            <h4 class="font-semibold text-gray-900 mb-2">${kp.title}</h4>
+                            <p class="text-gray-700">${kp.content}</p>
+                        </div>
+                    `).join('');
+                }
+            }
+
+            // Populate questions
+            const questionsContainer = document.getElementById('practiceQuestions');
+            questionsContainer.innerHTML = topicContent.questions.map((q, idx) => `
+                <div class="space-y-4">
+                    <p class="font-medium text-gray-900">${idx + 1}. ${q.question}</p>
+                    <div class="space-y-2">
+                        ${q.options.map((opt, optIdx) => `
+                            <label class="flex items-center gap-3 p-3 rounded-lg border border-gray-200 hover:border-blue-400 cursor-pointer transition">
+                                <input type="radio" name="question${idx}" value="${optIdx}" class="text-blue-600">
+                                <span class="text-gray-700">${opt}</span>
+                            </label>
+                        `).join('')}
+                    </div>
+                </div>
+            `).join('');
+
+            // Populate resources
+            const resourcesContainer = document.getElementById('resources');
+            resourcesContainer.innerHTML = topicContent.resources.map(resource => `
+                <a href="${resource.link}" class="flex items-center gap-4 p-4 rounded-lg border border-gray-200 hover:border-blue-400 transition">
+                    <i class="${resource.icon} ${resource.color} text-2xl"></i>
+                    <span class="text-gray-900 font-medium">${resource.title}</span>
+                </a>
+            `).join('');
+        }
+
+        function loadSubtopic(subtopicId) {
+            const newUrl = new URL(window.location);
+            newUrl.searchParams.set('subtopic', subtopicId);
+            window.history.pushState({}, '', newUrl);
+            initializePage();
+        }
+
+        function checkAnswers() {
+            // Implement answer checking logic
+            console.log('Checking answers...');
+        }
+
+        // Initialize the page when loaded
+        document.addEventListener('DOMContentLoaded', initializePage);
+    </script>
+</body>
+</html>
+

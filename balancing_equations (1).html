@@ -1,0 +1,384 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Balancing Chemical Equations</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+        }
+        #simulation-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            width: 80%;
+            max-width: 800px;
+        }
+        .equation {
+            font-size: 24px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        .molecule {
+            display: inline-flex;
+            align-items: center;
+            margin: 0 10px;
+        }
+        input[type="number"] {
+            width: 50px;
+            padding: 5px;
+            font-size: 16px;
+            margin-right: 5px;
+        }
+        input[type="text"] {
+            width: 100px;
+            padding: 5px;
+            font-size: 16px;
+            margin-right: 5px;
+        }
+        .atom-counts {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            font-size: 18px;
+        }
+        .controls {
+            margin-top: 20px;
+            text-align: center;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin: 0 10px;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #feedback {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div id="simulation-container">
+        <h1>Balancing Chemical Equations</h1>
+        <div class="equation">
+            <span class="molecule"><input type="number" id="coef1" min="1" value="1"> <input type="text" id="reactant1" value="CH4"></span> +
+            <span class="molecule"><input type="number" id="coef2" min="1" value="1"> <input type="text" id="reactant2" value="O2"></span> →
+            <span class="molecule"><input type="number" id="coef3" min="1" value="1"> <input type="text" id="product1" value=""></span> +
+            <span class="molecule"><input type="number" id="coef4" min="0" value="0"> <input type="text" id="product2" value=""></span>
+        </div>
+        <div class="atom-counts">
+            <div id="left-counts">Left: Calculating...</div>
+            <div id="right-counts">Right: Calculating...</div>
+        </div>
+        <div class="controls">
+            <button id="predict-button">Predict Products</button>
+            <button id="predict-reactants-button">Predict Reactants</button>
+            <button id="check-button">Check Balance</button>
+            <button id="reset-button">Reset</button>
+        </div>
+        <div id="feedback">Enter reactants or products and predict the other side, then balance the equation.</div>
+    </div>
+
+    <script>
+        function parseFormula(formula) {
+            if (!formula) return {};
+            const atomCounts = {};
+            let i = 0;
+
+            while (i < formula.length) {
+                if (/[A-Z]/.test(formula[i])) {
+                    let element = formula[i];
+                    i++;
+                    if (i < formula.length && /[a-z]/.test(formula[i])) {
+                        element += formula[i];
+                        i++;
+                    }
+                    let number = '';
+                    while (i < formula.length && /[0-9]/.test(formula[i])) {
+                        number += formula[i];
+                        i++;
+                    }
+                    const count = number ? parseInt(number) : 1;
+                    atomCounts[element] = (atomCounts[element] || 0) + count;
+                } else if (formula[i] === '(') {
+                    let subFormula = '';
+                    i++;
+                    let parenCount = 1;
+                    while (i < formula.length && parenCount > 0) {
+                        if (formula[i] === '(') parenCount++;
+                        else if (formula[i] === ')') parenCount--;
+                        if (parenCount > 0) subFormula += formula[i];
+                        i++;
+                    }
+                    let number = '';
+                    while (i < formula.length && /[0-9]/.test(formula[i])) {
+                        number += formula[i];
+                        i++;
+                    }
+                    const multiplier = number ? parseInt(number) : 1;
+                    const subCounts = parseFormula(subFormula);
+                    for (let element in subCounts) {
+                        atomCounts[element] = (atomCounts[element] || 0) + subCounts[element] * multiplier;
+                    }
+                } else {
+                    i++;
+                }
+            }
+            return atomCounts;
+        }
+
+        function predictProducts() {
+            const reactant1 = document.getElementById('reactant1').value.trim();
+            const reactant2 = document.getElementById('reactant2').value.trim();
+            if (!reactant1) {
+                document.getElementById('feedback').innerText = 'Please enter at least one reactant.';
+                document.getElementById('feedback').style.color = '#f44336';
+                return;
+            }
+
+            // Simple reaction prediction logic based on common reaction types
+            let products = ['', ''];
+            if (reactant1.match(/C\d*H\d+/) && reactant2 === 'O2') {
+                // Combustion: CxHy + O2 → CO2 + H2O
+                const r1Counts = parseFormula(reactant1);
+                products = ['CO2', 'H2O'];
+                document.getElementById('coef3').value = r1Counts['C'] || 1;
+                document.getElementById('coef4').value = (r1Counts['H'] || 0) / 2;
+            } else if (reactant2.match(/HCl|NaCl|H2SO4/) && ['Fe', 'Zn', 'Mg'].includes(reactant1)) {
+                // Single displacement: Metal + Acid → Salt + H2
+                const acid = reactant2.match(/HCl/) ? 'Cl' : 'SO4';
+                products = [`${reactant1}${acid}`, 'H2'];
+                document.getElementById('coef3').value = 1;
+                document.getElementById('coef4').value = 1;
+            } else {
+                document.getElementById('feedback').innerText = 'Reaction type not supported. Try a combustion or displacement reaction.';
+                document.getElementById('feedback').style.color = '#f44336';
+                return;
+            }
+
+            document.getElementById('product1').value = products[0];
+            document.getElementById('product2').value = products[1];
+            updateAtomCounts();
+            document.getElementById('feedback').innerText = 'Products predicted. Adjust coefficients to balance.';
+            document.getElementById('feedback').style.color = '#333';
+        }
+
+        function predictReactants() {
+            const product1 = document.getElementById('product1').value.trim();
+            const product2 = document.getElementById('product2').value.trim();
+            if (!product1) {
+                document.getElementById('feedback').innerText = 'Please enter at least one product.';
+                document.getElementById('feedback').style.color = '#f44336';
+                return;
+            }
+
+            // Reverse prediction logic
+            let reactants = ['', ''];
+            if (product1 === 'CO2' && product2 === 'H2O') {
+                // Reverse combustion: CO2 + H2O ← CxHy + O2
+                reactants = ['CH4', 'O2'];
+                document.getElementById('coef1').value = 1;
+                document.getElementById('coef2').value = 2;
+            } else if (product2 === 'H2' && product1.match(/FeCl\d+|ZnCl\d+|MgCl\d+|FeSO4|ZnSO4|MgSO4/)) {
+                // Reverse displacement: Salt + H2 ← Metal + Acid
+                const metal = product1.match(/Fe|Zn|Mg/)[0];
+                const acid = product1.includes('Cl') ? 'HCl' : 'H2SO4';
+                reactants = [metal, acid];
+                document.getElementById('coef1').value = 1;
+                document.getElementById('coef2').value = product1.includes('Cl2') ? 2 : 1;
+            } else {
+                document.getElementById('feedback').innerText = 'Reaction type not supported. Try a combustion or displacement reaction.';
+                document.getElementById('feedback').style.color = '#f44336';
+                return;
+            }
+
+            document.getElementById('reactant1').value = reactants[0];
+            document.getElementById('reactant2').value = reactants[1];
+            updateAtomCounts();
+            document.getElementById('feedback').innerText = 'Reactants predicted. Adjust coefficients to balance.';
+            document.getElementById('feedback').style.color = '#333';
+        }
+
+        function updateAtomCounts() {
+            const coef1 = parseInt(document.getElementById('coef1').value) || 1;
+            const coef2 = parseInt(document.getElementById('coef2').value) || 1;
+            const coef3 = parseInt(document.getElementById('coef3').value) || 1;
+            const coef4 = parseInt(document.getElementById('coef4').value) || 0;
+            const reactant1 = document.getElementById('reactant1').value.trim();
+            const reactant2 = document.getElementById('reactant2').value.trim();
+            const product1 = document.getElementById('product1').value.trim();
+            const product2 = document.getElementById('product2').value.trim();
+
+            const leftCounts = {};
+            const rightCounts = {};
+
+            const r1Counts = parseFormula(reactant1);
+            const r2Counts = parseFormula(reactant2);
+            const p1Counts = parseFormula(product1);
+            const p2Counts = parseFormula(product2);
+
+            for (let element in r1Counts) {
+                leftCounts[element] = (leftCounts[element] || 0) + r1Counts[element] * coef1;
+            }
+            for (let element in r2Counts) {
+                leftCounts[element] = (leftCounts[element] || 0) + r2Counts[element] * coef2;
+            }
+            for (let element in p1Counts) {
+                rightCounts[element] = (rightCounts[element] || 0) + p1Counts[element] * coef3;
+            }
+            for (let element in p2Counts) {
+                rightCounts[element] = (rightCounts[element] || 0) + p2Counts[element] * coef4;
+            }
+
+            const leftText = Object.keys(leftCounts).length > 0
+                ? `Left: ${Object.keys(leftCounts).map(el => `${el}: ${leftCounts[el]}`).join(', ')}`
+                : 'Left: No valid formula';
+            const rightText = Object.keys(rightCounts).length > 0
+                ? `Right: ${Object.keys(rightCounts).map(el => `${el}: ${rightCounts[el]}`).join(', ')}`
+                : 'Right: No valid formula';
+
+            document.getElementById('left-counts').innerText = leftText;
+            document.getElementById('right-counts').innerText = rightText;
+        }
+
+        function checkBalance() {
+            const coef1 = parseInt(document.getElementById('coef1').value) || 1;
+            const coef2 = parseInt(document.getElementById('coef2').value) || 1;
+            const coef3 = parseInt(document.getElementById('coef3').value) || 1;
+            const coef4 = parseInt(document.getElementById('coef4').value) || 0;
+            const reactant1 = document.getElementById('reactant1').value.trim();
+            const reactant2 = document.getElementById('reactant2').value.trim();
+            const product1 = document.getElementById('product1').value.trim();
+            const product2 = document.getElementById('product2').value.trim();
+
+            if (!reactant1 || !product1) {
+                document.getElementById('feedback').innerText = 'Please enter at least one reactant and one product.';
+                document.getElementById('feedback').style.color = '#f44336';
+                return;
+            }
+
+            const leftCounts = {};
+            const rightCounts = {};
+
+            const r1Counts = parseFormula(reactant1);
+            const r2Counts = parseFormula(reactant2);
+            const p1Counts = parseFormula(product1);
+            const p2Counts = parseFormula(product2);
+
+            for (let element in r1Counts) {
+                leftCounts[element] = (leftCounts[element] || 0) + r1Counts[element] * coef1;
+            }
+            for (let element in r2Counts) {
+                leftCounts[element] = (leftCounts[element] || 0) + r2Counts[element] * coef2;
+            }
+            for (let element in p1Counts) {
+                rightCounts[element] = (rightCounts[element] || 0) + p1Counts[element] * coef3;
+            }
+            for (let element in p2Counts) {
+                rightCounts[element] = (rightCounts[element] || 0) + p2Counts[element] * coef4;
+            }
+
+            const allElements = new Set([...Object.keys(leftCounts), ...Object.keys(rightCounts)]);
+            let isBalanced = true;
+            for (let element of allElements) {
+                if ((leftCounts[element] || 0) !== (rightCounts[element] || 0)) {
+                    isBalanced = false;
+                    break;
+                }
+            }
+
+            if (isBalanced) {
+                document.getElementById('feedback').innerText = 'Correct! The equation is balanced.';
+                document.getElementById('feedback').style.color = '#4CAF50';
+            } else {
+                document.getElementById('feedback').innerText = 'Try again. The atoms don’t balance yet.';
+                document.getElementById('feedback').style.color = '#f44336';
+            }
+        }
+
+        function resetEquation() {
+            document.getElementById('coef1').value = 1;
+            document.getElementById('coef2').value = 1;
+            document.getElementById('coef3').value = 1;
+            document.getElementById('coef4').value = 0;
+            document.getElementById('reactant1').value = 'CH4';
+            document.getElementById('reactant2').value = 'O2';
+            document.getElementById('product1').value = '';
+            document.getElementById('product2').value = '';
+            updateAtomCounts();
+            document.getElementById('feedback').innerText = 'Enter reactants or products and predict the other side, then balance the equation.';
+            document.getElementById('feedback').style.color = '#333';
+        }
+
+        document.getElementById('coef1').addEventListener('input', updateAtomCounts);
+        document.getElementById('coef2').addEventListener('input', updateAtomCounts);
+        document.getElementById('coef3').addEventListener('input', updateAtomCounts);
+        document.getElementById('coef4').addEventListener('input', updateAtomCounts);
+        document.getElementById('reactant1').addEventListener('input', updateAtomCounts);
+        document.getElementById('reactant2').addEventListener('input', updateAtomCounts);
+        document.getElementById('product1').addEventListener('input', updateAtomCounts);
+        document.getElementById('product2').addEventListener('input', updateAtomCounts);
+        document.getElementById('predict-button').addEventListener('click', predictProducts);
+        document.getElementById('predict-reactants-button').addEventListener('click', predictReactants);
+        document.getElementById('check-button').addEventListener('click', checkBalance);
+        document.getElementById('reset-button').addEventListener('click', resetEquation);
+
+        updateAtomCounts();
+    </script>
+</body>
+</html>

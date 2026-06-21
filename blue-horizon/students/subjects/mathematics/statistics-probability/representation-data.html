@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Representation of Data — Charts & Tables</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>.card{background:#fff;padding:1rem;border-radius:10px;box-shadow:0 10px 30px rgba(2,6,23,0.06)} .muted{color:#374151}</style>
+</head>
+<body class="bg-emerald-50 font-sans">
+  <header class="bg-emerald-700 text-white py-3 mb-6"><div class="max-w-5xl mx-auto px-4 flex items-center justify-between"><div class="font-semibold">Representation of Data</div><a href="index.html" class="text-white/90">Back</a></div></header>
+
+  <main class="max-w-5xl mx-auto px-4 space-y-6">
+    <section class="card"><h2 class="text-lg font-semibold">Which chart to use?</h2><div class="muted mt-2">Use bar charts for categorical comparisons, histograms for continuous frequency, pie for proportions, and tables for exact counts.</div></section>
+
+    <section class="card">
+      <h2 class="text-lg font-semibold">Histogram (example)</h2>
+      <div class="mt-3 muted text-sm">Histogram for numeric data shows bins and frequency heights.</div>
+      <div class="mt-4 flex justify-center">
+        <!-- simple histogram SVG -->
+        <svg width="340" height="120" xmlns="http://www.w3.org/2000/svg">
+          <rect x="30" y="50" width="40" height="50" fill="#93c5fd"/>
+          <rect x="80" y="30" width="40" height="70" fill="#60a5fa"/>
+          <rect x="130" y="10" width="40" height="90" fill="#3b82f6"/>
+          <rect x="180" y="60" width="40" height="40" fill="#2563eb"/>
+          <rect x="230" y="80" width="40" height="20" fill="#1e40af"/>
+          <text x="30" y="105" font-size="10" fill="#0f172a">0-10</text>
+          <text x="80" y="105" font-size="10" fill="#0f172a">10-20</text>
+          <text x="130" y="105" font-size="10" fill="#0f172a">20-30</text>
+        </svg>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2 class="text-lg font-semibold">Practice</h2>
+      <div class="grid md:grid-cols-2 gap-4 mt-3">
+        <div class="p-3 bg-gray-50 rounded"><div class="font-medium">1) Frequency table for [1,2,2,3,3,3,4]</div><input id="r1" class="mt-2 p-2 border rounded w-full" placeholder="e.g., 1:1,2:2,3:3,4:1"><div class="mt-2 flex gap-2"><button id="rc1" class="px-3 py-1 bg-emerald-700 text-white rounded">Check</button><button id="rh1" class="px-3 py-1 border rounded">Hint</button></div><div id="rfb1" class="mt-2 text-sm"></div></div>
+
+        <div class="p-3 bg-gray-50 rounded"><div class="font-medium">2) Best chart for categorical data?</div><input id="r2" class="mt-2 p-2 border rounded w-full" placeholder="e.g., bar chart"><div class="mt-2 flex gap-2"><button id="rc2" class="px-3 py-1 bg-emerald-700 text-white rounded">Check</button><button id="rh2" class="px-3 py-1 border rounded">Hint</button></div><div id="rfb2" class="mt-2 text-sm"></div></div>
+      </div>
+    </section>
+
+    <div class="text-right"><button id="rdQuiz" class="bg-emerald-700 text-white px-4 py-2 rounded">Quick Quiz</button></div>
+  </main>
+
+  <div id="rdModal" class="hidden fixed inset-0 bg-black/40 z-40 flex items-center justify-center"><div class="bg-white rounded p-6 max-w-md w-full"><div id="rdContent"></div><div class="mt-4 text-right"><button id="rdClose" class="px-3 py-1 border rounded">Close</button></div></div></div>
+
+  <script>
+    function norm(s){ return (s||'').toString().trim().toLowerCase(); }
+    document.getElementById('rc1').addEventListener('click', ()=>{ const v=norm(document.getElementById('r1').value); const fb=document.getElementById('rfb1'); if(v.includes('1:1') && v.includes('2:2') && v.includes('3:3')) fb.innerHTML='<span style="color:#16a34a">Looks good — frequency table captured</span>'; else fb.innerHTML='<span style="color:#e11d48">Try listing counts like 1:1,2:2,3:3,4:1</span>'; });
+    document.getElementById('rh1').addEventListener('click', ()=> alert('Hint: count how many times each value appears'));
+
+    document.getElementById('rc2').addEventListener('click', ()=>{ const v=norm(document.getElementById('r2').value); const fb=document.getElementById('rfb2'); if(v.includes('bar')) fb.innerHTML='<span style="color:#16a34a">Correct — Bar chart</span>'; else fb.innerHTML='<span style="color:#e11d48">Bar chart or pie chart are common for categories</span>'; });
+    document.getElementById('rh2').addEventListener('click', ()=> alert('Hint: categories are discrete labels — use bars'));
+
+    const pool=[{q:'Which chart shows proportion parts?', a:['pie','pie chart']},{q:'Histogram axis shows?', a:['frequency','count']}];
+    function show(){ let i=0,score=0; const modal=document.getElementById('rdModal'); const content=document.getElementById('rdContent'); modal.classList.remove('hidden'); function next(){ if(i>=pool.length){ content.innerHTML=`<div class="font-bold">Done</div><div>Score: ${score}/${pool.length}</div>`; return; } const cur=pool[i]; content.innerHTML=`<div class="font-semibold">${cur.q}</div><input id="qa" class="mt-3 p-2 border rounded w-full"><div class="mt-3"><button id="subq" class="px-3 py-1 bg-emerald-700 text-white rounded">Submit</button></div><div id="qfb" class="mt-2"></div>`; document.getElementById('subq').onclick=()=>{ const a=norm(document.getElementById('qa').value); if(cur.a.some(x=>norm(x)===a)) { score++; document.getElementById('qfb').innerHTML='<span style="color:#16a34a">Correct</span>'; } else document.getElementById('qfb').innerHTML=`<span style="color:#e11d48">Wrong — ${cur.a[0]}</span>`; i++; setTimeout(next,700); }; }
+    next(); }
+    document.getElementById('rdQuiz').addEventListener('click', show);
+    document.getElementById('rdClose').addEventListener('click', ()=> document.getElementById('rdModal').classList.add('hidden'));
+  </script>
+<!-- Topic Quiz System -->
+<script src="/js/topic-quiz-loader.js"></script>
+<script src="/js/topic-quiz-injector.js"></script>
+</body>
+</html>

@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forces and Motion - Interactive Learning</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <style>
+        .step-active { background-color: #2563eb; color: white; }
+        .step-inactive { background-color: #e5e7eb; color: #374151; }
+        #simulationCanvas { touch-action: none; }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen font-inter">
+    <nav class="bg-blue-700 p-4">
+        <div class="max-w-7xl mx-auto px-4 flex justify-between items-center">
+            <a href="../index.html" class="text-white hover:text-blue-100 flex items-center gap-2">
+                <i class="fas fa-arrow-left"></i>
+                <span>Back to Physics</span>
+            </a>
+            <h1 class="text-white text-xl font-bold">Forces and Motion</h1>
+        </div>
+    </nav>
+
+    <div class="flex">
+        <!-- Sidebar Steps -->
+        <aside class="w-64 bg-white shadow-md p-4 min-h-screen">
+            <h2 class="text-lg font-semibold mb-4">Learning Steps</h2>
+            <ul id="stepsList" class="space-y-2"></ul>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 p-8">
+            <div id="progressBar" class="mb-6 h-3 bg-gray-200 rounded-full overflow-hidden">
+                <div id="progress" class="h-full bg-blue-600 transition-all" style="width: 0%"></div>
+            </div>
+
+            <div id="stepContent" class="bg-white rounded-xl shadow-sm p-6 min-h-[300px]"></div>
+
+            <!-- Force and Motion Simulation -->
+            <div id="simulationContainer" class="mt-6 bg-white rounded-xl shadow-sm p-6">
+                <h3 class="text-lg font-semibold mb-4">Interactive Force Simulation</h3>
+                <canvas id="simulationCanvas" class="w-full border rounded-lg bg-gray-50" height="300"></canvas>
+                <div class="mt-4 grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Applied Force (N)</label>
+                        <input type="range" id="forceSlider" min="0" max="100" value="50" class="w-full">
+                        <span id="forceValue" class="text-sm text-gray-600">50 N</span>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Mass (kg)</label>
+                        <input type="range" id="massSlider" min="1" max="20" value="10" class="w-full">
+                        <span id="massValue" class="text-sm text-gray-600">10 kg</span>
+                    </div>
+                </div>
+                <button id="resetSimulation" class="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+                    Reset Simulation
+                </button>
+            </div>
+
+            <div class="flex justify-between mt-8">
+                <button id="prevBtn" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400" disabled>Previous</button>
+                <button id="nextBtn" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Next</button>
+            </div>
+        </main>
+    </div>
+
+    <!-- Quiz Modal -->
+    <div id="quizModal" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center hidden">
+        <div class="bg-white p-8 rounded-xl shadow-lg max-w-lg w-full">
+            <h3 class="text-xl font-bold mb-4">Check Your Understanding</h3>
+            <div id="quizContent"></div>
+            <div class="mt-6 flex justify-end gap-4">
+                <button id="closeQuiz" class="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300">Close</button>
+                <button id="submitQuiz" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Submit</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const topicData = {
+            title: "Forces and Motion",
+            steps: [
+                {
+                    title: "Newton's Laws",
+                    content: `
+                        <div class="prose max-w-none">
+                            <h3 class="text-xl font-bold mb-4">Newton's Three Laws of Motion</h3>
+                            <div class="space-y-6">
+                                <div class="p-4 bg-blue-50 rounded-lg">
+                                    <h4 class="font-semibold">First Law (Inertia)</h4>
+                                    <p>An object will remain at rest or in uniform motion unless acted upon by a net force.</p>
+                                </div>
+                                <div class="p-4 bg-green-50 rounded-lg">
+                                    <h4 class="font-semibold">Second Law (F = ma)</h4>
+                                    <p>The acceleration of an object is directly proportional to the net force and inversely proportional to its mass.</p>
+                                </div>
+                                <div class="p-4 bg-yellow-50 rounded-lg">
+                                    <h4 class="font-semibold">Third Law (Action-Reaction)</h4>
+                                    <p>For every action force, there is an equal and opposite reaction force.</p>
+                                </div>
+                            </div>
+                        </div>
+                    `
+                },
+                {
+                    title: "Force and Acceleration",
+                    content: `
+                        <div class="prose max-w-none">
+                            <h3 class="text-xl font-bold mb-4">Understanding Force and Acceleration</h3>
+                            <p>Use the simulation below to explore how force affects acceleration:</p>
+                            <ul class="list-disc list-inside space-y-2 mt-4">
+                                <li>Adjust the force using the slider</li>
+                                <li>Change the mass to see its effect</li>
+                                <li>Watch how acceleration changes</li>
+                            </ul>
+                            <div class="mt-4 p-4 bg-blue-50 rounded-lg">
+                                <p class="font-semibold">Key Formula:</p>
+                                <p class="text-lg text-center my-2">a = F/m</p>
+                                <p>Where:</p>
+                                <ul class="list-disc list-inside">
+                                    <li>a = acceleration (m/s²)</li>
+                                    <li>F = force (N)</li>
+                                    <li>m = mass (kg)</li>
+                                </ul>
+                            </div>
+                        </div>
+                    `
+                },
+                {
+                    title: "Applications",
+                    content: `
+                        <div class="prose max-w-none">
+                            <h3 class="text-xl font-bold mb-4">Real-World Applications</h3>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="p-4 bg-blue-50 rounded-lg">
+                                    <h4 class="font-semibold">Sports</h4>
+                                    <ul class="list-disc list-inside">
+                                        <li>Throwing a ball</li>
+                                        <li>Running acceleration</li>
+                                        <li>Impact forces</li>
+                                    </ul>
+                                </div>
+                                <div class="p-4 bg-green-50 rounded-lg">
+                                    <h4 class="font-semibold">Transportation</h4>
+                                    <ul class="list-disc list-inside">
+                                        <li>Car acceleration</li>
+                                        <li>Braking forces</li>
+                                        <li>Air resistance</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    `
+                }
+            ],
+            quiz: [
+                {
+                    question: "According to Newton's Second Law, if mass remains constant, acceleration is...",
+                    options: [
+                        "inversely proportional to force",
+                        "directly proportional to force",
+                        "independent of force",
+                        "equal to force"
+                    ],
+                    correct: 1
+                },
+                {
+                    question: "A 5 kg object experiences a force of 10 N. What is its acceleration?",
+                    options: ["0.5 m/s²", "2 m/s²", "50 m/s²", "25 m/s²"],
+                    correct: 1
+                },
+                {
+                    question: "Newton's First Law is also known as...",
+                    options: ["Law of Action-Reaction", "Law of Inertia", "Law of Acceleration", "Law of Motion"],
+                    correct: 1
+                }
+            ]
+        };
+
+        let currentStep = 0;
+        let completedSteps = new Set();
+
+        // Initialize force and motion simulation
+        const canvas = document.getElementById('simulationCanvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = canvas.offsetWidth;
+        canvas.height = 300;
+
+        let box = {
+            x: 50,
+            y: canvas.height - 80,
+            width: 50,
+            height: 50,
+            velocity: 0,
+            acceleration: 0
+        };
+
+        let force = 50;
+        let mass = 10;
+        let friction = 0.1;
+        let animationId;
+
+        function drawBox() {
+            ctx.fillStyle = '#2563eb';
+            ctx.fillRect(box.x, box.y, box.width, box.height);
+            
+            // Draw force arrow
+            if (force > 0) {
+                ctx.beginPath();
+                ctx.moveTo(box.x + box.width, box.y + box.height/2);
+                ctx.lineTo(box.x + box.width + 40, box.y + box.height/2);
+                ctx.strokeStyle = '#ef4444';
+                ctx.lineWidth = 3;
+                ctx.stroke();
+                
+                // Arrow head
+                ctx.beginPath();
+                ctx.moveTo(box.x + box.width + 40, box.y + box.height/2);
+                ctx.lineTo(box.x + box.width + 30, box.y + box.height/2 - 10);
+                ctx.lineTo(box.x + box.width + 30, box.y + box.height/2 + 10);
+                ctx.fillStyle = '#ef4444';
+                ctx.fill();
+            }
+        }
+
+        function updateSimulation() {
+            // Calculate acceleration using F = ma
+            box.acceleration = (force - (friction * box.velocity)) / mass;
+            box.velocity += box.acceleration * 0.1; // Time step of 0.1s
+            box.x += box.velocity;
+
+            // Boundary check
+            if (box.x < 50) {
+                box.x = 50;
+                box.velocity = 0;
+            } else if (box.x > canvas.width - box.width - 50) {
+                box.x = canvas.width - box.width - 50;
+                box.velocity = 0;
+            }
+
+            // Clear canvas and redraw
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw ground
+            ctx.fillStyle = '#e5e7eb';
+            ctx.fillRect(0, canvas.height - 20, canvas.width, 20);
+            
+            drawBox();
+            animationId = requestAnimationFrame(updateSimulation);
+        }
+
+        // Event listeners for sliders
+        document.getElementById('forceSlider').addEventListener('input', (e) => {
+            force = parseInt(e.target.value);
+            document.getElementById('forceValue').textContent = force + ' N';
+        });
+
+        document.getElementById('massSlider').addEventListener('input', (e) => {
+            mass = parseInt(e.target.value);
+            document.getElementById('massValue').textContent = mass + ' kg';
+        });
+
+        document.getElementById('resetSimulation').addEventListener('click', () => {
+            box.x = 50;
+            box.velocity = 0;
+            box.acceleration = 0;
+        });
+
+        // Initialize steps navigation
+        function renderSteps() {
+            const stepsList = document.getElementById('stepsList');
+            stepsList.innerHTML = '';
+            topicData.steps.forEach((step, idx) => {
+                const li = document.createElement('li');
+                li.className = `cursor-pointer p-2 rounded ${idx === currentStep ? 'step-active' : 'step-inactive'}`;
+                li.textContent = step.title;
+                li.onclick = () => showStep(idx);
+                stepsList.appendChild(li);
+            });
+        }
+
+        function showStep(idx) {
+            currentStep = idx;
+            document.getElementById('stepContent').innerHTML = topicData.steps[idx].content;
+            renderSteps();
+            updateProgress();
+            document.getElementById('prevBtn').disabled = idx === 0;
+            document.getElementById('nextBtn').disabled = idx === topicData.steps.length - 1;
+        }
+
+        function updateProgress() {
+            const percent = ((completedSteps.size) / topicData.steps.length) * 100;
+            document.getElementById('progress').style.width = percent + '%';
+        }
+
+        // Quiz functionality
+        function showQuiz() {
+            const quizModal = document.getElementById('quizModal');
+            quizModal.classList.remove('hidden');
+            
+            const quizContent = document.getElementById('quizContent');
+            quizContent.innerHTML = topicData.quiz.map((q, idx) => `
+                <div class="mb-6">
+                    <p class="font-semibold mb-2">${idx + 1}. ${q.question}</p>
+                    <div class="space-y-2">
+                        ${q.options.map((opt, i) => `
+                            <label class="flex items-center">
+                                <input type="radio" name="q${idx}" value="${i}" class="mr-2">
+                                <span>${opt}</span>
+                            </label>
+                        `).join('')}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        document.getElementById('closeQuiz').onclick = () => {
+            document.getElementById('quizModal').classList.add('hidden');
+        };
+
+        document.getElementById('submitQuiz').onclick = () => {
+            let score = 0;
+            topicData.quiz.forEach((q, idx) => {
+                const selected = document.querySelector(`input[name="q${idx}"]:checked`);
+                if (selected && parseInt(selected.value) === q.correct) score++;
+            });
+            
+            const percent = (score / topicData.quiz.length) * 100;
+            if (percent >= 70) {
+                completedSteps.add(currentStep);
+                updateProgress();
+            }
+            
+            document.getElementById('quizContent').innerHTML = `
+                <div class="text-center">
+                    <p class="text-2xl font-bold ${percent >= 70 ? 'text-green-600' : 'text-red-600'}">${score}/${topicData.quiz.length}</p>
+                    <p class="mt-2">${percent >= 70 ? 'Great job! You can move on to the next section.' : 'Try again to improve your score.'}</p>
+                </div>
+            `;
+            document.getElementById('submitQuiz').style.display = 'none';
+        };
+
+        // Navigation buttons
+        document.getElementById('prevBtn').onclick = () => {
+            if (currentStep > 0) showStep(currentStep - 1);
+        };
+
+        document.getElementById('nextBtn').onclick = () => {
+            if (currentStep < topicData.steps.length - 1) {
+                showQuiz();
+            }
+        };
+
+        // Initialize
+        window.onload = () => {
+            renderSteps();
+            showStep(0);
+            updateSimulation();
+            
+            // Handle window resize
+            window.addEventListener('resize', () => {
+                canvas.width = canvas.offsetWidth;
+                box.y = canvas.height - 80; // Adjust box position
+            });
+        };
+    </script>
+<!-- Topic Quiz System -->
+<script src="/js/topic-quiz-loader.js"></script>
+<script src="/js/topic-quiz-injector.js"></script>
+</body>
+</html>

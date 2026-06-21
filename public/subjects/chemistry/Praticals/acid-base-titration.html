@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acid-Base Titration - Chemistry Practicals</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @keyframes fade-in-up { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-fade-in-up { animation: fade-in-up 0.5s ease-out forwards; }
+        .section-card { background: white; border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: 1px solid #e5e7eb; }
+        .video-container { position: relative; width: 100%; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 8px; }
+        .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+        .simulation-container { position: relative; width: 100%; padding-bottom: 60%; height: 0; overflow: hidden; border-radius: 8px; background: #f9fafb; }
+        .simulation-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <nav class="bg-white shadow-sm fixed top-0 w-full z-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center">
+                    <a href="index.html" class="text-pink-600 hover:text-pink-800 mr-4"><i class="fas fa-arrow-left"></i></a>
+                    <h1 class="text-xl font-semibold text-gray-900"><i class="fas fa-flask text-pink-500 mr-2"></i>Acid-Base Titration</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="text-sm text-gray-600 hidden sm:block">Progress: <span id="progressPercent">0%</span></div>
+                    <div class="w-24 sm:w-32 h-2 bg-gray-200 rounded-full">
+                        <div id="progressBar" class="h-2 bg-pink-500 rounded-full transition-all duration-300" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="pt-20 pb-8 px-4 max-w-5xl mx-auto">
+        <div class="bg-pink-50 border-l-4 border-pink-500 p-4 rounded-r-lg mb-6 animate-fade-in-up">
+            <h3 class="font-semibold text-pink-800 mb-2"><i class="fas fa-bullseye mr-2"></i>Learning Objectives</h3>
+            <ul class="text-pink-700 text-sm space-y-1">
+                <li>• Define titration and explain its purpose</li>
+                <li>• Identify apparatus used in acid-base titration</li>
+                <li>• Perform titration calculations using M₁V₁ = M₂V₂</li>
+                <li>• Select appropriate indicators for different titrations</li>
+                <li>• Record and analyze titration data accurately</li>
+            </ul>
+        </div>
+
+        <!-- Section 1: Introduction -->
+        <div class="section-card animate-fade-in-up">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <span class="bg-pink-100 text-pink-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">1</span>
+                What is Titration?
+            </h2>
+            
+            <div class="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-500 mb-4">
+                <p class="text-blue-800 font-medium"><strong>Titration</strong> is a quantitative analytical technique used to determine the concentration of an unknown solution by reacting it with a solution of known concentration (standard solution).</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-4">
+                <div class="bg-green-50 p-4 rounded-lg border border-green-200">
+                    <h4 class="font-semibold text-green-700 mb-2"><i class="fas fa-check-circle mr-2"></i>Key Terms</h4>
+                    <ul class="text-gray-600 text-sm space-y-1">
+                        <li><strong>Titrand:</strong> Solution being analyzed (unknown concentration)</li>
+                        <li><strong>Titrant:</strong> Standard solution in burette (known concentration)</li>
+                        <li><strong>Endpoint:</strong> Point where reaction is complete (color change)</li>
+                        <li><strong>Equivalence Point:</strong> Stoichiometrically equivalent amounts have reacted</li>
+                    </ul>
+                </div>
+                <div class="bg-purple-50 p-4 rounded-lg border border-purple-200">
+                    <h4 class="font-semibold text-purple-700 mb-2"><i class="fas fa-calculator mr-2"></i>Key Formula</h4>
+                    <div class="bg-white p-3 rounded-lg text-center">
+                        <p class="text-xl font-mono font-bold text-purple-600">MₐVₐ = MᵦVᵦ</p>
+                        <p class="text-sm text-gray-600 mt-2">For 1:1 mole ratio reactions</p>
+                    </div>
+                    <p class="text-gray-600 text-sm mt-2">Where M = molarity, V = volume, a = acid, b = base</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 2: Apparatus -->
+        <div class="section-card animate-fade-in-up">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <span class="bg-pink-100 text-pink-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">2</span>
+                Apparatus Used in Titration
+            </h2>
+
+            <div class="grid md:grid-cols-3 gap-4">
+                <div class="bg-white p-4 rounded-lg border text-center">
+                    <div class="text-4xl mb-2">🧪</div>
+                    <h4 class="font-semibold text-gray-700">Burette</h4>
+                    <p class="text-gray-500 text-sm">Holds titrant, reads from 0 at top to 50 at bottom</p>
+                    <p class="text-xs text-blue-600 mt-1">Precision: ±0.05 cm³</p>
+                </div>
+                <div class="bg-white p-4 rounded-lg border text-center">
+                    <div class="text-4xl mb-2">🔬</div>
+                    <h4 class="font-semibold text-gray-700">Pipette</h4>
+                    <p class="text-gray-500 text-sm">Measures fixed volume of titrand into flask</p>
+                    <p class="text-xs text-blue-600 mt-1">Common sizes: 25 cm³, 10 cm³</p>
+                </div>
+                <div class="bg-white p-4 rounded-lg border text-center">
+                    <div class="text-4xl mb-2">⚗️</div>
+                    <h4 class="font-semibold text-gray-700">Conical Flask</h4>
+                    <p class="text-gray-500 text-sm">Contains titrand + indicator for reaction</p>
+                    <p class="text-xs text-blue-600 mt-1">Shape allows swirling</p>
+                </div>
+                <div class="bg-white p-4 rounded-lg border text-center">
+                    <div class="text-4xl mb-2">📏</div>
+                    <h4 class="font-semibold text-gray-700">Burette Stand</h4>
+                    <p class="text-gray-500 text-sm">Holds burette vertically during titration</p>
+                </div>
+                <div class="bg-white p-4 rounded-lg border text-center">
+                    <div class="text-4xl mb-2">💧</div>
+                    <h4 class="font-semibold text-gray-700">Funnel</h4>
+                    <p class="text-gray-500 text-sm">Used to fill burette without spillage</p>
+                </div>
+                <div class="bg-white p-4 rounded-lg border text-center">
+                    <div class="text-4xl mb-2">🎯</div>
+                    <h4 class="font-semibold text-gray-700">White Tile</h4>
+                    <p class="text-gray-500 text-sm">Provides white background for color change</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 3: Procedure -->
+        <div class="section-card animate-fade-in-up">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <span class="bg-pink-100 text-pink-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">3</span>
+                Titration Procedure
+            </h2>
+
+            <div class="space-y-3">
+                <div class="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-500">
+                    <h4 class="font-semibold text-blue-700 mb-2">A. Preparation</h4>
+                    <ol class="text-gray-600 text-sm space-y-1 list-decimal list-inside">
+                        <li>Rinse burette with distilled water, then with titrant solution</li>
+                        <li>Fill burette with titrant above zero mark, then drain to zero</li>
+                        <li>Record initial burette reading</li>
+                        <li>Rinse pipette with titrand solution</li>
+                        <li>Transfer measured volume of titrand to clean conical flask</li>
+                        <li>Add 2-3 drops of appropriate indicator</li>
+                    </ol>
+                </div>
+
+                <div class="bg-green-50 p-4 rounded-lg border-l-4 border-green-500">
+                    <h4 class="font-semibold text-green-700 mb-2">B. Titration</h4>
+                    <ol class="text-gray-600 text-sm space-y-1 list-decimal list-inside">
+                        <li>Place conical flask on white tile under burette</li>
+                        <li>Add titrant slowly while swirling flask continuously</li>
+                        <li>Near endpoint, add titrant drop by drop</li>
+                        <li>Stop when permanent color change occurs</li>
+                        <li>Record final burette reading</li>
+                        <li>Calculate volume used (final - initial)</li>
+                    </ol>
+                </div>
+
+                <div class="bg-amber-50 p-4 rounded-lg border-l-4 border-amber-500">
+                    <h4 class="font-semibold text-amber-700 mb-2">C. Recording Results</h4>
+                    <p class="text-gray-600 text-sm">Repeat titration until you obtain <strong>concordant results</strong> (volumes within 0.1 cm³ of each other). Take average of concordant values.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 4: Indicators -->
+        <div class="section-card animate-fade-in-up">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <span class="bg-pink-100 text-pink-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">4</span>
+                Choice of Indicators
+            </h2>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm border-collapse">
+                    <thead>
+                        <tr class="bg-pink-50">
+                            <th class="border border-gray-200 p-3 text-left">Titration Type</th>
+                            <th class="border border-gray-200 p-3 text-left">pH Range</th>
+                            <th class="border border-gray-200 p-3 text-left">Suitable Indicator</th>
+                            <th class="border border-gray-200 p-3 text-left">Color Change</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="border border-gray-200 p-3 font-medium">Strong acid + Strong base</td>
+                            <td class="border border-gray-200 p-3">3-11</td>
+                            <td class="border border-gray-200 p-3">Phenolphthalein OR Methyl orange</td>
+                            <td class="border border-gray-200 p-3">Colorless → Pink OR Red → Yellow</td>
+                        </tr>
+                        <tr class="bg-gray-50">
+                            <td class="border border-gray-200 p-3 font-medium">Strong acid + Weak base</td>
+                            <td class="border border-gray-200 p-3">3-7</td>
+                            <td class="border border-gray-200 p-3">Methyl orange</td>
+                            <td class="border border-gray-200 p-3">Red → Yellow (at pH ~4)</td>
+                        </tr>
+                        <tr>
+                            <td class="border border-gray-200 p-3 font-medium">Weak acid + Strong base</td>
+                            <td class="border border-gray-200 p-3">7-11</td>
+                            <td class="border border-gray-200 p-3">Phenolphthalein</td>
+                            <td class="border border-gray-200 p-3">Colorless → Pink (at pH ~9)</td>
+                        </tr>
+                        <tr class="bg-gray-50">
+                            <td class="border border-gray-200 p-3 font-medium">Weak acid + Weak base</td>
+                            <td class="border border-gray-200 p-3">~7</td>
+                            <td class="border border-gray-200 p-3">No suitable indicator</td>
+                            <td class="border border-gray-200 p-3">Use pH meter instead</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Section 5: Worked Example -->
+        <div class="section-card animate-fade-in-up">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <span class="bg-pink-100 text-pink-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">5</span>
+                Worked Example
+            </h2>
+
+            <div class="bg-amber-50 p-4 rounded-lg border border-amber-200 mb-4">
+                <h4 class="font-semibold text-amber-700 mb-2">Problem</h4>
+                <p class="text-gray-700">25.0 cm³ of 0.1 mol/dm³ HCl required 20.0 cm³ of NaOH solution for neutralization. Calculate the concentration of the NaOH solution.</p>
+            </div>
+
+            <div class="space-y-3">
+                <div class="bg-white p-4 rounded-lg border">
+                    <p class="font-medium text-gray-700 mb-2"><strong>Step 1:</strong> Write the balanced equation</p>
+                    <p class="text-blue-600 font-mono">HCl + NaOH → NaCl + H₂O</p>
+                    <p class="text-gray-500 text-sm">Mole ratio = 1:1</p>
+                </div>
+                
+                <div class="bg-white p-4 rounded-lg border">
+                    <p class="font-medium text-gray-700 mb-2"><strong>Step 2:</strong> Calculate moles of HCl</p>
+                    <p class="text-gray-600">Moles HCl = Concentration × Volume (dm³)</p>
+                    <p class="text-gray-600">Moles HCl = 0.1 × (25.0/1000) = <strong>0.0025 mol</strong></p>
+                </div>
+                
+                <div class="bg-white p-4 rounded-lg border">
+                    <p class="font-medium text-gray-700 mb-2"><strong>Step 3:</strong> Calculate moles of NaOH</p>
+                    <p class="text-gray-600">From equation: 1 mol HCl reacts with 1 mol NaOH</p>
+                    <p class="text-gray-600">Moles NaOH = <strong>0.0025 mol</strong></p>
+                </div>
+                
+                <div class="bg-green-50 p-4 rounded-lg border-l-4 border-green-500">
+                    <p class="font-medium text-green-700 mb-2"><strong>Step 4:</strong> Calculate concentration of NaOH</p>
+                    <p class="text-gray-600">Concentration = Moles / Volume (dm³)</p>
+                    <p class="text-gray-600">Concentration = 0.0025 / (20.0/1000)</p>
+                    <p class="text-green-700 font-bold text-lg">Concentration NaOH = 0.125 mol/dm³</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 6: Interactive Simulation -->
+        <div class="section-card animate-fade-in-up">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <span class="bg-pink-100 text-pink-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">6</span>
+                Interactive Titration Simulator
+            </h2>
+            
+            <div class="bg-gray-50 p-4 rounded-lg border">
+                <div class="simulation-container">
+                    <iframe src="https://phet.colorado.edu/sims/html/ph-scale/latest/ph-scale_en.html" frameborder="0" allowfullscreen></iframe>
+                </div>
+                <p class="text-gray-500 text-sm mt-2 text-center"><i class="fas fa-info-circle mr-1"></i>Explore pH and acid-base reactions with this simulation</p>
+            </div>
+        </div>
+
+        <!-- Section 7: Common Errors -->
+        <div class="section-card animate-fade-in-up">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <span class="bg-pink-100 text-pink-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">7</span>
+                Common Errors & Precautions
+            </h2>
+
+            <div class="grid md:grid-cols-2 gap-4">
+                <div class="bg-red-50 p-4 rounded-lg border-l-4 border-red-500">
+                    <h4 class="font-semibold text-red-700 mb-2"><i class="fas fa-times-circle mr-2"></i>Common Errors</h4>
+                    <ul class="text-gray-600 text-sm space-y-1">
+                        <li>• Reading burette from bottom up (should be top down)</li>
+                        <li>• Not removing funnel before titration</li>
+                        <li>• Not rinsing apparatus with correct solutions</li>
+                        <li>• Adding too much indicator</li>
+                        <li>• Not swirling flask during titration</li>
+                        <li>• Air bubbles in burette tip</li>
+                    </ul>
+                </div>
+                <div class="bg-green-50 p-4 rounded-lg border-l-4 border-green-500">
+                    <h4 class="font-semibold text-green-700 mb-2"><i class="fas fa-check-circle mr-2"></i>Precautions</h4>
+                    <ul class="text-gray-600 text-sm space-y-1">
+                        <li>• Read burette at eye level (meniscus)</li>
+                        <li>• Remove funnel before starting titration</li>
+                        <li>• Rinse burette with titrant, pipette with titrand</li>
+                        <li>• Use only 2-3 drops of indicator</li>
+                        <li>• Swirl continuously while adding titrant</li>
+                        <li>• Check for and remove air bubbles</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Key Takeaways -->
+        <div class="bg-gradient-to-r from-pink-50 to-rose-50 p-5 rounded-lg border border-pink-200 animate-fade-in-up">
+            <h3 class="font-semibold text-pink-800 mb-3"><i class="fas fa-star mr-2"></i>Key Takeaways</h3>
+            <ul class="text-pink-700 text-sm space-y-2">
+                <li>• Titration determines unknown concentration using a standard solution</li>
+                <li>• Key formula: M₁V₁/n₁ = M₂V₂/n₂ (accounting for mole ratio)</li>
+                <li>• Choose indicator based on acid-base strength combination</li>
+                <li>• Concordant results = values within 0.1 cm³ of each other</li>
+                <li>• Always read burette from top (0) to bottom (50)</li>
+            </ul>
+        </div>
+
+        <div class="flex justify-between items-center mt-8">
+            <a href="principles.html" class="px-4 py-2 text-gray-600 hover:text-gray-900"><i class="fas fa-chevron-left mr-2"></i>Previous</a>
+            <a href="redox-titration.html" class="px-4 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600">Next: Redox Titration<i class="fas fa-chevron-right ml-2"></i></a>
+        </div>
+    </main>
+
+    <script>
+        let progress = 0;
+        const sections = document.querySelectorAll('.section-card');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    progress = Array.from(sections).indexOf(entry.target) + 1;
+                    document.getElementById('progressPercent').textContent = Math.round((progress / sections.length) * 100) + '%';
+                    document.getElementById('progressBar').style.width = Math.round((progress / sections.length) * 100) + '%';
+                }
+            });
+        }, { threshold: 0.5 });
+        sections.forEach(s => observer.observe(s));
+    </script>
+    <script src="/js/topic-quiz-loader.js"></script>
+    <script src="/js/topic-quiz-injector.js"></script>
+</body>
+</html>

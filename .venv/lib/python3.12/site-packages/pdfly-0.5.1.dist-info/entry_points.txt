@@ -1,0 +1,3 @@
+[console_scripts]
+pdfly=pdfly.cli:entry_point
+

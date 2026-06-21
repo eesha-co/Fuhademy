@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 300">
+  <style>
+    .bg { fill: #ffffff; }
+    .axis { stroke: #666; stroke-width: 1; }
+    .grid { stroke: #eee; stroke-width: 1; }
+    .parabola { fill: none; stroke: #1e40af; stroke-width: 3; }
+    .parabola2 { fill: none; stroke: #059669; stroke-width: 3; }
+    .parabola3 { fill: none; stroke: #e11d48; stroke-width: 3; }
+    .label { fill: #111827; font-family: Arial, sans-serif; font-size: 14px; }
+    .caption { fill: #374151; font-family: Arial, sans-serif; font-size: 12px; }
+    .dot { fill: #111827; }
+  </style>
+
+  <rect width="100%" height="100%" class="bg"/>
+
+  <!-- Three mini-graphs laid out horizontally -->
+  <!-- First: Two real roots -->
+  <g transform="translate(30,20)">
+    <rect x="0" y="0" width="260" height="240" fill="#fbfdff" stroke="#e6eef8"/>
+    <!-- grid -->
+    <g stroke="#f3f7fb">
+      <line x1="0" y1="120" x2="260" y2="120"/>
+      <line x1="65" y1="0" x2="65" y2="240"/>
+      <line x1="130" y1="0" x2="130" y2="240"/>
+      <line x1="195" y1="0" x2="195" y2="240"/>
+    </g>
+    <!-- axis -->
+    <line x1="0" y1="120" x2="260" y2="120" class="axis"/>
+    <line x1="130" y1="0" x2="130" y2="240" class="axis"/>
+    <!-- parabola: two real roots -->
+    <path d="M0,180 C40,60 90,20 130,60 C170,100 210,160 260,140" class="parabola"/>
+    <!-- roots marks -->
+    <circle cx="30" cy="120" r="3" class="dot"/>
+    <circle cx="220" cy="120" r="3" class="dot"/>
+    <text x="10" y="16" class="label">Two real roots</text>
+    <text x="10" y="36" class="caption">Parabola crosses the x-axis twice</text>
+  </g>
+
+  <!-- Second: One real (touches) -->
+  <g transform="translate(320,20)">
+    <rect x="0" y="0" width="260" height="240" fill="#fbfdff" stroke="#e6eef8"/>
+    <g stroke="#f3f7fb">
+      <line x1="0" y1="120" x2="260" y2="120"/>
+      <line x1="65" y1="0" x2="65" y2="240"/>
+      <line x1="130" y1="0" x2="130" y2="240"/>
+      <line x1="195" y1="0" x2="195" y2="240"/>
+    </g>
+    <line x1="0" y1="120" x2="260" y2="120" class="axis"/>
+    <line x1="130" y1="0" x2="130" y2="240" class="axis"/>
+    <!-- parabola: touches once -->
+    <path d="M0,160 C60,60 100,40 130,120 C160,200 200,220 260,200" class="parabola2"/>
+    <circle cx="130" cy="120" r="3" class="dot"/>
+    <text x="10" y="16" class="label">One real root</text>
+    <text x="10" y="36" class="caption">Parabola touches the x-axis (repeated root)</text>
+  </g>
+
+  <!-- Third: No real roots -->
+  <g transform="translate(610,20)">
+    <rect x="0" y="0" width="260" height="240" fill="#fbfdff" stroke="#e6eef8"/>
+    <g stroke="#f3f7fb">
+      <line x1="0" y1="120" x2="260" y2="120"/>
+      <line x1="65" y1="0" x2="65" y2="240"/>
+      <line x1="130" y1="0" x2="130" y2="240"/>
+      <line x1="195" y1="0" x2="195" y2="240"/>
+    </g>
+    <line x1="0" y1="120" x2="260" y2="120" class="axis"/>
+    <line x1="130" y1="0" x2="130" y2="240" class="axis"/>
+    <!-- parabola: no real roots -->
+    <path d="M0,60 C60,20 95,10 130,40 C165,70 200,160 260,160" class="parabola3"/>
+    <text x="10" y="16" class="label">No real roots</text>
+    <text x="10" y="36" class="caption">Parabola doesn't cross the x-axis (complex roots)</text>
+  </g>
+
+</svg>

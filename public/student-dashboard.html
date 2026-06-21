@@ -1,0 +1,648 @@
+<!doctype html>
+<html lang="en">
+  <head>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Student Dashboard — Secure</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="48x48" href="/favicon-32x32.png">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+  #sidebar {
+    transition: transform 0.3s ease-in-out;
+  }
+  #sidebar.hide { transform: translateX(-100%); }
+  @media (min-width: 1024px) {
+    #sidebar { transform: translateX(0) !important; }
+  }
+
+  /* Goals Modal Animations */
+  @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes slideIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+  }
+
+  .animate-fade-in {
+      animation: fadeIn 0.3s ease-out;
+  }
+
+  .animate-slide-in {
+      animation: slideIn 0.3s ease-out;
+  }
+
+  /* Range Slider Custom Styles for Goals Modal */
+  input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 24px;
+      height: 24px;
+      background: linear-gradient(135deg, #0ea5e9, #0284c7);
+      border-radius: 50%;
+      cursor: pointer;
+      box-shadow: 0 4px 6px rgba(14, 165, 233, 0.3);
+      transition: transform 0.2s ease;
+  }
+
+  input[type="range"]::-webkit-slider-thumb:hover {
+      transform: scale(1.1);
+  }
+
+  /* Custom Scrollbar for Goals Modal */
+  #goalsModal ::-webkit-scrollbar {
+      width: 6px;
+  }
+
+  #goalsModal ::-webkit-scrollbar-track {
+      background: #f1f1f1;
+      border-radius: 3px;
+  }
+
+  #goalsModal ::-webkit-scrollbar-thumb {
+      background: #c1c1c1;
+      border-radius: 3px;
+  }
+
+  #goalsModal ::-webkit-scrollbar-thumb:hover {
+      background: #a1a1a1;
+  }
+</style>
+    
+    <!-- Preload user data (use centralized cache module if available) -->
+    <script type="module">
+      import { getGlobalUserData } from '../js/user-cache.js';
+
+      // Helper: returns initials safely
+      function getInitials(fullName) {
+        try {
+          return String(fullName || '').split(' ').slice(0, 2).map(n => n.charAt(0)).join('').toUpperCase();
+        } catch (e) { return '' }
+      }
+
+      // Normalize a cached entry into a plain user object
+      function normalizeCachedEntry(entry) {
+        if (!entry) return null;
+        // If it's already a user object (has uid or displayName), return it
+        if (entry.uid || entry.displayName || entry.email) return entry;
+        // If it looks like the { data, timestamp } wrapper used by cacheUserData
+        if (entry.data) return entry.data;
+        return null;
+      }
+
+      // Apply preloaded user to the UI (safe checks)
+      function applyPreloadedUser(user) {
+        if (!user) return;
+        const fullName = user.displayName || 'Student';
+        const name = fullName.split(' ')[0];
+        const level = (user.profile?.level || '').startsWith('SS') ? user.profile.level : 'SS 3';
+        const initials = getInitials(fullName);
+
+        const heroName = document.getElementById('heroName'); if (heroName) heroName.textContent = name;
+        const userNameEl = document.getElementById('userName'); if (userNameEl) userNameEl.textContent = name;
+        const userLevelEl = document.getElementById('userLevel'); if (userLevelEl) userLevelEl.textContent = level;
+        const topName = document.getElementById('topName'); if (topName) topName.textContent = fullName;
+        const topLevel = document.getElementById('topLevel'); if (topLevel) topLevel.textContent = level;
+
+        document.querySelectorAll('.user-fullname').forEach(el => { el.textContent = fullName; });
+        document.querySelectorAll('.user-firstname').forEach(el => { el.textContent = name; });
+
+        const avatarUrl = user.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(initials)}&background=2563eb&color=fff&size=128`;
+        ['avatar-sm','topAvatar','main-avatar'].forEach(id => { const a = document.getElementById(id); if (a) a.src = avatarUrl; });
+
+        if (user.progress) {
+          const weekly = document.getElementById('weeklyProgressLabel'); if (weekly) weekly.textContent = `${user.progress.weekly || 0}%`;
+          const mockAvg = document.getElementById('mockAvgLabel'); if (mockAvg) mockAvg.textContent = `${user.progress.mockAvg || 0}%`;
+          const streak = document.getElementById('streakLabel'); if (streak) streak.textContent = `${user.progress.streak || 0} days`;
+        }
+        if (user.unreadNotifications) {
+          const notifCount = document.getElementById('notifCount'); if (notifCount) notifCount.textContent = String(user.unreadNotifications.length || 0);
+        }
+      }
+
+      // Try module-based global cache first (fast)
+      try {
+        const global = getGlobalUserData();
+        if (global) {
+          window.preloadedUserData = global;
+          // DOMContentLoaded might already have fired; apply immediately and also on ready
+          if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', () => applyPreloadedUser(global));
+          else applyPreloadedUser(global);
+        } else {
+          // Fallback: some pages set a legacy cachedUserData_current key directly in localStorage
+          const raw = localStorage.getItem('cachedUserData_current');
+          if (raw) {
+            try {
+              const parsed = JSON.parse(raw);
+              const user = normalizeCachedEntry(parsed);
+              if (user) {
+                window.preloadedUserData = user;
+                if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', () => applyPreloadedUser(user));
+                else applyPreloadedUser(user);
+              }
+            } catch (e) {
+              console.warn('Could not parse legacy cachedUserData_current', e);
+            }
+          }
+        }
+      } catch (err) {
+        // Keep silent but log to console for debugging
+        console.debug('Preload cache check failed', err);
+      }
+    </script>
+    <script>
+      // Synchronous bootstrap globals for Supabase (safe: anon key public)
+      window.SUPABASE_URL = 'https://kruwfhzfqieuiuhqlutt.supabase.co';
+      window.SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtydXdmaHpmcWlldWl1aHFsdXR0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjIxOTk0OTAsImV4cCI6MjA3Nzc3NTQ5MH0.XD3-PDjDtKwCVsBILYgVrHF7Yc9tHkzpvpN2b7ojvB4';
+    </script>
+    <script src="../js/supabase-bootstrap.js"></script>
+    <script type="module" src="../js/personalize-page.js"></script>
+  </head>
+  <body class="bg-slate-50 text-slate-800">
+    <div class="min-h-screen flex">
+
+      <!-- Sidebar injected by sidebar-fragment.js -->
+
+      <!-- Main area -->
+  <div id="main-content" class="flex-1 flex flex-col ml-64 md:ml-72 lg:ml-80">
+        <!-- Topbar -->
+        <header class="flex items-center justify-between p-4 bg-white border-b border-slate-200">
+          <div class="flex items-center gap-3">
+            <button id="toggleSidebar" class="p-2 rounded-md hover:bg-slate-100 lg:hidden" title="Toggle sidebar"><i class="fas fa-bars"></i></button>
+            <div class="relative">
+              <input id="globalSearch" type="search" placeholder="Search subjects, topics, resources..." class="w-[520px] hidden md:inline-block pl-10 pr-4 py-2 rounded-full border border-slate-200 bg-white focus:outline-none focus:ring-2 focus:ring-sky-100">
+              <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-4">
+            <div class="relative">
+              <button id="notifBtn" class="p-2 rounded-full hover:bg-slate-50" aria-label="Notifications"><i class="fas fa-bell text-sky-600"></i></button>
+              <span id="notifCount" class="absolute -top-1 -right-1 bg-pink-500 text-white rounded-full w-5 h-5 text-xs flex items-center justify-center">0</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <div class="text-right mr-2">
+                <div id="topName" class="font-semibold">Student Name</div>
+                <div id="topLevel" class="text-xs text-slate-400">SS 3</div>
+              </div>
+              <img id="topAvatar" src="../assets/images/unnamed.jpg" alt="avatar" class="h-10 w-10 rounded-full border-2">
+            </div>
+          </div>
+        </header>
+
+        <!-- Content -->
+        <main class="p-6 space-y-6">
+          <!-- Hero + Quick Stats -->
+          <section class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div class="lg:col-span-2 bg-gradient-to-r from-sky-600 to-sky-500 text-white rounded-2xl p-6 shadow">
+              <h2 class="text-2xl font-bold mb-1">Welcome back, <span id="heroName">Student</span> 👋</h2>
+              <p id="heroMsg" class="opacity-90 mb-4">Let's make today productive — tasks loaded from your account.</p>
+              <div class="flex gap-3 flex-wrap">
+                <a href="learning-report/learning-report.html" class="bg-white/20 px-4 py-2 rounded-full font-medium hover:bg-white/30 flex items-center gap-2">
+                  <span>📊</span> Learning Report
+                </a>
+                <a href="study-plan.html" class="bg-white/20 px-4 py-2 rounded-full font-medium hover:bg-white/30">Open Study Plan</a>
+                <a href="mock-exams.html" class="bg-white/20 px-4 py-2 rounded-full font-medium hover:bg-white/30">Take a Mock Test</a>
+                <a href="ai-tutor-chatbot.html" class="bg-white/20 px-4 py-2 rounded-full font-medium hover:bg-white/30">Chat with AI Tutor</a>
+              </div>
+            </div>
+
+            <div class="bg-white rounded-2xl p-4 shadow flex flex-col gap-4">
+              <div class="flex items-center justify-between">
+                <div class="text-sm text-slate-500">Weekly Progress</div>
+                <div id="weeklyProgressLabel" class="text-sm font-semibold">0%</div>
+              </div>
+              <div class="w-full h-3 bg-slate-100 rounded-full overflow-hidden"><div id="weekBar" class="h-full bg-sky-500 w-0"></div></div>
+
+              <div class="flex items-center justify-between">
+                <div class="text-sm text-slate-500">Mock Test Avg</div>
+                <div id="mockAvgLabel" class="text-sm font-semibold">0%</div>
+              </div>
+              <div class="w-full h-3 bg-slate-100 rounded-full overflow-hidden"><div id="mockBar" class="h-full bg-yellow-400 w-0"></div></div>
+
+              <div class="text-sm text-slate-500">Streak</div>
+              <div id="streakLabel" class="text-lg font-bold">0 days</div>
+            </div>
+          </section>
+
+          <!-- ============================================
+               GOALS SECTION (Added for Learning Goals)
+               ============================================ -->
+          <section id="goalsDashboardSection" class="space-y-4">
+            <div class="flex items-center justify-between">
+              <h3 class="text-lg font-semibold text-slate-800">
+                <span class="mr-2">🎯</span>Your Learning Goals
+              </h3>
+              <button id="editGoalsBtn" class="text-sm text-sky-600 hover:text-sky-700 font-medium flex items-center gap-1 transition-colors">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                </svg>
+                Edit Goals
+              </button>
+            </div>
+            
+            <!-- Goals Cards Container -->
+            <div id="goalsCardsContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              <!-- Loading skeletons -->
+              <div class="bg-white rounded-xl p-5 border border-slate-100 shadow-sm animate-pulse">
+                <div class="h-4 bg-slate-200 rounded w-1/2 mb-3"></div>
+                <div class="h-8 bg-slate-200 rounded w-3/4 mb-2"></div>
+                <div class="h-2 bg-slate-200 rounded w-full"></div>
+              </div>
+              <div class="bg-white rounded-xl p-5 border border-slate-100 shadow-sm animate-pulse">
+                <div class="h-4 bg-slate-200 rounded w-1/2 mb-3"></div>
+                <div class="h-8 bg-slate-200 rounded w-3/4 mb-2"></div>
+                <div class="h-2 bg-slate-200 rounded w-full"></div>
+              </div>
+              <div class="bg-white rounded-xl p-5 border border-slate-100 shadow-sm animate-pulse">
+                <div class="h-4 bg-slate-200 rounded w-1/2 mb-3"></div>
+                <div class="h-8 bg-slate-200 rounded w-3/4 mb-2"></div>
+                <div class="h-2 bg-slate-200 rounded w-full"></div>
+              </div>
+              <div class="bg-white rounded-xl p-5 border border-slate-100 shadow-sm animate-pulse">
+                <div class="h-4 bg-slate-200 rounded w-1/2 mb-3"></div>
+                <div class="h-8 bg-slate-200 rounded w-3/4 mb-2"></div>
+                <div class="h-2 bg-slate-200 rounded w-full"></div>
+              </div>
+            </div>
+            
+            <!-- Empty State (hidden by default) -->
+            <div id="emptyGoalsState" class="hidden bg-gradient-to-br from-sky-50 to-blue-50 rounded-2xl p-6 text-center border border-sky-100">
+              <div class="text-5xl mb-4">🎯</div>
+              <h4 class="text-lg font-bold text-slate-800 mb-2">Set Your Learning Goals</h4>
+              <p class="text-slate-600 mb-4 max-w-md mx-auto">
+                Define your targets and we'll help you track your progress. 
+                Stay motivated with personalized goal tracking!
+              </p>
+              <button id="createGoalsFromEmptyBtn" class="px-6 py-3 bg-gradient-to-r from-sky-500 to-blue-600 text-white font-medium rounded-xl hover:from-sky-600 hover:to-blue-700 transition-all transform hover:scale-105 shadow-lg">
+                Create Learning Plan
+              </button>
+            </div>
+          </section>
+          <!-- END GOALS SECTION -->
+
+          <!-- Subjects grid -->
+          <section>
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-lg font-semibold">Subjects</h3>
+              <a href="subjects.html" class="text-sm text-sky-600">View all</a>
+            </div>
+
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+              <a href="subjects/mathematics/index.html" class="bg-white rounded-2xl p-5 shadow hover:scale-105 transition text-center">
+                <div class="text-2xl text-sky-500 mb-2"><i class="fas fa-square-root-alt"></i></div>
+                <div class="font-semibold">Mathematics</div>
+              </a>
+              <a href="subjects/physics/index.html" class="bg-white rounded-2xl p-5 shadow hover:scale-105 transition text-center">
+                <div class="text-2xl text-yellow-500 mb-2"><i class="fas fa-atom"></i></div>
+                <div class="font-semibold">Physics</div>
+              </a>
+              <a href="subjects/chemistry/index.html" class="bg-white rounded-2xl p-5 shadow hover:scale-105 transition text-center">
+                <div class="text-2xl text-pink-500 mb-2"><i class="fas fa-flask"></i></div>
+                <div class="font-semibold">Chemistry</div>
+              </a>
+              <a href="storybook-reader.html" class="bg-white rounded-2xl p-5 shadow hover:scale-105 transition text-center">
+                <div class="text-2xl text-purple-500 mb-2"><i class="fas fa-book-open"></i></div>
+                <div class="font-semibold">Lekki Headmaster</div>
+              </a>
+              <a href="subjects/biology/index.html" class="bg-white rounded-2xl p-5 shadow hover:scale-105 transition text-center">
+                <div class="text-2xl text-green-500 mb-2"><i class="fas fa-dna"></i></div>
+                <div class="font-semibold">Biology</div>
+              </a>
+              <a href="subjects/english/index.html" class="bg-white rounded-2xl p-5 shadow hover:scale-105 transition text-center">
+                <div class="text-2xl text-indigo-500 mb-2"><i class="fas fa-book"></i></div>
+                <div class="font-semibold">English</div>
+              </a>
+            </div>
+          </section>
+
+          <!-- Two column layout: Study plan + Activity -->
+          <section class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div class="lg:col-span-2 bg-white rounded-2xl p-6 shadow space-y-4">
+              <div class="flex items-center justify-between">
+                <h4 class="font-semibold">Today — Study Plan</h4>
+                <div id="taskCount" class="text-sm text-slate-400">0 tasks</div>
+              </div>
+              <ul id="todayTasks" class="space-y-3">
+                <!-- Firestore tasks will populate here -->
+              </ul>
+
+              <div class="mt-4 flex gap-3">
+                <button id="addTaskBtn" class="px-4 py-2 bg-sky-600 text-white rounded-full">Add Task</button>
+                <button id="markCompleteAll" class="px-4 py-2 border rounded-full">Mark all complete</button>
+              </div>
+            </div>
+
+            <aside class="bg-white rounded-2xl p-6 shadow space-y-4">
+              <h4 class="font-semibold">Recent Activity</h4>
+              <div id="activityFeed" class="space-y-3 text-sm text-slate-600">Loading…</div>
+
+              <hr>
+              <h5 class="font-semibold">Upcoming Live Sessions</h5>
+              <div id="upcoming" class="space-y-2 text-sm">Loading…</div>
+            </aside>
+          </section>
+
+        </main>
+
+      </div>
+    </div>
+
+    <link rel="stylesheet" href="dashboard-styles.css">
+
+    <script src="../js/supabase-bootstrap.js"></script>
+    <script type="module" src="./js/dashboard-main.js"></script>
+    <script type="module" src="../js/user-cache.js"></script>
+    <script type="module" src="./js/sidebar-fragment.js"></script>
+
+    <!-- ============================================
+         GOALS SYSTEM SCRIPTS
+         ============================================ -->
+    <script src="../js/goals-manager.js"></script>
+    <script src="../js/goals-modal.js"></script>
+    <script>
+      // ============================================
+      // GOALS DASHBOARD INTEGRATION
+      // ============================================
+      (function() {
+        'use strict';
+        
+        let goalsInitialized = false;
+        let goalsLoaded = false;
+        
+        // Render goals to the dashboard
+        function renderGoals(goals) {
+          console.log('🎨 Rendering goals:', goals?.length || 0);
+          
+          const container = document.getElementById('goalsCardsContainer');
+          const emptyState = document.getElementById('emptyGoalsState');
+          
+          if (!goals || goals.length === 0) {
+            container.classList.add('hidden');
+            emptyState?.classList.remove('hidden');
+            return;
+          }
+          
+          container.classList.remove('hidden');
+          emptyState?.classList.add('hidden');
+          goalsLoaded = true;
+          
+          container.innerHTML = goals.map(goal => {
+            const formatted = window.GoalsManager.formatGoal(goal);
+            const progress = formatted.progress;
+            
+            let progressColorClass = 'bg-emerald-500';
+            let bgColorClass = 'bg-emerald-100';
+            if (progress < 50) {
+              progressColorClass = 'bg-red-500';
+              bgColorClass = 'bg-red-100';
+            } else if (progress < 75) {
+              progressColorClass = 'bg-amber-500';
+              bgColorClass = 'bg-amber-100';
+            }
+            
+            return `
+              <div class="bg-white rounded-xl p-5 border border-slate-100 shadow-sm hover:shadow-md transition-all duration-200">
+                <div class="flex items-center justify-between mb-3">
+                  <span class="text-2xl">${formatted.icon}</span>
+                  ${formatted.isCompleted ? 
+                    '<span class="text-xs bg-emerald-100 text-emerald-700 px-2 py-1 rounded-full font-medium">✓ Complete</span>' : 
+                    `<span class="text-xs text-slate-400 font-medium">${progress}%</span>`
+                  }
+                </div>
+                <div class="text-xs text-slate-500 mb-1">${formatted.typeLabel}</div>
+                <div class="font-semibold text-slate-800 mb-3 truncate" title="${goal.title}">${goal.title}</div>
+                
+                <div class="h-2 ${bgColorClass} rounded-full overflow-hidden mb-2">
+                  <div class="h-full ${progressColorClass} rounded-full transition-all duration-500" style="width: ${progress}%"></div>
+                </div>
+                
+                <div class="flex justify-between text-xs text-slate-500">
+                  <span>${goal.current_value} ${goal.unit}</span>
+                  <span>${goal.target_value} ${goal.unit}</span>
+                </div>
+                
+                ${formatted.daysRemaining !== null ? `
+                  <div class="mt-2 text-xs ${formatted.isOverdue ? 'text-red-500' : 'text-slate-400'}">
+                    ${formatted.isOverdue ? '⚠️ Overdue' : `📅 ${formatted.daysRemaining} days left`}
+                  </div>
+                ` : ''}
+              </div>
+            `;
+          }).join('');
+        }
+        
+        // Check and load goals
+        async function checkAndLoadGoals() {
+          console.log('🔍 checkAndLoadGoals called');
+          
+          if (!window.GoalsManager) {
+            console.warn('⚠️ GoalsManager not loaded, retrying...');
+            setTimeout(checkAndLoadGoals, 1000);
+            return;
+          }
+          
+          // Check localStorage flag first
+          if (localStorage.getItem('goalsCreated') === 'true' && goalsLoaded) {
+            console.log('✅ Goals already loaded');
+            return;
+          }
+          
+          console.log('📊 Checking for user goals...');
+          
+          try {
+            const result = await window.GoalsManager.checkUserGoals();
+            console.log('📊 Goals check result:', result);
+            
+            if (result.error === 'not_authenticated') {
+              console.log('User not authenticated yet');
+              return;
+            }
+            
+            if (result.error === 'table_not_found') {
+              console.warn('⚠️ Goals table not found - please run SQL setup');
+              const container = document.getElementById('goalsCardsContainer');
+              const emptyState = document.getElementById('emptyGoalsState');
+              container?.classList.add('hidden');
+              emptyState?.classList.remove('hidden');
+              
+              // Add a helpful message
+              const note = document.createElement('p');
+              note.className = 'text-xs text-amber-600 mt-2 text-center';
+              note.textContent = '⚠️ Database table not found. Please run the SQL setup in Supabase.';
+              emptyState?.appendChild(note);
+              return;
+            }
+            
+            // Render existing goals
+            if (result.goals && result.goals.length > 0) {
+              renderGoals(result.goals);
+              localStorage.setItem('goalsCreated', 'true');
+              console.log('✅ Goals rendered successfully');
+            } else {
+              // No goals - show empty state and modal
+              const container = document.getElementById('goalsCardsContainer');
+              const emptyState = document.getElementById('emptyGoalsState');
+              container?.classList.add('hidden');
+              emptyState?.classList.remove('hidden');
+              
+              // Show modal for first-time users
+              if (window.GoalsModal) {
+                console.log('👋 No goals found - will show modal');
+                setTimeout(() => {
+                  window.GoalsModal.checkGoals();
+                }, 1500);
+              }
+            }
+            
+          } catch (err) {
+            console.error('❌ Error loading goals:', err);
+          }
+        }
+        
+        // Attach event handlers
+        function attachEventHandlers() {
+          // Edit goals button
+          document.getElementById('editGoalsBtn')?.addEventListener('click', () => {
+            if (window.GoalsModal) {
+              window.GoalsModal.open();
+            }
+          });
+          
+          // Create goals from empty state
+          document.getElementById('createGoalsFromEmptyBtn')?.addEventListener('click', () => {
+            if (window.GoalsModal) {
+              window.GoalsModal.open();
+            }
+          });
+          
+          // Listen for goals created event
+          window.addEventListener('goalsCreated', () => {
+            console.log('🎉 Goals created event received');
+            localStorage.setItem('goalsCreated', 'true');
+            // Reload to show fresh data
+            setTimeout(() => {
+              window.location.reload();
+            }, 500);
+          });
+        }
+        
+        // Initialize
+        function init() {
+          if (goalsInitialized) return;
+          goalsInitialized = true;
+          
+          console.log('🚀 Goals dashboard initializing...');
+          
+          attachEventHandlers();
+          
+          // Wait for auth and other scripts to be ready
+          setTimeout(() => {
+            checkAndLoadGoals();
+          }, 1000);
+        }
+        
+        // Run on DOM ready
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', init);
+        } else {
+          init();
+        }
+      })();
+    </script>
+
+<style>
+  #cortex-ai-chat-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0;
+    border: none;
+    z-index: 1000;
+  }
+
+  #cortex-ai-chat-popup {
+    position: fixed;
+    bottom: 90px;
+    right: 20px;
+    width: 380px;
+    height: 500px;
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0px 4px 16px rgba(0,0,0,0.4);
+    display: none;
+    z-index: 1000;
+  }
+
+  #cortex-ai-chat-popup.open {
+    display: block;
+  }
+
+  #cortex-ai-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.3);
+    display: none;
+    z-index: 999;
+  }
+
+  #cortex-ai-overlay.open {
+    display: block;
+  }
+</style>
+
+<div id="cortex-ai-overlay"></div>
+
+<div id="cortex-ai-chat-button" role="button" aria-label="Open Cortex AI chat">
+  <img src="../cortex-owl-brain.svg" alt="Cortex AI" class="cortex-icon" style="width:72px;height:72px;box-shadow:0 4px 16px rgba(0,0,0,0.20);border-radius:16px;transition:transform 0.18s cubic-bezier(.4,2,.6,1),box-shadow 0.18s;cursor:pointer;" onmouseover="this.style.transform='scale(1.12)';this.style.boxShadow='0 8px 32px rgba(0,0,0,0.28)';" onmouseout="this.style.transform='scale(1)';this.style.boxShadow='0 4px 16px rgba(0,0,0,0.20)';" onmousedown="this.style.transform='scale(0.96)';" onmouseup="this.style.transform='scale(1.12)';" />
+</div>
+<iframe 
+  id="cortex-ai-chat-popup"  
+  title="CORTEX AI"
+  allow="microphone"
+  src="https://app.edcafe.ai/chatbots/68b96ebb2a5be310497b6a0b">
+</iframe>
+
+<script>
+  const chatButton = document.getElementById('cortex-ai-chat-button');
+  const chatPopup = document.getElementById('cortex-ai-chat-popup');
+  const overlay = document.getElementById('cortex-ai-overlay');
+
+  // Toggle chat on button click
+  chatButton.addEventListener('click', () => {
+    chatPopup.classList.toggle('open');
+    overlay.classList.toggle('open');
+  });
+
+  // Close chat on overlay click
+  overlay.addEventListener('click', () => {
+    chatPopup.classList.remove('open');
+    overlay.classList.remove('open');
+  });
+
+  // Close chat on Escape key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      chatPopup.classList.remove('open');
+      overlay.classList.remove('open');
+    }
+  });
+</script>
+
+
+  </body>
+</html>

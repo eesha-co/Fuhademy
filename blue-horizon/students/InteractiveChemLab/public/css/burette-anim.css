@@ -1,0 +1,44 @@
+.burette-liquid {
+    transition: height 900ms ease;
+}
+
+.burette-meniscus {
+    background: rgba(0,0,0,0.12);
+    border-radius: 50% 50% 0 0;
+}
+
+/* sparkle styles */
+.sparkle {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, #fff, #ffd, #ffd34d);
+    box-shadow: 0 0 8px rgba(255, 220, 80, 0.9);
+    opacity: 0.0;
+    transform: scale(0.6) translateY(0);
+    animation: sparkle 900ms ease-out forwards;
+}
+
+@keyframes sparkle {
+    0% { opacity: 0; transform: scale(0.4) translateY(6px); }
+    30% { opacity: 1; transform: scale(1.1) translateY(-6px); }
+    100% { opacity: 0; transform: scale(0.6) translateY(-10px); }
+}
+
+/* small glow when filled */
+.burette-clamp-filled {
+    box-shadow: 0 0 18px rgba(46, 204, 113, 0.18);
+}
+
+/* control panel liquid and meniscus fine tuning */
+.burette-tube .liquid-level {
+    transition: height 900ms ease;
+}
+
+/* subtle hover highlight when filled */
+.burette-element.filled-hover {
+    box-shadow: 0 6px 18px rgba(74, 144, 226, 0.12);
+    transform: translateY(-2px);
+    transition: transform 200ms ease, box-shadow 200ms ease;
+}

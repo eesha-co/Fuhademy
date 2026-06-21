@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Nernst Equation | Chemistry</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .content-card {
+      -webkit-backdrop-filter: blur(12px);
+      backdrop-filter: blur(12px);
+      background: rgba(255, 255, 255, 0.95);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    .accordion-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease-out;
+    }
+    .accordion-content.open {
+      max-height: 2000px;
+    }
+    .step-card {
+      transition: all 0.2s ease;
+    }
+    .step-card:hover {
+      transform: translateX(4px);
+    }
+    .formula-box {
+      background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%);
+      border: 2px solid #6366f1;
+    }
+    #topic-complete-btn {
+      transition: all 0.3s ease;
+    }
+    #topic-complete-btn:not(:disabled):hover {
+      transform: scale(1.02);
+    }
+    .video-container {
+      position: relative;
+      width: 100%;
+      padding-bottom: 56.25%;
+      height: 0;
+      overflow: hidden;
+      border-radius: 8px;
+      background: #f9fafb;
+    }
+    .video-container iframe {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-indigo-50 to-violet-100 p-4 md:p-6">
+  <div class="max-w-4xl mx-auto">
+    <!-- Navigation -->
+    <nav class="mb-4 flex items-center justify-between">
+      <a href="index.html" class="text-blue-600 hover:text-blue-800 transition flex items-center">
+        <i class="fas fa-arrow-left mr-2"></i>Back to Electrochemistry & Redox
+      </a>
+      <!-- Progress indicator -->
+      <div class="flex items-center gap-3">
+        <div class="text-sm text-gray-600">
+          <span id="topic-progress-text">0% Complete</span>
+        </div>
+        <div class="w-24 h-2 bg-gray-200 rounded-full overflow-hidden">
+          <div id="topic-progress-bar" class="h-full bg-gradient-to-r from-indigo-400 to-violet-500 transition-all duration-300" style="width: 0%"></div>
+        </div>
+      </div>
+    </nav>
+    
+    <article class="content-card rounded-xl p-6 md:p-8 shadow-lg">
+      <!-- Header -->
+      <div class="border-b pb-4 mb-6">
+        <h1 class="text-2xl md:text-3xl font-bold text-gray-800 mb-2">
+          <i class="fas fa-square-root-variable text-indigo-500 mr-3"></i>Nernst Equation
+        </h1>
+        <p class="text-gray-600">Understanding how concentration affects electrode potential and predicting cell voltages under non-standard conditions.</p>
+      </div>
+
+      <!-- Learning Objectives -->
+      <div class="bg-indigo-50 border-l-4 border-indigo-500 p-4 rounded-r-lg mb-6">
+        <h3 class="font-semibold text-indigo-800 mb-2"><i class="fas fa-bullseye mr-2"></i>Learning Objectives</h3>
+        <ul class="text-indigo-700 text-sm space-y-1">
+          <li>• State the Nernst equation and identify each term</li>
+          <li>• Calculate electrode potential at non-standard concentrations</li>
+          <li>• Predict cell potential under varying conditions</li>
+          <li>• Understand the relationship between E, E°, and concentration</li>
+        </ul>
+      </div>
+
+      <!-- Section 1: Introduction -->
+      <section id="section-1" class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <span class="bg-indigo-100 text-indigo-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">1</span>
+          What is the Nernst Equation?
+        </h2>
+        
+        <div class="bg-gray-50 p-5 rounded-lg mb-4">
+          <p class="text-gray-700 mb-4">
+            The <strong class="text-indigo-600">Nernst equation</strong> relates the electrode potential of a half-cell or overall cell to the standard electrode potential, temperature, and activities (approximately concentrations) of the chemical species undergoing reduction and oxidation.
+          </p>
+          
+          <div class="formula-box p-5 rounded-lg mb-4">
+            <h3 class="font-bold text-indigo-800 mb-3 text-center">The Nernst Equation</h3>
+            <div class="bg-white/50 p-4 rounded-lg text-center">
+              <p class="text-2xl font-mono text-indigo-800 font-bold">E = E° - (RT/nF) ln Q</p>
+            </div>
+          </div>
+
+          <div class="bg-white p-4 rounded-lg border border-gray-200">
+            <h4 class="font-semibold text-gray-800 mb-3">Where:</h4>
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-3 text-sm">
+              <div class="bg-gray-50 p-2 rounded">
+                <p class="font-semibold text-indigo-700">E</p>
+                <p class="text-gray-600">Cell potential (V)</p>
+              </div>
+              <div class="bg-gray-50 p-2 rounded">
+                <p class="font-semibold text-indigo-700">E°</p>
+                <p class="text-gray-600">Standard cell potential (V)</p>
+              </div>
+              <div class="bg-gray-50 p-2 rounded">
+                <p class="font-semibold text-indigo-700">R</p>
+                <p class="text-gray-600">Gas constant (8.314 J/mol·K)</p>
+              </div>
+              <div class="bg-gray-50 p-2 rounded">
+                <p class="font-semibold text-indigo-700">T</p>
+                <p class="text-gray-600">Temperature (K)</p>
+              </div>
+              <div class="bg-gray-50 p-2 rounded">
+                <p class="font-semibold text-indigo-700">n</p>
+                <p class="text-gray-600">Number of electrons transferred</p>
+              </div>
+              <div class="bg-gray-50 p-2 rounded">
+                <p class="font-semibold text-indigo-700">F</p>
+                <p class="text-gray-600">Faraday constant (96,500 C/mol)</p>
+              </div>
+              <div class="bg-gray-50 p-2 rounded col-span-2 md:col-span-1">
+                <p class="font-semibold text-indigo-700">Q</p>
+                <p class="text-gray-600">Reaction quotient</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 2: Simplified Form -->
+      <section id="section-2" class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <span class="bg-indigo-100 text-indigo-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">2</span>
+          Simplified Form at 25°C
+        </h2>
+        
+        <div class="bg-gray-50 p-5 rounded-lg mb-4">
+          <p class="text-gray-700 mb-4">At room temperature (25°C = 298 K), the Nernst equation can be simplified by substituting the constants and converting from natural log to base-10 log:</p>
+          
+          <div class="formula-box p-5 rounded-lg mb-4">
+            <div class="bg-white/50 p-4 rounded-lg text-center">
+              <p class="text-2xl font-mono text-indigo-800 font-bold">E = E° - (0.059/n) log Q</p>
+            </div>
+            <p class="text-center text-sm text-indigo-700 mt-2">At 25°C (298 K)</p>
+          </div>
+
+          <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-r-lg">
+            <h4 class="font-semibold text-yellow-800 mb-2"><i class="fas fa-lightbulb mr-2"></i>Key Point</h4>
+            <p class="text-gray-700 text-sm">The factor 0.059 comes from: (RT/F) × ln(10) = (8.314 × 298 / 96500) × 2.303 ≈ 0.059 V</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 3: The Reaction Quotient -->
+      <section id="section-3" class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <span class="bg-indigo-100 text-indigo-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">3</span>
+          Calculating the Reaction Quotient (Q)
+        </h2>
+        
+        <div class="bg-gray-50 p-5 rounded-lg mb-4">
+          <p class="text-gray-700 mb-4">For a general reaction: <strong>aA + bB → cC + dD</strong></p>
+          
+          <div class="bg-white p-4 rounded-lg border border-gray-200 mb-4">
+            <p class="text-center font-mono text-lg text-indigo-700">Q = [C]<sup>c</sup> [D]<sup>d</sup> / [A]<sup>a</sup> [B]<sup>b</sup></p>
+          </div>
+
+          <div class="bg-blue-50 border-l-4 border-blue-400 p-4 rounded-r-lg mb-4">
+            <h4 class="font-semibold text-blue-800 mb-2"><i class="fas fa-info-circle mr-2"></i>Important Rules</h4>
+            <ul class="text-blue-700 text-sm space-y-1">
+              <li>• <strong>Solids and pure liquids</strong> have activity = 1 (not included in Q)</li>
+              <li>• <strong>Gases</strong> use partial pressures (in atm)</li>
+              <li>• <strong>Aqueous ions</strong> use molar concentrations</li>
+              <li>• Water as a solvent has activity ≈ 1</li>
+            </ul>
+          </div>
+
+          <div class="grid md:grid-cols-2 gap-4">
+            <div class="bg-green-50 p-4 rounded-lg border border-green-200">
+              <h4 class="font-semibold text-green-700 mb-2">At Equilibrium</h4>
+              <p class="text-gray-700 text-sm">Q = K (equilibrium constant)</p>
+              <p class="text-gray-700 text-sm">E = 0 (no driving force)</p>
+            </div>
+            <div class="bg-rose-50 p-4 rounded-lg border border-rose-200">
+              <h4 class="font-semibold text-rose-700 mb-2">Standard Conditions</h4>
+              <p class="text-gray-700 text-sm">All concentrations = 1 M</p>
+              <p class="text-gray-700 text-sm">Q = 1, log Q = 0, so E = E°</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 4: Worked Examples -->
+      <section id="section-4" class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <span class="bg-indigo-100 text-indigo-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">4</span>
+          Worked Examples
+        </h2>
+        
+        <!-- Example 1 -->
+        <div class="border border-gray-200 rounded-lg overflow-hidden mb-4">
+          <button class="accordion-btn w-full p-4 bg-indigo-50 text-left font-semibold text-indigo-800 flex justify-between items-center hover:bg-indigo-100 transition">
+            <span><i class="fas fa-calculator mr-2 text-indigo-500"></i>Example 1: Calculate Cell Potential</span>
+            <i class="fas fa-chevron-down transform transition-transform"></i>
+          </button>
+          <div class="accordion-content">
+            <div class="p-5">
+              <p class="font-medium text-gray-800 mb-3">
+                Calculate the potential of a Daniel cell: Zn|Zn²⁺(0.01 M)||Cu²⁺(0.1 M)|Cu
+              </p>
+              <p class="text-sm text-gray-600 mb-3">Given: E°(Zn²⁺/Zn) = -0.76 V, E°(Cu²⁺/Cu) = +0.34 V</p>
+              
+              <div class="space-y-3">
+                <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-indigo-500">
+                  <p class="text-sm text-gray-600"><strong>Step 1:</strong> Calculate E°cell</p>
+                  <p class="text-indigo-700 font-mono mt-1">E°cell = E°cathode - E°anode = +0.34 - (-0.76) = +1.10 V</p>
+                </div>
+                
+                <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-blue-500">
+                  <p class="text-sm text-gray-600"><strong>Step 2:</strong> Write the cell reaction and Q</p>
+                  <p class="text-blue-700 font-mono mt-1">Zn + Cu²⁺ → Zn²⁺ + Cu</p>
+                  <p class="text-blue-700 font-mono mt-1">Q = [Zn²⁺] / [Cu²⁺] = 0.01 / 0.1 = 0.1</p>
+                </div>
+                
+                <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-green-500">
+                  <p class="text-sm text-gray-600"><strong>Step 3:</strong> Apply Nernst equation (n = 2)</p>
+                  <p class="text-green-700 font-mono mt-1">E = E° - (0.059/n) log Q</p>
+                  <p class="text-green-700 font-mono mt-1">E = 1.10 - (0.059/2) log(0.1)</p>
+                  <p class="text-green-700 font-mono mt-1">E = 1.10 - (0.0295) × (-1)</p>
+                  <p class="text-green-700 font-mono mt-1">E = 1.10 + 0.0295 = <strong>1.13 V</strong></p>
+                </div>
+                
+                <div class="bg-green-100 p-3 rounded-lg">
+                  <p class="text-green-800 font-semibold"><i class="fas fa-check-circle mr-2"></i>Answer: E = 1.13 V (higher than E° because [Cu²⁺] > [Zn²⁺])</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Example 2 -->
+        <div class="border border-gray-200 rounded-lg overflow-hidden mb-4">
+          <button class="accordion-btn w-full p-4 bg-purple-50 text-left font-semibold text-purple-800 flex justify-between items-center hover:bg-purple-100 transition">
+            <span><i class="fas fa-flask mr-2 text-purple-500"></i>Example 2: Electrode Potential</span>
+            <i class="fas fa-chevron-down transform transition-transform"></i>
+          </button>
+          <div class="accordion-content">
+            <div class="p-5">
+              <p class="font-medium text-gray-800 mb-3">
+                Calculate the potential of a hydrogen electrode when [H⁺] = 0.01 M and H₂ is at 1 atm.
+              </p>
+              
+              <div class="space-y-3">
+                <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-purple-500">
+                  <p class="text-sm text-gray-600"><strong>Step 1:</strong> Write the half-reaction</p>
+                  <p class="text-purple-700 font-mono mt-1">2H⁺ + 2e⁻ → H₂ &nbsp;&nbsp;&nbsp; E° = 0.00 V</p>
+                </div>
+                
+                <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-blue-500">
+                  <p class="text-sm text-gray-600"><strong>Step 2:</strong> Calculate Q</p>
+                  <p class="text-blue-700 font-mono mt-1">Q = PH₂ / [H⁺]² = 1 / (0.01)² = 1 / 0.0001 = 10000</p>
+                </div>
+                
+                <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-green-500">
+                  <p class="text-sm text-gray-600"><strong>Step 3:</strong> Apply Nernst equation (n = 2)</p>
+                  <p class="text-green-700 font-mono mt-1">E = E° - (0.059/n) log Q</p>
+                  <p class="text-green-700 font-mono mt-1">E = 0.00 - (0.059/2) log(10000)</p>
+                  <p class="text-green-700 font-mono mt-1">E = 0.00 - 0.0295 × 4</p>
+                  <p class="text-green-700 font-mono mt-1">E = <strong>-0.118 V</strong></p>
+                </div>
+                
+                <div class="bg-green-100 p-3 rounded-lg">
+                  <p class="text-green-800 font-semibold"><i class="fas fa-check-circle mr-2"></i>Answer: E = -0.118 V (lower pH means lower potential)</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 5: Effect of Concentration -->
+      <section id="section-5" class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <span class="bg-indigo-100 text-indigo-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">5</span>
+          Effect of Concentration on Cell Potential
+        </h2>
+        
+        <div class="bg-gray-50 p-5 rounded-lg mb-4">
+          <div class="grid md:grid-cols-2 gap-4 mb-4">
+            <div class="bg-green-50 p-4 rounded-lg border border-green-200">
+              <h4 class="font-semibold text-green-700 mb-2"><i class="fas fa-arrow-up mr-2"></i>Increasing Products</h4>
+              <p class="text-gray-700 text-sm">Q increases → log Q is positive → E < E°</p>
+              <p class="text-gray-600 text-xs mt-2">Cell potential decreases</p>
+            </div>
+            <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
+              <h4 class="font-semibold text-blue-700 mb-2"><i class="fas fa-arrow-down mr-2"></i>Increasing Reactants</h4>
+              <p class="text-gray-700 text-sm">Q decreases → log Q is negative → E > E°</p>
+              <p class="text-gray-600 text-xs mt-2">Cell potential increases</p>
+            </div>
+          </div>
+
+          <div class="bg-amber-50 border-l-4 border-amber-500 p-4 rounded-r-lg">
+            <h4 class="font-semibold text-amber-800 mb-2"><i class="fas fa-balance-scale mr-2"></i>Le Chatelier's Principle</h4>
+            <p class="text-gray-700 text-sm">The Nernst equation shows that cells "prefer" to run when reactants are concentrated and products are dilute. This aligns with Le Chatelier's principle: high reactant concentration drives the reaction forward, giving a higher cell potential.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 6: Video -->
+      <section id="section-6" class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <span class="bg-indigo-100 text-indigo-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">6</span>
+          Video: The Nernst Equation
+        </h2>
+        
+        <div class="bg-gray-50 p-4 rounded-lg border">
+          <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/oOjGi6fGbVk" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 7: Practice Problems -->
+      <section id="section-7" class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <i class="fas fa-pencil-alt text-indigo-600 mr-3"></i>
+          Practice Problems
+        </h2>
+        
+        <div class="space-y-4">
+          <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+            <p class="font-medium text-gray-800 mb-2">1. Calculate E for the cell: Zn|Zn²⁺(0.1 M)||Cu²⁺(0.001 M)|Cu</p>
+            <p class="text-sm text-gray-600 mb-2">E°cell = 1.10 V</p>
+            <details class="mt-2">
+              <summary class="text-sm text-blue-600 cursor-pointer hover:text-blue-800">Show Solution</summary>
+              <div class="mt-2 text-sm text-gray-700">
+                <p>Q = [Zn²⁺]/[Cu²⁺] = 0.1/0.001 = 100</p>
+                <p>E = 1.10 - (0.059/2) log(100)</p>
+                <p>E = 1.10 - 0.0295 × 2</p>
+                <p><strong>Answer: E = 1.04 V</strong></p>
+              </div>
+            </details>
+          </div>
+          
+          <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+            <p class="font-medium text-gray-800 mb-2">2. What is the potential of a Cu²⁺/Cu electrode when [Cu²⁺] = 0.001 M? (E° = +0.34 V)</p>
+            <details class="mt-2">
+              <summary class="text-sm text-blue-600 cursor-pointer hover:text-blue-800">Show Solution</summary>
+              <div class="mt-2 text-sm text-gray-700">
+                <p>Cu²⁺ + 2e⁻ → Cu</p>
+                <p>Q = 1/[Cu²⁺] = 1/0.001 = 1000</p>
+                <p>E = 0.34 - (0.059/2) log(1000)</p>
+                <p>E = 0.34 - 0.0295 × 3</p>
+                <p><strong>Answer: E = 0.25 V</strong></p>
+              </div>
+            </details>
+          </div>
+          
+          <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+            <p class="font-medium text-gray-800 mb-2">3. At what concentration of Cu²⁺ will the Cu²⁺/Cu electrode have a potential of 0.28 V? (E° = +0.34 V)</p>
+            <details class="mt-2">
+              <summary class="text-sm text-blue-600 cursor-pointer hover:text-blue-800">Show Solution</summary>
+              <div class="mt-2 text-sm text-gray-700">
+                <p>E = E° - (0.059/2) log(1/[Cu²⁺])</p>
+                <p>0.28 = 0.34 - 0.0295 log(1/[Cu²⁺])</p>
+                <p>0.0295 log(1/[Cu²⁺]) = 0.06</p>
+                <p>log(1/[Cu²⁺]) = 2.03</p>
+                <p>1/[Cu²⁺] = 10²·⁰³ ≈ 107</p>
+                <p><strong>Answer: [Cu²⁺] ≈ 0.0093 M (or about 0.01 M)</strong></p>
+              </div>
+            </details>
+          </div>
+        </div>
+      </section>
+
+      <!-- Key Takeaways -->
+      <section id="section-8" class="mb-8">
+        <div class="bg-gradient-to-r from-indigo-50 to-violet-50 p-5 rounded-lg border border-indigo-200">
+          <h3 class="font-semibold text-indigo-800 mb-3"><i class="fas fa-star mr-2"></i>Key Takeaways</h3>
+          <ul class="text-indigo-700 text-sm space-y-2">
+            <li>• <strong>Nernst Equation:</strong> E = E° - (RT/nF) ln Q or E = E° - (0.059/n) log Q (at 25°C)</li>
+            <li>• Q uses product concentrations in the numerator, reactants in the denominator</li>
+            <li>• Solids and pure liquids have activity = 1</li>
+            <li>• Higher reactant concentration → lower Q → higher E (more driving force)</li>
+            <li>• At equilibrium: E = 0 and Q = K</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Complete Topic Button -->
+      <div class="mt-8 pt-6 border-t border-gray-200">
+        <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div class="text-center sm:text-left">
+            <h3 class="font-semibold text-gray-800">Ready to Complete?</h3>
+            <p class="text-sm text-gray-600">View all sections, then take the quiz to mark this topic as complete.</p>
+          </div>
+          <button id="topic-complete-btn" disabled
+                  class="px-6 py-3 rounded-xl bg-gray-300 text-gray-500 cursor-not-allowed opacity-50 flex items-center gap-2 text-lg font-medium">
+            <i class="fas fa-lock mr-2"></i>
+            <span>Complete (0% viewed)</span>
+          </button>
+        </div>
+      </div>
+    </article>
+  </div>
+
+  <!-- Scripts -->
+  <script>
+    // Accordion functionality
+    document.querySelectorAll('.accordion-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const content = btn.nextElementSibling;
+        const icon = btn.querySelector('.fa-chevron-down');
+        content.classList.toggle('open');
+        icon.classList.toggle('rotate-180');
+      });
+    });
+  </script>
+
+  <!-- Topic Tracking and Quiz System -->
+  <script type="module">
+    import { TopicTracker } from '/js/topic-tracker.js';
+    import { TopicQuiz } from '/js/topic-quiz.js';
+
+    // Quiz questions for Nernst Equation
+    const quizQuestions = [
+      {
+        question: "What does the Nernst equation calculate?",
+        options: [
+          "Standard electrode potential",
+          "Cell potential at non-standard conditions",
+          "Equilibrium constant",
+          "Rate of reaction"
+        ],
+        correct: 1,
+        explanation: "The Nernst equation calculates the electrode or cell potential under non-standard conditions of concentration, pressure, or temperature."
+      },
+      {
+        question: "What is the simplified form of the Nernst equation at 25°C?",
+        options: [
+          "E = E° - (RT/nF) ln Q",
+          "E = E° - (0.059/n) log Q",
+          "E = E° + (RT/nF) ln Q",
+          "E = E° × Q"
+        ],
+        correct: 1,
+        explanation: "At 25°C, the constants combine to give: E = E° - (0.059/n) log Q, where 0.059 is a convenient constant."
+      },
+      {
+        question: "In the Nernst equation, what does Q represent?",
+        options: [
+          "Charge transferred",
+          "Reaction quotient",
+          "Heat of reaction",
+          "Electrode constant"
+        ],
+        correct: 1,
+        explanation: "Q is the reaction quotient - the ratio of product concentrations to reactant concentrations at any point in the reaction."
+      },
+      {
+        question: "What happens to cell potential when reactant concentration increases?",
+        options: [
+          "E decreases",
+          "E increases",
+          "E stays the same",
+          "E becomes negative"
+        ],
+        correct: 1,
+        explanation: "When reactants increase, Q decreases, log Q becomes more negative, so E = E° - (positive)×(negative) = E° + positive, meaning E increases."
+      },
+      {
+        question: "Calculate E for a cell with E° = 1.10 V, n = 2, and Q = 100.",
+        options: [
+          "1.04 V",
+          "1.16 V",
+          "1.10 V",
+          "0.98 V"
+        ],
+        correct: 0,
+        explanation: "E = E° - (0.059/n) log Q = 1.10 - (0.059/2) × log(100) = 1.10 - 0.0295 × 2 = 1.10 - 0.059 = 1.04 V"
+      },
+      {
+        question: "At equilibrium, what is the value of E?",
+        options: [
+          "E = E°",
+          "E = 0",
+          "E = -E°",
+          "E = infinity"
+        ],
+        correct: 1,
+        explanation: "At equilibrium, there is no net driving force for the reaction, so E = 0. Also, at equilibrium Q = K (the equilibrium constant)."
+      },
+      {
+        question: "What is the activity of a pure solid in the Nernst equation?",
+        options: [
+          "0",
+          "1",
+          "Its molar mass",
+          "Its concentration"
+        ],
+        correct: 1,
+        explanation: "Pure solids and pure liquids have activity = 1 by definition, so they don't appear in the Q expression."
+      },
+      {
+        question: "If [Cu²⁺] = 0.01 M in a Cu²⁺/Cu half-cell (E° = +0.34 V), what is E?",
+        options: [
+          "0.34 V",
+          "0.28 V",
+          "0.40 V",
+          "0.22 V"
+        ],
+        correct: 1,
+        explanation: "Q = 1/[Cu²⁺] = 100. E = 0.34 - (0.059/2) log(100) = 0.34 - 0.0295 × 2 = 0.34 - 0.059 = 0.28 V"
+      }
+    ];
+
+    // Initialize tracker
+    const tracker = new TopicTracker({
+      topicId: 'nernst-equation',
+      topicTitle: 'Nernst Equation',
+      subject: 'chemistry',
+      sections: ['section-1', 'section-2', 'section-3', 'section-4', 'section-5', 'section-6', 'section-7', 'section-8'],
+      quizRequired: true
+    });
+
+    // Initialize quiz
+    const quiz = new TopicQuiz({
+      topicId: 'nernst-equation',
+      topicTitle: 'Nernst Equation',
+      subject: 'chemistry',
+      questions: quizQuestions,
+      passingScore: 60,
+      tracker: tracker
+    });
+
+    // Track accordions being opened
+    document.querySelectorAll('.accordion-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const section = btn.closest('section');
+        if (section && section.id) {
+          tracker.markSectionViewed(section.id);
+        }
+      });
+    });
+
+    // Track practice problem views
+    document.querySelectorAll('details').forEach(details => {
+      details.addEventListener('toggle', () => {
+        if (details.open) {
+          tracker.markSectionViewed('section-7');
+        }
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="120" viewBox="0 0 400 120" role="img" aria-label="Simple series circuit with battery and resistor">
+  <rect width="100%" height="100%" fill="none"/>
+  <g stroke="#1e3a8a" stroke-width="3" fill="none">
+    <line x1="20" y1="60" x2="100" y2="60" />
+    <rect x="100" y="45" width="40" height="30" stroke="#1e3a8a" fill="#bfdbfe" />
+    <line x1="140" y1="60" x2="260" y2="60" />
+    <g transform="translate(260,40)">
+      <line x1="0" y1="0" x2="0" y2="40" stroke="#7c3aed" stroke-width="2" />
+      <line x1="20" y1="0" x2="20" y2="40" stroke="#7c3aed" stroke-width="6" />
+    </g>
+    <line x1="300" y1="60" x2="380" y2="60" />
+  </g>
+  <text x="110" y="40" font-size="12" fill="#1e293b">R</text>
+  <text x="270" y="35" font-size="12" fill="#1e293b">Battery</text>
+</svg>

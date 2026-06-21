@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Atomic Structure | Chemistry</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style> body{font-family:Inter, sans-serif}.content-card{-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);background:rgba(255,255,255,0.95);border:1px solid rgba(255,255,255,0.2);} .accordion-content{max-height:0;overflow:hidden;transition:max-height 0.3s ease-out;} .accordion-content.open{max-height:2000px;} </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-6">
+  <div class="max-w-4xl mx-auto">
+    <nav class="mb-4"><a href="index.html" class="text-blue-600">← Back to Foundations</a></nav>
+    <article class="content-card rounded-lg p-6">
+      <h1 class="text-2xl font-bold mb-4 text-indigo-800">Atomic Structure</h1>
+      
+      <!-- Learning Objectives -->
+      <div class="bg-indigo-50 border-l-4 border-indigo-500 p-4 mb-6 rounded-r">
+        <h3 class="font-semibold text-indigo-800 mb-2">Learning Objectives</h3>
+        <ul class="list-disc pl-5 text-gray-700 space-y-1">
+          <li>Describe the structure of the atom</li>
+          <li>Identify the locations and properties of protons, neutrons, and electrons</li>
+          <li>Define atomic number and mass number</li>
+          <li>Explain isotopes and calculate relative atomic mass</li>
+          <li>Write electron configurations for simple atoms</li>
+        </ul>
+      </div>
+
+      <!-- Introduction -->
+      <section class="mb-6">
+        <h2 class="text-xl font-semibold mb-3 text-gray-800">What is an Atom?</h2>
+        <p class="text-gray-700 mb-3">An atom is the smallest particle of an element that can take part in a chemical reaction. The word "atom" comes from the Greek word "atomos" meaning indivisible. However, we now know that atoms are made up of even smaller particles called <strong>subatomic particles</strong>.</p>
+        
+        <div class="bg-gradient-to-r from-blue-100 to-purple-100 p-4 rounded-lg mb-4">
+          <p class="text-gray-800 font-medium">Atoms are incredibly small! A typical atom has a diameter of about 0.1 to 0.5 nanometers (1 nm = 10⁻⁹ m). If you could line up 10 million atoms side by side, they would only measure about 1 millimeter!</p>
+        </div>
+      </section>
+
+      <!-- Subatomic Particles -->
+      <section class="mb-6">
+        <h2 class="text-xl font-semibold mb-3 text-gray-800">Subatomic Particles</h2>
+        <p class="text-gray-700 mb-3">Atoms consist of three main subatomic particles:</p>
+        
+        <div class="overflow-x-auto mb-4">
+          <table class="w-full border-collapse border border-gray-300 rounded-lg overflow-hidden">
+            <thead class="bg-indigo-600 text-white">
+              <tr>
+                <th class="border border-gray-300 p-3">Particle</th>
+                <th class="border border-gray-300 p-3">Symbol</th>
+                <th class="border border-gray-300 p-3">Relative Mass</th>
+                <th class="border border-gray-300 p-3">Relative Charge</th>
+                <th class="border border-gray-300 p-3">Location</th>
+              </tr>
+            </thead>
+            <tbody class="bg-white">
+              <tr>
+                <td class="border border-gray-300 p-3 font-medium">Proton</td>
+                <td class="border border-gray-300 p-3">p</td>
+                <td class="border border-gray-300 p-3">1</td>
+                <td class="border border-gray-300 p-3 text-red-600">+1</td>
+                <td class="border border-gray-300 p-3">Nucleus</td>
+              </tr>
+              <tr class="bg-gray-50">
+                <td class="border border-gray-300 p-3 font-medium">Neutron</td>
+                <td class="border border-gray-300 p-3">n</td>
+                <td class="border border-gray-300 p-3">1</td>
+                <td class="border border-gray-300 p-3">0</td>
+                <td class="border border-gray-300 p-3">Nucleus</td>
+              </tr>
+              <tr>
+                <td class="border border-gray-300 p-3 font-medium">Electron</td>
+                <td class="border border-gray-300 p-3">e⁻</td>
+                <td class="border border-gray-300 p-3">1/1840 (≈ 0.0005)</td>
+                <td class="border border-gray-300 p-3 text-blue-600">−1</td>
+                <td class="border border-gray-300 p-3">Electron shells/orbitals</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-4">
+          <h4 class="font-semibold text-yellow-800 mb-1">Key Points to Remember</h4>
+          <ul class="list-disc pl-5 text-gray-700 space-y-1">
+            <li>The <strong>nucleus</strong> contains protons and neutrons, making up most of the atom's mass</li>
+            <li>Electrons orbit the nucleus in electron shells (energy levels)</li>
+            <li>An atom is electrically neutral: number of protons = number of electrons</li>
+            <li>Most of an atom is empty space!</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Atomic Number and Mass Number -->
+      <section class="mb-6">
+        <h2 class="text-xl font-semibold mb-3 text-gray-800">Atomic Number and Mass Number</h2>
+        
+        <div class="grid md:grid-cols-2 gap-4 mb-4">
+          <div class="bg-green-50 p-4 rounded-lg border border-green-200">
+            <h3 class="font-semibold text-green-800 mb-2">Atomic Number (Z)</h3>
+            <p class="text-gray-700">The atomic number is the number of protons in the nucleus of an atom. It identifies the element and determines its position in the periodic table.</p>
+            <p class="mt-2 text-green-700 font-medium">Atomic Number (Z) = Number of Protons</p>
+          </div>
+          
+          <div class="bg-purple-50 p-4 rounded-lg border border-purple-200">
+            <h3 class="font-semibold text-purple-800 mb-2">Mass Number (A)</h3>
+            <p class="text-gray-700">The mass number is the total number of protons and neutrons in the nucleus of an atom.</p>
+            <p class="mt-2 text-purple-700 font-medium">Mass Number (A) = Protons + Neutrons</p>
+          </div>
+        </div>
+
+        <!-- Notation -->
+        <div class="bg-gray-100 p-4 rounded-lg mb-4">
+          <h4 class="font-semibold text-gray-800 mb-2">Nuclear Notation</h4>
+          <div class="flex items-center justify-center py-4">
+            <div class="relative text-center">
+              <span class="absolute -top-6 left-0 text-sm text-gray-600">Mass Number (A)</span>
+              <span class="text-2xl font-bold text-indigo-600">23</span>
+              <br>
+              <span class="absolute -bottom-6 left-0 text-sm text-gray-600">Atomic Number (Z)</span>
+              <span class="text-sm text-gray-500">11</span>
+            </div>
+            <span class="text-2xl font-bold ml-2">Na</span>
+            <span class="ml-2 text-gray-600">→ Sodium atom</span>
+          </div>
+          <p class="text-center text-gray-700 mt-6">This notation tells us: Sodium has 11 protons, 11 electrons, and 23 - 11 = 12 neutrons</p>
+        </div>
+      </section>
+
+      <!-- Isotopes -->
+      <section class="mb-6">
+        <h2 class="text-xl font-semibold mb-3 text-gray-800">Isotopes</h2>
+        <p class="text-gray-700 mb-3"><strong>Isotopes</strong> are atoms of the same element that have the same number of protons but different numbers of neutrons. This means they have the same atomic number but different mass numbers.</p>
+        
+        <div class="bg-orange-50 p-4 rounded-lg mb-4">
+          <h4 class="font-semibold text-orange-800 mb-3">Example: Isotopes of Carbon</h4>
+          <div class="grid grid-cols-3 gap-4 text-center">
+            <div class="bg-white p-3 rounded-lg shadow">
+              <div class="text-lg font-bold">Carbon-12</div>
+              <div class="text-sm text-gray-600">⁶⁄₆C</div>
+              <div class="text-xs text-gray-500 mt-1">6p, 6n, 6e</div>
+              <div class="text-xs text-green-600 mt-1">Most common (98.9%)</div>
+            </div>
+            <div class="bg-white p-3 rounded-lg shadow">
+              <div class="text-lg font-bold">Carbon-13</div>
+              <div class="text-sm text-gray-600">⁷⁄₆C</div>
+              <div class="text-xs text-gray-500 mt-1">6p, 7n, 6e</div>
+              <div class="text-xs text-yellow-600 mt-1">Rare (1.1%)</div>
+            </div>
+            <div class="bg-white p-3 rounded-lg shadow">
+              <div class="text-lg font-bold">Carbon-14</div>
+              <div class="text-sm text-gray-600">⁸⁄₆C</div>
+              <div class="text-xs text-gray-500 mt-1">6p, 8n, 6e</div>
+              <div class="text-xs text-red-600 mt-1">Radioactive</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-teal-50 p-4 rounded-lg mb-4">
+          <h4 class="font-semibold text-teal-800 mb-2">Relative Atomic Mass (Aᵣ)</h4>
+          <p class="text-gray-700 mb-2">The relative atomic mass is the weighted average mass of all naturally occurring isotopes of an element, relative to ¹²C = 12 exactly.</p>
+          <div class="bg-white p-3 rounded font-mono text-center">
+            Aᵣ = Σ (isotope mass × abundance) / 100
+          </div>
+        </div>
+
+        <!-- Worked Example -->
+        <div class="bg-blue-50 border border-blue-200 p-4 rounded-lg mb-4">
+          <h4 class="font-semibold text-blue-800 mb-2">📝 Worked Example</h4>
+          <p class="text-gray-700 mb-2">Chlorine has two isotopes: ³⁵Cl (75% abundance) and ³⁷Cl (25% abundance). Calculate the relative atomic mass of chlorine.</p>
+          <div class="bg-white p-3 rounded mt-2">
+            <p class="font-medium mb-2">Solution:</p>
+            <p class="text-gray-700">Aᵣ = (35 × 75 + 37 × 25) / 100</p>
+            <p class="text-gray-700">Aᵣ = (2625 + 925) / 100</p>
+            <p class="text-gray-700">Aᵣ = 3550 / 100</p>
+            <p class="text-gray-700 font-bold text-green-700">Aᵣ = 35.5</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Electron Configuration -->
+      <section class="mb-6">
+        <h2 class="text-xl font-semibold mb-3 text-gray-800">Electron Configuration</h2>
+        <p class="text-gray-700 mb-3">Electrons are arranged in energy levels (shells) around the nucleus. The arrangement follows specific rules:</p>
+        
+        <div class="bg-gray-50 p-4 rounded-lg mb-4">
+          <h4 class="font-semibold text-gray-800 mb-2">Maximum Electrons in Each Shell</h4>
+          <div class="grid grid-cols-4 gap-2 text-center">
+            <div class="bg-white p-3 rounded shadow">
+              <div class="font-bold text-indigo-600">1st Shell</div>
+              <div class="text-2xl font-bold">2</div>
+              <div class="text-xs text-gray-500">electrons</div>
+            </div>
+            <div class="bg-white p-3 rounded shadow">
+              <div class="font-bold text-indigo-600">2nd Shell</div>
+              <div class="text-2xl font-bold">8</div>
+              <div class="text-xs text-gray-500">electrons</div>
+            </div>
+            <div class="bg-white p-3 rounded shadow">
+              <div class="font-bold text-indigo-600">3rd Shell</div>
+              <div class="text-2xl font-bold">18</div>
+              <div class="text-xs text-gray-500">electrons</div>
+            </div>
+            <div class="bg-white p-3 rounded shadow">
+              <div class="font-bold text-indigo-600">4th Shell</div>
+              <div class="text-2xl font-bold">32</div>
+              <div class="text-xs text-gray-500">electrons</div>
+            </div>
+          </div>
+          <p class="text-center text-sm text-gray-600 mt-3">Formula: 2n² (where n = shell number)</p>
+        </div>
+
+        <div class="bg-green-50 border border-green-200 p-4 rounded-lg mb-4">
+          <h4 class="font-semibold text-green-800 mb-2">Electron Configurations of First 20 Elements</h4>
+          <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+              <thead class="bg-green-600 text-white">
+                <tr>
+                  <th class="p-2">Element</th>
+                  <th class="p-2">Symbol</th>
+                  <th class="p-2">Atomic No.</th>
+                  <th class="p-2">1st</th>
+                  <th class="p-2">2nd</th>
+                  <th class="p-2">3rd</th>
+                  <th class="p-2">4th</th>
+                  <th class="p-2">Notation</th>
+                </tr>
+              </thead>
+              <tbody class="bg-white">
+                <tr><td class="p-2 border">Hydrogen</td><td class="p-2 border">H</td><td class="p-2 border">1</td><td class="p-2 border text-center">1</td><td class="p-2 border text-center">-</td><td class="p-2 border text-center">-</td><td class="p-2 border text-center">-</td><td class="p-2 border font-mono">1</td></tr>
+                <tr class="bg-gray-50"><td class="p-2 border">Helium</td><td class="p-2 border">He</td><td class="p-2 border">2</td><td class="p-2 border text-center">2</td><td class="p-2 border text-center">-</td><td class="p-2 border text-center">-</td><td class="p-2 border text-center">-</td><td class="p-2 border font-mono">2</td></tr>
+                <tr><td class="p-2 border">Lithium</td><td class="p-2 border">Li</td><td class="p-2 border">3</td><td class="p-2 border text-center">2</td><td class="p-2 border text-center">1</td><td class="p-2 border text-center">-</td><td class="p-2 border text-center">-</td><td class="p-2 border font-mono">2,1</td></tr>
+                <tr class="bg-gray-50"><td class="p-2 border">Carbon</td><td class="p-2 border">C</td><td class="p-2 border">6</td><td class="p-2 border text-center">2</td><td class="p-2 border text-center">4</td><td class="p-2 border text-center">-</td><td class="p-2 border text-center">-</td><td class="p-2 border font-mono">2,4</td></tr>
+                <tr><td class="p-2 border">Neon</td><td class="p-2 border">Ne</td><td class="p-2 border">10</td><td class="p-2 border text-center">2</td><td class="p-2 border text-center">8</td><td class="p-2 border text-center">-</td><td class="p-2 border text-center">-</td><td class="p-2 border font-mono">2,8</td></tr>
+                <tr class="bg-gray-50"><td class="p-2 border">Sodium</td><td class="p-2 border">Na</td><td class="p-2 border">11</td><td class="p-2 border text-center">2</td><td class="p-2 border text-center">8</td><td class="p-2 border text-center">1</td><td class="p-2 border text-center">-</td><td class="p-2 border font-mono">2,8,1</td></tr>
+                <tr><td class="p-2 border">Chlorine</td><td class="p-2 border">Cl</td><td class="p-2 border">17</td><td class="p-2 border text-center">2</td><td class="p-2 border text-center">8</td><td class="p-2 border text-center">7</td><td class="p-2 border text-center">-</td><td class="p-2 border font-mono">2,8,7</td></tr>
+                <tr class="bg-gray-50"><td class="p-2 border">Argon</td><td class="p-2 border">Ar</td><td class="p-2 border">18</td><td class="p-2 border text-center">2</td><td class="p-2 border text-center">8</td><td class="p-2 border text-center">8</td><td class="p-2 border text-center">-</td><td class="p-2 border font-mono">2,8,8</td></tr>
+                <tr><td class="p-2 border">Potassium</td><td class="p-2 border">K</td><td class="p-2 border">19</td><td class="p-2 border text-center">2</td><td class="p-2 border text-center">8</td><td class="p-2 border text-center">8</td><td class="p-2 border text-center">1</td><td class="p-2 border font-mono">2,8,8,1</td></tr>
+                <tr class="bg-gray-50"><td class="p-2 border">Calcium</td><td class="p-2 border">Ca</td><td class="p-2 border">20</td><td class="p-2 border text-center">2</td><td class="p-2 border text-center">8</td><td class="p-2 border text-center">8</td><td class="p-2 border text-center">2</td><td class="p-2 border font-mono">2,8,8,2</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- Interactive Accordion: Atomic Models -->
+      <section class="mb-6">
+        <h2 class="text-xl font-semibold mb-3 text-gray-800">Historical Development of Atomic Models</h2>
+        
+        <div class="space-y-2">
+          <div class="border border-gray-200 rounded-lg">
+            <button class="accordion-btn w-full text-left p-4 bg-gray-50 hover:bg-gray-100 font-medium flex justify-between items-center" onclick="toggleAccordion(this)">
+              <span>John Dalton's Solid Sphere Model (1803)</span>
+              <span class="transform transition-transform">▼</span>
+            </button>
+            <div class="accordion-content">
+              <div class="p-4">
+                <p class="text-gray-700">Dalton proposed that all matter is made of tiny, solid, indestructible spheres called atoms. He suggested that atoms of the same element are identical and atoms of different elements have different masses.</p>
+                <ul class="list-disc pl-5 mt-2 text-gray-600">
+                  <li>Atoms are solid, indivisible spheres</li>
+                  <li>All atoms of an element are identical</li>
+                  <li>Atoms combine in simple whole number ratios</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          
+          <div class="border border-gray-200 rounded-lg">
+            <button class="accordion-btn w-full text-left p-4 bg-gray-50 hover:bg-gray-100 font-medium flex justify-between items-center" onclick="toggleAccordion(this)">
+              <span>J.J. Thomson's Plum Pudding Model (1897)</span>
+              <span class="transform transition-transform">▼</span>
+            </button>
+            <div class="accordion-content">
+              <div class="p-4">
+                <p class="text-gray-700">After discovering the electron, Thomson proposed that atoms are positive spheres with negative electrons embedded throughout, like plums in a pudding.</p>
+                <ul class="list-disc pl-5 mt-2 text-gray-600">
+                  <li>Atoms contain smaller particles (electrons)</li>
+                  <li>Atoms are divisible</li>
+                  <li>Positive charge spread throughout the atom</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          
+          <div class="border border-gray-200 rounded-lg">
+            <button class="accordion-btn w-full text-left p-4 bg-gray-50 hover:bg-gray-100 font-medium flex justify-between items-center" onclick="toggleAccordion(this)">
+              <span>Ernest Rutherford's Nuclear Model (1911)</span>
+              <span class="transform transition-transform">▼</span>
+            </button>
+            <div class="accordion-content">
+              <div class="p-4">
+                <p class="text-gray-700">Through his famous gold foil experiment, Rutherford discovered that atoms have a small, dense, positively charged nucleus with electrons orbiting around it.</p>
+                <ul class="list-disc pl-5 mt-2 text-gray-600">
+                  <li>Most of the atom is empty space</li>
+                  <li>Positive charge concentrated in tiny nucleus</li>
+                  <li>Electrons orbit the nucleus</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          
+          <div class="border border-gray-200 rounded-lg">
+            <button class="accordion-btn w-full text-left p-4 bg-gray-50 hover:bg-gray-100 font-medium flex justify-between items-center" onclick="toggleAccordion(this)">
+              <span>Niels Bohr's Model (1913)</span>
+              <span class="transform transition-transform">▼</span>
+            </button>
+            <div class="accordion-content">
+              <div class="p-4">
+                <p class="text-gray-700">Bohr proposed that electrons orbit the nucleus in fixed energy levels (shells) and can jump between levels by absorbing or emitting energy.</p>
+                <ul class="list-disc pl-5 mt-2 text-gray-600">
+                  <li>Electrons in fixed orbits (energy levels)</li>
+                  <li>Each orbit has specific energy</li>
+                  <li>Electrons can jump between levels</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Practice Problems -->
+      <section class="mb-6">
+        <h2 class="text-xl font-semibold mb-3 text-gray-800">Practice Problems</h2>
+        
+        <div class="space-y-4">
+          <div class="bg-white border border-gray-200 p-4 rounded-lg">
+            <p class="font-medium text-gray-800 mb-2">1. An atom has 17 protons and 18 neutrons. What is its atomic number and mass number?</p>
+            <div class="bg-gray-50 p-3 rounded mt-2 hidden answer">
+              <p class="text-gray-700">Atomic number = 17 (number of protons)</p>
+              <p class="text-gray-700">Mass number = 17 + 18 = 35</p>
+              <p class="text-gray-700 font-medium text-green-600">This is a chlorine-35 atom.</p>
+            </div>
+            <button class="mt-2 text-blue-600 hover:text-blue-800" onclick="this.previousElementSibling.classList.toggle('hidden')">Show Answer</button>
+          </div>
+          
+          <div class="bg-white border border-gray-200 p-4 rounded-lg">
+            <p class="font-medium text-gray-800 mb-2">2. Write the electron configuration for an atom with atomic number 15 (Phosphorus).</p>
+            <div class="bg-gray-50 p-3 rounded mt-2 hidden answer">
+              <p class="text-gray-700">Phosphorus has 15 electrons.</p>
+              <p class="text-gray-700">Electron configuration: <strong>2, 8, 5</strong></p>
+              <p class="text-gray-700">First shell: 2, Second shell: 8, Third shell: 5</p>
+            </div>
+            <button class="mt-2 text-blue-600 hover:text-blue-800" onclick="this.previousElementSibling.classList.toggle('hidden')">Show Answer</button>
+          </div>
+          
+          <div class="bg-white border border-gray-200 p-4 rounded-lg">
+            <p class="font-medium text-gray-800 mb-2">3. Copper has two isotopes: ⁶³Cu (69.2%) and ⁶⁵Cu (30.8%). Calculate the relative atomic mass.</p>
+            <div class="bg-gray-50 p-3 rounded mt-2 hidden answer">
+              <p class="text-gray-700">Aᵣ = (63 × 69.2 + 65 × 30.8) / 100</p>
+              <p class="text-gray-700">Aᵣ = (4359.6 + 2002) / 100</p>
+              <p class="text-gray-700">Aᵣ = 6361.6 / 100</p>
+              <p class="text-gray-700 font-bold text-green-600">Aᵣ = 63.6</p>
+            </div>
+            <button class="mt-2 text-blue-600 hover:text-blue-800" onclick="this.previousElementSibling.classList.toggle('hidden')">Show Answer</button>
+          </div>
+          
+          <div class="bg-white border border-gray-200 p-4 rounded-lg">
+            <p class="font-medium text-gray-800 mb-2">4. An ion has 12 protons, 14 neutrons, and 10 electrons. What is the symbol and charge of this ion?</p>
+            <div class="bg-gray-50 p-3 rounded mt-2 hidden answer">
+              <p class="text-gray-700">Atomic number = 12 → This is Magnesium (Mg)</p>
+              <p class="text-gray-700">Protons = 12 (+12 charge)</p>
+              <p class="text-gray-700">Electrons = 10 (-10 charge)</p>
+              <p class="text-gray-700">Net charge = +12 + (-10) = +2</p>
+              <p class="text-gray-700 font-bold text-green-600">Symbol: Mg²⁺ (Magnesium ion)</p>
+            </div>
+            <button class="mt-2 text-blue-600 hover:text-blue-800" onclick="this.previousElementSibling.classList.toggle('hidden')">Show Answer</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Real-World Applications -->
+      <section class="mb-6">
+        <h2 class="text-xl font-semibold mb-3 text-gray-800">Real-World Applications</h2>
+        <div class="grid md:grid-cols-2 gap-4">
+          <div class="bg-gradient-to-br from-blue-50 to-indigo-50 p-4 rounded-lg">
+            <h4 class="font-semibold text-indigo-800 mb-2">Carbon Dating</h4>
+            <p class="text-gray-700 text-sm">The radioactive isotope Carbon-14 is used to determine the age of ancient artifacts and fossils. This technique revolutionized archaeology!</p>
+          </div>
+          <div class="bg-gradient-to-br from-green-50 to-teal-50 p-4 rounded-lg">
+            <h4 class="font-semibold text-teal-800 mb-2">Medical Imaging</h4>
+            <p class="text-gray-700 text-sm">Radioactive isotopes like Technetium-99m are used in medical scans to diagnose diseases and study organ function.</p>
+          </div>
+          <div class="bg-gradient-to-br from-orange-50 to-amber-50 p-4 rounded-lg">
+            <h4 class="font-semibold text-amber-800 mb-2">Nuclear Power</h4>
+            <p class="text-gray-700 text-sm">Uranium-235 undergoes nuclear fission to generate electricity in nuclear power plants, providing clean energy.</p>
+          </div>
+          <div class="bg-gradient-to-br from-purple-50 to-pink-50 p-4 rounded-lg">
+            <h4 class="font-semibold text-pink-800 mb-2">Smoke Detectors</h4>
+            <p class="text-gray-700 text-sm">Americium-241, a radioactive isotope, is used in household smoke detectors to detect smoke particles.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Key Takeaways -->
+      <section class="mb-6">
+        <div class="bg-gradient-to-r from-indigo-100 to-purple-100 p-4 rounded-lg">
+          <h3 class="font-semibold text-indigo-800 mb-2">Key Takeaways for WAEC</h3>
+          <ul class="list-disc pl-5 text-gray-700 space-y-1">
+            <li>Know the properties of protons, neutrons, and electrons</li>
+            <li>Be able to calculate the number of each particle given atomic and mass numbers</li>
+            <li>Understand isotopes and be able to calculate relative atomic mass</li>
+            <li>Write electron configurations for the first 20 elements</li>
+            <li>Know the historical development of atomic models</li>
+          </ul>
+        </div>
+      </section>
+    </article>
+  </div>
+
+  <script>
+    function toggleAccordion(btn) {
+      const content = btn.nextElementSibling;
+      const arrow = btn.querySelector('span:last-child');
+      content.classList.toggle('open');
+      arrow.style.transform = content.classList.contains('open') ? 'rotate(180deg)' : 'rotate(0)';
+    }
+  </script>
+<!-- Topic Quiz System -->
+<script src="/js/topic-quiz-loader.js"></script>
+<script src="/js/topic-quiz-injector.js"></script>
+</body>
+</html>

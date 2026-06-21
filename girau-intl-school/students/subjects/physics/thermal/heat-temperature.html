@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heat & Temperature - Learning Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @keyframes fade-in-up {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in-up { animation: fade-in-up 0.5s ease-out forwards; }
+        .step-progress { transition: width 0.3s ease-in-out; }
+        .resource-card { transition: transform 0.2s; }
+        .resource-card:hover { transform: translateY(-4px); }
+        .step-button.active { background-color: #EFF6FF; color: #2563EB; }
+        .quiz-option.selected { border-color: #2563EB; background-color: #EFF6FF; }
+        .quiz-option.correct { border-color: #16A34A; background-color: #F0FDF4; }
+        .quiz-option.incorrect { background-color: #fff5f5; border-color: #e53e3e; }
+        
+        #modeLearnBtn.active { background-color: #EFF6FF; color: #2563EB; }
+        #modeAIBtn { position: relative; cursor: not-allowed; opacity: 0.7; }
+
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 40;
+        }
+        .sidebar-overlay.show { display: block; }
+
+        .simulation-container {
+            position: relative;
+            width: 100%;
+            height: 500px;
+            overflow: hidden;
+            border-radius: 8px;
+            background: #f9fafb;
+        }
+        .simulation-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 8px;
+            background: #f9fafb;
+        }
+        .video-container iframe {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        @media (max-width: 768px) {
+            .desktop-sidebar { display: none; }
+            .mobile-sidebar {
+                position: fixed;
+                top: 0; left: -280px;
+                width: 280px;
+                height: 100%;
+                background: white;
+                z-index: 50;
+                transition: left 0.3s ease;
+                overflow-y: auto;
+                box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+            }
+            .mobile-sidebar.show { left: 0; }
+            .simulation-container { height: 300px; }
+        }
+
+        .section-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            border: 1px solid #e5e7eb;
+        }
+
+        .intro-text {
+            background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%);
+            border-left: 4px solid #f97316;
+            padding: 1rem 1.25rem;
+            border-radius: 0 8px 8px 0;
+            margin-bottom: 1.5rem;
+        }
+        .intro-text p {
+            color: #9a3412;
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        .formula-box {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            border: 2px solid #3b82f6;
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1e40af;
+        }
+
+        .coming-soon-badge {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+            font-size: 10px;
+            padding: 2px 8px;
+            border-radius: 9999px;
+            margin-left: 8px;
+            text-transform: uppercase;
+            font-weight: 600;
+            animation: pulse 2s infinite;
+            white-space: nowrap;
+            display: inline-block;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .click-hint {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            color: #9ca3af;
+            font-size: 0.875rem;
+            font-weight: 400;
+            cursor: pointer;
+            margin-top: 16px;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Top Navigation -->
+    <nav class="bg-white shadow-sm fixed top-0 w-full z-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center">
+                    <button id="mobileMenuBtn" class="text-gray-600 hover:text-gray-900 mr-3 md:hidden" aria-label="Menu">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                    <h1 id="topicTitle" class="text-xl font-semibold text-gray-900">Heat & Temperature</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="text-sm text-gray-600 hidden sm:block">
+                        Progress: <span id="progressPercent">0%</span>
+                    </div>
+                    <div class="w-24 sm:w-32 h-2 bg-gray-200 rounded-full">
+                        <div id="progressBar" class="step-progress h-2 bg-orange-500 rounded-full" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Sidebar Overlay -->
+    <div id="sidebarOverlay" class="sidebar-overlay"></div>
+
+    <!-- Mobile Sidebar -->
+    <div id="mobileSidebar" class="mobile-sidebar">
+        <div class="p-4">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="font-semibold text-lg">Learning Steps</h3>
+                <button id="closeSidebarBtn" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            <ul id="mobileStepsList" class="space-y-2"></ul>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="pt-20 pb-24">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-12 gap-6">
+                <!-- Left Sidebar - Steps (Desktop) -->
+                <div class="md:col-span-3 desktop-sidebar">
+                    <div class="bg-white rounded-lg shadow-sm p-4 sticky top-20">
+                        <h3 class="font-semibold mb-4">Learning Steps</h3>
+                        <ul id="stepsList" class="space-y-2"></ul>
+                    </div>
+                </div>
+
+                <!-- Main Content Area -->
+                <div class="md:col-span-9">
+                    <!-- Mode Switcher -->
+                    <div class="bg-white rounded-lg shadow-sm p-4 mb-6">
+                        <div class="flex space-x-4">
+                            <button id="modeLearnBtn" class="flex-1 px-4 py-2 rounded-lg font-medium transition-all duration-200 active bg-orange-50 text-orange-600 hover:bg-orange-50">
+                                <i class="fas fa-book mr-2"></i>Learn Yourself
+                            </button>
+                            <button id="modeAIBtn" class="flex-1 px-4 py-2 rounded-lg font-medium transition-all duration-200 text-gray-600 relative whitespace-nowrap" title="Coming Soon">
+                                <i class="fas fa-robot mr-2"></i>AI-Powered Learning
+                                <span class="coming-soon-badge">Coming Soon</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Current Step Content -->
+                    <div id="stepContainer" class="bg-white rounded-lg shadow-sm p-6 mb-6"></div>
+
+                    <!-- Resources Section -->
+                    <div id="resourcesContainer" class="bg-white rounded-lg shadow-sm p-6">
+                        <h3 class="text-lg font-semibold mb-4">Resources</h3>
+                        <div id="resourcesGrid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Bottom Navigation -->
+    <div class="fixed bottom-0 w-full bg-white border-t border-gray-200 z-40">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between py-4">
+                <button id="prevStepBtn" class="px-4 py-2 text-gray-600 hover:text-gray-900 disabled:opacity-50 disabled:cursor-not-allowed">
+                    <i class="fas fa-chevron-left mr-2"></i>Previous
+                </button>
+                <button id="nextStepBtn" class="px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 disabled:opacity-50 disabled:cursor-not-allowed">
+                    Continue<i class="fas fa-chevron-right ml-2"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Resource Modal -->
+    <div id="resourceModal" class="hidden fixed inset-0 bg-gray-800 bg-opacity-75 overflow-y-auto h-full w-full z-50 flex items-center justify-center p-4">
+        <div class="relative mx-auto p-5 border w-full max-w-5xl shadow-lg rounded-md bg-white">
+            <div class="flex justify-between items-center pb-3 border-b">
+                <h3 id="resourceModalTitle" class="text-xl font-semibold">Resource</h3>
+                <button id="closeResourceModal" class="text-gray-600 hover:text-gray-900 text-2xl font-bold">&times;</button>
+            </div>
+            <div id="resourceModalContent" class="mt-4"></div>
+        </div>
+    </div>
+
+    <!-- Quiz Modal -->
+    <div id="quizModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50 p-4">
+        <div class="relative top-10 md:top-20 mx-auto p-5 border w-full max-w-2xl shadow-lg rounded-md bg-white">
+            <div id="quizContent" class="p-4 md:p-6"></div>
+        </div>
+    </div>
+
+    <script>
+        let currentStepIndex = 0;
+        let currentChunkIndex = 0;
+        let stepsCompleted = [];
+
+        const topicData = {
+            title: "Heat & Temperature",
+            steps: [
+                {
+                    id: "introduction",
+                    title: "Understanding Temperature",
+                    type: "note",
+                    chunks: [
+                        {
+                            intro: "Let's begin with a fundamental question: What makes something hot or cold? The answer lies in understanding temperature at the molecular level.",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-thermometer-half text-orange-500 mr-3"></i>What is Temperature?
+                                    </h3>
+                                    <p class="text-gray-700 leading-relaxed mb-4">Temperature is a measure of the <strong>average kinetic energy</strong> of the particles in a substance. When we say something is "hot," we're really saying its particles are moving rapidly. When something is "cold," its particles are moving more slowly.</p>
+                                    <div class="bg-orange-50 p-4 rounded-lg border-l-4 border-orange-500 mb-4">
+                                        <p class="text-gray-700"><strong>Key Point:</strong> Temperature does NOT measure the total heat energy in an object—it only measures how fast the particles are moving on average.</p>
+                                    </div>
+                                </div>
+                            `
+                        },
+                        {
+                            intro: "Now let's look at the different temperature scales used around the world. Understanding how to convert between them is essential for physics calculations.",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-ruler text-orange-500 mr-3"></i>Temperature Scales
+                                    </h3>
+                                    <div class="grid md:grid-cols-3 gap-4 mb-4">
+                                        <div class="bg-blue-50 p-4 rounded-lg border-2 border-blue-200">
+                                            <h4 class="font-bold text-blue-700 mb-2">Celsius (°C)</h4>
+                                            <ul class="text-sm text-gray-700 space-y-1">
+                                                <li>• Water freezes at 0°C</li>
+                                                <li>• Water boils at 100°C</li>
+                                                <li>• Most commonly used worldwide</li>
+                                            </ul>
+                                        </div>
+                                        <div class="bg-purple-50 p-4 rounded-lg border-2 border-purple-200">
+                                            <h4 class="font-bold text-purple-700 mb-2">Kelvin (K)</h4>
+                                            <ul class="text-sm text-gray-700 space-y-1">
+                                                <li>• Absolute zero = 0 K</li>
+                                                <li>• Water freezes at 273.15 K</li>
+                                                <li>• Used in scientific calculations</li>
+                                            </ul>
+                                        </div>
+                                        <div class="bg-green-50 p-4 rounded-lg border-2 border-green-200">
+                                            <h4 class="font-bold text-green-700 mb-2">Fahrenheit (°F)</h4>
+                                            <ul class="text-sm text-gray-700 space-y-1">
+                                                <li>• Water freezes at 32°F</li>
+                                                <li>• Water boils at 212°F</li>
+                                                <li>• Used mainly in the USA</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            `
+                        },
+                        {
+                            intro: "Here are the essential conversion formulas you need to memorize. These are frequently tested in WAEC examinations.",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-exchange-alt text-orange-500 mr-3"></i>Conversion Formulas
+                                    </h3>
+                                    <div class="space-y-4">
+                                        <div class="formula-box">
+                                            K = °C + 273.15
+                                        </div>
+                                        <div class="formula-box">
+                                            °C = K − 273.15
+                                        </div>
+                                        <div class="formula-box">
+                                            °F = (°C × 9/5) + 32
+                                        </div>
+                                        <div class="bg-yellow-50 p-4 rounded-lg border-l-4 border-yellow-500">
+                                            <p class="text-gray-700"><strong>Remember:</strong> The Kelvin scale has no negative values because absolute zero (0 K) is the lowest possible temperature where all molecular motion stops!</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            `
+                        }
+                    ],
+                    resources: [
+                        { type: "video", title: "Temperature Scales Explained", description: "Understanding Celsius, Kelvin, and Fahrenheit", url: "https://www.youtube.com/embed/EIK8f2P6fVU" }
+                    ],
+                    quiz: {
+                        question: "What does temperature actually measure?",
+                        options: ["Total heat energy in an object", "Average kinetic energy of particles", "The weight of molecules", "The number of particles"],
+                        correct: 1,
+                        explanation: "Temperature measures the average kinetic energy of particles. It tells us how fast particles are moving on average, not the total energy."
+                    }
+                },
+                {
+                    id: "heat-definition",
+                    title: "What is Heat?",
+                    type: "note",
+                    chunks: [
+                        {
+                            intro: "Now that we understand temperature, let's explore what heat really is. Heat and temperature are related but they are NOT the same thing!",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-fire text-orange-500 mr-3"></i>Defining Heat
+                                    </h3>
+                                    <p class="text-gray-700 leading-relaxed mb-4">Heat is the <strong>transfer of thermal energy</strong> between objects due to a temperature difference. Heat always flows from a hotter object to a colder one—never the other way around naturally.</p>
+                                    <div class="bg-red-50 p-4 rounded-lg border-l-4 border-red-500 mb-4">
+                                        <p class="text-gray-700"><strong>Important:</strong> Heat is energy in transit. An object cannot "contain" heat—it contains internal energy. We only call it "heat" when it's being transferred!</p>
+                                    </div>
+                                </div>
+                            `
+                        },
+                        {
+                            intro: "Let's understand the crucial difference between heat and temperature with a practical example.",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-balance-scale text-orange-500 mr-3"></i>Heat vs Temperature: A Comparison
+                                    </h3>
+                                    <div class="overflow-x-auto">
+                                        <table class="w-full border-collapse border border-gray-300 rounded-lg overflow-hidden">
+                                            <thead>
+                                                <tr class="bg-orange-100">
+                                                    <th class="border border-gray-300 p-3 text-left">Aspect</th>
+                                                    <th class="border border-gray-300 p-3 text-left">Temperature</th>
+                                                    <th class="border border-gray-300 p-3 text-left">Heat</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td class="border border-gray-300 p-3 font-medium">Definition</td>
+                                                    <td class="border border-gray-300 p-3">Measure of average kinetic energy</td>
+                                                    <td class="border border-gray-300 p-3">Transfer of thermal energy</td>
+                                                </tr>
+                                                <tr class="bg-gray-50">
+                                                    <td class="border border-gray-300 p-3 font-medium">Symbol</td>
+                                                    <td class="border border-gray-300 p-3">T (or θ)</td>
+                                                    <td class="border border-gray-300 p-3">Q</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="border border-gray-300 p-3 font-medium">Unit</td>
+                                                    <td class="border border-gray-300 p-3">Kelvin (K), Celsius (°C)</td>
+                                                    <td class="border border-gray-300 p-3">Joule (J)</td>
+                                                </tr>
+                                                <tr class="bg-gray-50">
+                                                    <td class="border border-gray-300 p-3 font-medium">Measures</td>
+                                                    <td class="border border-gray-300 p-3">How hot or cold something is</td>
+                                                    <td class="border border-gray-300 p-3">Amount of energy transferred</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            `
+                        },
+                        {
+                            intro: "Here's a classic example that helps distinguish between heat and temperature. This often appears in WAEC exams!",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-lightbulb text-orange-500 mr-3"></i>Practical Example
+                                    </h3>
+                                    <div class="bg-amber-50 p-5 rounded-lg border-2 border-amber-300">
+                                        <h4 class="font-semibold text-amber-800 mb-3">The Cup of Tea vs the Swimming Pool</h4>
+                                        <p class="text-gray-700 mb-3">A cup of hot tea at 80°C has a <strong>higher temperature</strong> than a swimming pool at 25°C.</p>
+                                        <p class="text-gray-700 mb-3">However, the swimming pool contains <strong>much more heat energy</strong> (total internal energy) because it has many more water molecules!</p>
+                                        <p class="text-gray-600 text-sm">This shows that temperature and total heat energy are different concepts. A small hot object can have less total energy than a large cool object.</p>
+                                    </div>
+                                </div>
+                            `
+                        }
+                    ],
+                    resources: [
+                        { type: "video", title: "Heat vs Temperature", description: "Clear explanation of the difference", url: "https://www.youtube.com/embed/0iJf_XQhPTU" }
+                    ],
+                    quiz: {
+                        question: "Which statement about heat is correct?",
+                        options: ["Heat flows from cold to hot objects", "Heat is stored in objects", "Heat is the transfer of thermal energy due to temperature difference", "Heat and temperature are the same thing"],
+                        correct: 2,
+                        explanation: "Heat is the transfer of thermal energy between objects due to a temperature difference. It always flows from hot to cold objects naturally."
+                    }
+                },
+                {
+                    id: "heat-capacity",
+                    title: "Heat Capacity & Specific Heat",
+                    type: "note",
+                    chunks: [
+                        {
+                            intro: "Why does a metal spoon get hot faster than a wooden spoon when placed in hot soup? The answer lies in heat capacity and specific heat capacity!",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-tint text-orange-500 mr-3"></i>Heat Capacity
+                                    </h3>
+                                    <p class="text-gray-700 leading-relaxed mb-4"><strong>Heat Capacity (C)</strong> is the amount of heat energy required to raise the temperature of an entire object by 1 K (or 1°C).</p>
+                                    <div class="formula-box mb-4">
+                                        C = Q / ΔT
+                                    </div>
+                                    <p class="text-gray-700">Where: C = Heat Capacity (J/K), Q = Heat energy (J), ΔT = Temperature change (K or °C)</p>
+                                </div>
+                            `
+                        },
+                        {
+                            intro: "Specific Heat Capacity is one of the most important concepts in thermal physics. Let's understand what it means and how to use it.",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-flask text-orange-500 mr-3"></i>Specific Heat Capacity
+                                    </h3>
+                                    <p class="text-gray-700 leading-relaxed mb-4"><strong>Specific Heat Capacity (c)</strong> is the amount of heat energy required to raise the temperature of <strong>1 kg</strong> of a substance by 1 K (or 1°C).</p>
+                                    <div class="formula-box mb-4">
+                                        Q = m × c × ΔT
+                                    </div>
+                                    <p class="text-gray-700 mb-4">Where: Q = Heat energy (J), m = Mass (kg), c = Specific heat capacity (J/kg·K), ΔT = Temperature change (K)</p>
+                                    
+                                    <div class="bg-blue-50 p-4 rounded-lg mb-4">
+                                        <h4 class="font-semibold text-blue-800 mb-2">Common Specific Heat Capacities:</h4>
+                                        <ul class="text-gray-700 space-y-1">
+                                            <li>• Water: 4,186 J/kg·K (very high!)</li>
+                                            <li>• Ice: 2,090 J/kg·K</li>
+                                            <li>• Aluminum: 900 J/kg·K</li>
+                                            <li>• Iron: 450 J/kg·K</li>
+                                            <li>• Copper: 385 J/kg·K</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            `
+                        },
+                        {
+                            intro: "Let's work through a detailed example. This type of calculation frequently appears in WAEC exams.",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-calculator text-orange-500 mr-3"></i>Worked Example
+                                    </h3>
+                                    <div class="bg-green-50 p-5 rounded-lg border-l-4 border-green-500">
+                                        <p class="font-semibold text-green-800 mb-3">Problem: How much heat energy is needed to raise the temperature of 2 kg of water from 20°C to 80°C?</p>
+                                        <div class="bg-white p-4 rounded-lg mt-3">
+                                            <p class="font-medium mb-2"><strong>Solution:</strong></p>
+                                            <p class="mb-2">Given: m = 2 kg, c = 4186 J/kg·K, T₁ = 20°C, T₂ = 80°C</p>
+                                            <p class="mb-2">ΔT = T₂ − T₁ = 80 − 20 = 60 K</p>
+                                            <p class="mb-2">Using Q = mcΔT:</p>
+                                            <p class="mb-2">Q = 2 × 4186 × 60</p>
+                                            <p class="font-bold text-green-700">Q = 502,320 J or 502.32 kJ</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            `
+                        },
+                        {
+                            intro: "Let's explore this concept with an interactive simulation. You'll see how different materials respond differently to the same amount of heat.",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-laptop-code text-orange-500 mr-3"></i>Interactive Simulation
+                                    </h3>
+                                    <p class="text-gray-700 mb-4">Explore how different materials heat up differently. Try adding the same amount of heat to different substances!</p>
+                                    <div class="simulation-container">
+                                        <iframe src="https://phet.colorado.edu/sims/html/energy-forms-and-changes/latest/energy-forms-and-changes_en.html"></iframe>
+                                    </div>
+                                </div>
+                            `
+                        }
+                    ],
+                    resources: [
+                        { type: "simulation", title: "Energy Forms and Changes", description: "Explore heat transfer", url: "https://phet.colorado.edu/sims/html/energy-forms-and-changes/latest/energy-forms-and-changes_en.html" },
+                        { type: "video", title: "Specific Heat Capacity", description: "Detailed explanation with examples", url: "https://www.youtube.com/embed/KU6oPk3hqhs" }
+                    ],
+                    quiz: {
+                        question: "Water has a high specific heat capacity. What does this mean?",
+                        options: ["Water heats up quickly", "Water requires a lot of energy to change temperature", "Water cannot store heat", "Water has low thermal energy"],
+                        correct: 1,
+                        explanation: "A high specific heat capacity means a substance requires more energy to change its temperature. This is why water is used in cooling systems—it absorbs a lot of heat without getting too hot."
+                    }
+                },
+                {
+                    id: "thermometers",
+                    title: "Thermometers & Temperature Measurement",
+                    type: "note",
+                    chunks: [
+                        {
+                            intro: "How do we measure temperature? Let's explore different types of thermometers and the physics behind how they work.",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-thermometer text-orange-500 mr-3"></i>Types of Thermometers
+                                    </h3>
+                                    <p class="text-gray-700 leading-relaxed mb-4">Thermometers work on the principle that certain physical properties change predictably with temperature. Here are the main types:</p>
+                                    <div class="grid md:grid-cols-2 gap-4">
+                                        <div class="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-500">
+                                            <strong class="text-blue-700">Liquid-in-Glass Thermometer</strong>
+                                            <p class="text-gray-700 mt-2">Uses the expansion of liquid (mercury or alcohol) in a glass tube. As temperature increases, the liquid expands and rises up the tube.</p>
+                                        </div>
+                                        <div class="bg-purple-50 p-4 rounded-lg border-l-4 border-purple-500">
+                                            <strong class="text-purple-700">Clinical Thermometer</strong>
+                                            <p class="text-gray-700 mt-2">A specialized mercury thermometer for measuring body temperature. Range: 35°C to 42°C with a constriction to prevent backflow.</p>
+                                        </div>
+                                        <div class="bg-green-50 p-4 rounded-lg border-l-4 border-green-500">
+                                            <strong class="text-green-700">Thermocouple</strong>
+                                            <p class="text-gray-700 mt-2">Uses two different metals joined together. Produces a voltage that changes with temperature. Can measure very high temperatures.</p>
+                                        </div>
+                                        <div class="bg-orange-50 p-4 rounded-lg border-l-4 border-orange-500">
+                                            <strong class="text-orange-700">Resistance Thermometer</strong>
+                                            <p class="text-gray-700 mt-2">Uses the fact that electrical resistance of metals changes with temperature. Very accurate for scientific work.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            `
+                        },
+                        {
+                            intro: "Let's look at the key features of a liquid-in-glass thermometer and understand how it's calibrated.",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-vial text-orange-500 mr-3"></i>Liquid-in-Glass Thermometer
+                                    </h3>
+                                    <div class="bg-gray-50 p-5 rounded-lg mb-4">
+                                        <h4 class="font-semibold text-gray-800 mb-3">Key Parts:</h4>
+                                        <ul class="list-disc pl-6 space-y-2 text-gray-700">
+                                            <li><strong>Bulb:</strong> Contains the liquid (mercury or colored alcohol)</li>
+                                            <li><strong>Capillary tube:</strong> Narrow tube where liquid rises</li>
+                                            <li><strong>Scale:</strong> Marked in degrees for reading temperature</li>
+                                        </ul>
+                                    </div>
+                                    <div class="bg-yellow-50 p-4 rounded-lg border-l-4 border-yellow-500">
+                                        <h4 class="font-semibold text-yellow-800 mb-2">Why Mercury vs Alcohol?</h4>
+                                        <p class="text-gray-700"><strong>Mercury:</strong> Good conductor, visible, doesn't wet glass. Range: -39°C to 357°C</p>
+                                        <p class="text-gray-700 mt-2"><strong>Alcohol:</strong> Can measure lower temperatures (-115°C), safer. Colored red or blue for visibility.</p>
+                                    </div>
+                                </div>
+                            `
+                        },
+                        {
+                            intro: "Let's watch a video that explains how thermometers work in more detail.",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-play-circle text-orange-500 mr-3"></i>Video: How Thermometers Work
+                                    </h3>
+                                    <div class="video-container">
+                                        <iframe src="https://www.youtube.com/embed/2JZf9AAh83A" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                    </div>
+                                </div>
+                            `
+                        }
+                    ],
+                    resources: [
+                        { type: "video", title: "Thermometer Types", description: "Comparing different thermometers", url: "https://www.youtube.com/embed/4OFJ-qCeD2E" }
+                    ],
+                    quiz: {
+                        question: "Which type of thermometer is best for measuring very high temperatures (above 500°C)?",
+                        options: ["Mercury thermometer", "Alcohol thermometer", "Thermocouple", "Clinical thermometer"],
+                        correct: 2,
+                        explanation: "Thermocouples can measure very high temperatures (up to 1800°C) because they use electrical voltage produced by temperature difference between two metal junctions."
+                    }
+                },
+                {
+                    id: "practice-problems",
+                    title: "Practice Problems",
+                    type: "note",
+                    chunks: [
+                        {
+                            intro: "Let's practice what we've learned with some WAEC-style problems. Work through each one step by step.",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-pencil-alt text-orange-500 mr-3"></i>Problem 1: Temperature Conversion
+                                    </h3>
+                                    <div class="bg-blue-50 p-4 rounded-lg mb-4">
+                                        <p class="font-medium">Convert 300 K to °C.</p>
+                                    </div>
+                                    <details class="bg-green-50 p-4 rounded-lg">
+                                        <summary class="font-semibold text-green-700 cursor-pointer">Show Solution</summary>
+                                        <div class="mt-3">
+                                            <p>Using the formula: °C = K − 273.15</p>
+                                            <p class="mt-2">°C = 300 − 273.15</p>
+                                            <p class="font-bold text-green-700 mt-2">°C = 26.85°C</p>
+                                        </div>
+                                    </details>
+                                </div>
+                            `
+                        },
+                        {
+                            intro: "Here's another problem involving specific heat capacity calculation.",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-pencil-alt text-orange-500 mr-3"></i>Problem 2: Heat Energy Calculation
+                                    </h3>
+                                    <div class="bg-blue-50 p-4 rounded-lg mb-4">
+                                        <p class="font-medium">A 500 g aluminum block at 25°C is heated until its temperature rises to 75°C. Calculate the amount of heat supplied. (Specific heat capacity of aluminum = 900 J/kg·K)</p>
+                                    </div>
+                                    <details class="bg-green-50 p-4 rounded-lg">
+                                        <summary class="font-semibold text-green-700 cursor-pointer">Show Solution</summary>
+                                        <div class="mt-3">
+                                            <p>Given: m = 500 g = 0.5 kg, T₁ = 25°C, T₂ = 75°C, c = 900 J/kg·K</p>
+                                            <p class="mt-2">ΔT = 75 − 25 = 50 K</p>
+                                            <p class="mt-2">Q = mcΔT = 0.5 × 900 × 50</p>
+                                            <p class="font-bold text-green-700 mt-2">Q = 22,500 J or 22.5 kJ</p>
+                                        </div>
+                                    </details>
+                                </div>
+                            `
+                        },
+                        {
+                            intro: "This problem involves finding the final temperature when mixing substances at different temperatures.",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-pencil-alt text-orange-500 mr-3"></i>Problem 3: Mixing Problem
+                                    </h3>
+                                    <div class="bg-blue-50 p-4 rounded-lg mb-4">
+                                        <p class="font-medium">200 g of water at 80°C is mixed with 300 g of water at 20°C. Assuming no heat loss, find the final temperature of the mixture.</p>
+                                    </div>
+                                    <details class="bg-green-50 p-4 rounded-lg">
+                                        <summary class="font-semibold text-green-700 cursor-pointer">Show Solution</summary>
+                                        <div class="mt-3">
+                                            <p>Heat lost by hot water = Heat gained by cold water</p>
+                                            <p class="mt-2">m₁c(T₁ − T) = m₂c(T − T₂)</p>
+                                            <p class="mt-2">0.2 × c × (80 − T) = 0.3 × c × (T − 20)</p>
+                                            <p class="mt-2">The c cancels out:</p>
+                                            <p class="mt-2">0.2(80 − T) = 0.3(T − 20)</p>
+                                            <p class="mt-2">16 − 0.2T = 0.3T − 6</p>
+                                            <p class="mt-2">22 = 0.5T</p>
+                                            <p class="font-bold text-green-700 mt-2">T = 44°C</p>
+                                        </div>
+                                    </details>
+                                </div>
+                            `
+                        }
+                    ],
+                    resources: [],
+                    quiz: {
+                        question: "A piece of iron (c = 450 J/kg·K) of mass 2 kg is heated from 30°C to 130°C. How much heat energy is supplied?",
+                        options: ["45 kJ", "90 kJ", "180 kJ", "900 kJ"],
+                        correct: 1,
+                        explanation: "Q = mcΔT = 2 × 450 × 100 = 90,000 J = 90 kJ"
+                    }
+                }
+            ]
+        };
+
+        // Render functions
+        function renderStepsList() {
+            const stepsList = document.getElementById('stepsList');
+            const mobileStepsList = document.getElementById('mobileStepsList');
+            
+            let html = '';
+            topicData.steps.forEach((step, index) => {
+                const isActive = index === currentStepIndex;
+                const isCompleted = stepsCompleted.includes(index);
+                
+                html += `
+                    <li>
+                        <button onclick="goToStep(${index})" class="step-button w-full text-left px-3 py-2 rounded-lg flex items-center ${isActive ? 'active' : 'hover:bg-gray-100'}">
+                            <span class="w-6 h-6 rounded-full flex items-center justify-center text-sm mr-3 ${isCompleted ? 'bg-green-500 text-white' : isActive ? 'bg-orange-500 text-white' : 'bg-gray-200 text-gray-600'}">
+                                ${isCompleted ? '✓' : index + 1}
+                            </span>
+                            <span class="${isActive ? 'font-medium' : ''}">${step.title}</span>
+                        </button>
+                    </li>
+                `;
+            });
+            
+            stepsList.innerHTML = html;
+            mobileStepsList.innerHTML = html;
+        }
+
+        function renderStepContent() {
+            const step = topicData.steps[currentStepIndex];
+            const chunk = step.chunks[currentChunkIndex];
+            
+            let html = '';
+            
+            // Intro text
+            if (chunk.intro) {
+                html += `<div class="intro-text"><p>${chunk.intro}</p></div>`;
+            }
+            
+            // Content
+            html += chunk.content;
+            
+            // Click hint for chunks
+            if (currentChunkIndex < step.chunks.length - 1) {
+                html += `<div class="click-hint" onclick="nextChunk()"><span>Click to continue</span><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg></div>`;
+            } else {
+                // Quiz button for last chunk
+                if (step.quiz) {
+                    html += `
+                        <div class="mt-6 text-center">
+                            <button onclick="showQuiz()" class="px-6 py-3 bg-orange-500 text-white rounded-lg font-medium hover:bg-orange-600 transition-colors">
+                                <i class="fas fa-question-circle mr-2"></i>Take Quiz
+                            </button>
+                        </div>
+                    `;
+                }
+            }
+            
+            document.getElementById('stepContainer').innerHTML = html;
+            
+            // Update progress
+            const progress = ((currentStepIndex + (currentChunkIndex / step.chunks.length)) / topicData.steps.length) * 100;
+            document.getElementById('progressBar').style.width = `${progress}%`;
+            document.getElementById('progressPercent').textContent = `${Math.round(progress)}%`;
+            
+            // Update navigation buttons
+            document.getElementById('prevStepBtn').disabled = currentStepIndex === 0 && currentChunkIndex === 0;
+            document.getElementById('nextStepBtn').textContent = currentChunkIndex < step.chunks.length - 1 ? 'Continue' : (currentStepIndex < topicData.steps.length - 1 ? 'Next Step' : 'Complete');
+        }
+
+        function renderResources() {
+            const step = topicData.steps[currentStepIndex];
+            const grid = document.getElementById('resourcesGrid');
+            
+            if (!step.resources || step.resources.length === 0) {
+                document.getElementById('resourcesContainer').style.display = 'none';
+                return;
+            }
+            
+            document.getElementById('resourcesContainer').style.display = 'block';
+            
+            let html = '';
+            step.resources.forEach(resource => {
+                const icon = resource.type === 'video' ? 'fa-video' : resource.type === 'simulation' ? 'fa-flask' : 'fa-file';
+                html += `
+                    <div class="resource-card bg-gray-50 p-4 rounded-lg border border-gray-200 cursor-pointer" onclick="openResource('${resource.type}', '${resource.title}', '${resource.url}')">
+                        <div class="flex items-center mb-2">
+                            <i class="fas ${icon} text-orange-500 mr-2"></i>
+                            <h4 class="font-medium">${resource.title}</h4>
+                        </div>
+                        <p class="text-sm text-gray-600">${resource.description}</p>
+                    </div>
+                `;
+            });
+            
+            grid.innerHTML = html;
+        }
+
+        function showQuiz() {
+            const step = topicData.steps[currentStepIndex];
+            const quiz = step.quiz;
+            
+            const html = `
+                <div class="mb-6">
+                    <h3 class="text-lg font-semibold mb-4">Quick Quiz</h3>
+                    <p class="text-gray-700 mb-4">${quiz.question}</p>
+                    <div class="space-y-3">
+                        ${quiz.options.map((option, index) => `
+                            <button onclick="checkAnswer(${index}, ${quiz.correct})" class="quiz-option w-full text-left p-4 border-2 border-gray-200 rounded-lg hover:border-orange-300 transition-colors">
+                                ${String.fromCharCode(65 + index)}. ${option}
+                            </button>
+                        `).join('')}
+                    </div>
+                </div>
+                <div id="quizFeedback" class="hidden"></div>
+            `;
+            
+            document.getElementById('quizContent').innerHTML = html;
+            document.getElementById('quizModal').classList.remove('hidden');
+        }
+
+        function checkAnswer(selected, correct) {
+            const options = document.querySelectorAll('.quiz-option');
+            const step = topicData.steps[currentStepIndex];
+            const quiz = step.quiz;
+            
+            options.forEach((option, index) => {
+                option.classList.remove('selected');
+                if (index === correct) {
+                    option.classList.add('correct');
+                } else if (index === selected && selected !== correct) {
+                    option.classList.add('incorrect');
+                }
+            });
+            
+            const feedback = document.getElementById('quizFeedback');
+            feedback.classList.remove('hidden');
+            
+            if (selected === correct) {
+                feedback.innerHTML = `
+                    <div class="bg-green-50 border-l-4 border-green-500 p-4 rounded">
+                        <p class="font-semibold text-green-700"><i class="fas fa-check-circle mr-2"></i>Correct!</p>
+                        <p class="text-gray-700 mt-2">${quiz.explanation}</p>
+                    </div>
+                `;
+                if (!stepsCompleted.includes(currentStepIndex)) {
+                    stepsCompleted.push(currentStepIndex);
+                }
+            } else {
+                feedback.innerHTML = `
+                    <div class="bg-red-50 border-l-4 border-red-500 p-4 rounded">
+                        <p class="font-semibold text-red-700"><i class="fas fa-times-circle mr-2"></i>Incorrect</p>
+                        <p class="text-gray-700 mt-2">${quiz.explanation}</p>
+                    </div>
+                `;
+            }
+            
+            renderStepsList();
+        }
+
+        function openResource(type, title, url) {
+            const modal = document.getElementById('resourceModal');
+            const modalTitle = document.getElementById('resourceModalTitle');
+            const modalContent = document.getElementById('resourceModalContent');
+            
+            modalTitle.textContent = title;
+            
+            if (type === 'video') {
+                modalContent.innerHTML = `<div class="video-container"><iframe src="${url}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>`;
+            } else if (type === 'simulation') {
+                modalContent.innerHTML = `<div class="simulation-container"><iframe src="${url}"></iframe></div>`;
+            }
+            
+            modal.classList.remove('hidden');
+        }
+
+        // Navigation functions
+        function goToStep(index) {
+            currentStepIndex = index;
+            currentChunkIndex = 0;
+            renderStepsList();
+            renderStepContent();
+            renderResources();
+            closeMobileSidebar();
+        }
+
+        function nextChunk() {
+            const step = topicData.steps[currentStepIndex];
+            if (currentChunkIndex < step.chunks.length - 1) {
+                currentChunkIndex++;
+                renderStepContent();
+            }
+        }
+
+        function nextStep() {
+            const step = topicData.steps[currentStepIndex];
+            if (currentChunkIndex < step.chunks.length - 1) {
+                currentChunkIndex++;
+                renderStepContent();
+            } else if (currentStepIndex < topicData.steps.length - 1) {
+                currentStepIndex++;
+                currentChunkIndex = 0;
+                renderStepsList();
+                renderStepContent();
+                renderResources();
+            }
+        }
+
+        function prevStep() {
+            if (currentChunkIndex > 0) {
+                currentChunkIndex--;
+                renderStepContent();
+            } else if (currentStepIndex > 0) {
+                currentStepIndex--;
+                currentChunkIndex = 0;
+                renderStepsList();
+                renderStepContent();
+                renderResources();
+            }
+        }
+
+        function closeMobileSidebar() {
+            document.getElementById('mobileSidebar').classList.remove('show');
+            document.getElementById('sidebarOverlay').classList.remove('show');
+        }
+
+        // Event listeners
+        document.getElementById('nextStepBtn').addEventListener('click', nextStep);
+        document.getElementById('prevStepBtn').addEventListener('click', prevStep);
+        document.getElementById('closeResourceModal').addEventListener('click', () => {
+            document.getElementById('resourceModal').classList.add('hidden');
+        });
+        document.getElementById('quizModal').addEventListener('click', (e) => {
+            if (e.target.id === 'quizModal') {
+                document.getElementById('quizModal').classList.add('hidden');
+            }
+        });
+
+        // Mobile menu
+        document.getElementById('mobileMenuBtn').addEventListener('click', () => {
+            document.getElementById('mobileSidebar').classList.add('show');
+            document.getElementById('sidebarOverlay').classList.add('show');
+        });
+        document.getElementById('closeSidebarBtn').addEventListener('click', closeMobileSidebar);
+        document.getElementById('sidebarOverlay').addEventListener('click', closeMobileSidebar);
+
+        // Initialize
+        renderStepsList();
+        renderStepContent();
+        renderResources();
+    </script>
+<!-- Topic Quiz System -->
+<script src="/js/topic-quiz-loader.js"></script>
+<script src="/js/topic-quiz-injector.js"></script>
+</body>
+</html>

@@ -1,0 +1,2398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Covalent Bonding - Chemistry | Juanova Cortex</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @keyframes fade-in-up {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in-up { animation: fade-in-up 0.5s ease-out forwards; }
+        .step-progress { transition: width 0.3s ease-in-out; }
+        
+        /* Section cards */
+        .section-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            border: 1px solid #e5e7eb;
+        }
+        
+        /* Click hint button - green theme for covalent */
+        .click-hint {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+            color: #065f46;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 24px;
+            padding: 12px 24px;
+            border-radius: 12px;
+            border: 2px solid #22c55e;
+            transition: all 0.3s ease;
+            animation: pulse-hint 2s infinite;
+        }
+        .click-hint:hover {
+            background: linear-gradient(135deg, #a7f3d0 0%, #6ee7b7 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(34, 197, 94, 0.4);
+        }
+        @keyframes pulse-hint {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.4); }
+            50% { box-shadow: 0 0 0 8px rgba(34, 197, 94, 0); }
+        }
+        
+        /* Step complete indicator */
+        .step-complete-hint {
+            background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+            border: 2px solid #10b981;
+            color: #065f46;
+            padding: 16px 24px;
+            border-radius: 12px;
+            text-align: center;
+            margin-top: 24px;
+        }
+        
+        /* Prerequisite banner */
+        .prerequisite-banner {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border: 2px solid #f59e0b;
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin-bottom: 24px;
+        }
+        
+        /* Molecule colors */
+        .molecule-color { background: linear-gradient(135deg, #34d399 0%, #22c55e 100%); }
+        
+        /* Electron sharing animation */
+        @keyframes electron-sharing {
+            0%, 100% { transform: translateX(-8px); }
+            50% { transform: translateX(8px); }
+        }
+        .electron-sharing-anim {
+            animation: electron-sharing 1s ease-in-out infinite;
+        }
+        
+        /* Atom pulse animation */
+        @keyframes atom-pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        .atom-pulse { animation: atom-pulse 2s ease-in-out infinite; }
+        
+        /* Bond animation */
+        @keyframes bond-pulse {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+        .bond-pulse { animation: bond-pulse 1.5s ease-in-out infinite; }
+        
+        /* Dot and cross diagram styles */
+        .dot-cross-canvas {
+            background: linear-gradient(135deg, #fafafa 0%, #f5f5f5 100%);
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+        }
+        
+        /* Molecule badge styles */
+        .molecule-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            font-weight: bold;
+            font-size: 1.2rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        
+        /* Property card hover */
+        .property-card {
+            transition: all 0.3s ease;
+        }
+        .property-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+        }
+        
+        /* Practice question styles */
+        .practice-option {
+            padding: 12px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .practice-option:hover {
+            border-color: #22c55e;
+            background: #f0fdf4;
+        }
+        .practice-option.selected {
+            border-color: #22c55e;
+            background: #dcfce7;
+        }
+        .practice-option.correct {
+            border-color: #22c55e;
+            background: #dcfce7;
+        }
+        .practice-option.incorrect {
+            border-color: #ef4444;
+            background: #fee2e2;
+        }
+        
+        /* Quiz modal */
+        .quiz-modal {
+            backdrop-filter: blur(8px);
+        }
+        
+        /* VSEPR shape visualization */
+        .shape-container {
+            perspective: 400px;
+        }
+        
+        /* Mobile responsive */
+        @media (max-width: 768px) {
+            .section-card { padding: 1rem; }
+            .molecule-badge { min-width: 50px; height: 50px; font-size: 1rem; }
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Top Navigation -->
+    <nav class="bg-white shadow-sm fixed top-0 w-full z-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center">
+                    <button id="mobileMenuBtn" class="text-gray-600 hover:text-gray-900 mr-3 md:hidden" aria-label="Menu">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                    <a href="index.html" class="flex items-center gap-2 text-gray-600 hover:text-gray-900">
+                        <i class="fas fa-arrow-left"></i>
+                        <h1 class="text-lg md:text-xl font-semibold text-gray-900">Covalent Bonding</h1>
+                    </a>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="text-sm text-gray-600 hidden sm:block">
+                        Progress: <span id="progressPercent">0%</span>
+                    </div>
+                    <div class="w-24 sm:w-32 h-2 bg-gray-200 rounded-full">
+                        <div id="progressBar" class="step-progress h-2 bg-green-500 rounded-full" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Sidebar Overlay -->
+    <div id="sidebarOverlay" class="fixed inset-0 bg-black/50 z-40 hidden"></div>
+
+    <!-- Mobile Sidebar -->
+    <div id="mobileSidebar" class="fixed top-0 left-0 w-72 h-full bg-white z-50 transform -translate-x-full transition-transform">
+        <div class="p-4">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="font-semibold text-lg">Learning Steps</h3>
+                <button id="closeSidebarBtn" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            <ul id="mobileStepsList" class="space-y-2"></ul>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="pt-20 pb-24">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-12 gap-6">
+                <!-- Left Sidebar - Steps (Desktop) -->
+                <div class="md:col-span-3 hidden md:block">
+                    <div class="bg-white rounded-lg shadow-sm p-4 sticky top-20">
+                        <h3 class="font-semibold mb-4">Learning Steps</h3>
+                        <ul id="stepsList" class="space-y-2"></ul>
+                    </div>
+                </div>
+
+                <!-- Main Content Area -->
+                <div class="md:col-span-9">
+                    <!-- Prerequisite Banner -->
+                    <div class="prerequisite-banner">
+                        <div class="flex items-start gap-3">
+                            <div class="text-2xl">📋</div>
+                            <div>
+                                <h4 class="font-semibold text-amber-800 mb-1">Before You Start</h4>
+                                <p class="text-amber-700 text-sm mb-2">This topic builds on Ionic Bonding. Make sure you understand:</p>
+                                <ul class="text-amber-700 text-sm list-disc pl-5 space-y-1">
+                                    <li><strong>Electron transfer</strong> - metals lose electrons, non-metals gain</li>
+                                    <li><strong>Octet rule</strong> - atoms want full outer shells</li>
+                                    <li><strong>Electronegativity</strong> - how strongly atoms attract electrons</li>
+                                </ul>
+                                <a href="ionic-bonding.html" class="inline-flex items-center gap-2 mt-3 text-amber-800 font-medium hover:text-amber-900">
+                                    <i class="fas fa-book-open"></i>
+                                    Review: Ionic Bonding →
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Current Step Content -->
+                    <div id="stepContainer" class="bg-white rounded-lg shadow-sm p-6 mb-6"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Bottom Navigation -->
+    <div class="fixed bottom-0 w-full bg-white border-t border-gray-200 z-40">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between py-4">
+                <button id="prevStepBtn" class="px-4 py-2 text-gray-600 hover:text-gray-900 disabled:opacity-50 disabled:cursor-not-allowed">
+                    <i class="fas fa-chevron-left mr-2"></i>Previous
+                </button>
+                <button id="nextStepBtn" class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 disabled:opacity-50 disabled:cursor-not-allowed">
+                    Continue<i class="fas fa-chevron-right ml-2"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quiz Modal -->
+    <div id="quizModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 quiz-modal">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full mx-4 max-h-[90vh] overflow-hidden">
+            <!-- Quiz Header -->
+            <div class="bg-gradient-to-r from-green-500 to-emerald-500 text-white p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h2 class="text-xl font-bold">Covalent Bonding - Quiz</h2>
+                        <p class="text-green-100 text-sm mt-1">Test your understanding</p>
+                    </div>
+                    <button onclick="closeQuiz()" class="text-white/80 hover:text-white transition">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
+                <div class="mt-4 h-2 bg-white/20 rounded-full overflow-hidden">
+                    <div id="quizProgressBar" class="h-full bg-white transition-all duration-300" style="width: 0%"></div>
+                </div>
+                <div class="flex justify-between text-sm mt-2 text-green-100">
+                    <span id="quizQuestionCount">Question 1 of 10</span>
+                    <span id="quizScoreDisplay">Score: 0</span>
+                </div>
+            </div>
+            
+            <!-- Quiz Content -->
+            <div id="quizContent" class="p-6 max-h-[60vh] overflow-y-auto"></div>
+            
+            <!-- Quiz Footer -->
+            <div id="quizFooter" class="p-4 border-t bg-gray-50 flex justify-between items-center">
+                <button id="quizPrevBtn" onclick="quizPrev()" class="px-4 py-2 rounded-lg bg-gray-200 text-gray-700 hover:bg-gray-300 transition disabled:opacity-50" disabled>
+                    <i class="fas fa-arrow-left mr-2"></i>Previous
+                </button>
+                <button id="quizNextBtn" onclick="quizNext()" class="px-6 py-2 rounded-lg bg-green-500 text-white hover:bg-green-600 transition disabled:opacity-50" disabled>
+                    Next<i class="fas fa-arrow-right ml-2"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Score Display Modal -->
+    <div id="scoreModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full mx-4 p-6 text-center">
+            <div id="scoreIcon" class="text-6xl mb-4">🎉</div>
+            <h2 class="text-2xl font-bold text-gray-800 mb-2">Topic Complete!</h2>
+            <div class="my-6">
+                <div class="grid grid-cols-3 gap-4 text-center">
+                    <div class="bg-green-50 p-3 rounded-lg">
+                        <p class="text-sm text-gray-600">Practice</p>
+                        <p class="text-2xl font-bold text-green-600" id="practiceScoreDisplay">--</p>
+                    </div>
+                    <div class="bg-blue-50 p-3 rounded-lg">
+                        <p class="text-sm text-gray-600">Quiz</p>
+                        <p class="text-2xl font-bold text-blue-600" id="quizScoreDisplayFinal">--</p>
+                    </div>
+                    <div class="bg-purple-50 p-3 rounded-lg">
+                        <p class="text-sm text-gray-600">Combined</p>
+                        <p class="text-2xl font-bold text-purple-600" id="combinedScoreDisplay">--</p>
+                    </div>
+                </div>
+                <p class="text-sm text-gray-500 mt-2">Combined: 40% Practice + 60% Quiz</p>
+            </div>
+            <div class="flex gap-3 justify-center">
+                <button onclick="closeScoreModal()" class="px-6 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300">
+                    Close
+                </button>
+                <a href="metallic-bonding.html" class="px-6 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600">
+                    Next: Metallic Bonding →
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script src="../subject-quiz-handler.js"></script>
+    <script>
+        // =============================================
+        // COVALENT BONDING - INTERACTIVE LEARNING MODULE
+        // =============================================
+        
+        let currentStepIndex = 0;
+        let currentChunkIndex = 0;
+        let stepsCompleted = [];
+        
+        // Element and molecule data
+        const elementData = {
+            H: { z: 1, symbol: 'H', name: 'Hydrogen', valence: 1, en: 2.1, needs: 1 },
+            C: { z: 6, symbol: 'C', name: 'Carbon', valence: 4, en: 2.5, needs: 4 },
+            N: { z: 7, symbol: 'N', name: 'Nitrogen', valence: 5, en: 3.0, needs: 3 },
+            O: { z: 8, symbol: 'O', name: 'Oxygen', valence: 6, en: 3.5, needs: 2 },
+            F: { z: 9, symbol: 'F', name: 'Fluorine', valence: 7, en: 4.0, needs: 1 },
+            Cl: { z: 17, symbol: 'Cl', name: 'Chlorine', valence: 7, en: 3.0, needs: 1 },
+            S: { z: 16, symbol: 'S', name: 'Sulfur', valence: 6, en: 2.5, needs: 2 }
+        };
+        
+        // Molecule data for visualization
+        const moleculeData = {
+            H2: { name: 'Hydrogen', formula: 'H₂', bonds: 1, type: 'single', enDiff: 0, polarity: 'nonpolar', shape: 'linear' },
+            O2: { name: 'Oxygen', formula: 'O₂', bonds: 2, type: 'double', enDiff: 0, polarity: 'nonpolar', shape: 'linear' },
+            N2: { name: 'Nitrogen', formula: 'N₂', bonds: 3, type: 'triple', enDiff: 0, polarity: 'nonpolar', shape: 'linear' },
+            CO2: { name: 'Carbon Dioxide', formula: 'CO₂', bonds: 2, type: 'double', enDiff: 1.0, polarity: 'nonpolar', shape: 'linear' },
+            H2O: { name: 'Water', formula: 'H₂O', bonds: 1, type: 'single', enDiff: 1.4, polarity: 'polar', shape: 'bent' },
+            CH4: { name: 'Methane', formula: 'CH₄', bonds: 1, type: 'single', enDiff: 0.4, polarity: 'nonpolar', shape: 'tetrahedral' },
+            NH3: { name: 'Ammonia', formula: 'NH₃', bonds: 1, type: 'single', enDiff: 0.9, polarity: 'polar', shape: 'trigonal pyramidal' },
+            HCl: { name: 'Hydrogen Chloride', formula: 'HCl', bonds: 1, type: 'single', enDiff: 0.9, polarity: 'polar', shape: 'linear' }
+        };
+        
+        // Practice Question Tracker
+        const PracticeTracker = {
+            answers: { guided: [], independent: [], practice: [] },
+            quizScore: null,
+            
+            recordAnswer(category, questionId, isCorrect, details) {
+                if (!this.answers[category]) this.answers[category] = [];
+                this.answers[category].push({ id: questionId, correct: isCorrect, details, timestamp: Date.now() });
+                this.saveToStorage();
+            },
+            
+            recordQuizScore(score, total) {
+                this.quizScore = { score, total, percentage: Math.round((score / total) * 100) };
+                this.saveToStorage();
+            },
+            
+            getCombinedScore() {
+                let practiceCorrect = 0;
+                let practiceTotal = 0;
+                
+                Object.values(this.answers).forEach(arr => {
+                    arr.forEach(a => {
+                        practiceTotal++;
+                        if (a.correct) practiceCorrect++;
+                    });
+                });
+                
+                const practicePercent = practiceTotal > 0 ? Math.round((practiceCorrect / practiceTotal) * 100) : null;
+                const quizPercent = this.quizScore ? this.quizScore.percentage : null;
+                
+                // Combined score: 40% practice, 60% quiz
+                let combined = null;
+                if (practicePercent !== null && quizPercent !== null) {
+                    combined = Math.round((practicePercent * 0.4) + (quizPercent * 0.6));
+                } else if (quizPercent !== null) {
+                    combined = quizPercent;
+                } else if (practicePercent !== null) {
+                    combined = practicePercent;
+                }
+                
+                return { practice: practicePercent, quiz: quizPercent, combined };
+            },
+            
+            saveToStorage() {
+                try {
+                    localStorage.setItem('covalentBonding_progress', JSON.stringify({
+                        answers: this.answers,
+                        quizScore: this.quizScore
+                    }));
+                } catch (e) {}
+            },
+            
+            loadFromStorage() {
+                try {
+                    const saved = localStorage.getItem('covalentBonding_progress');
+                    if (saved) {
+                        const data = JSON.parse(saved);
+                        this.answers = data.answers || { guided: [], independent: [], practice: [] };
+                        this.quizScore = data.quizScore || null;
+                    }
+                } catch (e) {}
+            }
+        };
+        
+        PracticeTracker.loadFromStorage();
+        
+        // Topic data with all content
+        const topicData = {
+            title: "Covalent Bonding",
+            steps: [
+                {
+                    id: "introduction",
+                    title: "Introduction to Covalent Bonding",
+                    type: "note",
+                    chunks: [
+                        {
+                            intro: "Welcome to Covalent Bonding! After learning about ionic bonding (electron transfer), we'll now explore what happens when atoms share electrons instead.",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-handshake text-green-500 mr-3"></i>What is Covalent Bonding?
+                                    </h3>
+                                    <p class="text-gray-700 leading-relaxed mb-4">
+                                        A <strong class="text-green-600">covalent bond</strong> forms when two non-metal atoms <strong>share</strong> pairs of electrons. Each atom contributes one electron to the shared pair, and both atoms are attracted to the shared electrons.
+                                    </p>
+                                    
+                                    <div class="bg-gradient-to-r from-green-100 to-teal-100 p-6 rounded-lg mb-4">
+                                        <div class="flex items-center justify-center gap-4 flex-wrap">
+                                            <div class="text-center">
+                                                <div class="molecule-badge molecule-color text-white mb-2">Non-metal</div>
+                                                <p class="text-sm text-gray-600">High electronegativity</p>
+                                            </div>
+                                            <div class="text-3xl">+</div>
+                                            <div class="text-center">
+                                                <div class="molecule-badge molecule-color text-white mb-2">Non-metal</div>
+                                                <p class="text-sm text-gray-600">High electronegativity</p>
+                                            </div>
+                                            <div class="text-3xl">=</div>
+                                            <div class="text-center bg-white p-3 rounded-lg border-2 border-green-300">
+                                                <i class="fas fa-link text-green-500 text-2xl mb-2"></i>
+                                                <p class="font-bold text-green-700">Covalent Bond</p>
+                                                <p class="text-xs text-gray-500">Shared electron pair</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="bg-emerald-50 border-l-4 border-emerald-500 p-4 mb-4">
+                                        <h4 class="font-semibold text-emerald-800 mb-2"><i class="fas fa-lightbulb mr-2"></i>Why Share Instead of Transfer?</h4>
+                                        <p class="text-gray-700 mb-2">Both atoms have high electronegativity (strong attraction for electrons). Neither atom is willing to give up electrons completely, so they compromise by <strong>sharing</strong>!</p>
+                                        <div class="bg-white p-3 rounded mt-2">
+                                            <p class="text-sm text-gray-600"><strong>Example:</strong> Two H atoms each need 1 electron to fill their outer shell. By sharing their single electrons, each H "feels" like it has 2 electrons!</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            `
+                        },
+                        {
+                            intro: "Let's compare ionic and covalent bonding to understand the key differences:",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-balance-scale text-green-500 mr-3"></i>Ionic vs Covalent Bonding
+                                    </h3>
+                                    
+                                    <div class="overflow-x-auto mb-4">
+                                        <table class="w-full border-collapse text-sm">
+                                            <thead>
+                                                <tr class="bg-gray-100">
+                                                    <th class="border p-3 text-left">Feature</th>
+                                                    <th class="border p-3 text-center bg-orange-50">
+                                                        <span class="text-orange-600 font-bold">Ionic</span>
+                                                    </th>
+                                                    <th class="border p-3 text-center bg-green-50">
+                                                        <span class="text-green-600 font-bold">Covalent</span>
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td class="border p-3 font-medium">Electron behavior</td>
+                                                    <td class="border p-3 text-center">Transferred</td>
+                                                    <td class="border p-3 text-center">Shared</td>
+                                                </tr>
+                                                <tr class="bg-gray-50">
+                                                    <td class="border p-3 font-medium">Atoms involved</td>
+                                                    <td class="border p-3 text-center">Metal + Non-metal</td>
+                                                    <td class="border p-3 text-center">Non-metal + Non-metal</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="border p-3 font-medium">Particles formed</td>
+                                                    <td class="border p-3 text-center">Ions (cation + anion)</td>
+                                                    <td class="border p-3 text-center">Molecules</td>
+                                                </tr>
+                                                <tr class="bg-gray-50">
+                                                    <td class="border p-3 font-medium">Bond type</td>
+                                                    <td class="border p-3 text-center">Electrostatic attraction</td>
+                                                    <td class="border p-3 text-center">Shared electron pair</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="border p-3 font-medium">Structure</td>
+                                                    <td class="border p-3 text-center">Giant lattice</td>
+                                                    <td class="border p-3 text-center">Simple molecules or giant covalent</td>
+                                                </tr>
+                                                <tr class="bg-gray-50">
+                                                    <td class="border p-3 font-medium">Melting point</td>
+                                                    <td class="border p-3 text-center">High</td>
+                                                    <td class="border p-3 text-center">Low (simple molecules)</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="border p-3 font-medium">Conductivity</td>
+                                                    <td class="border p-3 text-center">Molten/dissolved</td>
+                                                    <td class="border p-3 text-center">Does not conduct</td>
+                                                </tr>
+                                                <tr class="bg-gray-50">
+                                                    <td class="border p-3 font-medium">Examples</td>
+                                                    <td class="border p-3 text-center">NaCl, MgO, CaCl₂</td>
+                                                    <td class="border p-3 text-center">H₂O, CO₂, CH₄</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    
+                                    <button class="click-hint" onclick="nextChunk()">
+                                        <i class="fas fa-arrow-right"></i>
+                                        <span>Continue to Bond Types →</span>
+                                    </button>
+                                </div>
+                            `
+                        }
+                    ]
+                },
+                {
+                    id: "bond-types",
+                    title: "Types of Covalent Bonds",
+                    type: "simulation",
+                    chunks: [
+                        {
+                            intro: "Atoms can share 1, 2, or 3 pairs of electrons, forming single, double, or triple bonds. Let's explore each type!",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-link text-green-500 mr-3"></i>Single, Double, and Triple Bonds
+                                    </h3>
+                                    <p class="text-gray-700 mb-4">The number of shared electron pairs determines the bond type and bond strength!</p>
+                                    
+                                    <div class="grid md:grid-cols-3 gap-4 mb-6">
+                                        <!-- Single Bond -->
+                                        <div class="bg-green-50 p-4 rounded-lg border-2 border-green-200">
+                                            <h4 class="font-bold text-green-700 text-center mb-3">Single Bond</h4>
+                                            <div class="text-center mb-3">
+                                                <div class="inline-flex items-center gap-2">
+                                                    <span class="text-2xl font-bold">H</span>
+                                                    <span class="text-green-500 text-xl">—</span>
+                                                    <span class="text-2xl font-bold">H</span>
+                                                </div>
+                                            </div>
+                                            <p class="text-sm text-center text-gray-600 mb-2">One shared pair (2 e⁻)</p>
+                                            <div class="bg-white p-2 rounded text-center">
+                                                <p class="text-xs text-gray-500">Example: H₂, Cl₂, CH₄</p>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Double Bond -->
+                                        <div class="bg-blue-50 p-4 rounded-lg border-2 border-blue-200">
+                                            <h4 class="font-bold text-blue-700 text-center mb-3">Double Bond</h4>
+                                            <div class="text-center mb-3">
+                                                <div class="inline-flex items-center gap-1">
+                                                    <span class="text-2xl font-bold">O</span>
+                                                    <span class="text-blue-500 text-xl">＝</span>
+                                                    <span class="text-2xl font-bold">O</span>
+                                                </div>
+                                            </div>
+                                            <p class="text-sm text-center text-gray-600 mb-2">Two shared pairs (4 e⁻)</p>
+                                            <div class="bg-white p-2 rounded text-center">
+                                                <p class="text-xs text-gray-500">Example: O₂, CO₂, C₂H₄</p>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Triple Bond -->
+                                        <div class="bg-purple-50 p-4 rounded-lg border-2 border-purple-200">
+                                            <h4 class="font-bold text-purple-700 text-center mb-3">Triple Bond</h4>
+                                            <div class="text-center mb-3">
+                                                <div class="inline-flex items-center gap-1">
+                                                    <span class="text-2xl font-bold">N</span>
+                                                    <span class="text-purple-500 text-xl">≡</span>
+                                                    <span class="text-2xl font-bold">N</span>
+                                                </div>
+                                            </div>
+                                            <p class="text-sm text-center text-gray-600 mb-2">Three shared pairs (6 e⁻)</p>
+                                            <div class="bg-white p-2 rounded text-center">
+                                                <p class="text-xs text-gray-500">Example: N₂, C₂H₂</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="bg-amber-50 border-l-4 border-amber-500 p-4 mb-4">
+                                        <h4 class="font-semibold text-amber-800 mb-2"><i class="fas fa-chart-line mr-2"></i>Bond Strength & Length</h4>
+                                        <ul class="text-gray-700 space-y-1">
+                                            <li><strong>Triple bonds</strong> are the <span class="text-purple-600 font-semibold">strongest</span> and <span class="text-purple-600 font-semibold">shortest</span></li>
+                                            <li><strong>Double bonds</strong> are stronger and shorter than single bonds</li>
+                                            <li><strong>Single bonds</strong> are the weakest and longest</li>
+                                        </ul>
+                                        <p class="text-sm text-gray-600 mt-2">More shared electrons = stronger attraction between nuclei = stronger, shorter bond</p>
+                                    </div>
+                                </div>
+                            `
+                        },
+                        {
+                            intro: "Let's see interactive examples of molecules with different bond types:",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-atom text-green-500 mr-3"></i>Interactive Molecule Explorer
+                                    </h3>
+                                    <p class="text-gray-700 mb-4">Select a molecule to see its bonding structure:</p>
+                                    
+                                    <div class="bg-gray-50 p-4 rounded-lg mb-4">
+                                        <div class="flex flex-wrap gap-2 mb-4">
+                                            <p class="w-full font-medium text-gray-700 mb-2">Select Molecule:</p>
+                                            <button onclick="showMolecule('H2')" class="px-4 py-2 bg-green-100 text-green-700 rounded-lg hover:bg-green-200 transition mol-btn active" data-mol="H2">H₂ (Single)</button>
+                                            <button onclick="showMolecule('O2')" class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition mol-btn" data-mol="O2">O₂ (Double)</button>
+                                            <button onclick="showMolecule('N2')" class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition mol-btn" data-mol="N2">N₂ (Triple)</button>
+                                            <button onclick="showMolecule('CO2')" class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition mol-btn" data-mol="CO2">CO₂ (Double)</button>
+                                            <button onclick="showMolecule('CH4')" class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition mol-btn" data-mol="CH4">CH₄ (Single)</button>
+                                        </div>
+                                    </div>
+                                    
+                                    <div id="moleculeViz" class="bg-white border-2 border-gray-200 rounded-lg p-6 min-h-[280px]">
+                                        <!-- Will be populated by JS -->
+                                    </div>
+                                    
+                                    <button class="click-hint" onclick="nextChunk()">
+                                        <i class="fas fa-arrow-right"></i>
+                                        <span>Continue to Dot-Cross Diagrams →</span>
+                                    </button>
+                                </div>
+                            `
+                        }
+                    ]
+                },
+                {
+                    id: "dot-cross",
+                    title: "Dot-Cross Diagrams",
+                    type: "simulation",
+                    chunks: [
+                        {
+                            intro: "Dot-cross diagrams show how electrons are shared in covalent bonds. Let's learn how to draw them!",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-draw-polygon text-green-500 mr-3"></i>Drawing Dot-Cross Diagrams
+                                    </h3>
+                                    <p class="text-gray-700 mb-4">
+                                        <span class="text-green-600 font-bold">Dots (•)</span> represent electrons from one atom, 
+                                        <span class="text-blue-600 font-bold">Crosses (×)</span> represent electrons from another.
+                                        Shared pairs appear between atoms!
+                                    </p>
+                                    
+                                    <div class="bg-indigo-50 p-4 rounded-lg mb-4">
+                                        <h4 class="font-semibold text-indigo-800 mb-2">How to Draw Dot-Cross Diagrams:</h4>
+                                        <ol class="list-decimal pl-5 text-gray-700 space-y-1">
+                                            <li>Write the symbol for each atom</li>
+                                            <li>Draw valence electrons as dots on one atom</li>
+                                            <li>Draw valence electrons as crosses on the other atom</li>
+                                            <li>Show shared pairs between the atoms (overlap dots and crosses)</li>
+                                            <li>Check that each atom has a full outer shell (2 for H, 8 for others)</li>
+                                        </ol>
+                                    </div>
+                                    
+                                    <div class="bg-gray-50 p-4 rounded-lg mb-4">
+                                        <div class="flex flex-wrap gap-2 mb-4">
+                                            <p class="w-full font-medium text-gray-700">View Diagram For:</p>
+                                            <button onclick="showCovalentDotCross('H2')" class="px-4 py-2 bg-green-100 text-green-700 rounded-lg hover:bg-green-200 transition dc-btn active">H₂</button>
+                                            <button onclick="showCovalentDotCross('Cl2')" class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition dc-btn">Cl₂</button>
+                                            <button onclick="showCovalentDotCross('H2O')" class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition dc-btn">H₂O</button>
+                                            <button onclick="showCovalentDotCross('CO2')" class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition dc-btn">CO₂</button>
+                                            <button onclick="showCovalentDotCross('NH3')" class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition dc-btn">NH₃</button>
+                                            <button onclick="showCovalentDotCross('CH4')" class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition dc-btn">CH₄</button>
+                                        </div>
+                                    </div>
+                                    
+                                    <div id="covalentDotCrossDiagram" class="bg-white border-2 border-gray-200 rounded-lg p-6 min-h-[300px]">
+                                        <!-- Will be populated by JS -->
+                                    </div>
+                                </div>
+                            `
+                        },
+                        {
+                            intro: "Some atoms can form multiple bonds - let's see how carbon forms double bonds in CO₂:",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-project-diagram text-green-500 mr-3"></i>Multiple Bonds in Detail
+                                    </h3>
+                                    
+                                    <div class="bg-gradient-to-r from-green-50 to-blue-50 p-4 rounded-lg mb-4">
+                                        <h4 class="font-semibold text-green-800 mb-3">Carbon Dioxide (CO₂)</h4>
+                                        <div class="flex items-center justify-center gap-4 flex-wrap">
+                                            <div class="text-center">
+                                                <div class="text-2xl font-bold text-blue-600">O</div>
+                                                <p class="text-xs text-gray-600">6 valence e⁻</p>
+                                                <p class="text-xs text-blue-500">needs 2</p>
+                                            </div>
+                                            <div class="text-3xl text-blue-400">＝</div>
+                                            <div class="text-center">
+                                                <div class="text-2xl font-bold text-green-600">C</div>
+                                                <p class="text-xs text-gray-600">4 valence e⁻</p>
+                                                <p class="text-xs text-green-500">needs 4</p>
+                                            </div>
+                                            <div class="text-3xl text-blue-400">＝</div>
+                                            <div class="text-center">
+                                                <div class="text-2xl font-bold text-blue-600">O</div>
+                                                <p class="text-xs text-gray-600">6 valence e⁻</p>
+                                                <p class="text-xs text-blue-500">needs 2</p>
+                                            </div>
+                                        </div>
+                                        <p class="text-center text-sm text-gray-600 mt-3">Each O shares 2 pairs with C (double bond)</p>
+                                    </div>
+                                    
+                                    <div class="bg-amber-50 border-l-4 border-amber-500 p-4 mb-4">
+                                        <h4 class="font-semibold text-amber-800 mb-2"><i class="fas fa-info-circle mr-2"></i>Lone Pairs vs Bonding Pairs</h4>
+                                        <ul class="text-gray-700 space-y-1">
+                                            <li><strong>Bonding pairs:</strong> Shared between atoms (shown between symbols)</li>
+                                            <li><strong>Lone pairs:</strong> Not shared (shown on one atom only)</li>
+                                        </ul>
+                                        <p class="text-sm text-gray-600 mt-2">In H₂O, oxygen has 2 bonding pairs (with H) and 2 lone pairs</p>
+                                    </div>
+                                    
+                                    <button class="click-hint" onclick="nextChunk()">
+                                        <i class="fas fa-arrow-right"></i>
+                                        <span>Continue to Bond Polarity →</span>
+                                    </button>
+                                </div>
+                            `
+                        }
+                    ]
+                },
+                {
+                    id: "bond-polarity",
+                    title: "Bond Polarity",
+                    type: "simulation",
+                    chunks: [
+                        {
+                            intro: "Not all covalent bonds are equal! The difference in electronegativity determines whether a bond is polar or nonpolar.",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-magnet text-green-500 mr-3"></i>Understanding Bond Polarity
+                                    </h3>
+                                    <p class="text-gray-700 mb-4">
+                                        When two atoms share electrons, the sharing may not be equal. The more <strong class="text-green-600">electronegative</strong> atom pulls the shared electrons closer to itself.
+                                    </p>
+                                    
+                                    <div class="grid md:grid-cols-2 gap-4 mb-4">
+                                        <div class="bg-green-50 p-4 rounded-lg border-l-4 border-green-500">
+                                            <h4 class="font-semibold text-green-800 mb-2">Nonpolar Covalent Bond</h4>
+                                            <p class="text-gray-700 text-sm mb-2">Equal sharing of electrons</p>
+                                            <ul class="text-sm text-gray-600 space-y-1">
+                                                <li>• Same or very similar electronegativity</li>
+                                                <li>• EN difference < 0.4</li>
+                                                <li>• No partial charges</li>
+                                            </ul>
+                                            <div class="mt-3 p-2 bg-white rounded text-center">
+                                                <span class="text-green-600 font-mono">H—H, Cl—Cl, O＝O</span>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="bg-red-50 p-4 rounded-lg border-l-4 border-red-500">
+                                            <h4 class="font-semibold text-red-800 mb-2">Polar Covalent Bond</h4>
+                                            <p class="text-gray-700 text-sm mb-2">Unequal sharing of electrons</p>
+                                            <ul class="text-sm text-gray-600 space-y-1">
+                                                <li>• Different electronegativities</li>
+                                                <li>• EN difference 0.4 - 1.7</li>
+                                                <li>• Creates partial charges (δ+ and δ−)</li>
+                                            </ul>
+                                            <div class="mt-3 p-2 bg-white rounded text-center">
+                                                <span class="text-red-600 font-mono">H—Cl, H—O, C—Cl</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            `
+                        },
+                        {
+                            intro: "Let's use an interactive tool to explore bond polarity based on electronegativity differences:",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-sliders-h text-green-500 mr-3"></i>Electronegativity Difference Calculator
+                                    </h3>
+                                    <p class="text-gray-700 mb-4">Select two elements to see the electronegativity difference and bond type:</p>
+                                    
+                                    <div class="bg-gray-50 p-4 rounded-lg mb-4">
+                                        <div class="grid md:grid-cols-3 gap-4 items-center">
+                                            <div>
+                                                <label class="block text-sm font-medium text-gray-700 mb-1">Element 1:</label>
+                                                <select id="enElement1" class="w-full border rounded px-3 py-2" onchange="updatePolarity()">
+                                                    <option value="H">Hydrogen (H) - 2.1</option>
+                                                    <option value="C">Carbon (C) - 2.5</option>
+                                                    <option value="N">Nitrogen (N) - 3.0</option>
+                                                    <option value="O">Oxygen (O) - 3.5</option>
+                                                    <option value="F">Fluorine (F) - 4.0</option>
+                                                    <option value="Cl">Chlorine (Cl) - 3.0</option>
+                                                    <option value="S">Sulfur (S) - 2.5</option>
+                                                </select>
+                                            </div>
+                                            <div class="text-center text-2xl text-gray-400">—</div>
+                                            <div>
+                                                <label class="block text-sm font-medium text-gray-700 mb-1">Element 2:</label>
+                                                <select id="enElement2" class="w-full border rounded px-3 py-2" onchange="updatePolarity()">
+                                                    <option value="H">Hydrogen (H) - 2.1</option>
+                                                    <option value="C" selected>Carbon (C) - 2.5</option>
+                                                    <option value="N">Nitrogen (N) - 3.0</option>
+                                                    <option value="O">Oxygen (O) - 3.5</option>
+                                                    <option value="F">Fluorine (F) - 4.0</option>
+                                                    <option value="Cl">Chlorine (Cl) - 3.0</option>
+                                                    <option value="S">Sulfur (S) - 2.5</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div id="polarityResult" class="bg-white border-2 border-gray-200 rounded-lg p-4">
+                                        <!-- Will be populated by JS -->
+                                    </div>
+                                    
+                                    <div class="mt-4 bg-purple-50 p-4 rounded-lg">
+                                        <h4 class="font-semibold text-purple-800 mb-2"><i class="fas fa-ruler mr-2"></i>Bond Type Spectrum</h4>
+                                        <div class="flex items-center justify-between text-xs mb-2">
+                                            <span class="text-green-600 font-medium">Nonpolar</span>
+                                            <span class="text-red-600 font-medium">Polar</span>
+                                            <span class="text-orange-600 font-medium">Ionic</span>
+                                        </div>
+                                        <div class="h-4 bg-gradient-to-r from-green-400 via-red-400 to-orange-400 rounded-full relative">
+                                            <div class="absolute left-1/3 h-full w-0.5 bg-gray-800"></div>
+                                            <div class="absolute right-1/4 h-full w-0.5 bg-gray-800"></div>
+                                        </div>
+                                        <div class="flex items-center justify-between text-xs mt-1">
+                                            <span>0</span>
+                                            <span>0.4</span>
+                                            <span>1.7</span>
+                                            <span>3.0+</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <button class="click-hint" onclick="nextChunk()">
+                                        <i class="fas fa-arrow-right"></i>
+                                        <span>Continue to VSEPR Theory →</span>
+                                    </button>
+                                </div>
+                            `
+                        }
+                    ]
+                },
+                {
+                    id: "vsepr",
+                    title: "VSEPR Theory",
+                    type: "simulation",
+                    chunks: [
+                        {
+                            intro: "Molecules aren't flat! VSEPR theory helps us predict the 3D shapes of molecules based on electron pair repulsion.",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-shapes text-green-500 mr-3"></i>VSEPR Theory Introduction
+                                    </h3>
+                                    <p class="text-gray-700 mb-4">
+                                        <strong class="text-green-600">VSEPR</strong> = Valence Shell Electron Pair Repulsion
+                                    </p>
+                                    
+                                    <div class="bg-gradient-to-r from-green-50 to-teal-50 p-4 rounded-lg mb-4">
+                                        <h4 class="font-semibold text-green-800 mb-2">Key Principle:</h4>
+                                        <p class="text-gray-700">Electron pairs (bonding and lone pairs) around a central atom <strong>repel each other</strong> and arrange themselves as far apart as possible to minimize repulsion.</p>
+                                    </div>
+                                    
+                                    <div class="bg-amber-50 border-l-4 border-amber-500 p-4 mb-4">
+                                        <h4 class="font-semibold text-amber-800 mb-2"><i class="fas fa-exclamation-triangle mr-2"></i>Repulsion Order:</h4>
+                                        <p class="text-gray-700 font-mono text-center text-lg">
+                                            Lone pair - Lone pair > Lone pair - Bond pair > Bond pair - Bond pair
+                                        </p>
+                                        <p class="text-sm text-gray-600 mt-2">Lone pairs occupy more space and repel more strongly!</p>
+                                    </div>
+                                    
+                                    <div class="grid md:grid-cols-2 gap-4">
+                                        <div class="bg-blue-50 p-3 rounded-lg">
+                                            <h4 class="font-medium text-blue-800 mb-1">Electron Domains</h4>
+                                            <p class="text-sm text-gray-700">Count all regions of electron density (bonds + lone pairs)</p>
+                                        </div>
+                                        <div class="bg-purple-50 p-3 rounded-lg">
+                                            <h4 class="font-medium text-purple-800 mb-1">Shape Determination</h4>
+                                            <p class="text-sm text-gray-700">Molecular shape depends on both bonding AND lone pairs</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            `
+                        },
+                        {
+                            intro: "Let's explore the common molecular shapes predicted by VSEPR theory:",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-cube text-green-500 mr-3"></i>Common Molecular Shapes
+                                    </h3>
+                                    
+                                    <div class="grid md:grid-cols-2 gap-4 mb-4">
+                                        <!-- Linear -->
+                                        <div class="bg-gray-50 p-4 rounded-lg border-2 border-gray-200">
+                                            <h4 class="font-bold text-gray-800 mb-2 text-center">Linear</h4>
+                                            <div class="text-center mb-3">
+                                                <svg viewBox="0 0 120 60" class="w-24 h-12 mx-auto">
+                                                    <circle cx="30" cy="30" r="15" fill="#3b82f6"/>
+                                                    <text x="30" y="35" text-anchor="middle" fill="white" font-size="12" font-weight="bold">A</text>
+                                                    <line x1="45" y1="30" x2="75" y2="30" stroke="#22c55e" stroke-width="3"/>
+                                                    <circle cx="90" cy="30" r="15" fill="#3b82f6"/>
+                                                    <text x="90" y="35" text-anchor="middle" fill="white" font-size="12" font-weight="bold">A</text>
+                                                </svg>
+                                            </div>
+                                            <p class="text-sm text-center text-gray-600">2 electron domains, 0 lone pairs</p>
+                                            <p class="text-xs text-center text-green-600 font-medium">Examples: CO₂, BeCl₂, HCl</p>
+                                            <p class="text-xs text-center text-gray-500">Bond angle: 180°</p>
+                                        </div>
+                                        
+                                        <!-- Trigonal Planar -->
+                                        <div class="bg-gray-50 p-4 rounded-lg border-2 border-gray-200">
+                                            <h4 class="font-bold text-gray-800 mb-2 text-center">Trigonal Planar</h4>
+                                            <div class="text-center mb-3">
+                                                <svg viewBox="0 0 120 80" class="w-24 h-16 mx-auto">
+                                                    <circle cx="60" cy="50" r="15" fill="#22c55e"/>
+                                                    <text x="60" y="55" text-anchor="middle" fill="white" font-size="10" font-weight="bold">C</text>
+                                                    <circle cx="20" cy="20" r="12" fill="#3b82f6"/>
+                                                    <line x1="30" y1="25" x2="50" y2="45" stroke="#22c55e" stroke-width="2"/>
+                                                    <circle cx="100" cy="20" r="12" fill="#3b82f6"/>
+                                                    <line x1="90" y1="25" x2="70" y2="45" stroke="#22c55e" stroke-width="2"/>
+                                                    <circle cx="60" cy="70" r="12" fill="#3b82f6"/>
+                                                </svg>
+                                            </div>
+                                            <p class="text-sm text-center text-gray-600">3 electron domains, 0 lone pairs</p>
+                                            <p class="text-xs text-center text-green-600 font-medium">Examples: BF₃, BCl₃, CO₃²⁻</p>
+                                            <p class="text-xs text-center text-gray-500">Bond angle: 120°</p>
+                                        </div>
+                                        
+                                        <!-- Tetrahedral -->
+                                        <div class="bg-gray-50 p-4 rounded-lg border-2 border-green-300">
+                                            <h4 class="font-bold text-green-700 mb-2 text-center">Tetrahedral</h4>
+                                            <div class="text-center mb-3">
+                                                <svg viewBox="0 0 120 100" class="w-24 h-20 mx-auto">
+                                                    <circle cx="60" cy="50" r="15" fill="#22c55e"/>
+                                                    <text x="60" y="55" text-anchor="middle" fill="white" font-size="10" font-weight="bold">C</text>
+                                                    <circle cx="60" cy="10" r="10" fill="#3b82f6"/>
+                                                    <line x1="60" y1="20" x2="60" y2="35" stroke="#22c55e" stroke-width="2"/>
+                                                    <circle cx="25" cy="80" r="10" fill="#3b82f6"/>
+                                                    <line x1="35" y1="72" x2="50" y2="60" stroke="#22c55e" stroke-width="2"/>
+                                                    <circle cx="95" cy="80" r="10" fill="#3b82f6"/>
+                                                    <line x1="85" y1="72" x2="70" y2="60" stroke="#22c55e" stroke-width="2"/>
+                                                    <circle cx="60" cy="90" r="10" fill="#3b82f6"/>
+                                                </svg>
+                                            </div>
+                                            <p class="text-sm text-center text-gray-600">4 electron domains, 0 lone pairs</p>
+                                            <p class="text-xs text-center text-green-600 font-medium">Examples: CH₄, CCl₄, SiCl₄</p>
+                                            <p class="text-xs text-center text-gray-500">Bond angle: 109.5°</p>
+                                        </div>
+                                        
+                                        <!-- Bent/V-shaped -->
+                                        <div class="bg-gray-50 p-4 rounded-lg border-2 border-blue-300">
+                                            <h4 class="font-bold text-blue-700 mb-2 text-center">Bent (V-shaped)</h4>
+                                            <div class="text-center mb-3">
+                                                <svg viewBox="0 0 120 80" class="w-24 h-16 mx-auto">
+                                                    <circle cx="60" cy="35" r="15" fill="#3b82f6"/>
+                                                    <text x="60" y="40" text-anchor="middle" fill="white" font-size="10" font-weight="bold">O</text>
+                                                    <circle cx="20" cy="60" r="10" fill="#ef4444"/>
+                                                    <line x1="30" y1="52" x2="50" y2="42" stroke="#22c55e" stroke-width="2"/>
+                                                    <circle cx="100" cy="60" r="10" fill="#ef4444"/>
+                                                    <line x1="90" y1="52" x2="70" y2="42" stroke="#22c55e" stroke-width="2"/>
+                                                    <!-- Lone pairs -->
+                                                    <circle cx="50" cy="20" r="4" fill="#a855f7"/>
+                                                    <circle cx="70" cy="20" r="4" fill="#a855f7"/>
+                                                </svg>
+                                            </div>
+                                            <p class="text-sm text-center text-gray-600">4 electron domains, 2 lone pairs</p>
+                                            <p class="text-xs text-center text-blue-600 font-medium">Examples: H₂O, H₂S</p>
+                                            <p class="text-xs text-center text-gray-500">Bond angle: 104.5°</p>
+                                        </div>
+                                        
+                                        <!-- Trigonal Pyramidal -->
+                                        <div class="bg-gray-50 p-4 rounded-lg border-2 border-purple-300">
+                                            <h4 class="font-bold text-purple-700 mb-2 text-center">Trigonal Pyramidal</h4>
+                                            <div class="text-center mb-3">
+                                                <svg viewBox="0 0 120 90" class="w-24 h-18 mx-auto">
+                                                    <circle cx="60" cy="35" r="15" fill="#8b5cf6"/>
+                                                    <text x="60" y="40" text-anchor="middle" fill="white" font-size="10" font-weight="bold">N</text>
+                                                    <circle cx="30" cy="70" r="10" fill="#ef4444"/>
+                                                    <line x1="38" y1="62" x2="50" y2="45" stroke="#22c55e" stroke-width="2"/>
+                                                    <circle cx="90" cy="70" r="10" fill="#ef4444"/>
+                                                    <line x1="82" y1="62" x2="70" y2="45" stroke="#22c55e" stroke-width="2"/>
+                                                    <circle cx="60" cy="80" r="10" fill="#ef4444"/>
+                                                    <!-- Lone pair -->
+                                                    <circle cx="60" cy="18" r="4" fill="#a855f7"/>
+                                                </svg>
+                                            </div>
+                                            <p class="text-sm text-center text-gray-600">4 electron domains, 1 lone pair</p>
+                                            <p class="text-xs text-center text-purple-600 font-medium">Examples: NH₃, PH₃</p>
+                                            <p class="text-xs text-center text-gray-500">Bond angle: 107°</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <button class="click-hint" onclick="nextChunk()">
+                                        <i class="fas fa-arrow-right"></i>
+                                        <span>Continue to Properties →</span>
+                                    </button>
+                                </div>
+                            `
+                        }
+                    ]
+                },
+                {
+                    id: "properties",
+                    title: "Properties of Covalent Compounds",
+                    type: "note",
+                    chunks: [
+                        {
+                            intro: "The nature of covalent bonds gives these compounds very different properties from ionic compounds.",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-flask text-green-500 mr-3"></i>Properties of Simple Covalent Molecules
+                                    </h3>
+                                    <p class="text-gray-700 mb-4">Simple covalent molecules (like H₂O, CO₂, CH₄) have distinct properties due to their molecular structure and weak intermolecular forces.</p>
+                                    
+                                    <div class="grid md:grid-cols-2 gap-4 mb-4">
+                                        <div class="property-card bg-blue-50 p-4 rounded-lg border-l-4 border-blue-500">
+                                            <div class="flex items-center gap-3 mb-2">
+                                                <i class="fas fa-temperature-low text-blue-500 text-2xl"></i>
+                                                <h4 class="font-semibold text-blue-800">Low Melting & Boiling Points</h4>
+                                            </div>
+                                            <p class="text-gray-700 text-sm">Weak intermolecular forces need little energy to break.</p>
+                                            <div class="mt-2 p-2 bg-white rounded text-sm">
+                                                <p>H₂O: <strong>100°C</strong> (water boils at room temp!)</p>
+                                                <p>CO₂: <strong>-78°C</strong> (sublimes)</p>
+                                                <p>CH₄: <strong>-161°C</strong></p>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="property-card bg-green-50 p-4 rounded-lg border-l-4 border-green-500">
+                                            <div class="flex items-center gap-3 mb-2">
+                                                <i class="fas fa-tint text-green-500 text-2xl"></i>
+                                                <h4 class="font-semibold text-green-800">Often Insoluble in Water</h4>
+                                            </div>
+                                            <p class="text-gray-700 text-sm">Nonpolar molecules don't dissolve in polar solvents like water.</p>
+                                            <div class="mt-2 p-2 bg-white rounded text-sm">
+                                                <p class="text-red-600">✗ Oil doesn't mix with water</p>
+                                                <p class="text-green-600">✓ Some polar molecules do dissolve (HCl, NH₃)</p>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="property-card bg-purple-50 p-4 rounded-lg border-l-4 border-purple-500">
+                                            <div class="flex items-center gap-3 mb-2">
+                                                <i class="fas fa-bolt text-purple-500 text-2xl"></i>
+                                                <h4 class="font-semibold text-purple-800">Poor Conductors</h4>
+                                            </div>
+                                            <p class="text-gray-700 text-sm">No free ions or delocalized electrons to carry charge.</p>
+                                            <div class="mt-2 p-2 bg-white rounded text-sm">
+                                                <p class="text-red-600">✗ Don't conduct in any state</p>
+                                                <p class="text-xs text-gray-500">Exception: Some polar molecules form ions in water</p>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="property-card bg-amber-50 p-4 rounded-lg border-l-4 border-amber-500">
+                                            <div class="flex items-center gap-3 mb-2">
+                                                <i class="fas fa-cube text-amber-500 text-2xl"></i>
+                                                <h4 class="font-semibold text-amber-800">Soft or Gases/Liquids at Room Temp</h4>
+                                            </div>
+                                            <p class="text-gray-700 text-sm">Weak forces between molecules make them easy to separate.</p>
+                                            <div class="mt-2 p-2 bg-white rounded text-sm">
+                                                <p>Gases: O₂, N₂, CO₂, CH₄</p>
+                                                <p>Liquids: H₂O, Br₂</p>
+                                                <p>Soft solids: I₂, wax, sulfur</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            `
+                        },
+                        {
+                            intro: "Some covalent substances form giant networks instead of small molecules - these have very different properties!",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-gem text-green-500 mr-3"></i>Giant Covalent Structures
+                                    </h3>
+                                    <p class="text-gray-700 mb-4">Some elements and compounds form extended networks of covalent bonds throughout the entire structure!</p>
+                                    
+                                    <div class="grid md:grid-cols-3 gap-4 mb-4">
+                                        <div class="bg-gray-100 p-4 rounded-lg border-2 border-gray-300">
+                                            <h4 class="font-bold text-gray-800 mb-2 text-center">Diamond</h4>
+                                            <div class="text-center text-3xl mb-2">💎</div>
+                                            <ul class="text-sm text-gray-700 space-y-1">
+                                                <li>• Each C bonded to 4 other C</li>
+                                                <li>• Very hard (strong bonds)</li>
+                                                <li>• High melting point (3550°C)</li>
+                                                <li>• Doesn't conduct</li>
+                                            </ul>
+                                        </div>
+                                        
+                                        <div class="bg-gray-800 p-4 rounded-lg border-2 border-gray-600">
+                                            <h4 class="font-bold text-white mb-2 text-center">Graphite</h4>
+                                            <div class="text-center text-3xl mb-2">✏️</div>
+                                            <ul class="text-sm text-gray-300 space-y-1">
+                                                <li>• Layers of C atoms (hexagonal)</li>
+                                                <li>• Soft, slippery layers</li>
+                                                <li>• High melting point</li>
+                                                <li>• <span class="text-green-400">Conducts electricity!</span></li>
+                                            </ul>
+                                        </div>
+                                        
+                                        <div class="bg-blue-50 p-4 rounded-lg border-2 border-blue-300">
+                                            <h4 class="font-bold text-blue-800 mb-2 text-center">Silicon Dioxide</h4>
+                                            <div class="text-center text-3xl mb-2">🏜️</div>
+                                            <ul class="text-sm text-gray-700 space-y-1">
+                                                <li>• SiO₂ (quartz, sand)</li>
+                                                <li>• Each Si bonded to 4 O</li>
+                                                <li>• Hard, high melting point</li>
+                                                <li>• Doesn't conduct</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="bg-red-50 border-l-4 border-red-500 p-4">
+                                        <h4 class="font-semibold text-red-800 mb-2"><i class="fas fa-exclamation-circle mr-2"></i>Important Distinction!</h4>
+                                        <p class="text-gray-700">When melting simple molecules, you're breaking <strong>weak intermolecular forces</strong> (easy). When melting giant covalent structures, you're breaking <strong>strong covalent bonds</strong> (very hard)!</p>
+                                    </div>
+                                    
+                                    <button class="click-hint" onclick="nextChunk()">
+                                        <i class="fas fa-arrow-right"></i>
+                                        <span>Continue to Practice →</span>
+                                    </button>
+                                </div>
+                            `
+                        }
+                    ]
+                },
+                {
+                    id: "practice",
+                    title: "Practice Questions",
+                    type: "practice",
+                    chunks: [
+                        {
+                            intro: "Let's practice what you've learned! First, some guided questions with feedback.",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-graduation-cap text-green-500 mr-3"></i>Guided Practice
+                                    </h3>
+                                    <p class="text-gray-700 mb-4">Identify the bond type and molecule properties:</p>
+                                    
+                                    <div class="space-y-4" id="guidedPracticeContainer">
+                                        <!-- Question 1 -->
+                                        <div class="bg-gray-50 p-4 rounded-lg" id="guidedQ1">
+                                            <p class="font-medium text-gray-800 mb-2">1. What type of bond forms between two chlorine atoms?</p>
+                                            <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+                                                <button onclick="checkGuidedAnswer(1, 'Ionic bond', this)" class="practice-option text-sm">Ionic bond</button>
+                                                <button onclick="checkGuidedAnswer(1, 'Covalent bond', this)" class="practice-option text-sm">Covalent bond</button>
+                                                <button onclick="checkGuidedAnswer(1, 'Metallic bond', this)" class="practice-option text-sm">Metallic bond</button>
+                                                <button onclick="checkGuidedAnswer(1, 'No bond', this)" class="practice-option text-sm">No bond</button>
+                                            </div>
+                                            <p class="text-sm mt-2 hidden" id="guidedFeedback1"></p>
+                                        </div>
+                                        
+                                        <!-- Question 2 -->
+                                        <div class="bg-gray-50 p-4 rounded-lg" id="guidedQ2">
+                                            <p class="font-medium text-gray-800 mb-2">2. How many electron pairs are shared in a triple bond?</p>
+                                            <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+                                                <button onclick="checkGuidedAnswer(2, '1 pair', this)" class="practice-option text-sm">1 pair</button>
+                                                <button onclick="checkGuidedAnswer(2, '2 pairs', this)" class="practice-option text-sm">2 pairs</button>
+                                                <button onclick="checkGuidedAnswer(2, '3 pairs', this)" class="practice-option text-sm">3 pairs</button>
+                                                <button onclick="checkGuidedAnswer(2, '6 pairs', this)" class="practice-option text-sm">6 pairs</button>
+                                            </div>
+                                            <p class="text-sm mt-2 hidden" id="guidedFeedback2"></p>
+                                        </div>
+                                        
+                                        <!-- Question 3 -->
+                                        <div class="bg-gray-50 p-4 rounded-lg" id="guidedQ3">
+                                            <p class="font-medium text-gray-800 mb-2">3. What is the molecular shape of CH₄ (methane)?</p>
+                                            <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+                                                <button onclick="checkGuidedAnswer(3, 'Linear', this)" class="practice-option text-sm">Linear</button>
+                                                <button onclick="checkGuidedAnswer(3, 'Tetrahedral', this)" class="practice-option text-sm">Tetrahedral</button>
+                                                <button onclick="checkGuidedAnswer(3, 'Bent', this)" class="practice-option text-sm">Bent</button>
+                                                <button onclick="checkGuidedAnswer(3, 'Trigonal planar', this)" class="practice-option text-sm">Trigonal planar</button>
+                                            </div>
+                                            <p class="text-sm mt-2 hidden" id="guidedFeedback3"></p>
+                                        </div>
+                                        
+                                        <!-- Question 4 -->
+                                        <div class="bg-gray-50 p-4 rounded-lg" id="guidedQ4">
+                                            <p class="font-medium text-gray-800 mb-2">4. Is the H-Cl bond polar or nonpolar?</p>
+                                            <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+                                                <button onclick="checkGuidedAnswer(4, 'Polar', this)" class="practice-option text-sm">Polar</button>
+                                                <button onclick="checkGuidedAnswer(4, 'Nonpolar', this)" class="practice-option text-sm">Nonpolar</button>
+                                                <button onclick="checkGuidedAnswer(4, 'Ionic', this)" class="practice-option text-sm">Ionic</button>
+                                                <button onclick="checkGuidedAnswer(4, 'Metallic', this)" class="practice-option text-sm">Metallic</button>
+                                            </div>
+                                            <p class="text-sm mt-2 hidden" id="guidedFeedback4"></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            `
+                        },
+                        {
+                            intro: "Now try some independent practice - predict properties and shapes!",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-pen text-green-500 mr-3"></i>Independent Practice
+                                    </h3>
+                                    <p class="text-gray-700 mb-4">Apply your knowledge to these questions:</p>
+                                    
+                                    <div class="space-y-4" id="independentPracticeContainer">
+                                        <!-- Question 1 -->
+                                        <div class="bg-gray-50 p-4 rounded-lg" id="independentQ1">
+                                            <p class="font-medium text-gray-800 mb-2">1. Why do simple covalent molecules have low melting points?</p>
+                                            <div class="grid grid-cols-1 gap-2">
+                                                <button onclick="checkIndependentAnswer(1, 'Weak intermolecular forces', this)" class="practice-option text-sm text-left">Weak intermolecular forces between molecules</button>
+                                                <button onclick="checkIndependentAnswer(1, 'Weak covalent bonds', this)" class="practice-option text-sm text-left">Covalent bonds are weak</button>
+                                                <button onclick="checkIndependentAnswer(1, 'Small molecules', this)" class="practice-option text-sm text-left">Molecules are too small</button>
+                                            </div>
+                                            <p class="text-sm mt-2 hidden" id="independentFeedback1"></p>
+                                        </div>
+                                        
+                                        <!-- Question 2 -->
+                                        <div class="bg-gray-50 p-4 rounded-lg" id="independentQ2">
+                                            <p class="font-medium text-gray-800 mb-2">2. What is the bond angle in a water molecule (H₂O)?</p>
+                                            <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+                                                <button onclick="checkIndependentAnswer(2, '180°', this)" class="practice-option text-sm">180°</button>
+                                                <button onclick="checkIndependentAnswer(2, '120°', this)" class="practice-option text-sm">120°</button>
+                                                <button onclick="checkIndependentAnswer(2, '104.5°', this)" class="practice-option text-sm">104.5°</button>
+                                                <button onclick="checkIndependentAnswer(2, '109.5°', this)" class="practice-option text-sm">109.5°</button>
+                                            </div>
+                                            <p class="text-sm mt-2 hidden" id="independentFeedback2"></p>
+                                        </div>
+                                        
+                                        <!-- Question 3 -->
+                                        <div class="bg-gray-50 p-4 rounded-lg" id="independentQ3">
+                                            <p class="font-medium text-gray-800 mb-2">3. Which molecule contains a double bond?</p>
+                                            <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+                                                <button onclick="checkIndependentAnswer(3, 'H₂', this)" class="practice-option text-sm">H₂</button>
+                                                <button onclick="checkIndependentAnswer(3, 'N₂', this)" class="practice-option text-sm">N₂</button>
+                                                <button onclick="checkIndependentAnswer(3, 'O₂', this)" class="practice-option text-sm">O₂</button>
+                                                <button onclick="checkIndependentAnswer(3, 'CH₄', this)" class="practice-option text-sm">CH₄</button>
+                                            </div>
+                                            <p class="text-sm mt-2 hidden" id="independentFeedback3"></p>
+                                        </div>
+                                        
+                                        <!-- Question 4 -->
+                                        <div class="bg-gray-50 p-4 rounded-lg" id="independentQ4">
+                                            <p class="font-medium text-gray-800 mb-2">4. Why does graphite conduct electricity but diamond doesn't?</p>
+                                            <div class="grid grid-cols-1 gap-2">
+                                                <button onclick="checkIndependentAnswer(4, 'Delocalized electrons', this)" class="practice-option text-sm text-left">Graphite has delocalized electrons between layers</button>
+                                                <button onclick="checkIndependentAnswer(4, 'Softer structure', this)" class="practice-option text-sm text-left">Graphite is softer than diamond</button>
+                                                <button onclick="checkIndependentAnswer(4, 'More carbon', this)" class="practice-option text-sm text-left">Graphite contains more carbon atoms</button>
+                                            </div>
+                                            <p class="text-sm mt-2 hidden" id="independentFeedback4"></p>
+                                        </div>
+                                        
+                                        <!-- Question 5 -->
+                                        <div class="bg-gray-50 p-4 rounded-lg" id="independentQ5">
+                                            <p class="font-medium text-gray-800 mb-2">5. What is the shape of NH₃ (ammonia)?</p>
+                                            <div class="grid grid-cols-2 gap-2">
+                                                <button onclick="checkIndependentAnswer(5, 'Tetrahedral', this)" class="practice-option text-sm">Tetrahedral</button>
+                                                <button onclick="checkIndependentAnswer(5, 'Trigonal pyramidal', this)" class="practice-option text-sm">Trigonal pyramidal</button>
+                                                <button onclick="checkIndependentAnswer(5, 'Trigonal planar', this)" class="practice-option text-sm">Trigonal planar</button>
+                                                <button onclick="checkIndependentAnswer(5, 'Bent', this)" class="practice-option text-sm">Bent</button>
+                                            </div>
+                                            <p class="text-sm mt-2 hidden" id="independentFeedback5"></p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div id="practiceComplete" class="hidden mt-6">
+                                        <div class="step-complete-hint">
+                                            <i class="fas fa-check-circle text-green-500 text-2xl mb-2"></i>
+                                            <p class="font-semibold">Practice Complete!</p>
+                                            <p class="text-sm">You've answered all practice questions. Take the quiz to test your knowledge!</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <button class="click-hint" onclick="nextChunk()">
+                                        <i class="fas fa-arrow-right"></i>
+                                        <span>Continue to Summary →</span>
+                                    </button>
+                                </div>
+                            `
+                        }
+                    ]
+                },
+                {
+                    id: "summary",
+                    title: "Summary & Quiz",
+                    type: "note",
+                    chunks: [
+                        {
+                            intro: "Let's summarize what you've learned about covalent bonding!",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-clipboard-check text-green-500 mr-3"></i>Key Takeaways
+                                    </h3>
+                                    
+                                    <div class="space-y-3 mb-4">
+                                        <div class="bg-green-50 p-3 rounded-lg border-l-4 border-green-500">
+                                            <p class="text-gray-800"><strong>1. Covalent Bond:</strong> Shared electron pairs between non-metal atoms</p>
+                                        </div>
+                                        
+                                        <div class="bg-blue-50 p-3 rounded-lg border-l-4 border-blue-500">
+                                            <p class="text-gray-800"><strong>2. Bond Types:</strong> Single (1 pair), Double (2 pairs), Triple (3 pairs)</p>
+                                        </div>
+                                        
+                                        <div class="bg-purple-50 p-3 rounded-lg border-l-4 border-purple-500">
+                                            <p class="text-gray-800"><strong>3. Polarity:</strong> Depends on electronegativity difference (<0.4 nonpolar, 0.4-1.7 polar)</p>
+                                        </div>
+                                        
+                                        <div class="bg-amber-50 p-3 rounded-lg border-l-4 border-amber-500">
+                                            <p class="text-gray-800"><strong>4. VSEPR Theory:</strong> Electron pairs repel → determines molecular shape</p>
+                                        </div>
+                                        
+                                        <div class="bg-red-50 p-3 rounded-lg border-l-4 border-red-500">
+                                            <p class="text-gray-800"><strong>5. Properties:</strong> Low MP, poor conductors, often insoluble in water</p>
+                                        </div>
+                                        
+                                        <div class="bg-indigo-50 p-3 rounded-lg border-l-4 border-indigo-500">
+                                            <p class="text-gray-800"><strong>6. Giant Covalent:</strong> Diamond, graphite, SiO₂ - high MP, hard (except graphite)</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="bg-gradient-to-r from-green-100 to-teal-100 p-4 rounded-lg mb-4">
+                                        <h4 class="font-semibold text-green-800 mb-2">WAEC Exam Tips:</h4>
+                                        <ul class="text-gray-700 space-y-1">
+                                            <li>• Know how to draw dot-cross diagrams for common molecules</li>
+                                            <li>• Remember shapes and bond angles: CH₄ (109.5°), H₂O (104.5°), NH₃ (107°)</li>
+                                            <li>• Explain properties using intermolecular vs intramolecular forces</li>
+                                            <li>• Compare ionic vs covalent in exam questions</li>
+                                        </ul>
+                                    </div>
+                                    
+                                    <a href="metallic-bonding.html" class="inline-flex items-center gap-2 text-green-600 font-medium hover:text-green-700 mb-4">
+                                        <i class="fas fa-arrow-right"></i>
+                                        Continue to: Metallic Bonding →
+                                    </a>
+                                </div>
+                            `
+                        },
+                        {
+                            intro: "Ready to test your knowledge? Take the quiz!",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-question-circle text-green-500 mr-3"></i>Topic Quiz
+                                    </h3>
+                                    <p class="text-gray-700 mb-4">Test your understanding of covalent bonding with 10 questions!</p>
+                                    
+                                    <div class="bg-gradient-to-r from-green-50 to-teal-50 p-6 rounded-lg text-center">
+                                        <i class="fas fa-clipboard-list text-green-500 text-4xl mb-4"></i>
+                                        <h4 class="font-semibold text-gray-800 mb-2">Covalent Bonding Quiz</h4>
+                                        <p class="text-gray-600 mb-4">10 questions covering bond types, polarity, VSEPR, and properties</p>
+                                        <button onclick="startQuiz()" class="px-8 py-3 bg-green-500 text-white rounded-lg hover:bg-green-600 transition font-semibold">
+                                            <i class="fas fa-play mr-2"></i>Start Quiz
+                                        </button>
+                                    </div>
+                                    
+                                    <div class="mt-4 grid md:grid-cols-2 gap-4">
+                                        <div class="bg-blue-50 p-4 rounded-lg">
+                                            <h4 class="font-semibold text-blue-800 mb-2">Practice Score</h4>
+                                            <p class="text-2xl font-bold text-blue-600" id="finalPracticeScore">--</p>
+                                        </div>
+                                        <div class="bg-purple-50 p-4 rounded-lg">
+                                            <h4 class="font-semibold text-purple-800 mb-2">Combined Score</h4>
+                                            <p class="text-2xl font-bold text-purple-600" id="finalCombinedScore">--</p>
+                                            <p class="text-xs text-gray-500">40% Practice + 60% Quiz</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            `
+                        }
+                    ]
+                }
+            ]
+        };
+        
+        // Quiz questions
+        const quizQuestions = [
+            {
+                question: "What type of atoms typically form covalent bonds?",
+                options: ["Metal + Metal", "Metal + Non-metal", "Non-metal + Non-metal", "Noble gases"],
+                correct: 2,
+                explanation: "Covalent bonds form between non-metal atoms that both have high electronegativity and share electrons."
+            },
+            {
+                question: "How many electrons are shared in a double bond?",
+                options: ["2 electrons", "4 electrons", "6 electrons", "8 electrons"],
+                correct: 1,
+                explanation: "A double bond shares 2 pairs of electrons = 4 electrons total."
+            },
+            {
+                question: "What is the molecular shape of methane (CH₄)?",
+                options: ["Linear", "Trigonal planar", "Bent", "Tetrahedral"],
+                correct: 3,
+                explanation: "CH₄ has 4 bonding pairs around carbon with no lone pairs, giving a tetrahedral shape with 109.5° bond angles."
+            },
+            {
+                question: "Why is the H-Cl bond polar?",
+                options: ["Chlorine is larger than hydrogen", "Chlorine is more electronegative than hydrogen", "They share electrons equally", "Hydrogen has no neutrons"],
+                correct: 1,
+                explanation: "Chlorine (EN = 3.0) is more electronegative than hydrogen (EN = 2.1), so it pulls shared electrons closer, creating partial charges."
+            },
+            {
+                question: "Which molecule has a triple bond?",
+                options: ["H₂", "O₂", "N₂", "CO₂"],
+                correct: 2,
+                explanation: "N₂ has a triple bond between the two nitrogen atoms, sharing 3 pairs of electrons (6 electrons total)."
+            },
+            {
+                question: "What is the bond angle in a water molecule?",
+                options: ["180°", "120°", "109.5°", "104.5°"],
+                correct: 3,
+                explanation: "Water has 2 bonding pairs and 2 lone pairs. Lone pair repulsion compresses the H-O-H angle to 104.5°."
+            },
+            {
+                question: "Why do simple covalent molecules have low melting points?",
+                options: ["Strong covalent bonds", "Weak intermolecular forces", "They are always gases", "They contain few electrons"],
+                correct: 1,
+                explanation: "Melting involves breaking weak intermolecular forces between molecules, not the strong covalent bonds within molecules."
+            },
+            {
+                question: "Why does graphite conduct electricity?",
+                options: ["It has free ions", "It has delocalized electrons between layers", "It is a metal", "It has metallic bonds"],
+                correct: 1,
+                explanation: "Graphite has delocalized electrons between its layers that can move and carry electric current."
+            },
+            {
+                question: "What is the shape of NH₃ (ammonia)?",
+                options: ["Tetrahedral", "Trigonal pyramidal", "Trigonal planar", "Bent"],
+                correct: 1,
+                explanation: "NH₃ has 3 bonding pairs and 1 lone pair around nitrogen. The lone pair pushes the bonds down, giving a trigonal pyramidal shape."
+            },
+            {
+                question: "What type of bond forms between atoms with electronegativity difference of 0.2?",
+                options: ["Ionic bond", "Polar covalent bond", "Nonpolar covalent bond", "Metallic bond"],
+                correct: 2,
+                explanation: "Electronegativity difference < 0.4 indicates a nonpolar covalent bond with nearly equal sharing of electrons."
+            }
+        ];
+        
+        let currentQuizIndex = 0;
+        let quizScore = 0;
+        let quizAnswers = [];
+        let practiceQuestionsAnswered = 0;
+        const totalPracticeQuestions = 9;
+        
+        // Electronegativity values for polarity calculator
+        const electronegativity = {
+            H: 2.1, C: 2.5, N: 3.0, O: 3.5, F: 4.0, Cl: 3.0, S: 2.5
+        };
+        
+        // Initialize the page
+        function init() {
+            renderStepsList();
+            loadProgress();
+            renderCurrentStep();
+            setupEventListeners();
+            updateScores();
+        }
+        
+        // Render steps list
+        function renderStepsList() {
+            const stepsList = document.getElementById('stepsList');
+            const mobileStepsList = document.getElementById('mobileStepsList');
+            
+            let html = '';
+            topicData.steps.forEach((step, index) => {
+                const isComplete = stepsCompleted.includes(index);
+                const isCurrent = index === currentStepIndex;
+                
+                html += `
+                    <li class="step-item ${isCurrent ? 'bg-green-50 border-l-2 border-green-500 -ml-1 pl-1' : ''}" data-step="${index}">
+                        <button onclick="goToStep(${index})" class="w-full text-left px-3 py-2 rounded flex items-center gap-2 ${isCurrent ? 'font-semibold text-green-700' : 'text-gray-600 hover:bg-gray-100'}">
+                            <span class="w-6 h-6 rounded-full flex items-center justify-center text-xs ${isComplete ? 'bg-green-500 text-white' : isCurrent ? 'bg-green-500 text-white' : 'bg-gray-200 text-gray-600'}">
+                                ${isComplete ? '<i class="fas fa-check"></i>' : index + 1}
+                            </span>
+                            <span class="text-sm truncate">${step.title}</span>
+                        </button>
+                    </li>
+                `;
+            });
+            
+            stepsList.innerHTML = html;
+            mobileStepsList.innerHTML = html;
+        }
+        
+        // Render current step
+        function renderCurrentStep() {
+            const step = topicData.steps[currentStepIndex];
+            const chunk = step.chunks[currentChunkIndex];
+            const container = document.getElementById('stepContainer');
+            
+            // Animate in
+            container.classList.remove('animate-fade-in-up');
+            void container.offsetWidth; // Trigger reflow
+            container.classList.add('animate-fade-in-up');
+            
+            let html = `
+                <div class="mb-4 text-sm text-gray-500">
+                    Step ${currentStepIndex + 1} of ${topicData.steps.length}: <span class="font-medium text-gray-700">${step.title}</span>
+                </div>
+            `;
+            
+            if (chunk.intro) {
+                html += `<p class="text-gray-600 mb-4 bg-green-50 p-3 rounded-lg border-l-4 border-green-300">${chunk.intro}</p>`;
+            }
+            
+            html += chunk.content;
+            
+            container.innerHTML = html;
+            
+            // Initialize any interactive elements
+            if (currentStepIndex === 1 && currentChunkIndex === 1) {
+                setTimeout(() => showMolecule('H2'), 100);
+            } else if (currentStepIndex === 2 && currentChunkIndex === 0) {
+                setTimeout(() => showCovalentDotCross('H2'), 100);
+            } else if (currentStepIndex === 3 && currentChunkIndex === 1) {
+                setTimeout(() => updatePolarity(), 100);
+            }
+            
+            updateProgress();
+            updateNavigationButtons();
+        }
+        
+        // Navigation
+        function nextChunk() {
+            const step = topicData.steps[currentStepIndex];
+            if (currentChunkIndex < step.chunks.length - 1) {
+                currentChunkIndex++;
+                renderCurrentStep();
+            } else {
+                // Mark step as complete
+                if (!stepsCompleted.includes(currentStepIndex)) {
+                    stepsCompleted.push(currentStepIndex);
+                    saveProgress();
+                    renderStepsList();
+                }
+                
+                // Go to next step
+                if (currentStepIndex < topicData.steps.length - 1) {
+                    currentStepIndex++;
+                    currentChunkIndex = 0;
+                    renderCurrentStep();
+                    renderStepsList();
+                }
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        function goToStep(index) {
+            currentStepIndex = index;
+            currentChunkIndex = 0;
+            renderCurrentStep();
+            renderStepsList();
+            closeMobileSidebar();
+        }
+        
+        function updateNavigationButtons() {
+            const prevBtn = document.getElementById('prevStepBtn');
+            const nextBtn = document.getElementById('nextStepBtn');
+            
+            prevBtn.disabled = currentStepIndex === 0 && currentChunkIndex === 0;
+            
+            const isLastStep = currentStepIndex === topicData.steps.length - 1;
+            const isLastChunk = currentChunkIndex === topicData.steps[currentStepIndex].chunks.length - 1;
+            nextBtn.disabled = isLastStep && isLastChunk;
+        }
+        
+        // Progress management
+        function updateProgress() {
+            const totalChunks = topicData.steps.reduce((sum, step) => sum + step.chunks.length, 0);
+            let completedChunks = 0;
+            
+            for (let i = 0; i < currentStepIndex; i++) {
+                completedChunks += topicData.steps[i].chunks.length;
+            }
+            completedChunks += currentChunkIndex;
+            
+            const percent = Math.round((completedChunks / totalChunks) * 100);
+            document.getElementById('progressPercent').textContent = percent + '%';
+            document.getElementById('progressBar').style.width = percent + '%';
+        }
+        
+        function saveProgress() {
+            try {
+                localStorage.setItem('covalentBonding_stepProgress', JSON.stringify({
+                    currentStepIndex,
+                    currentChunkIndex,
+                    stepsCompleted
+                }));
+            } catch (e) {}
+        }
+        
+        function loadProgress() {
+            try {
+                const saved = localStorage.getItem('covalentBonding_stepProgress');
+                if (saved) {
+                    const data = JSON.parse(saved);
+                    currentStepIndex = data.currentStepIndex || 0;
+                    currentChunkIndex = data.currentChunkIndex || 0;
+                    stepsCompleted = data.stepsCompleted || [];
+                }
+            } catch (e) {}
+        }
+        
+        // Molecule Visualization
+        function showMolecule(molecule) {
+            const data = moleculeData[molecule];
+            if (!data) return;
+            
+            // Update button states
+            document.querySelectorAll('.mol-btn').forEach(btn => {
+                btn.classList.remove('bg-green-100', 'text-green-700', 'active');
+                btn.classList.add('bg-gray-100', 'text-gray-700');
+            });
+            document.querySelector(`.mol-btn[data-mol="${molecule}"]`).classList.remove('bg-gray-100', 'text-gray-700');
+            document.querySelector(`.mol-btn[data-mol="${molecule}"]`).classList.add('bg-green-100', 'text-green-700', 'active');
+            
+            const viz = document.getElementById('moleculeViz');
+            
+            const bondSymbols = {
+                'single': '—',
+                'double': '＝',
+                'triple': '≡'
+            };
+            
+            const bondColors = {
+                'single': 'text-green-500',
+                'double': 'text-blue-500',
+                'triple': 'text-purple-500'
+            };
+            
+            let formula = data.formula;
+            let diagram = '';
+            
+            // Create specific diagrams for each molecule
+            if (molecule === 'H2') {
+                diagram = `
+                    <div class="text-center">
+                        <h4 class="font-semibold text-gray-800 mb-4">Hydrogen Molecule (H₂)</h4>
+                        <div class="flex items-center justify-center gap-2 mb-4">
+                            <div class="w-16 h-16 rounded-full bg-red-100 flex items-center justify-center text-2xl font-bold text-red-600 atom-pulse">H</div>
+                            <span class="text-3xl ${bondColors[data.type]}">${bondSymbols[data.type]}</span>
+                            <div class="w-16 h-16 rounded-full bg-red-100 flex items-center justify-center text-2xl font-bold text-red-600 atom-pulse">H</div>
+                        </div>
+                        <div class="grid md:grid-cols-3 gap-4 text-sm">
+                            <div class="bg-green-50 p-3 rounded-lg">
+                                <p class="font-medium text-green-800">Bond Type</p>
+                                <p class="text-green-600">${data.type.charAt(0).toUpperCase() + data.type.slice(1)} Bond</p>
+                            </div>
+                            <div class="bg-blue-50 p-3 rounded-lg">
+                                <p class="font-medium text-blue-800">Shared Electrons</p>
+                                <p class="text-blue-600">${data.bonds * 2} electrons (1 pair)</p>
+                            </div>
+                            <div class="bg-purple-50 p-3 rounded-lg">
+                                <p class="font-medium text-purple-800">Polarity</p>
+                                <p class="text-purple-600">${data.polarity.charAt(0).toUpperCase() + data.polarity.slice(1)} (EN diff: 0)</p>
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-600 mt-4">Each H atom contributes 1 electron to the shared pair. Each H now "feels" 2 electrons.</p>
+                    </div>
+                `;
+            } else if (molecule === 'O2') {
+                diagram = `
+                    <div class="text-center">
+                        <h4 class="font-semibold text-gray-800 mb-4">Oxygen Molecule (O₂)</h4>
+                        <div class="flex items-center justify-center gap-1 mb-4">
+                            <div class="w-20 h-20 rounded-full bg-blue-100 flex items-center justify-center text-2xl font-bold text-blue-600 atom-pulse">O</div>
+                            <span class="text-3xl ${bondColors[data.type]}">${bondSymbols[data.type]}</span>
+                            <div class="w-20 h-20 rounded-full bg-blue-100 flex items-center justify-center text-2xl font-bold text-blue-600 atom-pulse">O</div>
+                        </div>
+                        <div class="grid md:grid-cols-3 gap-4 text-sm">
+                            <div class="bg-green-50 p-3 rounded-lg">
+                                <p class="font-medium text-green-800">Bond Type</p>
+                                <p class="text-green-600">${data.type.charAt(0).toUpperCase() + data.type.slice(1)} Bond</p>
+                            </div>
+                            <div class="bg-blue-50 p-3 rounded-lg">
+                                <p class="font-medium text-blue-800">Shared Electrons</p>
+                                <p class="text-blue-600">${data.bonds * 2} electrons (2 pairs)</p>
+                            </div>
+                            <div class="bg-purple-50 p-3 rounded-lg">
+                                <p class="font-medium text-purple-800">Polarity</p>
+                                <p class="text-purple-600">${data.polarity.charAt(0).toUpperCase() + data.polarity.slice(1)} (EN diff: 0)</p>
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-600 mt-4">Each O has 6 valence electrons and needs 2 more. They share 2 pairs (4 electrons) in a double bond.</p>
+                    </div>
+                `;
+            } else if (molecule === 'N2') {
+                diagram = `
+                    <div class="text-center">
+                        <h4 class="font-semibold text-gray-800 mb-4">Nitrogen Molecule (N₂)</h4>
+                        <div class="flex items-center justify-center gap-1 mb-4">
+                            <div class="w-20 h-20 rounded-full bg-indigo-100 flex items-center justify-center text-2xl font-bold text-indigo-600 atom-pulse">N</div>
+                            <span class="text-3xl ${bondColors[data.type]}">${bondSymbols[data.type]}</span>
+                            <div class="w-20 h-20 rounded-full bg-indigo-100 flex items-center justify-center text-2xl font-bold text-indigo-600 atom-pulse">N</div>
+                        </div>
+                        <div class="grid md:grid-cols-3 gap-4 text-sm">
+                            <div class="bg-green-50 p-3 rounded-lg">
+                                <p class="font-medium text-green-800">Bond Type</p>
+                                <p class="text-green-600">${data.type.charAt(0).toUpperCase() + data.type.slice(1)} Bond</p>
+                            </div>
+                            <div class="bg-blue-50 p-3 rounded-lg">
+                                <p class="font-medium text-blue-800">Shared Electrons</p>
+                                <p class="text-blue-600">${data.bonds * 2} electrons (3 pairs)</p>
+                            </div>
+                            <div class="bg-purple-50 p-3 rounded-lg">
+                                <p class="font-medium text-purple-800">Bond Strength</p>
+                                <p class="text-purple-600">Very strong (shortest bond)</p>
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-600 mt-4">Each N has 5 valence electrons and needs 3 more. They share 3 pairs (6 electrons) in a triple bond - the strongest type!</p>
+                    </div>
+                `;
+            } else if (molecule === 'CO2') {
+                diagram = `
+                    <div class="text-center">
+                        <h4 class="font-semibold text-gray-800 mb-4">Carbon Dioxide (CO₂)</h4>
+                        <div class="flex items-center justify-center gap-1 mb-4">
+                            <div class="w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center text-xl font-bold text-blue-600">O</div>
+                            <span class="text-2xl text-blue-500">＝</span>
+                            <div class="w-16 h-16 rounded-full bg-gray-200 flex items-center justify-center text-xl font-bold text-gray-700 atom-pulse">C</div>
+                            <span class="text-2xl text-blue-500">＝</span>
+                            <div class="w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center text-xl font-bold text-blue-600">O</div>
+                        </div>
+                        <div class="grid md:grid-cols-4 gap-4 text-sm">
+                            <div class="bg-green-50 p-3 rounded-lg">
+                                <p class="font-medium text-green-800">Bond Type</p>
+                                <p class="text-green-600">2 Double Bonds</p>
+                            </div>
+                            <div class="bg-blue-50 p-3 rounded-lg">
+                                <p class="font-medium text-blue-800">Shape</p>
+                                <p class="text-blue-600">Linear (180°)</p>
+                            </div>
+                            <div class="bg-purple-50 p-3 rounded-lg">
+                                <p class="font-medium text-purple-800">EN Difference</p>
+                                <p class="text-purple-600">C-O: 1.0 (polar bonds)</p>
+                            </div>
+                            <div class="bg-amber-50 p-3 rounded-lg">
+                                <p class="font-medium text-amber-800">Molecule Polarity</p>
+                                <p class="text-amber-600">Nonpolar (symmetrical!)</p>
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-600 mt-4">CO₂ has polar C=O bonds but is nonpolar overall because the dipoles cancel out (symmetrical linear shape).</p>
+                    </div>
+                `;
+            } else if (molecule === 'CH4') {
+                diagram = `
+                    <div class="text-center">
+                        <h4 class="font-semibold text-gray-800 mb-4">Methane (CH₄)</h4>
+                        <div class="mb-4">
+                            <svg viewBox="0 0 120 100" class="w-32 h-28 mx-auto">
+                                <circle cx="60" cy="50" r="18" fill="#d1d5db"/>
+                                <text x="60" y="55" text-anchor="middle" fill="#374151" font-size="14" font-weight="bold">C</text>
+                                <circle cx="60" cy="10" r="12" fill="#fee2e2"/>
+                                <text x="60" y="15" text-anchor="middle" fill="#dc2626" font-size="10" font-weight="bold">H</text>
+                                <line x1="60" y1="22" x2="60" y2="32" stroke="#22c55e" stroke-width="3"/>
+                                <circle cx="25" cy="75" r="12" fill="#fee2e2"/>
+                                <text x="25" y="80" text-anchor="middle" fill="#dc2626" font-size="10" font-weight="bold">H</text>
+                                <line x1="35" y1="68" x2="48" y2="58" stroke="#22c55e" stroke-width="3"/>
+                                <circle cx="95" cy="75" r="12" fill="#fee2e2"/>
+                                <text x="95" y="80" text-anchor="middle" fill="#dc2626" font-size="10" font-weight="bold">H</text>
+                                <line x1="85" y1="68" x2="72" y2="58" stroke="#22c55e" stroke-width="3"/>
+                                <circle cx="60" cy="92" r="12" fill="#fee2e2"/>
+                                <text x="60" y="97" text-anchor="middle" fill="#dc2626" font-size="10" font-weight="bold">H</text>
+                                <line x1="60" y1="80" x2="60" y2="68" stroke="#22c55e" stroke-width="3"/>
+                            </svg>
+                        </div>
+                        <div class="grid md:grid-cols-3 gap-4 text-sm">
+                            <div class="bg-green-50 p-3 rounded-lg">
+                                <p class="font-medium text-green-800">Bond Type</p>
+                                <p class="text-green-600">4 Single Bonds</p>
+                            </div>
+                            <div class="bg-blue-50 p-3 rounded-lg">
+                                <p class="font-medium text-blue-800">Shape</p>
+                                <p class="text-blue-600">Tetrahedral (109.5°)</p>
+                            </div>
+                            <div class="bg-purple-50 p-3 rounded-lg">
+                                <p class="font-medium text-purple-800">Polarity</p>
+                                <p class="text-purple-600">Nonpolar (symmetrical)</p>
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-600 mt-4">Carbon forms 4 single bonds with hydrogen atoms arranged in a tetrahedral shape. Each H-C-H angle is 109.5°.</p>
+                    </div>
+                `;
+            }
+            
+            viz.innerHTML = diagram;
+        }
+        
+        // Covalent Dot-Cross Diagrams
+        function showCovalentDotCross(molecule) {
+            // Update button states
+            document.querySelectorAll('.dc-btn').forEach(btn => {
+                btn.classList.remove('bg-green-100', 'text-green-700', 'active');
+                btn.classList.add('bg-gray-100', 'text-gray-700');
+            });
+            if (event && event.target) {
+                event.target.classList.remove('bg-gray-100', 'text-gray-700');
+                event.target.classList.add('bg-green-100', 'text-green-700', 'active');
+            }
+            
+            const container = document.getElementById('covalentDotCrossDiagram');
+            
+            const diagrams = {
+                'H2': `
+                    <div class="text-center">
+                        <h4 class="font-semibold text-gray-800 mb-4">Dot-Cross Diagram for H₂</h4>
+                        <div class="flex items-center justify-center gap-8 mb-4">
+                            <div class="text-center">
+                                <div class="text-3xl font-bold text-red-600 mb-2">H</div>
+                                <div class="text-lg">•</div>
+                                <p class="text-xs text-gray-500">1 valence e⁻</p>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-2xl text-green-500 bond-pulse">××••</div>
+                                <p class="text-xs text-gray-500">shared pair</p>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-3xl font-bold text-blue-600 mb-2">H</div>
+                                <div class="text-lg">×</div>
+                                <p class="text-xs text-gray-500">1 valence e⁻</p>
+                            </div>
+                        </div>
+                        <div class="bg-green-50 p-4 rounded-lg">
+                            <p class="text-gray-700"><strong>Result:</strong> Each H now has 2 electrons (like He)</p>
+                            <p class="text-sm text-gray-600 mt-1">• = electron from first H, × = electron from second H</p>
+                        </div>
+                    </div>
+                `,
+                'Cl2': `
+                    <div class="text-center">
+                        <h4 class="font-semibold text-gray-800 mb-4">Dot-Cross Diagram for Cl₂</h4>
+                        <div class="flex items-center justify-center gap-4 mb-4">
+                            <div class="text-center bg-green-50 p-4 rounded-lg">
+                                <div class="text-2xl font-bold text-green-600 mb-2">Cl</div>
+                                <div class="grid grid-cols-3 gap-1 w-20 h-20 mx-auto relative">
+                                    <div></div>
+                                    <div class="text-red-500">••</div>
+                                    <div></div>
+                                    <div class="text-red-500">••</div>
+                                    <div class="text-green-500 text-lg font-bold">•×</div>
+                                    <div class="text-red-500">••</div>
+                                    <div></div>
+                                    <div class="text-red-500">••</div>
+                                    <div></div>
+                                </div>
+                                <p class="text-xs text-gray-500 mt-2">7 valence e⁻</p>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-xl text-gray-400">=</div>
+                            </div>
+                            <div class="text-center bg-blue-50 p-4 rounded-lg">
+                                <div class="text-2xl font-bold text-blue-600 mb-2">Cl</div>
+                                <div class="grid grid-cols-3 gap-1 w-20 h-20 mx-auto relative">
+                                    <div></div>
+                                    <div class="text-blue-500">××</div>
+                                    <div></div>
+                                    <div class="text-blue-500">××</div>
+                                    <div class="text-green-500 text-lg font-bold">×•</div>
+                                    <div class="text-blue-500">××</div>
+                                    <div></div>
+                                    <div class="text-blue-500">××</div>
+                                    <div></div>
+                                </div>
+                                <p class="text-xs text-gray-500 mt-2">7 valence e⁻</p>
+                            </div>
+                        </div>
+                        <div class="bg-green-50 p-4 rounded-lg">
+                            <p class="text-gray-700"><strong>Result:</strong> Each Cl now has 8 electrons in outer shell (like Ar)</p>
+                            <p class="text-sm text-gray-600 mt-1">•• and •× show lone pairs and shared pair</p>
+                        </div>
+                    </div>
+                `,
+                'H2O': `
+                    <div class="text-center">
+                        <h4 class="font-semibold text-gray-800 mb-4">Dot-Cross Diagram for H₂O</h4>
+                        <div class="flex items-center justify-center gap-4 mb-4">
+                            <div class="text-center">
+                                <div class="text-xl font-bold text-red-600">H</div>
+                                <div class="text-red-500">•</div>
+                            </div>
+                            <div class="text-center bg-blue-50 p-4 rounded-lg">
+                                <div class="text-2xl font-bold text-blue-600 mb-2">O</div>
+                                <div class="grid grid-cols-3 gap-1 w-24 h-24 mx-auto">
+                                    <div></div>
+                                    <div class="text-blue-500">××</div>
+                                    <div></div>
+                                    <div class="text-blue-500">×•</div>
+                                    <div class="text-blue-500 text-lg font-bold">××</div>
+                                    <div class="text-blue-500">×•</div>
+                                    <div></div>
+                                    <div class="text-blue-500">××</div>
+                                    <div></div>
+                                </div>
+                                <p class="text-xs text-gray-500">6 valence e⁻</p>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-xl font-bold text-red-600">H</div>
+                                <div class="text-red-500">•</div>
+                            </div>
+                        </div>
+                        <div class="bg-green-50 p-4 rounded-lg text-left">
+                            <p class="text-gray-700"><strong>Result:</strong> O has 8 electrons, each H has 2</p>
+                            <p class="text-sm text-gray-600 mt-1">• 2 bonding pairs (shared with H)</p>
+                            <p class="text-sm text-gray-600">• 2 lone pairs (on O only)</p>
+                            <p class="text-sm text-gray-600">• Shape: Bent (104.5°) due to lone pair repulsion</p>
+                        </div>
+                    </div>
+                `,
+                'CO2': `
+                    <div class="text-center">
+                        <h4 class="font-semibold text-gray-800 mb-4">Dot-Cross Diagram for CO₂</h4>
+                        <div class="flex items-center justify-center gap-2 mb-4">
+                            <div class="text-center bg-blue-50 p-3 rounded-lg">
+                                <div class="text-xl font-bold text-blue-600">O</div>
+                                <div class="text-xs text-blue-500">××××</div>
+                                <div class="text-xs text-blue-500">××</div>
+                            </div>
+                            <div class="text-green-500 text-xl">••××</div>
+                            <div class="text-center bg-gray-100 p-3 rounded-lg">
+                                <div class="text-xl font-bold text-gray-700">C</div>
+                                <div class="text-xs text-red-500">••••</div>
+                            </div>
+                            <div class="text-green-500 text-xl">××••</div>
+                            <div class="text-center bg-blue-50 p-3 rounded-lg">
+                                <div class="text-xl font-bold text-blue-600">O</div>
+                                <div class="text-xs text-blue-500">××××</div>
+                                <div class="text-xs text-blue-500">××</div>
+                            </div>
+                        </div>
+                        <div class="bg-green-50 p-4 rounded-lg text-left">
+                            <p class="text-gray-700"><strong>Double bonds:</strong> Each O shares 2 pairs with C</p>
+                            <p class="text-sm text-gray-600 mt-1">• C has 4 valence electrons, needs 4 more</p>
+                            <p class="text-sm text-gray-600">• Each O has 6 valence electrons, needs 2 more</p>
+                            <p class="text-sm text-gray-600">• Shape: Linear (180°) - no lone pairs on C</p>
+                        </div>
+                    </div>
+                `,
+                'NH3': `
+                    <div class="text-center">
+                        <h4 class="font-semibold text-gray-800 mb-4">Dot-Cross Diagram for NH₃</h4>
+                        <div class="flex items-center justify-center gap-2 mb-4">
+                            <div class="text-center">
+                                <div class="text-lg font-bold text-red-600">H</div>
+                                <div class="text-red-500">•</div>
+                            </div>
+                            <div class="text-center bg-purple-50 p-3 rounded-lg">
+                                <div class="text-xl font-bold text-purple-600 mb-1">N</div>
+                                <div class="grid grid-cols-3 gap-1 w-16 h-16 mx-auto">
+                                    <div></div>
+                                    <div class="text-purple-500">××</div>
+                                    <div></div>
+                                    <div class="text-purple-500">×•</div>
+                                    <div class="text-purple-500 text-sm">××</div>
+                                    <div class="text-purple-500">×•</div>
+                                    <div></div>
+                                    <div class="text-purple-500">×•</div>
+                                    <div></div>
+                                </div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-lg font-bold text-red-600">H</div>
+                                <div class="text-red-500">•</div>
+                            </div>
+                        </div>
+                        <div class="flex justify-center mb-4">
+                            <div class="text-center">
+                                <div class="text-lg font-bold text-red-600">H</div>
+                                <div class="text-red-500">•</div>
+                            </div>
+                        </div>
+                        <div class="bg-green-50 p-4 rounded-lg text-left">
+                            <p class="text-gray-700"><strong>Result:</strong> N has 8 electrons, each H has 2</p>
+                            <p class="text-sm text-gray-600 mt-1">• 3 bonding pairs (with H)</p>
+                            <p class="text-sm text-gray-600">• 1 lone pair (on N)</p>
+                            <p class="text-sm text-gray-600">• Shape: Trigonal pyramidal (107°)</p>
+                        </div>
+                    </div>
+                `,
+                'CH4': `
+                    <div class="text-center">
+                        <h4 class="font-semibold text-gray-800 mb-4">Dot-Cross Diagram for CH₄</h4>
+                        <div class="mb-4">
+                            <svg viewBox="0 0 160 140" class="w-40 h-36 mx-auto">
+                                <!-- Central Carbon -->
+                                <circle cx="80" cy="70" r="20" fill="#e5e7eb"/>
+                                <text x="80" y="75" text-anchor="middle" fill="#374151" font-size="16" font-weight="bold">C</text>
+                                
+                                <!-- Top H -->
+                                <circle cx="80" cy="15" r="15" fill="#fee2e2"/>
+                                <text x="80" y="20" text-anchor="middle" fill="#dc2626" font-size="12" font-weight="bold">H</text>
+                                <line x1="80" y1="30" x2="80" y2="50" stroke="#22c55e" stroke-width="3"/>
+                                <circle cx="80" cy="40" r="3" fill="#ef4444"/>
+                                <circle cx="80" cy="40" r="3" fill="#3b82f6" cx="83"/>
+                                
+                                <!-- Bottom Left H -->
+                                <circle cx="25" cy="110" r="15" fill="#fee2e2"/>
+                                <text x="25" y="115" text-anchor="middle" fill="#dc2626" font-size="12" font-weight="bold">H</text>
+                                <line x1="38" y1="98" x2="65" y2="82" stroke="#22c55e" stroke-width="3"/>
+                                
+                                <!-- Bottom Right H -->
+                                <circle cx="135" cy="110" r="15" fill="#fee2e2"/>
+                                <text x="135" y="115" text-anchor="middle" fill="#dc2626" font-size="12" font-weight="bold">H</text>
+                                <line x1="122" y1="98" x2="95" y2="82" stroke="#22c55e" stroke-width="3"/>
+                                
+                                <!-- Bottom Center H -->
+                                <circle cx="80" cy="125" r="15" fill="#fee2e2"/>
+                                <text x="80" y="130" text-anchor="middle" fill="#dc2626" font-size="12" font-weight="bold">H</text>
+                                <line x1="80" y1="90" x2="80" y2="110" stroke="#22c55e" stroke-width="3"/>
+                                
+                                <!-- Electron dots -->
+                                <circle cx="77" cy="57" r="2" fill="#ef4444"/>
+                                <circle cx="83" cy="57" r="2" fill="#3b82f6"/>
+                            </svg>
+                        </div>
+                        <div class="bg-green-50 p-4 rounded-lg text-left">
+                            <p class="text-gray-700"><strong>Result:</strong> C has 8 electrons, each H has 2</p>
+                            <p class="text-sm text-gray-600 mt-1">• 4 bonding pairs (single bonds)</p>
+                            <p class="text-sm text-gray-600">• No lone pairs on carbon</p>
+                            <p class="text-sm text-gray-600">• Shape: Tetrahedral (109.5°)</p>
+                        </div>
+                    </div>
+                `
+            };
+            
+            container.innerHTML = diagrams[molecule] || '';
+        }
+        
+        // Polarity Calculator
+        function updatePolarity() {
+            const elem1 = document.getElementById('enElement1').value;
+            const elem2 = document.getElementById('enElement2').value;
+            
+            const en1 = electronegativity[elem1];
+            const en2 = electronegativity[elem2];
+            const diff = Math.abs(en1 - en2);
+            
+            let bondType, bondColor, description;
+            
+            if (diff < 0.4) {
+                bondType = 'Nonpolar Covalent';
+                bondColor = 'green';
+                description = 'Electrons are shared equally between the atoms. No partial charges form.';
+            } else if (diff >= 0.4 && diff < 1.7) {
+                bondType = 'Polar Covalent';
+                bondColor = 'red';
+                const moreEN = en1 > en2 ? elem1 : elem2;
+                const lessEN = en1 > en2 ? elem2 : elem1;
+                description = `Electrons are shared unequally. ${moreEN} pulls electrons closer (δ−), ${lessEN} becomes partially positive (δ+).`;
+            } else {
+                bondType = 'Ionic';
+                bondColor = 'orange';
+                description = 'The electronegativity difference is so large that electrons are transferred, not shared.';
+            }
+            
+            const container = document.getElementById('polarityResult');
+            container.innerHTML = `
+                <div class="text-center">
+                    <div class="flex items-center justify-center gap-4 mb-4">
+                        <div class="text-center">
+                            <div class="text-3xl font-bold ${en1 > en2 ? 'text-red-600' : 'text-blue-600'}">${elem1}</div>
+                            <p class="text-sm text-gray-500">EN = ${en1}</p>
+                        </div>
+                        <div class="text-2xl text-gray-400">—</div>
+                        <div class="text-center">
+                            <div class="text-3xl font-bold ${en2 > en1 ? 'text-red-600' : 'text-blue-600'}">${elem2}</div>
+                            <p class="text-sm text-gray-500">EN = ${en2}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-${bondColor}-50 p-4 rounded-lg border-2 border-${bondColor}-300">
+                        <p class="text-lg font-bold text-${bondColor}-700 mb-2">${bondType}</p>
+                        <p class="text-sm text-gray-600">Electronegativity difference: <strong>${diff.toFixed(1)}</strong></p>
+                        <p class="text-sm text-gray-600 mt-2">${description}</p>
+                    </div>
+                </div>
+            `;
+        }
+        
+        // Practice Question Handlers
+        function checkGuidedAnswer(questionNum, answer, btn) {
+            const correctAnswers = {
+                1: 'Covalent bond',
+                2: '3 pairs',
+                3: 'Tetrahedral',
+                4: 'Polar'
+            };
+            
+            const feedbacks = {
+                1: { correct: 'Correct! Two non-metal atoms share electrons to form a covalent bond.', incorrect: 'Incorrect. Two chlorine atoms (both non-metals) share electrons to form a covalent bond.' },
+                2: { correct: 'Correct! A triple bond shares 3 pairs = 6 electrons.', incorrect: 'Incorrect. A triple bond shares 3 pairs of electrons (6 electrons total).' },
+                3: { correct: 'Correct! CH₄ has 4 bonding pairs around carbon with no lone pairs - tetrahedral shape.', incorrect: 'Incorrect. CH₄ has tetrahedral shape with bond angles of 109.5°.' },
+                4: { correct: 'Correct! H-Cl is polar because Cl is more electronegative (EN diff = 0.9).', incorrect: 'Incorrect. H-Cl is polar because Cl (EN=3.0) pulls electrons more strongly than H (EN=2.1).' }
+            };
+            
+            const isCorrect = answer === correctAnswers[questionNum];
+            
+            // Update button styles
+            const container = document.getElementById(`guidedQ${questionNum}`);
+            container.querySelectorAll('.practice-option').forEach(b => {
+                b.classList.remove('selected', 'correct', 'incorrect');
+                if (b.textContent === correctAnswers[questionNum]) {
+                    b.classList.add('correct');
+                }
+            });
+            btn.classList.add(isCorrect ? 'correct' : 'incorrect');
+            
+            // Show feedback
+            const feedback = document.getElementById(`guidedFeedback${questionNum}`);
+            feedback.textContent = isCorrect ? feedbacks[questionNum].correct : feedbacks[questionNum].incorrect;
+            feedback.className = `text-sm mt-2 ${isCorrect ? 'text-green-600' : 'text-red-600'}`;
+            feedback.classList.remove('hidden');
+            
+            // Record answer
+            PracticeTracker.recordAnswer('guided', questionNum, isCorrect, { answer });
+            practiceQuestionsAnswered++;
+            checkPracticeComplete();
+        }
+        
+        function checkIndependentAnswer(questionNum, answer, btn) {
+            const correctAnswers = {
+                1: 'Weak intermolecular forces',
+                2: '104.5°',
+                3: 'O₂',
+                4: 'Delocalized electrons',
+                5: 'Trigonal pyramidal'
+            };
+            
+            const feedbacks = {
+                1: { correct: 'Correct! Weak intermolecular forces between molecules require little energy to break.', incorrect: 'Incorrect. Covalent bonds are strong - it\'s the weak intermolecular forces between molecules that are easy to break.' },
+                2: { correct: 'Correct! Water\'s bond angle is 104.5° due to lone pair repulsion.', incorrect: 'Incorrect. Water has a bent shape with bond angle 104.5° (less than 109.5° due to lone pair repulsion).' },
+                3: { correct: 'Correct! O₂ has a double bond sharing 4 electrons.', incorrect: 'Incorrect. O₂ has a double bond. H₂ has a single bond, N₂ has a triple bond, and CH₄ has all single bonds.' },
+                4: { correct: 'Correct! Graphite has delocalized electrons between its layers that can conduct electricity.', incorrect: 'Incorrect. Graphite conducts because each carbon atom is only bonded to 3 others, leaving one electron free to move between layers.' },
+                5: { correct: 'Correct! NH₃ has 3 bonding pairs and 1 lone pair, giving trigonal pyramidal shape.', incorrect: 'Incorrect. NH₃ is trigonal pyramidal (the lone pair pushes the 3 N-H bonds down).' }
+            };
+            
+            const isCorrect = answer === correctAnswers[questionNum];
+            
+            // Update button styles
+            const container = document.getElementById(`independentQ${questionNum}`);
+            container.querySelectorAll('.practice-option').forEach(b => {
+                b.classList.remove('selected', 'correct', 'incorrect');
+                if (b.textContent.includes(correctAnswers[questionNum]) || b.textContent === correctAnswers[questionNum]) {
+                    b.classList.add('correct');
+                }
+            });
+            btn.classList.add(isCorrect ? 'correct' : 'incorrect');
+            
+            // Show feedback
+            const feedback = document.getElementById(`independentFeedback${questionNum}`);
+            feedback.textContent = isCorrect ? feedbacks[questionNum].correct : feedbacks[questionNum].incorrect;
+            feedback.className = `text-sm mt-2 ${isCorrect ? 'text-green-600' : 'text-red-600'}`;
+            feedback.classList.remove('hidden');
+            
+            // Record answer
+            PracticeTracker.recordAnswer('independent', questionNum, isCorrect, { answer });
+            practiceQuestionsAnswered++;
+            checkPracticeComplete();
+        }
+        
+        function checkPracticeComplete() {
+            if (practiceQuestionsAnswered >= totalPracticeQuestions) {
+                document.getElementById('practiceComplete').classList.remove('hidden');
+                updateScores();
+            }
+        }
+        
+        function updateScores() {
+            const scores = PracticeTracker.getCombinedScore();
+            if (scores.practice !== null) {
+                document.getElementById('finalPracticeScore').textContent = scores.practice + '%';
+            }
+            if (scores.combined !== null) {
+                document.getElementById('finalCombinedScore').textContent = scores.combined + '%';
+            }
+        }
+        
+        // Quiz Functions
+        function startQuiz() {
+            currentQuizIndex = 0;
+            quizScore = 0;
+            quizAnswers = [];
+            document.getElementById('quizModal').classList.remove('hidden');
+            document.getElementById('quizModal').classList.add('flex');
+            renderQuizQuestion();
+        }
+        
+        function closeQuiz() {
+            document.getElementById('quizModal').classList.add('hidden');
+            document.getElementById('quizModal').classList.remove('flex');
+        }
+        
+        function renderQuizQuestion() {
+            const q = quizQuestions[currentQuizIndex];
+            const total = quizQuestions.length;
+            
+            document.getElementById('quizQuestionCount').textContent = `Question ${currentQuizIndex + 1} of ${total}`;
+            document.getElementById('quizScoreDisplay').textContent = `Score: ${quizScore}`;
+            document.getElementById('quizProgressBar').style.width = `${((currentQuizIndex + 1) / total) * 100}%`;
+            
+            let html = `
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">${q.question}</h3>
+                <div class="space-y-3">
+            `;
+            
+            q.options.forEach((opt, i) => {
+                html += `
+                    <button onclick="selectQuizAnswer(${i})" class="quiz-option w-full text-left p-4 rounded-lg border-2 border-gray-200 hover:border-green-300 hover:bg-green-50 transition" id="quizOpt${i}">
+                        <span class="font-medium mr-2">${String.fromCharCode(65 + i)}.</span>${opt}
+                    </button>
+                `;
+            });
+            
+            html += `
+                </div>
+                <div id="quizExplanation" class="mt-4 p-4 rounded-lg hidden"></div>
+            `;
+            
+            document.getElementById('quizContent').innerHTML = html;
+            document.getElementById('quizPrevBtn').disabled = currentQuizIndex === 0;
+            document.getElementById('quizNextBtn').disabled = true;
+        }
+        
+        function selectQuizAnswer(index) {
+            const q = quizQuestions[currentQuizIndex];
+            const isCorrect = index === q.correct;
+            
+            // Record answer
+            quizAnswers.push({ questionIndex: currentQuizIndex, selected: index, correct: isCorrect });
+            
+            if (isCorrect) quizScore++;
+            
+            // Show result
+            document.querySelectorAll('.quiz-option').forEach((opt, i) => {
+                opt.classList.remove('border-green-500', 'bg-green-50');
+                if (i === q.correct) {
+                    opt.classList.add('border-green-500', 'bg-green-50');
+                } else if (i === index && !isCorrect) {
+                    opt.classList.add('border-red-500', 'bg-red-50');
+                }
+                opt.disabled = true;
+            });
+            
+            // Show explanation
+            const explanation = document.getElementById('quizExplanation');
+            explanation.innerHTML = `
+                <div class="${isCorrect ? 'bg-green-50 text-green-800' : 'bg-red-50 text-red-800'}">
+                    <p class="font-semibold mb-1">${isCorrect ? '✓ Correct!' : '✗ Incorrect'}</p>
+                    <p class="text-sm">${q.explanation}</p>
+                </div>
+            `;
+            explanation.classList.remove('hidden');
+            
+            document.getElementById('quizNextBtn').disabled = false;
+        }
+        
+        function quizNext() {
+            if (currentQuizIndex < quizQuestions.length - 1) {
+                currentQuizIndex++;
+                renderQuizQuestion();
+            } else {
+                // Quiz complete
+                finishQuiz();
+            }
+        }
+        
+        function quizPrev() {
+            if (currentQuizIndex > 0) {
+                currentQuizIndex--;
+                renderQuizQuestion();
+            }
+        }
+        
+        function finishQuiz() {
+            // Record quiz score
+            PracticeTracker.recordQuizScore(quizScore, quizQuestions.length);
+            
+            // Save to ChemistryQuiz
+            if (window.ChemistryQuiz) {
+                ChemistryQuiz.saveQuizResult({
+                    topicId: 'covalent-bonding',
+                    topicTitle: 'Covalent Bonding',
+                    score: quizScore,
+                    totalQuestions: quizQuestions.length,
+                    percentage: Math.round((quizScore / quizQuestions.length) * 100),
+                    passed: quizScore >= 6,
+                    answers: quizAnswers
+                });
+            }
+            
+            closeQuiz();
+            showScoreModal();
+        }
+        
+        function showScoreModal() {
+            const scores = PracticeTracker.getCombinedScore();
+            
+            document.getElementById('practiceScoreDisplay').textContent = scores.practice !== null ? scores.practice + '%' : '--';
+            document.getElementById('quizScoreDisplayFinal').textContent = scores.quiz !== null ? scores.quiz + '%' : '--';
+            document.getElementById('combinedScoreDisplay').textContent = scores.combined !== null ? scores.combined + '%' : '--';
+            
+            // Set icon based on score
+            const icon = document.getElementById('scoreIcon');
+            if (scores.combined >= 80) {
+                icon.textContent = '🎉';
+            } else if (scores.combined >= 60) {
+                icon.textContent = '👍';
+            } else {
+                icon.textContent = '📚';
+            }
+            
+            document.getElementById('scoreModal').classList.remove('hidden');
+            document.getElementById('scoreModal').classList.add('flex');
+            updateScores();
+        }
+        
+        function closeScoreModal() {
+            document.getElementById('scoreModal').classList.add('hidden');
+            document.getElementById('scoreModal').classList.remove('flex');
+        }
+        
+        // Event Listeners
+        function setupEventListeners() {
+            document.getElementById('mobileMenuBtn').addEventListener('click', () => {
+                document.getElementById('mobileSidebar').classList.remove('-translate-x-full');
+                document.getElementById('sidebarOverlay').classList.remove('hidden');
+            });
+            
+            document.getElementById('closeSidebarBtn').addEventListener('click', closeMobileSidebar);
+            document.getElementById('sidebarOverlay').addEventListener('click', closeMobileSidebar);
+            
+            document.getElementById('prevStepBtn').addEventListener('click', () => {
+                if (currentChunkIndex > 0) {
+                    currentChunkIndex--;
+                    renderCurrentStep();
+                } else if (currentStepIndex > 0) {
+                    currentStepIndex--;
+                    currentChunkIndex = topicData.steps[currentStepIndex].chunks.length - 1;
+                    renderCurrentStep();
+                    renderStepsList();
+                }
+            });
+            
+            document.getElementById('nextStepBtn').addEventListener('click', nextChunk);
+        }
+        
+        function closeMobileSidebar() {
+            document.getElementById('mobileSidebar').classList.add('-translate-x-full');
+            document.getElementById('sidebarOverlay').classList.add('hidden');
+        }
+        
+        // Initialize
+        init();
+    </script>
+</body>
+</html>

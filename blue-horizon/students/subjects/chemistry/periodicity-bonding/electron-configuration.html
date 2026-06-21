@@ -1,0 +1,1488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Electron Configuration - Chemistry | Juanova Cortex</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @keyframes fade-in-up {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in-up { animation: fade-in-up 0.5s ease-out forwards; }
+        .step-progress { transition: width 0.3s ease-in-out; }
+        .resource-card:hover { transform: translateY(-4px); }
+        
+        /* Electron orbital animations */
+        @keyframes orbit1 { from { transform: rotateX(70deg) rotateZ(0deg); } to { transform: rotateX(70deg) rotateZ(360deg); } }
+        @keyframes orbit2 { from { transform: rotateX(60deg) rotateY(30deg) rotateZ(0deg); } to { transform: rotateX(60deg) rotateY(30deg) rotateZ(360deg); } }
+        @keyframes orbit3 { from { transform: rotateX(75deg) rotateY(-25deg) rotateZ(0deg); } to { transform: rotateX(75deg) rotateY(-25deg) rotateZ(360deg); } }
+        @keyframes orbit4 { from { transform: rotateX(65deg) rotateY(45deg) rotateZ(0deg); } to { transform: rotateX(65deg) rotateY(45deg) rotateZ(360deg); } }
+        @keyframes pulse-electron { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.2); opacity: 0.8; } }
+        
+        .electron-orbit-1 { animation: orbit1 3s linear infinite; transform-origin: 150px 120px; }
+        .electron-orbit-2 { animation: orbit2 4s linear infinite; transform-origin: 150px 120px; }
+        .electron-orbit-3 { animation: orbit3 2.5s linear infinite; transform-origin: 150px 120px; }
+        .electron-orbit-4 { animation: orbit4 5s linear infinite; transform-origin: 150px 120px; }
+        .electron-pulse { animation: pulse-electron 1.5s ease-in-out infinite; }
+        
+        /* Section cards */
+        .section-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            border: 1px solid #e5e7eb;
+        }
+        
+        /* Click hint button */
+        .click-hint {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            color: #92400e;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 24px;
+            padding: 12px 24px;
+            border-radius: 12px;
+            border: 2px solid #f59e0b;
+            transition: all 0.3s ease;
+            animation: pulse-hint 2s infinite;
+        }
+        .click-hint:hover {
+            background: linear-gradient(135deg, #fde68a 0%, #fcd34d 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4);
+        }
+        @keyframes pulse-hint {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.4); }
+            50% { box-shadow: 0 0 0 8px rgba(245, 158, 11, 0); }
+        }
+        
+        /* Step complete indicator */
+        .step-complete-hint {
+            background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+            border: 2px solid #10b981;
+            color: #065f46;
+            padding: 16px 24px;
+            border-radius: 12px;
+            text-align: center;
+            margin-top: 24px;
+        }
+        
+        /* Orbital box styles */
+        .orbital-box {
+            width: 40px;
+            height: 30px;
+            border: 2px solid #6366f1;
+            border-radius: 4px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin: 2px;
+            background: #eef2ff;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .orbital-box:hover { background: #c7d2fe; transform: scale(1.05); }
+        .orbital-box.filled { background: #818cf8; color: white; }
+        .orbital-box .electron-up { color: #dc2626; font-size: 14px; }
+        .orbital-box .electron-down { color: #2563eb; font-size: 14px; }
+        
+        /* Energy level diagram */
+        .energy-level {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin: 8px 0;
+        }
+        .energy-line {
+            height: 2px;
+            background: #e5e7eb;
+            flex-grow: 1;
+            position: relative;
+        }
+        .energy-arrow {
+            position: absolute;
+            right: -5px;
+            top: -4px;
+            width: 0;
+            height: 0;
+            border-left: 5px solid #6b7280;
+            border-top: 5px solid transparent;
+            border-bottom: 5px solid transparent;
+        }
+        .electron-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #3b82f6;
+            display: inline-block;
+            margin: 0 2px;
+        }
+        
+        /* Prerequisite banner */
+        .prerequisite-banner {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border: 2px solid #f59e0b;
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin-bottom: 24px;
+        }
+        
+        /* Interactive atom visualization */
+        .atom-container {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            margin: 20px auto;
+        }
+        .nucleus {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: radial-gradient(circle, #ef4444 0%, #b91c1c 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 14px;
+            z-index: 10;
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+        }
+        .shell {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            border-radius: 50%;
+            border: 2px dashed rgba(59, 130, 246, 0.3);
+        }
+        .shell-1 { width: 100px; height: 100px; margin: -50px 0 0 -50px; }
+        .shell-2 { width: 160px; height: 160px; margin: -80px 0 0 -80px; }
+        .shell-3 { width: 220px; height: 220px; margin: -110px 0 0 -110px; }
+        .shell-4 { width: 280px; height: 280px; margin: -140px 0 0 -140px; }
+        
+        @media (max-width: 768px) {
+            .atom-container { width: 250px; height: 250px; }
+            .shell-1 { width: 80px; height: 80px; margin: -40px 0 0 -40px; }
+            .shell-2 { width: 130px; height: 130px; margin: -65px 0 0 -65px; }
+            .shell-3 { width: 180px; height: 180px; margin: -90px 0 0 -90px; }
+            .shell-4 { width: 230px; height: 230px; margin: -115px 0 0 -115px; }
+            .nucleus { width: 50px; height: 50px; font-size: 12px; }
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Top Navigation -->
+    <nav class="bg-white shadow-sm fixed top-0 w-full z-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center">
+                    <button id="mobileMenuBtn" class="text-gray-600 hover:text-gray-900 mr-3 md:hidden" aria-label="Menu">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                    <a href="index.html" class="flex items-center gap-2 text-gray-600 hover:text-gray-900">
+                        <i class="fas fa-arrow-left"></i>
+                        <h1 class="text-lg md:text-xl font-semibold text-gray-900">Electron Configuration</h1>
+                    </a>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="text-sm text-gray-600 hidden sm:block">
+                        Progress: <span id="progressPercent">0%</span>
+                    </div>
+                    <div class="w-24 sm:w-32 h-2 bg-gray-200 rounded-full">
+                        <div id="progressBar" class="step-progress h-2 bg-amber-500 rounded-full" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Sidebar Overlay -->
+    <div id="sidebarOverlay" class="fixed inset-0 bg-black/50 z-40 hidden"></div>
+
+    <!-- Mobile Sidebar -->
+    <div id="mobileSidebar" class="fixed top-0 left-0 w-72 h-full bg-white z-50 transform -translate-x-full transition-transform">
+        <div class="p-4">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="font-semibold text-lg">Learning Steps</h3>
+                <button id="closeSidebarBtn" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            <ul id="mobileStepsList" class="space-y-2"></ul>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="pt-20 pb-24">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-12 gap-6">
+                <!-- Left Sidebar - Steps (Desktop) -->
+                <div class="md:col-span-3 hidden md:block">
+                    <div class="bg-white rounded-lg shadow-sm p-4 sticky top-20">
+                        <h3 class="font-semibold mb-4">Learning Steps</h3>
+                        <ul id="stepsList" class="space-y-2"></ul>
+                    </div>
+                </div>
+
+                <!-- Main Content Area -->
+                <div class="md:col-span-9">
+                    <!-- Prerequisite Banner -->
+                    <div class="prerequisite-banner">
+                        <div class="flex items-start gap-3">
+                            <div class="text-2xl">📋</div>
+                            <div>
+                                <h4 class="font-semibold text-amber-800 mb-1">Before You Start</h4>
+                                <p class="text-amber-700 text-sm mb-2">This topic builds on the Periodic Table Overview. Make sure you understand:</p>
+                                <ul class="text-amber-700 text-sm list-disc pl-5 space-y-1">
+                                    <li>Atomic structure (protons, neutrons, electrons)</li>
+                                    <li>Atomic number and mass number</li>
+                                    <li>Position of elements on the periodic table</li>
+                                </ul>
+                                <a href="periodic-table-overview.html" class="inline-flex items-center gap-2 mt-3 text-amber-800 font-medium hover:text-amber-900">
+                                    <i class="fas fa-book-open"></i>
+                                    Review: Periodic Table Overview →
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Current Step Content -->
+                    <div id="stepContainer" class="bg-white rounded-lg shadow-sm p-6 mb-6"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Bottom Navigation -->
+    <div class="fixed bottom-0 w-full bg-white border-t border-gray-200 z-40">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between py-4">
+                <button id="prevStepBtn" class="px-4 py-2 text-gray-600 hover:text-gray-900 disabled:opacity-50 disabled:cursor-not-allowed">
+                    <i class="fas fa-chevron-left mr-2"></i>Previous
+                </button>
+                <button id="nextStepBtn" class="px-4 py-2 bg-amber-500 text-white rounded-lg hover:bg-amber-600 disabled:opacity-50 disabled:cursor-not-allowed">
+                    Continue<i class="fas fa-chevron-right ml-2"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentStepIndex = 0;
+        let currentChunkIndex = 0;
+        let stepsCompleted = [];
+        
+        // Element symbols and names for reference
+        const elementData = {
+            1: { symbol: 'H', name: 'Hydrogen' },
+            2: { symbol: 'He', name: 'Helium' },
+            3: { symbol: 'Li', name: 'Lithium' },
+            4: { symbol: 'Be', name: 'Beryllium' },
+            5: { symbol: 'B', name: 'Boron' },
+            6: { symbol: 'C', name: 'Carbon' },
+            7: { symbol: 'N', name: 'Nitrogen' },
+            8: { symbol: 'O', name: 'Oxygen' },
+            9: { symbol: 'F', name: 'Fluorine' },
+            10: { symbol: 'Ne', name: 'Neon' },
+            11: { symbol: 'Na', name: 'Sodium' },
+            12: { symbol: 'Mg', name: 'Magnesium' },
+            13: { symbol: 'Al', name: 'Aluminium' },
+            14: { symbol: 'Si', name: 'Silicon' },
+            15: { symbol: 'P', name: 'Phosphorus' },
+            16: { symbol: 'S', name: 'Sulfur' },
+            17: { symbol: 'Cl', name: 'Chlorine' },
+            18: { symbol: 'Ar', name: 'Argon' },
+            19: { symbol: 'K', name: 'Potassium' },
+            20: { symbol: 'Ca', name: 'Calcium' }
+        };
+
+        // Orbital filling order (Aufbau principle)
+        const orbitalOrder = ['1s', '2s', '2p', '3s', '3p', '4s', '3d', '4p', '5s', '4d', '5p', '6s', '4f', '5d', '6p', '7s', '5f', '6d', '7p'];
+        const maxElectrons = { 's': 2, 'p': 6, 'd': 10, 'f': 14 };
+
+        // Generate electron configuration for an element
+        function getElectronConfiguration(z) {
+            let remaining = z;
+            let config = [];
+            
+            for (let orbital of orbitalOrder) {
+                if (remaining <= 0) break;
+                const subshell = orbital.slice(-1);
+                const max = maxElectrons[subshell];
+                const electrons = Math.min(remaining, max);
+                config.push(orbital + electrons);
+                remaining -= electrons;
+            }
+            
+            return config.join(' ');
+        }
+
+        // Get orbital diagram representation
+        function getOrbitalDiagram(z) {
+            let remaining = z;
+            let diagram = {};
+            
+            for (let orbital of orbitalOrder) {
+                if (remaining <= 0) break;
+                const subshell = orbital.slice(-1);
+                const max = maxElectrons[subshell];
+                const electrons = Math.min(remaining, max);
+                
+                // Create boxes based on number of orbitals
+                const numOrbitals = { 's': 1, 'p': 3, 'd': 5, 'f': 7 }[subshell];
+                diagram[orbital] = {
+                    boxes: numOrbitals,
+                    electrons: electrons,
+                    subshell: subshell
+                };
+                
+                remaining -= electrons;
+            }
+            
+            return diagram;
+        }
+
+        // Practice Question Tracker
+        const PracticeTracker = {
+            answers: { atomic: [], ions: [], practice: [] },
+            quizScore: null,
+            
+            recordAnswer(category, questionId, isCorrect, details) {
+                if (!this.answers[category]) this.answers[category] = [];
+                this.answers[category].push({ id: questionId, correct: isCorrect, details, timestamp: Date.now() });
+                this.saveToStorage();
+            },
+            
+            recordQuizScore(score, total) {
+                this.quizScore = { score, total, percentage: Math.round((score / total) * 100) };
+                this.saveToStorage();
+            },
+            
+            getCombinedScore() {
+                let practiceCorrect = 0;
+                let practiceTotal = 0;
+                
+                Object.values(this.answers).forEach(arr => {
+                    arr.forEach(a => {
+                        practiceTotal++;
+                        if (a.correct) practiceCorrect++;
+                    });
+                });
+                
+                const practicePercent = practiceTotal > 0 ? Math.round((practiceCorrect / practiceTotal) * 100) : null;
+                const quizPercent = this.quizScore ? this.quizScore.percentage : null;
+                
+                // Combined score: 40% practice, 60% quiz
+                let combined = null;
+                if (practicePercent !== null && quizPercent !== null) {
+                    combined = Math.round((practicePercent * 0.4) + (quizPercent * 0.6));
+                } else if (quizPercent !== null) {
+                    combined = quizPercent;
+                } else if (practicePercent !== null) {
+                    combined = practicePercent;
+                }
+                
+                return { practice: practicePercent, quiz: quizPercent, combined };
+            },
+            
+            saveToStorage() {
+                try {
+                    localStorage.setItem('electronConfig_progress', JSON.stringify({
+                        answers: this.answers,
+                        quizScore: this.quizScore
+                    }));
+                } catch (e) {}
+            },
+            
+            loadFromStorage() {
+                try {
+                    const saved = localStorage.getItem('electronConfig_progress');
+                    if (saved) {
+                        const data = JSON.parse(saved);
+                        this.answers = data.answers || { atomic: [], ions: [], practice: [] };
+                        this.quizScore = data.quizScore || null;
+                    }
+                } catch (e) {}
+            }
+        };
+        
+        PracticeTracker.loadFromStorage();
+
+        // Topic data with all content
+        const topicData = {
+            title: "Electron Configuration",
+            steps: [
+                {
+                    id: "introduction",
+                    title: "What is Electron Configuration?",
+                    type: "note",
+                    chunks: [
+                        {
+                            intro: "Welcome to Electron Configuration! In the previous topic, we learned about atomic structure - how atoms have protons and neutrons in the nucleus, with electrons orbiting around. Now we'll discover exactly HOW those electrons are arranged!",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-atom text-amber-500 mr-3"></i>Electron Configuration
+                                    </h3>
+                                    <p class="text-gray-700 leading-relaxed mb-4">
+                                        <strong class="text-amber-600">Electron configuration</strong> describes how electrons are arranged in an atom's electron shells and orbitals. It tells us:
+                                    </p>
+                                    <div class="grid md:grid-cols-2 gap-4 mb-4">
+                                        <div class="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-500">
+                                            <h4 class="font-semibold text-blue-700 mb-2">Which energy level?</h4>
+                                            <p class="text-sm text-gray-700">Electrons occupy different energy levels (shells) numbered 1, 2, 3, 4... with 1 being closest to the nucleus.</p>
+                                        </div>
+                                        <div class="bg-green-50 p-4 rounded-lg border-l-4 border-green-500">
+                                            <h4 class="font-semibold text-green-700 mb-2">Which type of orbital?</h4>
+                                            <p class="text-sm text-gray-700">Each shell has subshells called orbitals: s, p, d, and f. Each holds a different number of electrons.</p>
+                                        </div>
+                                    </div>
+                                    <div class="bg-amber-50 p-4 rounded-lg border-l-4 border-amber-500">
+                                        <p class="text-amber-800"><i class="fas fa-lightbulb mr-2"></i><strong>Why does this matter?</strong> The arrangement of electrons determines how an atom behaves chemically - which elements it reacts with and what compounds it forms!</p>
+                                    </div>
+                                </div>
+                            `
+                        },
+                        {
+                            intro: "Let's understand the structure of electron shells. Each shell can hold a maximum number of electrons, and this follows a pattern!",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-layer-group text-amber-500 mr-3"></i>Electron Shells (Energy Levels)
+                                    </h3>
+                                    <p class="text-gray-700 mb-4">Electrons orbit the nucleus in <strong>shells</strong> (also called energy levels or principal quantum numbers). Each shell can hold a specific maximum number of electrons:</p>
+                                    
+                                    <div class="overflow-x-auto mb-4">
+                                        <table class="w-full border-collapse">
+                                            <thead class="bg-indigo-100">
+                                                <tr>
+                                                    <th class="border border-indigo-200 p-3">Shell (n)</th>
+                                                    <th class="border border-indigo-200 p-3">Name</th>
+                                                    <th class="border border-indigo-200 p-3">Max Electrons (2n²)</th>
+                                                    <th class="border border-indigo-200 p-3">Subshells</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr class="bg-white"><td class="border border-indigo-200 p-3 text-center font-bold">1</td><td class="border border-indigo-200 p-3">K</td><td class="border border-indigo-200 p-3 text-center">2</td><td class="border border-indigo-200 p-3">1s</td></tr>
+                                                <tr class="bg-indigo-50"><td class="border border-indigo-200 p-3 text-center font-bold">2</td><td class="border border-indigo-200 p-3">L</td><td class="border border-indigo-200 p-3 text-center">8</td><td class="border border-indigo-200 p-3">2s, 2p</td></tr>
+                                                <tr class="bg-white"><td class="border border-indigo-200 p-3 text-center font-bold">3</td><td class="border border-indigo-200 p-3">M</td><td class="border border-indigo-200 p-3 text-center">18</td><td class="border border-indigo-200 p-3">3s, 3p, 3d</td></tr>
+                                                <tr class="bg-indigo-50"><td class="border border-indigo-200 p-3 text-center font-bold">4</td><td class="border border-indigo-200 p-3">N</td><td class="border border-indigo-200 p-3 text-center">32</td><td class="border border-indigo-200 p-3">4s, 4p, 4d, 4f</td></tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    
+                                    <div class="bg-gradient-to-r from-purple-50 to-indigo-50 p-4 rounded-lg">
+                                        <p class="text-purple-800"><i class="fas fa-calculator mr-2"></i><strong>Formula:</strong> Maximum electrons in shell n = <span class="font-mono bg-white px-2 py-1 rounded">2n²</span></p>
+                                        <p class="text-sm text-purple-600 mt-2">Example: Shell 3 can hold 2 × 3² = 2 × 9 = 18 electrons</p>
+                                    </div>
+                                </div>
+                            `
+                        },
+                        {
+                            intro: "Now let's see an interactive visualization of how electrons fill the shells!",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-eye text-amber-500 mr-3"></i>Interactive Shell Visualization
+                                    </h3>
+                                    <p class="text-gray-700 mb-4">Use the slider to see how electrons fill the shells for different elements. Watch how the shells fill from inner to outer!</p>
+                                    
+                                    <div class="bg-gray-50 p-4 rounded-lg mb-4">
+                                        <div class="flex items-center gap-4 mb-4">
+                                            <label class="font-medium text-gray-700">Select Element (Z = <span id="zValue">1</span>):</label>
+                                            <input type="range" id="zSlider" min="1" max="20" value="1" class="flex-1 h-2 bg-gray-200 rounded-lg cursor-pointer">
+                                            <span id="elementName" class="font-bold text-indigo-600 w-24">Hydrogen</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Atom Visualization -->
+                                    <div class="atom-container" id="atomViz">
+                                        <div class="nucleus" id="nucleusDisplay">1p</div>
+                                        <div class="shell shell-1" id="shell1"></div>
+                                        <div class="shell shell-2" id="shell2"></div>
+                                        <div class="shell shell-3" id="shell3"></div>
+                                        <div class="shell shell-4" id="shell4"></div>
+                                    </div>
+                                    
+                                    <!-- Shell electron counts -->
+                                    <div class="grid grid-cols-4 gap-2 mt-4 text-center text-sm">
+                                        <div class="bg-blue-50 p-2 rounded">
+                                            <p class="text-gray-500">Shell 1 (K)</p>
+                                            <p class="font-bold text-blue-600" id="shell1Count">0</p>
+                                        </div>
+                                        <div class="bg-green-50 p-2 rounded">
+                                            <p class="text-gray-500">Shell 2 (L)</p>
+                                            <p class="font-bold text-green-600" id="shell2Count">0</p>
+                                        </div>
+                                        <div class="bg-yellow-50 p-2 rounded">
+                                            <p class="text-gray-500">Shell 3 (M)</p>
+                                            <p class="font-bold text-yellow-600" id="shell3Count">0</p>
+                                        </div>
+                                        <div class="bg-purple-50 p-2 rounded">
+                                            <p class="text-gray-500">Shell 4 (N)</p>
+                                            <p class="font-bold text-purple-600" id="shell4Count">0</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Electron configuration display -->
+                                    <div class="mt-4 p-4 bg-indigo-50 rounded-lg">
+                                        <p class="text-sm text-gray-600 mb-1">Electron Configuration:</p>
+                                        <p class="font-mono text-lg text-indigo-800" id="configDisplay">1s¹</p>
+                                    </div>
+                                    
+                                    <button class="click-hint" onclick="nextChunk()">
+                                        <i class="fas fa-arrow-right"></i>
+                                        <span>Continue to Orbitals →</span>
+                                    </button>
+                                </div>
+                            `
+                        }
+                    ]
+                },
+                {
+                    id: "orbitals",
+                    title: "Orbitals: s, p, d, f",
+                    type: "note",
+                    chunks: [
+                        {
+                            intro: "Within each shell, electrons occupy specific regions called orbitals. Let's learn about the four types of orbitals and their shapes!",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-shapes text-amber-500 mr-3"></i>Types of Orbitals
+                                    </h3>
+                                    <p class="text-gray-700 mb-4">Each shell is divided into <strong>subshells</strong> containing different types of orbitals:</p>
+                                    
+                                    <div class="space-y-4">
+                                        <!-- s-orbital -->
+                                        <div class="bg-red-50 p-4 rounded-lg border-l-4 border-red-500">
+                                            <div class="flex items-center gap-3 mb-2">
+                                                <div class="w-12 h-12 bg-red-200 rounded-full flex items-center justify-center text-2xl font-bold text-red-700">s</div>
+                                                <div>
+                                                    <h4 class="font-semibold text-red-800">s-orbital (Sharp)</h4>
+                                                    <p class="text-sm text-red-600">Spherical shape, 1 orbital per subshell</p>
+                                                </div>
+                                            </div>
+                                            <p class="text-gray-700"><strong>Max electrons:</strong> 2</p>
+                                            <p class="text-sm text-gray-600">Present in all shells (1s, 2s, 3s, 4s...)</p>
+                                        </div>
+                                        
+                                        <!-- p-orbital -->
+                                        <div class="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-500">
+                                            <div class="flex items-center gap-3 mb-2">
+                                                <div class="w-12 h-12 bg-blue-200 rounded-lg flex items-center justify-center text-2xl font-bold text-blue-700">p</div>
+                                                <div>
+                                                    <h4 class="font-semibold text-blue-800">p-orbital (Principal)</h4>
+                                                    <p class="text-sm text-blue-600">Dumbbell shape, 3 orbitals per subshell</p>
+                                                </div>
+                                            </div>
+                                            <p class="text-gray-700"><strong>Max electrons:</strong> 6 (3 orbitals × 2 electrons)</p>
+                                            <p class="text-sm text-gray-600">Present from shell 2 onwards (2p, 3p, 4p...)</p>
+                                        </div>
+                                        
+                                        <!-- d-orbital -->
+                                        <div class="bg-green-50 p-4 rounded-lg border-l-4 border-green-500">
+                                            <div class="flex items-center gap-3 mb-2">
+                                                <div class="w-12 h-12 bg-green-200 rounded-lg flex items-center justify-center text-2xl font-bold text-green-700">d</div>
+                                                <div>
+                                                    <h4 class="font-semibold text-green-800">d-orbital (Diffuse)</h4>
+                                                    <p class="text-sm text-green-600">Cloverleaf shape, 5 orbitals per subshell</p>
+                                                </div>
+                                            </div>
+                                            <p class="text-gray-700"><strong>Max electrons:</strong> 10 (5 orbitals × 2 electrons)</p>
+                                            <p class="text-sm text-gray-600">Present from shell 3 onwards (3d, 4d, 5d...)</p>
+                                        </div>
+                                        
+                                        <!-- f-orbital -->
+                                        <div class="bg-purple-50 p-4 rounded-lg border-l-4 border-purple-500">
+                                            <div class="flex items-center gap-3 mb-2">
+                                                <div class="w-12 h-12 bg-purple-200 rounded-lg flex items-center justify-center text-2xl font-bold text-purple-700">f</div>
+                                                <div>
+                                                    <h4 class="font-semibold text-purple-800">f-orbital (Fundamental)</h4>
+                                                    <p class="text-sm text-purple-600">Complex shape, 7 orbitals per subshell</p>
+                                                </div>
+                                            </div>
+                                            <p class="text-gray-700"><strong>Max electrons:</strong> 14 (7 orbitals × 2 electrons)</p>
+                                            <p class="text-sm text-gray-600">Present from shell 4 onwards (4f, 5f...)</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            `
+                        },
+                        {
+                            intro: "Here's a summary of orbital capacities that you should memorize:",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-table text-amber-500 mr-3"></i>Orbital Capacity Summary
+                                    </h3>
+                                    
+                                    <div class="overflow-x-auto mb-4">
+                                        <table class="w-full border-collapse text-center">
+                                            <thead class="bg-indigo-600 text-white">
+                                                <tr>
+                                                    <th class="border p-3">Orbital Type</th>
+                                                    <th class="border p-3">Number of Orbitals</th>
+                                                    <th class="border p-3">Max Electrons</th>
+                                                    <th class="border p-3">First Appears</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr class="bg-red-50"><td class="border p-3 font-bold">s</td><td class="border p-3">1</td><td class="border p-3">2</td><td class="border p-3">Shell 1</td></tr>
+                                                <tr class="bg-blue-50"><td class="border p-3 font-bold">p</td><td class="border p-3">3</td><td class="border p-3">6</td><td class="border p-3">Shell 2</td></tr>
+                                                <tr class="bg-green-50"><td class="border p-3 font-bold">d</td><td class="border p-3">5</td><td class="border p-3">10</td><td class="border p-3">Shell 3</td></tr>
+                                                <tr class="bg-purple-50"><td class="border p-3 font-bold">f</td><td class="border p-3">7</td><td class="border p-3">14</td><td class="border p-3">Shell 4</td></tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    
+                                    <div class="bg-amber-50 p-4 rounded-lg border border-amber-200">
+                                        <p class="text-amber-800"><i class="fas fa-lightbulb mr-2"></i><strong>Memory Tip:</strong> The order of first appearance (s, p, d, f) also tells you the filling order! And notice: max electrons = 2 × number of orbitals.</p>
+                                    </div>
+                                    
+                                    <button class="click-hint" onclick="nextChunk()">
+                                        <i class="fas fa-arrow-right"></i>
+                                        <span>Continue to Filling Rules →</span>
+                                    </button>
+                                </div>
+                            `
+                        }
+                    ]
+                },
+                {
+                    id: "filling-rules",
+                    title: "Electron Filling Rules",
+                    type: "note",
+                    chunks: [
+                        {
+                            intro: "Electrons don't just fill orbitals randomly! There are three important rules that determine the order. Let's learn each one!",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-list-ol text-amber-500 mr-3"></i>Rule 1: Aufbau Principle
+                                    </h3>
+                                    <p class="text-gray-700 mb-4">The word "Aufbau" means "building up" in German. This principle states:</p>
+                                    
+                                    <div class="bg-indigo-50 p-4 rounded-lg border-l-4 border-indigo-500 mb-4">
+                                        <p class="text-indigo-800 text-lg"><strong>Electrons fill orbitals in order of increasing energy.</strong></p>
+                                        <p class="text-indigo-600 text-sm mt-2">Lower energy orbitals fill before higher energy orbitals.</p>
+                                    </div>
+                                    
+                                    <p class="text-gray-700 mb-3">The filling order is:</p>
+                                    <div class="bg-gray-50 p-4 rounded-lg font-mono text-sm overflow-x-auto">
+                                        <p class="text-indigo-700">1s → 2s → 2p → 3s → 3p → 4s → 3d → 4p → 5s → 4d → 5p → 6s...</p>
+                                    </div>
+                                    
+                                    <div class="mt-4 bg-amber-50 p-4 rounded-lg border border-amber-200">
+                                        <p class="text-amber-800"><i class="fas fa-exclamation-triangle mr-2"></i><strong>Important!</strong> Notice that 4s fills BEFORE 3d, and 5s fills BEFORE 4d. This is because 4s has lower energy than 3d!</p>
+                                    </div>
+                                </div>
+                            `
+                        },
+                        {
+                            intro: "The second rule explains how electrons arrange themselves within orbitals of the same energy (like the three p-orbitals)",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-arrows-alt text-amber-500 mr-3"></i>Rule 2: Hund's Rule
+                                    </h3>
+                                    <p class="text-gray-700 mb-4">When filling orbitals of equal energy (like 2p_x, 2p_y, 2p_z), electrons follow Hund's Rule:</p>
+                                    
+                                    <div class="bg-green-50 p-4 rounded-lg border-l-4 border-green-500 mb-4">
+                                        <p class="text-green-800"><strong>Electrons occupy empty orbitals singly first, before pairing up.</strong></p>
+                                        <p class="text-green-600 text-sm mt-2">Think of it like taking a seat on a bus - you sit alone before sharing a seat!</p>
+                                    </div>
+                                    
+                                    <p class="text-gray-700 mb-3">Example: Carbon (Z=6) filling 2p orbitals:</p>
+                                    <div class="bg-gray-50 p-4 rounded-lg">
+                                        <p class="text-sm text-gray-600 mb-2">Carbon configuration: 1s² 2s² 2p²</p>
+                                        <div class="flex gap-2 items-center justify-center">
+                                            <div class="orbital-box filled">↑↓</div>
+                                            <div class="orbital-box filled">↑↓</div>
+                                            <div class="orbital-box">↑</div>
+                                            <div class="orbital-box">↑</div>
+                                            <div class="orbital-box empty"></div>
+                                        </div>
+                                        <p class="text-xs text-gray-500 mt-2 text-center">1s² &nbsp;&nbsp; 2s² &nbsp;&nbsp; 2p_x¹ 2p_y¹ 2p_z⁰</p>
+                                    </div>
+                                    
+                                    <div class="mt-4 bg-blue-50 p-4 rounded-lg">
+                                        <p class="text-blue-800"><i class="fas fa-info-circle mr-2"></i>The arrows ↑ and ↓ represent electrons with opposite spins. In the 2p orbitals, electrons go into separate orbitals first (Hund's Rule), each with the same spin (↑).</p>
+                                    </div>
+                                </div>
+                            `
+                        },
+                        {
+                            intro: "The third rule explains why each orbital can only hold two electrons:",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-ban text-amber-500 mr-3"></i>Rule 3: Pauli Exclusion Principle
+                                    </h3>
+                                    <p class="text-gray-700 mb-4">Named after Wolfgang Pauli, this fundamental principle states:</p>
+                                    
+                                    <div class="bg-red-50 p-4 rounded-lg border-l-4 border-red-500 mb-4">
+                                        <p class="text-red-800 text-lg"><strong>No two electrons in an atom can have the same set of four quantum numbers.</strong></p>
+                                        <p class="text-red-600 text-sm mt-2">In simpler terms: Each orbital can hold a maximum of 2 electrons, and they must have opposite spins.</p>
+                                    </div>
+                                    
+                                    <p class="text-gray-700 mb-3">This explains why:</p>
+                                    <ul class="list-disc pl-5 text-gray-700 space-y-2">
+                                        <li>s orbitals hold max 2 electrons (1 orbital × 2)</li>
+                                        <li>p orbitals hold max 6 electrons (3 orbitals × 2)</li>
+                                        <li>d orbitals hold max 10 electrons (5 orbitals × 2)</li>
+                                        <li>f orbitals hold max 14 electrons (7 orbitals × 2)</li>
+                                    </ul>
+                                    
+                                    <div class="mt-4 p-4 bg-gradient-to-r from-indigo-50 to-purple-50 rounded-lg">
+                                        <h4 class="font-semibold text-indigo-800 mb-2">Summary of All Three Rules</h4>
+                                        <div class="grid md:grid-cols-3 gap-2 text-sm">
+                                            <div class="bg-white p-2 rounded"><strong>1. Aufbau:</strong> Fill lowest energy first</div>
+                                            <div class="bg-white p-2 rounded"><strong>2. Hund's:</strong> Singles before pairs</div>
+                                            <div class="bg-white p-2 rounded"><strong>3. Pauli:</strong> Max 2 per orbital, opposite spins</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <button class="click-hint" onclick="nextChunk()">
+                                        <i class="fas fa-arrow-right"></i>
+                                        <span>Continue to Writing Configurations →</span>
+                                    </button>
+                                </div>
+                            `
+                        }
+                    ]
+                },
+                {
+                    id: "writing-configs",
+                    title: "Writing Electron Configurations",
+                    type: "note",
+                    chunks: [
+                        {
+                            intro: "Now let's practice writing electron configurations! We'll start with the first 20 elements and see the patterns.",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-pencil-alt text-amber-500 mr-3"></i>Writing Electron Configurations
+                                    </h3>
+                                    <p class="text-gray-700 mb-4">The notation format is: <span class="font-mono bg-gray-100 px-2 py-1 rounded">[shell][subshell][superscript electrons]</span></p>
+                                    
+                                    <div class="bg-blue-50 p-4 rounded-lg mb-4">
+                                        <p class="text-blue-800">Example: Oxygen (Z = 8)</p>
+                                        <p class="font-mono text-xl text-blue-900 mt-2">1s² 2s² 2p⁴</p>
+                                        <p class="text-sm text-blue-600 mt-1">This means: 2 electrons in 1s, 2 in 2s, 4 in 2p</p>
+                                    </div>
+                                    
+                                    <p class="text-gray-700 mb-3">Let's write configurations for the first 10 elements:</p>
+                                    <div class="overflow-x-auto">
+                                        <table class="w-full border-collapse text-sm">
+                                            <thead class="bg-indigo-100">
+                                                <tr>
+                                                    <th class="border p-2">Z</th>
+                                                    <th class="border p-2">Element</th>
+                                                    <th class="border p-2">Electron Configuration</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr><td class="border p-2 text-center">1</td><td class="border p-2">H</td><td class="border p-2 font-mono">1s¹</td></tr>
+                                                <tr class="bg-gray-50"><td class="border p-2 text-center">2</td><td class="border p-2">He</td><td class="border p-2 font-mono">1s²</td></tr>
+                                                <tr><td class="border p-2 text-center">3</td><td class="border p-2">Li</td><td class="border p-2 font-mono">1s² 2s¹</td></tr>
+                                                <tr class="bg-gray-50"><td class="border p-2 text-center">4</td><td class="border p-2">Be</td><td class="border p-2 font-mono">1s² 2s²</td></tr>
+                                                <tr><td class="border p-2 text-center">5</td><td class="border p-2">B</td><td class="border p-2 font-mono">1s² 2s² 2p¹</td></tr>
+                                                <tr class="bg-gray-50"><td class="border p-2 text-center">6</td><td class="border p-2">C</td><td class="border p-2 font-mono">1s² 2s² 2p²</td></tr>
+                                                <tr><td class="border p-2 text-center">7</td><td class="border p-2">N</td><td class="border p-2 font-mono">1s² 2s² 2p³</td></tr>
+                                                <tr class="bg-gray-50"><td class="border p-2 text-center">8</td><td class="border p-2">O</td><td class="border p-2 font-mono">1s² 2s² 2p⁴</td></tr>
+                                                <tr><td class="border p-2 text-center">9</td><td class="border p-2">F</td><td class="border p-2 font-mono">1s² 2s² 2p⁵</td></tr>
+                                                <tr class="bg-gray-50"><td class="border p-2 text-center">10</td><td class="border p-2">Ne</td><td class="border p-2 font-mono">1s² 2s² 2p⁶</td></tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            `
+                        },
+                        {
+                            intro: "Here are elements 11-20. Notice the pattern and the transition from 3p to 4s to 3d!",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-table text-amber-500 mr-3"></i>Elements 11-20
+                                    </h3>
+                                    
+                                    <div class="overflow-x-auto mb-4">
+                                        <table class="w-full border-collapse text-sm">
+                                            <thead class="bg-green-100">
+                                                <tr>
+                                                    <th class="border p-2">Z</th>
+                                                    <th class="border p-2">Element</th>
+                                                    <th class="border p-2">Electron Configuration</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr><td class="border p-2 text-center">11</td><td class="border p-2">Na</td><td class="border p-2 font-mono">1s² 2s² 2p⁶ 3s¹</td></tr>
+                                                <tr class="bg-gray-50"><td class="border p-2 text-center">12</td><td class="border p-2">Mg</td><td class="border p-2 font-mono">1s² 2s² 2p⁶ 3s²</td></tr>
+                                                <tr><td class="border p-2 text-center">13</td><td class="border p-2">Al</td><td class="border p-2 font-mono">1s² 2s² 2p⁶ 3s² 3p¹</td></tr>
+                                                <tr class="bg-gray-50"><td class="border p-2 text-center">14</td><td class="border p-2">Si</td><td class="border p-2 font-mono">1s² 2s² 2p⁶ 3s² 3p²</td></tr>
+                                                <tr><td class="border p-2 text-center">15</td><td class="border p-2">P</td><td class="border p-2 font-mono">1s² 2s² 2p⁶ 3s² 3p³</td></tr>
+                                                <tr class="bg-gray-50"><td class="border p-2 text-center">16</td><td class="border p-2">S</td><td class="border p-2 font-mono">1s² 2s² 2p⁶ 3s² 3p⁴</td></tr>
+                                                <tr><td class="border p-2 text-center">17</td><td class="border p-2">Cl</td><td class="border p-2 font-mono">1s² 2s² 2p⁶ 3s² 3p⁵</td></tr>
+                                                <tr class="bg-gray-50"><td class="border p-2 text-center">18</td><td class="border p-2">Ar</td><td class="border p-2 font-mono">1s² 2s² 2p⁶ 3s² 3p⁶</td></tr>
+                                                <tr class="bg-yellow-50"><td class="border p-2 text-center">19</td><td class="border p-2">K</td><td class="border p-2 font-mono">1s² 2s² 2p⁶ 3s² 3p⁶ <strong class="text-amber-600">4s¹</strong></td></tr>
+                                                <tr class="bg-yellow-50"><td class="border p-2 text-center">20</td><td class="border p-2">Ca</td><td class="border p-2 font-mono">1s² 2s² 2p⁶ 3s² 3p⁶ <strong class="text-amber-600">4s²</strong></td></tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    
+                                    <div class="bg-amber-50 p-4 rounded-lg border border-amber-200">
+                                        <p class="text-amber-800"><i class="fas fa-exclamation-triangle mr-2"></i><strong>Notice!</strong> For K and Ca, electrons go into 4s BEFORE 3d. This is because 4s has lower energy than 3d. After Ca (Z=20), electrons then start filling 3d for the transition metals (Sc, Ti, V...).</p>
+                                    </div>
+                                    
+                                    <button class="click-hint" onclick="nextChunk()">
+                                        <i class="fas fa-arrow-right"></i>
+                                        <span>Continue to Practice →</span>
+                                    </button>
+                                </div>
+                            `
+                        }
+                    ]
+                },
+                {
+                    id: "practice",
+                    title: "Practice Questions",
+                    type: "practice",
+                    chunks: [
+                        {
+                            intro: "Let's practice writing electron configurations! Work through each problem step by step.",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-pencil-alt text-amber-500 mr-3"></i>Guided Practice
+                                    </h3>
+                                    <p class="text-gray-700 mb-4">Let's write the electron configuration for <strong class="text-indigo-600">Silicon (Si, Z = 14)</strong> step by step.</p>
+                                    
+                                    <div class="space-y-4">
+                                        <!-- Step 1 -->
+                                        <div class="bg-gray-50 p-4 rounded-lg">
+                                            <p class="font-medium text-gray-800">Step 1: Fill the 1s orbital</p>
+                                            <p class="text-sm text-gray-600 mt-1">The 1s orbital holds a maximum of 2 electrons.</p>
+                                            <div class="mt-2 flex items-center gap-2">
+                                                <input type="text" id="step1-config" class="w-20 px-3 py-2 border rounded-lg" placeholder="1s?">
+                                                <span class="text-gray-500">How many electrons in 1s?</span>
+                                            </div>
+                                            <button onclick="checkGuidedStep(1)" class="mt-2 px-4 py-1 bg-indigo-500 text-white rounded-lg text-sm hover:bg-indigo-600">Check</button>
+                                            <p id="feedback1" class="text-sm mt-2"></p>
+                                        </div>
+                                        
+                                        <!-- Step 2 -->
+                                        <div class="bg-gray-50 p-4 rounded-lg">
+                                            <p class="font-medium text-gray-800">Step 2: Fill the 2s orbital</p>
+                                            <p class="text-sm text-gray-600 mt-1">After 1s², we have 14 - 2 = 12 electrons left.</p>
+                                            <div class="mt-2 flex items-center gap-2">
+                                                <input type="text" id="step2-config" class="w-20 px-3 py-2 border rounded-lg" placeholder="2s?">
+                                                <span class="text-gray-500">How many electrons in 2s?</span>
+                                            </div>
+                                            <button onclick="checkGuidedStep(2)" class="mt-2 px-4 py-1 bg-indigo-500 text-white rounded-lg text-sm hover:bg-indigo-600">Check</button>
+                                            <p id="feedback2" class="text-sm mt-2"></p>
+                                        </div>
+                                        
+                                        <!-- Step 3 -->
+                                        <div class="bg-gray-50 p-4 rounded-lg">
+                                            <p class="font-medium text-gray-800">Step 3: Fill the 2p orbital</p>
+                                            <p class="text-sm text-gray-600 mt-1">After 2s², we have 12 - 2 = 10 electrons left.</p>
+                                            <div class="mt-2 flex items-center gap-2">
+                                                <input type="text" id="step3-config" class="w-20 px-3 py-2 border rounded-lg" placeholder="2p?">
+                                                <span class="text-gray-500">How many electrons in 2p?</span>
+                                            </div>
+                                            <button onclick="checkGuidedStep(3)" class="mt-2 px-4 py-1 bg-indigo-500 text-white rounded-lg text-sm hover:bg-indigo-600">Check</button>
+                                            <p id="feedback3" class="text-sm mt-2"></p>
+                                        </div>
+                                        
+                                        <!-- Step 4 -->
+                                        <div class="bg-gray-50 p-4 rounded-lg">
+                                            <p class="font-medium text-gray-800">Step 4: Fill 3s and 3p</p>
+                                            <p class="text-sm text-gray-600 mt-1">After 2p⁶, we have 10 - 6 = 4 electrons left. Fill 3s, then 3p.</p>
+                                            <div class="mt-2 flex items-center gap-2">
+                                                <input type="text" id="step4-config" class="w-40 px-3 py-2 border rounded-lg" placeholder="3s? 3p?">
+                                                <span class="text-gray-500">Write 3s and 3p config</span>
+                                            </div>
+                                            <button onclick="checkGuidedStep(4)" class="mt-2 px-4 py-1 bg-indigo-500 text-white rounded-lg text-sm hover:bg-indigo-600">Check</button>
+                                            <p id="feedback4" class="text-sm mt-2"></p>
+                                        </div>
+                                        
+                                        <!-- Final Answer -->
+                                        <div class="bg-green-50 p-4 rounded-lg border border-green-200">
+                                            <p class="font-medium text-green-800">Final Answer</p>
+                                            <p class="text-sm text-green-600 mt-1">The complete electron configuration for Silicon:</p>
+                                            <p id="finalAnswer" class="font-mono text-lg text-green-800 mt-2">1s² 2s² 2p⁶ 3s² 3p²</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            `
+                        },
+                        {
+                            intro: "Now try these independent practice questions to test your understanding!",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-tasks text-amber-500 mr-3"></i>Independent Practice
+                                    </h3>
+                                    
+                                    <div class="space-y-4">
+                                        <!-- Question 1 -->
+                                        <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+                                            <p class="font-medium text-gray-800 mb-2">1. Write the electron configuration for <strong>Chlorine (Cl, Z = 17)</strong></p>
+                                            <input type="text" id="ind1-answer" class="w-full px-3 py-2 border rounded-lg" placeholder="e.g., 1s² 2s² 2p⁶ 3s² 3p⁵">
+                                            <button onclick="checkIndependent(1)" class="mt-2 px-4 py-2 bg-amber-500 text-white rounded-lg hover:bg-amber-600">Check Answer</button>
+                                            <p id="ind-feedback1" class="text-sm mt-2"></p>
+                                        </div>
+                                        
+                                        <!-- Question 2 -->
+                                        <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+                                            <p class="font-medium text-gray-800 mb-2">2. Write the electron configuration for <strong>Potassium (K, Z = 19)</strong></p>
+                                            <p class="text-sm text-gray-600 mb-2">Remember: 4s fills before 3d!</p>
+                                            <input type="text" id="ind2-answer" class="w-full px-3 py-2 border rounded-lg" placeholder="Type your answer...">
+                                            <button onclick="checkIndependent(2)" class="mt-2 px-4 py-2 bg-amber-500 text-white rounded-lg hover:bg-amber-600">Check Answer</button>
+                                            <p id="ind-feedback2" class="text-sm mt-2"></p>
+                                        </div>
+                                        
+                                        <!-- Question 3 -->
+                                        <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+                                            <p class="font-medium text-gray-800 mb-2">3. How many unpaired electrons does <strong>Nitrogen (N, Z = 7)</strong> have?</p>
+                                            <p class="text-sm text-gray-600 mb-2">Hint: Draw the orbital diagram for 2p³</p>
+                                            <input type="number" id="ind3-answer" class="w-20 px-3 py-2 border rounded-lg" placeholder="?">
+                                            <span class="ml-2 text-gray-600">unpaired electrons</span>
+                                            <button onclick="checkIndependent(3)" class="mt-2 ml-4 px-4 py-2 bg-amber-500 text-white rounded-lg hover:bg-amber-600">Check Answer</button>
+                                            <p id="ind-feedback3" class="text-sm mt-2"></p>
+                                        </div>
+                                        
+                                        <!-- Question 4 -->
+                                        <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+                                            <p class="font-medium text-gray-800 mb-2">4. An element has the electron configuration <strong>1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹</strong>. What element is this?</p>
+                                            <input type="text" id="ind4-answer" class="w-40 px-3 py-2 border rounded-lg" placeholder="Element name">
+                                            <button onclick="checkIndependent(4)" class="mt-2 ml-4 px-4 py-2 bg-amber-500 text-white rounded-lg hover:bg-amber-600">Check Answer</button>
+                                            <p id="ind-feedback4" class="text-sm mt-2"></p>
+                                        </div>
+                                    </div>
+                                    
+                                    <button class="click-hint mt-6" onclick="nextChunk()">
+                                        <i class="fas fa-arrow-right"></i>
+                                        <span>Continue to Summary →</span>
+                                    </button>
+                                </div>
+                            `
+                        }
+                    ]
+                },
+                {
+                    id: "summary",
+                    title: "Summary & Next Steps",
+                    type: "note",
+                    chunks: [
+                        {
+                            intro: "Great job completing this topic! Let's summarize what you've learned.",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-check-circle text-green-500 mr-3"></i>Topic Summary
+                                    </h3>
+                                    
+                                    <div class="space-y-4">
+                                        <div class="bg-indigo-50 p-4 rounded-lg">
+                                            <h4 class="font-semibold text-indigo-800 mb-2">Key Concepts Learned</h4>
+                                            <ul class="list-disc pl-5 text-gray-700 space-y-1">
+                                                <li>Electron configuration describes how electrons are arranged in shells and orbitals</li>
+                                                <li>Shells are labeled 1-7 (or K-Q), with each holding a max of 2n² electrons</li>
+                                                <li>Four types of orbitals: s (2 e⁻), p (6 e⁻), d (10 e⁻), f (14 e⁻)</li>
+                                                <li>Three filling rules: Aufbau, Hund's, Pauli Exclusion</li>
+                                                <li>4s fills before 3d (important exception!)</li>
+                                            </ul>
+                                        </div>
+                                        
+                                        <div class="bg-amber-50 p-4 rounded-lg border border-amber-200">
+                                            <h4 class="font-semibold text-amber-800 mb-2">Key Points for WAEC</h4>
+                                            <ul class="list-disc pl-5 text-gray-700 space-y-1">
+                                                <li>Know the order: 1s → 2s → 2p → 3s → 3p → 4s → 3d → 4p</li>
+                                                <li>Be able to write configurations for elements 1-20</li>
+                                                <li>Understand orbital diagrams and unpaired electrons</li>
+                                                <li>Recognize patterns in the periodic table (same group = same outer config)</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            `
+                        },
+                        {
+                            intro: "Now you're ready to test your knowledge with the quiz, or continue to the next topic!",
+                            content: `
+                                <div class="section-card">
+                                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                        <i class="fas fa-route text-amber-500 mr-3"></i>What's Next?
+                                    </h3>
+                                    
+                                    <div class="grid md:grid-cols-2 gap-4">
+                                        <div class="bg-green-50 p-4 rounded-lg border border-green-200">
+                                            <h4 class="font-semibold text-green-800 mb-2">Take the Quiz</h4>
+                                            <p class="text-sm text-gray-700 mb-3">Test your understanding with questions covering all concepts from this topic.</p>
+                                            <button onclick="startQuiz()" class="w-full px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 font-medium">
+                                                <i class="fas fa-play mr-2"></i>Start Quiz
+                                            </button>
+                                        </div>
+                                        
+                                        <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                                            <h4 class="font-semibold text-blue-800 mb-2">Next Topic</h4>
+                                            <p class="text-sm text-gray-700 mb-3">Learn about periodic trends like atomic radius and ionization energy.</p>
+                                            <a href="periodic-trends.html" class="block w-full px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 font-medium text-center">
+                                                <i class="fas fa-arrow-right mr-2"></i>Periodic Trends
+                                            </a>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="mt-4 p-4 bg-gray-50 rounded-lg">
+                                        <p class="text-sm text-gray-600"><i class="fas fa-info-circle text-blue-500 mr-2"></i><strong>Learning Path:</strong> Periodic Table Overview → <span class="text-indigo-600 font-medium">Electron Configuration</span> → Periodic Trends → Ionic Bonding</p>
+                                    </div>
+                                </div>
+                            `
+                        }
+                    ]
+                }
+            ]
+        };
+
+        // Initialize the page
+        function init() {
+            renderStepsList();
+            renderStep();
+            setupEventListeners();
+            updateProgressBar();
+            
+            // Setup atom visualization slider
+            const slider = document.getElementById('zSlider');
+            if (slider) {
+                slider.addEventListener('input', updateAtomVisualization);
+                updateAtomVisualization();
+            }
+        }
+
+        function renderStepsList() {
+            const stepsList = document.getElementById('stepsList');
+            const mobileStepsList = document.getElementById('mobileStepsList');
+            
+            const html = topicData.steps.map((step, index) => `
+                <li>
+                    <button onclick="goToStep(${index})" 
+                            class="step-button w-full text-left px-3 py-2 rounded-lg text-sm flex items-center gap-2
+                                   ${index === currentStepIndex ? 'bg-amber-100 text-amber-800 font-medium' : 'text-gray-600 hover:bg-gray-100'}
+                                   ${stepsCompleted.includes(index) ? 'text-green-600' : ''}">
+                        <span class="w-6 h-6 rounded-full flex items-center justify-center text-xs
+                                     ${stepsCompleted.includes(index) ? 'bg-green-500 text-white' : 'bg-gray-200'}">
+                            ${stepsCompleted.includes(index) ? '✓' : index + 1}
+                        </span>
+                        <span class="truncate">${step.title}</span>
+                    </button>
+                </li>
+            `).join('');
+            
+            stepsList.innerHTML = html;
+            mobileStepsList.innerHTML = html;
+        }
+
+        function renderStep() {
+            const step = topicData.steps[currentStepIndex];
+            const chunk = step.chunks[currentChunkIndex];
+            const container = document.getElementById('stepContainer');
+            
+            let content = '';
+            
+            // Add intro text if exists
+            if (chunk.intro) {
+                content += `
+                    <div class="bg-gradient-to-r from-amber-50 to-yellow-50 border-l-4 border-amber-500 p-4 rounded-r-lg mb-6">
+                        <p class="text-amber-800">${chunk.intro}</p>
+                    </div>
+                `;
+            }
+            
+            // Add main content
+            content += chunk.content;
+            
+            container.innerHTML = content;
+            container.classList.add('animate-fade-in-up');
+            
+            // Re-setup atom visualization if we're on that step
+            const slider = document.getElementById('zSlider');
+            if (slider) {
+                slider.addEventListener('input', updateAtomVisualization);
+                updateAtomVisualization();
+            }
+            
+            updateProgressBar();
+        }
+
+        function updateProgressBar() {
+            const totalChunks = topicData.steps.reduce((sum, step) => sum + step.chunks.length, 0);
+            let completedChunks = 0;
+            
+            for (let i = 0; i < currentStepIndex; i++) {
+                completedChunks += topicData.steps[i].chunks.length;
+            }
+            completedChunks += currentChunkIndex;
+            
+            const percent = Math.round((completedChunks / totalChunks) * 100);
+            document.getElementById('progressPercent').textContent = percent + '%';
+            document.getElementById('progressBar').style.width = percent + '%';
+        }
+
+        function nextChunk() {
+            const step = topicData.steps[currentStepIndex];
+            
+            if (currentChunkIndex < step.chunks.length - 1) {
+                currentChunkIndex++;
+                renderStep();
+            } else if (currentStepIndex < topicData.steps.length - 1) {
+                stepsCompleted.push(currentStepIndex);
+                currentStepIndex++;
+                currentChunkIndex = 0;
+                renderStepsList();
+                renderStep();
+            }
+        }
+
+        function prevChunk() {
+            if (currentChunkIndex > 0) {
+                currentChunkIndex--;
+                renderStep();
+            } else if (currentStepIndex > 0) {
+                currentStepIndex--;
+                currentChunkIndex = topicData.steps[currentStepIndex].chunks.length - 1;
+                renderStep();
+            }
+        }
+
+        function goToStep(index) {
+            if (index <= currentStepIndex || stepsCompleted.includes(index - 1)) {
+                currentStepIndex = index;
+                currentChunkIndex = 0;
+                renderStepsList();
+                renderStep();
+            }
+        }
+
+        function setupEventListeners() {
+            document.getElementById('nextStepBtn').addEventListener('click', nextChunk);
+            document.getElementById('prevStepBtn').addEventListener('click', prevChunk);
+            
+            // Mobile sidebar
+            document.getElementById('mobileMenuBtn').addEventListener('click', () => {
+                document.getElementById('mobileSidebar').classList.remove('-translate-x-full');
+                document.getElementById('sidebarOverlay').classList.remove('hidden');
+            });
+            
+            document.getElementById('closeSidebarBtn').addEventListener('click', () => {
+                document.getElementById('mobileSidebar').classList.add('-translate-x-full');
+                document.getElementById('sidebarOverlay').classList.add('hidden');
+            });
+            
+            document.getElementById('sidebarOverlay').addEventListener('click', () => {
+                document.getElementById('mobileSidebar').classList.add('-translate-x-full');
+                document.getElementById('sidebarOverlay').classList.add('hidden');
+            });
+        }
+
+        // Update atom visualization
+        function updateAtomVisualization() {
+            const slider = document.getElementById('zSlider');
+            const z = parseInt(slider.value);
+            
+            document.getElementById('zValue').textContent = z;
+            document.getElementById('elementName').textContent = elementData[z]?.name || 'Unknown';
+            document.getElementById('nucleusDisplay').textContent = z + 'p';
+            
+            // Calculate electrons in each shell
+            let remaining = z;
+            const shellMax = [2, 8, 8, 2]; // Simplified for first 20 elements
+            const shellCounts = [];
+            
+            for (let i = 0; i < 4; i++) {
+                const electrons = Math.min(remaining, shellMax[i]);
+                shellCounts.push(electrons);
+                remaining -= electrons;
+            }
+            
+            // Update display
+            document.getElementById('shell1Count').textContent = shellCounts[0];
+            document.getElementById('shell2Count').textContent = shellCounts[1];
+            document.getElementById('shell3Count').textContent = shellCounts[2];
+            document.getElementById('shell4Count').textContent = shellCounts[3];
+            
+            // Update configuration display
+            document.getElementById('configDisplay').textContent = getElectronConfiguration(z);
+            
+            // Place electrons on shells
+            placeElectrons('shell1', shellCounts[0], 50);
+            placeElectrons('shell2', shellCounts[1], 80);
+            placeElectrons('shell3', shellCounts[2], 110);
+            placeElectrons('shell4', shellCounts[3], 140);
+        }
+
+        function placeElectrons(shellId, count, radius) {
+            const shell = document.getElementById(shellId);
+            if (!shell) return;
+            
+            // Remove existing electrons
+            const existing = shell.querySelectorAll('.electron');
+            existing.forEach(e => e.remove());
+            
+            // Place electrons around the shell
+            for (let i = 0; i < count; i++) {
+                const angle = (i / count) * 2 * Math.PI - Math.PI / 2;
+                const electron = document.createElement('div');
+                electron.className = 'electron absolute w-4 h-4 bg-blue-500 rounded-full electron-pulse';
+                electron.style.top = `calc(50% + ${radius * Math.sin(angle)}px - 8px)`;
+                electron.style.left = `calc(50% + ${radius * Math.cos(angle)}px - 8px)`;
+                shell.appendChild(electron);
+            }
+        }
+
+        // Check guided practice answers
+        window.checkGuidedStep = function(step) {
+            const input = document.getElementById('step' + step + '-config');
+            const feedback = document.getElementById('feedback' + step);
+            const value = input.value.trim();
+            
+            let correct = false;
+            let message = '';
+            
+            if (step === 1) {
+                correct = value === '2' || value === '1s2' || value === '1s²';
+                message = correct ? '✅ Correct! 1s² (2 electrons)' : '❌ The 1s orbital always fills completely with 2 electrons first.';
+            } else if (step === 2) {
+                correct = value === '2' || value === '2s2' || value === '2s²';
+                message = correct ? '✅ Correct! 2s² (2 electrons)' : '❌ After 1s², electrons fill 2s. It holds 2 electrons.';
+            } else if (step === 3) {
+                correct = value === '6' || value === '2p6' || value === '2p⁶';
+                message = correct ? '✅ Correct! 2p⁶ (6 electrons - full!)' : '❌ The 2p orbital holds max 6 electrons. After 1s² 2s², we have 10 electrons left, so 2p gets 6.';
+            } else if (step === 4) {
+                correct = value === '3s2 3p2' || value === '3s² 3p²' || value === '3s2 3p2' || value.toLowerCase().includes('3s2') && value.toLowerCase().includes('3p2');
+                message = correct ? '✅ Correct! After 2p⁶, we have 4 electrons left. 3s² takes 2, then 3p² takes 2!' : '❌ After 1s² 2s² 2p⁶, we have 4 electrons left. Fill 3s² (2 e⁻), then 3p² (2 e⁻).';
+            }
+            
+            feedback.innerHTML = message;
+            feedback.className = 'text-sm mt-2 ' + (correct ? 'text-green-600 font-medium' : 'text-red-600');
+            
+            if (correct) {
+                PracticeTracker.recordAnswer('practice', 'guided-' + step, true, { step, value });
+            }
+        };
+
+        // Check independent practice
+        window.checkIndependent = function(num) {
+            const input = document.getElementById('ind' + num + '-answer');
+            const feedback = document.getElementById('ind-feedback' + num);
+            const value = input.value.trim().toLowerCase();
+            
+            let correct = false;
+            let message = '';
+            
+            if (num === 1) {
+                // Chlorine Z=17: 1s² 2s² 2p⁶ 3s² 3p⁵
+                correct = value.includes('1s2') && value.includes('2s2') && value.includes('2p6') && value.includes('3s2') && value.includes('3p5');
+                message = correct ? 
+                    '✅ Correct! Cl: 1s² 2s² 2p⁶ 3s² 3p⁵. 17 electrons total!' :
+                    '❌ Chlorine (Z=17) should be: 1s² 2s² 2p⁶ 3s² 3p⁵. Count: 2+2+6+2+5 = 17';
+            } else if (num === 2) {
+                // Potassium Z=19: 1s² 2s² 2p⁶ 3s² 3p⁶ 4s¹
+                correct = value.includes('4s1') || value.includes('4s¹');
+                message = correct ?
+                    '✅ Correct! K: 1s² 2s² 2p⁶ 3s² 3p⁶ 4s¹. Remember: 4s fills before 3d!' :
+                    '❌ K (Z=19) should be: 1s² 2s² 2p⁶ 3s² 3p⁶ 4s¹. 4s fills BEFORE 3d!';
+            } else if (num === 3) {
+                // Nitrogen Z=7: 1s² 2s² 2p³ - 3 unpaired electrons (Hund's rule)
+                correct = value === '3';
+                message = correct ?
+                    '✅ Correct! N has 3 unpaired electrons (2p³: each p orbital gets 1 electron first - Hund\'s Rule!)' :
+                    '❌ N (Z=7) is 1s² 2s² 2p³. The 3 electrons in 2p go into separate orbitals first (↑ ↑ ↑), so 3 unpaired!';
+            } else if (num === 4) {
+                // Element with that config is Scandium (Sc, Z=21)
+                correct = value === 'scandium' || value === 'sc';
+                message = correct ?
+                    '✅ Correct! This is Scandium (Sc, Z=21). 2+2+6+2+6+2+1 = 21 electrons!' :
+                    '❌ Count the electrons: 2+2+6+2+6+2+1 = 21. Z=21 is Scandium (Sc)!';
+            }
+            
+            feedback.innerHTML = message;
+            feedback.className = 'text-sm mt-2 ' + (correct ? 'text-green-600 font-medium' : 'text-red-600');
+            
+            PracticeTracker.recordAnswer('practice', 'ind-' + num, correct, { num, value });
+        };
+
+        // Start quiz function
+        window.startQuiz = function() {
+            if (window.periodicTableQuiz) {
+                window.periodicTableQuiz.start();
+            }
+        };
+
+        // Initialize
+        init();
+    </script>
+
+    <!-- Topic Quiz System -->
+    <script type="module">
+        import { TopicTracker } from '/js/topic-tracker.js';
+        import { TopicQuiz } from '/js/topic-quiz.js';
+
+        const quizQuestions = [
+            {
+                question: "What is the maximum number of electrons that can occupy the 2p subshell?",
+                options: ["2", "4", "6", "8"],
+                correct: 2,
+                explanation: "The p subshell has 3 orbitals, each holding 2 electrons. So 3 × 2 = 6 electrons maximum."
+            },
+            {
+                question: "According to the Aufbau principle, electrons fill orbitals in order of:",
+                options: ["Decreasing energy", "Increasing energy", "Alphabetical order", "Random order"],
+                correct: 1,
+                explanation: "Aufbau means 'building up' - electrons fill from lowest energy to highest energy orbitals."
+            },
+            {
+                question: "Which orbital fills first: 4s or 3d?",
+                options: ["3d", "4s", "They fill simultaneously", "It depends on the element"],
+                correct: 1,
+                explanation: "4s has lower energy than 3d, so 4s fills first. This is a key exception to remember!"
+            },
+            {
+                question: "What is the electron configuration of Oxygen (Z = 8)?",
+                options: ["1s² 2s² 2p²", "1s² 2s² 2p⁴", "1s² 2s² 2p⁶", "1s² 2s² 2p³"],
+                correct: 1,
+                explanation: "Oxygen has 8 electrons: 2 in 1s, 2 in 2s, and 4 in 2p. Total: 2+2+4 = 8 ✓"
+            },
+            {
+                question: "Hund's Rule states that electrons will:",
+                options: ["Pair up before occupying empty orbitals", "Occupy empty orbitals singly first", "Fill the highest energy orbitals first", "Have the same spin in all orbitals"],
+                correct: 1,
+                explanation: "Hund's Rule: electrons spread out into empty orbitals of equal energy before pairing up."
+            },
+            {
+                question: "How many unpaired electrons are in a phosphorus atom (Z = 15)?",
+                options: ["1", "2", "3", "5"],
+                correct: 2,
+                explanation: "P configuration: 1s² 2s² 2p⁶ 3s² 3p³. The 3p³ has 3 electrons in separate orbitals (↑ ↑ ↑), so 3 unpaired."
+            },
+            {
+                question: "The Pauli Exclusion Principle states that:",
+                options: ["Each orbital can hold any number of electrons", "No two electrons can have the same set of quantum numbers", "Electrons always pair up", "Orbitals must be completely filled"],
+                correct: 1,
+                explanation: "Pauli Exclusion Principle: each orbital can hold max 2 electrons with opposite spins (different quantum numbers)."
+            },
+            {
+                question: "What is the correct electron configuration for Calcium (Z = 20)?",
+                options: ["1s² 2s² 2p⁶ 3s² 3p⁶ 3d²", "1s² 2s² 2p⁶ 3s² 3p⁶ 4s²", "1s² 2s² 2p⁶ 3s² 3p⁶ 4s¹ 3d¹", "1s² 2s² 2p⁶ 3s² 3p⁴ 4s⁴"],
+                correct: 1,
+                explanation: "Ca (Z=20): 1s² 2s² 2p⁶ 3s² 3p⁶ 4s². Remember: 4s fills before 3d, and Ca has 2 electrons in 4s."
+            }
+        ];
+
+        const tracker = new TopicTracker({
+            topicId: 'electron-configuration',
+            topicTitle: 'Electron Configuration',
+            subject: 'chemistry',
+            sections: ['introduction', 'orbitals', 'filling-rules', 'writing-configs', 'practice', 'summary'],
+            quizRequired: true
+        });
+
+        const quiz = new TopicQuiz({
+            topicId: 'electron-configuration',
+            topicTitle: 'Electron Configuration',
+            subject: 'chemistry',
+            questions: quizQuestions,
+            passingScore: 60,
+            tracker: tracker
+        });
+
+        // Connect quiz to PracticeTracker for combined scoring
+        const baseShowResults = quiz.showResults.bind(quiz);
+        quiz.showResults = async function() {
+            await baseShowResults();
+            
+            // Record quiz score to PracticeTracker
+            PracticeTracker.recordQuizScore(this.score, this.questions.length);
+            
+            // Show combined score
+            const combinedScore = PracticeTracker.getCombinedScore();
+            const content = document.getElementById('quiz-content');
+            if (content && combinedScore) {
+                const practicePercent = combinedScore.practice || 0;
+                const quizPercent = combinedScore.quiz || 0;
+                const totalCombined = combinedScore.combined || 0;
+                
+                content.innerHTML += `
+                    <div class="mt-6 p-4 bg-gradient-to-r from-purple-50 to-indigo-50 rounded-xl border-2 border-purple-200">
+                        <h4 class="font-bold text-lg text-purple-800 mb-3 text-center">📊 Your Complete Score Summary</h4>
+                        <div class="grid grid-cols-3 gap-4 text-center">
+                            <div class="bg-white p-3 rounded-lg">
+                                <p class="text-xs text-gray-500 mb-1">Practice Questions</p>
+                                <p class="text-2xl font-bold ${practicePercent >= 60 ? 'text-green-600' : 'text-amber-600'}">${practicePercent !== null ? practicePercent + '%' : 'N/A'}</p>
+                                <p class="text-xs text-gray-400">(40% weight)</p>
+                            </div>
+                            <div class="bg-white p-3 rounded-lg">
+                                <p class="text-xs text-gray-500 mb-1">Quiz</p>
+                                <p class="text-2xl font-bold ${quizPercent >= 60 ? 'text-green-600' : 'text-amber-600'}">${quizPercent}%</p>
+                                <p class="text-xs text-gray-400">(60% weight)</p>
+                            </div>
+                            <div class="bg-white p-3 rounded-lg border-2 border-purple-300">
+                                <p class="text-xs text-gray-500 mb-1">Combined Score</p>
+                                <p class="text-2xl font-bold ${totalCombined >= 60 ? 'text-green-600' : 'text-red-600'}">${totalCombined}%</p>
+                                <p class="text-xs text-gray-400">Final Grade</p>
+                            </div>
+                        </div>
+                        ${totalCombined >= 60 ? 
+                            '<p class="text-center text-green-600 font-medium mt-3">🎉 Congratulations! You passed this topic!</p>' : 
+                            '<p class="text-center text-amber-600 font-medium mt-3">📚 Keep practicing! Review the material and try again.</p>'
+                        }
+                    </div>
+                `;
+            }
+        };
+
+        // Make quiz accessible globally
+        window.electronConfigQuiz = quiz;
+        window.topicTracker = tracker;
+        window.TopicQuizInstance = quiz;
+        
+        // Enhanced showResults that also saves to ChemistryQuiz
+        const originalShowResults = quiz.showResults.bind(quiz);
+        quiz.showResults = async function() {
+            await originalShowResults();
+            
+            // Save to ChemistryQuiz handler (which saves to topic_quiz_results table)
+            if (window.ChemistryQuiz && this.isCompleted) {
+                await window.ChemistryQuiz.saveQuizResult({
+                    topicId: 'electron-configuration',
+                    topicTitle: 'Electron Configuration',
+                    score: this.score,
+                    totalQuestions: this.questions.length,
+                    percentage: Math.round((this.score / this.questions.length) * 100),
+                    passed: this.score / this.questions.length >= 0.6,
+                    answers: this.answers || []
+                });
+            }
+        };
+    </script>
+    
+    <!-- Chemistry Subject Quiz Handler -->
+    <script src="../subject-quiz-handler.js"></script>
+</body>
+</html>

@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vectors and Scalars - Physics</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @keyframes fade-in-up {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in-up { animation: fade-in-up 0.5s ease-out forwards; }
+        .section-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            border: 1px solid #e5e7eb;
+        }
+        .simulation-container {
+            position: relative;
+            width: 100%;
+            height: 500px;
+            overflow: hidden;
+            border-radius: 8px;
+            background: #f9fafb;
+        }
+        .simulation-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        .video-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 8px;
+            background: #f9fafb;
+        }
+        .video-container iframe {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Header -->
+    <nav class="bg-white shadow-sm fixed top-0 w-full z-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center">
+                    <a href="index.html" class="text-blue-600 hover:text-blue-800 mr-4">
+                        <i class="fas fa-arrow-left"></i>
+                    </a>
+                    <h1 class="text-xl font-semibold text-gray-900">Vectors and Scalars</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="text-sm text-gray-600 hidden sm:block">
+                        Progress: <span id="progressPercent">0%</span>
+                    </div>
+                    <div class="w-24 sm:w-32 h-2 bg-gray-200 rounded-full">
+                        <div id="progressBar" class="h-2 bg-blue-500 rounded-full transition-all duration-300" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="pt-20 pb-8 px-4 max-w-5xl mx-auto">
+        <!-- Learning Objectives -->
+        <div class="bg-blue-50 border-l-4 border-blue-500 p-4 rounded-r-lg mb-6 animate-fade-in-up">
+            <h3 class="font-semibold text-blue-800 mb-2"><i class="fas fa-bullseye mr-2"></i>Learning Objectives</h3>
+            <ul class="text-blue-700 text-sm space-y-1">
+                <li>• Distinguish between scalar and vector quantities</li>
+                <li>• Represent vectors graphically using arrows</li>
+                <li>• Add and subtract vectors using graphical and analytical methods</li>
+                <li>• Resolve vectors into horizontal and vertical components</li>
+            </ul>
+        </div>
+
+        <!-- Section 1: Scalars vs Vectors -->
+        <div class="section-card animate-fade-in-up">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <span class="bg-blue-100 text-blue-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">1</span>
+                Scalars vs Vectors
+            </h2>
+            
+            <p class="text-gray-700 mb-4">Physical quantities can be classified as either <strong>scalars</strong> or <strong>vectors</strong> based on whether they have direction.</p>
+            
+            <div class="grid md:grid-cols-2 gap-4 mb-4">
+                <div class="bg-green-50 p-5 rounded-lg border-2 border-green-200">
+                    <div class="flex items-center mb-3">
+                        <i class="fas fa-hashtag text-green-500 text-2xl mr-3"></i>
+                        <h4 class="font-semibold text-xl text-green-700">Scalar Quantities</h4>
+                    </div>
+                    <p class="text-gray-700 mb-3">Have only <strong>magnitude</strong> (size/amount). No direction needed.</p>
+                    <div class="bg-white p-3 rounded-lg">
+                        <p class="text-sm font-semibold text-gray-600 mb-2">Examples:</p>
+                        <ul class="text-green-700 text-sm space-y-1">
+                            <li>• Mass (5 kg)</li>
+                            <li>• Temperature (25°C)</li>
+                            <li>• Time (10 seconds)</li>
+                            <li>• Speed (60 km/h)</li>
+                            <li>• Distance (100 m)</li>
+                            <li>• Energy (500 J)</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="bg-purple-50 p-5 rounded-lg border-2 border-purple-200">
+                    <div class="flex items-center mb-3">
+                        <i class="fas fa-long-arrow-alt-right text-purple-500 text-2xl mr-3"></i>
+                        <h4 class="font-semibold text-xl text-purple-700">Vector Quantities</h4>
+                    </div>
+                    <p class="text-gray-700 mb-3">Have both <strong>magnitude AND direction</strong>.</p>
+                    <div class="bg-white p-3 rounded-lg">
+                        <p class="text-sm font-semibold text-gray-600 mb-2">Examples:</p>
+                        <ul class="text-purple-700 text-sm space-y-1">
+                            <li>• Force (10 N east)</li>
+                            <li>• Velocity (60 km/h north)</li>
+                            <li>• Displacement (100 m left)</li>
+                            <li>• Acceleration (5 m/s² upward)</li>
+                            <li>• Momentum (20 kg·m/s forward)</li>
+                            <li>• Weight (50 N downward)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-r-lg">
+                <h4 class="font-semibold text-yellow-800 mb-2"><i class="fas fa-lightbulb mr-2"></i>Key Distinction</h4>
+                <p class="text-gray-700 text-sm"><strong>Distance vs Displacement:</strong> Distance is how far you travel (scalar). Displacement is your change in position from start to finish, including direction (vector). You might walk 100m but end up only 50m from where you started!</p>
+            </div>
+        </div>
+
+        <!-- Section 2: Vector Representation -->
+        <div class="section-card animate-fade-in-up">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <span class="bg-blue-100 text-blue-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">2</span>
+                Representing Vectors
+            </h2>
+
+            <p class="text-gray-700 mb-4">Vectors are represented graphically using <strong>arrows</strong> (also called directed line segments). The arrow conveys two pieces of information:</p>
+
+            <div class="bg-gray-50 p-5 rounded-lg mb-4">
+                <div class="flex items-center justify-center mb-4">
+                    <svg viewBox="0 0 400 150" class="w-full max-w-lg">
+                        <!-- Vector arrow -->
+                        <defs>
+                            <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                                <polygon points="0 0, 10 3.5, 0 7" fill="#3b82f6" />
+                            </marker>
+                        </defs>
+                        <line x1="50" y1="75" x2="300" y2="75" stroke="#3b82f6" stroke-width="4" marker-end="url(#arrowhead)" />
+                        
+                        <!-- Length label -->
+                        <text x="175" y="60" text-anchor="middle" fill="#1e40af" font-size="14" font-weight="bold">Length = Magnitude</text>
+                        
+                        <!-- Direction arc -->
+                        <path d="M 100 75 A 50 50 0 0 1 100 25" fill="none" stroke="#10b981" stroke-width="2" stroke-dasharray="5,3" />
+                        <text x="130" y="45" fill="#059669" font-size="12">Direction</text>
+                        
+                        <!-- Start point -->
+                        <circle cx="50" cy="75" r="5" fill="#ef4444" />
+                        <text x="50" y="100" text-anchor="middle" fill="#dc2626" font-size="11">Tail</text>
+                        
+                        <!-- End point -->
+                        <text x="310" y="75" fill="#3b82f6" font-size="11">Head</text>
+                    </svg>
+                </div>
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div class="bg-white p-3 rounded-lg border">
+                        <p class="font-semibold text-blue-700"><i class="fas fa-ruler-horizontal mr-2"></i>Length of Arrow</p>
+                        <p class="text-gray-600 text-sm">Represents the <strong>magnitude</strong> (drawn to scale)</p>
+                    </div>
+                    <div class="bg-white p-3 rounded-lg border">
+                        <p class="font-semibold text-green-700"><i class="fas fa-compass mr-2"></i>Direction of Arrow</p>
+                        <p class="text-gray-600 text-sm">Shows the direction of the vector quantity</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-blue-50 p-4 rounded-lg">
+                <h4 class="font-semibold text-blue-800 mb-2">Vector Notation</h4>
+                <p class="text-gray-700 text-sm mb-2">Vectors are written in bold or with an arrow above:</p>
+                <ul class="text-gray-700 text-sm space-y-1">
+                    <li>• <strong>F</strong> or <span class="font-serif">F⃗</span> represents a force vector</li>
+                    <li>• <strong>v</strong> or <span class="font-serif">v⃗</span> represents a velocity vector</li>
+                    <li>• |<strong>F</strong>| or F represents the magnitude only (scalar)</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Section 3: Adding Vectors -->
+        <div class="section-card animate-fade-in-up">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <span class="bg-blue-100 text-blue-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">3</span>
+                Adding Vectors
+            </h2>
+
+            <p class="text-gray-700 mb-4">When adding vectors, both magnitude and direction must be considered. There are two main methods:</p>
+
+            <div class="space-y-4">
+                <!-- Triangle Method -->
+                <div class="bg-green-50 p-4 rounded-lg border border-green-200">
+                    <h4 class="font-semibold text-green-800 mb-3"><i class="fas fa-shapes mr-2"></i>Triangle (Head-to-Tail) Method</h4>
+                    <ol class="text-gray-700 text-sm space-y-2 list-decimal list-inside">
+                        <li>Draw the first vector to scale</li>
+                        <li>Draw the second vector starting from the <strong>head</strong> of the first</li>
+                        <li>The <strong>resultant</strong> is drawn from the tail of the first to the head of the last</li>
+                    </ol>
+                    <div class="mt-3 bg-white p-3 rounded-lg">
+                        <svg viewBox="0 0 300 150" class="w-full max-w-xs mx-auto">
+                            <defs>
+                                <marker id="arrow1" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+                                    <polygon points="0 0, 8 3, 0 6" fill="#10b981" />
+                                </marker>
+                                <marker id="arrow2" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+                                    <polygon points="0 0, 8 3, 0 6" fill="#3b82f6" />
+                                </marker>
+                                <marker id="arrow3" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+                                    <polygon points="0 0, 8 3, 0 6" fill="#ef4444" />
+                                </marker>
+                            </defs>
+                            <!-- Vector A -->
+                            <line x1="30" y1="120" x2="120" y2="60" stroke="#10b981" stroke-width="3" marker-end="url(#arrow1)" />
+                            <text x="60" y="100" fill="#059669" font-size="12">A</text>
+                            
+                            <!-- Vector B -->
+                            <line x1="120" y1="60" x2="220" y2="90" stroke="#3b82f6" stroke-width="3" marker-end="url(#arrow2)" />
+                            <text x="170" y="55" fill="#2563eb" font-size="12">B</text>
+                            
+                            <!-- Resultant R -->
+                            <line x1="30" y1="120" x2="220" y2="90" stroke="#ef4444" stroke-width="3" stroke-dasharray="5,3" marker-end="url(#arrow3)" />
+                            <text x="110" y="130" fill="#dc2626" font-size="12" font-weight="bold">R = A + B</text>
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Parallelogram Method -->
+                <div class="bg-purple-50 p-4 rounded-lg border border-purple-200">
+                    <h4 class="font-semibold text-purple-800 mb-3"><i class="fas fa-vector-square mr-2"></i>Parallelogram Method</h4>
+                    <ol class="text-gray-700 text-sm space-y-2 list-decimal list-inside">
+                        <li>Draw both vectors from the same starting point (tail-to-tail)</li>
+                        <li>Complete the parallelogram by drawing parallel lines</li>
+                        <li>The <strong>diagonal</strong> from the common point is the resultant</li>
+                    </ol>
+                    <div class="mt-3 bg-white p-3 rounded-lg">
+                        <svg viewBox="0 0 300 180" class="w-full max-w-xs mx-auto">
+                            <defs>
+                                <marker id="parrow1" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+                                    <polygon points="0 0, 8 3, 0 6" fill="#8b5cf6" />
+                                </marker>
+                                <marker id="parrow2" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+                                    <polygon points="0 0, 8 3, 0 6" fill="#8b5cf6" />
+                                </marker>
+                                <marker id="parrow3" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+                                    <polygon points="0 0, 8 3, 0 6" fill="#ef4444" />
+                                </marker>
+                            </defs>
+                            <!-- Vector A -->
+                            <line x1="50" y1="140" x2="160" y2="60" stroke="#8b5cf6" stroke-width="3" marker-end="url(#parrow1)" />
+                            <text x="90" y="85" fill="#7c3aed" font-size="12">A</text>
+                            
+                            <!-- Vector B -->
+                            <line x1="50" y1="140" x2="160" y2="140" stroke="#8b5cf6" stroke-width="3" marker-end="url(#parrow2)" />
+                            <text x="95" y="160" fill="#7c3aed" font-size="12">B</text>
+                            
+                            <!-- Parallelogram -->
+                            <line x1="160" y1="60" x2="270" y2="140" stroke="#8b5cf6" stroke-width="2" stroke-dasharray="4,2" opacity="0.5" />
+                            <line x1="160" y1="140" x2="270" y2="60" stroke="#8b5cf6" stroke-width="2" stroke-dasharray="4,2" opacity="0.5" />
+                            
+                            <!-- Resultant -->
+                            <line x1="50" y1="140" x2="215" y2="100" stroke="#ef4444" stroke-width="3" marker-end="url(#parrow3)" />
+                            <text x="120" y="130" fill="#dc2626" font-size="12" font-weight="bold">R</text>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 4: Interactive Simulation -->
+        <div class="section-card animate-fade-in-up">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <span class="bg-blue-100 text-blue-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">4</span>
+                Interactive: Vector Addition
+            </h2>
+            
+            <p class="text-gray-700 mb-4">Explore vector addition with this interactive simulation. Add vectors and see the resultant!</p>
+            
+            <div class="bg-gray-50 p-4 rounded-lg border">
+                <div class="simulation-container">
+                    <iframe src="https://phet.colorado.edu/sims/html/vector-addition/latest/vector-addition_en.html"></iframe>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 5: Video Explanation -->
+        <div class="section-card animate-fade-in-up">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <span class="bg-blue-100 text-blue-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">5</span>
+                Video: Introduction to Vectors
+            </h2>
+            
+            <p class="text-gray-700 mb-4">Watch this video for a comprehensive explanation of vectors:</p>
+            
+            <div class="bg-gray-50 p-4 rounded-lg border">
+                <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/ml4NStrCksk" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 6: Practice Problems -->
+        <div class="section-card animate-fade-in-up">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-pencil-alt text-blue-600 mr-3"></i>
+                Practice Questions
+            </h2>
+
+            <div class="space-y-4">
+                <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+                    <p class="font-medium text-gray-800 mb-2">1. Classify each quantity as scalar or vector: (a) Speed, (b) Velocity, (c) Mass, (d) Force, (e) Temperature</p>
+                    <details class="mt-2">
+                        <summary class="text-sm text-blue-600 cursor-pointer hover:text-blue-800">Show Answer</summary>
+                        <div class="mt-2 text-sm text-gray-700">
+                            <p><strong>Scalar:</strong> Speed, Mass, Temperature (have magnitude only)</p>
+                            <p><strong>Vector:</strong> Velocity, Force (have magnitude AND direction)</p>
+                        </div>
+                    </details>
+                </div>
+
+                <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+                    <p class="font-medium text-gray-800 mb-2">2. A person walks 3 km east, then 4 km north. What is their total displacement?</p>
+                    <details class="mt-2">
+                        <summary class="text-sm text-blue-600 cursor-pointer hover:text-blue-800">Show Answer</summary>
+                        <div class="mt-2 text-sm text-gray-700">
+                            <p>Using Pythagoras theorem: R² = 3² + 4² = 9 + 16 = 25</p>
+                            <p>R = √25 = <strong>5 km</strong></p>
+                            <p class="mt-1">Direction: tan⁻¹(4/3) = 53.1° north of east</p>
+                        </div>
+                    </details>
+                </div>
+
+                <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+                    <p class="font-medium text-gray-800 mb-2">3. What is the difference between distance and displacement?</p>
+                    <details class="mt-2">
+                        <summary class="text-sm text-blue-600 cursor-pointer hover:text-blue-800">Show Answer</summary>
+                        <div class="mt-2 text-sm text-gray-700">
+                            <p><strong>Distance</strong> is a scalar - the total length of path traveled, regardless of direction.</p>
+                            <p><strong>Displacement</strong> is a vector - the straight-line distance from start to finish, with direction.</p>
+                            <p class="mt-1">Example: Walking around a 400m track once = 400m distance, but 0m displacement (you end where you started).</p>
+                        </div>
+                    </details>
+                </div>
+
+                <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+                    <p class="font-medium text-gray-800 mb-2">4. Two forces act on an object: 30 N to the right and 20 N to the left. What is the resultant force?</p>
+                    <details class="mt-2">
+                        <summary class="text-sm text-blue-600 cursor-pointer hover:text-blue-800">Show Answer</summary>
+                        <div class="mt-2 text-sm text-gray-700">
+                            <p>Since they're in opposite directions, subtract:</p>
+                            <p>R = 30 N - 20 N = <strong>10 N to the right</strong></p>
+                            <p class="text-xs text-gray-500 mt-1">When vectors are along the same line, add if same direction, subtract if opposite.</p>
+                        </div>
+                    </details>
+                </div>
+            </div>
+        </div>
+
+        <!-- Key Takeaways -->
+        <div class="bg-gradient-to-r from-blue-50 to-purple-50 p-5 rounded-lg border border-blue-200 animate-fade-in-up">
+            <h3 class="font-semibold text-blue-800 mb-3"><i class="fas fa-star mr-2"></i>Key Takeaways</h3>
+            <ul class="text-blue-700 text-sm space-y-2">
+                <li>• <strong>Scalars</strong> have magnitude only; <strong>vectors</strong> have magnitude AND direction</li>
+                <li>• Vectors are represented by arrows: length = magnitude, direction = vector direction</li>
+                <li>• Add vectors using head-to-tail (triangle) or parallelogram methods</li>
+                <li>• The <strong>resultant</strong> is the single vector that has the same effect as the combined vectors</li>
+                <li>• Distance is scalar; displacement is vector. Speed is scalar; velocity is vector.</li>
+            </ul>
+        </div>
+
+        <!-- Navigation -->
+        <div class="flex justify-between items-center mt-8">
+            <a href="measurement.html" class="px-4 py-2 text-gray-600 hover:text-gray-900">
+                <i class="fas fa-chevron-left mr-2"></i>Previous
+            </a>
+            <a href="quantities.html" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
+                Next: Quantities<i class="fas fa-chevron-right ml-2"></i>
+            </a>
+        </div>
+    </main>
+
+    <script>
+        // Progress tracking
+        let progress = 0;
+        const totalSections = 6;
+        
+        function updateProgress() {
+            const percentage = Math.round((progress / totalSections) * 100);
+            document.getElementById('progressPercent').textContent = percentage + '%';
+            document.getElementById('progressBar').style.width = percentage + '%';
+        }
+
+        // Intersection Observer for progress
+        const sections = document.querySelectorAll('.section-card');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    progress = Array.from(sections).indexOf(entry.target) + 1;
+                    updateProgress();
+                }
+            });
+        }, { threshold: 0.5 });
+
+        sections.forEach(section => observer.observe(section));
+    </script>
+
+<!-- Topic Quiz System -->
+<script src="/js/topic-quiz-loader.js"></script>
+<script src="/js/topic-quiz-injector.js"></script>
+</body>
+</html>

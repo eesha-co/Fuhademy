@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Vibration & Simple Harmonic Motion | Properties of Matter</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body{font-family:Inter, sans-serif}
+    .card{ -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); background:rgba(255,255,255,0.75); border:1px solid rgba(255,255,255,0.35); box-shadow:0 8px 30px rgba(0,0,0,0.08)}
+  </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-cyan-50 to-blue-50 p-6">
+  <div class="max-w-5xl mx-auto">
+    <nav class="mb-6"><a href="../index.html" class="text-blue-600 hover:text-blue-700">← Back to Properties</a></nav>
+
+    <main class="card rounded-xl p-8">
+      <header class="mb-6">
+        <h1 class="text-3xl font-bold text-gray-800">Vibration in Springs & Pipes — Simple Harmonic Motion (SHM)</h1>
+        <p class="text-gray-600 mt-2">Oscillatory motion of springs and air columns (pipes). Equations for SHM, period, frequency and energy in oscillation.</p>
+      </header>
+
+      <section class="space-y-6 text-gray-700">
+        <div>
+          <h2 class="text-xl font-semibold mb-2">Simple Harmonic Motion (SHM)</h2>
+          <p>SHM is oscillation where acceleration is proportional and opposite to displacement: a = -ω²x. Solution: x(t)=A cos(ωt+φ).</p>
+          <ul class="list-disc pl-6 mt-3">
+            <li>Angular frequency ω = 2πf = √(k/m) for mass-spring systems</li>
+            <li>Period T = 2π/ω = 2π√(m/k)</li>
+            <li>Frequency f = 1/T</li>
+          </ul>
+        </div>
+
+        <div>
+          <h2 class="text-xl font-semibold mb-2">Mass-Spring System</h2>
+          <p>Restoring force F = -kx; equation of motion: m d²x/dt² + kx = 0; energy oscillates between kinetic and potential forms.</p>
+          <div class="bg-white/60 p-3 rounded mt-3">
+            <p class="text-sm">Total energy E = ½kA² = ½mω²A² (constant in absence of damping).</p>
+          </div>
+        </div>
+
+        <div>
+          <h2 class="text-xl font-semibold mb-2">Vibrations in Pipes (Air Columns)</h2>
+          <p>Open and closed pipes support standing waves with specific harmonic series.</p>
+          <ul class="list-disc pl-6 mt-3">
+            <li>Open pipe: harmonics nλ/2 = L (n=1,2,3...)</li>
+            <li>Closed pipe: odd harmonics only (n=1,3,5...); nλ/4 = L</li>
+            <li>Frequency f = v/λ where v is speed of sound</li>
+          </ul>
+        </div>
+
+        <div>
+          <h2 class="text-xl font-semibold mb-2">Damping & Resonance (Overview)</h2>
+          <p>Real systems have damping; resonance occurs when driving frequency matches natural frequency, causing large amplitude.</p>
+        </div>
+
+        <div>
+          <h2 class="text-xl font-semibold mb-2">Examples & Problems</h2>
+          <div class="space-y-3">
+            <div>
+              <p class="font-medium">Example: Spring Oscillator</p>
+              <p>Given m and k, find period, frequency and maximum speed for amplitude A.</p>
+            </div>
+            <div>
+              <p class="font-medium">Example: Air Column Frequencies</p>
+              <p>Find fundamental frequency of an open pipe length L given speed of sound v.</p>
+            </div>
+          </div>
+        </div>
+
+      </section>
+    </main>
+  </div>
+<!-- Topic Quiz System -->
+<script src="/js/topic-quiz-loader.js"></script>
+<script src="/js/topic-quiz-injector.js"></script>
+</body>
+</html>

@@ -1,0 +1,28 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "Q41: A galvanometer with full-scale deflection of 10mA is to be converted to a voltmeter with full-scale deflection of 5 V. If a series resistance of 498Ω is used for the conversion, the resistance of the galvanometer is | Diagram: no\nQ42: Two inductors of inductances 5 mH and 15mH are connected in series and a current of 5A flows through them. The total energy stored in the inductors is | Diagram: no\nQ43: In alternating current circuit at resonance, the angle of lead or lag is ___ | Diagram: no\nQ44: In Faraday's law of electrolysis, a graph of mass deposited against the quantity of electricity is plotted. The slope of the graph gives | Diagram: no\nQ45: In a discharge tube, most of the gas is pumped out so that electricity is conducted at | Diagram: no\nQ46: The radioisotope ²³⁵₉₂U decays by emitting two alpha particles, three beta particles and a gamma ray. What is the mass and atomic | Diagram: no",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1774106529,
+  "id": "202603212321585bab825f9878486f",
+  "model": "glm-4.6v",
+  "object": "chat.completion",
+  "request_id": "202603212321585bab825f9878486f",
+  "usage": {
+    "completion_tokens": 243,
+    "completion_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "prompt_tokens": 5065,
+    "prompt_tokens_details": {
+      "cached_tokens": 4
+    },
+    "total_tokens": 5308
+  }
+}

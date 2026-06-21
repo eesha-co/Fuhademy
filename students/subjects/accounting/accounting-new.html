@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Accounting - JUANOVA CORTEX</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <link rel="stylesheet" href="../general/styles.css" />
+    <style>
+        .divisions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .division-card {
+            background: white;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .division-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        .division-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--accent-blue);
+        }
+
+        .division-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1F2937;
+            margin-bottom: 0.5rem;
+        }
+
+        .division-description {
+            color: #6B7280;
+            font-size: 0.875rem;
+            line-height: 1.25rem;
+        }
+
+        .quick-stats {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+            font-size: 0.875rem;
+            color: #6B7280;
+        }
+
+        .quick-stat {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="container mx-auto px-4 py-8">
+        <nav class="breadcrumbs mb-6">
+            <a href="../student-dashboard.html">Dashboard</a>
+            <i class="fas fa-chevron-right text-sm"></i>
+            <span>Accounting</span>
+        </nav>
+
+        <header class="mb-8">
+            <h1 class="text-3xl font-bold text-gray-900 mb-2">Accounting</h1>
+            <p class="text-gray-600">Master fundamental accounting principles and practices</p>
+        </header>
+
+        <div class="divisions-grid">
+            <!-- Core Accounting Foundations -->
+            <div class="division-card" onclick="navigateToTopics('core-foundations')">
+                <i class="fas fa-book-open division-icon"></i>
+                <h3 class="division-title">Core Accounting Foundations</h3>
+                <p class="division-description">Basic principles, development, branches, and significance of accounting</p>
+                <div class="quick-stats">
+                    <div class="quick-stat">
+                        <i class="fas fa-book"></i>
+                        <span>5 Topics</span>
+                    </div>
+                    <div class="quick-stat">
+                        <i class="fas fa-clock"></i>
+                        <span>3 Hours</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Double Entry System -->
+            <div class="division-card" onclick="navigateToTopics('double-entry')">
+                <i class="fas fa-balance-scale division-icon"></i>
+                <h3 class="division-title">Double Entry System</h3>
+                <p class="division-description">Source documents, books of entry, ledgers, and trial balance</p>
+                <div class="quick-stats">
+                    <div class="quick-stat">
+                        <i class="fas fa-book"></i>
+                        <span>6 Topics</span>
+                    </div>
+                    <div class="quick-stat">
+                        <i class="fas fa-clock"></i>
+                        <span>4 Hours</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Professional Ethics -->
+            <div class="division-card" onclick="navigateToTopics('ethics')">
+                <i class="fas fa-shield-alt division-icon"></i>
+                <h3 class="division-title">Professional Ethics</h3>
+                <p class="division-description">Ethical principles, professional conduct, and qualities of an accountant</p>
+                <div class="quick-stats">
+                    <div class="quick-stat">
+                        <i class="fas fa-book"></i>
+                        <span>2 Topics</span>
+                    </div>
+                    <div class="quick-stat">
+                        <i class="fas fa-clock"></i>
+                        <span>1.5 Hours</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Study Resources -->
+            <div class="division-card bg-gradient-to-br from-blue-50 to-purple-50">
+                <i class="fas fa-lightbulb division-icon text-yellow-500"></i>
+                <h3 class="division-title">Study Resources</h3>
+                <div class="flex flex-col gap-2 mt-4">
+                    <button onclick="openTool('formula')" class="text-sm px-4 py-2 bg-white rounded-lg hover:bg-blue-50 transition flex items-center gap-2 border border-gray-200">
+                        <i class="fas fa-calculator text-blue-600"></i>
+                        <span>Financial Calculator</span>
+                    </button>
+                    <button onclick="openTool('smart-notes')" class="text-sm px-4 py-2 bg-white rounded-lg hover:bg-blue-50 transition flex items-center gap-2 border border-gray-200">
+                        <i class="fas fa-sticky-note text-yellow-500"></i>
+                        <span>Quick Notes</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tips Section -->
+        <div class="mt-12 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-8">
+            <h2 class="text-xl font-bold text-gray-800 mb-4">Tips for Success</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="flex items-start gap-3">
+                    <i class="fas fa-check-circle text-green-500 mt-1"></i>
+                    <p class="text-gray-600">Start with core foundations before advancing to complex topics</p>
+                </div>
+                <div class="flex items-start gap-3">
+                    <i class="fas fa-check-circle text-green-500 mt-1"></i>
+                    <p class="text-gray-600">Practice double entry exercises regularly</p>
+                </div>
+                <div class="flex items-start gap-3">
+                    <i class="fas fa-check-circle text-green-500 mt-1"></i>
+                    <p class="text-gray-600">Focus on understanding concepts rather than memorizing</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openTool(toolType) {
+            switch (toolType) {
+                case 'formula':
+                    window.location.href = '../calculator.html';
+                    break;
+                case 'smart-notes':
+                    window.location.href = '../smart-note.html';
+                    break;
+            }
+        }
+
+        function navigateToTopics(unit) {
+            window.location.href = `accounting-topic.html?unit=${unit}`;
+        }
+    </script>
+</body>
+</html>

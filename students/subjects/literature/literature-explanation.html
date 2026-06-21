@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="/assets/images/logo.png" />
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Literature - Explanation</title>
+  <link rel="stylesheet" href="../styles.css" />
+</head>
+<body>
+  <h1>Literature - Topic</h1>
+  <div class="two-column-layout">
+    <section class="column explanation">
+      <h2>Explanation</h2>
+      <p id="explanation-text">This page will display a senior secondary level explanation for the selected Literature topic.</p>
+    </section>
+    <section class="column video">
+      <h2>Video</h2>
+      <p id="video-text">Video placeholder for the selected Literature topic.</p>
+    </section>
+  </div>
+  <style>
+    .two-column-layout {
+      display: flex;
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+    .two-column-layout .column {
+      flex: 1;
+      background: #f9f9f9;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      padding: 1rem;
+      min-width: 0;
+      min-height: 500px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .two-column-layout .explanation { border-right: 2px solid #e0e0e0; }
+    @media (max-width: 900px) {
+      .two-column-layout { flex-direction: column; gap: 1rem; }
+      .two-column-layout .column { border-right: none; }
+    }
+  </style>
+  <script>
+    // Parse topic from URL and display it in all relevant places
+    const params = new URLSearchParams(window.location.search);
+    const topic = params.get('topic');
+    if(topic) {
+      document.querySelector('h1').textContent = `Literature - ${topic}`;
+      document.getElementById('explanation-text').textContent = `This page will display a senior secondary level explanation for ${topic} in Literature.`;
+      document.getElementById('video-text').textContent = `Video placeholder for ${topic} in Literature.`;
+    }
+  </script>
+</body>
+</html>
+

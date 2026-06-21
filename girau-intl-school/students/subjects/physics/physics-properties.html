@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Properties of Matter - Physics</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+</head>
+<body class="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-100 font-inter">
+  <nav class="fixed inset-x-0 top-0 bg-white/60 backdrop-blur-sm border-b border-blue-100 z-50">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+      <a href="physics.html" class="text-sm text-blue-600 hover:underline">← Back to Physics</a>
+      <img src="/assets/images/logo.png" alt="logo" class="h-10 w-auto" />
+    </div>
+  </nav>
+
+  <main class="main-content max-w-6xl mx-auto px-4 pt-24 pb-12">
+    <h1 class="text-3xl font-extrabold text-blue-700 mb-4">Properties of Matter</h1>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <a href="javascript:void(0)" onclick="openModal('Pressure')" class="topic-card rounded-xl bg-white/60 backdrop-blur-sm shadow-sm border p-5">
+        <h3 class="font-semibold text-blue-700">Pressure</h3>
+        <p class="text-sm text-slate-500 mt-1">Atmospheric pressure and its variations</p>
+      </a>
+      <a href="javascript:void(0)" onclick="openModal('Liquids at Rest')" class="topic-card rounded-xl bg-white/60 backdrop-blur-sm shadow-sm border p-5">
+        <h3 class="font-semibold text-blue-700">Liquids at Rest</h3>
+        <p class="text-sm text-slate-500 mt-1">Density, buoyancy, and fluid statics</p>
+      </a>
+      <a href="javascript:void(0)" onclick="openModal('Surface Phenomena')" class="topic-card rounded-xl bg-white/60 backdrop-blur-sm shadow-sm border p-5">
+        <h3 class="font-semibold text-blue-700">Surface Phenomena</h3>
+        <p class="text-sm text-slate-500 mt-1">Surface tension and capillarity</p>
+      </a>
+      <a href="javascript:void(0)" onclick="openModal('Structure of Matter')" class="topic-card rounded-xl bg-white/60 backdrop-blur-sm shadow-sm border p-5">
+        <h3 class="font-semibold text-blue-700">Structure of Matter</h3>
+        <p class="text-sm text-slate-500 mt-1">Atoms, molecules, and states of matter</p>
+      </a>
+      <a href="javascript:void(0)" onclick="openModal('Kinetic Theory')" class="topic-card rounded-xl bg-white/60 backdrop-blur-sm shadow-sm border p-5">
+        <h3 class="font-semibold text-blue-700">Kinetic Theory</h3>
+        <p class="text-sm text-slate-500 mt-1">Molecular behavior and phase changes</p>
+      </a>
+    </div>
+  </main>
+
+  <!-- Modal -->
+  <div id="topicModal" class="fixed inset-0 bg-gray-700/30 backdrop-blur-sm hidden items-center justify-center z-50">
+    <div class="bg-white rounded-xl shadow-lg w-11/12 max-w-md p-6 relative">
+      <button class="absolute top-4 right-4 text-gray-500 hover:text-gray-700" onclick="closeModal()" title="Close modal"><i class="fas fa-times"></i><span class="sr-only">Close</span></button>
+      <h2 id="modalTitle" class="text-xl font-semibold text-blue-700 mb-3">Sub-topics</h2>
+      <ul id="subtopicList" class="space-y-2 text-gray-700"></ul>
+    </div>
+  </div>
+
+  <script>
+    const subtopics = {
+      'Pressure': [
+        'Atmospheric Pressure',
+        'Units and Measurement',
+        'Barometers and their Types',
+        'Variation with Height',
+        'Pressure in Liquids',
+        'Pascal\'s Principle',
+        'Applications of Pressure',
+        'Manometers and Gauges'
+      ],
+      'Liquids at Rest': [
+        'Concept of Density',
+        'Relative Density',
+        'Upthrust in Fluids',
+        'Archimedes\' Principle',
+        'Law of Flotation',
+        'Applications in Ships',
+        'Hydrometers',
+        'Practical Applications'
+      ],
+      'Surface Phenomena': [
+        'Surface Tension Definition',
+        'Surface Energy',
+        'Capillarity',
+        'Adhesion and Cohesion',
+        'Applications in Nature',
+        'Industrial Applications',
+        'Daily Life Examples'
+      ],
+      'Structure of Matter': [
+        'Atoms and Molecules',
+        'States of Matter',
+        'Brownian Motion',
+        'Diffusion in Fluids',
+        'Intermolecular Forces',
+        'Phase Transitions',
+        'Material Properties'
+      ],
+      'Kinetic Theory': [
+        'Kinetic Model',
+        'Molecular Motion',
+        'Pressure and Temperature',
+        'Phase Changes',
+        'Evaporation Process',
+        'Boiling and Melting',
+        'Applications to Gases'
+      ]
+    };
+    function openModal(topic) {
+      document.getElementById('modalTitle').textContent = topic;
+      const list = document.getElementById('subtopicList');
+      list.innerHTML = '';
+      subtopics[topic].forEach(s => {
+        const li = document.createElement('li');
+        li.textContent = s;
+        list.appendChild(li);
+      });
+      document.getElementById('topicModal').classList.remove('hidden');
+      document.getElementById('topicModal').classList.add('flex');
+    }
+    function closeModal() {
+      document.getElementById('topicModal').classList.remove('flex');
+      document.getElementById('topicModal').classList.add('hidden');
+    }
+  </script>
+<!-- Topic Quiz System -->
+<script src="/js/topic-quiz-loader.js"></script>
+<script src="/js/topic-quiz-injector.js"></script>
+</body>
+</html>
+

@@ -1,0 +1,19 @@
+{
+  "name": "PlanAlarm",
+  "short_name": "PlanAlarm",
+  "description": "Your smart daily plan manager with persistent alarm overlay",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#0f0f23",
+  "theme_color": "#f97316",
+  "orientation": "portrait",
+  "categories": ["productivity", "utilities"],
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "1024x1024",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

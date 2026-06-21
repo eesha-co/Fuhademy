@@ -1,0 +1,2240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <meta name="msapplication-TileColor" content="#3B82F6">
+  <meta name="theme-color" content="#3B82F6">
+  <meta charset="UTF-8">
+  <meta name="google-site-verification" content="Qryx0HJHTJkpIwOA7z5LHZWwohZkKrVkuE2LMc-aIBw" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>FUHADEMY | Best FREE eLearning Platform</title>
+<meta name="description" content="Boost your scores with fuhademy, Nigeria's best 100% FREE eLearning platform. Easy navigation, mock exams, and study tools for WAEC and JAMB success.">
+<meta name="keywords" content="eLearning Nigeria, free WAEC prep, JAMB mock test, online learning, fuhademy, juanova, cortex, juanova cortex">
+  <!-- Open Graph / Facebook / WhatsApp -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://fuhademy.netlify.app">
+<meta property="og:title" content="JuanovaCortex | Best FREE eLearning for WAEC & JAMB">
+<meta property="og:description" content="Master your exams with Nigeria's #1 free learning platform. Mock tests, easy navigation, and 100% free resources.">
+<meta property="og:image" content="https://fuhademy.netlify.app/preview-image.png">
+
+<!-- Twitter -->
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:url" content="https://fuhademy.netlify.app">
+<meta property="twitter:title" content="fuhademy | Free WAEC & JAMB Prep">
+<meta property="twitter:description" content="The best way to study for your exams for free. Join thousands of students on JuanovaCortex today!">
+<meta property="twitter:image" content="https://fuhademy.netlify.app/preview-image.png">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          maxWidth: {
+            'screen': '100vw',
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    html, body {
+      max-width: 100%;
+      overflow-x: hidden;
+      position: relative;
+      width: 100vw;
+    }
+    #root, main, header {
+      max-width: 100vw;
+      overflow-x: hidden;
+      width: 100%;
+    }
+    .container {
+      width: 100%;
+      max-width: 100vw !important;
+      overflow-x: hidden;
+      margin-left: auto;
+      margin-right: auto;
+      padding-left: env(safe-area-inset-left);
+      padding-right: env(safe-area-inset-right);
+    }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
+  <link rel="stylesheet" href="https://unpkg.com/swiper@9/swiper-bundle.min.css" />
+  <link rel="stylesheet" href="general/modernized.css">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <!-- dedupe: removed duplicate favicon/manifest entries -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#3B82F6',
+            secondary: '#6B7280',
+          },
+          fontFamily: {
+            sans: ['Plus Jakarta Sans', 'sans-serif'],
+          },
+        },
+      },
+    }
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12" defer></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      AOS.init({
+        duration: 800,
+        once: true
+      });
+    });
+  </script>
+  <!-- Firebase SDK removed (migrated to Supabase) -->
+  <style>
+    /* Hero Section Styles */
+    .hero {
+      padding: 7.5rem 1.5rem 6rem;
+      position: relative;
+      overflow: visible;
+      min-height: calc(100vh - 160px);
+      background: linear-gradient(180deg, #fbfbfe 0%, #ffffff 100%);
+      margin-top: 160px; /* Account for navbar + announcement */
+    }
+
+    /* Two-column hero grid used on desktop to match the design preview */
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    @media (min-width: 768px) {
+      .hero-grid {
+        grid-template-columns: 1fr 520px;
+      }
+      .hero-left { text-align: left; }
+    }
+
+    .hero-left h1 { font-size: 3.25rem; line-height: 1.02; }
+    .hero-left p { font-size: 1.125rem; color: #2563EB; }
+
+    /* Right-side mockup card that resembles the floating dashboard card in the screenshots */
+    .mockup-card {
+      width: 100%;
+      max-width: 520px;
+      background: linear-gradient(180deg, #ffffff, #f7f9ff);
+      border-radius: 18px;
+      box-shadow: 0 20px 50px rgba(66, 88, 160, 0.08);
+      padding: 1.25rem;
+      border: 1px solid rgba(66, 88, 160, 0.04);
+    }
+
+  .mockup-header { display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .mockup-pill { background: linear-gradient(90deg,#eef2ff,#f0f7ff); padding:6px 10px; border-radius:999px; color:#334155; font-weight:600; font-size:0.9rem; }
+  .mockup-pill.alt { background: transparent; color: #2563EB; font-weight: 700; }
+  .mockup-card .stat { background: white; border-radius:12px; padding:10px 14px; box-shadow: 0 8px 30px rgba(66,153,225,0.06); }
+  .mockup-gap { height:14px; }
+  .mockup-row { display:flex; gap:10px; align-items:center; }
+  .mockup-progress { flex:1; }
+  .mockup-bar { height:8px; border-radius:6px; }
+  .mockup-bar.primary { background: linear-gradient(90deg,#3B82F6,#60A5FA); width:80%; }
+  .mockup-bar.secondary { height:8px; background:#e6eefb; border-radius:6px; width:60%; }
+  .mockup-right { width:90px; text-align:right; }
+  .mockup-right .muted { font-size:0.9rem; color:#6b7280; }
+  .mockup-spacer { height:10px; }
+  .mockup-strong { font-weight:700; color:#1f2937; }
+
+  /* Cortex icon sizing in chat button */
+  .cortex-icon { width:36px; height:36px; display:block; }
+
+    /* Feature cards — warmer pastel colors, rounded, elevated */
+    #features .feature-card {
+      border-radius: 16px;
+      padding: 1.5rem;
+      min-height: 220px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      box-shadow: 0 12px 30px rgba(16,24,40,0.04);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      background: linear-gradient(180deg, rgba(255,255,255,0.9), rgba(250,250,255,0.95));
+      border: 1px solid rgba(15,23,42,0.03);
+    }
+    #features .feature-card:hover { transform: translateY(-6px); box-shadow: 0 20px 48px rgba(16,24,40,0.08); }
+
+    /* Make feature icons slightly larger and with soft color swatches */
+    .feature-card .icon-swatch { width:56px; height:56px; border-radius:12px; display:flex; align-items:center; justify-content:center; margin-bottom:18px; }
+
+    /* Slightly narrower content column so sections read like the screenshots */
+    .container.narrow { max-width: 1100px; margin: 0 auto; }
+
+    /* Footer contrast tweak to match dark footer in screenshots */
+    .footer { background: linear-gradient(180deg,#0f1724,#111827); padding-top:4.5rem; }
+
+    .hero-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      text-align: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .stat-highlight {
+      font-size: 1.25rem;
+      color: #EF4444;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      display: inline-block;
+      padding: 0.5rem 1.5rem;
+      background: rgba(239, 68, 68, 0.1);
+      border-radius: 50px;
+    }
+
+    .impact-statement {
+      font-size: 1.125rem;
+      color: #2563EB;
+      font-weight: 600;
+      margin-top: 1.5rem;
+    }
+
+    .hero-visual {
+      margin: 2rem auto;
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      max-width: 1000px;
+    }
+
+    .device-wrapper {
+      position: relative;
+      width: 100%;
+      padding: 0 1rem;
+    }
+
+    .device-screen {
+      width: 100%;
+      height: auto;
+      border-radius: 16px;
+      box-shadow: 0 20px 40px rgba(66,153,225,0.2);
+      transition: all 0.3s ease-in-out;
+      border: 1px solid rgba(66, 153, 225, 0.1);
+    }
+
+    .device-screen:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 30px 60px rgba(66,153,225,0.3);
+    }
+
+    .device-screen:hover {
+      transform: translateY(-5px);
+    }
+
+  /* Swiper adjustments */
+  .mySwiper { width: 100%; }
+  .swiper-slide { box-sizing: border-box; padding: 0.25rem; }
+  .carousel-video { width: 100%; border-radius: 12px; display: block; }
+  .carousel-video { object-fit: cover; }
+  .swiper-pagination-bullet { background: rgba(148,163,184,0.6); opacity: 1; }
+  .swiper-pagination-bullet-active { background: linear-gradient(90deg,#3B82F6,#60A5FA); box-shadow: 0 6px 18px rgba(59,130,246,0.18); }
+
+    /* Responsive Breakpoints */
+    @media (max-width: 1024px) {
+      .achievement-cards {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1rem;
+      }
+
+      .hero {
+        padding: 6rem 1.5rem 4rem;
+      }
+
+      .injini-headline {
+        font-size: 2.4rem;
+      }
+
+      .injini-subheadline {
+        font-size: 1.2rem;
+      }
+
+      .injini-mission {
+        font-size: 1rem;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .achievement-cards {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0.75rem;
+      }
+
+      .device-wrapper {
+        max-width: 100%;
+        padding: 0 0.75rem;
+      }
+
+      .achievement-card {
+        padding: 0.75rem;
+      }
+
+      .achievement-card .counter {
+        font-size: 1.5rem;
+      }
+
+      .achievement-card .achievement-icon {
+        font-size: 1.75rem;
+      }
+
+      .injini-headline {
+        font-size: 1.6rem;
+        padding: 0.75rem 0;
+        line-height: 1.15;
+      }
+
+      .injini-subheadline {
+        font-size: 1rem;
+      }
+
+      .injini-mission {
+        font-size: 0.95rem;
+        margin: 0.9rem auto 1.25rem;
+        line-height: 1.4;
+      }
+
+      .stat-highlight {
+        font-size: 0.9rem;
+        padding: 0.4rem 1rem;
+        margin-bottom: 1rem;
+      }
+
+      .impact-statement {
+        font-size: 0.9rem;
+        margin-top: 1rem;
+      }
+
+      .hero {
+        padding: 4rem 1rem 3rem;
+      }
+
+      .button {
+        padding: 0.75rem 1.5rem;
+        font-size: 0.9rem;
+      }
+
+      .hero-cta {
+        gap: 1rem;
+        margin: 1.5rem 0 2rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .achievement-cards {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0.75rem;
+      }
+
+      .achievement-card {
+        padding: 0.75rem;
+      }
+
+      .achievement-info .counter {
+        font-size: 1.8rem;
+      }
+    }
+
+    /* Injini-style headline and mission statement (tuned for card-sized parity) */
+    .injini-headline {
+      font-size: 3rem; /* smaller than before, visually closer to card scale */
+      font-weight: 800;
+      line-height: 1.05;
+      color: #1a202c;
+      margin: 0.75rem auto 1.25rem;
+      font-family: 'Plus Jakarta Sans', Arial, sans-serif;
+      letter-spacing: -0.8px;
+      padding: 1.25rem 0;
+      text-transform: capitalize;
+      max-width: 900px;
+      text-align: center;
+    }
+
+    .injini-subheadline {
+      font-size: 1.4rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #4299e1 0%, #3182ce 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      color: transparent;
+      margin-top: 0.5rem;
+      display: block;
+      letter-spacing: -0.2px;
+    }
+
+    .injini-mission {
+      font-size: 1.05rem; /* slightly larger than card numbers but compact */
+      color: #3182ce;
+      font-weight: 600;
+      line-height: 1.45;
+      margin: 0.75rem auto 1.5rem;
+      font-family: 'Plus Jakarta Sans', Arial, sans-serif;
+      max-width: 880px;
+      padding: 0 0.5rem;
+      text-align: center;
+    }
+
+    /* Equal-height achievement/stat cards */
+    #stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      align-items: stretch; /* ensure children stretch to same height */
+    }
+
+    #stats-grid > .relative {
+      display: flex;
+      align-items: stretch;
+    }
+
+    /* Inner card container (the white card) should fill and center content */
+    #stats-grid .relative > .relative {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+      min-height: 120px; /* baseline for small devices */
+      padding: 1rem;
+    }
+
+    /* Larger min-heights on bigger screens for balanced look */
+    @media (min-width: 768px) {
+      #stats-grid .relative > .relative {
+        min-height: 140px;
+        padding: 1.25rem;
+      }
+    }
+
+    @media (min-width: 1024px) {
+      #stats-grid .relative > .relative {
+        min-height: 160px;
+        padding: 1.5rem;
+      }
+    }
+
+    /* Stronger fallback in case Tailwind or other rules override earlier styles */
+    #stats-grid > .relative,
+    #stats-grid > .relative > .relative {
+      min-height: 140px !important;
+      height: 100% !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+    }
+
+    /* Ensure spacing inside the inner card remains consistent */
+    #stats-grid > .relative > .relative {
+      padding-left: 1rem !important;
+      padding-right: 1rem !important;
+    }
+
+    .hero-cta {
+      display: flex;
+      gap: 1.5rem;
+      justify-content: center;
+      margin: 2.5rem 0 3rem;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem 2rem;
+      font-weight: 600;
+      font-size: 1.125rem;
+      border-radius: 50px;
+      transition: all 0.3s ease;
+      text-decoration: none;
+    }
+
+    .button-primary {
+      background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
+      color: white;
+      box-shadow: 0 4px 20px rgba(37, 99, 235, 0.2);
+    }
+
+    .button-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(37, 99, 235, 0.3);
+    }
+
+    .button-secondary {
+      background: white;
+      color: #2563EB;
+      border: 2px solid #2563EB;
+    }
+
+    .button-secondary:hover {
+      background: rgba(37, 99, 235, 0.1);
+      transform: translateY(-2px);
+    }
+
+    .achievement-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin: 2rem auto;
+      max-width: 1200px;
+      padding: 0 1rem;
+    }
+
+    .achievement-card {
+      background: linear-gradient(135deg, #4299e1 0%, #3182ce 100%);
+      color: #fff;
+      border-radius: 16px;
+      box-shadow: 0 4px 16px rgba(66,153,225,0.15);
+      padding: 1.5rem;
+      text-align: center;
+      position: relative;
+      z-index: 2;
+      border: none;
+      transform: translateY(0);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .achievement-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 40px rgba(66,153,225,0.25);
+    }
+
+    /* Announcement Banner Styles */
+    .announcement-banner {
+      background: linear-gradient(135deg, #4299e1 0%, #3182ce 100%);
+      color: white;
+      padding: 0.75rem 0;
+      position: fixed;
+      top: 120px;
+      left: 0;
+      width: 100%;
+      display: block;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+      z-index: 1000;
+      overflow: hidden;
+    }
+
+    .announcement-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1rem;
+      display: flex;
+      align-items: center;
+    }
+
+    .announcement-slider {
+      display: flex;
+      animation: slide 30s linear infinite;
+      width: fit-content;
+      /* Duplicate items for continuous sliding */
+    }
+
+    .announcement-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      white-space: nowrap;
+      padding: 0 3rem;
+      animation: fadeIn 0.5s ease-in-out;
+      font-size: 1.1rem;
+      font-weight: 500;
+    }
+
+    .announcement-item i {
+      color: #ffd700;
+      font-size: 1.2rem;
+      animation: pulse 2s infinite;
+    }
+
+    .announcement-close {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 1.5rem;
+      cursor: pointer;
+      margin-left: auto;
+      padding: 0.5rem;
+    }
+
+    @media (max-width: 768px) {
+      .announcement-item {
+        font-size: 0.9rem;
+        padding: 0 1.5rem;
+        gap: 0.5rem;
+      }
+
+      .announcement-item i {
+        font-size: 1rem;
+      }
+    }
+
+    @keyframes pulse {
+      0% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.2);
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .announcement-link {
+      color: #ffd700;
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.3s ease;
+    }
+
+    .announcement-link:hover {
+      color: #fff;
+      text-decoration: underline;
+    }
+
+    /* Progress Card Styles */
+    /* Injini-style Achievement Card Styles */
+    .achievement-cards {
+      display: flex;
+      gap: 2.5rem;
+      margin-top: 2.5rem;
+      margin-bottom: 2.5rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .achievement-card {
+      background: linear-gradient(135deg, #4299e1 0%, #3182ce 100%);
+      color: #fff;
+      border-radius: 18px;
+      box-shadow: 0 8px 32px rgba(66,153,225,0.15);
+      padding: 2.5rem 2rem;
+      min-width: 220px;
+      text-align: center;
+      position: relative;
+      z-index: 100;
+      border: none;
+    }
+    .achievement-icon {
+      color: #fff;
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+    .achievement-info .counter {
+      color: #fff;
+      font-size: 2.5rem;
+      font-weight: 800;
+      margin: 0.5rem 0 0.5rem 0;
+    }
+    .achievement-info .percentage {
+      color: #ffd700;
+    }
+    .progress-card {
+      background: white;
+      padding: 2rem;
+      position: relative;
+      z-index: 100;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .progress-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1rem 2rem;
+    }
+
+    .progress-card h2 {
+      color: #2d3748;
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    .progress-card p {
+      color: #4a5568;
+      font-size: 1.1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    @media (max-width: 768px) {
+      .progress-card h2 {
+        font-size: 1.5rem;
+      }
+
+      .progress-card p {
+        font-size: 0.95rem;
+      }
+
+      .progress-stats {
+        gap: 1.5rem;
+      }
+
+      .stat-item h3 {
+        font-size: 0.9rem;
+      }
+
+      .stat-item p {
+        font-size: 1.25rem;
+      }
+
+      .stat-detail {
+        font-size: 0.8rem;
+      }
+    }
+
+    .continue-btn {
+      background: #4299e1;
+      color: white;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 0.5rem;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .continue-btn:hover {
+      background: #3182ce;
+      transform: translateY(-2px);
+    }
+
+    .progress-stats {
+      display: flex;
+      gap: 3rem;
+      margin-top: 2rem;
+    }
+
+    .stat-item {
+      flex: 1;
+    }
+
+    .stat-item h3 {
+      color: #2d3748;
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+    }
+
+    .progress-bar {
+      background: #e2e8f0;
+      height: 8px;
+      border-radius: 4px;
+      margin-bottom: 0.5rem;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      background: linear-gradient(90deg, #4299e1, #3182ce);
+      height: 100%;
+      border-radius: 4px;
+      transition: width 0.5s ease;
+    }
+
+    .stat-item p {
+      color: #4299e1;
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin: 0.5rem 0;
+    }
+
+    .stat-detail {
+      color: #718096;
+      font-size: 0.9rem;
+    }
+
+    @keyframes slide {
+      0% {
+        transform: translateX(0);
+      }
+      100% {
+        transform: translateX(-50%);  /* Adjusted for smoother loop */
+      }
+    }
+
+    /* Navbar Styles */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1100; /* Higher than announcement */
+      background: rgba(255, 255, 255, 0.95);
+      height: 120px;
+      padding: 0 30px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .nav-container {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      width: 100%;
+      height: 100%;
+    }
+    
+    .nav-links {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    /* Mobile Menu Styles */
+    .mobile-menu {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: #4299e1;
+      cursor: pointer;
+      padding: 0.5rem;
+      z-index: 1200;
+    }
+
+    @media (max-width: 768px) {
+      .mobile-menu {
+        display: block;
+        margin-left: auto;
+      }
+
+      .nav-links {
+        display: none;
+        position: fixed;
+        top: 170px; /* Account for navbar (120px) + announcement (50px) */
+        left: 0;
+        right: 0;
+        background: white;
+        padding: 1.5rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        flex-direction: column;
+        gap: 1.5rem;
+        z-index: 1050;
+        max-height: calc(100vh - 170px);
+        overflow-y: auto;
+        margin: 0;
+        opacity: 0;
+        transform: translateY(-10px);
+        transition: opacity 0.3s ease, transform 0.3s ease;
+      }
+
+      .nav-links.active {
+        display: flex;
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .nav-item.dropdown {
+        width: 100%;
+      }
+
+      .dropdown-content {
+        position: static;
+        box-shadow: none;
+        padding: 1rem 0;
+        background: #f8fafc;
+        border-radius: 8px;
+        margin-top: 0.5rem;
+      }
+
+      .auth-buttons {
+        flex-direction: column;
+        width: 100%;
+        gap: 1rem;
+        padding-top: 1rem;
+        border-top: 1px solid #e2e8f0;
+      }
+
+      .auth-buttons a {
+        width: 100%;
+        text-align: center;
+      }
+
+      .hero {
+        padding-top: 2rem;
+      }
+    }
+
+    .footer {
+      background: #1a202c;
+      color: #fff;
+      padding: 4rem 2rem 2rem;
+    }
+
+    .footer-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 4rem;
+    }
+
+    .footer-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+      font-size: 1.5rem;
+    }
+
+    .footer-logo i {
+      color: #4299e1;
+      font-size: 2rem;
+    }
+
+    .footer-section {
+      margin-bottom: 2rem;
+    }
+
+    .footer-section p {
+      color: #a0aec0;
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+    }
+
+    .footer-section h3 {
+      color: #fff;
+      font-size: 1.2rem;
+      margin-bottom: 1rem;
+      font-weight: 600;
+    }
+
+    .footer-section ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .footer-section ul li {
+      margin-bottom: 0.75rem;
+      color: #a0aec0;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .footer-section ul li i {
+      color: #4299e1;
+      width: 20px;
+    }
+
+    .social-links {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .social-links a {
+      color: #a0aec0;
+      font-size: 1.2rem;
+      transition: color 0.3s ease;
+    }
+
+    .social-links a:hover {
+      color: #4299e1;
+    }
+
+    .footer-bottom {
+      /* lighter, subtle divider on dark footer for better contrast */
+      border-top: 1px solid rgba(255,255,255,0.06);
+      margin-top: 2rem;
+      padding-top: 2rem;
+      text-align: center;
+    }
+
+    .footer-links {
+      margin-top: 1rem;
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+    }
+
+    .footer-links a {
+      color: #a0aec0;
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: color 0.3s ease;
+    }
+
+    .footer-links a:hover {
+      color: #4299e1;
+    }
+
+
+
+    @media (max-width: 768px) {
+      .footer-content {
+        grid-template-columns: 2fr 1fr;
+        gap: 1.5rem;
+        padding: 0 1rem;
+      }
+
+      .footer-links {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1rem;
+        justify-items: center;
+      }
+
+      .cta-buttons {
+        display: flex;
+        flex-wrap: nowrap;
+        gap: 1rem;
+        justify-content: center;
+        padding: 0 1rem;
+      }
+
+      .button {
+        padding: 0.75rem 1.5rem;
+        font-size: 1rem;
+        white-space: nowrap;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .footer-content {
+        grid-template-columns: 3fr 2fr;
+        gap: 1rem;
+      }
+
+      .footer-links {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+  </style>
+  <style>
+    /* Hero Section Animations and Patterns */
+    @keyframes blob {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      25% { transform: translate(20px, -50px) scale(1.1); }
+      50% { transform: translate(-20px, 20px) scale(0.9); }
+      75% { transform: translate(-40px, -30px) scale(1.05); }
+    }
+    
+    .animate-blob {
+      animation: blob 10s infinite;
+    }
+    
+    .animation-delay-2000 {
+      animation-delay: 2s;
+    }
+    
+    .bg-grid-pattern {
+      background-size: 40px 40px;
+      background-image: 
+        linear-gradient(to right, rgba(0,0,0,0.05) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(0,0,0,0.05) 1px, transparent 1px);
+    }
+    
+    .bg-gradient-radial-dots {
+      background-image: radial-gradient(circle at center, #4F46E5 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+
+    /* Small added styles: Timeline, Portfolio, Pricing (keeps existing theme) */
+    .timeline { max-width: 1100px; margin: 0 auto; padding: 3.5rem 1rem; }
+    .timeline .line { position: relative; padding-left: 48px; }
+    .timeline .line::before { content: ""; position: absolute; left: 20px; top: 8px; bottom: 8px; width: 6px; background: linear-gradient(180deg,#e9d5ff,#c7d2fe); border-radius: 4px; }
+    .timeline .event { position: relative; padding-left: 42px; margin-bottom: 2.25rem; }
+    .timeline .event .dot { position: absolute; left: 12px; top: 6px; width: 14px; height: 14px; border-radius: 50%; background: #7c3aed; box-shadow: 0 8px 24px rgba(124,58,237,0.12); }
+    .timeline .event h4 { margin-bottom: 0.35rem; }
+    .timeline .event p { color: #6b7280; }
+
+    .pricing-cards { max-width: 1100px; margin: 0 auto; padding: 3rem 1rem; display: grid; gap: 1rem; grid-template-columns: 1fr; }
+    @media (min-width: 768px) { .pricing-cards { grid-template-columns: repeat(3, 1fr); } }
+    .pricing-card { background: linear-gradient(180deg,#ffffff,#f8fbff); padding: 1.6rem; border-radius: 12px; text-align: center; box-shadow: 0 12px 30px rgba(2,6,23,0.04); border: 1px solid rgba(31,41,55,0.04); }
+    .pricing-card.highlight { transform: translateY(-8px) scale(1.02); background: linear-gradient(90deg,#6366f1,#7c3aed); color: #fff; border: none; box-shadow: 0 30px 60px rgba(99,102,241,0.14); }
+    .pricing-card .price { font-size: 2rem; font-weight: 800; margin: 1rem 0; }
+    .pricing-card .features { color: rgba(255,255,255,0.9); }
+  </style>
+</head>
+<body class="bg-gray-50 font-sans antialiased overflow-x-hidden">
+
+  <!-- Header -->
+  <header class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-white/80 backdrop-blur-sm shadow-sm" id="navbar">
+    <div class="container mx-auto px-4">
+      <nav class="flex items-center justify-between py-4">
+        <a href="/" class="flex items-center space-x-3">
+          <img src="/assets/images/logo latest.png" alt="JUANOVA CORTEX Logo" class="h-10 w-10 rounded-full">
+          <span class="text-2xl font-bold text-gray-800">Fuhademy</span>
+        </a>
+  <ul class="hidden md:flex items-center space-x-8 font-medium text-gray-600">
+          <li><a href="#features" class="hover:text-primary transition-colors">Features</a></li>
+          <li><a href="#subjects" class="hover:text-primary transition-colors">Subjects</a></li>
+          <li><a href="#testimonials" class="hover:text-primary transition-colors">Testimonials</a></li>
+          <li><a href="#faq" class="hover:text-primary transition-colors">FAQ</a></li>
+        </ul>
+        <div class="hidden md:flex items-center space-x-4">
+          <a id="nav-login-link" href="/general/login.html" class="text-primary font-semibold hover:opacity-80 transition-opacity">Log In</a>
+          <a id="nav-cta-link" href="/general/signup.html" class="button button-primary">Get Started Free</a>
+        </div>
+  <button class="md:hidden z-50 block" id="mobile-menu-button" aria-label="Open Menu">
+          <i class="fas fa-bars text-2xl text-gray-700"></i>
+        </button>
+      </nav>
+    </div>
+    <!-- Mobile Menu -->
+  <div id="mobile-menu" class="hidden md:hidden bg-white px-4 pb-4 border-t">
+      <ul class="space-y-4 font-medium text-gray-600 mt-4">
+        <li><a href="#features" class="block hover:text-primary transition-colors">Features</a></li>
+        <li><a href="#subjects" class="block hover:text-primary transition-colors">Subjects</a></li>
+        <li><a href="#testimonials" class="block hover:text-primary transition-colors">Testimonials</a></li>
+        <li><a href="#faq" class="block hover:text-primary transition-colors">FAQ</a></li>
+      </ul>
+      <div class="mt-6 flex flex-col space-y-4">
+        <a id="mobile-login-link" href="/general/login.html" class="text-center py-2 px-4 rounded-full border border-primary text-primary font-semibold hover:bg-blue-50 transition-colors">Log In</a>
+        <a id="mobile-cta-link" href="/general/signup.html" class="button button-primary text-center">Get Started Free</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero Section -->
+    <section id="hero" class="relative w-full overflow-hidden bg-gradient-to-b from-gray-50 to-white">
+      <div class="absolute inset-0 bg-grid-pattern opacity-[0.02] pointer-events-none"></div>
+      
+      <div class="w-full overflow-hidden px-2 sm:px-4 lg:px-8 py-24 sm:py-28 mx-auto">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-2 sm:gap-8 items-start w-full overflow-hidden">
+          <!-- Left column: Main content -->
+          <div class="space-y-6 sm:space-y-8 mt-4" data-aos="fade-up">
+            <!-- UNESCO Alert -->
+            <div class="inline-flex items-center bg-gradient-to-r from-red-50 to-red-100 border border-red-200 rounded-full py-2 px-3 sm:px-4">
+              <span class="flex-shrink-0 bg-red-500 rounded-full w-2 h-2 mr-2 animate-pulse"></span>
+              <span class="text-red-600 font-medium text-xs sm:text-sm">UNESCO Global Education Report: According to UNESCO, Sub-Saharan Africa has the highest rate of education exclusion in the world.</span>
+            </div>            <h1 class="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 leading-tight mb-2 sm:mb-3">
+              Let's Change The
+              <span class="relative block mt-2">
+                <span class="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600">Story Together</span>
+                <svg class="absolute bottom-0 left-0 w-full h-3 -mb-1 opacity-30" viewBox="0 0 300 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M3 9C100.015 4.01984 197.03 4.01984 294.045 9" stroke="#4F46E5" stroke-width="6" stroke-linecap="round"/>
+                </svg>
+              </span>
+            </h1>
+
+            <p class="text-base sm:text-lg text-gray-600 max-w-full mb-6">
+              Sub-Saharan Africa faces the world's highest education exclusion rate. We're transforming this challenge into an opportunity through AI-powered learning that's accessible to all. Join our mission to build Africa's future leaders.
+            </p>
+
+            <div class="flex flex-col sm:flex-row gap-2 sm:gap-4 mb-6 w-full max-w-full">
+              <a href="/general/signup.html" class="inline-flex items-center justify-center px-6 sm:px-8 py-3 sm:py-4 rounded-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold hover:shadow-lg hover:scale-105 transition-all duration-300 text-sm sm:text-base">
+                Start Learning Now
+                <svg class="w-4 h-4 sm:w-5 sm:h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                </svg>
+              </a>
+              <button id="open-impact-modal" class="inline-flex items-center justify-center px-6 sm:px-8 py-3 sm:py-4 rounded-full bg-white border border-gray-200 text-gray-600 font-semibold hover:border-blue-300 hover:text-blue-600 transition-all duration-300 text-sm sm:text-base">
+                <i class="fas fa-chart-line mr-2"></i>Discover Our Impact
+              </button>
+            </div>
+
+          <!-- Stats Grid and Teacher CTA -->
+          <div class="space-y-6 sm:space-y-10 w-full max-w-full">
+            <!-- Stats Grid -->
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-6 mx-auto max-w-lg md:max-w-none">
+              <!-- Pass Rate -->
+              <div class="stat-card bg-white rounded-xl sm:rounded-2xl p-3 sm:p-6 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 relative overflow-hidden group">
+                <div class="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-blue-600/10 transform -translate-x-full group-hover:translate-x-0 transition-transform duration-700"></div>
+                <div class="relative z-10">
+                  <span class="block text-2xl sm:text-4xl lg:text-5xl font-bold text-blue-600 mb-1 sm:mb-2 group-hover:scale-110 transition-transform duration-300">95%</span>
+                  <span class="text-gray-600 text-xs sm:text-base font-medium">Pass Rate</span>
+                </div>
+                <div class="absolute -bottom-4 -right-4 sm:-bottom-6 sm:-right-6 w-12 h-12 sm:w-20 sm:h-20 bg-blue-600/5 rounded-full group-hover:scale-150 transition-transform duration-700"></div>
+              </div>
+
+              <!-- AI Support -->
+              <div class="stat-card bg-white rounded-xl sm:rounded-2xl p-3 sm:p-6 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 relative overflow-hidden group">
+                <div class="absolute inset-0 bg-gradient-to-r from-purple-500/10 to-purple-600/10 transform -translate-x-full group-hover:translate-x-0 transition-transform duration-700"></div>
+                <div class="relative z-10">
+                  <span class="block text-2xl sm:text-4xl lg:text-5xl font-bold text-purple-600 mb-1 sm:mb-2 group-hover:scale-110 transition-transform duration-300">24/7</span>
+                  <span class="text-gray-600 text-xs sm:text-base font-medium">AI-Powered Support</span>
+                </div>
+                <div class="absolute -bottom-4 -right-4 sm:-bottom-6 sm:-right-6 w-12 h-12 sm:w-20 sm:h-20 bg-purple-600/5 rounded-full group-hover:scale-150 transition-transform duration-700"></div>
+              </div>
+
+              <!-- Expert Tutors -->
+              <div class="col-span-2 md:col-span-1 mx-auto w-1/2 md:w-full stat-card bg-white rounded-xl sm:rounded-2xl p-3 sm:p-6 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 relative overflow-hidden group">
+                <div class="absolute inset-0 bg-gradient-to-r from-green-500/10 to-green-600/10 transform -translate-x-full group-hover:translate-x-0 transition-transform duration-700"></div>
+                <div class="relative z-10">
+                  <span class="block text-2xl sm:text-4xl lg:text-5xl font-bold text-green-600 mb-1 sm:mb-2 group-hover:scale-110 transition-transform duration-300">100+</span>
+                  <span class="text-gray-600 text-xs sm:text-base font-medium">Expert Tutors</span>
+                </div>
+                <div class="absolute -bottom-4 -right-4 sm:-bottom-6 sm:-right-6 w-12 h-12 sm:w-20 sm:h-20 bg-green-600/5 rounded-full group-hover:scale-150 transition-transform duration-700"></div>
+              </div>
+            </div>
+
+            <!-- Teacher CTA -->
+            <div class="flex justify-center">
+              <a href="/teachers/teacher-confirmation.html" class="group inline-flex items-center space-x-3 text-lg text-gray-600 hover:text-blue-600 transform hover:-translate-y-1 transition-all duration-300">
+                <span class="flex items-center">
+                  <i class="fas fa-chalkboard-teacher text-blue-500 mr-2 group-hover:scale-110 transition-transform duration-300"></i>
+                  <span class="font-medium">Are you a teacher?</span>
+                </span>
+                <span class="text-blue-600 flex items-center font-medium group-hover:translate-x-1 transition-transform duration-300">
+                  Click here to get started
+                  <i class="fas fa-arrow-right ml-2 transform group-hover:translate-x-1 transition-transform duration-300"></i>
+                </span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+
+          <!-- Right column: Video Carousel -->
+          <div class="relative" data-aos="fade-left">
+            <div class="relative z-10">
+              <!-- Swiper Container -->
+              <div class="swiper-container main-swiper rounded-2xl shadow-xl overflow-hidden max-h-[300px] sm:max-h-[400px] lg:max-h-[500px]">
+                <div class="swiper-wrapper h-full">
+                  <!-- Carousel Slides -->
+                  <div class="swiper-slide h-full">
+                    <div class="relative h-full overflow-hidden rounded-lg bg-gray-100">
+                      <video class="absolute inset-0 w-full h-full object-cover" autoplay loop muted playsinline>
+                        <source src="/assets/videos/student-success.mp4" type="video/mp4">
+                      </video>
+                      <div class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
+                      <div class="absolute bottom-4 left-4 right-4 text-white">
+                        <h3 class="text-base sm:text-lg font-semibold">Student Success Stories</h3>
+                        <p class="text-xs sm:text-sm opacity-90">See how our platform transforms learning journeys</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="swiper-slide h-full">
+                    <div class="relative h-full overflow-hidden rounded-lg bg-gray-100">
+                      <video class="absolute inset-0 w-full h-full object-cover" autoplay loop muted playsinline>
+                        <source src="/assets/videos/ai-features.mp4" type="video/mp4">
+                      </video>
+                      <div class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
+                      <div class="absolute bottom-4 left-4 right-4 text-white">
+                        <h3 class="text-base sm:text-lg font-semibold">AI-Powered Learning</h3>
+                        <p class="text-xs sm:text-sm opacity-90">Experience personalized education at its best</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="swiper-slide">
+                    <div class="relative pb-[56.25%] overflow-hidden rounded-lg bg-gray-100">
+                      <video class="absolute inset-0 w-full h-full object-cover" autoplay loop muted playsinline>
+                        <source src="/assets/videos/practice-exams.mp4" type="video/mp4">
+                      </video>
+                      <div class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
+                      <div class="absolute bottom-4 left-4 right-4 text-white">
+                        <h3 class="text-lg font-semibold">Interactive Practice</h3>
+                        <p class="text-sm opacity-90">Prepare for success with realistic exam simulations</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- Pagination and Navigation -->
+                <div class="swiper-pagination"></div>
+                <div class="swiper-button-next text-white after:text-2xl"></div>
+                <div class="swiper-button-prev text-white after:text-2xl"></div>
+              </div>
+            </div>
+            <!-- Decorative elements -->
+            <div class="absolute top-1/2 -right-12 w-72 h-72 bg-gradient-to-r from-blue-400 to-indigo-400 rounded-full filter blur-3xl opacity-20 animate-blob"></div>
+            <div class="absolute -bottom-12 -left-12 w-72 h-72 bg-gradient-to-r from-indigo-400 to-purple-400 rounded-full filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Decorative background elements -->
+      <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-full opacity-10 pointer-events-none">
+        <div class="absolute inset-0 bg-gradient-radial-dots"></div>
+      </div>
+      </div>
+      
+      <div class="hero-grid px-6">
+        <!-- Left column: text + stats -->
+        <div class="hero-left" data-aos="fade-up">
+
+
+        <!-- Right column removed -->
+      </div>
+    </section>
+
+    <!-- Timeline / Roadmap Section -->
+    <section id="timeline" class="py-16 bg-gray-50">
+      <div class="timeline" data-aos="fade-up">
+        <div class="text-center mb-12">
+          <span class="text-primary font-semibold">ROADMAP</span>
+          <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mt-2">How FUHADEMY Works</h2>
+          <p class="text-gray-600 max-w-2xl mx-auto">A simple path from onboarding to exam success — personalized learning, practice, and progress tracking.</p>
+        </div>
+        <div class="line">
+          <div class="event">
+            <div class="dot"></div>
+            <h4 class="font-semibold">Sign up & Onboard</h4>
+            <p>Create your free account and tell us your exam and subject priorities. We craft a study plan for you.</p>
+          </div>
+          <div class="event">
+            <div class="dot"></div>
+            <h4 class="font-semibold">Personalized Practice</h4>
+            <p>Use the AI tutor for step-by-step help, take realistic mock exams, and review instant analytics.</p>
+          </div>
+          <div class="event">
+            <div class="dot"></div>
+            <h4 class="font-semibold">Live Sessions & Dashboard</h4>
+            <p>Attend live tutor sessions, track progress on your dashboard, and refine your study roadmap.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  <!-- Pricing removed per user request (site is free) -->
+
+  <!-- Stats moved into hero (removed duplicate section) -->
+
+    <!-- Features Section -->
+    <section id="features" class="py-20 bg-white">
+      <div class="container narrow mx-auto px-4" id="features-container">
+        <div class="text-center max-w-3xl mx-auto mb-16">
+          <div class="inline-flex items-center justify-center p-2 px-4 rounded-full bg-blue-100 text-blue-600 font-semibold text-sm mb-4">
+            <i class="fas fa-star mr-2"></i>
+            OUR FEATURES
+          </div>
+          <h2 class="text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600 mt-2 mb-4">Everything You Need to Succeed</h2>
+          <p class="text-lg text-gray-600">A complete toolkit to help you master any subject and ace your exams with confidence.</p>
+        </div>
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <!-- Feature 1: AI-Powered Tutor -->
+          <div class="feature-card group p-6 bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-blue-200" data-aos="fade-up">
+            <div class="icon-swatch bg-blue-100 text-blue-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+              <i class="fas fa-robot text-2xl"></i>
+            </div>
+            <h3 class="text-xl font-bold text-gray-800 mb-3 group-hover:text-blue-600 transition-colors">AI-Powered Tutor</h3>
+            <p class="text-gray-600">Get instant, step-by-step explanations for any question, 24/7. No more getting stuck on difficult concepts.</p>
+          </div>
+          <!-- Feature 2: Personalized Study Plans -->
+          <div class="feature-card group p-6 bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-green-200" data-aos="fade-up" data-aos-delay="100">
+            <div class="icon-swatch bg-green-100 text-green-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+              <i class="fas fa-tasks text-2xl"></i>
+            </div>
+            <h3 class="text-xl font-bold text-gray-800 mb-3 group-hover:text-green-600 transition-colors">Personalized Study Plans</h3>
+            <p class="text-gray-600">Our AI analyzes your strengths and weaknesses to create a custom study roadmap that focuses on what you need most.</p>
+          </div>
+          <!-- Feature 3: Realistic Mock Exams -->
+          <div class="feature-card group p-6 bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-purple-200" data-aos="fade-up" data-aos-delay="200">
+            <div class="icon-swatch bg-purple-100 text-purple-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+              <i class="fas fa-pencil-ruler text-2xl"></i>
+            </div>
+            <h3 class="text-xl font-bold text-gray-800 mb-3 group-hover:text-purple-600 transition-colors">Realistic Mock Exams</h3>
+            <p class="text-gray-600">Practice with timed exams that mimic the format and difficulty of WAEC, NECO, and JAMB to eliminate exam-day surprises.</p>
+          </div>
+          <!-- Feature 4: Live Tutor Sessions -->
+          <div class="feature-card group p-6 bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-red-200" data-aos="fade-up" data-aos-delay="300">
+            <div class="icon-swatch bg-red-100 text-red-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+              <i class="fas fa-video text-2xl"></i>
+            </div>
+            <h3 class="text-xl font-bold text-gray-800 mb-3 group-hover:text-red-600 transition-colors">Live Tutor Sessions</h3>
+            <p class="text-gray-600">Join group sessions or book one-on-one time with expert tutors for in-depth guidance and support.</p>
+          </div>
+          <!-- Feature 5: Performance Analytics -->
+          <div class="feature-card group p-6 bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-yellow-200" data-aos="fade-up" data-aos-delay="400">
+            <div class="icon-swatch bg-yellow-100 text-yellow-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+              <i class="fas fa-chart-line text-2xl"></i>
+            </div>
+            <h3 class="text-xl font-bold text-gray-800 mb-3 group-hover:text-yellow-600 transition-colors">Performance Analytics</h3>
+            <p class="text-gray-600">Track your progress with detailed reports that show you where you're improving and where to focus next.</p>
+          </div>
+          <!-- Feature 6: Comprehensive Content Library -->
+          <div class="feature-card group p-6 bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-indigo-200" data-aos="fade-up" data-aos-delay="500">
+            <div class="icon-swatch bg-indigo-100 text-indigo-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+              <i class="fas fa-book-open text-2xl"></i>
+            </div>
+            <h3 class="text-xl font-bold text-gray-800 mb-3 group-hover:text-indigo-600 transition-colors">Comprehensive Content Library</h3>
+            <p class="text-gray-600">Access thousands of practice questions, video lessons, and study notes across all your subjects.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Subjects Section -->
+    <section id="subjects" class="py-20 bg-gradient-to-b from-gray-50 to-white">
+      <div class="container mx-auto px-4">
+        <div class="text-center max-w-3xl mx-auto mb-16">
+          <div class="inline-flex items-center justify-center p-2 px-4 rounded-full bg-indigo-100 text-indigo-600 font-semibold text-sm mb-4">
+            ALL SUBJECTS
+          </div>
+          <h2 class="text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-blue-600 mt-2 mb-4">Master Your Core Subjects</h2>
+          <p class="text-lg text-gray-600">From sciences to arts, we've got you covered with expert-curated content for all your exam needs.</p>
+        </div>
+        
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-6xl mx-auto">
+          <!-- Mathematics -->
+          <div class="group relative" data-aos="fade-up">
+            <div class="bg-white p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-indigo-200 h-full flex flex-col items-center justify-center text-center">
+              <div class="w-16 h-16 bg-indigo-100 rounded-2xl flex items-center justify-center mb-4 group-hover:bg-indigo-200 transition-colors duration-300">
+                <i class="fas fa-calculator text-2xl text-indigo-600"></i>
+              </div>
+              <h3 class="font-bold text-gray-800 mb-2">Mathematics</h3>
+              <p class="text-sm text-gray-500">Master calculations</p>
+            </div>
+          </div>
+
+          <!-- English -->
+          <div class="group relative" data-aos="fade-up" data-aos-delay="50">
+            <div class="bg-white p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-blue-200 h-full flex flex-col items-center justify-center text-center">
+              <div class="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center mb-4 group-hover:bg-blue-200 transition-colors duration-300">
+                <i class="fas fa-book-open text-2xl text-blue-600"></i>
+              </div>
+              <h3 class="font-bold text-gray-800 mb-2">English</h3>
+              <p class="text-sm text-gray-500">Perfect your language</p>
+            </div>
+          </div>
+
+          <!-- Physics -->
+          <div class="group relative" data-aos="fade-up" data-aos-delay="100">
+            <div class="bg-white p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-purple-200 h-full flex flex-col items-center justify-center text-center">
+              <div class="w-16 h-16 bg-purple-100 rounded-2xl flex items-center justify-center mb-4 group-hover:bg-purple-200 transition-colors duration-300">
+                <i class="fas fa-atom text-2xl text-purple-600"></i>
+              </div>
+              <h3 class="font-bold text-gray-800 mb-2">Physics</h3>
+              <p class="text-sm text-gray-500">Natural phenomena</p>
+            </div>
+          </div>
+
+          <!-- Chemistry -->
+          <div class="group relative" data-aos="fade-up" data-aos-delay="150">
+            <div class="bg-white p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-green-200 h-full flex flex-col items-center justify-center text-center">
+              <div class="w-16 h-16 bg-green-100 rounded-2xl flex items-center justify-center mb-4 group-hover:bg-green-200 transition-colors duration-300">
+                <i class="fas fa-flask text-2xl text-green-600"></i>
+              </div>
+              <h3 class="font-bold text-gray-800 mb-2">Chemistry</h3>
+              <p class="text-sm text-gray-500">Matter & reactions</p>
+            </div>
+          </div>
+
+          <!-- Biology -->
+          <div class="group relative" data-aos="fade-up" data-aos-delay="200">
+            <div class="bg-white p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-teal-200 h-full flex flex-col items-center justify-center text-center">
+              <div class="w-16 h-16 bg-teal-100 rounded-2xl flex items-center justify-center mb-4 group-hover:bg-teal-200 transition-colors duration-300">
+                <i class="fas fa-dna text-2xl text-teal-600"></i>
+              </div>
+              <h3 class="font-bold text-gray-800 mb-2">Biology</h3>
+              <p class="text-sm text-gray-500">Life sciences</p>
+            </div>
+          </div>
+
+          <!-- Government -->
+          <div class="group relative" data-aos="fade-up" data-aos-delay="250">
+            <div class="bg-white p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-red-200 h-full flex flex-col items-center justify-center text-center">
+              <div class="w-16 h-16 bg-red-100 rounded-2xl flex items-center justify-center mb-4 group-hover:bg-red-200 transition-colors duration-300">
+                <i class="fas fa-landmark text-2xl text-red-600"></i>
+              </div>
+              <h3 class="font-bold text-gray-800 mb-2">Government</h3>
+              <p class="text-sm text-gray-500">Political systems</p>
+            </div>
+          </div>
+
+          <!-- Economics -->
+          <div class="group relative" data-aos="fade-up" data-aos-delay="300">
+            <div class="bg-white p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-yellow-200 h-full flex flex-col items-center justify-center text-center">
+              <div class="w-16 h-16 bg-yellow-100 rounded-2xl flex items-center justify-center mb-4 group-hover:bg-yellow-200 transition-colors duration-300">
+                <i class="fas fa-chart-area text-2xl text-yellow-600"></i>
+              </div>
+              <h3 class="font-bold text-gray-800 mb-2">Economics</h3>
+              <p class="text-sm text-gray-500">Market principles</p>
+            </div>
+          </div>
+
+          <!-- Literature -->
+          <div class="group relative" data-aos="fade-up" data-aos-delay="350">
+            <div class="bg-white p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-pink-200 h-full flex flex-col items-center justify-center text-center">
+              <div class="w-16 h-16 bg-pink-100 rounded-2xl flex items-center justify-center mb-4 group-hover:bg-pink-200 transition-colors duration-300">
+                <i class="fas fa-book text-2xl text-pink-600"></i>
+              </div>
+              <h3 class="font-bold text-gray-800 mb-2">Literature</h3>
+              <p class="text-sm text-gray-500">Literary mastery</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Programmer Section -->
+    <section id="programmer" class="py-20 bg-gradient-to-b from-gray-50 to-white">
+      <div class="container mx-auto px-4">
+        <div class="flex flex-col md:flex-row items-center justify-between max-w-7xl mx-auto gap-12">
+          <!-- Left Content -->
+          <div class="flex-1 text-left" data-aos="fade-right">
+            <div class="flex items-center gap-3 mb-6">
+              <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold">
+                Meet <span class="text-indigo-600">Our Programmer</span>
+              </h1>
+              <div class="inline-flex items-center px-3 py-1 rounded-full bg-green-100 text-green-700">
+                <span class="w-2 h-2 rounded-full bg-green-500 mr-2"></span>
+                Online Now
+              </div>
+            </div>
+            
+            <h2 class="text-2xl md:text-3xl font-bold text-gray-700 mb-8">The Mind Behind FUHADEMY</h2>
+            
+            <p class="text-lg text-gray-600 mb-6">
+              Visionary EdTech Founder & Innovation Leader dedicated to revolutionizing education in Africa through cutting-edge technology and accessible learning solutions.
+            </p>
+            
+            <p class="text-lg text-gray-600 mb-6">
+              Driven by a passion for educational transformation, I combine entrepreneurial leadership with technological expertise to create scalable platforms that democratize quality education across Nigeria and beyond.
+            </p>
+
+            <!-- Compact Bio Section -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+              <!-- Personal Info -->
+              <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+                <div class="grid grid-cols-2 gap-3 text-sm">
+                  <div class="col-span-2">
+                    <p class="text-gray-600 mb-2"><i class="fas fa-user-circle mr-2 text-indigo-600"></i><span class="font-semibold">Abdlrazaq Fuhad Desmond</span></p>
+                  </div>
+                  <p class="text-gray-600"><i class="fas fa-calendar mr-2 text-blue-600"></i>Oct 7, 2010</p>
+                  <p class="text-gray-600"><i class="fas fa-user mr-2 text-green-600"></i>Age: 16</p>
+                  <p class="text-gray-600"><i class="fas fa-venus-mars mr-2 text-purple-600"></i>Male</p>
+                  <p class="text-gray-600"><i class="fas fa-pray mr-2 text-teal-600"></i>Muslim</p>
+                  <p class="text-gray-600 col-span-2"><i class="fas fa-graduation-cap mr-2 text-orange-600"></i>Secoary school graduate</p>
+                  <p class="text-gray-600 col-span-2"><i class="fas fa-graduation-cap mr-2 text-orange-600"></i>Secoary School Leaving Year: 2026 </p>
+                </div>
+              </div>
+
+              <!-- Skills Overview -->
+              <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+                <div class="space-y-3">
+                  <div>
+                    <p class="font-semibold text-gray-800 mb-1 flex items-center"><i class="fas fa-microchip mr-2 text-indigo-600"></i>Technical</p>
+                    <p class="text-gray-600 text-sm">Robotics, AI, Programming</p>
+                  </div>
+                  <div>
+                    <p class="font-semibold text-gray-800 mb-1 flex items-center"><i class="fas fa-lightbulb mr-2 text-green-600"></i>Entrepreneurial</p>
+                    <p class="text-gray-600 text-sm">Visionary Thinking, Solution Building, Knowledge-seeking</p>
+                  </div>
+                  <div>
+                    <p class="font-semibold text-gray-800 mb-1 flex items-center"><i class="fas fa-users mr-2 text-blue-600"></i>Leadership</p>
+                    <p class="text-gray-600 text-sm">Clarity, Persistence, Purpose-driven, Bold Thinking</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Innovation & Prayer -->
+            <div class="bg-gradient-to-r from-indigo-500 to-blue-600 p-4 rounded-xl shadow-sm mb-8">
+              <div class="text-white mb-3">
+                <p class="font-semibold flex items-center mb-2"><i class="fas fa-rocket mr-2"></i>Innovation Focus</p>
+                <p class="text-sm opacity-90">Humanoid Robots • EdTech Platforms • Engineering</p>
+              </div>
+              <div class="flex items-center justify-between">
+                <p class="text-sm text-white opacity-90"><i class="fas fa-star mr-2"></i>Role Model: Elon Musk</p>
+                <p class="text-sm text-white italic">"By the grace of Allah, revolutionizing education"</p>
+              </div>
+            </div>
+
+            <!-- Social Links -->
+            <div class="flex gap-4">
+              <a href="https://github.com/Fuhad-Lab" class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-gray-100 hover:bg-indigo-100 text-gray-600 hover:text-indigo-600 transition-all duration-300">
+                <i class="fab fa-github text-xl"></i>
+              </a>
+            </div>
+          </div>
+
+          <!-- Right Image -->
+          <div class="flex-1" data-aos="fade-left">
+            <div class="relative bg-gradient-to-br from-gray-100 to-white p-6 rounded-3xl shadow-xl">
+              <img src="fuhad.jpg" alt="Abdlrazaq Fuhad Desmond" class="w-full h-[500px] object-cover rounded-2xl shadow-lg">
+              
+              <!-- Status Cards -->
+              <div class="grid grid-cols-2 gap-4 mt-6">
+                <div class="bg-white/90 backdrop-blur-sm p-4 rounded-xl shadow-lg">
+                  <div class="text-2xl font-bold text-indigo-600 mb-1">Vision</div>
+                  <div class="text-gray-600 text-sm">EdTech Pioneer</div>
+                </div>
+                <div class="bg-white/90 backdrop-blur-sm p-4 rounded-xl shadow-lg">
+                  <div class="text-2xl font-bold text-green-600 mb-1">Purpose</div>
+                  <div class="text-gray-600 text-sm">Impact Driven</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section id="testimonials" class="py-20 bg-white">
+      <div class="container mx-auto px-4">
+        <div class="text-center max-w-3xl mx-auto mb-16">
+          <span class="text-primary font-semibold">TESTIMONIALS</span>
+          <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mt-2 mb-4">What Our Students Say</h2>
+          <p class="text-lg text-gray-600">Real stories from students who have transformed their grades with our platform.</p>
+        </div>
+        <div class="flex justify-center items-center py-12">
+          <div class="text-center">
+            <i class="far fa-comment-dots text-4xl text-gray-300 mb-4"></i>
+            <p class="text-lg text-gray-500">No comments yet</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="py-20 bg-gray-50">
+      <div class="container mx-auto px-4">
+        <div class="text-center max-w-3xl mx-auto mb-16">
+          <span class="text-primary font-semibold">QUESTIONS?</span>
+          <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mt-2 mb-4">Frequently Asked Questions</h2>
+          <p class="text-lg text-gray-600">Have questions? We've got answers. If you can't find what you're looking for, feel free to contact us.</p>
+        </div>
+        <div class="max-w-3xl mx-auto space-y-4">
+          <div class="faq-item bg-white rounded-lg shadow-sm" data-aos="fade-up">
+            <button class="faq-question w-full text-left p-6 flex justify-between items-center">
+              <span class="text-lg font-semibold text-gray-800">What exams do you cover?</span>
+              <i class="fas fa-chevron-down transition-transform"></i>
+            </button>
+            <div class="faq-answer hidden p-6 pt-0 text-gray-600">
+              <p>We primarily focus on preparing students for major Nigerian secondary school examinations, including the West African Examinations Council (WAEC), National Examinations Council (NECO), and the Joint Admissions and Matriculation Board (JAMB) exams. Our content is tailored to their specific syllabi.</p>
+            </div>
+          </div>
+          <div class="faq-item bg-white rounded-lg shadow-sm" data-aos="fade-up">
+            <button class="faq-question w-full text-left p-6 flex justify-between items-center">
+              <span class="text-lg font-semibold text-gray-800">Is the AI Tutor available 24/7?</span>
+              <i class="fas fa-chevron-down transition-transform"></i>
+            </button>
+            <div class="faq-answer hidden p-6 pt-0 text-gray-600">
+              <p>Yes, absolutely! Our AI Tutor is designed to be your round-the-clock study partner. You can ask questions, get explanations, and work through problems anytime, day or night, without having to wait for a human tutor.</p>
+            </div>
+          </div>
+          <div class="faq-item bg-white rounded-lg shadow-sm" data-aos="fade-up">
+            <button class="faq-question w-full text-left p-6 flex justify-between items-center">
+              <span class="text-lg font-semibold text-gray-800">Is this service really free?</span>
+              <i class="fas fa-chevron-down transition-transform"></i>
+            </button>
+            <div class="faq-answer hidden p-6 pt-0 text-gray-600">
+              <p>Yes, absolutely. Our platform is completely free for all students. We are committed to breaking down barriers to education in Africa. Our mission is to provide high-quality learning tools to everyone, regardless of their financial situation. There are no hidden costs or subscription plans.</p>
+            </div>
+          </div>
+          <div class="faq-item bg-white rounded-lg shadow-sm" data-aos="fade-up">
+            <button class="faq-question w-full text-left p-6 flex justify-between items-center">
+              <span class="text-lg font-semibold text-gray-800">Can I use this on my phone?</span>
+              <i class="fas fa-chevron-down transition-transform"></i>
+            </button>
+            <div class="faq-answer hidden p-6 pt-0 text-gray-600">
+              <p>Yes! Our platform is fully mobile-responsive, meaning you can access all features on your smartphone, tablet, or computer. Learn on the go, wherever you are.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-20 bg-primary text-white">
+      <div class="container mx-auto px-4 text-center">
+        <h2 class="text-3xl md:text-4xl font-bold mb-4" data-aos="fade-up">Ready to Achieve Your Best Scores?</h2>
+        <p class="text-lg md:text-xl max-w-3xl mx-auto mb-8" data-aos="fade-up" data-aos-delay="100">Join thousands of successful students and start your journey to exam excellence today. Your future is just a click away.</p>
+        <div data-aos="fade-up" data-aos-delay="200">
+          <a href="/general/signup.html" class="button bg-white text-primary hover:bg-gray-100 text-lg">Get Started For Free</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+    <!-- Swiper JS -->
+    <script src="https://unpkg.com/swiper@9/swiper-bundle.min.js"></script>
+    <script>
+      // Initialize main carousel
+      (function(){
+        const mainSwiper = new Swiper('.main-swiper', {
+          loop: true,
+          speed: 1000,
+          autoplay: {
+            delay: 5000,
+            disableOnInteraction: false,
+            pauseOnMouseEnter: true
+          },
+          effect: 'fade',
+          fadeEffect: {
+            crossFade: true
+          },
+          pagination: { 
+            el: '.swiper-pagination',
+            clickable: true,
+            renderBullet: function (index, className) {
+              return '<span class="' + className + ' w-2.5 h-2.5"></span>';
+            },
+          },
+          navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+          }
+        });
+
+        // Handle video playback
+        function playActiveVideo() {
+          const videos = document.querySelectorAll('.main-swiper video');
+          videos.forEach(video => {
+            try {
+              video.pause();
+              video.currentTime = 0;
+            } catch(e){}
+          });
+
+          const activeVideo = mainSwiper.slides[mainSwiper.activeIndex].querySelector('video');
+          if (activeVideo) {
+            activeVideo.play().catch(()=>{});
+          }
+        }
+
+        // Play video when slide changes
+        mainSwiper.on('slideChange', playActiveVideo);
+        mainSwiper.on('init', playActiveVideo);
+
+        // Handle hover pause
+        const swiperEl = document.querySelector('.main-swiper');
+        if (swiperEl) {
+          swiperEl.addEventListener('mouseenter', () => {
+            mainSwiper.autoplay.stop();
+            const activeVideo = swiperEl.querySelector('.swiper-slide-active video');
+            if (activeVideo) activeVideo.pause();
+          });
+
+          swiperEl.addEventListener('mouseleave', () => {
+            mainSwiper.autoplay.start();
+            playActiveVideo();
+          });
+        }
+      })();
+    </script>
+
+  <!-- Footer -->
+  <footer class="bg-gray-800 text-white">
+    <div class="container mx-auto px-4 py-16">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div class="md:col-span-1">
+          <a href="/" class="flex items-center space-x-3 mb-4">
+            <img src="/assets/images/logo.png" alt="JUANOVA CORTEX Logo" class="h-10 w-10 rounded-full">
+            <span class="text-xl font-bold">FUHADEMY</span>
+          </a>
+          <p class="text-gray-400">Your AI-powered partner for academic success.</p>
+          <div class="flex space-x-4 mt-6">
+            <a href="#" class="text-gray-400 hover:text-white" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="text-gray-400 hover:text-white" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="text-gray-400 hover:text-white" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="text-gray-400 hover:text-white" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+          </div>
+        </div>
+        <div>
+          <h3 class="font-bold text-lg mb-4">Quick Links</h3>
+          <ul class="space-y-2 text-gray-400">
+            <li><a href="#features" class="hover:text-white">Features</a></li>
+            <li><a href="#subjects" class="hover:text-white">Subjects</a></li>
+            <li><a href="/general/login.html" class="hover:text-white">Log In</a></li>
+            <li><a href="/general/signup.html" class="hover:text-white">Sign Up</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="font-bold text-lg mb-4">Resources</h3>
+          <ul class="space-y-2 text-gray-400">
+            <li><a href="#" class="hover:text-white">Blog</a></li>
+            <li><a href="#faq" class="hover:text-white">FAQ</a></li>
+            <li><a href="#" class="hover:text-white">Help Center</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="font-bold text-lg mb-4">Legal</h3>
+          <ul class="space-y-2 text-gray-400">
+            <li><a href="#" class="hover:text-white">Terms of Service</a></li>
+            <li><a href="#" class="hover:text-white">Privacy Policy</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="mt-12 border-t border-gray-700 pt-8 text-center text-gray-500">
+        <p>&copy; 2026 FUHADEMY. All Rights Reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+  <script>
+    // Navbar scroll effect
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        navbar.classList.add('shadow-md', 'bg-white/80', 'backdrop-blur-sm');
+        navbar.classList.remove('bg-transparent');
+      } else {
+        navbar.classList.remove('shadow-md', 'bg-white/80', 'backdrop-blur-sm');
+        navbar.classList.add('bg-transparent');
+      }
+    });
+
+    // Mobile menu toggle
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+    mobileMenuButton.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+    });
+
+    // Modal initialization moved to the bottom of the file
+
+    // FAQ Accordion
+    const faqItems = document.querySelectorAll('.faq-item');
+    faqItems.forEach(item => {
+      const question = item.querySelector('.faq-question');
+      const answer = item.querySelector('.faq-answer');
+      const icon = question.querySelector('i');
+
+      question.addEventListener('click', () => {
+        const isVisible = !answer.classList.contains('hidden');
+        
+        // Close all other answers
+        faqItems.forEach(otherItem => {
+          if (otherItem !== item) {
+            otherItem.querySelector('.faq-answer').classList.add('hidden');
+            otherItem.querySelector('.faq-question i').classList.remove('rotate-180');
+          }
+        });
+
+        // Toggle current answer
+        answer.classList.toggle('hidden');
+        icon.classList.toggle('rotate-180');
+      });
+    });
+
+    // Smooth scroll for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const targetId = this.getAttribute('href');
+        const targetElement = document.querySelector(targetId);
+        if (targetElement) {
+          const offset = 100; // Adjust for fixed header
+          const bodyRect = document.body.getBoundingClientRect().top;
+          const elementRect = targetElement.getBoundingClientRect().top;
+          const elementPosition = elementRect - bodyRect;
+          const offsetPosition = elementPosition - offset;
+
+          window.scrollTo({
+            top: offsetPosition,
+            behavior: 'smooth'
+          });
+        }
+      });
+    });
+  </script>
+  <!-- CORTEX AI Chatbot Widget -->
+<div id="cortex-ai-chat-widget"></div>
+<style>
+  #cortex-ai-chat-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: transparent;
+    color: inherit;
+    border-radius: 0;
+    width: auto;
+    height: auto;
+    display: block;
+    font-size: 0;
+    cursor: pointer;
+    box-shadow: none;
+    z-index: 1000;
+    padding: 0;
+  }
+
+  .chat-tooltip {
+    position: fixed;
+    bottom: 100px;
+    right: 20px;
+    background: linear-gradient(135deg, #4299e1, #3182ce);
+    color: white;
+    padding: 12px 20px;
+    border-radius: 12px;
+    font-size: 15px;
+    max-width: 220px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    opacity: 0;
+    transform: translateY(10px) scale(0.95);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: none;
+    z-index: 999;
+  }
+
+  .chat-tooltip.show {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+  .chat-tooltip::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    right: 24px;
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-top: 8px solid #3182ce;
+  }
+
+  #cortex-ai-chat-popup {
+    position: fixed;
+    bottom: 90px;
+    right: 20px;
+    width: 380px;
+    height: 500px;
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0px 4px 16px rgba(0,0,0,0.4);
+    display: none;
+    z-index: 1000;
+  }
+</style>
+
+  <div id="cortex-ai-chat-button" role="button" aria-label="Open Cortex AI chat">
+    <img src="cortex-owl-brain.svg" alt="Cortex AI" class="cortex-icon" style="width:72px;height:72px;box-shadow:0 4px 16px rgba(0,0,0,0.20);border-radius:16px;transition:transform 0.18s cubic-bezier(.4,2,.6,1),box-shadow 0.18s;cursor:pointer;" onmouseover="this.style.transform='scale(1.12)';this.style.boxShadow='0 8px 32px rgba(0,0,0,0.28)';" onmouseout="this.style.transform='scale(1)';this.style.boxShadow='0 4px 16px rgba(0,0,0,0.20)';" onmousedown="this.style.transform='scale(0.96)';" onmouseup="this.style.transform='scale(1.12)';" />
+  </div>
+  <div class="chat-tooltip">Hi there! Need help finding something? 👋</div>
+<iframe 
+  id="cortex-ai-chat-popup"  
+  src="https://app.edcafe.ai/chatbots/68ba4887cee035583b5a01f3">
+</iframe>
+
+<script>
+  const button = document.getElementById("cortex-ai-chat-button");
+  const popup = document.getElementById("cortex-ai-chat-popup");
+  const tooltip = document.querySelector(".chat-tooltip");
+  let tooltipTimeout;
+  let isPopupOpen = false;
+
+  // Function to show tooltip with different messages
+  function showTooltip() {
+    if (!isPopupOpen) {
+      const messages = [
+        "Hi there! Need help finding something? 👋",
+        "Have questions about our platform? I'm here to help! 💬",
+        "Looking for specific features? Let me guide you! 🎯",
+        "Want to learn more about JUANOVA CORTEX? Ask me! ✨"
+      ];
+      tooltip.textContent = messages[Math.floor(Math.random() * messages.length)];
+      tooltip.classList.add("show");
+    }
+  }
+
+  function hideTooltip() {
+    tooltip.classList.remove("show");
+  }
+
+  // Show tooltip on page load after a delay
+  setTimeout(showTooltip, 2000);
+  
+  // Hide tooltip after 5 seconds
+  setTimeout(hideTooltip, 7000);
+
+  // Show random tooltip message when clicked nearby
+  document.addEventListener("click", (e) => {
+    const buttonRect = button.getBoundingClientRect();
+    const clickDistance = Math.hypot(
+      e.clientX - (buttonRect.left + buttonRect.width/2),
+      e.clientY - (buttonRect.top + buttonRect.height/2)
+    );
+    
+    // If click is within 200px of the button and popup is not open
+    if (clickDistance < 200 && !isPopupOpen) {
+      clearTimeout(tooltipTimeout);
+      showTooltip();
+      tooltipTimeout = setTimeout(hideTooltip, 4000);
+    }
+  });
+
+  button.addEventListener("click", () => {
+    isPopupOpen = !isPopupOpen;
+    popup.style.display = isPopupOpen ? "block" : "none";
+    hideTooltip();
+  });
+
+  // Hide tooltip when mouse leaves the area
+  button.addEventListener("mouseleave", () => {
+    tooltipTimeout = setTimeout(hideTooltip, 1000);
+  });
+
+  // Show tooltip on hover
+  button.addEventListener("mouseenter", () => {
+    clearTimeout(tooltipTimeout);
+    if (!isPopupOpen) {
+      showTooltip();
+    }
+  });
+</script>
+
+<!-- Auth: toggle nav links when signed in (Supabase) -->
+<script type="module">
+  import { config } from '/js/config.js';
+  import { initSupabase, signOut as supaSignOut } from '/js/supabase-client.js';
+
+  let supabase = null;
+
+  try {
+    if (config && config.supabase && config.supabase.url && config.supabase.anonKey) {
+      supabase = initSupabase(config.supabase.url, config.supabase.anonKey);
+      console.debug('Index: Supabase initialized');
+    } else {
+      console.debug('Index: Supabase config not found (config.supabase missing)');
+    }
+  } catch (err) {
+    console.warn('Index: Supabase init error', err);
+  }
+
+  function setSignedInUI(user) {
+    console.debug('Auth state: signed in', user && (user.id || user.id));
+    const loginLink = document.getElementById('nav-login-link');
+    const ctaLink = document.getElementById('nav-cta-link');
+    if (loginLink) {
+      loginLink.textContent = 'Go to Dashboard';
+      loginLink.href = '/students/student-dashboard.html';
+    }
+    if (ctaLink) {
+      ctaLink.textContent = 'Sign out';
+      ctaLink.href = '#';
+      ctaLink.addEventListener('click', async (e) => {
+        e.preventDefault();
+        if (supabase) await supaSignOut(supabase);
+        else console.warn('Supabase client not initialised - cannot sign out');
+      });
+    }
+
+    const mLogin = document.getElementById('mobile-login-link');
+    const mCta = document.getElementById('mobile-cta-link');
+    if (mLogin) {
+      mLogin.textContent = 'Go to Dashboard';
+      mLogin.href = '/students/student-dashboard.html';
+    }
+    if (mCta) {
+      mCta.textContent = 'Sign out';
+      mCta.href = '#';
+      mCta.addEventListener('click', async (e) => {
+        e.preventDefault();
+        if (supabase) await supaSignOut(supabase);
+        else console.warn('Supabase client not initialised - cannot sign out');
+      });
+    }
+  }
+
+  function setSignedOutUI() {
+    console.debug('Auth state: signed out');
+    const loginLink = document.getElementById('nav-login-link');
+    const ctaLink = document.getElementById('nav-cta-link');
+    if (loginLink) {
+      loginLink.textContent = 'Log In';
+      loginLink.href = '/general/login.html';
+    }
+    if (ctaLink) {
+      const replacement = ctaLink.cloneNode(true);
+      replacement.textContent = 'Get Started Free';
+      replacement.href = '/general/signup.html';
+      ctaLink.replaceWith(replacement);
+    }
+
+    const mLogin = document.getElementById('mobile-login-link');
+    const mCta = document.getElementById('mobile-cta-link');
+    if (mLogin) {
+      mLogin.textContent = 'Log In';
+      mLogin.href = '/general/login.html';
+    }
+    if (mCta) {
+      const replacement = mCta.cloneNode(true);
+      replacement.textContent = 'Get Started Free';
+      replacement.href = '/general/signup.html';
+      mCta.replaceWith(replacement);
+    }
+  }
+
+  if (supabase && supabase.auth && supabase.auth.onAuthStateChange) {
+    // Listen for auth changes
+    supabase.auth.onAuthStateChange((event, session) => {
+      if (session && session.user) {
+        setSignedInUI(session.user);
+      } else {
+        setSignedOutUI();
+      }
+    });
+
+    // Check current session on load
+    supabase.auth.getSession().then(({ data }) => {
+      if (data && data.session && data.session.user) {
+        setSignedInUI(data.session.user);
+      } else {
+        setSignedOutUI();
+      }
+    }).catch(() => setSignedOutUI());
+  } else {
+    // Default to signed-out UI if Supabase not configured
+    setSignedOutUI();
+  }
+</script>
+
+  <!-- Impact Modal -->
+  <div id="impact-modal" class="fixed inset-0 hidden items-center justify-center p-4 sm:p-8 z-50" role="dialog" aria-modal="true">
+    <div class="fixed inset-0 bg-black bg-opacity-50 transition-opacity"></div>
+    <div class="bg-white rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto relative z-10 transform transition-transform scale-95 opacity-0">
+      <!-- Modal header (with top-right close) -->
+      <div class="relative bg-gradient-to-r from-blue-600 to-blue-700 text-white p-8 rounded-t-2xl">
+        <h2 class="text-3xl sm:text-4xl font-bold">How We Can Transform Africa</h2>
+        <!-- Top-right close button visible inside header -->
+        <button id="close-impact-modal-top" aria-label="Close impact modal" class="absolute top-4 right-4 text-white bg-white/10 hover:bg-white/20 p-2 rounded-full transition-colors duration-200">
+          <span class="text-2xl font-bold">&times;</span>
+        </button>
+      </div>
+      
+      <!-- Modal body -->
+      <div class="p-8 space-y-6">
+        <p class="text-lg text-gray-700 mb-6">
+          This is more than an exam prep platform—it's a movement to empower African youth and revolutionize education across the continent. With the right support, here's what we can offer:
+        </p>
+        
+        <div class="space-y-4">
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
+              <i class="fas fa-robot text-blue-600"></i>
+            </div>
+            <div>
+              <h3 class="font-semibold text-lg text-gray-900">Personalized AI Tutoring</h3>
+              <p class="text-gray-700">Every student gets tailored guidance, breaking barriers to quality education.</p>
+            </div>
+          </div>
+          
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center">
+              <i class="fas fa-mobile-alt text-purple-600"></i>
+            </div>
+            <div>
+              <h3 class="font-semibold text-lg text-gray-900">Access for All</h3>
+              <p class="text-gray-700">Mobile-first, offline learning ensures even remote communities can benefit.</p>
+            </div>
+          </div>
+          
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
+              <i class="fas fa-chalkboard-teacher text-green-600"></i>
+            </div>
+            <div>
+              <h3 class="font-semibold text-lg text-gray-900">Teacher Empowerment</h3>
+              <p class="text-gray-700">Tools and analytics help educators focus on what matters most—student growth.</p>
+            </div>
+          </div>
+          
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-8 h-8 bg-yellow-100 rounded-lg flex items-center justify-center">
+              <i class="fas fa-graduation-cap text-yellow-600"></i>
+            </div>
+            <div>
+              <h3 class="font-semibold text-lg text-gray-900">Exam Success</h3>
+              <p class="text-gray-700">Practice tests, instant feedback, and smart study plans boost pass rates for WAEC, JAMB, and NECO.</p>
+            </div>
+          </div>
+          
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-8 h-8 bg-red-100 rounded-lg flex items-center justify-center">
+              <i class="fas fa-users text-red-600"></i>
+            </div>
+            <div>
+              <h3 class="font-semibold text-lg text-gray-900">Leadership Development</h3>
+              <p class="text-gray-700">Beyond academics, we nurture future leaders with soft skills and innovation challenges.</p>
+            </div>
+          </div>
+          
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-8 h-8 bg-indigo-100 rounded-lg flex items-center justify-center">
+              <i class="fas fa-hands-helping text-indigo-600"></i>
+            </div>
+            <div>
+              <h3 class="font-semibold text-lg text-gray-900">Community Impact</h3>
+              <p class="text-gray-700">Scholarships, mentorship, and peer support networks foster hope and ambition.</p>
+            </div>
+          </div>
+          
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-8 h-8 bg-pink-100 rounded-lg flex items-center justify-center">
+              <i class="fas fa-chart-line text-pink-600"></i>
+            </div>
+            <div>
+              <h3 class="font-semibold text-lg text-gray-900">Scalable Change</h3>
+              <p class="text-gray-700">With sponsorship, we can reach millions, closing the education gap and unlocking Africa's potential.</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="mt-8 text-center">
+          <p class="text-xl font-semibold text-blue-600">Together, we can build a brighter future for Africa.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  // Modal functionality
+  const modal = document.getElementById('impact-modal');
+  const modalContent = modal.querySelector('.bg-white');
+  const openButton = document.getElementById('open-impact-modal');
+  const closeButton = document.getElementById('close-impact-modal'); // optional older button
+
+    function openModal() {
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      // Trigger reflow
+      modal.offsetHeight;
+      modalContent.classList.remove('scale-95', 'opacity-0');
+      modalContent.classList.add('scale-100', 'opacity-100');
+    }
+
+    function closeModal() {
+      modalContent.classList.remove('scale-100', 'opacity-100');
+      modalContent.classList.add('scale-95', 'opacity-0');
+      setTimeout(() => {
+        modal.classList.remove('flex');
+        modal.classList.add('hidden');
+      }, 300);
+    }
+
+    if (openButton) openButton.addEventListener('click', openModal);
+    if (closeButton) closeButton.addEventListener('click', closeModal);
+    // Top header close button (visible) - additionally close modal
+    const closeTop = document.getElementById('close-impact-modal-top');
+    if (closeTop) closeTop.addEventListener('click', closeModal);
+
+    // Close when clicking outside the modal content (backdrop or padding area)
+    modal.addEventListener('click', (e) => {
+      // If click is not inside the modalContent, close
+      if (!modalContent.contains(e.target)) closeModal();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+        closeModal();
+      }
+    });
+  </script>
+</body>
+</html>

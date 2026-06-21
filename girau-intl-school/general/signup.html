@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JUANOVA CORTEX - Sign Up</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Favicon -->
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+  </style>
+</head>
+<body>
+  <main class="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-200 via-white to-blue-100 py-12 px-4 sm:px-6 lg:px-8">
+    <div class="w-full max-w-lg bg-white/90 rounded-3xl shadow-2xl border border-blue-100 p-6 sm:p-8 md:p-12 backdrop-blur-lg">
+      <div class="flex items-center justify-center gap-3 mb-6">
+  <img src="../assets/images/logo.png" alt="JUANOVA CORTEX Logo" class="h-24 sm:h-32 md:h-40 w-auto drop-shadow-2xl mb-4" />
+      </div>
+      <h1 class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-center text-gray-900 mb-2">Sign up for JUANOVA CORTEX</h1>
+      <p class="text-center text-blue-500 mb-8 font-medium">Create your free account</p>
+      <form id="signupForm" class="space-y-6" autocomplete="off">
+        <div>
+          <label class="block font-semibold text-gray-700 mb-1" for="email">Email <span class="text-red-500">*</span></label>
+          <input type="email" id="email" class="w-full px-4 py-3 rounded-xl border border-blue-200 focus:ring-2 focus:ring-blue-400 focus:border-blue-400 bg-blue-50/60 transition placeholder:text-gray-400" required autocomplete="email" placeholder="you@email.com">
+        </div>
+        <div>
+          <label class="block font-semibold text-gray-700 mb-1" for="password">Password <span class="text-red-500">*</span></label>
+          <input type="password" id="password" class="w-full px-4 py-3 rounded-xl border border-blue-200 focus:ring-2 focus:ring-blue-400 focus:border-blue-400 bg-blue-50/60 transition placeholder:text-gray-400" required autocomplete="new-password" placeholder="Create a password">
+          <div class="text-xs text-blue-500 mt-1">Password should be at least 15 characters OR at least 8 characters including a number and a lowercase letter.</div>
+          <div id="password-error" class="text-xs text-red-600 mt-1 hidden"></div>
+        </div>
+        <div>
+          <label class="block font-semibold text-gray-700 mb-1" for="username">Username <span class="text-red-500">*</span></label>
+          <input type="text" id="username" class="w-full px-4 py-3 rounded-xl border border-blue-200 focus:ring-2 focus:ring-blue-400 focus:border-blue-400 bg-blue-50/60 transition placeholder:text-gray-400" required pattern="^[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*$" autocomplete="username" placeholder="Choose a username">
+          <div class="text-xs text-blue-500 mt-1">Username may only contain alphanumeric characters or single hyphens, and cannot begin or end with a hyphen.</div>
+          <div id="username-error" class="text-xs text-red-600 mt-1 hidden"></div>
+        </div>
+        <div>
+          <label class="block font-semibold text-gray-700 mb-1" for="country">Your Country/Region <span class="text-red-500">*</span></label>
+          <select id="country" class="w-full px-4 py-3 rounded-xl border border-blue-200 focus:ring-2 focus:ring-blue-400 focus:border-blue-400 bg-blue-50/60 transition" required>
+            <option value="">Select your country</option>
+            <option value="Algeria">Algeria</option>
+            <option value="Angola">Angola</option>
+            <option value="Benin">Benin</option>
+            <option value="Botswana">Botswana</option>
+            <option value="Burkina Faso">Burkina Faso</option>
+            <option value="Burundi">Burundi</option>
+            <option value="Cabo Verde">Cabo Verde</option>
+            <option value="Cameroon">Cameroon</option>
+            <option value="Central African Republic">Central African Republic</option>
+            <option value="Chad">Chad</option>
+            <option value="Comoros">Comoros</option>
+            <option value="Congo">Congo</option>
+            <option value="Congo (Democratic Republic)">Congo (Democratic Republic)</option>
+            <option value="Djibouti">Djibouti</option>
+            <option value="Egypt">Egypt</option>
+            <option value="Equatorial Guinea">Equatorial Guinea</option>
+            <option value="Eritrea">Eritrea</option>
+            <option value="Eswatini">Eswatini</option>
+            <option value="Ethiopia">Ethiopia</option>
+            <option value="Gabon">Gabon</option>
+            <option value="Gambia">Gambia</option>
+            <option value="Ghana">Ghana</option>
+            <option value="Guinea">Guinea</option>
+            <option value="Guinea-Bissau">Guinea-Bissau</option>
+            <option value="Ivory Coast">Ivory Coast</option>
+            <option value="Kenya">Kenya</option>
+            <option value="Lesotho">Lesotho</option>
+            <option value="Liberia">Liberia</option>
+            <option value="Libya">Libya</option>
+            <option value="Madagascar">Madagascar</option>
+            <option value="Malawi">Malawi</option>
+            <option value="Mali">Mali</option>
+            <option value="Mauritania">Mauritania</option>
+            <option value="Mauritius">Mauritius</option>
+            <option value="Morocco">Morocco</option>
+            <option value="Mozambique">Mozambique</option>
+            <option value="Namibia">Namibia</option>
+            <option value="Niger">Niger</option>
+            <option value="Nigeria">Nigeria</option>
+            <option value="Rwanda">Rwanda</option>
+            <option value="Sao Tome and Principe">Sao Tome and Principe</option>
+            <option value="Senegal">Senegal</option>
+            <option value="Seychelles">Seychelles</option>
+            <option value="Sierra Leone">Sierra Leone</option>
+            <option value="Somalia">Somalia</option>
+            <option value="South Africa">South Africa</option>
+            <option value="South Sudan">South Sudan</option>
+            <option value="Sudan">Sudan</option>
+            <option value="Tanzania">Tanzania</option>
+            <option value="Togo">Togo</option>
+            <option value="Tunisia">Tunisia</option>
+            <option value="Uganda">Uganda</option>
+            <option value="Zambia">Zambia</option>
+            <option value="Zimbabwe">Zimbabwe</option>
+          </select>
+          <div class="text-xs text-blue-500 mt-1">For compliance reasons, we're required to collect country information to send you occasional updates and announcements.</div>
+        </div>
+        <div>
+          <label class="inline-flex items-center cursor-pointer">
+            <input type="checkbox" id="emailPrefs" class="form-checkbox rounded text-blue-600 focus:ring-blue-400">
+            <span class="ml-2 text-gray-700">Receive occasional product updates and announcements</span>
+          </label>
+        </div>
+        <button type="submit" id="signupBtn" class="w-full py-3 rounded-xl bg-gradient-to-r from-blue-500 to-blue-700 text-white font-bold text-lg shadow-xl hover:from-blue-600 hover:to-blue-800 transition-all duration-200">Sign Up</button>
+        <div id="signup-loading" class="flex items-center justify-center mt-4 hidden">
+          <span class="inline-block animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-600 mr-2"></span>
+          <span class="text-blue-600 font-semibold">Creating your account…</span>
+        </div>
+        <div class="text-xs text-center text-blue-500 mt-4">
+          By creating an account, you agree to the <a href="#" class="text-blue-600 hover:underline">Terms of Service</a>.<br>
+          For more information about JUANOVA CORTEX's privacy practices, see the <a href="#" class="text-blue-600 hover:underline">Privacy Statement</a>.<br>
+          We'll occasionally send you account-related emails.
+        </div>
+      </form>
+      <div id="signup-verification" class="text-center mt-4" style="display:none;">
+        <span id="verification-msg" class="text-blue-600 font-semibold"></span>
+        <button id="resendVerificationBtn" class="mt-2 px-4 py-2 bg-blue-100 text-blue-700 rounded hover:bg-blue-200 font-semibold" style="display:none;">Resend Verification Email</button>
+      </div>
+      <div class="text-center mt-8">
+        <span class="text-gray-600">Already have an account?</span> <a href="login.html" class="text-blue-600 font-semibold hover:underline">Log in</a>
+      </div>
+    </div>
+  </main>
+  <script>
+    // Username validation
+    document.getElementById('username').addEventListener('input', function() {
+      const val = this.value;
+      const regex = /^[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*$/;
+      const errorDiv = document.getElementById('username-error');
+      if (!regex.test(val) || val.startsWith('-') || val.endsWith('-')) {
+        errorDiv.textContent = 'Invalid username format.';
+        errorDiv.classList.remove('hidden');
+      } else {
+        errorDiv.textContent = '';
+        errorDiv.classList.add('hidden');
+      }
+    });
+    // Password validation
+    document.getElementById('password').addEventListener('input', function() {
+      const val = this.value;
+      const errorDiv = document.getElementById('password-error');
+      const longEnough = val.length >= 15;
+      const strongEnough = val.length >= 8 && /[0-9]/.test(val) && /[a-z]/.test(val);
+      if (!longEnough && !strongEnough) {
+        errorDiv.textContent = 'Password does not meet requirements.';
+        errorDiv.classList.remove('hidden');
+      } else {
+        errorDiv.textContent = '';
+        errorDiv.classList.add('hidden');
+      }
+    });
+  </script>
+  <!-- Supabase sign-up flow -->
+  <script type="module">
+    import { config } from '../js/config.js';
+    import { initSupabase, signUp } from '../js/supabase-client.js';
+
+    const supabase = initSupabase(config.supabase.url, config.supabase.anonKey);
+    // Debug panel when ?debug=1
+    (function maybeShowInitDebug() {
+      try {
+        const params = new URLSearchParams(window.location.search);
+        if (!params.has('debug')) return;
+        const panel = document.createElement('div');
+        panel.id = 'supabase-debug-panel';
+        panel.style.position = 'fixed';
+        panel.style.right = '12px';
+        panel.style.bottom = '12px';
+        panel.style.zIndex = '9999';
+        panel.style.background = 'white';
+        panel.style.border = '1px solid #e2e8f0';
+        panel.style.padding = '12px';
+        panel.style.boxShadow = '0 8px 20px rgba(2,6,23,0.08)';
+        panel.style.maxWidth = '360px';
+        panel.innerHTML = '<strong>Supabase debug</strong><div id="sup-debug-content" style="margin-top:8px;font-size:13px;color:#111"></div>';
+        document.body.appendChild(panel);
+        const content = document.getElementById('sup-debug-content');
+        content.textContent = supabase ? 'Supabase client ready' : 'Supabase client NOT created (init returned null)';
+        window.__SUPABASE_DEBUG = { panel, content };
+      } catch (e) { console.warn('debug panel failed', e); }
+    })();
+
+    // Preserve existing client-side username/password validation above.
+
+    document.getElementById('signupForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const signupBtn = document.getElementById('signupBtn');
+      const loadingDiv = document.getElementById('signup-loading');
+      const verificationDiv = document.getElementById('signup-verification');
+      const verificationMsgSpan = document.getElementById('verification-msg');
+      const resendBtn = document.getElementById('resendVerificationBtn');
+      signupBtn.disabled = true;
+      loadingDiv.classList.remove('hidden');
+
+      const usernameError = document.getElementById('username-error').textContent;
+      const passwordError = document.getElementById('password-error').textContent;
+      if (usernameError || passwordError) {
+        alert('Please fix the errors before submitting.');
+        signupBtn.disabled = false;
+        loadingDiv.classList.add('hidden');
+        return;
+      }
+
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      const username = document.getElementById('username').value.trim();
+      const country = document.getElementById('country').value || null;
+      const emailPrefs = document.getElementById('emailPrefs').checked;
+
+      try {
+        // Use the helper signUp which wraps supabase.auth.signUp
+        const res = await signUp(supabase, email, password);
+        // Log full response for debugging (inspect structure in browser console)
+        console.debug('signUp response', res);
+        if (res.error) {
+          const msg = res.error.message || 'Sign up failed';
+          alert(msg);
+          signupBtn.disabled = false;
+          loadingDiv.classList.add('hidden');
+          return;
+        }
+
+        // res.data may contain user info or session; get user id when available
+        const user = (res.data && res.data.user) ? res.data.user : null;
+
+        // If we have a user id, try to create a profiles row (best-effort)
+        if (user && user.id) {
+          try {
+            const profile = {
+              id: user.id,
+              email: email,
+              username: username || null,
+              country: country,
+              email_prefs: emailPrefs
+            };
+            // Upsert so repeat runs won't fail (requires appropriate RLS/policies server-side)
+            const { data: upsertData, error: profileError } = await supabase.from('profiles').upsert([profile]).select();
+            // Debug output for upsert
+            console.debug('profiles.upsert result', { upsertData, profileError });
+            if (profileError) {
+              console.warn('Profile upsert failed:', profileError);
+              // Surface this in the verification UI so it's visible during debugging
+              if (verificationDiv && verificationMsgSpan) {
+                verificationDiv.style.display = 'block';
+                verificationMsgSpan.textContent = 'Warning: profile row was not created: ' + (profileError.message || JSON.stringify(profileError));
+                // show resend button in case user needs to trigger verification flow
+                if (resendBtn) resendBtn.style.display = 'inline-block';
+              }
+            } else {
+              console.log('Profile upsert succeeded:', upsertData);
+            }
+          } catch (err) {
+            console.warn('Failed to upsert profile:', err.message || err);
+            if (verificationDiv && verificationMsgSpan) {
+              verificationDiv.style.display = 'block';
+              verificationMsgSpan.textContent = 'Error creating profile: ' + (err.message || err);
+              if (resendBtn) resendBtn.style.display = 'inline-block';
+            }
+          }
+        }
+
+        // Show verification message and resend button
+        let verificationMsg = 'Registration successful! Please check your email for a verification link.';
+        let showResend = true;
+        if (user && user.email_confirmed_at) {
+          verificationMsg = 'Registration successful! Your email is already verified.';
+          showResend = false;
+        } else if (res.data && res.data.session && res.data.session.user && res.data.session.user.email_confirmed_at) {
+          verificationMsg = 'Registration successful! Your email is already verified.';
+          showResend = false;
+        } else if (!user) {
+          verificationMsg = 'Registration successful! (No verification email sent by Supabase. Please contact support if you do not receive a verification email.)';
+          showResend = true;
+        }
+
+        verificationDiv.style.display = 'block';
+        verificationMsgSpan.textContent = verificationMsg;
+        resendBtn.style.display = showResend ? 'inline-block' : 'none';
+        resendBtn.onclick = async function() {
+          resendBtn.disabled = true;
+          resendBtn.textContent = 'Sending...';
+          try {
+            // Supabase: trigger resend by calling signUp again (safe, does not create new user)
+            const { error } = await supabase.auth.signUp({ email });
+            if (error) {
+              verificationMsgSpan.textContent = 'Failed to resend verification email: ' + error.message;
+            } else {
+              verificationMsgSpan.textContent = 'Verification email sent! Please check your inbox.';
+            }
+          } catch (err) {
+            verificationMsgSpan.textContent = 'Error sending verification email.';
+          } finally {
+            resendBtn.disabled = false;
+            resendBtn.textContent = 'Resend Verification Email';
+          }
+        };
+
+        // Hide loader and enable button after showing message
+        loadingDiv.classList.add('hidden');
+        signupBtn.disabled = false;
+
+        // Dispatch update so any open pages can pick up the new profile immediately
+        try { window.dispatchEvent(new CustomEvent('userDataUpdated', { detail: JSON.parse(localStorage.getItem('userProfile') || 'null') })); } catch(e){console.debug('dispatch userDataUpdated failed', e)}
+
+        // Redirect after 6 seconds (use absolute path to be explicit)
+        setTimeout(() => {
+          window.location.href = '/general/login.html';
+        }, 6000);
+      } catch (error) {
+        console.error('Sign up error', error);
+        alert('Sign up failed: ' + (error.message || error));
+        signupBtn.disabled = false;
+        loadingDiv.classList.add('hidden');
+      }
+    });
+  </script>
+</body>
+</html>

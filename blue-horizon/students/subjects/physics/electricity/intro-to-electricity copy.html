@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TeachConnect - Student Dashboard</title>
+  <link rel="stylesheet" href="dist/style.css">
+</head>
+<body>
+    <div style="position: fixed;">
+    <aside class="sidebar">
+      <div class="logo">
+        <span class="logo-icon">🎓</span>
+  <span class="logo-text">TeachConnect</span>
+      </div>
+
+          <a href="#">Course Overview</a>
+          <a href="#">Assignment Management</a>
+          <a href="#">Grade Tracking</a>
+          <a href="#">Discussion Forums</a>
+          <a href="#">Resource Library</a>
+          <a href="#">calendar</a>
+          <a href="#">Messaging</a>
+        </ul>
+  </aside>
+  </div>
+
+  <div class="main-content" style="margin-left: 250px;">
+    <section class="dashboard-section">
+      <div class="container">
+        <h1>Student Dashboard</h1>
+        <div class="student-actions">
+          <div class="find-book">
+            <h2>Find a Teacher</h2>
+            <form class="find-teacher-form">
+              <input type="text" placeholder="Search by subject, name, or skill" class="input" />
+              <button class="btn btn-primary" type="submit"><i class="fa-solid fa-magnifying-glass"></i> Search</button>
+            </form>
+            <button class="btn btn-outline book-class-btn"><i class="fa-solid fa-calendar-plus"></i> Book a Class</button>
+          </div>
+        </div>
+        <div class="dashboard-grid">
+          <div class="dashboard-feature">
+            <h2>📚 Access Lessons</h2>
+            <ul id="student-lessons-list">
+              <li>Loading...</li>
+            </ul>
+            <button class="btn btn-primary">Go to Lessons</button>
+          </div>
+          <div class="dashboard-feature">
+            <h2>📝 Submit Assignments</h2>
+            <ul id="student-assignments-list">
+              <li>Loading...</li>
+            </ul>
+            <button class="btn btn-primary">Submit Work</button>
+          </div>
+          <div class="dashboard-feature">
+            <h2>📈 Track Progress</h2>
+            <ul id="student-progress-list">
+              <li>Loading...</li>
+            </ul>
+            <button class="btn btn-primary">View Progress</button>
+          </div>
+          <div class="dashboard-feature">
+            <h2>💬 Communicate</h2>
+            <ul id="student-comm-list">
+              <li>Loading...</li>
+            </ul>
+            <button class="btn btn-primary">Open Chat</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+    // Hamburger menu logic
+    const menuToggle = document.getElementById('menu-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
+    menuToggle.onclick = function() {
+      mobileMenu.classList.toggle('open');
+      menuToggle.classList.toggle('open');
+    };
+
+    // --- AUTH LOGIC ---
+    // Remove login modal logic. Only check for token and redirect if not present.
+    function updateAuthUI() {
+      const token = localStorage.getItem('student_jwt');
+      document.getElementById('logout-btn').style.display = token ? '' : 'none';
+      document.getElementById('login-link').style.display = token ? 'none' : '';
+    }
+
+    // Logout logic
+    document.getElementById('logout-btn').onclick = function() {
+      localStorage.removeItem('student_jwt');
+      location.href = 'login.html';
+    };
+
+      updateAuthUI();
+      fetchAndRenderStudentDashboard();
+      // Find a Teacher form
+      const findForm = document.querySelector('.find-teacher-form');
+      if (findForm) {
+        findForm.addEventListener('submit', function(e) {
+          e.preventDefault();
+          openModal('Find a Teacher', '<p>Simulated search for teachers.</p>');
+        });
+      }
+      // Book a Class
+      const bookBtn = document.querySelector('.book-class-btn');
+      if (bookBtn) {
+        bookBtn.addEventListener('click', function() {
+          openModal('Book a Class', '<p>Simulated class booking flow.</p>');
+        });
+      }
+      // Dashboard features
+      document.querySelectorAll('.dashboard-feature .btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+          let text = btn.textContent.trim();
+          openModal(text, `<p>Simulated <b>${text}</b> feature for students.</p>`);
+        });
+      });
+    });
+
+    // Fetch and render real student data from backend API (mock endpoints for demo)
+    async function fetchAndRenderStudentDashboard() {
+      const token = localStorage.getItem('student_jwt');
+      if (!token) return;
+      // Lessons
+      fetch('http://localhost:34567/api/student/lessons', {
+        headers: { 'Authorization': 'Bearer ' + token }
+      })
+        .then(res => res.json())
+        .then(data => {
+          const ul = document.getElementById('student-lessons-list');
+          ul.innerHTML = '';
+          data.forEach(lesson => {
+            ul.innerHTML += `<li>${lesson.title} (${lesson.date})</li>`;
+          });
+        });
+      // Assignments
+      fetch('http://localhost:34567/api/student/assignments', {
+        headers: { 'Authorization': 'Bearer ' + token }
+      })
+        .then(res => res.json())
+        .then(data => {
+          const ul = document.getElementById('student-assignments-list');
+          ul.innerHTML = '';
+          data.forEach(a => {
+            ul.innerHTML += `<li>${a.title} - Due: ${a.due}</li>`;
+          });
+        });
+      // Progress
+      fetch('http://localhost:34567/api/student/progress', {
+        headers: { 'Authorization': 'Bearer ' + token }
+      })
+        .then(res => res.json())
+        .then(data => {
+          const ul = document.getElementById('student-progress-list');
+          ul.innerHTML = '';
+          ul.innerHTML += `<li><b>Attendance:</b> ${data.attendance}</li>`;
+          ul.innerHTML += `<li><b>Quiz Average:</b> ${data.quizAverage}</li>`;
+          ul.innerHTML += `<li><b>Most Improved:</b> ${data.mostImproved}</li>`;
+        });
+      // Communication
+      fetch('http://localhost:34567/api/student/comm', {
+        headers: { 'Authorization': 'Bearer ' + token }
+      })
+        .then(res => res.json())
+        .then(data => {
+          const ul = document.getElementById('student-comm-list');
+          ul.innerHTML = '';
+          data.forEach(msg => {
+            ul.innerHTML += `<li>${msg}</li>`;
+          });
+        });
+    }
+    window.addEventListener('DOMContentLoaded', fetchAndRenderStudentDashboard);
+  </script>
+  <style>
+    .sidebar li{
+      margin-bottom: 10px;
+    }
+    .sidebar a{
+      color: #acbff1;
+    }
+    .sidebar:hover{
+      color:blue;
+    }
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(30, 41, 59, 0.45);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-box {
+      background: #fff;
+      border-radius: 14px;
+      box-shadow: 0 4px 32px 0 rgba(99,102,241,0.13);
+      padding: 2rem 2.5rem 1.5rem 2.5rem;
+      min-width: 320px;
+      max-width: 90vw;
+      position: relative;
+      animation: modalIn 0.2s cubic-bezier(.4,0,.2,1);
+    }
+    @keyframes modalIn {
+      from { transform: translateY(40px) scale(0.97); opacity: 0; }
+      to { transform: none; opacity: 1; }
+    }
+    .modal-close {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: #6366f1;
+      cursor: pointer;
+    }
+    .modal-content {
+      margin-top: 1rem;
+      color: #444;
+    }
+  </style>
+</body>
+</html>

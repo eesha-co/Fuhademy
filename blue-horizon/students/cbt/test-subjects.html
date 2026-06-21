@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Subject Loading</title>
+</head>
+<body>
+    <h1>Subject Loading Test</h1>
+    <pre id="output">Loading...</pre>
+    
+    <!-- Load all question files -->
+    <script src="js/maths-questions.js"></script>
+    <script src="js/chem-questions.js"></script>
+    <script src="js/english-questions.js"></script>
+    <script src="js/physics-questions.js"></script>
+    <script src="js/biology-questions.js"></script>
+    <script src="js/economics-questions.js"></script>
+    
+    <script>
+        var output = document.getElementById('output');
+        
+        output.textContent = 'Checking jambQuestions...\n';
+        output.textContent += 'typeof jambQuestions: ' + typeof jambQuestions + '\n\n';
+        
+        if (typeof jambQuestions !== 'undefined') {
+            output.textContent += 'Available subjects: ' + Object.keys(jambQuestions).join(', ') + '\n\n';
+            
+            Object.keys(jambQuestions).forEach(function(subject) {
+                var years = jambQuestions[subject].years || [];
+                var totalQ = 0;
+                if (jambQuestions[subject].questionsByYear) {
+                    Object.keys(jambQuestions[subject].questionsByYear).forEach(function(year) {
+                        totalQ += jambQuestions[subject].questionsByYear[year].length;
+                    });
+                }
+                output.textContent += subject + ': ' + years.length + ' years, ' + totalQ + ' questions\n';
+            });
+        } else {
+            output.textContent += 'ERROR: jambQuestions is not defined!\n';
+        }
+    </script>
+</body>
+</html>

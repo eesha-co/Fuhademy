@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Machines - Physics</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @keyframes fade-in-up { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-fade-in-up { animation: fade-in-up 0.5s ease-out forwards; }
+        .section-card { background: white; border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: 1px solid #e5e7eb; }
+        .simulation-container { position: relative; width: 100%; height: 450px; overflow: hidden; border-radius: 8px; }
+        .simulation-container iframe { width: 100%; height: 100%; border: none; }
+        .video-container { position: relative; width: 100%; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 8px; }
+        .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <nav class="bg-white shadow-sm fixed top-0 w-full z-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center">
+                    <a href="index.html" class="text-orange-600 hover:text-orange-800 mr-4"><i class="fas fa-arrow-left"></i></a>
+                    <h1 class="text-xl font-semibold text-gray-900">Simple Machines</h1>
+                </div>
+                <div class="text-sm text-gray-600 hidden sm:block">Progress: <span id="progressPercent">0%</span></div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="pt-20 pb-8 px-4 max-w-5xl mx-auto">
+        <div class="bg-orange-50 border-l-4 border-orange-500 p-4 rounded-r-lg mb-6 animate-fade-in-up">
+            <h3 class="font-semibold text-orange-800 mb-2"><i class="fas fa-bullseye mr-2"></i>Learning Objectives</h3>
+            <ul class="text-orange-700 text-sm space-y-1">
+                <li>• Define simple machines and explain their purpose</li>
+                <li>• Describe six types of simple machines and their applications</li>
+                <li>• Calculate mechanical advantage, velocity ratio, and efficiency</li>
+                <li>• Explain how machines make work easier</li>
+            </ul>
+        </div>
+
+        <!-- Section 1: Introduction -->
+        <div class="section-card animate-fade-in-up">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <span class="bg-orange-100 text-orange-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">1</span>
+                What are Simple Machines?
+            </h2>
+            
+            <div class="bg-orange-50 p-4 rounded-lg border-l-4 border-orange-500 mb-4">
+                <p class="text-orange-800 font-medium">A <strong>simple machine</strong> is a device that makes work easier by changing the magnitude or direction of a force.</p>
+            </div>
+
+            <p class="text-gray-700 mb-4">Simple machines do NOT reduce the amount of work - they make work easier by allowing us to use <strong>less force over a greater distance</strong> or change the direction of force.</p>
+
+            <div class="grid md:grid-cols-2 gap-4">
+                <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                    <h4 class="font-semibold text-blue-700 mb-2"><i class="fas fa-check-circle mr-2"></i>What Machines Do</h4>
+                    <ul class="text-gray-700 text-sm space-y-1">
+                        <li>• Multiply force (force multiplier)</li>
+                        <li>• Multiply speed/distance</li>
+                        <li>• Change direction of force</li>
+                        <li>• Transfer force from one place to another</li>
+                    </ul>
+                </div>
+                <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+                    <h4 class="font-semibold text-yellow-700 mb-2"><i class="fas fa-cogs mr-2"></i>The Six Types</h4>
+                    <ol class="text-gray-700 text-sm space-y-1 list-decimal list-inside">
+                        <li>Levers</li>
+                        <li>Pulleys</li>
+                        <li>Inclined planes</li>
+                        <li>Wedges</li>
+                        <li>Screws</li>
+                        <li>Wheel and axle</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 2: Key Terms -->
+        <div class="section-card animate-fade-in-up">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <span class="bg-orange-100 text-orange-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">2</span>
+                Important Terms & Formulas
+            </h2>
+
+            <div class="space-y-4">
+                <div class="bg-green-50 p-4 rounded-lg border-l-4 border-green-500">
+                    <h4 class="font-semibold text-green-700 mb-2">Mechanical Advantage (MA)</h4>
+                    <div class="bg-white p-3 rounded-lg text-center mb-2">
+                        <p class="text-xl font-mono font-bold text-green-600">MA = Load ÷ Effort</p>
+                    </div>
+                    <p class="text-gray-600 text-sm">The ratio of load to effort. MA > 1 means the machine multiplies force.</p>
+                </div>
+
+                <div class="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-500">
+                    <h4 class="font-semibold text-blue-700 mb-2">Velocity Ratio (VR)</h4>
+                    <div class="bg-white p-3 rounded-lg text-center mb-2">
+                        <p class="text-xl font-mono font-bold text-blue-600">VR = Distance moved by effort ÷ Distance moved by load</p>
+                    </div>
+                    <p class="text-gray-600 text-sm">Also called "Ideal Mechanical Advantage" - the theoretical advantage based on geometry.</p>
+                </div>
+
+                <div class="bg-purple-50 p-4 rounded-lg border-l-4 border-purple-500">
+                    <h4 class="font-semibold text-purple-700 mb-2">Efficiency (η)</h4>
+                    <div class="bg-white p-3 rounded-lg text-center mb-2">
+                        <p class="text-xl font-mono font-bold text-purple-600">Efficiency = (MA ÷ VR) × 100%</p>
+                    </div>
+                    <p class="text-gray-600 text-sm">How well the machine works. Always less than 100% due to friction.</p>
+                </div>
+            </div>
+
+            <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-r-lg mt-4">
+                <h4 class="font-semibold text-yellow-800 mb-2"><i class="fas fa-lightbulb mr-2"></i>Key Relationship</h4>
+                <p class="text-gray-700 text-sm">Work input = Work output (ignoring friction)<br>
+                <strong>Effort × Distance<sub>effort</sub> = Load × Distance<sub>load</sub></strong></p>
+            </div>
+        </div>
+
+        <!-- Section 3: Types of Machines -->
+        <div class="section-card animate-fade-in-up">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <span class="bg-orange-100 text-orange-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">3</span>
+                Types of Simple Machines
+            </h2>
+
+            <div class="space-y-4">
+                <!-- Levers -->
+                <div class="bg-red-50 p-4 rounded-lg border border-red-200">
+                    <h4 class="font-semibold text-red-700 mb-2"><i class="fas fa-balance-scale mr-2"></i>1. Levers</h4>
+                    <p class="text-gray-700 text-sm mb-2">A rigid bar that rotates around a fixed point called the <strong>fulcrum</strong>.</p>
+                    <div class="grid md:grid-cols-3 gap-2 text-xs">
+                        <div class="bg-white p-2 rounded"><strong>Class 1:</strong> Fulcrum in middle (seesaw, scissors)</div>
+                        <div class="bg-white p-2 rounded"><strong>Class 2:</strong> Load in middle (wheelbarrow, nutcracker)</div>
+                        <div class="bg-white p-2 rounded"><strong>Class 3:</strong> Effort in middle (tweezers, fishing rod)</div>
+                    </div>
+                    <p class="text-gray-600 text-xs mt-2"><strong>VR</strong> = Distance from effort to fulcrum ÷ Distance from load to fulcrum</p>
+                </div>
+
+                <!-- Pulleys -->
+                <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                    <h4 class="font-semibold text-blue-700 mb-2"><i class="fas fa-circle-notch mr-2"></i>2. Pulleys</h4>
+                    <p class="text-gray-700 text-sm mb-2">A wheel with a groove that holds a rope or cable. Used to lift loads.</p>
+                    <ul class="text-gray-700 text-sm space-y-1">
+                        <li>• <strong>Single fixed pulley:</strong> VR = 1 (changes direction only)</li>
+                        <li>• <strong>Single movable pulley:</strong> VR = 2</li>
+                        <li>• <strong>Block and tackle:</strong> VR = number of pulleys</li>
+                    </ul>
+                </div>
+
+                <!-- Inclined Plane -->
+                <div class="bg-green-50 p-4 rounded-lg border border-green-200">
+                    <h4 class="font-semibold text-green-700 mb-2"><i class="fas fa-ramp-loading mr-2"></i>3. Inclined Plane</h4>
+                    <p class="text-gray-700 text-sm mb-2">A flat surface tilted at an angle to the horizontal. Makes lifting easier.</p>
+                    <p class="text-gray-600 text-sm"><strong>VR</strong> = Length of slope ÷ Height of slope</p>
+                    <p class="text-gray-500 text-xs mt-1">Examples: Ramp, slide, mountain road</p>
+                </div>
+
+                <!-- Wheel and Axle -->
+                <div class="bg-purple-50 p-4 rounded-lg border border-purple-200">
+                    <h4 class="font-semibold text-purple-700 mb-2"><i class="fas fa-circle mr-2"></i>4. Wheel and Axle</h4>
+                    <p class="text-gray-700 text-sm mb-2">A large wheel attached to a smaller axle that turn together.</p>
+                    <p class="text-gray-600 text-sm"><strong>VR</strong> = Radius of wheel ÷ Radius of axle</p>
+                    <p class="text-gray-500 text-xs mt-1">Examples: Steering wheel, doorknob, bicycle wheel</p>
+                </div>
+
+                <!-- Wedge and Screw -->
+                <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+                    <h4 class="font-semibold text-yellow-700 mb-2"><i class="fas fa-caret-up mr-2"></i>5. Wedge & Screw</h4>
+                    <p class="text-gray-700 text-sm"><strong>Wedge:</strong> Two inclined planes joined together (axe, knife, chisel)</p>
+                    <p class="text-gray-700 text-sm"><strong>Screw:</strong> Inclined plane wrapped around a cylinder (jar lid, bolt, drill)</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 4: Interactive Simulation -->
+        <div class="section-card animate-fade-in-up">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <span class="bg-orange-100 text-orange-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">4</span>
+                Interactive: Balancing Act
+            </h2>
+            <p class="text-gray-700 mb-4">Explore how levers work with this interactive simulation:</p>
+            <div class="simulation-container bg-gray-100">
+                <iframe src="https://phet.colorado.edu/sims/html/balancing-act/latest/balancing-act_en.html"></iframe>
+            </div>
+        </div>
+
+        <!-- Section 5: Video -->
+        <div class="section-card animate-fade-in-up">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <span class="bg-orange-100 text-orange-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">5</span>
+                Video: Simple Machines Explained
+            </h2>
+            <div class="video-container bg-gray-100">
+                <iframe src="https://www.youtube.com/embed/lBYYQValHWQ" frameborder="0" allowfullscreen></iframe>
+            </div>
+        </div>
+
+        <!-- Practice -->
+        <div class="section-card animate-fade-in-up">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-pencil-alt text-orange-600 mr-3"></i>Practice Questions
+            </h2>
+            <div class="space-y-4">
+                <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+                    <p class="font-medium text-gray-800 mb-2">1. A machine has a load of 200 N lifted by an effort of 50 N. Calculate the MA.</p>
+                    <details class="mt-2">
+                        <summary class="text-sm text-blue-600 cursor-pointer">Show Answer</summary>
+                        <div class="mt-2 text-sm text-gray-700">
+                            MA = Load ÷ Effort = 200 N ÷ 50 N = <strong>4</strong>
+                        </div>
+                    </details>
+                </div>
+                <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+                    <p class="font-medium text-gray-800 mb-2">2. An inclined plane is 6 m long and 2 m high. Calculate its VR.</p>
+                    <details class="mt-2">
+                        <summary class="text-sm text-blue-600 cursor-pointer">Show Answer</summary>
+                        <div class="mt-2 text-sm text-gray-700">
+                            VR = Length of slope ÷ Height = 6 m ÷ 2 m = <strong>3</strong>
+                        </div>
+                    </details>
+                </div>
+                <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+                    <p class="font-medium text-gray-800 mb-2">3. A pulley system has MA = 4 and VR = 5. Calculate its efficiency.</p>
+                    <details class="mt-2">
+                        <summary class="text-sm text-blue-600 cursor-pointer">Show Answer</summary>
+                        <div class="mt-2 text-sm text-gray-700">
+                            Efficiency = (MA ÷ VR) × 100% = (4 ÷ 5) × 100% = <strong>80%</strong>
+                        </div>
+                    </details>
+                </div>
+                <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+                    <p class="font-medium text-gray-800 mb-2">4. Give one reason why a machine's efficiency is always less than 100%.</p>
+                    <details class="mt-2">
+                        <summary class="text-sm text-blue-600 cursor-pointer">Show Answer</summary>
+                        <div class="mt-2 text-sm text-gray-700">
+                            Some energy is <strong>lost as heat</strong> due to:
+                            <ul class="list-disc list-inside mt-1">
+                                <li>Friction between moving parts</li>
+                                <li>Work done against air resistance</li>
+                                <li>Energy used to lift parts of the machine itself</li>
+                            </ul>
+                        </div>
+                    </details>
+                </div>
+            </div>
+        </div>
+
+        <!-- Key Takeaways -->
+        <div class="bg-gradient-to-r from-orange-50 to-amber-50 p-5 rounded-lg border border-orange-200 animate-fade-in-up">
+            <h3 class="font-semibold text-orange-800 mb-3"><i class="fas fa-star mr-2"></i>Key Takeaways</h3>
+            <ul class="text-orange-700 text-sm space-y-2">
+                <li>• Simple machines make work easier but don't reduce total work</li>
+                <li>• MA = Load ÷ Effort; VR = Distance<sub>effort</sub> ÷ Distance<sub>load</sub></li>
+                <li>• Efficiency = (MA ÷ VR) × 100% (always less than 100% due to friction)</li>
+                <li>• Six types: Lever, Pulley, Inclined plane, Wedge, Screw, Wheel & axle</li>
+                <li>• Machines trade force for distance - use less force over greater distance</li>
+            </ul>
+        </div>
+
+        <div class="flex justify-between items-center mt-8">
+            <a href="work-energy-power.html" class="px-4 py-2 text-gray-600 hover:text-gray-900"><i class="fas fa-chevron-left mr-2"></i>Previous</a>
+            <a href="momentum.html" class="px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600">Next: Momentum<i class="fas fa-chevron-right ml-2"></i></a>
+        </div>
+    </main>
+
+    <script src="/js/topic-quiz-loader.js"></script>
+    <script src="/js/topic-quiz-injector.js"></script>
+</body>
+</html>

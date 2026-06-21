@@ -1,0 +1,21 @@
+# Render manifest to declare services for this project.
+# After connecting this repository in Render, this file helps Render create
+# the Web Service and Static Site automatically. Secrets must still be set
+# in the Render dashboard (do not place secrets in this file).
+
+services:
+  - type: web
+    name: exam-prep100-web
+    env: node
+    branch: main
+    buildCommand: npm install
+    startCommand: node server.js
+    plan: free
+    region: oregon
+
+static_sites:
+  - type: static
+    name: exam-prep100-static
+    branch: main
+    publishPath: students
+    plan: free

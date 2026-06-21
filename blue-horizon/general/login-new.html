@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JUANOVA CORTEX - Login</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Favicon -->
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+</head>
+<body>
+  <main class="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-200 via-white to-blue-100 py-12 px-4 sm:px-6 lg:px-8">
+    <div class="w-full max-w-lg bg-white/90 rounded-3xl shadow-2xl border border-blue-100 p-6 sm:p-8 md:p-12 backdrop-blur-lg">
+      <div class="flex items-center justify-center gap-3 mb-6">
+  <img src="/assets/images/logo.png" alt="JUANOVA CORTEX Logo" class="h-24 sm:h-32 md:h-40 w-auto drop-shadow-2xl mb-4" />
+      </div>
+      <h1 class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-center text-gray-900 mb-2">Welcome Back!</h1>
+      <p class="text-center text-blue-500 mb-8 font-medium">Log in to your account</p>
+      <form id="loginForm" class="space-y-6" autocomplete="off">
+        <div>
+          <label class="block font-semibold text-gray-700 mb-1" for="email">Email <span class="text-red-500">*</span></label>
+          <input type="email" id="email" class="w-full px-4 py-3 rounded-xl border border-blue-200 focus:ring-2 focus:ring-blue-400 focus:border-blue-400 bg-blue-50/60 transition placeholder:text-gray-400" required autocomplete="email" placeholder="you@email.com">
+        </div>
+        <div>
+          <label class="block font-semibold text-gray-700 mb-1" for="password">Password <span class="text-red-500">*</span></label>
+          <input type="password" id="password" class="w-full px-4 py-3 rounded-xl border border-blue-200 focus:ring-2 focus:ring-blue-400 focus:border-blue-400 bg-blue-50/60 transition placeholder:text-gray-400" required autocomplete="current-password" placeholder="Enter your password">
+        </div>
+          <button id="loginBtn" type="submit" class="w-full py-3 rounded-xl bg-gradient-to-r from-blue-500 to-blue-700 text-white font-bold text-lg shadow-xl hover:from-blue-600 hover:to-blue-800 transition-all duration-200">Log In</button>
+          <div id="loginLoader" class="flex justify-center items-center mt-4" style="display:none;">
+            <svg class="animate-spin h-6 w-6 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+            </svg>
+            <span class="ml-2 text-blue-600 font-medium">Logging in...</span>
+          </div>
+          <div id="loginError" class="error-message" style="display:none;"></div>
+          <div class="text-sm text-center text-blue-500 mt-4">
+            Don't have an account? <a href="signup-new.html" class="text-blue-600 hover:underline">Sign up</a>
+          </div>
+      </form>
+    </div>
+  </main>
+
+  <script type="module">
+    // Use the local Supabase client helper (already present in the repo)
+    import { config } from '../js/config.js';
+    import { initSupabase, signIn, getUser, onAuthStateChange, signOut, getSupabase } from '../js/supabase-client.js';
+
+    // Attempt to record init (this records keys for lazy loader)
+    initSupabase(config.supabase.url, config.supabase.anonKey);
+    // Diagnostic: show init state in a small debug panel (visible only when ?debug=1)
+    (function maybeShowInitDebug() {
+      try {
+        const params = new URLSearchParams(window.location.search);
+        if (!params.has('debug')) return;
+        const panel = document.createElement('div');
+        panel.id = 'supabase-debug-panel';
+        panel.style.position = 'fixed';
+        panel.style.right = '12px';
+        panel.style.bottom = '12px';
+        panel.style.zIndex = '9999';
+        panel.style.background = 'white';
+        panel.style.border = '1px solid #e2e8f0';
+        panel.style.padding = '12px';
+        panel.style.boxShadow = '0 8px 20px rgba(2,6,23,0.08)';
+        panel.style.maxWidth = '360px';
+        panel.innerHTML = '<strong>Supabase debug</strong><div id="sup-debug-content" style="margin-top:8px;font-size:13px;color:#111"></div>';
+        document.body.appendChild(panel);
+        const content = document.getElementById('sup-debug-content');
+        content.textContent = (window.__supabaseClient ? 'Supabase client ready' : 'Supabase client NOT created (init returned null)');
+        window.__SUPABASE_DEBUG = { panel, content };
+      } catch (e) { console.warn('debug panel failed', e); }
+    })();
+
+    // Redirect if already logged in (check existing session)
+    (async () => {
+      try {
+        const res = await getUser();
+        const user = res && res.data && res.data.user ? res.data.user : null;
+        if (user) window.location.href = '/students/student-dashboard.html';
+      } catch (e) {
+        console.warn('getUser failed during redirect check', e);
+      }
+    })();
+
+    // Listen for auth state changes using wrapper helper
+    (async () => {
+      try {
+        const sub = await onAuthStateChange((event, session) => {
+          if (session && session.user) window.location.href = '/students/student-dashboard.html';
+        });
+        if (!sub) console.debug('onAuthStateChange not registered (client unavailable)');
+      } catch (e) {
+        console.warn('onAuthStateChange registration failed', e);
+      }
+    })();
+
+    const loginForm = document.getElementById('loginForm');
+    const loginBtn = document.getElementById('loginBtn');
+    const loginLoader = document.getElementById('loginLoader');
+    const loginError = document.getElementById('loginError');
+
+    loginForm.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      loginError.style.display = 'none';
+      loginBtn.disabled = true;
+      loginLoader.style.display = 'flex';
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      try {
+      const res = await signIn(null, email, password);
+        // Helpful debug output to inspect the exact Supabase response shape in the browser console
+        console.debug('signIn response', res);
+      if (window.__SUPABASE_DEBUG && window.__SUPABASE_DEBUG.content) window.__SUPABASE_DEBUG.content.textContent += '\n' + JSON.stringify({ signIn: !!res, error: !!res?.error });
+        if (res.error) {
+          const msg = res.error.message || 'Sign in failed';
+          loginError.textContent = (msg.toLowerCase().includes('invalid login credentials') || msg.toLowerCase().includes('invalid'))
+            ? 'No account found with this email or incorrect password. Please sign up or reset your password.'
+            : msg;
+          loginError.style.display = 'block';
+          loginBtn.disabled = false;
+          loginLoader.style.display = 'none';
+          return;
+        }
+
+        // Successful sign-in
+        // Check email verification
+        if (!res.data.user.email_confirmed_at) {
+          loginError.textContent = 'Your email is not verified. Please check your inbox for the verification link. If you did not receive it, click below to resend.';
+          loginError.style.display = 'block';
+          loginBtn.disabled = false;
+          loginLoader.style.display = 'none';
+          // Sign out to block access
+          await signOut();
+          // Optionally show a resend verification link
+          showResendVerification(email);
+          return;
+        }
+
+          // Load profile for redirect
+          try {
+          const client = await getSupabase();
+            const { data: profile } = client ? await client
+              .from('profiles')
+              .select('*')
+              .eq('id', res.data.user.id)
+              .maybeSingle() : { data: null };
+
+          if (profile) {
+            localStorage.setItem('userProfile', JSON.stringify({
+              id: res.data.user.id,
+              email: res.data.user.email,
+              displayName: profile.username || profile.full_name || 'Student',
+              level: profile.level || 'SS 3',
+              photoURL: profile.avatar_url,
+              progress: {
+                weekly: profile.weekly_progress || 0,
+                mockAvg: profile.mock_avg || 0,
+                streak: profile.streak || 0
+              }
+            }));
+          }
+
+          // Dispatch userDataUpdated so other open pages can pick up personalization immediately
+          try { window.dispatchEvent(new CustomEvent('userDataUpdated', { detail: JSON.parse(localStorage.getItem('userProfile') || 'null') })); } catch(e){console.debug('dispatch userDataUpdated failed', e)}
+
+          // Use absolute path to avoid edge cases with relative paths
+          window.location.href = '/students/student-dashboard.html';
+        } catch (err) {
+          console.warn('Profile load failed:', err);
+          // Still attempt absolute redirect as a fallback
+          window.location.href = '/students/student-dashboard.html';
+        }
+      } catch (error) {
+        loginError.textContent = 'Login failed: ' + (error.message || error);
+        loginError.style.display = 'block';
+      } finally {
+        loginBtn.disabled = false;
+        loginLoader.style.display = 'none';
+      }
+    });
+
+    // Helper to show resend verification link
+    function showResendVerification(email) {
+      if (!loginError) return;
+      // Add a resend link if not already present
+      if (!document.getElementById('resendVerificationLink')) {
+        const resend = document.createElement('button');
+        resend.id = 'resendVerificationLink';
+        resend.className = 'mt-2 px-4 py-2 bg-blue-100 text-blue-700 rounded hover:bg-blue-200 font-semibold';
+        resend.textContent = 'Resend Verification Email';
+        resend.onclick = async function() {
+          resend.disabled = true;
+          resend.textContent = 'Sending...';
+          try {
+            // Supabase: trigger resend by calling signUp again (safe, does not create new user)
+            const client = await getSupabase();
+            const { error } = client ? await client.auth.signUp({ email }) : { error: new Error('Supabase client not available') };
+            if (error) {
+              loginError.textContent = 'Failed to resend verification email: ' + error.message;
+            } else {
+              loginError.textContent = 'Verification email sent! Please check your inbox.';
+            }
+          } catch (err) {
+            loginError.textContent = 'Error sending verification email.';
+          } finally {
+            resend.disabled = false;
+            resend.textContent = 'Resend Verification Email';
+          }
+        };
+        loginError.appendChild(resend);
+      }
+    }
+  </script>
+
+  <style>
+    .error-message {
+      display: none;
+      color: #dc2626;
+      background: #fee2e2;
+      border: 1px solid #fecaca;
+      padding: 0.75rem;
+      border-radius: var(--radius-md);
+      margin-bottom: var(--spacing-md);
+      font-size: 0.875rem;
+    }
+
+    .success-message {
+      display: none;
+      color: #059669;
+      background: #d1fae5;
+      border: 1px solid #a7f3d0;
+      padding: 0.75rem;
+      border-radius: var(--radius-md);
+      margin-bottom: var(--spacing-md);
+      font-size: 0.875rem;
+    }
+
+    .divider {
+      margin: var(--spacing-lg) 0;
+      display: flex;
+      align-items: center;
+      text-align: center;
+    }
+
+    .divider::before,
+    .divider::after {
+      content: '';
+      flex: 1;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .divider span {
+      padding: 0 1rem;
+      color: var(--text-secondary);
+      font-size: 0.875rem;
+    }
+
+    .social-auth {
+      margin-bottom: var(--spacing-lg);
+    }
+
+    .social-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      padding: 0.75rem;
+      border: 2px solid var(--border-color);
+      border-radius: var(--radius-md);
+      background: #fff;
+      color: var(--text-primary);
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      gap: 0.75rem;
+    }
+
+    .social-btn:hover {
+      border-color: var(--primary);
+      background: var(--light);
+    }
+
+    .social-btn img {
+      width: 24px;
+      height: 24px;
+    }
+  </style>
+</body>
+</html>
+

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Magnetism - Physics</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @keyframes fade-in-up { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-fade-in-up { animation: fade-in-up 0.5s ease-out forwards; }
+        .section-card { background: white; border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: 1px solid #e5e7eb; }
+        .topic-card { transition: all 0.3s ease; }
+        .topic-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <nav class="bg-white shadow-sm fixed top-0 w-full z-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center">
+                    <a href="index.html" class="text-red-600 hover:text-red-800 mr-4"><i class="fas fa-arrow-left"></i></a>
+                    <h1 class="text-xl font-semibold text-gray-900"><i class="fas fa-magnet text-red-500 mr-2"></i>Magnetism & Electromagnetism</h1>
+                </div>
+                <div class="text-sm text-gray-600">Physics Topics</div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="pt-20 pb-8 px-4 max-w-6xl mx-auto">
+        <div class="bg-red-50 border-l-4 border-red-500 p-4 rounded-r-lg mb-6 animate-fade-in-up">
+            <h3 class="font-semibold text-red-800 mb-2"><i class="fas fa-info-circle mr-2"></i>Introduction to Magnetism</h3>
+            <p class="text-red-700 text-sm">Magnetism is a force of attraction or repulsion between magnetic materials. Electromagnetism describes the relationship between electricity and magnetism, forming the basis for many modern technologies.</p>
+        </div>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <a href="magnetism/magnetic-field.html" class="topic-card section-card animate-fade-in-up block">
+                <div class="flex items-center mb-3">
+                    <span class="bg-red-100 text-red-600 w-10 h-10 rounded-full flex items-center justify-center mr-3"><i class="fas fa-magnet"></i></span>
+                    <h3 class="font-semibold text-gray-800">Magnetic Fields</h3>
+                </div>
+                <p class="text-gray-600 text-sm mb-3">Magnetic field lines, poles, field patterns around magnets and conductors.</p>
+                <div class="flex flex-wrap gap-1">
+                    <span class="bg-red-50 text-red-600 text-xs px-2 py-1 rounded">Field Lines</span>
+                    <span class="bg-red-50 text-red-600 text-xs px-2 py-1 rounded">Poles</span>
+                </div>
+            </a>
+
+            <a href="magnetism/electromagnet.html" class="topic-card section-card animate-fade-in-up block">
+                <div class="flex items-center mb-3">
+                    <span class="bg-blue-100 text-blue-600 w-10 h-10 rounded-full flex items-center justify-center mr-3"><i class="fas fa-bolt"></i></span>
+                    <h3 class="font-semibold text-gray-800">Electromagnets</h3>
+                </div>
+                <p class="text-gray-600 text-sm mb-3">Solenoids, factors affecting strength, applications in devices.</p>
+                <div class="flex flex-wrap gap-1">
+                    <span class="bg-blue-50 text-blue-600 text-xs px-2 py-1 rounded">Solenoids</span>
+                    <span class="bg-blue-50 text-blue-600 text-xs px-2 py-1 rounded">Applications</span>
+                </div>
+            </a>
+
+            <a href="magnetism/induction.html" class="topic-card section-card animate-fade-in-up block">
+                <div class="flex items-center mb-3">
+                    <span class="bg-orange-100 text-orange-600 w-10 h-10 rounded-full flex items-center justify-center mr-3"><i class="fas fa-sync-alt"></i></span>
+                    <h3 class="font-semibold text-gray-800">Electromagnetic Induction</h3>
+                </div>
+                <p class="text-gray-600 text-sm mb-3">Faraday's law, Lenz's law, generators, and transformers.</p>
+                <div class="flex flex-wrap gap-1">
+                    <span class="bg-orange-50 text-orange-600 text-xs px-2 py-1 rounded">Faraday's Law</span>
+                    <span class="bg-orange-50 text-orange-600 text-xs px-2 py-1 rounded">Generators</span>
+                </div>
+            </a>
+
+            <a href="magnetism/practicals.html" class="topic-card section-card animate-fade-in-up block">
+                <div class="flex items-center mb-3">
+                    <span class="bg-green-100 text-green-600 w-10 h-10 rounded-full flex items-center justify-center mr-3"><i class="fas fa-flask"></i></span>
+                    <h3 class="font-semibold text-gray-800">Magnetism Practicals</h3>
+                </div>
+                <p class="text-gray-600 text-sm mb-3">Experimental investigations of magnetic phenomena.</p>
+                <div class="flex flex-wrap gap-1">
+                    <span class="bg-green-50 text-green-600 text-xs px-2 py-1 rounded">Experiments</span>
+                    <span class="bg-green-50 text-green-600 text-xs px-2 py-1 rounded">Measurements</span>
+                </div>
+            </a>
+
+            <a href="electricity/circuits.html" class="topic-card section-card animate-fade-in-up block">
+                <div class="flex items-center mb-3">
+                    <span class="bg-purple-100 text-purple-600 w-10 h-10 rounded-full flex items-center justify-center mr-3"><i class="fas fa-plug"></i></span>
+                    <h3 class="font-semibold text-gray-800">Electric Circuits</h3>
+                </div>
+                <p class="text-gray-600 text-sm mb-3">Circuit components, series and parallel circuits, calculations.</p>
+                <div class="flex flex-wrap gap-1">
+                    <span class="bg-purple-50 text-purple-600 text-xs px-2 py-1 rounded">Series</span>
+                    <span class="bg-purple-50 text-purple-600 text-xs px-2 py-1 rounded">Parallel</span>
+                </div>
+            </a>
+
+            <a href="electromag/electromagnetism-interactive.html" class="topic-card section-card animate-fade-in-up block">
+                <div class="flex items-center mb-3">
+                    <span class="bg-teal-100 text-teal-600 w-10 h-10 rounded-full flex items-center justify-center mr-3"><i class="fas fa-laptop"></i></span>
+                    <h3 class="font-semibold text-gray-800">Interactive Simulations</h3>
+                </div>
+                <p class="text-gray-600 text-sm mb-3">PhET simulations for exploring magnetism concepts.</p>
+                <div class="flex flex-wrap gap-1">
+                    <span class="bg-teal-50 text-teal-600 text-xs px-2 py-1 rounded">PhET</span>
+                    <span class="bg-teal-50 text-teal-600 text-xs px-2 py-1 rounded">Interactive</span>
+                </div>
+            </a>
+        </div>
+
+        <div class="mt-8 bg-gradient-to-r from-red-50 to-orange-50 p-5 rounded-lg border border-red-200 animate-fade-in-up">
+            <h3 class="font-semibold text-red-800 mb-3"><i class="fas fa-lightbulb mr-2"></i>Key Concepts in Magnetism</h3>
+            <div class="grid md:grid-cols-2 gap-4 text-sm text-red-700">
+                <div>
+                    <p class="font-medium text-red-800 mb-1">Magnetic Poles:</p>
+                    <p>North and South - like poles repel, unlike poles attract</p>
+                </div>
+                <div>
+                    <p class="font-medium text-red-800 mb-1">Right-Hand Grip Rule:</p>
+                    <p>Determines direction of magnetic field around current-carrying wire</p>
+                </div>
+                <div>
+                    <p class="font-medium text-red-800 mb-1">Faraday's Law:</p>
+                    <p>Induced EMF is proportional to rate of change of magnetic flux</p>
+                </div>
+                <div>
+                    <p class="font-medium text-red-800 mb-1">Motor Effect:</p>
+                    <p>Force on current-carrying conductor in magnetic field: F = BIL</p>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

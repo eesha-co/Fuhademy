@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Standard Electrode Potentials | Chemistry</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <style> 
+    body{font-family:Inter, sans-serif}
+    .content-card{-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);background:rgba(255,255,255,0.95);border:1px solid rgba(255,255,255,0.2);} 
+    .accordion-content{max-height:0;overflow:hidden;transition:max-height 0.3s ease-out;}
+    .accordion-content.open{max-height:2000px;}
+    .step-card{transition:all 0.2s ease;}
+    .step-card:hover{transform:translateX(4px);}
+    .video-container{position:relative;width:100%;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;background:#f9fafb;}
+    .video-container iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:none;}
+  </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-rose-50 to-pink-100 p-4 md:p-6">
+  <div class="max-w-4xl mx-auto">
+    <nav class="mb-4"><a href="index.html" class="text-blue-600 hover:text-blue-800 transition"><i class="fas fa-arrow-left mr-2"></i>Back to Electrochemistry & Redox</a></nav>
+    
+    <article class="content-card rounded-xl p-6 md:p-8 shadow-lg">
+      <!-- Header -->
+      <div class="border-b pb-4 mb-6">
+        <h1 class="text-2xl md:text-3xl font-bold text-gray-800 mb-2">
+          <i class="fas fa-bolt text-yellow-500 mr-3"></i>Standard Electrode Potentials
+        </h1>
+        <p class="text-gray-600">Understanding E° values, the electrochemical series, and predicting reaction spontaneity.</p>
+      </div>
+
+      <!-- Learning Objectives -->
+      <div class="bg-yellow-50 border-l-4 border-yellow-500 p-4 rounded-r-lg mb-6">
+        <h3 class="font-semibold text-yellow-800 mb-2"><i class="fas fa-bullseye mr-2"></i>Learning Objectives</h3>
+        <ul class="text-yellow-700 text-sm space-y-1">
+          <li>• Define standard electrode potential (E°)</li>
+          <li>• Read and interpret the electrochemical series</li>
+          <li>• Calculate cell potential using standard potentials</li>
+          <li>• Predict whether a redox reaction will occur spontaneously</li>
+        </ul>
+      </div>
+
+      <!-- Section 1: What is Standard Electrode Potential? -->
+      <section class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <span class="bg-yellow-100 text-yellow-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">1</span>
+          What is Standard Electrode Potential?
+        </h2>
+        
+        <div class="bg-gray-50 p-5 rounded-lg mb-4">
+          <p class="text-gray-700 mb-3"><strong class="text-yellow-600">Standard electrode potential (E°)</strong> is the voltage measured for a half-cell under standard conditions compared to the standard hydrogen electrode (SHE).</p>
+          
+          <div class="bg-white p-4 rounded-lg border border-gray-200 mt-3">
+            <p class="font-semibold text-gray-800 mb-2">Standard Conditions:</p>
+            <ul class="text-gray-700 text-sm space-y-1">
+              <li>• Temperature: <strong>25°C (298 K)</strong></li>
+              <li>• Concentration: <strong>1.0 mol/dm³</strong> for solutions</li>
+              <li>• Pressure: <strong>1 atm</strong> for gases</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-blue-50 border-l-4 border-blue-400 p-4 rounded-r-lg">
+          <h4 class="font-semibold text-blue-800 mb-2"><i class="fas fa-info-circle mr-2"></i>The Standard Hydrogen Electrode (SHE)</h4>
+          <p class="text-gray-700 text-sm">The SHE is assigned an E° value of <strong>0.00 V</strong>. All other electrode potentials are measured relative to this reference. It consists of hydrogen gas at 1 atm bubbling over a platinum electrode in 1M H⁺ solution.</p>
+        </div>
+      </section>
+
+      <!-- Section 2: The Electrochemical Series -->
+      <section class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <span class="bg-yellow-100 text-yellow-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">2</span>
+          The Electrochemical Series
+        </h2>
+        
+        <p class="text-gray-700 mb-4">The <strong>electrochemical series</strong> is a list of half-reactions arranged in order of their standard electrode potentials. It helps us predict the direction of redox reactions.</p>
+
+        <div class="overflow-x-auto mb-4">
+          <table class="w-full text-sm border-collapse">
+            <thead>
+              <tr class="bg-red-50">
+                <th class="border border-gray-200 p-2 text-left">Half-Reaction</th>
+                <th class="border border-gray-200 p-2 text-center">E° (V)</th>
+                <th class="border border-gray-200 p-2 text-left">Trend</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="bg-red-50">
+                <td class="border border-gray-200 p-2 font-mono">Li⁺ + e⁻ → Li</td>
+                <td class="border border-gray-200 p-2 text-center">-3.04</td>
+                <td class="border border-gray-200 p-2 text-red-600" rowspan="5">↑ Strongest Reducing Agents<br>(Easily oxidized)</td>
+              </tr>
+              <tr class="bg-red-50">
+                <td class="border border-gray-200 p-2 font-mono">K⁺ + e⁻ → K</td>
+                <td class="border border-gray-200 p-2 text-center">-2.93</td>
+              </tr>
+              <tr>
+                <td class="border border-gray-200 p-2 font-mono">Ca²⁺ + 2e⁻ → Ca</td>
+                <td class="border border-gray-200 p-2 text-center">-2.87</td>
+              </tr>
+              <tr>
+                <td class="border border-gray-200 p-2 font-mono">Na⁺ + e⁻ → Na</td>
+                <td class="border border-gray-200 p-2 text-center">-2.71</td>
+              </tr>
+              <tr>
+                <td class="border border-gray-200 p-2 font-mono">Mg²⁺ + 2e⁻ → Mg</td>
+                <td class="border border-gray-200 p-2 text-center">-2.37</td>
+              </tr>
+              <tr>
+                <td class="border border-gray-200 p-2 font-mono">Zn²⁺ + 2e⁻ → Zn</td>
+                <td class="border border-gray-200 p-2 text-center">-0.76</td>
+              </tr>
+              <tr>
+                <td class="border border-gray-200 p-2 font-mono">Fe²⁺ + 2e⁻ → Fe</td>
+                <td class="border border-gray-200 p-2 text-center">-0.44</td>
+              </tr>
+              <tr class="bg-gray-50">
+                <td class="border border-gray-200 p-2 font-mono">2H⁺ + 2e⁻ → H₂</td>
+                <td class="border border-gray-200 p-2 text-center">0.00</td>
+                <td class="border border-gray-200 p-2 text-center">— Reference —</td>
+              </tr>
+              <tr>
+                <td class="border border-gray-200 p-2 font-mono">Cu²⁺ + 2e⁻ → Cu</td>
+                <td class="border border-gray-200 p-2 text-center">+0.34</td>
+              </tr>
+              <tr>
+                <td class="border border-gray-200 p-2 font-mono">I₂ + 2e⁻ → 2I⁻</td>
+                <td class="border border-gray-200 p-2 text-center">+0.54</td>
+              </tr>
+              <tr>
+                <td class="border border-gray-200 p-2 font-mono">Ag⁺ + e⁻ → Ag</td>
+                <td class="border border-gray-200 p-2 text-center">+0.80</td>
+              </tr>
+              <tr class="bg-green-50">
+                <td class="border border-gray-200 p-2 font-mono">Br₂ + 2e⁻ → 2Br⁻</td>
+                <td class="border border-gray-200 p-2 text-center">+1.07</td>
+              </tr>
+              <tr class="bg-green-50">
+                <td class="border border-gray-200 p-2 font-mono">Cl₂ + 2e⁻ → 2Cl⁻</td>
+                <td class="border border-gray-200 p-2 text-center">+1.36</td>
+              </tr>
+              <tr class="bg-green-50">
+                <td class="border border-gray-200 p-2 font-mono">F₂ + 2e⁻ → 2F⁻</td>
+                <td class="border border-gray-200 p-2 text-center">+2.87</td>
+                <td class="border border-gray-200 p-2 text-green-600">↓ Strongest Oxidizing Agents<br>(Easily reduced)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-4">
+          <div class="bg-red-50 p-4 rounded-lg border border-red-200">
+            <h4 class="font-semibold text-red-700 mb-2">More Negative E° Values</h4>
+            <ul class="text-gray-700 text-sm space-y-1">
+              <li>• Stronger <strong>reducing agents</strong></li>
+              <li>• Lose electrons more easily</li>
+              <li>• Metals like Li, K, Na are very reactive</li>
+              <li>• Displace metals below them in the series</li>
+            </ul>
+          </div>
+          <div class="bg-green-50 p-4 rounded-lg border border-green-200">
+            <h4 class="font-semibold text-green-700 mb-2">More Positive E° Values</h4>
+            <ul class="text-gray-700 text-sm space-y-1">
+              <li>• Stronger <strong>oxidizing agents</strong></li>
+              <li>• Gain electrons more easily</li>
+              <li>• Halogens like F₂, Cl₂ are very reactive</li>
+              <li>• Oxidize metals above them in the series</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 3: Calculating Cell Potential -->
+      <section class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <span class="bg-yellow-100 text-yellow-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">3</span>
+          Calculating Cell Potential
+        </h2>
+        
+        <div class="bg-gray-50 p-5 rounded-lg mb-4">
+          <div class="bg-white p-4 rounded-lg border border-gray-200 mb-3">
+            <p class="font-semibold text-gray-800 mb-2">The Formula:</p>
+            <div class="bg-green-100 p-3 rounded text-center font-mono text-lg">
+              E°<sub>cell</sub> = E°<sub>cathode</sub> - E°<sub>anode</sub>
+            </div>
+            <p class="text-xs text-gray-500 mt-2 text-center">Or: E°<sub>cell</sub> = E°<sub>reduction</sub> - E°<sub>oxidation</sub></p>
+          </div>
+
+          <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-r-lg">
+            <h4 class="font-semibold text-yellow-800 mb-2"><i class="fas fa-lightbulb mr-2"></i>Important Rules</h4>
+            <ul class="text-gray-700 text-sm space-y-1">
+              <li>• <strong>DO NOT</strong> multiply E° values even if you balance the equation</li>
+              <li>• The species with more positive E° will be reduced (cathode)</li>
+              <li>• The species with more negative E° will be oxidized (anode)</li>
+              <li>• If E°<sub>cell</sub> > 0, the reaction is spontaneous</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Worked Example -->
+        <div class="border border-gray-200 rounded-lg overflow-hidden">
+          <button class="accordion-btn w-full p-4 bg-yellow-50 text-left font-semibold text-yellow-800 flex justify-between items-center hover:bg-yellow-100 transition">
+            <span><i class="fas fa-calculator mr-2 text-yellow-600"></i>Worked Example: Will zinc displace copper from CuSO₄?</span>
+            <i class="fas fa-chevron-down transform transition-transform"></i>
+          </button>
+          <div class="accordion-content">
+            <div class="p-5">
+              <div class="space-y-3">
+                <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-yellow-500">
+                  <p class="text-sm text-gray-600"><strong>Step 1:</strong> Write the half-reactions and E° values</p>
+                  <p class="font-mono mt-1">Zn²⁺ + 2e⁻ → Zn &nbsp;&nbsp;&nbsp; E° = -0.76 V</p>
+                  <p class="font-mono">Cu²⁺ + 2e⁻ → Cu &nbsp;&nbsp;&nbsp; E° = +0.34 V</p>
+                </div>
+                
+                <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-blue-500">
+                  <p class="text-sm text-gray-600"><strong>Step 2:</strong> Identify oxidation and reduction</p>
+                  <p class="text-blue-700 mt-1">Zn has more negative E°, so it will be oxidized (anode)</p>
+                  <p class="text-blue-700">Cu²⁺ has more positive E°, so it will be reduced (cathode)</p>
+                </div>
+                
+                <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-green-500">
+                  <p class="text-sm text-gray-600"><strong>Step 3:</strong> Calculate E°<sub>cell</sub></p>
+                  <p class="text-green-700 font-mono mt-1">E°<sub>cell</sub> = E°<sub>cathode</sub> - E°<sub>anode</sub></p>
+                  <p class="text-green-700 font-mono">E°<sub>cell</sub> = (+0.34) - (-0.76)</p>
+                  <p class="text-green-700 font-mono">E°<sub>cell</sub> = +1.10 V</p>
+                </div>
+                
+                <div class="bg-green-100 p-3 rounded-lg">
+                  <p class="text-green-800 font-semibold"><i class="fas fa-check-circle mr-2"></i>Answer: YES! E°<sub>cell</sub> = +1.10 V (positive, so spontaneous)</p>
+                  <p class="text-green-700 text-sm mt-1">Zinc will displace copper from copper(II) sulfate solution.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 4: Predicting Reactions -->
+      <section class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <span class="bg-yellow-100 text-yellow-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">4</span>
+          Predicting if Reactions Will Occur
+        </h2>
+
+        <div class="bg-purple-50 p-5 rounded-lg border border-purple-200 mb-4">
+          <h4 class="font-semibold text-purple-800 mb-3"><i class="fas fa-crystal-ball mr-2"></i>The Simple Rule</h4>
+          <p class="text-gray-700 mb-3">A spontaneous redox reaction will occur when:</p>
+          <div class="bg-white p-3 rounded-lg text-center">
+            <p class="text-purple-700 font-semibold">The species being reduced has a MORE POSITIVE E°</p>
+            <p class="text-purple-700 font-semibold">than the species being oxidized</p>
+          </div>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-4">
+          <div class="bg-green-50 p-4 rounded-lg border border-green-200">
+            <h4 class="font-semibold text-green-700 mb-2"><i class="fas fa-check mr-2"></i>Reaction WILL Occur</h4>
+            <p class="text-gray-700 text-sm">E°<sub>cell</sub> > 0 (positive)</p>
+            <p class="text-gray-600 text-xs mt-1">The reducing agent is ABOVE the oxidizing agent in the electrochemical series.</p>
+            <div class="bg-white p-2 rounded mt-2 text-xs">
+              Example: Zn + Cu²⁺ → Zn²⁺ + Cu ✓
+            </div>
+          </div>
+          <div class="bg-red-50 p-4 rounded-lg border border-red-200">
+            <h4 class="font-semibold text-red-700 mb-2"><i class="fas fa-times mr-2"></i>Reaction WON't Occur</h4>
+            <p class="text-gray-700 text-sm">E°<sub>cell</sub> < 0 (negative)</p>
+            <p class="text-gray-600 text-xs mt-1">The reducing agent is BELOW the oxidizing agent in the electrochemical series.</p>
+            <div class="bg-white p-2 rounded mt-2 text-xs">
+              Example: Cu + Zn²⁺ → Cu²⁺ + Zn ✗
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 5: Video -->
+      <section class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <span class="bg-yellow-100 text-yellow-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">5</span>
+          Video: Standard Electrode Potentials
+        </h2>
+        
+        <div class="bg-gray-50 p-4 rounded-lg border">
+          <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/eG6xQQfRqIM" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
+        </div>
+      </section>
+
+      <!-- Practice Problems -->
+      <section class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <i class="fas fa-pencil-alt text-yellow-600 mr-3"></i>
+          Practice Problems
+        </h2>
+        
+        <div class="space-y-4">
+          <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+            <p class="font-medium text-gray-800 mb-2">1. Will silver react with copper(II) sulfate solution?</p>
+            <details class="mt-2">
+              <summary class="text-sm text-blue-600 cursor-pointer hover:text-blue-800">Show Solution</summary>
+              <div class="mt-2 text-sm text-gray-700">
+                <p>Ag⁺ + e⁻ → Ag &nbsp;&nbsp; E° = +0.80 V</p>
+                <p>Cu²⁺ + 2e⁻ → Cu &nbsp;&nbsp; E° = +0.34 V</p>
+                <p class="mt-2">For Ag to displace Cu: Ag → Ag⁺ + e⁻ (oxidation)</p>
+                <p>E°<sub>cell</sub> = (+0.34) - (+0.80) = <strong>-0.46 V</strong></p>
+                <p class="text-red-600 mt-1">Since E°<sub>cell</sub> is negative, <strong>NO reaction</strong> will occur.</p>
+              </div>
+            </details>
+          </div>
+          
+          <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+            <p class="font-medium text-gray-800 mb-2">2. Calculate the E°<sub>cell</sub> for: Mg + 2Ag⁺ → Mg²⁺ + 2Ag</p>
+            <details class="mt-2">
+              <summary class="text-sm text-blue-600 cursor-pointer hover:text-blue-800">Show Solution</summary>
+              <div class="mt-2 text-sm text-gray-700">
+                <p>Mg²⁺ + 2e⁻ → Mg &nbsp;&nbsp; E° = -2.37 V</p>
+                <p>Ag⁺ + e⁻ → Ag &nbsp;&nbsp; E° = +0.80 V</p>
+                <p class="mt-2">Mg is oxidized (anode), Ag⁺ is reduced (cathode)</p>
+                <p>E°<sub>cell</sub> = (+0.80) - (-2.37) = <strong>+3.17 V</strong></p>
+                <p class="text-green-600 mt-1">Very spontaneous reaction!</p>
+              </div>
+            </details>
+          </div>
+          
+          <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+            <p class="font-medium text-gray-800 mb-2">3. Which is the stronger oxidizing agent: Cl₂ or Br₂?</p>
+            <details class="mt-2">
+              <summary class="text-sm text-blue-600 cursor-pointer hover:text-blue-800">Show Solution</summary>
+              <div class="mt-2 text-sm text-gray-700">
+                <p>Cl₂ + 2e⁻ → 2Cl⁻ &nbsp;&nbsp; E° = +1.36 V</p>
+                <p>Br₂ + 2e⁻ → 2Br⁻ &nbsp;&nbsp; E° = +1.07 V</p>
+                <p class="mt-2"><strong>Cl₂</strong> has the more positive E° value, so it is the stronger oxidizing agent.</p>
+                <p class="text-gray-600 text-xs mt-1">Cl₂ will oxidize Br⁻ to Br₂, but Br₂ cannot oxidize Cl⁻.</p>
+              </div>
+            </details>
+          </div>
+        </div>
+      </section>
+
+      <!-- Key Takeaways -->
+      <div class="bg-gradient-to-r from-yellow-50 to-amber-50 p-5 rounded-lg border border-yellow-200">
+        <h3 class="font-semibold text-yellow-800 mb-3"><i class="fas fa-star mr-2"></i>Key Takeaways</h3>
+        <ul class="text-yellow-700 text-sm space-y-2">
+          <li>• E° values are measured relative to the Standard Hydrogen Electrode (0.00 V)</li>
+          <li>• More negative E° = stronger reducing agent (easily oxidized)</li>
+          <li>• More positive E° = stronger oxidizing agent (easily reduced)</li>
+          <li>• E°<sub>cell</sub> = E°<sub>cathode</sub> - E°<sub>anode</sub> (NEVER multiply E° values)</li>
+          <li>• If E°<sub>cell</sub> > 0, the reaction is spontaneous</li>
+        </ul>
+      </div>
+    </article>
+  </div>
+
+  <script>
+    document.querySelectorAll('.accordion-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const content = btn.nextElementSibling;
+        const icon = btn.querySelector('.fa-chevron-down');
+        content.classList.toggle('open');
+        icon.classList.toggle('rotate-180');
+      });
+    });
+  </script>
+
+<!-- Topic Tracking and Quiz System -->
+  <script type="module">
+    import { TopicTracker } from '/js/topic-tracker.js';
+    import { TopicQuiz } from '/js/topic-quiz.js';
+
+    const quizQuestions = [
+      {
+        question: "What is the standard electrode potential of the Standard Hydrogen Electrode (SHE)?",
+        options: [
+          "-1.00 V",
+          "0.00 V",
+          "+1.00 V",
+          "+2.00 V"
+        ],
+        correct: 1,
+        explanation: "The SHE is assigned E° = 0.00 V as the reference point for all other electrode potentials."
+      },
+      {
+        question: "Which element is the strongest reducing agent based on E° values?",
+        options: [
+          "Cu (E° = +0.34 V)",
+          "Zn (E° = -0.76 V)",
+          "Li (E° = -3.04 V)",
+          "Ag (E° = +0.80 V)"
+        ],
+        correct: 2,
+        explanation: "Li has the most negative E° value, making it the strongest reducing agent (most easily oxidized)."
+      },
+      {
+        question: "Calculate E°cell for: Zn + Cu²⁺ → Zn²⁺ + Cu (E°Zn = -0.76 V, E°Cu = +0.34 V)",
+        options: [
+          "-1.10 V",
+          "-0.42 V",
+          "+0.42 V",
+          "+1.10 V"
+        ],
+        correct: 3,
+        explanation: "E°cell = E°cathode - E°anode = (+0.34) - (-0.76) = +1.10 V"
+      },
+      {
+        question: "If E°cell is positive, the reaction is:",
+        options: [
+          "Non-spontaneous",
+          "Spontaneous",
+          "At equilibrium",
+          "Impossible"
+        ],
+        correct: 1,
+        explanation: "A positive E°cell indicates a spontaneous reaction that can occur without external energy."
+      },
+      {
+        question: "Which is the stronger oxidizing agent: Cl₂ (E° = +1.36 V) or Br₂ (E° = +1.07 V)?",
+        options: [
+          "Br₂ is stronger",
+          "Cl₂ is stronger",
+          "They are equal",
+          "Cannot be determined"
+        ],
+        correct: 1,
+        explanation: "Cl₂ has a more positive E° value, making it the stronger oxidizing agent (more easily reduced)."
+      },
+      {
+        question: "Will copper displace zinc from ZnSO₄ solution? (E°Cu = +0.34 V, E°Zn = -0.76 V)",
+        options: [
+          "Yes, because Cu is less reactive",
+          "No, because E°cell would be negative",
+          "Yes, because Cu has a positive E°",
+          "It depends on concentration"
+        ],
+        correct: 1,
+        explanation: "E°cell = (-0.76) - (+0.34) = -1.10 V (negative), so no reaction occurs."
+      },
+      {
+        question: "When balancing equations, should you multiply E° values?",
+        options: [
+          "Yes, always multiply by the coefficient",
+          "Yes, but only for the anode",
+          "No, never multiply E° values",
+          "Only when there are 2 or more electrons"
+        ],
+        correct: 2,
+        explanation: "E° values are intensive properties - they do NOT depend on the amount of substance, so never multiply them."
+      },
+      {
+        question: "What does a more negative E° value indicate?",
+        options: [
+          "Stronger oxidizing agent",
+          "Stronger reducing agent",
+          "More likely to be reduced",
+          "Less reactive metal"
+        ],
+        correct: 1,
+        explanation: "More negative E° means the species is more easily oxidized, making it a stronger reducing agent."
+      }
+    ];
+
+    const tracker = new TopicTracker({
+      topicId: 'standard-potentials',
+      topicTitle: 'Standard Electrode Potentials',
+      subject: 'chemistry',
+      sections: ['section-1', 'section-2', 'section-3', 'section-4', 'section-5', 'section-6'],
+      quizRequired: true
+    });
+
+    const quiz = new TopicQuiz({
+      topicId: 'standard-potentials',
+      topicTitle: 'Standard Electrode Potentials',
+      subject: 'chemistry',
+      questions: quizQuestions,
+      passingScore: 60,
+      tracker: tracker
+    });
+
+    // Track accordion opens
+    document.querySelectorAll('.accordion-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const section = btn.closest('section');
+        if (section && section.id) {
+          tracker.markSectionViewed(section.id);
+        }
+      });
+    });
+
+    // Track practice problem views
+    document.querySelectorAll('details').forEach(details => {
+      details.addEventListener('toggle', () => {
+        if (details.open) {
+          tracker.markSectionViewed('section-6');
+        }
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,88 @@
+Garbled files report
+=====================
+
+c:\Users\Hp\Downloads\Exam-Prep100\cortex-ai-vercel\node_modules\iconv-lite\encodings\sbcs-data-generated.js
+Type: REPLACEMENT_CHAR
+Snippet (hex/bytes):
+{
+    "type": "_sbcs",
+    "chars": "€����…�����������‘’“”•–—����
+
+c:\Users\Hp\Downloads\Exam-Prep100\cortex-ai-vercel\node_modules\iconv-lite\lib\index.js
+Type: REPLACEMENT_CHAR
+Snippet (hex/bytes):
+e of error.
+iconv.defaultCharUnicode = '�';
+iconv.defaultCharSingleByte = '?';
+
+// Public API.
+iconv.encode = function
+
+c:\Users\Hp\Downloads\Exam-Prep100\edunext-functions\node_modules\iconv-lite\encodings\sbcs-data-generated.js
+Type: REPLACEMENT_CHAR
+Snippet (hex/bytes):
+{
+    "type": "_sbcs",
+    "chars": "€����…�����������‘’“”•–—����
+
+c:\Users\Hp\Downloads\Exam-Prep100\edunext-functions\node_modules\iconv-lite\lib\index.js
+Type: REPLACEMENT_CHAR
+Snippet (hex/bytes):
+e of error.
+iconv.defaultCharUnicode = '�';
+iconv.defaultCharSingleByte = '?';
+
+// Public API.
+iconv.encode = function
+
+c:\Users\Hp\Downloads\Exam-Prep100\functions\cortex-ai\node_modules\iconv-lite\encodings\sbcs-data-generated.js
+Type: REPLACEMENT_CHAR
+Snippet (hex/bytes):
+{
+    "type": "_sbcs",
+    "chars": "€����…�����������‘’“”•–—����
+
+c:\Users\Hp\Downloads\Exam-Prep100\functions\cortex-ai\node_modules\iconv-lite\lib\index.js
+Type: REPLACEMENT_CHAR
+Snippet (hex/bytes):
+e of error.
+iconv.defaultCharUnicode = '�';
+iconv.defaultCharSingleByte = '?';
+
+// Public API.
+iconv.encode = function
+
+c:\Users\Hp\Downloads\Exam-Prep100\functions\node_modules\firebase-functions\node_modules\iconv-lite\encodings\sbcs-data-generated.js
+Type: REPLACEMENT_CHAR
+Snippet (hex/bytes):
+{
+    "type": "_sbcs",
+    "chars": "€����…�����������‘’“”•–—����
+
+c:\Users\Hp\Downloads\Exam-Prep100\functions\node_modules\firebase-functions\node_modules\iconv-lite\lib\index.js
+Type: REPLACEMENT_CHAR
+Snippet (hex/bytes):
+e of error.
+iconv.defaultCharUnicode = '�';
+iconv.defaultCharSingleByte = '?';
+
+// Public API.
+iconv.encode = function
+
+c:\Users\Hp\Downloads\Exam-Prep100\node_modules\iconv-lite\encodings\sbcs-data-generated.js
+Type: REPLACEMENT_CHAR
+Snippet (hex/bytes):
+{
+    "type": "_sbcs",
+    "chars": "€����…�����������‘’“”•–—����
+
+c:\Users\Hp\Downloads\Exam-Prep100\node_modules\iconv-lite\lib\index.js
+Type: REPLACEMENT_CHAR
+Snippet (hex/bytes):
+e of error.
+iconv.defaultCharUnicode = '�';
+iconv.defaultCharSingleByte = '?';
+
+// Public API.
+iconv.encode = function
+

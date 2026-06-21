@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ratios, Proportions & Rates | Mathematics</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <style> 
+    body{font-family:Inter, sans-serif}
+    .content-card{-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);background:rgba(255,255,255,0.95);border:1px solid rgba(255,255,255,0.2);} 
+    .accordion-content{max-height:0;overflow:hidden;transition:max-height 0.3s ease-out;}
+    .accordion-content.open{max-height:2000px;}
+    .step-card{transition:all 0.2s ease;}
+    .step-card:hover{transform:translateX(4px);}
+  </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-green-50 to-teal-100 p-4 md:p-6">
+  <div class="max-w-4xl mx-auto">
+    <nav class="mb-4"><a href="index.html" class="text-blue-600 hover:text-blue-800 transition"><i class="fas fa-arrow-left mr-2"></i>Back to Foundations</a></nav>
+    
+    <article class="content-card rounded-xl p-6 md:p-8 shadow-lg">
+      <!-- Header -->
+      <div class="border-b pb-4 mb-6">
+        <h1 class="text-2xl md:text-3xl font-bold text-gray-800 mb-2">
+          <i class="fas fa-divide text-green-600 mr-3"></i>Ratios, Proportions & Rates
+        </h1>
+        <p class="text-gray-600">Understanding proportional relationships, unit rates, and scaling problems in mathematics.</p>
+      </div>
+
+      <!-- Learning Objectives -->
+      <div class="bg-blue-50 border-l-4 border-blue-500 p-4 rounded-r-lg mb-6">
+        <h3 class="font-semibold text-blue-800 mb-2"><i class="fas fa-bullseye mr-2"></i>Learning Objectives</h3>
+        <ul class="text-blue-700 text-sm space-y-1">
+          <li>• Understand the concept of ratio and how to simplify it</li>
+          <li>• Solve problems involving direct and inverse proportion</li>
+          <li>• Calculate and apply unit rates to real-world problems</li>
+          <li>• Use proportional reasoning to solve scaling problems</li>
+        </ul>
+      </div>
+
+      <!-- Section 1: Understanding Ratios -->
+      <section class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <span class="bg-green-100 text-green-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">1</span>
+          Understanding Ratios
+        </h2>
+        
+        <div class="bg-gray-50 p-5 rounded-lg mb-4">
+          <p class="text-gray-700 mb-3">A <strong class="text-green-600">ratio</strong> compares two or more quantities of the same kind. It shows how many times one quantity is contained in another.</p>
+          
+          <div class="bg-white p-4 rounded-lg border border-gray-200">
+            <p class="font-semibold text-gray-800 mb-2">Writing Ratios:</p>
+            <ul class="text-gray-700 text-sm space-y-2">
+              <li><strong>Using colon:</strong> 3:4 (read as "3 to 4")</li>
+              <li><strong>Using fraction:</strong> 3/4</li>
+              <li><strong>Using words:</strong> "3 to 4" or "3 is to 4"</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Worked Example 1 -->
+        <div class="border border-gray-200 rounded-lg overflow-hidden mb-4">
+          <button class="accordion-btn w-full p-4 bg-green-50 text-left font-semibold text-green-800 flex justify-between items-center hover:bg-green-100 transition">
+            <span><i class="fas fa-lightbulb mr-2 text-yellow-500"></i>Worked Example 1: Simplifying Ratios</span>
+            <i class="fas fa-chevron-down transform transition-transform"></i>
+          </button>
+          <div class="accordion-content">
+            <div class="p-5">
+              <p class="font-medium text-gray-800 mb-3">Simplify the ratio 24:36</p>
+              
+              <div class="space-y-3">
+                <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-green-500">
+                  <p class="text-sm text-gray-600"><strong>Step 1:</strong> Find the Greatest Common Divisor (GCD) of 24 and 36</p>
+                  <p class="text-green-700 font-mono mt-1">GCD(24, 36) = 12</p>
+                </div>
+                
+                <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-green-500">
+                  <p class="text-sm text-gray-600"><strong>Step 2:</strong> Divide both numbers by the GCD</p>
+                  <p class="text-green-700 font-mono mt-1">24 ÷ 12 : 36 ÷ 12 = 2 : 3</p>
+                </div>
+                
+                <div class="bg-green-100 p-3 rounded-lg">
+                  <p class="text-green-800 font-semibold"><i class="fas fa-check-circle mr-2"></i>Answer: 2:3</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 2: Proportions -->
+      <section class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <span class="bg-green-100 text-green-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">2</span>
+          Proportions
+        </h2>
+        
+        <div class="bg-gray-50 p-5 rounded-lg mb-4">
+          <p class="text-gray-700 mb-3">A <strong class="text-green-600">proportion</strong> is a statement that two ratios are equal. When two quantities are in proportion, changing one affects the other in a predictable way.</p>
+          
+          <div class="grid md:grid-cols-2 gap-4 mt-4">
+            <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
+              <p class="font-semibold text-blue-800 mb-2">Direct Proportion</p>
+              <p class="text-sm text-blue-700">As one quantity increases, the other increases at the same rate.</p>
+              <p class="text-xs text-blue-600 mt-2 italic">Example: More items = more cost</p>
+            </div>
+            <div class="bg-purple-50 p-4 rounded-lg border border-purple-200">
+              <p class="font-semibold text-purple-800 mb-2">Inverse Proportion</p>
+              <p class="text-sm text-purple-700">As one quantity increases, the other decreases.</p>
+              <p class="text-xs text-purple-600 mt-2 italic">Example: More workers = less time to complete a task</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Worked Example 2 -->
+        <div class="border border-gray-200 rounded-lg overflow-hidden mb-4">
+          <button class="accordion-btn w-full p-4 bg-green-50 text-left font-semibold text-green-800 flex justify-between items-center hover:bg-green-100 transition">
+            <span><i class="fas fa-lightbulb mr-2 text-yellow-500"></i>Worked Example 2: Direct Proportion</span>
+            <i class="fas fa-chevron-down transform transition-transform"></i>
+          </button>
+          <div class="accordion-content">
+            <div class="p-5">
+              <p class="font-medium text-gray-800 mb-3">If 5 apples cost ₦300, how much will 8 apples cost?</p>
+              
+              <div class="space-y-3">
+                <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-green-500">
+                  <p class="text-sm text-gray-600"><strong>Step 1:</strong> Find the cost per apple (unit rate)</p>
+                  <p class="text-green-700 font-mono mt-1">₦300 ÷ 5 = ₦60 per apple</p>
+                </div>
+                
+                <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-green-500">
+                  <p class="text-sm text-gray-600"><strong>Step 2:</strong> Multiply by the required quantity</p>
+                  <p class="text-green-700 font-mono mt-1">8 × ₦60 = ₦480</p>
+                </div>
+                
+                <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-blue-500">
+                  <p class="text-sm text-gray-600"><strong>Alternative Method (Proportion):</strong></p>
+                  <p class="text-blue-700 font-mono mt-1">5 : 8 = 300 : x</p>
+                  <p class="text-blue-700 font-mono">x = (8 × 300) ÷ 5 = ₦480</p>
+                </div>
+                
+                <div class="bg-green-100 p-3 rounded-lg">
+                  <p class="text-green-800 font-semibold"><i class="fas fa-check-circle mr-2"></i>Answer: ₦480</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Worked Example 3 -->
+        <div class="border border-gray-200 rounded-lg overflow-hidden mb-4">
+          <button class="accordion-btn w-full p-4 bg-purple-50 text-left font-semibold text-purple-800 flex justify-between items-center hover:bg-purple-100 transition">
+            <span><i class="fas fa-lightbulb mr-2 text-yellow-500"></i>Worked Example 3: Inverse Proportion</span>
+            <i class="fas fa-chevron-down transform transition-transform"></i>
+          </button>
+          <div class="accordion-content">
+            <div class="p-5">
+              <p class="font-medium text-gray-800 mb-3">If 6 workers can complete a job in 10 days, how long will it take 15 workers?</p>
+              
+              <div class="space-y-3">
+                <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-purple-500">
+                  <p class="text-sm text-gray-600"><strong>Step 1:</strong> Calculate total work (worker-days)</p>
+                  <p class="text-purple-700 font-mono mt-1">6 workers × 10 days = 60 worker-days</p>
+                </div>
+                
+                <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-purple-500">
+                  <p class="text-sm text-gray-600"><strong>Step 2:</strong> Divide by new number of workers</p>
+                  <p class="text-purple-700 font-mono mt-1">60 ÷ 15 = 4 days</p>
+                </div>
+                
+                <div class="bg-purple-100 p-3 rounded-lg">
+                  <p class="text-purple-800 font-semibold"><i class="fas fa-check-circle mr-2"></i>Answer: 4 days</p>
+                  <p class="text-purple-700 text-sm mt-1">More workers = less time (inverse relationship)</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 3: Rates -->
+      <section class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <span class="bg-green-100 text-green-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">3</span>
+          Rates and Unit Rates
+        </h2>
+        
+        <div class="bg-gray-50 p-5 rounded-lg mb-4">
+          <p class="text-gray-700 mb-3">A <strong class="text-green-600">rate</strong> compares two quantities with different units. A <strong class="text-green-600">unit rate</strong> is a rate per one unit.</p>
+          
+          <div class="bg-white p-4 rounded-lg border border-gray-200 mt-3">
+            <p class="font-semibold text-gray-800 mb-2">Common Examples of Rates:</p>
+            <ul class="text-gray-700 text-sm space-y-1">
+              <li>• <strong>Speed:</strong> km/h, m/s (distance per time)</li>
+              <li>• <strong>Unit price:</strong> ₦/kg, $/item (cost per quantity)</li>
+              <li>• <strong>Productivity:</strong> items/hour (output per time)</li>
+              <li>• <strong>Heart rate:</strong> beats/minute</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Worked Example 4 -->
+        <div class="border border-gray-200 rounded-lg overflow-hidden mb-4">
+          <button class="accordion-btn w-full p-4 bg-green-50 text-left font-semibold text-green-800 flex justify-between items-center hover:bg-green-100 transition">
+            <span><i class="fas fa-lightbulb mr-2 text-yellow-500"></i>Worked Example 4: Rate Problems</span>
+            <i class="fas fa-chevron-down transform transition-transform"></i>
+          </button>
+          <div class="accordion-content">
+            <div class="p-5">
+              <p class="font-medium text-gray-800 mb-3">A car travels 180 km in 3 hours. How far will it travel in 5 hours at the same speed?</p>
+              
+              <div class="space-y-3">
+                <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-green-500">
+                  <p class="text-sm text-gray-600"><strong>Step 1:</strong> Find the rate (speed)</p>
+                  <p class="text-green-700 font-mono mt-1">Speed = 180 km ÷ 3 h = 60 km/h</p>
+                </div>
+                
+                <div class="step-card bg-gray-50 p-3 rounded border-l-4 border-green-500">
+                  <p class="text-sm text-gray-600"><strong>Step 2:</strong> Apply the rate to find distance</p>
+                  <p class="text-green-700 font-mono mt-1">Distance = 60 km/h × 5 h = 300 km</p>
+                </div>
+                
+                <div class="bg-green-100 p-3 rounded-lg">
+                  <p class="text-green-800 font-semibold"><i class="fas fa-check-circle mr-2"></i>Answer: 300 km</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Practice Problems -->
+      <section class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <i class="fas fa-pencil-alt text-blue-600 mr-3"></i>
+          Practice Problems
+        </h2>
+        
+        <div class="space-y-4">
+          <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+            <p class="font-medium text-gray-800 mb-2">1. Simplify the ratio 45:75</p>
+            <details class="mt-2">
+              <summary class="text-sm text-blue-600 cursor-pointer hover:text-blue-800">Show Solution</summary>
+              <div class="mt-2 text-sm text-gray-700">
+                <p>GCD(45, 75) = 15</p>
+                <p>45 ÷ 15 : 75 ÷ 15 = <strong>3:5</strong></p>
+              </div>
+            </details>
+          </div>
+          
+          <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+            <p class="font-medium text-gray-800 mb-2">2. If 3 pencils cost ₦120, find the cost of 7 pencils.</p>
+            <details class="mt-2">
+              <summary class="text-sm text-blue-600 cursor-pointer hover:text-blue-800">Show Solution</summary>
+              <div class="mt-2 text-sm text-gray-700">
+                <p>Unit cost = ₦120 ÷ 3 = ₦40 per pencil</p>
+                <p>Cost of 7 = 7 × ₦40 = <strong>₦280</strong></p>
+              </div>
+            </details>
+          </div>
+          
+          <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+            <p class="font-medium text-gray-800 mb-2">3. A car uses 15 litres of fuel to travel 225 km. How far can it travel on 20 litres?</p>
+            <details class="mt-2">
+              <summary class="text-sm text-blue-600 cursor-pointer hover:text-blue-800">Show Solution</summary>
+              <div class="mt-2 text-sm text-gray-700">
+                <p>Rate = 225 km ÷ 15 L = 15 km/L</p>
+                <p>Distance = 15 km/L × 20 L = <strong>300 km</strong></p>
+              </div>
+            </details>
+          </div>
+          
+          <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+            <p class="font-medium text-gray-800 mb-2">4. 4 men can paint a house in 6 days. How many days will 8 men take?</p>
+            <details class="mt-2">
+              <summary class="text-sm text-blue-600 cursor-pointer hover:text-blue-800">Show Solution</summary>
+              <div class="mt-2 text-sm text-gray-700">
+                <p>Total work = 4 × 6 = 24 man-days</p>
+                <p>Days with 8 men = 24 ÷ 8 = <strong>3 days</strong></p>
+              </div>
+            </details>
+          </div>
+          
+          <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+            <p class="font-medium text-gray-800 mb-2">5. Share ₦500 between A and B in the ratio 3:2</p>
+            <details class="mt-2">
+              <summary class="text-sm text-blue-600 cursor-pointer hover:text-blue-800">Show Solution</summary>
+              <div class="mt-2 text-sm text-gray-700">
+                <p>Total parts = 3 + 2 = 5</p>
+                <p>Value of one part = ₦500 ÷ 5 = ₦100</p>
+                <p>A gets: 3 × ₦100 = <strong>₦300</strong></p>
+                <p>B gets: 2 × ₦100 = <strong>₦200</strong></p>
+              </div>
+            </details>
+          </div>
+        </div>
+      </section>
+
+      <!-- Key Takeaways -->
+      <div class="bg-gradient-to-r from-green-50 to-teal-50 p-5 rounded-lg border border-green-200">
+        <h3 class="font-semibold text-green-800 mb-3"><i class="fas fa-star mr-2"></i>Key Takeaways</h3>
+        <ul class="text-green-700 text-sm space-y-2">
+          <li>• A ratio compares quantities of the same kind; always simplify to lowest terms</li>
+          <li>• In direct proportion, both quantities increase together</li>
+          <li>• In inverse proportion, one quantity increases as the other decreases</li>
+          <li>• A unit rate is always expressed per ONE unit (e.g., km per 1 hour)</li>
+          <li>• Cross-multiplication is useful for solving proportion problems</li>
+        </ul>
+      </div>
+    </article>
+  </div>
+
+  <script>
+    // Accordion functionality
+    document.querySelectorAll('.accordion-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const content = btn.nextElementSibling;
+        const icon = btn.querySelector('.fa-chevron-down');
+        
+        content.classList.toggle('open');
+        icon.classList.toggle('rotate-180');
+      });
+    });
+  </script>
+
+<!-- Topic Quiz System -->
+<script src="/js/topic-quiz-loader.js"></script>
+<script src="/js/topic-quiz-injector.js"></script>
+</body>
+</html>

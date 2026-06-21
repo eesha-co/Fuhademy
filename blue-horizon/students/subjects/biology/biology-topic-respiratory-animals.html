@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Respiratory Systems in Animals - WAEC Biology</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; }
+    .accordion-content.open { max-height: 2000px; }
+    .quiz-option:hover { transform: translateX(4px); }
+    .quiz-option.selected { background: #dbeafe; border-color: #3b82f6; }
+    .quiz-option.correct { background: #dcfce7; border-color: #22c55e; }
+    .quiz-option.incorrect { background: #fee2e2; border-color: #ef4444; }
+  </style>
+</head>
+<body class="bg-gradient-to-br from-sky-50 via-white to-cyan-50 min-h-screen">
+  <!-- Navigation -->
+  <nav class="sticky top-0 bg-white/80 backdrop-blur-sm border-b border-sky-100 z-50">
+    <div class="max-w-6xl mx-auto px-4 py-3">
+      <div class="flex items-center justify-between">
+        <a href="biology.html" class="text-sky-600 hover:text-sky-700 flex items-center gap-2">
+          <i class="fas fa-arrow-left"></i>
+          <span>Back to Biology</span>
+        </a>
+        <div class="flex items-center gap-4">
+          <span class="text-sm text-gray-500">WAEC SSCE Biology</span>
+          <span class="bg-sky-100 text-sky-700 px-3 py-1 rounded-full text-sm font-medium">SS1-SS3</span>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <main class="max-w-6xl mx-auto px-4 py-8">
+    <!-- Header -->
+    <header class="text-center mb-10">
+      <div class="inline-flex items-center gap-2 bg-sky-100 text-sky-700 px-4 py-2 rounded-full text-sm font-medium mb-4">
+        <i class="fas fa-lungs"></i>
+        <span>Respiration & Gas Exchange</span>
+      </div>
+      <h1 class="text-4xl font-bold text-gray-800 mb-4">Respiratory Systems in Animals</h1>
+      <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+        Learn about the different respiratory structures and mechanisms used by various animals for gas exchange. 
+        Essential topic for WAEC Biology covering adaptations and comparative anatomy.
+      </p>
+    </header>
+
+    <!-- Learning Objectives -->
+    <section class="bg-white rounded-2xl shadow-lg p-6 mb-8 border border-sky-100">
+      <div class="flex items-start gap-4">
+        <div class="w-12 h-12 bg-sky-100 rounded-xl flex items-center justify-center flex-shrink-0">
+          <i class="fas fa-bullseye text-sky-600 text-xl"></i>
+        </div>
+        <div>
+          <h2 class="text-xl font-semibold text-gray-800 mb-3">Learning Objectives</h2>
+          <p class="text-gray-600 mb-4">By the end of this lesson, you should be able to:</p>
+          <ul class="grid md:grid-cols-2 gap-3">
+            <li class="flex items-start gap-2">
+              <i class="fas fa-check-circle text-sky-500 mt-1"></i>
+              <span class="text-gray-700">Define respiration and explain its importance</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <i class="fas fa-check-circle text-sky-500 mt-1"></i>
+              <span class="text-gray-700">Identify different respiratory structures in animals</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <i class="fas fa-check-circle text-sky-500 mt-1"></i>
+              <span class="text-gray-700">Compare respiratory systems across organisms</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <i class="fas fa-check-circle text-sky-500 mt-1"></i>
+              <span class="text-gray-700">Explain the mechanism of breathing in mammals</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Main Content -->
+    <div class="grid lg:grid-cols-3 gap-8">
+      <!-- Left Column - Main Content -->
+      <div class="lg:col-span-2 space-y-6">
+        
+        <!-- Definition Section -->
+        <section class="bg-white rounded-2xl shadow-lg p-6 border border-sky-100">
+          <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-3">
+            <span class="w-8 h-8 bg-sky-500 text-white rounded-lg flex items-center justify-center text-sm">1</span>
+            What is Respiration?
+          </h2>
+          
+          <div class="bg-sky-50 rounded-xl p-5 mb-5">
+            <h3 class="font-semibold text-sky-800 mb-2">Definition</h3>
+            <p class="text-gray-700">
+              <strong>Respiration</strong> is the biochemical process by which living organisms break down glucose (or other organic molecules) to release energy for cellular activities. This energy is stored in ATP (Adenosine Triphosphate).
+            </p>
+          </div>
+
+          <div class="grid md:grid-cols-2 gap-4 mb-5">
+            <div class="bg-blue-50 rounded-xl p-4">
+              <h4 class="font-semibold text-blue-800 mb-2">
+                <i class="fas fa-wind mr-2"></i>Respiratory System vs Respiration
+              </h4>
+              <ul class="text-gray-700 space-y-1 text-sm">
+                <li>• <strong>Respiratory system:</strong> Organs involved in gas exchange</li>
+                <li>• <strong>Cellular respiration:</strong> Chemical process in cells</li>
+                <li>• <strong>Breathing:</strong> Physical movement of air</li>
+              </ul>
+            </div>
+            <div class="bg-green-50 rounded-xl p-4">
+              <h4 class="font-semibold text-green-800 mb-2">
+                <i class="fas fa-exchange-alt mr-2"></i>Gas Exchange
+              </h4>
+              <ul class="text-gray-700 space-y-1 text-sm">
+                <li>• Oxygen (O₂) enters the blood</li>
+                <li>• Carbon dioxide (CO₂) leaves the blood</li>
+                <li>• Occurs across respiratory surfaces</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Types of Respiration -->
+          <div class="bg-purple-50 rounded-xl p-5">
+            <h3 class="font-semibold text-purple-800 mb-3">
+              <i class="fas fa-atom mr-2"></i>Types of Cellular Respiration
+            </h3>
+            <div class="grid md:grid-cols-2 gap-4">
+              <div class="bg-white rounded-lg p-4 border border-purple-200">
+                <h4 class="font-semibold text-purple-700 mb-2">Aerobic Respiration</h4>
+                <p class="text-sm text-gray-600 mb-2">Requires oxygen</p>
+                <div class="bg-purple-50 rounded p-2 text-sm">
+                  <p class="font-mono text-purple-800">C₆H₁₂O₆ + 6O₂ → 6CO₂ + 6H₂O + Energy (38 ATP)</p>
+                </div>
+                <ul class="text-xs text-gray-500 mt-2 space-y-1">
+                  <li>• Complete breakdown of glucose</li>
+                  <li>• Occurs in mitochondria</li>
+                  <li>• High energy yield</li>
+                </ul>
+              </div>
+              <div class="bg-white rounded-lg p-4 border border-purple-200">
+                <h4 class="font-semibold text-purple-700 mb-2">Anaerobic Respiration</h4>
+                <p class="text-sm text-gray-600 mb-2">Without oxygen</p>
+                <div class="bg-purple-50 rounded p-2 text-sm">
+                  <p class="font-mono text-purple-800">C₆H₁₂O₆ → 2C₂H₅OH + 2CO₂ + Energy (2 ATP)</p>
+                  <p class="text-xs text-gray-500 mt-1">(In yeast - alcohol fermentation)</p>
+                </div>
+                <ul class="text-xs text-gray-500 mt-2 space-y-1">
+                  <li>• Incomplete breakdown</li>
+                  <li>• Occurs in cytoplasm</li>
+                  <li>• Low energy yield</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Respiratory Surfaces Section -->
+        <section class="bg-white rounded-2xl shadow-lg p-6 border border-sky-100">
+          <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-3">
+            <span class="w-8 h-8 bg-sky-500 text-white rounded-lg flex items-center justify-center text-sm">2</span>
+            Characteristics of Respiratory Surfaces
+          </h2>
+
+          <p class="text-gray-700 mb-4">
+            All respiratory surfaces share common features that make them efficient for gas exchange:
+          </p>
+
+          <div class="grid sm:grid-cols-2 gap-4">
+            <div class="bg-gradient-to-br from-sky-50 to-blue-50 rounded-xl p-4 border border-sky-200">
+              <div class="flex items-center gap-3 mb-2">
+                <div class="w-10 h-10 bg-sky-500 text-white rounded-full flex items-center justify-center">
+                  <i class="fas fa-expand-arrows-alt"></i>
+                </div>
+                <h4 class="font-semibold text-sky-800">Large Surface Area</h4>
+              </div>
+              <p class="text-sm text-gray-600">More space for diffusion to occur (e.g., alveoli have folded walls)</p>
+            </div>
+
+            <div class="bg-gradient-to-br from-sky-50 to-blue-50 rounded-xl p-4 border border-sky-200">
+              <div class="flex items-center gap-3 mb-2">
+                <div class="w-10 h-10 bg-sky-500 text-white rounded-full flex items-center justify-center">
+                  <i class="fas fa-compress-alt"></i>
+                </div>
+                <h4 class="font-semibold text-sky-800">Thin Walls</h4>
+              </div>
+              <p class="text-sm text-gray-600">One cell thick for short diffusion distance</p>
+            </div>
+
+            <div class="bg-gradient-to-br from-sky-50 to-blue-50 rounded-xl p-4 border border-sky-200">
+              <div class="flex items-center gap-3 mb-2">
+                <div class="w-10 h-10 bg-sky-500 text-white rounded-full flex items-center justify-center">
+                  <i class="fas fa-tint"></i>
+                </div>
+                <h4 class="font-semibold text-sky-800">Moist Surface</h4>
+              </div>
+              <p class="text-sm text-gray-600">Gases dissolve in moisture before diffusing</p>
+            </div>
+
+            <div class="bg-gradient-to-br from-sky-50 to-blue-50 rounded-xl p-4 border border-sky-200">
+              <div class="flex items-center gap-3 mb-2">
+                <div class="w-10 h-10 bg-sky-500 text-white rounded-full flex items-center justify-center">
+                  <i class="fas fa-blood"></i>
+                </div>
+                <h4 class="font-semibold text-sky-800">Rich Blood Supply</h4>
+              </div>
+              <p class="text-sm text-gray-600">Many capillaries to transport gases efficiently</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Types of Respiratory Systems -->
+        <section class="bg-white rounded-2xl shadow-lg p-6 border border-sky-100">
+          <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-3">
+            <span class="w-8 h-8 bg-sky-500 text-white rounded-lg flex items-center justify-center text-sm">3</span>
+            Types of Respiratory Systems in Animals
+          </h2>
+
+          <!-- Body Surface -->
+          <div class="mb-6 border-l-4 border-emerald-400 pl-4">
+            <h3 class="text-lg font-semibold text-gray-800 mb-3">A. Body Surface (Skin/Cutaneous Respiration)</h3>
+            <p class="text-gray-700 mb-3">Gas exchange occurs directly through the moist body surface.</p>
+            
+            <div class="grid md:grid-cols-2 gap-4">
+              <div class="bg-emerald-50 rounded-lg p-4">
+                <h4 class="font-medium text-emerald-800 mb-2">Organisms:</h4>
+                <ul class="text-gray-700 text-sm space-y-1">
+                  <li>• <strong>Amoeba</strong> - entire cell membrane</li>
+                  <li>• <strong>Earthworm</strong> - moist skin</li>
+                  <li>• <strong>Frog</strong> - skin + lungs</li>
+                  <li>• <strong>Hydra</strong> - body wall</li>
+                </ul>
+              </div>
+              <div class="bg-emerald-50 rounded-lg p-4">
+                <h4 class="font-medium text-emerald-800 mb-2">Adaptations:</h4>
+                <ul class="text-gray-700 text-sm space-y-1">
+                  <li>• Skin must remain moist</li>
+                  <li>• Mucus secretions</li>
+                  <li>• Highly vascularized skin</li>
+                  <li>• Thin epidermis</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- Gills -->
+          <div class="mb-6 border-l-4 border-blue-400 pl-4">
+            <h3 class="text-lg font-semibold text-gray-800 mb-3">B. Gills</h3>
+            <p class="text-gray-700 mb-3">Specialized structures for extracting oxygen from water.</p>
+            
+            <div class="bg-blue-50 rounded-xl p-4 mb-4">
+              <div class="flex justify-center">
+                <svg viewBox="0 0 400 200" class="w-full max-w-md">
+                  <!-- Fish body outline -->
+                  <ellipse cx="200" cy="100" rx="150" ry="60" fill="#a7f3d0" stroke="#059669" stroke-width="2"/>
+                  
+                  <!-- Gill slits -->
+                  <path d="M280 70 Q290 100 280 130" stroke="#059669" stroke-width="2" fill="none"/>
+                  <path d="M300 65 Q310 100 300 135" stroke="#059669" stroke-width="2" fill="none"/>
+                  <path d="M320 60 Q330 100 320 140" stroke="#059669" stroke-width="2" fill="none"/>
+                  
+                  <!-- Gill filaments -->
+                  <line x1="285" y1="80" x2="295" y2="85" stroke="#059669" stroke-width="1"/>
+                  <line x1="285" y1="95" x2="295" y2="100" stroke="#059669" stroke-width="1"/>
+                  <line x1="285" y1="110" x2="295" y2="115" stroke="#059669" stroke-width="1"/>
+                  
+                  <line x1="305" y1="75" x2="315" y2="80" stroke="#059669" stroke-width="1"/>
+                  <line x1="305" y1="95" x2="315" y2="100" stroke="#059669" stroke-width="1"/>
+                  <line x1="305" y1="115" x2="315" y2="120" stroke="#059669" stroke-width="1"/>
+                  
+                  <line x1="325" y1="70" x2="335" y2="75" stroke="#059669" stroke-width="1"/>
+                  <line x1="325" y1="95" x2="335" y2="100" stroke="#059669" stroke-width="1"/>
+                  <line x1="325" y1="120" x2="335" y2="125" stroke="#059669" stroke-width="1"/>
+                  
+                  <!-- Labels -->
+                  <text x="350" y="90" font-size="12" fill="#374151">Gill arch</text>
+                  <text x="350" y="110" font-size="12" fill="#374151">Gill filaments</text>
+                  
+                  <!-- Water flow arrows -->
+                  <path d="M260 50 L340 50" stroke="#0ea5e9" stroke-width="2" marker-end="url(#arrowhead)"/>
+                  <text x="280" y="40" font-size="10" fill="#0ea5e9">Water flow</text>
+                  
+                  <defs>
+                    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                      <polygon points="0 0, 10 3.5, 0 7" fill="#0ea5e9"/>
+                    </marker>
+                  </defs>
+                </svg>
+              </div>
+              <p class="text-center text-sm text-gray-600 mt-2">Structure of Fish Gills</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-4">
+              <div class="bg-white rounded-lg p-4 border border-blue-200">
+                <h4 class="font-medium text-blue-800 mb-2">Types of Gills:</h4>
+                <ul class="text-gray-700 text-sm space-y-1">
+                  <li>• <strong>External gills:</strong> Project outside body (tadpoles, some molluscs)</li>
+                  <li>• <strong>Internal gills:</strong> Inside body (fish)</li>
+                </ul>
+              </div>
+              <div class="bg-white rounded-lg p-4 border border-blue-200">
+                <h4 class="font-medium text-blue-800 mb-2">Counter-Current Flow:</h4>
+                <p class="text-gray-700 text-sm">Blood flows opposite to water flow, maintaining concentration gradient for maximum oxygen uptake.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tracheal System -->
+          <div class="mb-6 border-l-4 border-amber-400 pl-4">
+            <h3 class="text-lg font-semibold text-gray-800 mb-3">C. Tracheal System (Insects)</h3>
+            <p class="text-gray-700 mb-3">Network of tubes that carry air directly to tissues.</p>
+            
+            <div class="bg-amber-50 rounded-xl p-4 mb-4">
+              <div class="grid md:grid-cols-3 gap-4">
+                <div class="bg-white rounded-lg p-3 text-center border border-amber-200">
+                  <div class="w-8 h-8 bg-amber-500 rounded-full mx-auto mb-2 flex items-center justify-center">
+                    <span class="text-white text-xs">1</span>
+                  </div>
+                  <h5 class="font-medium text-amber-800 text-sm">Spiracles</h5>
+                  <p class="text-xs text-gray-600">Openings on body surface</p>
+                </div>
+                <div class="bg-white rounded-lg p-3 text-center border border-amber-200">
+                  <div class="w-8 h-8 bg-amber-500 rounded-full mx-auto mb-2 flex items-center justify-center">
+                    <span class="text-white text-xs">2</span>
+                  </div>
+                  <h5 class="font-medium text-amber-800 text-sm">Tracheae</h5>
+                  <p class="text-xs text-gray-600">Main tubes with rings</p>
+                </div>
+                <div class="bg-white rounded-lg p-3 text-center border border-amber-200">
+                  <div class="w-8 h-8 bg-amber-500 rounded-full mx-auto mb-2 flex items-center justify-center">
+                    <span class="text-white text-xs">3</span>
+                  </div>
+                  <h5 class="font-medium text-amber-800 text-sm">Tracheoles</h5>
+                  <p class="text-xs text-gray-600">Fine tubes to cells</p>
+                </div>
+              </div>
+            </div>
+
+            <ul class="text-gray-700 text-sm space-y-2">
+              <li><strong>Advantages:</strong> No blood needed for gas transport; direct oxygen delivery to cells</li>
+              <li><strong>Limitation:</strong> Only works for small animals due to diffusion limits</li>
+            </ul>
+          </div>
+
+          <!-- Lungs -->
+          <div class="border-l-4 border-rose-400 pl-4">
+            <h3 class="text-lg font-semibold text-gray-800 mb-3">D. Lungs</h3>
+            <p class="text-gray-700 mb-3">Internal air-filled sacs for gas exchange with blood.</p>
+            
+            <div class="grid md:grid-cols-2 gap-4">
+              <div class="bg-rose-50 rounded-lg p-4">
+                <h4 class="font-medium text-rose-800 mb-2">Found in:</h4>
+                <ul class="text-gray-700 text-sm space-y-1">
+                  <li>• Mammals (paired lungs)</li>
+                  <li>• Birds (air sacs + lungs)</li>
+                  <li>• Reptiles</li>
+                  <li>• Amphibians (simple sacs)</li>
+                  <li>• Some fish (lungfish)</li>
+                </ul>
+              </div>
+              <div class="bg-rose-50 rounded-lg p-4">
+                <h4 class="font-medium text-rose-800 mb-2">Key Features:</h4>
+                <ul class="text-gray-700 text-sm space-y-1">
+                  <li>• Internal to prevent drying</li>
+                  <li>• Alveoli increase surface area</li>
+                  <li>• Ventilation moves air in/out</li>
+                  <li>• Rich blood supply</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Mammalian Respiratory System -->
+        <section class="bg-white rounded-2xl shadow-lg p-6 border border-sky-100">
+          <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-3">
+            <span class="w-8 h-8 bg-sky-500 text-white rounded-lg flex items-center justify-center text-sm">4</span>
+            The Mammalian Respiratory System
+          </h2>
+
+          <!-- Diagram -->
+          <div class="bg-gray-50 rounded-xl p-6 mb-6">
+            <h4 class="font-semibold text-gray-800 mb-4 text-center">Structure of the Human Respiratory System</h4>
+            <div class="flex justify-center">
+              <svg viewBox="0 0 400 350" class="w-full max-w-sm">
+                <!-- Nasal cavity -->
+                <rect x="170" y="10" width="60" height="30" fill="#fef3c7" stroke="#f59e0b" stroke-width="2" rx="5"/>
+                <text x="200" y="30" font-size="10" fill="#374151" text-anchor="middle">Nasal cavity</text>
+                
+                <!-- Pharynx -->
+                <rect x="190" y="45" width="20" height="40" fill="#fed7aa" stroke="#f97316" stroke-width="2"/>
+                <text x="230" y="65" font-size="10" fill="#374151">Pharynx</text>
+                
+                <!-- Larynx -->
+                <rect x="188" y="90" width="24" height="30" fill="#fecaca" stroke="#ef4444" stroke-width="2"/>
+                <text x="235" y="108" font-size="10" fill="#374151">Larynx</text>
+                
+                <!-- Trachea -->
+                <rect x="192" y="125" width="16" height="60" fill="#e0f2fe" stroke="#0ea5e9" stroke-width="2"/>
+                <text x="235" y="155" font-size="10" fill="#374151">Trachea</text>
+                
+                <!-- Bronchi -->
+                <path d="M200 185 L160 220" stroke="#0ea5e9" stroke-width="8" fill="none"/>
+                <path d="M200 185 L240 220" stroke="#0ea5e9" stroke-width="8" fill="none"/>
+                <text x="140" y="200" font-size="10" fill="#374151">Bronchi</text>
+                
+                <!-- Left Lung -->
+                <ellipse cx="140" cy="270" rx="60" ry="80" fill="#fce7f3" stroke="#ec4899" stroke-width="2"/>
+                
+                <!-- Right Lung -->
+                <ellipse cx="260" cy="270" rx="65" ry="85" fill="#fce7f3" stroke="#ec4899" stroke-width="2"/>
+                
+                <!-- Bronchioles -->
+                <line x1="160" y1="220" x2="140" y2="250" stroke="#0ea5e9" stroke-width="3"/>
+                <line x1="240" y1="220" x2="260" y2="250" stroke="#0ea5e9" stroke-width="3"/>
+                
+                <!-- Alveoli dots -->
+                <circle cx="110" cy="280" r="8" fill="#fbcfe8" stroke="#ec4899" stroke-width="1"/>
+                <circle cx="130" cy="300" r="8" fill="#fbcfe8" stroke="#ec4899" stroke-width="1"/>
+                <circle cx="150" cy="280" r="8" fill="#fbcfe8" stroke="#ec4899" stroke-width="1"/>
+                <circle cx="240" cy="280" r="8" fill="#fbcfe8" stroke="#ec4899" stroke-width="1"/>
+                <circle cx="260" cy="300" r="8" fill="#fbcfe8" stroke="#ec4899" stroke-width="1"/>
+                <circle cx="280" cy="280" r="8" fill="#fbcfe8" stroke="#ec4899" stroke-width="1"/>
+                
+                <!-- Labels -->
+                <text x="140" y="365" font-size="12" fill="#374151" text-anchor="middle">Left Lung</text>
+                <text x="260" y="365" font-size="12" fill="#374151" text-anchor="middle">Right Lung</text>
+                
+                <!-- Diaphragm -->
+                <path d="M70 320 Q200 340 330 320" stroke="#22c55e" stroke-width="3" fill="none"/>
+                <text x="340" y="325" font-size="10" fill="#22c55e">Diaphragm</text>
+              </svg>
+            </div>
+          </div>
+
+          <!-- Parts and Functions Table -->
+          <div class="overflow-x-auto mb-6">
+            <table class="w-full border-collapse text-sm">
+              <thead>
+                <tr class="bg-sky-100">
+                  <th class="border border-sky-200 px-3 py-2 text-left font-semibold text-sky-800">Structure</th>
+                  <th class="border border-sky-200 px-3 py-2 text-left font-semibold text-sky-800">Location</th>
+                  <th class="border border-sky-200 px-3 py-2 text-left font-semibold text-sky-800">Function</th>
+                </tr>
+              </thead>
+              <tbody class="text-gray-700">
+                <tr class="hover:bg-gray-50">
+                  <td class="border border-sky-200 px-3 py-2 font-medium">Nasal cavity</td>
+                  <td class="border border-sky-200 px-3 py-2">Inside nose</td>
+                  <td class="border border-sky-200 px-3 py-2">Filters, warms, moistens air</td>
+                </tr>
+                <tr class="hover:bg-gray-50 bg-sky-50/50">
+                  <td class="border border-sky-200 px-3 py-2 font-medium">Pharynx</td>
+                  <td class="border border-sky-200 px-3 py-2">Throat</td>
+                  <td class="border border-sky-200 px-3 py-2">Passageway for air and food</td>
+                </tr>
+                <tr class="hover:bg-gray-50">
+                  <td class="border border-sky-200 px-3 py-2 font-medium">Larynx</td>
+                  <td class="border border-sky-200 px-3 py-2">Voice box</td>
+                  <td class="border border-sky-200 px-3 py-2">Contains vocal cords; produces sound</td>
+                </tr>
+                <tr class="hover:bg-gray-50 bg-sky-50/50">
+                  <td class="border border-sky-200 px-3 py-2 font-medium">Trachea</td>
+                  <td class="border border-sky-200 px-3 py-2">Windpipe</td>
+                  <td class="border border-sky-200 px-3 py-2">Carries air to lungs; C-shaped cartilage rings keep it open</td>
+                </tr>
+                <tr class="hover:bg-gray-50">
+                  <td class="border border-sky-200 px-3 py-2 font-medium">Bronchi</td>
+                  <td class="border border-sky-200 px-3 py-2">Branches of trachea</td>
+                  <td class="border border-sky-200 px-3 py-2">Carry air to each lung</td>
+                </tr>
+                <tr class="hover:bg-gray-50 bg-sky-50/50">
+                  <td class="border border-sky-200 px-3 py-2 font-medium">Bronchioles</td>
+                  <td class="border border-sky-200 px-3 py-2">Fine branches in lungs</td>
+                  <td class="border border-sky-200 px-3 py-2">Distribute air to alveoli</td>
+                </tr>
+                <tr class="hover:bg-gray-50">
+                  <td class="border border-sky-200 px-3 py-2 font-medium">Alveoli</td>
+                  <td class="border border-sky-200 px-3 py-2">Air sacs</td>
+                  <td class="border border-sky-200 px-3 py-2">Site of gas exchange</td>
+                </tr>
+                <tr class="hover:bg-gray-50 bg-sky-50/50">
+                  <td class="border border-sky-200 px-3 py-2 font-medium">Diaphragm</td>
+                  <td class="border border-sky-200 px-3 py-2">Below lungs</td>
+                  <td class="border border-sky-200 px-3 py-2">Muscle that causes breathing movements</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Alveoli Details -->
+          <div class="bg-pink-50 rounded-xl p-5 mb-6">
+            <h3 class="font-semibold text-pink-800 mb-3">
+              <i class="fas fa-circle text-pink-500 mr-2"></i>Alveoli - The Gas Exchange Surface
+            </h3>
+            <div class="grid md:grid-cols-2 gap-4">
+              <div>
+                <p class="text-gray-700 mb-2">Each lung contains about 300 million alveoli, providing a total surface area of about 70m² for gas exchange.</p>
+                <h4 class="font-medium text-pink-700 mb-2">Adaptations:</h4>
+                <ul class="text-gray-700 text-sm space-y-1">
+                  <li>• Thin walls (one cell thick)</li>
+                  <li>• Moist inner surface</li>
+                  <li>• Surrounded by capillaries</li>
+                  <li>• Large surface area</li>
+                  <li>• Excellent blood supply</li>
+                </ul>
+              </div>
+              <div class="bg-white rounded-lg p-3 border border-pink-200">
+                <h4 class="font-medium text-pink-700 mb-2">Gas Exchange in Alveoli:</h4>
+                <div class="text-sm text-gray-700">
+                  <p><strong>O₂ diffusion:</strong> Alveolar air (high O₂) → Blood (low O₂)</p>
+                  <p class="mt-2"><strong>CO₂ diffusion:</strong> Blood (high CO₂) → Alveolar air (low CO₂)</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Mechanism of Breathing -->
+        <section class="bg-white rounded-2xl shadow-lg p-6 border border-sky-100">
+          <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-3">
+            <span class="w-8 h-8 bg-sky-500 text-white rounded-lg flex items-center justify-center text-sm">5</span>
+            Mechanism of Breathing in Mammals
+          </h2>
+
+          <div class="grid md:grid-cols-2 gap-6">
+            <!-- Inspiration -->
+            <div class="bg-green-50 rounded-xl p-5 border border-green-200">
+              <h3 class="font-semibold text-green-800 mb-3 flex items-center gap-2">
+                <i class="fas fa-arrow-down text-green-600"></i>
+                Inspiration (Breathing In)
+              </h3>
+              <ol class="text-gray-700 space-y-2 text-sm">
+                <li class="flex gap-2">
+                  <span class="w-5 h-5 bg-green-500 text-white rounded-full flex items-center justify-center text-xs flex-shrink-0">1</span>
+                  <span>Diaphragm contracts and flattens</span>
+                </li>
+                <li class="flex gap-2">
+                  <span class="w-5 h-5 bg-green-500 text-white rounded-full flex items-center justify-center text-xs flex-shrink-0">2</span>
+                  <span>Intercostal muscles contract, ribs move up and out</span>
+                </li>
+                <li class="flex gap-2">
+                  <span class="w-5 h-5 bg-green-500 text-white rounded-full flex items-center justify-center text-xs flex-shrink-0">3</span>
+                  <span>Thoracic cavity volume increases</span>
+                </li>
+                <li class="flex gap-2">
+                  <span class="w-5 h-5 bg-green-500 text-white rounded-full flex items-center justify-center text-xs flex-shrink-0">4</span>
+                  <span>Pressure in lungs decreases (below atmospheric)</span>
+                </li>
+                <li class="flex gap-2">
+                  <span class="w-5 h-5 bg-green-500 text-white rounded-full flex items-center justify-center text-xs flex-shrink-0">5</span>
+                  <span>Air rushes into the lungs</span>
+                </li>
+              </ol>
+            </div>
+
+            <!-- Expiration -->
+            <div class="bg-red-50 rounded-xl p-5 border border-red-200">
+              <h3 class="font-semibold text-red-800 mb-3 flex items-center gap-2">
+                <i class="fas fa-arrow-up text-red-600"></i>
+                Expiration (Breathing Out)
+              </h3>
+              <ol class="text-gray-700 space-y-2 text-sm">
+                <li class="flex gap-2">
+                  <span class="w-5 h-5 bg-red-500 text-white rounded-full flex items-center justify-center text-xs flex-shrink-0">1</span>
+                  <span>Diaphragm relaxes and becomes dome-shaped</span>
+                </li>
+                <li class="flex gap-2">
+                  <span class="w-5 h-5 bg-red-500 text-white rounded-full flex items-center justify-center text-xs flex-shrink-0">2</span>
+                  <span>Intercostal muscles relax, ribs move down and in</span>
+                </li>
+                <li class="flex gap-2">
+                  <span class="w-5 h-5 bg-red-500 text-white rounded-full flex items-center justify-center text-xs flex-shrink-0">3</span>
+                  <span>Thoracic cavity volume decreases</span>
+                </li>
+                <li class="flex gap-2">
+                  <span class="w-5 h-5 bg-red-500 text-white rounded-full flex items-center justify-center text-xs flex-shrink-0">4</span>
+                  <span>Pressure in lungs increases (above atmospheric)</span>
+                </li>
+                <li class="flex gap-2">
+                  <span class="w-5 h-5 bg-red-500 text-white rounded-full flex items-center justify-center text-xs flex-shrink-0">5</span>
+                  <span>Air is forced out of the lungs</span>
+                </li>
+              </ol>
+            </div>
+          </div>
+
+          <!-- Summary Table -->
+          <div class="mt-6 bg-gray-50 rounded-xl p-4">
+            <h4 class="font-medium text-gray-800 mb-3">Comparison of Inspiration and Expiration</h4>
+            <div class="overflow-x-auto">
+              <table class="w-full border-collapse text-sm">
+                <thead>
+                  <tr class="bg-gray-200">
+                    <th class="border border-gray-300 px-3 py-2">Feature</th>
+                    <th class="border border-gray-300 px-3 py-2">Inspiration</th>
+                    <th class="border border-gray-300 px-3 py-2">Expiration</th>
+                  </tr>
+                </thead>
+                <tbody class="text-gray-700">
+                  <tr>
+                    <td class="border border-gray-300 px-3 py-2 font-medium">Diaphragm</td>
+                    <td class="border border-gray-300 px-3 py-2">Contracts (flattens)</td>
+                    <td class="border border-gray-300 px-3 py-2">Relaxes (dome-shaped)</td>
+                  </tr>
+                  <tr class="bg-gray-50">
+                    <td class="border border-gray-300 px-3 py-2 font-medium">Intercostal muscles</td>
+                    <td class="border border-gray-300 px-3 py-2">Contract</td>
+                    <td class="border border-gray-300 px-3 py-2">Relax</td>
+                  </tr>
+                  <tr>
+                    <td class="border border-gray-300 px-3 py-2 font-medium">Rib cage</td>
+                    <td class="border border-gray-300 px-3 py-2">Moves up and out</td>
+                    <td class="border border-gray-300 px-3 py-2">Moves down and in</td>
+                  </tr>
+                  <tr class="bg-gray-50">
+                    <td class="border border-gray-300 px-3 py-2 font-medium">Thoracic volume</td>
+                    <td class="border border-gray-300 px-3 py-2">Increases</td>
+                    <td class="border border-gray-300 px-3 py-2">Decreases</td>
+                  </tr>
+                  <tr>
+                    <td class="border border-gray-300 px-3 py-2 font-medium">Lung pressure</td>
+                    <td class="border border-gray-300 px-3 py-2">Decreases</td>
+                    <td class="border border-gray-300 px-3 py-2">Increases</td>
+                  </tr>
+                  <tr class="bg-gray-50">
+                    <td class="border border-gray-300 px-3 py-2 font-medium">Air movement</td>
+                    <td class="border border-gray-300 px-3 py-2">Into lungs</td>
+                    <td class="border border-gray-300 px-3 py-2">Out of lungs</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- Worked Examples -->
+        <section class="bg-white rounded-2xl shadow-lg p-6 border border-sky-100">
+          <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-3">
+            <span class="w-8 h-8 bg-sky-500 text-white rounded-lg flex items-center justify-center text-sm">6</span>
+            Worked Examples
+          </h2>
+
+          <div class="space-y-6">
+            <!-- Example 1 -->
+            <div class="bg-gray-50 rounded-xl p-5">
+              <div class="flex items-start gap-3 mb-3">
+                <span class="bg-sky-500 text-white px-2 py-1 rounded text-sm font-medium">WAEC 2020</span>
+                <span class="bg-blue-100 text-blue-700 px-2 py-1 rounded text-sm">Theory</span>
+              </div>
+              <p class="text-gray-800 font-medium mb-3">
+                Describe the adaptations of the alveoli for efficient gas exchange.
+              </p>
+              <div class="bg-white rounded-lg p-4 border border-gray-200">
+                <p class="font-semibold text-sky-700 mb-2">Solution:</p>
+                <ul class="text-gray-700 space-y-2 text-sm">
+                  <li><strong>1. Thin walls:</strong> One cell thick for short diffusion distance, allowing rapid gas exchange</li>
+                  <li><strong>2. Large surface area:</strong> About 300 million alveoli per lung, giving 70m² total surface area</li>
+                  <li><strong>3. Moist inner surface:</strong> Gases dissolve in the moisture before diffusing across the membrane</li>
+                  <li><strong>4. Rich blood supply:</strong> Dense network of capillaries around each alveolus maintains concentration gradient</li>
+                  <li><strong>5. Good ventilation:</strong> Continuous air flow maintains concentration gradient for oxygen and carbon dioxide</li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- Example 2 -->
+            <div class="bg-gray-50 rounded-xl p-5">
+              <div class="flex items-start gap-3 mb-3">
+                <span class="bg-sky-500 text-white px-2 py-1 rounded text-sm font-medium">WAEC 2018</span>
+                <span class="bg-blue-100 text-blue-700 px-2 py-1 rounded text-sm">Theory</span>
+              </div>
+              <p class="text-gray-800 font-medium mb-3">
+                Explain how a fish obtains oxygen from water using its gills.
+              </p>
+              <div class="bg-white rounded-lg p-4 border border-gray-200">
+                <p class="font-semibold text-sky-700 mb-2">Solution:</p>
+                <ol class="text-gray-700 space-y-2 text-sm">
+                  <li>1. Water enters through the mouth and flows over the gill filaments</li>
+                  <li>2. Each gill filament has many thin, blood-filled lamellae (plates)</li>
+                  <li>3. Blood flows through the lamellae in the opposite direction to water flow (counter-current exchange)</li>
+                  <li>4. This counter-current flow maintains a constant concentration gradient along the entire length</li>
+                  <li>5. Oxygen diffuses from water (high concentration) into blood (low concentration)</li>
+                  <li>6. Carbon dioxide diffuses from blood into water</li>
+                  <li>7. Water exits through the gill slits/operculum</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- Right Column - Sidebar -->
+      <div class="space-y-6">
+        
+        <!-- Video Resource -->
+        <section class="bg-white rounded-2xl shadow-lg overflow-hidden border border-sky-100">
+          <div class="bg-sky-500 text-white px-4 py-3">
+            <h3 class="font-semibold flex items-center gap-2">
+              <i class="fas fa-play-circle"></i>
+              Video Lesson
+            </h3>
+          </div>
+          <div class="aspect-video">
+            <iframe 
+              class="w-full h-full"
+              src="https://www.youtube.com/embed/wQ8lTV_9B0s" 
+              title="Respiratory System" 
+              frameborder="0" 
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+              allowfullscreen>
+            </iframe>
+          </div>
+          <div class="p-4">
+            <p class="text-sm text-gray-600">
+              <i class="fas fa-info-circle text-sky-500 mr-1"></i>
+              This video explains the human respiratory system in detail.
+            </p>
+          </div>
+        </section>
+
+        <!-- Quick Comparison -->
+        <section class="bg-white rounded-2xl shadow-lg p-5 border border-sky-100">
+          <h3 class="font-semibold text-gray-800 mb-4 flex items-center gap-2">
+            <i class="fas fa-balance-scale text-sky-500"></i>
+            Quick Comparison
+          </h3>
+          <div class="space-y-3 text-sm">
+            <div class="flex justify-between items-center py-2 border-b border-gray-100">
+              <span class="text-gray-700">Amoeba</span>
+              <span class="text-sky-600 font-medium">Body surface</span>
+            </div>
+            <div class="flex justify-between items-center py-2 border-b border-gray-100">
+              <span class="text-gray-700">Earthworm</span>
+              <span class="text-sky-600 font-medium">Moist skin</span>
+            </div>
+            <div class="flex justify-between items-center py-2 border-b border-gray-100">
+              <span class="text-gray-700">Fish</span>
+              <span class="text-sky-600 font-medium">Gills</span>
+            </div>
+            <div class="flex justify-between items-center py-2 border-b border-gray-100">
+              <span class="text-gray-700">Insect</span>
+              <span class="text-sky-600 font-medium">Tracheal system</span>
+            </div>
+            <div class="flex justify-between items-center py-2 border-b border-gray-100">
+              <span class="text-gray-700">Frog</span>
+              <span class="text-sky-600 font-medium">Skin + Lungs</span>
+            </div>
+            <div class="flex justify-between items-center py-2">
+              <span class="text-gray-700">Mammal</span>
+              <span class="text-sky-600 font-medium">Lungs</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- Key Terms -->
+        <section class="bg-white rounded-2xl shadow-lg p-5 border border-sky-100">
+          <h3 class="font-semibold text-gray-800 mb-4 flex items-center gap-2">
+            <i class="fas fa-book text-sky-500"></i>
+            Key Terms
+          </h3>
+          <div class="space-y-3">
+            <div class="border-l-4 border-sky-400 pl-3">
+              <p class="font-medium text-gray-800">Ventilation</p>
+              <p class="text-sm text-gray-600">Movement of air in and out of lungs</p>
+            </div>
+            <div class="border-l-4 border-sky-400 pl-3">
+              <p class="font-medium text-gray-800">Alveolus</p>
+              <p class="text-sm text-gray-600">Air sac where gas exchange occurs</p>
+            </div>
+            <div class="border-l-4 border-sky-400 pl-3">
+              <p class="font-medium text-gray-800">Hemoglobin</p>
+              <p class="text-sm text-gray-600">Red pigment that carries oxygen in blood</p>
+            </div>
+            <div class="border-l-4 border-sky-400 pl-3">
+              <p class="font-medium text-gray-800">Spiracle</p>
+              <p class="text-sm text-gray-600">Opening in insect body for air entry</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Quick Quiz -->
+        <section class="bg-white rounded-2xl shadow-lg p-5 border border-sky-100">
+          <h3 class="font-semibold text-gray-800 mb-4 flex items-center gap-2">
+            <i class="fas fa-question-circle text-sky-500"></i>
+            Quick Quiz
+          </h3>
+          <div id="quiz-container">
+            <div class="quiz-question mb-4" data-question="1">
+              <p class="text-gray-700 font-medium mb-3 text-sm">1. The respiratory organ in insects is:</p>
+              <div class="space-y-2">
+                <button onclick="selectAnswer(this, 'q1', 'a')" class="quiz-option w-full text-left px-3 py-2 border border-gray-200 rounded-lg hover:border-sky-400 transition text-sm">
+                  A. Gills
+                </button>
+                <button onclick="selectAnswer(this, 'q1', 'b')" class="quiz-option w-full text-left px-3 py-2 border border-gray-200 rounded-lg hover:border-sky-400 transition text-sm">
+                  B. Tracheal system
+                </button>
+                <button onclick="selectAnswer(this, 'q1', 'c')" class="quiz-option w-full text-left px-3 py-2 border border-gray-200 rounded-lg hover:border-sky-400 transition text-sm">
+                  C. Lungs
+                </button>
+                <button onclick="selectAnswer(this, 'q1', 'd')" class="quiz-option w-full text-left px-3 py-2 border border-gray-200 rounded-lg hover:border-sky-400 transition text-sm">
+                  D. Skin
+                </button>
+              </div>
+              <div id="feedback-q1" class="mt-2 hidden text-sm"></div>
+            </div>
+
+            <div class="quiz-question" data-question="2">
+              <p class="text-gray-700 font-medium mb-3 text-sm">2. During inspiration, the diaphragm:</p>
+              <div class="space-y-2">
+                <button onclick="selectAnswer(this, 'q2', 'a')" class="quiz-option w-full text-left px-3 py-2 border border-gray-200 rounded-lg hover:border-sky-400 transition text-sm">
+                  A. Relaxes and becomes dome-shaped
+                </button>
+                <button onclick="selectAnswer(this, 'q2', 'b')" class="quiz-option w-full text-left px-3 py-2 border border-gray-200 rounded-lg hover:border-sky-400 transition text-sm">
+                  B. Contracts and flattens
+                </button>
+                <button onclick="selectAnswer(this, 'q2', 'c')" class="quiz-option w-full text-left px-3 py-2 border border-gray-200 rounded-lg hover:border-sky-400 transition text-sm">
+                  C. Remains unchanged
+                </button>
+                <button onclick="selectAnswer(this, 'q2', 'd')" class="quiz-option w-full text-left px-3 py-2 border border-gray-200 rounded-lg hover:border-sky-400 transition text-sm">
+                  D. Contracts and becomes dome-shaped
+                </button>
+              </div>
+              <div id="feedback-q2" class="mt-2 hidden text-sm"></div>
+            </div>
+          </div>
+          <button onclick="checkAllAnswers()" class="mt-4 w-full bg-sky-500 text-white py-2 rounded-lg hover:bg-sky-600 transition font-medium text-sm">
+            Check Answers
+          </button>
+        </section>
+
+        <!-- WAEC Tips -->
+        <section class="bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl shadow-lg p-5 border border-amber-200">
+          <h3 class="font-semibold text-amber-800 mb-3 flex items-center gap-2">
+            <i class="fas fa-lightbulb text-amber-500"></i>
+            WAEC Exam Tips
+          </h3>
+          <ul class="text-gray-700 space-y-2 text-sm">
+            <li class="flex items-start gap-2">
+              <i class="fas fa-check text-amber-500 mt-1"></i>
+              <span>Know the differences between aerobic and anaerobic respiration</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <i class="fas fa-check text-amber-500 mt-1"></i>
+              <span>Be able to label diagrams of the respiratory system</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <i class="fas fa-check text-amber-500 mt-1"></i>
+              <span>Compare respiratory structures in different animals</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <i class="fas fa-check text-amber-500 mt-1"></i>
+              <span>Explain the mechanism of breathing step by step</span>
+            </li>
+          </ul>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <!-- Scripts -->
+  <script>
+    const correctAnswers = {
+      'q1': 'b',
+      'q2': 'b'
+    };
+
+    const userAnswers = {};
+
+    function selectAnswer(button, questionId, answer) {
+      const questionDiv = button.closest('.quiz-question');
+      questionDiv.querySelectorAll('.quiz-option').forEach(opt => {
+        opt.classList.remove('selected', 'correct', 'incorrect');
+      });
+      
+      button.classList.add('selected');
+      userAnswers[questionId] = answer;
+    }
+
+    function checkAllAnswers() {
+      Object.keys(correctAnswers).forEach(questionId => {
+        const feedbackDiv = document.getElementById(`feedback-${questionId}`);
+        feedbackDiv.classList.remove('hidden');
+        
+        const questionDiv = feedbackDiv.closest('.quiz-question');
+        const options = questionDiv.querySelectorAll('.quiz-option');
+        
+        options.forEach(opt => {
+          const answer = opt.textContent.trim().charAt(0).toLowerCase();
+          if (answer === correctAnswers[questionId]) {
+            opt.classList.add('correct');
+          } else if (opt.classList.contains('selected')) {
+            opt.classList.add('incorrect');
+          }
+        });
+
+        if (userAnswers[questionId] === correctAnswers[questionId]) {
+          feedbackDiv.innerHTML = '<p class="text-green-600 font-medium"><i class="fas fa-check-circle mr-1"></i>Correct!</p>';
+        } else {
+          feedbackDiv.innerHTML = `<p class="text-red-600 font-medium"><i class="fas fa-times-circle mr-1"></i>Incorrect. Answer: ${correctAnswers[questionId].toUpperCase()}</p>`;
+        }
+      });
+    }
+  </script>
+
+<!-- Topic Quiz System -->
+<script src="/js/topic-quiz-loader.js"></script>
+<script src="/js/topic-quiz-injector.js"></script>
+</body>
+</html>

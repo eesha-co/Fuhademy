@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Electrolysis Calculations - Chemistry</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @keyframes fade-in-up {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in-up { animation: fade-in-up 0.5s ease-out forwards; }
+        .section-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            border: 1px solid #e5e7eb;
+        }
+        .video-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 8px;
+            background: #f9fafb;
+        }
+        .video-container iframe {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        .math-formula {
+            font-family: 'Times New Roman', serif;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Header -->
+    <nav class="bg-white shadow-sm fixed top-0 w-full z-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center">
+                    <a href="index.html" class="text-indigo-600 hover:text-indigo-800 mr-4">
+                        <i class="fas fa-arrow-left"></i>
+                    </a>
+                    <h1 class="text-xl font-semibold text-gray-900">Electrolysis Calculations</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="text-sm text-gray-600 hidden sm:block">
+                        Progress: <span id="progressPercent">0%</span>
+                    </div>
+                    <div class="w-24 sm:w-32 h-2 bg-gray-200 rounded-full">
+                        <div id="progressBar" class="h-2 bg-indigo-500 rounded-full transition-all duration-300" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="pt-20 pb-8 px-4 max-w-5xl mx-auto">
+        <!-- Learning Objectives -->
+        <div class="bg-indigo-50 border-l-4 border-indigo-500 p-4 rounded-r-lg mb-6 animate-fade-in-up">
+            <h3 class="font-semibold text-indigo-800 mb-2"><i class="fas fa-bullseye mr-2"></i>Learning Objectives</h3>
+            <ul class="text-indigo-700 text-sm space-y-1">
+                <li>• Calculate the charge transferred using Q = I × t</li>
+                <li>• Use Faraday's constant to calculate moles of electrons</li>
+                <li>• Calculate mass of products formed during electrolysis</li>
+                <li>• Calculate volume of gases produced at electrodes</li>
+                <li>• Apply Faraday's laws of electrolysis to problems</li>
+            </ul>
+        </div>
+
+        <!-- Section 1: Basic Concepts -->
+        <div class="section-card animate-fade-in-up">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <span class="bg-indigo-100 text-indigo-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">1</span>
+                Key Equations and Constants
+            </h2>
+            
+            <div class="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-500 mb-4">
+                <h4 class="font-semibold text-blue-700 mb-2"><i class="fas fa-bolt mr-2"></i>Charge Equation</h4>
+                <p class="text-gray-600 text-sm mb-2">The total charge transferred during electrolysis is:</p>
+                <div class="bg-white p-3 rounded-lg text-center text-xl font-mono">
+                    <strong>Q = I × t</strong>
+                </div>
+                <p class="text-gray-600 text-sm mt-2">Where: Q = charge (Coulombs), I = current (Amperes), t = time (seconds)</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-4 mb-4">
+                <div class="bg-purple-50 p-4 rounded-lg border border-purple-200">
+                    <h4 class="font-semibold text-purple-700 mb-2 text-center">Faraday's Constant</h4>
+                    <div class="bg-white p-3 rounded-lg text-center">
+                        <p class="text-2xl font-bold text-purple-600">F = 96,500 C/mol</p>
+                    </div>
+                    <p class="text-gray-600 text-sm mt-2 text-center">The charge carried by 1 mole of electrons</p>
+                </div>
+                <div class="bg-green-50 p-4 rounded-lg border border-green-200">
+                    <h4 class="font-semibold text-green-700 mb-2 text-center">Molar Gas Volume</h4>
+                    <div class="bg-white p-3 rounded-lg text-center">
+                        <p class="text-2xl font-bold text-green-600">Vm = 24 dm³/mol</p>
+                    </div>
+                    <p class="text-gray-600 text-sm mt-2 text-center">Volume of 1 mole of gas at RTP (25°C, 1 atm)</p>
+                </div>
+            </div>
+
+            <div class="bg-amber-50 p-4 rounded-lg border-l-4 border-amber-500">
+                <h4 class="font-semibold text-amber-700 mb-2"><i class="fas fa-calculator mr-2"></i>Key Relationship</h4>
+                <p class="text-gray-600 text-sm">Moles of electrons = Q / F = (I × t) / 96,500</p>
+                <p class="text-gray-600 text-sm mt-1">This is the foundation for all electrolysis calculations!</p>
+            </div>
+        </div>
+
+        <!-- Section 2: Faraday's Laws -->
+        <div class="section-card animate-fade-in-up">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <span class="bg-indigo-100 text-indigo-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">2</span>
+                Faraday's Laws of Electrolysis
+            </h2>
+
+            <div class="grid md:grid-cols-2 gap-4 mb-4">
+                <div class="bg-rose-50 p-4 rounded-lg border-l-4 border-rose-500">
+                    <h4 class="font-semibold text-rose-700 mb-2">First Law</h4>
+                    <p class="text-gray-600 text-sm mb-2">The mass of substance deposited/dissolved is <strong>directly proportional</strong> to the quantity of electricity passed.</p>
+                    <div class="bg-white p-3 rounded-lg">
+                        <p class="text-center font-mono">m ∝ Q</p>
+                        <p class="text-center font-mono mt-1">m = (I × t × Ar) / (n × F)</p>
+                    </div>
+                    <p class="text-gray-500 text-xs mt-2">n = number of electrons transferred per ion</p>
+                </div>
+                <div class="bg-teal-50 p-4 rounded-lg border-l-4 border-teal-500">
+                    <h4 class="font-semibold text-teal-700 mb-2">Second Law</h4>
+                    <p class="text-gray-600 text-sm mb-2">The masses of different substances deposited by the same quantity of electricity are proportional to their <strong>equivalent weights</strong>.</p>
+                    <div class="bg-white p-3 rounded-lg">
+                        <p class="text-center font-mono">m ∝ M/n</p>
+                        <p class="text-center font-mono mt-1">Equivalent weight = Ar / n</p>
+                    </div>
+                    <p class="text-gray-500 text-xs mt-2">M = molar mass, n = charge on ion</p>
+                </div>
+            </div>
+
+            <div class="bg-gray-50 p-4 rounded-lg">
+                <h4 class="font-semibold text-gray-700 mb-2"><i class="fas fa-list-ol mr-2"></i>Common Ion Charges</h4>
+                <div class="grid grid-cols-3 md:grid-cols-6 gap-2 text-sm">
+                    <div class="bg-white p-2 rounded text-center">
+                        <p class="font-medium">Ag⁺</p>
+                        <p class="text-xs text-gray-500">n = 1</p>
+                    </div>
+                    <div class="bg-white p-2 rounded text-center">
+                        <p class="font-medium">Cu⁺</p>
+                        <p class="text-xs text-gray-500">n = 1</p>
+                    </div>
+                    <div class="bg-white p-2 rounded text-center">
+                        <p class="font-medium">Cu²⁺</p>
+                        <p class="text-xs text-gray-500">n = 2</p>
+                    </div>
+                    <div class="bg-white p-2 rounded text-center">
+                        <p class="font-medium">Pb²⁺</p>
+                        <p class="text-xs text-gray-500">n = 2</p>
+                    </div>
+                    <div class="bg-white p-2 rounded text-center">
+                        <p class="font-medium">Al³⁺</p>
+                        <p class="text-xs text-gray-500">n = 3</p>
+                    </div>
+                    <div class="bg-white p-2 rounded text-center">
+                        <p class="font-medium">Fe³⁺</p>
+                        <p class="text-xs text-gray-500">n = 3</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 3: Step-by-Step Method -->
+        <div class="section-card animate-fade-in-up">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <span class="bg-indigo-100 text-indigo-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">3</span>
+                Step-by-Step Calculation Method
+            </h2>
+
+            <div class="bg-green-50 p-4 rounded-lg border-l-4 border-green-500 mb-4">
+                <h4 class="font-semibold text-green-700 mb-3"><i class="fas fa-list-check mr-2"></i>General Steps</h4>
+                <ol class="text-gray-600 text-sm space-y-2">
+                    <li><span class="bg-green-200 text-green-800 w-6 h-6 rounded-full inline-flex items-center justify-center text-xs mr-2 font-bold">1</span>Write the balanced half-equation</li>
+                    <li><span class="bg-green-200 text-green-800 w-6 h-6 rounded-full inline-flex items-center justify-center text-xs mr-2 font-bold">2</span>Calculate charge: Q = I × t</li>
+                    <li><span class="bg-green-200 text-green-800 w-6 h-6 rounded-full inline-flex items-center justify-center text-xs mr-2 font-bold">3</span>Calculate moles of electrons: moles e⁻ = Q / F</li>
+                    <li><span class="bg-green-200 text-green-800 w-6 h-6 rounded-full inline-flex items-center justify-center text-xs mr-2 font-bold">4</span>Use the mole ratio from half-equation</li>
+                    <li><span class="bg-green-200 text-green-800 w-6 h-6 rounded-full inline-flex items-center justify-center text-xs mr-2 font-bold">5</span>Calculate mass or volume as required</li>
+                </ol>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-4">
+                <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                    <h4 class="font-semibold text-blue-700 mb-2"><i class="fas fa-weight-hanging mr-2"></i>For Mass</h4>
+                    <p class="text-gray-600 text-sm">Mass = moles × Mr</p>
+                </div>
+                <div class="bg-purple-50 p-4 rounded-lg border border-purple-200">
+                    <h4 class="font-semibold text-purple-700 mb-2"><i class="fas fa-wind mr-2"></i>For Gas Volume</h4>
+                    <p class="text-gray-600 text-sm">Volume = moles × 24 dm³ (at RTP)</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 4: Worked Example 1 -->
+        <div class="section-card animate-fade-in-up">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <span class="bg-indigo-100 text-indigo-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">4</span>
+                Worked Example: Calculating Mass
+            </h2>
+
+            <div class="bg-amber-50 p-4 rounded-lg border border-amber-200 mb-4">
+                <h4 class="font-semibold text-amber-700 mb-2">Problem</h4>
+                <p class="text-gray-700">Calculate the mass of copper deposited when a current of 2.5 A flows through CuSO₄ solution for 30 minutes.</p>
+            </div>
+
+            <div class="space-y-3">
+                <div class="bg-white p-4 rounded-lg border">
+                    <p class="font-medium text-gray-700 mb-2"><strong>Step 1:</strong> Write the half-equation</p>
+                    <p class="text-blue-600 font-mono">Cu²⁺ + 2e⁻ → Cu</p>
+                    <p class="text-gray-500 text-sm">Ratio: 2 mol e⁻ : 1 mol Cu</p>
+                </div>
+                
+                <div class="bg-white p-4 rounded-lg border">
+                    <p class="font-medium text-gray-700 mb-2"><strong>Step 2:</strong> Calculate charge</p>
+                    <p class="text-gray-600">Q = I × t = 2.5 A × (30 × 60) s</p>
+                    <p class="text-gray-600">Q = 2.5 × 1800 = <strong>4500 C</strong></p>
+                </div>
+                
+                <div class="bg-white p-4 rounded-lg border">
+                    <p class="font-medium text-gray-700 mb-2"><strong>Step 3:</strong> Calculate moles of electrons</p>
+                    <p class="text-gray-600">Moles e⁻ = Q / F = 4500 / 96500</p>
+                    <p class="text-gray-600">Moles e⁻ = <strong>0.0466 mol</strong></p>
+                </div>
+                
+                <div class="bg-white p-4 rounded-lg border">
+                    <p class="font-medium text-gray-700 mb-2"><strong>Step 4:</strong> Calculate moles of Cu</p>
+                    <p class="text-gray-600">From half-equation: 2 mol e⁻ → 1 mol Cu</p>
+                    <p class="text-gray-600">Moles Cu = 0.0466 / 2 = <strong>0.0233 mol</strong></p>
+                </div>
+                
+                <div class="bg-green-50 p-4 rounded-lg border-l-4 border-green-500">
+                    <p class="font-medium text-green-700 mb-2"><strong>Step 5:</strong> Calculate mass</p>
+                    <p class="text-gray-600">Mass Cu = moles × Ar = 0.0233 × 63.5</p>
+                    <p class="text-green-700 font-bold text-lg">Mass Cu = 1.48 g</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 5: Worked Example 2 -->
+        <div class="section-card animate-fade-in-up">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <span class="bg-indigo-100 text-indigo-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">5</span>
+                Worked Example: Calculating Gas Volume
+            </h2>
+
+            <div class="bg-amber-50 p-4 rounded-lg border border-amber-200 mb-4">
+                <h4 class="font-semibold text-amber-700 mb-2">Problem</h4>
+                <p class="text-gray-700">Calculate the volume of oxygen produced at the anode when a current of 0.5 A flows through dilute H₂SO₄ for 1 hour.</p>
+            </div>
+
+            <div class="space-y-3">
+                <div class="bg-white p-4 rounded-lg border">
+                    <p class="font-medium text-gray-700 mb-2"><strong>Step 1:</strong> Write the half-equation</p>
+                    <p class="text-blue-600 font-mono">4OH⁻ → O₂ + 2H₂O + 4e⁻</p>
+                    <p class="text-gray-500 text-sm">Ratio: 4 mol e⁻ : 1 mol O₂</p>
+                </div>
+                
+                <div class="bg-white p-4 rounded-lg border">
+                    <p class="font-medium text-gray-700 mb-2"><strong>Step 2:</strong> Calculate charge</p>
+                    <p class="text-gray-600">Q = I × t = 0.5 A × (1 × 60 × 60) s</p>
+                    <p class="text-gray-600">Q = 0.5 × 3600 = <strong>1800 C</strong></p>
+                </div>
+                
+                <div class="bg-white p-4 rounded-lg border">
+                    <p class="font-medium text-gray-700 mb-2"><strong>Step 3:</strong> Calculate moles of electrons</p>
+                    <p class="text-gray-600">Moles e⁻ = Q / F = 1800 / 96500</p>
+                    <p class="text-gray-600">Moles e⁻ = <strong>0.0187 mol</strong></p>
+                </div>
+                
+                <div class="bg-white p-4 rounded-lg border">
+                    <p class="font-medium text-gray-700 mb-2"><strong>Step 4:</strong> Calculate moles of O₂</p>
+                    <p class="text-gray-600">From half-equation: 4 mol e⁻ → 1 mol O₂</p>
+                    <p class="text-gray-600">Moles O₂ = 0.0187 / 4 = <strong>0.00467 mol</strong></p>
+                </div>
+                
+                <div class="bg-green-50 p-4 rounded-lg border-l-4 border-green-500">
+                    <p class="font-medium text-green-700 mb-2"><strong>Step 5:</strong> Calculate volume</p>
+                    <p class="text-gray-600">Volume O₂ = moles × 24 dm³</p>
+                    <p class="text-gray-600">Volume O₂ = 0.00467 × 24</p>
+                    <p class="text-green-700 font-bold text-lg">Volume O₂ = 0.112 dm³ = 112 cm³</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 6: Worked Example 3 -->
+        <div class="section-card animate-fade-in-up">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <span class="bg-indigo-100 text-indigo-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">6</span>
+                Worked Example: Finding Current or Time
+            </h2>
+
+            <div class="bg-amber-50 p-4 rounded-lg border border-amber-200 mb-4">
+                <h4 class="font-semibold text-amber-700 mb-2">Problem</h4>
+                <p class="text-gray-700">What current is needed to deposit 5.4 g of silver from AgNO₃ solution in 2 hours?</p>
+            </div>
+
+            <div class="space-y-3">
+                <div class="bg-white p-4 rounded-lg border">
+                    <p class="font-medium text-gray-700 mb-2"><strong>Step 1:</strong> Write the half-equation</p>
+                    <p class="text-blue-600 font-mono">Ag⁺ + e⁻ → Ag</p>
+                    <p class="text-gray-500 text-sm">Ratio: 1 mol e⁻ : 1 mol Ag</p>
+                </div>
+                
+                <div class="bg-white p-4 rounded-lg border">
+                    <p class="font-medium text-gray-700 mb-2"><strong>Step 2:</strong> Calculate moles of Ag</p>
+                    <p class="text-gray-600">Moles Ag = mass / Ar = 5.4 / 108</p>
+                    <p class="text-gray-600">Moles Ag = <strong>0.05 mol</strong></p>
+                </div>
+                
+                <div class="bg-white p-4 rounded-lg border">
+                    <p class="font-medium text-gray-700 mb-2"><strong>Step 3:</strong> Calculate moles of electrons</p>
+                    <p class="text-gray-600">From half-equation: 1 mol Ag requires 1 mol e⁻</p>
+                    <p class="text-gray-600">Moles e⁻ = <strong>0.05 mol</strong></p>
+                </div>
+                
+                <div class="bg-white p-4 rounded-lg border">
+                    <p class="font-medium text-gray-700 mb-2"><strong>Step 4:</strong> Calculate charge</p>
+                    <p class="text-gray-600">Q = moles e⁻ × F = 0.05 × 96500</p>
+                    <p class="text-gray-600">Q = <strong>4825 C</strong></p>
+                </div>
+                
+                <div class="bg-green-50 p-4 rounded-lg border-l-4 border-green-500">
+                    <p class="font-medium text-green-700 mb-2"><strong>Step 5:</strong> Calculate current</p>
+                    <p class="text-gray-600">Q = I × t → I = Q / t</p>
+                    <p class="text-gray-600">t = 2 hours = 2 × 60 × 60 = 7200 s</p>
+                    <p class="text-gray-600">I = 4825 / 7200</p>
+                    <p class="text-green-700 font-bold text-lg">I = 0.67 A</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 7: Video -->
+        <div class="section-card animate-fade-in-up">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <span class="bg-indigo-100 text-indigo-700 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold">7</span>
+                Video: Electrolysis Calculations
+            </h2>
+            
+            <div class="bg-gray-50 p-4 rounded-lg border">
+                <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/PmNiE5qCmiU" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 8: Practice Problems -->
+        <div class="section-card animate-fade-in-up">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-pencil-alt text-indigo-600 mr-3"></i>
+                Practice Questions
+            </h2>
+
+            <div class="space-y-4">
+                <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+                    <p class="font-medium text-gray-800 mb-2">1. Calculate the mass of lead deposited when a current of 3 A flows through molten PbBr₂ for 1 hour.</p>
+                    <details class="mt-2">
+                        <summary class="text-sm text-blue-600 cursor-pointer hover:text-blue-800">Show Answer</summary>
+                        <div class="mt-2 text-sm text-gray-700">
+                            <strong>Half-equation:</strong> Pb²⁺ + 2e⁻ → Pb (2 mol e⁻ : 1 mol Pb)<br>
+                            <strong>Q = I × t = 3 × 3600 = 10,800 C</strong><br>
+                            <strong>Moles e⁻ = 10800/96500 = 0.112 mol</strong><br>
+                            <strong>Moles Pb = 0.112/2 = 0.056 mol</strong><br>
+                            <strong>Mass Pb = 0.056 × 207 = 11.6 g</strong>
+                        </div>
+                    </details>
+                </div>
+
+                <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+                    <p class="font-medium text-gray-800 mb-2">2. What volume of hydrogen gas (at RTP) is produced at the cathode when a current of 5 A passes through dilute H₂SO₄ for 20 minutes?</p>
+                    <details class="mt-2">
+                        <summary class="text-sm text-blue-600 cursor-pointer hover:text-blue-800">Show Answer</summary>
+                        <div class="mt-2 text-sm text-gray-700">
+                            <strong>Half-equation:</strong> 2H⁺ + 2e⁻ → H₂ (2 mol e⁻ : 1 mol H₂)<br>
+                            <strong>Q = I × t = 5 × (20 × 60) = 6000 C</strong><br>
+                            <strong>Moles e⁻ = 6000/96500 = 0.0622 mol</strong><br>
+                            <strong>Moles H₂ = 0.0622/2 = 0.0311 mol</strong><br>
+                            <strong>Volume H₂ = 0.0311 × 24 = 0.746 dm³ = 746 cm³</strong>
+                        </div>
+                    </details>
+                </div>
+
+                <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+                    <p class="font-medium text-gray-800 mb-2">3. How long must a current of 2 A flow to deposit 3.18 g of copper from CuSO₄ solution?</p>
+                    <details class="mt-2">
+                        <summary class="text-sm text-blue-600 cursor-pointer hover:text-blue-800">Show Answer</summary>
+                        <div class="mt-2 text-sm text-gray-700">
+                            <strong>Half-equation:</strong> Cu²⁺ + 2e⁻ → Cu (2 mol e⁻ : 1 mol Cu)<br>
+                            <strong>Moles Cu = 3.18/63.5 = 0.05 mol</strong><br>
+                            <strong>Moles e⁻ = 0.05 × 2 = 0.1 mol</strong><br>
+                            <strong>Q = 0.1 × 96500 = 9650 C</strong><br>
+                            <strong>t = Q/I = 9650/2 = 4825 s = 80.4 min = 1 hour 20 min</strong>
+                        </div>
+                    </details>
+                </div>
+
+                <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+                    <p class="font-medium text-gray-800 mb-2">4. A current of 1.5 A flows through AgNO₃ solution. Calculate the mass of silver deposited in 45 minutes.</p>
+                    <details class="mt-2">
+                        <summary class="text-sm text-blue-600 cursor-pointer hover:text-blue-800">Show Answer</summary>
+                        <div class="mt-2 text-sm text-gray-700">
+                            <strong>Half-equation:</strong> Ag⁺ + e⁻ → Ag (1 mol e⁻ : 1 mol Ag)<br>
+                            <strong>Q = I × t = 1.5 × (45 × 60) = 4050 C</strong><br>
+                            <strong>Moles e⁻ = 4050/96500 = 0.042 mol</strong><br>
+                            <strong>Moles Ag = 0.042 mol (same ratio)</strong><br>
+                            <strong>Mass Ag = 0.042 × 108 = 4.54 g</strong>
+                        </div>
+                    </details>
+                </div>
+            </div>
+        </div>
+
+        <!-- Key Takeaways -->
+        <div class="bg-gradient-to-r from-indigo-50 to-purple-50 p-5 rounded-lg border border-indigo-200 animate-fade-in-up">
+            <h3 class="font-semibold text-indigo-800 mb-3"><i class="fas fa-star mr-2"></i>Key Takeaways</h3>
+            <ul class="text-indigo-700 text-sm space-y-2">
+                <li>• Q = I × t (charge = current × time in seconds)</li>
+                <li>• Moles of electrons = Q / 96,500 (Faraday's constant)</li>
+                <li>• Always write the half-equation to find the mole ratio</li>
+                <li>• Mass = moles × Mr; Gas volume = moles × 24 dm³</li>
+                <li>• The number of electrons (n) equals the ion charge</li>
+            </ul>
+        </div>
+
+        <!-- Navigation -->
+        <div class="flex justify-between items-center mt-8">
+            <a href="discharge-factors.html" class="px-4 py-2 text-gray-600 hover:text-gray-900">
+                <i class="fas fa-chevron-left mr-2"></i>Previous
+            </a>
+            <a href="faradays-laws.html" class="px-4 py-2 bg-indigo-500 text-white rounded-lg hover:bg-indigo-600">
+                Next: Faraday's Laws<i class="fas fa-chevron-right ml-2"></i>
+            </a>
+        </div>
+    </main>
+
+    <script>
+        // Progress tracking
+        let progress = 0;
+        const totalSections = 8;
+        
+        function updateProgress() {
+            const percentage = Math.round((progress / totalSections) * 100);
+            document.getElementById('progressPercent').textContent = percentage + '%';
+            document.getElementById('progressBar').style.width = percentage + '%';
+        }
+
+        // Intersection Observer for progress
+        const sections = document.querySelectorAll('.section-card');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    progress = Array.from(sections).indexOf(entry.target) + 1;
+                    updateProgress();
+                }
+            });
+        }, { threshold: 0.5 });
+
+        sections.forEach(section => observer.observe(section));
+    </script>
+
+<!-- Topic Quiz System -->
+<script src="/js/topic-quiz-loader.js"></script>
+<script src="/js/topic-quiz-injector.js"></script>
+</body>
+</html>

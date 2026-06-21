@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Favicon -->
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+
+  <script src='https://8x8.vc/vpaas-magic-cookie-29d1aa3d1dd04579a28364a8dfdabc89/external_api.js'></script>
+  <script src="video-modal.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quick Links</title>
+  <link rel="stylesheet" href="../general/styles.css">
+  <style>
+    body { font-family: 'Open Sans', Arial, sans-serif; background: #f5f6fa; }
+    .canvas-layout {
+      display: flex;
+      min-height: 100vh;
+    }
+    .canvas-sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 220px;
+      height: 100vh;
+      background: #1a2236;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem 0 1rem 0;
+      box-shadow: 2px 0 12px rgba(45,59,69,0.12);
+      z-index: 100;
+      border-right: 1px solid #232b3e;
+      overflow-y: auto;
+    }
+    .canvas-sidebar .canvas-logo {
+      margin-bottom: 2.5rem;
+      width: 56px;
+      height: 56px;
+      border-radius: 16px;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.2rem;
+      color: #1a2236;
+      font-weight: bold;
+      box-shadow: 0 2px 8px rgba(45,59,69,0.10);
+    }
+    .canvas-sidebar nav {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+      width: 100%;
+      align-items: center;
+    }
+    .canvas-sidebar nav a {
+      width: 90%;
+      min-width: 80px;
+      height: 56px;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: flex-start;
+      color: #fff;
+      font-size: 1.3rem;
+      border-radius: 10px;
+      background: none;
+      transition: background 0.2s, color 0.2s;
+      text-decoration: none;
+      position: relative;
+      margin-bottom: 0.2rem;
+      padding-left: 1.2rem;
+      gap: 0.7rem;
+    }
+    .canvas-sidebar nav a .menu-label {
+      display: inline-block;
+      font-size: 1rem;
+      font-weight: 600;
+      color: #eaf2ff;
+      margin-left: 0.5rem;
+      text-align: left;
+      letter-spacing: 0.01em;
+    }
+    .canvas-sidebar nav a.active, .canvas-sidebar nav a:hover {
+      background: #fff;
+      color: #2d3b45;
+      box-shadow: 0 2px 8px rgba(45,59,69,0.10);
+    }
+    .canvas-footer {
+      margin-top: auto;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding-bottom: 1rem;
+    }
+    .quick-links-container {
+      flex: 1;
+      margin-left: 220px;
+      min-height: 100vh;
+      background: #f5f6fa;
+      display: flex;
+      align-items: stretch;
+      justify-content: flex-start;
+    }
+    .links-container { max-width: 600px; margin: 2rem auto; background: #fff; border-radius: 12px; box-shadow: 0 2px 8px rgba(45,59,69,0.06); padding: 2rem; }
+    .link-item { background: #e1f5fe; border-radius: 8px; padding: 1rem; margin-bottom: 1rem; display: flex; align-items: center; justify-content: space-between; }
+    .link-item a { color: #2d7ff9; text-decoration: underline; font-weight: 600; }
+    .link-item button { background: none; border: none; color: #d32f2f; font-size: 1.1rem; cursor: pointer; }
+    .add-link { width: 60%; padding: 0.7rem; border-radius: 8px; border: 1px solid #e3e6ea; margin-bottom: 1rem; }
+    .add-btn { background: #2d7ff9; color: #fff; border: none; border-radius: 8px; padding: 0.7rem 1.2rem; cursor: pointer; font-weight: 600; margin-left: 0.5rem; }
+    @media (max-width: 900px) {
+      .canvas-layout { flex-direction: column; }
+      .canvas-sidebar { flex-direction: row; width: 100vw; height: 70px; padding: 0 1rem; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Modal for video call, hidden by default. Managed by video-modal.js -->
+  <style>
+    #video-modal {
+      display: none;
+      position: fixed;
+      z-index: 9999;
+      right: 24px;
+      bottom: 24px;
+      width: 420px;
+      height: 340px;
+      background: rgba(0,0,0,0.15);
+      align-items: flex-end;
+      justify-content: flex-end;
+    }
+    #video-modal-content {
+      background: #222;
+      border-radius: 12px;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.18);
+      padding: 0.5rem 0.5rem 0.5rem 0.5rem;
+      position: relative;
+      width: 400px;
+      height: 300px;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+    }
+    #close-video-modal {
+      position: absolute;
+      top: 6px;
+      right: 10px;
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 1.5rem;
+      cursor: pointer;
+      z-index: 2;
+    }
+  /* Removed empty ruleset for #video-modal-jitsi */
+</style>
+<div class="canvas-layout">
+    <aside class="canvas-sidebar">
+      <div class="canvas-logo" title="Canvas">🖼️</div>
+      <nav>
+        <a href="../teacher-dashboard-literature.html" title="Dashboard">🏠<span class="menu-label">Dashboard</span></a>
+        <a href="sticky-notes.html" title="Sticky Notes">📝<span class="menu-label">Sticky Notes</span></a>
+        <a href="todo-list.html" title="To-Do List">✅<span class="menu-label">To-Do List</span></a>
+        <a href="timer.html" title="Timer">⏲️<span class="menu-label">Timer</span></a>
+        <a href="lesson-planner.html" title="Lesson Planner">📅<span class="menu-label">Lesson Planner</span></a>
+        <a href="quick-links.html" title="Quick Links">🔗<span class="menu-label">Quick Links</span></a>
+        <a href="#" id="toggle-theme" title="Toggle Dark/Light Mode">🌓<span class="menu-label">Theme</span></a>
+        <a href="literature-live-session.html" title="Host Live Session">🎥<span class="menu-label">Host Live Session</span></a>
+    <div class="quick-links-container">
+      <!-- quick links content here -->
+    </div>
+      </nav>
+      <div class="canvas-footer">
+        <button title="Open Settings" class="settings-btn"></button>
+      </div>
+      <!-- Sidebar ends here -->
+    </aside>
+    <div class="quick-links-container">
+      <!-- quick links content here -->
+    </div>
+  </div>
+</body>
+      </div>
+    </aside>
+    <div class="links-container">
+      <h2>Quick Links</h2>
+      <input id="linkInput" class="add-link" placeholder="Paste or type a URL..." />
+      <button class="add-btn" onclick="addLink()">Add Link</button>
+      <div id="linksList"></div>
+    </div>
+  </div>
+  <script>
+    function getLinks() {
+      return JSON.parse(localStorage.getItem('teacherLinks') || '[]');
+    }
+    function saveLinks(links) {
+      localStorage.setItem('teacherLinks', JSON.stringify(links));
+    }
+    function renderLinks() {
+      const links = getLinks();
+      const linksList = document.getElementById('linksList');
+      linksList.innerHTML = '';
+      links.forEach((link, idx) => {
+        const div = document.createElement('div');
+        div.className = 'link-item';
+        div.innerHTML = `<a href="${link}" target="_blank">${link}</a><button onclick="deleteLink(${idx})">&times;</button>`;
+        linksList.appendChild(div);
+      });
+    }
+    function addLink() {
+      const input = document.getElementById('linkInput');
+      const value = input.value.trim();
+      if (value) {
+        const links = getLinks();
+        links.unshift(value);
+        saveLinks(links);
+        input.value = '';
+        renderLinks();
+      }
+    }
+    function deleteLink(idx) {
+      const links = getLinks();
+      links.splice(idx, 1);
+      saveLinks(links);
+      renderLinks();
+    }
+    renderLinks();
+  </script>
+</body>
+</html>

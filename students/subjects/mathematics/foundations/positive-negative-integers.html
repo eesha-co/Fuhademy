@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Positive & Negative Integers | Mathematics</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style> body{font-family:Inter, sans-serif}.content-card{-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);background:rgba(255,255,255,0.9);border:1px solid rgba(255,255,255,0.2);} .accordion-content{max-height:0;overflow:hidden;transition:max-height 0.3s ease-out;}.accordion-content.open{max-height:2000px;} </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-green-50 to-teal-100 p-6">
+  <div class="max-w-4xl mx-auto">
+    <nav class="mb-4"><a href="index.html" class="text-blue-600 hover:text-blue-800 font-medium"><i class="fas fa-arrow-left mr-2"></i>Back to Foundations</a></nav>
+    
+    <article class="content-card rounded-xl shadow-lg p-6 md:p-8">
+      <header class="mb-6 border-b pb-4">
+        <h1 class="text-2xl md:text-3xl font-bold text-gray-800 mb-2">Positive & Negative Integers</h1>
+        <p class="text-gray-600">Master the fundamental operations with positive and negative integers - a crucial foundation for algebra and advanced mathematics.</p>
+      </header>
+
+      <!-- Learning Objectives -->
+      <div class="bg-blue-50 border-l-4 border-blue-500 p-4 rounded-r-lg mb-6">
+        <h3 class="font-semibold text-blue-800 mb-2"><i class="fas fa-bullseye mr-2"></i>Learning Objectives</h3>
+        <ul class="text-sm text-blue-700 space-y-1">
+          <li>• Understand and represent integers on a number line</li>
+          <li>• Compare and order integers (including absolute value)</li>
+          <li>• Perform addition, subtraction, multiplication, and division with integers</li>
+          <li>• Apply integer operations to solve real-world problems</li>
+        </ul>
+      </div>
+
+      <!-- Section 1: Introduction to Integers -->
+      <section class="mb-8">
+        <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+          <span class="bg-green-500 text-white rounded-full w-8 h-8 flex items-center justify-center mr-3 text-sm">1</span>
+          What are Integers?
+        </h2>
+        
+        <p class="text-gray-700 mb-4">Integers are whole numbers that can be positive, negative, or zero. They do not include fractions or decimals.</p>
+        
+        <div class="bg-gray-100 p-4 rounded-lg mb-4 text-center">
+          <p class="font-mono text-lg text-gray-800">Integers = {..., -3, -2, -1, 0, 1, 2, 3, ...}</p>
+          <div class="flex justify-center gap-4 mt-3">
+            <span class="bg-red-100 text-red-700 px-3 py-1 rounded">Negative Integers</span>
+            <span class="bg-gray-200 text-gray-700 px-3 py-1 rounded">Zero</span>
+            <span class="bg-green-100 text-green-700 px-3 py-1 rounded">Positive Integers</span>
+          </div>
+        </div>
+
+        <!-- Number Line Visual -->
+        <div class="bg-white p-4 rounded-lg border mb-4">
+          <h4 class="font-semibold text-gray-700 mb-3">The Number Line</h4>
+          <svg viewBox="0 0 600 80" class="w-full h-20">
+            <!-- Line -->
+            <line x1="30" y1="40" x2="570" y2="40" stroke="#374151" stroke-width="2"/>
+            <!-- Arrow -->
+            <polygon points="570,40 560,35 560,45" fill="#374151"/>
+            <polygon points="30,40 40,35 40,45" fill="#374151"/>
+            <!-- Tick marks and numbers -->
+            <g font-size="14" text-anchor="middle">
+              <line x1="90" y1="35" x2="90" y2="45" stroke="#374151" stroke-width="1.5"/>
+              <text x="90" y="60" fill="#dc2626">-5</text>
+              
+              <line x1="140" y1="35" x2="140" y2="45" stroke="#374151" stroke-width="1.5"/>
+              <text x="140" y="60" fill="#dc2626">-4</text>
+              
+              <line x1="190" y1="35" x2="190" y2="45" stroke="#374151" stroke-width="1.5"/>
+              <text x="190" y="60" fill="#dc2626">-3</text>
+              
+              <line x1="240" y1="35" x2="240" y2="45" stroke="#374151" stroke-width="1.5"/>
+              <text x="240" y="60" fill="#dc2626">-2</text>
+              
+              <line x1="290" y1="35" x2="290" y2="45" stroke="#374151" stroke-width="1.5"/>
+              <text x="290" y="60" fill="#dc2626">-1</text>
+              
+              <line x1="340" y1="35" x2="340" y2="45" stroke="#374151" stroke-width="2"/>
+              <text x="340" y="60" fill="#374151" font-weight="bold">0</text>
+              
+              <line x1="390" y1="35" x2="390" y2="45" stroke="#374151" stroke-width="1.5"/>
+              <text x="390" y="60" fill="#16a34a">1</text>
+              
+              <line x1="440" y1="35" x2="440" y2="45" stroke="#374151" stroke-width="1.5"/>
+              <text x="440" y="60" fill="#16a34a">2</text>
+              
+              <line x1="490" y1="35" x2="490" y2="45" stroke="#374151" stroke-width="1.5"/>
+              <text x="490" y="60" fill="#16a34a">3</text>
+              
+              <line x1="540" y1="35" x2="540" y2="45" stroke="#374151" stroke-width="1.5"/>
+              <text x="540" y="60" fill="#16a34a">4</text>
+            </g>
+          </svg>
+          <p class="text-sm text-gray-500 text-center mt-2">Numbers increase as you move right, decrease as you move left</p>
+        </div>
+
+        <!-- Key Concept -->
+        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-r-lg mb-4">
+          <h4 class="font-semibold text-yellow-800 mb-1"><i class="fas fa-lightbulb mr-2"></i>Key Concept</h4>
+          <p class="text-sm text-yellow-700">Numbers further to the RIGHT on the number line are GREATER. Numbers further to the LEFT are SMALLER.</p>
+          <p class="text-sm text-yellow-700 mt-1">Example: -2 is greater than -5 (because -2 is to the right of -5 on the number line)</p>
+        </div>
+      </section>
+
+      <!-- Section 2: Absolute Value -->
+      <section class="mb-8">
+        <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+          <span class="bg-purple-500 text-white rounded-full w-8 h-8 flex items-center justify-center mr-3 text-sm">2</span>
+          Absolute Value
+        </h2>
+        
+        <p class="text-gray-700 mb-4">The absolute value of a number is its distance from zero on the number line, regardless of direction. It is always positive or zero.</p>
+        
+        <div class="bg-gray-100 p-4 rounded-lg mb-4 text-center">
+          <p class="font-mono text-lg text-gray-800">|a| = the absolute value of a</p>
+          <div class="grid grid-cols-2 gap-4 mt-3">
+            <div class="bg-white p-3 rounded">
+              <p class="font-mono text-xl text-purple-600">|-5| = 5</p>
+              <p class="text-xs text-gray-500">Distance from 0 is 5 units</p>
+            </div>
+            <div class="bg-white p-3 rounded">
+              <p class="font-mono text-xl text-purple-600">|7| = 7</p>
+              <p class="text-xs text-gray-500">Distance from 0 is 7 units</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 3: Addition and Subtraction -->
+      <section class="mb-8">
+        <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+          <span class="bg-blue-500 text-white rounded-full w-8 h-8 flex items-center justify-center mr-3 text-sm">3</span>
+          Addition and Subtraction Rules
+        </h2>
+        
+        <div class="grid md:grid-cols-2 gap-4 mb-4">
+          <div class="bg-green-50 p-4 rounded-lg border border-green-200">
+            <h4 class="font-semibold text-green-800 mb-2"><i class="fas fa-plus mr-2"></i>Addition Rules</h4>
+            <ul class="text-sm text-gray-700 space-y-2">
+              <li><strong>Same signs:</strong> Add the absolute values, keep the sign</li>
+              <li class="font-mono bg-white p-2 rounded">(-3) + (-5) = -8</li>
+              <li><strong>Different signs:</strong> Subtract the smaller absolute value from the larger, keep the sign of the larger</li>
+              <li class="font-mono bg-white p-2 rounded">(-7) + 4 = -3</li>
+            </ul>
+          </div>
+          <div class="bg-red-50 p-4 rounded-lg border border-red-200">
+            <h4 class="font-semibold text-red-800 mb-2"><i class="fas fa-minus mr-2"></i>Subtraction Rule</h4>
+            <p class="text-sm text-gray-700 mb-2"><strong>Key:</strong> Subtracting is the same as adding the opposite!</p>
+            <ul class="text-sm text-gray-700 space-y-2">
+              <li class="font-mono bg-white p-2 rounded">8 - (-3) = 8 + 3 = 11</li>
+              <li class="font-mono bg-white p-2 rounded">-5 - 7 = -5 + (-7) = -12</li>
+              <li class="font-mono bg-white p-2 rounded">-2 - (-6) = -2 + 6 = 4</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Worked Example -->
+        <div class="border border-gray-200 rounded-lg overflow-hidden mb-4">
+          <button class="accordion-btn w-full flex items-center justify-between p-4 bg-gray-50 hover:bg-gray-100" onclick="toggleAccordion(this)">
+            <span class="font-semibold text-gray-700"><i class="fas fa-calculator text-blue-500 mr-2"></i>Worked Example: Complex Addition</span>
+            <i class="fas fa-chevron-down transition-transform"></i>
+          </button>
+          <div class="accordion-content">
+            <div class="p-4 bg-white">
+              <p class="font-medium text-gray-800 mb-3">Problem: Calculate -15 + 8 - (-12) + (-5)</p>
+              <div class="space-y-2 text-gray-700">
+                <p><strong>Step 1:</strong> Convert all subtractions to additions</p>
+                <div class="bg-gray-50 p-3 rounded font-mono">-15 + 8 + 12 + (-5)</div>
+                <p><strong>Step 2:</strong> Group positive and negative numbers</p>
+                <div class="bg-gray-50 p-3 rounded font-mono">
+                  Positive: 8 + 12 = 20<br>
+                  Negative: -15 + (-5) = -20
+                </div>
+                <p><strong>Step 3:</strong> Add the results</p>
+                <div class="bg-gray-50 p-3 rounded font-mono">20 + (-20) = 0</div>
+                <p class="text-green-600 font-semibold mt-2"><strong>Answer:</strong> 0</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 4: Multiplication and Division -->
+      <section class="mb-8">
+        <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+          <span class="bg-orange-500 text-white rounded-full w-8 h-8 flex items-center justify-center mr-3 text-sm">4</span>
+          Multiplication and Division Rules
+        </h2>
+        
+        <div class="bg-gray-100 p-4 rounded-lg mb-4">
+          <h4 class="font-semibold text-gray-800 mb-3 text-center">Sign Rules for Multiplication and Division</h4>
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-2 text-center">
+            <div class="bg-green-100 p-3 rounded">
+              <p class="font-mono text-lg">(+)(+) = +</p>
+              <p class="text-xs text-gray-600">Pos × Pos = Pos</p>
+            </div>
+            <div class="bg-green-100 p-3 rounded">
+              <p class="font-mono text-lg">(-)(-) = +</p>
+              <p class="text-xs text-gray-600">Neg × Neg = Pos</p>
+            </div>
+            <div class="bg-red-100 p-3 rounded">
+              <p class="font-mono text-lg">(+)(-) = -</p>
+              <p class="text-xs text-gray-600">Pos × Neg = Neg</p>
+            </div>
+            <div class="bg-red-100 p-3 rounded">
+              <p class="font-mono text-lg">(-)(+) = -</p>
+              <p class="text-xs text-gray-600">Neg × Pos = Neg</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-blue-50 border-l-4 border-blue-400 p-4 rounded-r-lg mb-4">
+          <h4 class="font-semibold text-blue-800 mb-1"><i class="fas fa-lightbulb mr-2"></i>Memory Tip</h4>
+          <p class="text-sm text-blue-700"><strong>"Same signs = Positive, Different signs = Negative"</strong></p>
+          <p class="text-sm text-blue-700 mt-1">Like signs attract (become positive), unlike signs repel (become negative)!</p>
+        </div>
+
+        <!-- Worked Examples -->
+        <div class="border border-gray-200 rounded-lg overflow-hidden mb-4">
+          <button class="accordion-btn w-full flex items-center justify-between p-4 bg-gray-50 hover:bg-gray-100" onclick="toggleAccordion(this)">
+            <span class="font-semibold text-gray-700"><i class="fas fa-calculator text-orange-500 mr-2"></i>Worked Example: Order of Operations</span>
+            <i class="fas fa-chevron-down transition-transform"></i>
+          </button>
+          <div class="accordion-content">
+            <div class="p-4 bg-white">
+              <p class="font-medium text-gray-800 mb-3">Problem: Calculate -3 × (4 - 7) + 5</p>
+              <div class="space-y-2 text-gray-700">
+                <p><strong>Step 1:</strong> Solve inside the brackets first (BODMAS)</p>
+                <div class="bg-gray-50 p-3 rounded font-mono">(4 - 7) = -3</div>
+                <p><strong>Step 2:</strong> Perform the multiplication</p>
+                <div class="bg-gray-50 p-3 rounded font-mono">-3 × (-3) = 9</div>
+                <p><strong>Step 3:</strong> Complete the addition</p>
+                <div class="bg-gray-50 p-3 rounded font-mono">9 + 5 = 14</div>
+                <p class="text-green-600 font-semibold mt-2"><strong>Answer:</strong> 14</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Division Example -->
+        <div class="border border-gray-200 rounded-lg overflow-hidden mb-4">
+          <button class="accordion-btn w-full flex items-center justify-between p-4 bg-gray-50 hover:bg-gray-100" onclick="toggleAccordion(this)">
+            <span class="font-semibold text-gray-700"><i class="fas fa-calculator text-orange-500 mr-2"></i>Worked Example: Division</span>
+            <i class="fas fa-chevron-down transition-transform"></i>
+          </button>
+          <div class="accordion-content">
+            <div class="p-4 bg-white">
+              <p class="font-medium text-gray-800 mb-3">Problem: Calculate (-48) ÷ (-6)</p>
+              <div class="space-y-2 text-gray-700">
+                <p><strong>Apply the sign rule:</strong> Negative ÷ Negative = Positive</p>
+                <div class="bg-gray-50 p-3 rounded font-mono">(-48) ÷ (-6) = 48 ÷ 6 = 8</div>
+                <p class="text-green-600 font-semibold mt-2"><strong>Answer:</strong> 8</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 5: Real World Applications -->
+      <section class="mb-8">
+        <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+          <i class="fas fa-globe text-teal-500 mr-3"></i>
+          Real-World Applications
+        </h2>
+        
+        <div class="grid md:grid-cols-2 gap-4">
+          <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
+            <h4 class="font-semibold text-blue-800 mb-2"><i class="fas fa-temperature-low mr-2"></i>Temperature</h4>
+            <p class="text-sm text-gray-700">Temperatures can be positive (above freezing) or negative (below freezing).</p>
+            <p class="text-sm text-gray-600 mt-2 font-mono">If it's -5°C and rises by 8°C: -5 + 8 = 3°C</p>
+          </div>
+          <div class="bg-green-50 p-4 rounded-lg border border-green-200">
+            <h4 class="font-semibold text-green-800 mb-2"><i class="fas fa-money-bill mr-2"></i>Banking</h4>
+            <p class="text-sm text-gray-700">Positive = deposits/credits, Negative = withdrawals/debts</p>
+            <p class="text-sm text-gray-600 mt-2 font-mono">Account: -₦500 + ₦1000 = +₦500</p>
+          </div>
+          <div class="bg-purple-50 p-4 rounded-lg border border-purple-200">
+            <h4 class="font-semibold text-purple-800 mb-2"><i class="fas fa-mountain mr-2"></i>Elevation</h4>
+            <p class="text-sm text-gray-700">Above sea level = positive, Below sea level = negative</p>
+            <p class="text-sm text-gray-600 mt-2">Dead Sea: -430m, Mt. Everest: +8,849m</p>
+          </div>
+          <div class="bg-orange-50 p-4 rounded-lg border border-orange-200">
+            <h4 class="font-semibold text-orange-800 mb-2"><i class="fas fa-football-ball mr-2"></i>Sports</h4>
+            <p class="text-sm text-gray-700">Goal difference: Goals scored (positive) vs. conceded (negative)</p>
+            <p class="text-sm text-gray-600 mt-2 font-mono">+15 - 8 = +7 goal difference</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Interactive Practice -->
+      <section class="mb-8">
+        <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+          <i class="fas fa-calculator text-teal-500 mr-3"></i>
+          Interactive Practice
+        </h2>
+        
+        <div class="bg-teal-50 p-4 rounded-lg border border-teal-200">
+          <p class="text-center text-gray-700 mb-4">Solve each problem and check your answer:</p>
+          
+          <div class="space-y-4">
+            <div class="bg-white p-4 rounded-lg">
+              <p class="font-medium text-gray-800">1. Calculate: (-8) ÷ 2 + |-3|</p>
+              <div class="mt-3 flex gap-2">
+                <input type="text" id="practice1" placeholder="Your answer" class="flex-grow p-2 border rounded">
+                <button onclick="checkAnswer(1, '-1')" class="px-4 py-2 bg-teal-600 text-white rounded hover:bg-teal-700">Check</button>
+              </div>
+              <p id="feedback1" class="mt-2 text-sm"></p>
+            </div>
+
+            <div class="bg-white p-4 rounded-lg">
+              <p class="font-medium text-gray-800">2. Order from smallest to largest: -1, 3, 0, -5, 2</p>
+              <div class="mt-3 flex gap-2">
+                <input type="text" id="practice2" placeholder="e.g., -5, -1, 0, 2, 3" class="flex-grow p-2 border rounded">
+                <button onclick="checkAnswer(2, '-5, -1, 0, 2, 3')" class="px-4 py-2 bg-teal-600 text-white rounded hover:bg-teal-700">Check</button>
+              </div>
+              <p id="feedback2" class="mt-2 text-sm"></p>
+            </div>
+
+            <div class="bg-white p-4 rounded-lg">
+              <p class="font-medium text-gray-800">3. Calculate: (-4) × (-3) - 10</p>
+              <div class="mt-3 flex gap-2">
+                <input type="text" id="practice3" placeholder="Your answer" class="flex-grow p-2 border rounded">
+                <button onclick="checkAnswer(3, '2')" class="px-4 py-2 bg-teal-600 text-white rounded hover:bg-teal-700">Check</button>
+              </div>
+              <p id="feedback3" class="mt-2 text-sm"></p>
+            </div>
+
+            <div class="bg-white p-4 rounded-lg">
+              <p class="font-medium text-gray-800">4. Evaluate: 15 - (-7) + (-4)</p>
+              <div class="mt-3 flex gap-2">
+                <input type="text" id="practice4" placeholder="Your answer" class="flex-grow p-2 border rounded">
+                <button onclick="checkAnswer(4, '18')" class="px-4 py-2 bg-teal-600 text-white rounded hover:bg-teal-700">Check</button>
+              </div>
+              <p id="feedback4" class="mt-2 text-sm"></p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Summary -->
+      <section class="bg-gradient-to-r from-green-100 to-teal-100 p-6 rounded-lg">
+        <h3 class="font-bold text-gray-800 mb-3"><i class="fas fa-clipboard-list mr-2"></i>Quick Reference Rules</h3>
+        <div class="grid md:grid-cols-2 gap-4 text-sm">
+          <div class="bg-white/70 p-3 rounded">
+            <p class="font-semibold text-green-700 mb-2">Addition</p>
+            <p>• Same signs: Add and keep sign</p>
+            <p>• Different signs: Subtract, use sign of larger absolute value</p>
+          </div>
+          <div class="bg-white/70 p-3 rounded">
+            <p class="font-semibold text-red-700 mb-2">Subtraction</p>
+            <p>• Change subtraction to addition of opposite</p>
+            <p>• a - b = a + (-b)</p>
+          </div>
+          <div class="bg-white/70 p-3 rounded">
+            <p class="font-semibold text-blue-700 mb-2">Multiplication</p>
+            <p>• Same signs = Positive result</p>
+            <p>• Different signs = Negative result</p>
+          </div>
+          <div class="bg-white/70 p-3 rounded">
+            <p class="font-semibold text-purple-700 mb-2">Division</p>
+            <p>• Same signs = Positive result</p>
+            <p>• Different signs = Negative result</p>
+          </div>
+        </div>
+      </section>
+    </article>
+  </div>
+
+  <script>
+    // Accordion toggle function
+    function toggleAccordion(button) {
+      const content = button.nextElementSibling;
+      const icon = button.querySelector('.fa-chevron-down');
+      content.classList.toggle('open');
+      icon.classList.toggle('rotate-180');
+    }
+
+    // Answer checker
+    function checkAnswer(questionNum, correctAnswer) {
+      const userAnswer = document.getElementById('practice' + questionNum).value.trim().replace(/\s/g, '');
+      const feedback = document.getElementById('feedback' + questionNum);
+      const correctNormalized = correctAnswer.replace(/\s/g, '');
+      
+      if (userAnswer === correctNormalized) {
+        feedback.innerHTML = '<span class="text-green-600 font-semibold"><i class="fas fa-check-circle mr-1"></i>Correct! Well done!</span>';
+      } else {
+        feedback.innerHTML = '<span class="text-red-600"><i class="fas fa-times-circle mr-1"></i>Not quite. The correct answer is ' + correctAnswer + '</span>';
+      }
+    }
+  </script>
+<!-- Topic Quiz System -->
+<script src="/js/topic-quiz-loader.js"></script>
+<script src="/js/topic-quiz-injector.js"></script>
+</body>
+</html>
