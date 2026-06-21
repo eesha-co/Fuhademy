@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+  <head>
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Physics — Simulations</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-slate-50 min-h-screen text-slate-800">
+    <div class="p-8 max-w-4xl mx-auto">
+      <div class="bg-white p-6 rounded-lg shadow">
+        <h1 class="text-2xl font-semibold mb-2">Simulations</h1>
+        <p class="text-sm text-slate-600">Embed simulation links (PhET or external) and open them in an iframe for demonstration.</p>
+        <div class="mt-4">
+          <input id="simUrl" class="w-full rounded-md border p-2 mb-2" placeholder="https://... (PhET or other)" />
+          <div class="flex gap-2">
+            <button id="addSim" class="px-4 py-2 bg-indigo-600 text-white rounded-md">Add Simulation</button>
+            <button id="openSim" class="px-4 py-2 border rounded-md">Open Selected</button>
+          </div>
+        </div>
+        <h2 class="mt-6 font-medium">Saved Simulations</h2>
+        <div id="sims" class="mt-3 space-y-2"></div>
+  <div id="simFrameWrap" class="mt-4 hidden"><iframe id="simFrame" title="Simulation preview" src="" class="w-full h-96 border rounded-md"></iframe></div>
+      </div>
+    </div>
+    <script>
+      const SIM_K = 'physics_sims_v1';
+      function getSims(){ return JSON.parse(localStorage.getItem(SIM_K)||'[]'); }
+      function saveSims(v){ localStorage.setItem(SIM_K, JSON.stringify(v)); }
+      function renderSims(){ const out=document.getElementById('sims'); out.innerHTML=''; getSims().forEach((s,i)=>{ const d=document.createElement('div'); d.className='flex items-center justify-between p-2 bg-slate-50 rounded'; d.innerHTML = `<div class="text-sm text-indigo-700 truncate max-w-[70%]"><a href="${s.url}" target="_blank">${s.url}</a></div><div class="flex gap-2"><button data-i="${i}" class="text-sm text-indigo-600" data-action="open">Open</button><button data-i="${i}" class="text-sm text-red-600" data-action="del">Delete</button></div>`; out.appendChild(d); }); }
+      document.getElementById('addSim').addEventListener('click', ()=>{ const u=document.getElementById('simUrl').value.trim(); if(!u) return alert('Paste a URL'); const a=getSims(); a.unshift({url:u}); saveSims(a); document.getElementById('simUrl').value=''; renderSims(); });
+      document.getElementById('sims').addEventListener('click', e=>{ const b=e.target; if(!b.dataset) return; const i=Number(b.dataset.i); if(b.dataset.action==='del'){ const a=getSims(); a.splice(i,1); saveSims(a); renderSims(); } if(b.dataset.action==='open'){ const s=getSims()[i]; if(!s) return; document.getElementById('simFrame').src = s.url; document.getElementById('simFrameWrap').style.display='block'; } });
+      document.getElementById('openSim').addEventListener('click', ()=>{ const first = getSims()[0]; if(first){ document.getElementById('simFrame').src=first.url; document.getElementById('simFrameWrap').style.display='block'; } else alert('No saved simulations'); });
+      renderSims();
+    </script>
+  </body>
+</html>

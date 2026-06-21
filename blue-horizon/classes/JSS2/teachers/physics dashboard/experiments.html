@@ -1,0 +1,493 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Physics — Experiments</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+  </head>
+  <body class="bg-slate-50 min-h-screen text-slate-800">
+    <div class="p-6 max-w-7xl mx-auto">
+      <!-- Top Navigation Bar -->
+      <nav class="mb-6 flex items-center justify-between bg-white rounded-lg shadow-sm p-4">
+        <!-- Breadcrumb -->
+        <div class="flex items-center space-x-2 text-sm">
+          <a href="../teacher-dashboard-physics.html" class="text-slate-600 hover:text-slate-800">Physics Dashboard</a>
+          <span class="text-slate-400">/</span>
+          <span class="text-slate-800 font-medium">Experiments</span>
+        </div>
+
+        <!-- Three-dot Menu -->
+        <div class="relative" id="menuContainer">
+          <button id="menuButton" class="p-2 hover:bg-slate-100 rounded-full transition-colors" aria-label="Open menu" title="Open menu">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-slate-600" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+              <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" />
+            </svg>
+          </button>
+
+          <!-- Dropdown Menu -->
+          <div id="dropdownMenu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10 border">
+            <a href="resources.html" class="flex items-center px-4 py-2 text-sm text-slate-700 hover:bg-slate-100">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                <path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z"/>
+              </svg>
+              Resources & Videos
+            </a>
+            <a href="syllabus.html" class="flex items-center px-4 py-2 text-sm text-slate-700 hover:bg-slate-100">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" />
+                <path fill-rule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clip-rule="evenodd" />
+              </svg>
+              WAEC Syllabus
+            </a>
+            <a href="past-questions.html" class="flex items-center px-4 py-2 text-sm text-slate-700 hover:bg-slate-100">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" />
+              </svg>
+              Past Questions
+            </a>
+            <a href="discussion.html" class="flex items-center px-4 py-2 text-sm text-slate-700 hover:bg-slate-100">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M18 10c0 3.866-3.582 7-8 7a8.841 8.841 0 01-4.083-.98L2 17l1.338-3.123C2.493 12.767 2 11.434 2 10c0-3.866 3.582-7 8-7s8 3.134 8 7zM7 9H5v2h2V9zm8 0h-2v2h2V9zM9 9h2v2H9V9z" clip-rule="evenodd" />
+              </svg>
+              Discussion Forum
+            </a>
+            <hr class="my-1 border-slate-200">
+            <a href="settings.html" class="flex items-center px-4 py-2 text-sm text-slate-700 hover:bg-slate-100">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd" />
+              </svg>
+              Settings
+            </a>
+          </div>
+        </div>
+      </nav>
+
+      <header class="mb-4">
+        <h1 class="text-2xl font-semibold">Physics Practicals Hub</h1>
+        <p class="text-sm text-slate-600">Access and study WAEC/NECO practical experiments with detailed guides and resources.</p>
+      </header>
+
+      <div class="max-w-7xl mx-auto">
+        <!-- Landing hero + cards grid (modernized landing page) -->
+        <section>
+          <div class="bg-gradient-to-r from-indigo-600 to-sky-500 text-white rounded-lg p-8 shadow-lg transform hover:scale-[1.02] transition-all duration-300">
+            <div class="max-w-4xl mx-auto">
+              <h1 class="text-3xl sm:text-4xl font-extrabold animate-fade-in">Experiments Hub</h1>
+              <p class="mt-2 text-slate-100 animate-fade-in delay-100">Browse WAEC & NECO practicals, open the experiment page to run the guided practical.</p>
+              <div class="mt-4 flex gap-3 animate-fade-in delay-200">
+                <a href="#cardsGrid" class="bg-white text-sky-600 px-4 py-2 rounded font-semibold hover:bg-sky-50 transition-colors">Browse Practicals</a>
+                <a href="./teachers/physics dashboard/experiments-pendulum.html" class="bg-white bg-opacity-20 border border-white/30 text-white px-4 py-2 rounded hover:bg-white hover:bg-opacity-30 transition-colors">Open Pendulum Demo</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Search bar -->
+          <div class="mt-6 mb-4">
+            <input id="expSearch" type="search" placeholder="Search experiments..." class="w-full max-w-md mx-auto block border rounded-lg p-3 shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" />
+          </div>
+
+          <div id="cardsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-6"></div>
+        </section>
+
+        <style>
+          @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+          }
+          .animate-fade-in {
+            opacity: 0;
+            animation: fadeIn 0.6s ease-out forwards;
+          }
+          .delay-100 { animation-delay: 100ms; }
+          .delay-200 { animation-delay: 200ms; }
+        </style>
+      </div>
+    </div>
+
+    <script>
+      // Helper for HTML escaping
+      function escapeHtml(s){ return (s||'').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;'); }
+
+      // Prioritized WAEC/NECO experiments list
+      const examExperiments = [
+        // Mechanics (Priority 1)
+        { id:'pendulum', title:'Simple Pendulum (g)', area:'Mechanics', description:'Measure period for different lengths, plot T^2 vs L to determine g.', apparatus:['String','Bob (mass)','Clamp & stand','Stopwatch','Ruler'], priority: 1},
+        { id:'moments', title:'Principle of Moments', area:'Mechanics', description:'Balance a meter rule on a knife edge, suspend masses and verify moments.', apparatus:['Meter rule','Knife edge','Slotted masses','Mass hanger','Stand & clamp'], priority: 1},
+        { id:'hooke', title:"Hooke's Law", area:'Mechanics', description:'Measure extension vs load for a helical spring.', apparatus:['Helical spring','Mass hanger','Slotted masses','Ruler','Clamp'], priority: 1},
+        { id:'equilibrium', title:'Equilibrium of Forces', area:'Mechanics', description:'Use a force board, pulleys, and masses to find resultant forces.', apparatus:['Force board','Pulleys','Slotted masses','Newton balance','Strings'], priority: 1},
+        
+        // Optics (Priority 2)
+        { id:'refraction_prism', title:'Refraction through a Triangular Prism', area:'Optics', description:'Trace a ray and calculate refractive index.', apparatus:['Triangular prism','Optical pins','Ray box','Protractor','Paper'], priority: 2},
+        { id:'refraction_block', title:'Refraction through Rectangular Block', area:'Optics', description:'Trace a ray through a rectangular block to determine refractive index.', apparatus:['Rectangular glass block','Optical pins','Ray box','Protractor','Paper'], priority: 2},
+        { id:'focal_length', title:'Focal Length (Converging Lens)', area:'Optics', description:'Use object-screen method to determine focal length.', apparatus:['Converging lens','Screen','Illuminated object (wire gauze)','Ruler','Lens holder'], priority: 2},
+        
+        // Electricity (Priority 3)
+        { id:'ohm', title:"Ohm's Law", area:'Electricity', description:'Measure V and I for a resistor and plot V vs I.', apparatus:['Resistor','Ammeter','Voltmeter','Power supply','Connecting wires'], priority: 3},
+        { id:'metre_bridge', title:'Metre Bridge', area:'Electricity', description:'Use metre bridge to find unknown resistance.', apparatus:['Metre bridge','Known resistors','Jockey','Galvanometer','Connecting wires'], priority: 3},
+        { id:'potentiometer', title:'Potentiometer', area:'Electricity', description:'Compare e.m.f. of cells or determine internal resistance.', apparatus:['Potentiometer wire','Standard cell','Test cell','Galvanometer','Battery'], priority: 3},
+        
+        // Heat (Priority 4)
+        { id:'specific_heat', title:'Specific Heat Capacity', area:'Heat', description:'Use calorimetry to determine specific heat.', apparatus:['Calorimeter','Heater','Thermometer','Balance','Water sample'], priority: 4}
+      ];
+
+      // Render cards grid with animations and lazy-loaded icons
+      const cardsGrid = document.getElementById('cardsGrid');
+      const expSearch = document.getElementById('expSearch');
+
+      // Sort experiments by area priority
+      examExperiments.sort((a, b) => a.priority - b.priority);
+
+      function renderLandingCards(filter) {
+        if (!cardsGrid) return;
+        cardsGrid.innerHTML = '';
+
+        // Group by area to maintain priority order
+        const grouped = examExperiments.reduce((acc, exp) => {
+          if (!acc[exp.area]) acc[exp.area] = [];
+          acc[exp.area].push(exp);
+          return acc;
+        }, {});
+
+        // Render cards in priority order
+        ['Mechanics', 'Optics', 'Electricity', 'Heat'].forEach(area => {
+          if (!grouped[area]) return;
+          
+          grouped[area].forEach(ex => {
+            if (filter) {
+              const f = filter.toLowerCase();
+              if (!(ex.title.toLowerCase().includes(f) || 
+                  ex.description.toLowerCase().includes(f) || 
+                  ex.area.toLowerCase().includes(f))) {
+                return;
+              }
+            }
+
+            const card = document.createElement('a');
+            card.href = `./experiments-${ex.id}.html`;
+            card.className = 'block bg-white rounded-lg shadow p-4 hover:shadow-lg transition-all duration-300 hover:scale-[1.02] opacity-0';
+            card.style.animation = `fadeIn 0.6s ease-out ${0.1 * cardsGrid.children.length}s forwards`;
+
+            const iconPlaceholder = `<div class="w-8 h-8 rounded bg-slate-100 mb-3"></div>`;
+            
+            card.innerHTML = `
+              ${iconPlaceholder}
+              <div class="flex items-center justify-between">
+                <div>
+                  <h3 class="font-semibold">${escapeHtml(ex.title)}</h3>
+                  <div class="text-xs text-slate-500">${escapeHtml(ex.area)}</div>
+                </div>
+                <div class="text-sky-500 text-sm hover:text-sky-600 transition-colors">Open ↗</div>
+              </div>
+              <p class="mt-2 text-sm text-slate-600">${escapeHtml(ex.description)}</p>
+            `;
+
+            // Add intersection observer for lazy loading animations
+            const observer = new IntersectionObserver((entries) => {
+              entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                  entry.target.classList.add('opacity-100');
+                  observer.unobserve(entry.target);
+                }
+              });
+            });
+
+            cardsGrid.appendChild(card);
+            observer.observe(card);
+          });
+        });
+      }
+
+      // Initial render
+      renderLandingCards();
+
+      // Search functionality
+      if (expSearch) {
+        expSearch.addEventListener('input', () => {
+          const value = expSearch.value || '';
+          renderLandingCards(value);
+        });
+      }
+
+      // Menu functionality
+      const menuButton = document.getElementById('menuButton');
+      const dropdownMenu = document.getElementById('dropdownMenu');
+      const menuContainer = document.getElementById('menuContainer');
+
+      // Toggle menu
+      menuButton.addEventListener('click', (e) => {
+        e.stopPropagation();
+        dropdownMenu.classList.toggle('hidden');
+        
+        // Add active state to button
+        menuButton.classList.toggle('bg-slate-100');
+      });
+
+      // Close menu when clicking outside
+      document.addEventListener('click', (e) => {
+        if (!menuContainer.contains(e.target)) {
+          dropdownMenu.classList.add('hidden');
+          menuButton.classList.remove('bg-slate-100');
+        }
+      });
+
+      // Handle keyboard navigation
+      menuButton.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          dropdownMenu.classList.toggle('hidden');
+          menuButton.classList.toggle('bg-slate-100');
+        } else if (e.key === 'Escape') {
+          dropdownMenu.classList.add('hidden');
+          menuButton.classList.remove('bg-slate-100');
+        }
+      });
+
+      // Add hover animation to menu items
+      const menuItems = dropdownMenu.querySelectorAll('a');
+      menuItems.forEach(item => {
+        item.addEventListener('mouseenter', () => {
+          item.classList.add('transform', 'translate-x-1', 'transition-transform');
+        });
+        item.addEventListener('mouseleave', () => {
+          item.classList.remove('transform', 'translate-x-1');
+        });
+      });
+
+      // render apparatus list for a given experiment id
+      const apparatusList = document.getElementById('apparatusList');
+      // SVG icons for realistic appearance (simple stylized illustrations)
+      const ICONS = {
+        'Mass': `<svg width="48" height="36" viewBox="0 0 48 36" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="6" y="8" width="36" height="20" rx="3" fill="#1f2937"/><rect x="10" y="12" width="28" height="12" rx="2" fill="#111827" opacity="0.08"/></svg>`,
+        'Slotted masses': `<svg width="48" height="36" viewBox="0 0 48 36"><rect x="10" y="8" width="28" height="20" rx="2" fill="#6b7280"/></svg>`,
+        'Helical spring': `<svg width="48" height="36" viewBox="0 0 48 36"><path d="M6 18c4-8 8 8 12 0s8-8 12 0 8 8 12 0" stroke="#374151" stroke-width="2" fill="none" stroke-linecap="round"/></svg>`,
+        'Spring': `<svg width="48" height="36" viewBox="0 0 48 36"><path d="M6 18c4-8 8 8 12 0s8-8 12 0 8 8 12 0" stroke="#374151" stroke-width="2" fill="none" stroke-linecap="round"/></svg>`,
+        'String': `<svg width="48" height="36" viewBox="0 0 48 36"><line x1="24" y1="4" x2="24" y2="32" stroke="#374151" stroke-width="2" stroke-linecap="round"/></svg>`,
+        'Bob (mass)': `<svg width="48" height="36" viewBox="0 0 48 36"><circle cx="24" cy="20" r="8" fill="#111827"/></svg>`,
+        'Resistor': `<svg width="48" height="36" viewBox="0 0 48 36"><rect x="12" y="12" width="24" height="12" rx="2" fill="#f97316"/></svg>`,
+        'Battery': `<svg width="48" height="36" viewBox="0 0 48 36"><rect x="6" y="8" width="28" height="20" rx="2" fill="#fde68a"/><rect x="36" y="12" width="6" height="12" rx="1" fill="#f59e0b"/></svg>`,
+        'Converging lens': `<svg width="48" height="36" viewBox="0 0 48 36"><path d="M12 4 Q24 18 12 32" stroke="#111827" stroke-width="2" fill="none"/><path d="M36 4 Q24 18 36 32" stroke="#111827" stroke-width="2" fill="none"/></svg>`,
+        'Lens': `<svg width="48" height="36" viewBox="0 0 48 36"><path d="M12 4 Q24 18 12 32" stroke="#111827" stroke-width="2" fill="none"/><path d="M36 4 Q24 18 36 32" stroke="#111827" stroke-width="2" fill="none"/></svg>`,
+        'Meter rule': `<svg width="48" height="36" viewBox="0 0 48 36"><rect x="4" y="16" width="40" height="4" rx="2" fill="#d1d5db"/></svg>`,
+        'Knife edge': `<svg width="48" height="36" viewBox="0 0 48 36"><path d="M8 26 L24 10 L40 26" stroke="#111827" stroke-width="2" fill="#6b7280"/></svg>`,
+        'Stopwatch': `<svg width="48" height="36" viewBox="0 0 48 36"><circle cx="24" cy="18" r="10" fill="#fff" stroke="#111827"/><rect x="22" y="6" width="4" height="6" fill="#111827"/></svg>`
+      };
+
+      function renderApparatus(id){
+        apparatusList.innerHTML='';
+        const ex = examExperiments.find(x=>x.id===id);
+        if(!ex) return;
+        const title = document.createElement('div'); title.className='font-semibold mb-1'; title.textContent = 'Apparatus for: ' + ex.title; apparatusList.appendChild(title);
+        (ex.apparatus||[]).forEach(item=>{
+          const row=document.createElement('div'); row.className='flex justify-between items-center py-1 border-b';
+          const icon = ICONS[item] || ICONS['Mass'] || '';
+          row.innerHTML = `<div class="flex items-center gap-2"><div class="w-12 h-8">${icon}</div><div class="text-sm">${escapeHtml(item)}</div></div><div><button data-item="${escapeHtml(item)}" class="addItem text-xs px-2 py-0.5 border rounded text-green-600">Add</button></div>`;
+          apparatusList.appendChild(row);
+        });
+        // populate palette with these apparatus as clickable items
+        const pal = document.getElementById('palette'); pal.innerHTML=''; (ex.apparatus||[]).forEach(item=>{
+          const btn = document.createElement('button'); btn.className='p-2 bg-sky-50 rounded border flex items-center gap-2'; btn.dataset.item = item; btn.innerHTML = `<div class="w-6 h-4">${ICONS[item] || ''}</div><div class="text-xs">${escapeHtml(item)}</div>`; btn.addEventListener('click', ()=> addApparatusToCanvas(item)); pal.appendChild(btn);
+        });
+      }
+
+      // add apparatus to canvas with mapping
+      function addApparatusToCanvas(name){ const mapping = {
+        'String':'pendulum','Bob (mass)':'mass','Mass':'mass','Slotted masses':'mass','Mass hanger':'mass','Helical spring':'spring','Spring':'spring','Resistor':'resistor','Battery':'battery','Converging lens':'lens','Meter rule':'ruler','Knife edge':'knife_edge','Ruler':'ruler','Stopwatch':'stopwatch'
+      };
+        const key = Object.keys(mapping).find(k=> name.toLowerCase().includes(k.toLowerCase())) || null; const type = mapping[key] || 'tool'; const id='c_'+Math.random().toString(36).slice(2,9);
+        const defaultProps = {mass:{m:0.5},spring:{k:10},pendulum:{L:1.0,theta:0.2},resistor:{R:100},battery:{V:5},lens:{f:0.1}};
+        components.push({id,type:type,x:60+components.length*10,y:60+components.length*10,props: defaultProps[type]||{label:name}});
+        refreshCanvas(); renderInspector(); }
+
+      // Canvas and components
+      const canvas = document.getElementById('canvas');
+      const canvasHint = document.getElementById('canvasHint');
+      let components = []; // {id,type,x,y,props}
+      let selected = null;
+
+      function refreshCanvas(){
+        canvas.innerHTML='';
+        if(components.length===0){ canvas.appendChild(canvasHint); }
+        components.forEach(c=>{
+          const el=document.createElement('div');
+          el.className='absolute p-2 bg-white border rounded shadow text-xs flex items-center gap-2';
+          el.style.left = (c.x||50) + 'px'; el.style.top = (c.y||50)+'px';
+          el.dataset.id = c.id; el.tabIndex=0;
+          // pick a human-friendly label and icon
+          const label = c.props?.label || c.type || 'tool';
+          const iconHtml = ICONS[label] || ICONS[c.type.charAt(0).toUpperCase()+c.type.slice(1)] || ICONS['Mass'] || '';
+          el.innerHTML = `<div class="w-12 h-8">${iconHtml}</div><div><strong class="block">${escapeHtml(label)}</strong><div class="text-[10px] text-slate-500">${JSON.stringify(c.props||{})}</div></div>`;
+          el.addEventListener('click', ()=>{ selectComponent(c.id); });
+          // simple drag
+          el.addEventListener('pointerdown', e=>{ e.preventDefault(); el.setPointerCapture(e.pointerId); const startX=e.clientX, startY=e.clientY; const sx=parseInt(el.style.left), sy=parseInt(el.style.top);
+            function move(ev){ el.style.left = sx + (ev.clientX-startX) + 'px'; el.style.top = sy + (ev.clientY-startY)+'px'; }
+            function up(ev){ el.releasePointerCapture(e.pointerId); document.removeEventListener('pointermove', move); document.removeEventListener('pointerup', up); c.x = parseInt(el.style.left); c.y = parseInt(el.style.top); }
+            document.addEventListener('pointermove', move);
+            document.addEventListener('pointerup', up);
+          });
+          // add small animation hooks
+          el.dataset.compType = c.type;
+          if(c.type==='pendulum') el.classList.add('pendulum-comp');
+          if(c.type==='spring') el.classList.add('spring-comp');
+          canvas.appendChild(el);
+        });
+      }
+
+      // Palette buttons
+      document.getElementById('palette').addEventListener('click', e=>{
+        const t = e.target.closest('button')?.dataset?.type; if(!t) return;
+        const id = 'c_'+Math.random().toString(36).slice(2,9);
+        const defaultProps = {
+          mass: {m:0.5}, spring:{k:10,rest:50}, pendulum:{L:1.0,theta:0.2}, resistor:{R:100}, battery:{V:5}, lens:{f:0.1}
+        };
+        components.push({id,type:t,x:40+components.length*20,y:40+components.length*20,props: defaultProps[t] || {}});
+        selected = components[components.length-1].id; renderInspector(); refreshCanvas();
+      });
+
+      function selectComponent(id){ selected = id; renderInspector(); }
+
+      function renderInspector(){
+        const box = document.getElementById('inspector');
+        if(!selected){ box.innerHTML='Select a component to edit properties.'; return; }
+        const c = components.find(x=>x.id===selected); if(!c) return box.innerHTML='(missing component)';
+        let html = `<div class="text-sm"><strong>${escapeHtml(c.type)}</strong></div><div class="mt-2 space-y-2">`;
+        Object.keys(c.props||{}).forEach(key=>{ html += `<div><label class="block text-xs text-slate-600">${escapeHtml(key)} <input data-prop="${key}" class="mt-1 w-full border rounded p-1 text-sm" value="${c.props[key]}"></label></div>`; });
+        html += `<div class="flex gap-2 mt-2"><button id="delComp" class="px-2 py-1 text-xs border rounded text-red-600">Delete</button></div></div>`;
+        box.innerHTML = html;
+        box.querySelectorAll('input[data-prop]').forEach(inp=>{ inp.addEventListener('change', ()=>{ const k=inp.dataset.prop; let v=inp.value; const n=Number(v); c.props[k] = isNaN(n)?v:n; refreshCanvas(); renderInspector(); }); });
+        box.querySelector('#delComp').addEventListener('click', ()=>{ components = components.filter(x=>x.id!==c.id); selected=null; refreshCanvas(); renderInspector(); });
+      }
+
+      // Protocol saving / loading
+      function renderExps(){ const out=document.getElementById('protocols'); out.innerHTML=''; getExps().forEach((p,i)=>{ const el=document.createElement('div'); el.className='p-2 border-b'; el.innerHTML = `<div class="flex justify-between items-start"><div><strong>${escapeHtml(p.title||'Untitled')}</strong><div class="text-xs text-slate-500">${p.created?new Date(p.created).toLocaleString():''}</div></div><div class="text-right"><button data-i="${i}" data-action="load" class="text-indigo-600 text-xs">Load</button> <button data-i="${i}" data-action="del" class="text-red-600 text-xs">Del</button></div></div>`; out.appendChild(el); }); }
+
+      document.getElementById('saveExp').addEventListener('click', ()=>{ const title=document.getElementById('expTitle').value.trim(); const body=document.getElementById('expBody').value.trim(); const prot = {title,body,components,created:Date.now()}; const arr=getExps(); arr.unshift(prot); saveExps(arr); renderExps(); alert('Protocol saved locally'); });
+      document.getElementById('clearAll').addEventListener('click', ()=>{ if(!confirm('Clear all protocols?')) return; saveExps([]); renderExps(); });
+      document.getElementById('protocols').addEventListener('click', e=>{ const b=e.target; const i = Number(b.dataset.i); if(!b.dataset.action) return; if(b.dataset.action==='del'){ const a=getExps(); a.splice(i,1); saveExps(a); renderExps(); } if(b.dataset.action==='load'){ const a=getExps(); const p=a[i]; if(!p) return; components = JSON.parse(JSON.stringify(p.components||[])); selected = components.length?components[0].id:null; renderInspector(); refreshCanvas(); document.getElementById('expTitle').value = p.title||''; document.getElementById('expBody').value = p.body||''; } });
+      renderExps();
+
+      // AI Assistant actions (hardcoded)
+      document.getElementById('seeProblem').addEventListener('click', ()=>{
+        const selId = document.querySelector('#expList .see:hover, #expList .see:active')?.dataset?.id;
+        // fallback: pick first selected via button focus
+        let chosen = null;
+        const seen = document.querySelectorAll('#expList .see');
+        seen.forEach(s=>{ if(s.matches(':hover') || s.matches(':focus')) chosen = s.dataset.id; });
+        if(!chosen) chosen = seen[0]?.dataset?.id || 'pendulum';
+        const hint = aiHints[chosen] || aiHints.default;
+        document.getElementById('aiOutput').textContent = `Problem diagnostics:\n\n${hint.problem}\n\nSuggested fix:\n\n${hint.fix}`;
+      });
+      document.getElementById('suggestSetup').addEventListener('click', ()=>{
+        const seen = document.querySelectorAll('#expList .see'); let chosen = seen[0]?.dataset?.id || 'pendulum';
+        const ex = examExperiments.find(x=>x.id===chosen) || examExperiments[0];
+        const out = `Learning objective: ${ex.title}\nHypothesis: The measured values will match the theoretical prediction within experimental error.\nSuggested setup:\n - Use low friction pivots, measure multiple trials, capture data with the virtual sensor.\nExpected graph: ${ex.title.includes('Pendulum')? 'T^2 vs L linear': 'Appropriate V vs I or extension vs load graphs.'}`;
+        document.getElementById('aiOutput').textContent = out;
+      });
+
+      // Only handle Add-appartus clicks from the apparatus list; sidebar links are normal navigation
+      expList.addEventListener('click', e=>{
+        const addAll = e.target.closest('button.addAll');
+        if(addAll){
+          const id = addAll.dataset.id;
+          const ex = examExperiments.find(x=>x.id===id);
+          if(!ex) return;
+          (ex.apparatus||[]).forEach(it=> addApparatusToCanvas(it));
+          renderApparatus(id);
+          return;
+        }
+      });
+
+      // Simple simulation engine for pendulum and spring-mass
+      let simTimer=null; let simData=[]; let simStart=null; let chart=null;
+      function createChart(){
+        const canvasEl = document.getElementById('chart');
+        if(!canvasEl) return;
+        const ctx = canvasEl.getContext('2d');
+        if(chart && typeof chart.destroy === 'function'){
+          try{ chart.destroy(); }catch(e){}
+        }
+        chart = new Chart(ctx, {
+          type: 'line',
+          data: { datasets: [] },
+          options: {
+            scales: {
+              x: { type: 'linear', title: { display: true, text: 'Time (s)' } },
+              y: { title: { display: true, text: 'Position' } }
+            }
+          }
+        });
+      }
+      createChart();
+
+      function runSimulation(){ if(simTimer) return; simData=[]; simStart = performance.now(); const t0 = 0; const dt = 0.02; let t = t0; const selectedTypes = components.map(c=>c.type);
+        // choose a model heuristically
+        let model = null; if(selectedTypes.includes('pendulum')) model='pendulum'; else if(selectedTypes.includes('spring')) model='spring';
+        if(!model) return alert('Add a pendulum or spring component to simulate (demo models supported).');
+        const duration = 8; // seconds
+  if(model==='pendulum'){
+          const c = components.find(x=>x.type==='pendulum'); const L = Number(c.props.L||1); const theta0 = Number(c.props.theta||0.2); const damp = 0.02; const g=9.81;
+          // simple integration (symplectic)
+          let theta = theta0, omega=0;
+          const data=[];
+          const steps = Math.ceil(duration/dt);
+          for(let i=0;i<steps;i++){ const a = -(g/L)*Math.sin(theta) - damp*omega; omega += a*dt; theta += omega*dt; t = i*dt; data.push({t: t, y: theta}); }
+          simData = data; plotData(simData, {theory: (tArr)=> tArr.map(p=> ({x:p.t, y: theta0*Math.cos(Math.sqrt(g/L)*p.t)})) });
+          animateComponents();
+        }
+        if(model==='spring'){
+          const c = components.find(x=>x.type==='spring'); const k=Number(c.props.k||10); const m=Number( (components.find(x=>x.type==='mass')?.props?.m) || 0.5 ); const damp=0.02; const A=0.1;
+          let v=0, x=A; const data=[]; const steps = Math.ceil(duration/dt);
+          for(let i=0;i<steps;i++){ const a = -(k/m)*x - damp*v; v += a*dt; x += v*dt; t = i*dt; data.push({t: t, y: x}); }
+          simData=data; plotData(simData, {theory:(tArr)=> tArr.map(p=> ({x:p.t, y: A*Math.cos(Math.sqrt(k/m)*p.t)})) });
+          animateComponents();
+        }
+      }
+
+      function stopSimulation(){ if(simTimer){ clearInterval(simTimer); simTimer=null; } }
+      document.getElementById('runSim').addEventListener('click', runSimulation);
+      document.getElementById('stopSim').addEventListener('click', stopSimulation);
+      document.getElementById('clearCanvas').addEventListener('click', ()=>{ if(!confirm('Clear canvas?')) return; components=[]; selected=null; refreshCanvas(); renderInspector(); });
+
+      function plotData(data, opts={}){
+        createChart(); const tvals = data.map(p=>p.t); const yvals = data.map(p=>p.y);
+        chart.data.datasets.push({label:'Measured', data: data.map(p=>({x:p.t,y:p.y})), borderColor:'rgba(59,130,246,0.9)', tension:0.1, pointRadius:0});
+        if(opts.theory){ const th = opts.theory(data); chart.data.datasets.push({label:'Theoretical', data: th, borderColor:'rgba(16,185,129,0.9)', borderDash:[6,4], pointRadius:0}); }
+        chart.update();
+      }
+
+      // Animates pendulum/spring elements on the canvas using simData sampling
+      let animReq = null;
+      function animateComponents(){
+        const pendEls = Array.from(document.querySelectorAll('.pendulum-comp'));
+        const springEls = Array.from(document.querySelectorAll('.spring-comp'));
+        if(!simData || simData.length===0) return;
+        let idx = 0;
+        function step(){
+          if(idx >= simData.length){ cancelAnimationFrame(animReq); animReq=null; return; }
+          const point = simData[idx];
+          // apply small transforms
+          pendEls.forEach(el=>{ const angle = (point.y||0) * 40; el.style.transform = `rotate(${angle}deg)`; });
+          springEls.forEach(el=>{ const scale = 1 + (point.y||0)*2; el.style.transform = `scaleY(${Math.max(0.6,Math.abs(scale))})`; });
+          idx++; animReq = requestAnimationFrame(step);
+        }
+        if(animReq) cancelAnimationFrame(animReq);
+        animReq = requestAnimationFrame(step);
+      }
+
+  // apparatusList click delegation (add single item)
+  apparatusList.addEventListener('click', e=>{ const b=e.target.closest('button.addItem'); if(!b) return; const item = b.dataset.item; addApparatusToCanvas(item); });
+
+  // Initial render
+  refreshCanvas();
+
+      // migrate older simple protocols (leave intact)
+      (function migrate(){ const arr=getExps(); let changed=false; arr.forEach(p=>{ if(!p.components) p.components=[]; }); if(changed) saveExps(arr); })();
+    </script>
+  </body>
+</html>

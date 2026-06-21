@@ -1,0 +1,804 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Messenger — Blue Horizon E-Learning</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+      * { font-family: 'Plus Jakarta Sans', system-ui, sans-serif; }
+
+      :root {
+        --bh-navy:   #1f507b;
+        --bh-navy-2: #2c5282;
+        --bh-accent: #0195db;
+        --bh-bg:     #fafafa;
+      }
+
+      body { background: var(--bh-bg); }
+
+      ::-webkit-scrollbar { width: 6px; height: 6px; }
+      ::-webkit-scrollbar-track { background: #eef2f7; border-radius: 3px; }
+      ::-webkit-scrollbar-thumb { background: #c1cee0; border-radius: 3px; }
+      ::-webkit-scrollbar-thumb:hover { background: #8aa0bd; }
+
+      #sidebar { transition: transform 0.3s ease-in-out; }
+      #sidebar.hide { transform: translateX(-100%); }
+      @media (min-width: 1024px) { #sidebar { transform: translateX(0) !important; } }
+
+      .nav-link-active {
+        background: linear-gradient(135deg, rgba(31,80,123,0.10), rgba(1,149,219,0.06));
+        color: var(--bh-navy);
+        font-weight: 600;
+      }
+
+      /* Chat bubbles */
+      .bubble {
+        max-width: 75%;
+        padding: 0.65rem 0.95rem;
+        border-radius: 1.05rem;
+        word-wrap: break-word;
+        word-break: break-word;
+        font-size: 0.875rem;
+        line-height: 1.4;
+        box-shadow: 0 1px 2px rgba(15, 35, 60, 0.06);
+      }
+      .bubble-me   { background: linear-gradient(135deg, var(--bh-navy), var(--bh-navy-2)); color: #fff; border-bottom-right-radius: 0.25rem; }
+      .bubble-them { background: #fff; color: #1e293b; border: 1px solid #e2e8f0; border-bottom-left-radius: 0.25rem; }
+
+      .teacher-item { transition: background-color .15s ease, transform .15s ease; cursor: pointer; }
+      .teacher-item:hover { background: #f1f5f9; }
+      .teacher-item.active { background: linear-gradient(135deg, rgba(31,80,123,0.08), rgba(1,149,219,0.04)); border-left: 3px solid var(--bh-navy); }
+
+      .unread-dot { animation: pulse 2s infinite; }
+      @keyframes pulse {
+        0%,100% { box-shadow: 0 0 0 0 rgba(1,149,219,0.5); }
+        50%     { box-shadow: 0 0 0 6px rgba(1,149,219,0); }
+      }
+
+      .toast {
+        position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 9999;
+        padding: 0.9rem 1.2rem; border-radius: 0.75rem; color: #fff; font-size: 0.875rem;
+        box-shadow: 0 12px 30px -10px rgba(0,0,0,0.25);
+      }
+      .toast.success { background: #16a34a; }
+      .toast.error   { background: #dc2626; }
+      .toast.info    { background: var(--bh-navy); }
+
+      /* Typing indicator */
+      .typing-dot {
+        display: inline-block; width: 6px; height: 6px; border-radius: 50%;
+        background: #94a3b8; margin: 0 1px; animation: typingBlink 1.4s infinite both;
+      }
+      .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+      .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+      @keyframes typingBlink {
+        0%, 80%, 100% { opacity: 0.3; transform: translateY(0); }
+        40% { opacity: 1; transform: translateY(-3px); }
+      }
+
+      #sidebar-overlay {
+        position: fixed; inset: 0; background: rgba(15, 35, 60, 0.5);
+        backdrop-filter: blur(4px); z-index: 30;
+        opacity: 0; pointer-events: none; transition: opacity 0.25s ease;
+      }
+      #sidebar-overlay.show { opacity: 1; pointer-events: auto; }
+      @media (min-width: 1024px) { #sidebar-overlay { display: none !important; } }
+
+      /* On small screens, hide the conversation list when a chat is open */
+      @media (max-width: 767px) {
+        .show-chat #teacherListWrap { display: none; }
+        .show-chat #chatPanel { display: flex; }
+        #chatPanel { display: none; }
+      }
+      @media (min-width: 768px) {
+        #chatPanel { display: flex !important; }
+      }
+    </style>
+    <script>
+      tailwind.config = {
+        theme: { extend: { colors: {
+          'bh-navy':   '#1f507b',
+          'bh-navy-2': '#2c5282',
+          'bh-accent': '#0195db',
+          'bh-bg':     '#fafafa'
+        } } }
+      };
+    </script>
+  </head>
+  <body class="bg-bh-bg text-slate-800">
+    <div class="min-h-screen flex">
+
+      <div id="sidebar-overlay"></div>
+
+      <!-- Sidebar (consistent with dashboard) -->
+      <aside id="sidebar" class="w-72 lg:w-80 fixed left-0 top-0 h-full bg-white border-r border-slate-200 flex flex-col z-40 hide lg:translate-x-0">
+        <div class="p-5 border-b border-slate-100">
+          <div class="flex items-center gap-3">
+            <img src="../../../_next/static/media/logo-name.1dd6ad53.webp" alt="Blue Horizon logo"
+                 class="w-12 h-12 object-contain rounded-xl bg-white p-1 shadow-sm border border-slate-100"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-bh-navy to-bh-navy-2 flex items-center justify-center shadow-lg" style="display:none;">
+              <i class="fas fa-water text-white text-xl"></i>
+            </div>
+            <div>
+              <div class="text-base font-extrabold tracking-wide text-bh-navy">BLUE HORIZON</div>
+              <div class="text-[11px] text-slate-400 -mt-0.5">E-Learning Platform</div>
+            </div>
+          </div>
+        </div>
+
+        <nav class="flex-1 overflow-y-auto p-4 space-y-5">
+          <div>
+            <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider px-3 mb-2">Main Menu</div>
+            <ul class="space-y-1">
+              <li><a href="../dashboard.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 hover:bg-slate-50 transition-colors">
+                <i class="fas fa-home text-bh-navy w-5"></i><span>Dashboard</span></a></li>
+              <li><a href="../../../students/study-plan-supabase.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 hover:bg-slate-50 transition-colors">
+                <i class="fas fa-calendar-alt text-emerald-500 w-5"></i><span>Study Plan</span></a></li>
+              <li><a href="../../../students/mock-exams.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 hover:bg-slate-50 transition-colors">
+                <i class="fas fa-clipboard-list text-amber-500 w-5"></i><span>Practice Tests</span></a></li>
+              <li><a href="../../../students/learning-progress.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 hover:bg-slate-50 transition-colors">
+                <i class="fas fa-clock text-rose-500 w-5"></i><span>Timetable</span></a></li>
+            </ul>
+          </div>
+
+          <div>
+            <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider px-3 mb-2">Learning</div>
+            <ul class="space-y-1">
+              <li><a href="../../../students/video-library-modern.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 hover:bg-slate-50 transition-colors">
+                <i class="fas fa-play-circle text-rose-500 w-5"></i><span>Video Lessons</span></a></li>
+              <li><a href="../../../students/notes.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 hover:bg-slate-50 transition-colors">
+                <i class="fas fa-sticky-note text-yellow-500 w-5"></i><span>My Notes</span></a></li>
+              <li><a href="../../../students/textbooks.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 hover:bg-slate-50 transition-colors">
+                <i class="fas fa-book text-violet-500 w-5"></i><span>Textbooks</span></a></li>
+              <li><a href="../../../students/formula-bank.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 hover:bg-slate-50 transition-colors">
+                <i class="fas fa-square-root-alt text-teal-500 w-5"></i><span>Formula Bank</span></a></li>
+              <li><a href="../../../students/digital-library.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 hover:bg-slate-50 transition-colors">
+                <i class="fas fa-folder-open text-cyan-500 w-5"></i><span>Digital Library</span></a></li>
+              <li><a href="../../../students/student-live-session.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 hover:bg-slate-50 transition-colors">
+                <i class="fas fa-video text-purple-500 w-5"></i><span>Live Sessions</span></a></li>
+            </ul>
+          </div>
+
+          <div>
+            <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider px-3 mb-2">Communication</div>
+            <ul class="space-y-1">
+              <li><a href="messenger.html" class="nav-link-active flex items-center gap-3 px-3 py-2.5 rounded-xl">
+                <i class="fas fa-comments text-bh-accent w-5"></i><span>Messenger</span>
+                <span id="messengerBadge" class="ml-auto text-[10px] bg-bh-accent text-white px-1.5 py-0.5 rounded-full hidden">0</span>
+              </a></li>
+              <li><a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 hover:bg-slate-50 transition-colors">
+                <i class="fas fa-tasks text-indigo-500 w-5"></i><span>Assignments</span></a></li>
+            </ul>
+          </div>
+
+          <div>
+            <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider px-3 mb-2">Results</div>
+            <ul class="space-y-1">
+              <li><a href="../../../students/progress.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 hover:bg-slate-50 transition-colors">
+                <i class="fas fa-chart-bar text-green-600 w-5"></i><span>My Scores</span></a></li>
+              <li><a href="../../../students/learning-progress.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 hover:bg-slate-50 transition-colors">
+                <i class="fas fa-chart-line text-cyan-600 w-5"></i><span>Performance</span></a></li>
+            </ul>
+          </div>
+        </nav>
+
+        <div class="p-4 border-t border-slate-100">
+          <div class="flex items-center gap-3 p-2 rounded-xl bg-slate-50">
+            <img id="avatar-sm" alt="avatar" src="https://ui-avatars.com/api/?name=S&background=1f507b&color=fff&size=80&bold=true" class="w-10 h-10 rounded-full border-2 border-bh-navy/30 object-cover">
+            <div class="flex-1 min-w-0">
+              <div id="userName" class="font-semibold text-slate-800 truncate">Student</div>
+              <div id="userLevel" class="text-xs text-slate-500">Loading…</div>
+            </div>
+            <button id="logoutBtn" title="Sign out" class="p-2 rounded-lg hover:bg-rose-50 text-slate-400 hover:text-rose-500 transition-colors">
+              <i class="fas fa-sign-out-alt"></i>
+            </button>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Main Content -->
+      <div id="main-content" class="flex-1 flex flex-col ml-0 lg:ml-80">
+
+        <!-- Top Header -->
+        <header class="sticky top-0 z-30 bg-white/85 backdrop-blur-xl border-b border-slate-200/60 px-4 md:px-6 py-3.5">
+          <div class="flex items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+              <button id="toggleSidebar" class="p-2 rounded-xl hover:bg-slate-100 lg:hidden transition-colors" aria-label="Toggle sidebar">
+                <i class="fas fa-bars text-slate-500"></i>
+              </button>
+              <button id="backToList" class="md:hidden p-2 rounded-xl hover:bg-slate-100 transition-colors hidden" aria-label="Back to teachers">
+                <i class="fas fa-arrow-left text-slate-500"></i>
+              </button>
+              <div>
+                <h1 class="text-lg font-bold text-slate-800 flex items-center gap-2">
+                  <i class="fas fa-comments text-bh-accent"></i> Messenger
+                </h1>
+                <p class="text-xs text-slate-500 hidden sm:block">Chat with your teachers</p>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-3">
+              <span id="connStatus" class="text-xs text-slate-500 flex items-center gap-1.5">
+                <span class="w-2 h-2 bg-amber-400 rounded-full"></span> Connecting…
+              </span>
+              <div class="hidden sm:flex items-center gap-3">
+                <img id="topAvatar" alt="avatar" src="https://ui-avatars.com/api/?name=S&background=1f507b&color=fff&size=80&bold=true" class="w-9 h-9 rounded-full border-2 border-bh-navy/30">
+                <div class="text-right">
+                  <div id="topName" class="font-semibold text-slate-800 text-sm">Student</div>
+                  <div id="topLevel" class="text-xs text-slate-500">—</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        <!-- Main Body: split chat layout -->
+        <main class="flex-1 p-3 md:p-6 overflow-hidden">
+          <div class="bg-white rounded-2xl border border-slate-200 shadow-sm flex h-[calc(100vh-9.5rem)] overflow-hidden">
+
+            <!-- Teacher list -->
+            <div id="teacherListWrap" class="w-full md:w-80 border-r border-slate-100 flex flex-col">
+              <div class="p-4 border-b border-slate-100">
+                <div class="relative">
+                  <input id="searchTeachers" type="search" placeholder="Search teachers…"
+                    class="w-full pl-10 pr-3 py-2.5 rounded-xl border border-slate-200 bg-slate-50/60 focus:outline-none focus:ring-2 focus:ring-bh-navy/15 focus:border-bh-navy/40 focus:bg-white text-sm">
+                  <i class="fas fa-search absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+                </div>
+              </div>
+              <div id="teacherList" class="flex-1 overflow-y-auto">
+                <!-- teacher items injected -->
+              </div>
+            </div>
+
+            <!-- Chat panel -->
+            <div id="chatPanel" class="flex-1 flex flex-col bg-slate-50/40">
+              <!-- Empty state -->
+              <div id="chatEmpty" class="flex-1 flex items-center justify-center text-center px-6">
+                <div>
+                  <div class="w-20 h-20 rounded-full bg-bh-navy/10 flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-comments text-3xl text-bh-navy"></i>
+                  </div>
+                  <h3 class="text-lg font-bold text-slate-800">Select a teacher to start chatting</h3>
+                  <p class="text-sm text-slate-500 mt-1 max-w-xs mx-auto">Pick a conversation from the list, or search for a teacher to begin a new chat.</p>
+                </div>
+              </div>
+
+              <!-- Active chat (hidden until a teacher is selected) -->
+              <div id="chatActive" class="flex-1 flex flex-col hidden">
+                <!-- Chat header -->
+                <div class="px-4 py-3 bg-white border-b border-slate-100 flex items-center gap-3">
+                  <img id="chatTeacherAvatar" alt="teacher avatar" src="" class="w-10 h-10 rounded-full border-2 border-bh-navy/20">
+                  <div class="flex-1 min-w-0">
+                    <div id="chatTeacherName" class="font-semibold text-slate-800 text-sm truncate">Teacher</div>
+                    <div id="chatTeacherSubject" class="text-xs text-slate-500 truncate">Subject</div>
+                  </div>
+                  <span id="chatOnline" class="text-xs text-emerald-600 flex items-center gap-1">
+                    <span class="w-2 h-2 bg-emerald-500 rounded-full"></span> Online
+                  </span>
+                </div>
+
+                <!-- Messages -->
+                <div id="messagesContainer" class="flex-1 overflow-y-auto p-4 space-y-3">
+                  <!-- messages injected -->
+                </div>
+
+                <!-- Typing indicator -->
+                <div id="typingIndicator" class="px-4 pb-1 text-xs text-slate-500 hidden">
+                  <span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span>
+                  <span id="typingWho" class="ml-1">Teacher is typing…</span>
+                </div>
+
+                <!-- Composer -->
+                <form id="messageForm" class="p-3 bg-white border-t border-slate-100 flex items-center gap-2">
+                  <button type="button" id="attachBtn" class="p-2.5 text-slate-400 hover:text-bh-navy hover:bg-slate-100 rounded-xl transition-colors" title="Attachments (coming soon)">
+                    <i class="fas fa-paperclip"></i>
+                  </button>
+                  <input id="messageInput" type="text" placeholder="Type a message…" autocomplete="off"
+                    class="flex-1 px-4 py-2.5 rounded-xl border border-slate-200 bg-slate-50/60 focus:outline-none focus:ring-2 focus:ring-bh-navy/15 focus:border-bh-navy/40 focus:bg-white text-sm">
+                  <button type="submit" id="sendBtn" class="px-4 py-2.5 bg-bh-navy text-white rounded-xl hover:bg-bh-navy-2 transition-colors text-sm font-medium flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
+                    <i class="fas fa-paper-plane"></i>
+                    <span class="hidden sm:inline">Send</span>
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <div id="toastContainer"></div>
+
+    <script src="../js/supabase-client.js"></script>
+    <script>
+      // =====================================================
+      // Blue Horizon Messenger
+      // =====================================================
+
+      // ---------- State ----------
+      var state = {
+        session: null,
+        userId: null,
+        userName: 'Student',
+        teachers: [],            // [{ id, name, subject, avatar_url }]
+        conversations: {},       // teacherId -> last message { text, ts, unread, sent_by_me }
+        activeTeacherId: null,
+        activeChannel: null,
+        searchQuery: ''
+      };
+
+      // ---------- Helpers ----------
+      function getInitials(name) {
+        try { return String(name || '').split(' ').slice(0, 2).map(function (n) { return n.charAt(0); }).join('').toUpperCase(); }
+        catch (e) { return 'T'; }
+      }
+      function avatarFor(name) {
+        return 'https://ui-avatars.com/api/?name=' + encodeURIComponent(getInitials(name) || 'T') +
+               '&background=1f507b&color=fff&size=128&bold=true';
+      }
+      function timeAgo(dateStr) {
+        if (!dateStr) return '';
+        var d = new Date(dateStr);
+        var diff = (Date.now() - d.getTime()) / 1000;
+        if (diff < 60) return 'just now';
+        if (diff < 3600) return Math.floor(diff / 60) + 'm';
+        if (diff < 86400) return Math.floor(diff / 3600) + 'h';
+        if (diff < 604800) return Math.floor(diff / 86400) + 'd';
+        return d.toLocaleDateString();
+      }
+      function formatTime(dateStr) {
+        if (!dateStr) return '';
+        var d = new Date(dateStr);
+        return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      }
+      function showToast(msg, type) {
+        type = type || 'info';
+        var c = document.getElementById('toastContainer');
+        var el = document.createElement('div');
+        el.className = 'toast ' + type;
+        el.textContent = msg;
+        c.appendChild(el);
+        setTimeout(function () {
+          el.style.opacity = '0';
+          el.style.transition = 'opacity .3s';
+          setTimeout(function () { el.remove(); }, 300);
+        }, 3500);
+      }
+      function setConnStatus(label, color) {
+        var el = document.getElementById('connStatus');
+        if (!el) return;
+        el.innerHTML = '<span class="w-2 h-2 rounded-full" style="background:' + color + '"></span> ' + label;
+      }
+      function escapeHtml(s) {
+        if (s == null) return '';
+        return String(s).replace(/[&<>"']/g, function (c) {
+          return ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' })[c];
+        });
+      }
+
+      // ---------- Sidebar toggle ----------
+      (function bindSidebar() {
+        var sidebar = document.getElementById('sidebar');
+        var overlay = document.getElementById('sidebar-overlay');
+        var toggleBtn = document.getElementById('toggleSidebar');
+        function open()  { sidebar.classList.remove('hide'); overlay.classList.add('show'); }
+        function close() { sidebar.classList.add('hide');    overlay.classList.remove('show'); }
+        if (toggleBtn) toggleBtn.addEventListener('click', function (e) {
+          e.stopPropagation();
+          sidebar.classList.contains('hide') ? open() : close();
+        });
+        if (overlay) overlay.addEventListener('click', close);
+        window.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+      })();
+
+      document.getElementById('logoutBtn').addEventListener('click', function () {
+        if (window.BH) BH.signOut();
+      });
+
+      // ---------- Teacher list rendering ----------
+      function renderTeacherList() {
+        var box = document.getElementById('teacherList');
+        var q = state.searchQuery.trim().toLowerCase();
+        var list = state.teachers.filter(function (t) {
+          if (!q) return true;
+          return (t.name || '').toLowerCase().indexOf(q) !== -1 ||
+                 (t.subject || '').toLowerCase().indexOf(q) !== -1;
+        });
+
+        if (state.teachers.length === 0) {
+          box.innerHTML = '' +
+            '<div class="p-8 text-center text-slate-400">' +
+              '<i class="fas fa-chalkboard-teacher text-4xl mb-3 opacity-40"></i>' +
+              '<p class="text-sm">No teachers available yet.</p>' +
+              '<p class="text-xs mt-1">Your school admin will assign teachers to your class.</p>' +
+            '</div>';
+          return;
+        }
+        if (list.length === 0) {
+          box.innerHTML = '' +
+            '<div class="p-8 text-center text-slate-400">' +
+              '<i class="fas fa-search text-3xl mb-2 opacity-40"></i>' +
+              '<p class="text-sm">No teachers match your search.</p>' +
+            '</div>';
+          return;
+        }
+
+        var html = '';
+        list.forEach(function (t) {
+          var conv = state.conversations[t.id] || {};
+          var lastText  = conv.lastText  ? escapeHtml(conv.lastText)  : '<span class="italic text-slate-400">No messages yet</span>';
+          var lastTs    = conv.lastTs    ? timeAgo(conv.lastTs)        : '';
+          var unread    = conv.unread    || 0;
+          var isActive  = state.activeTeacherId === t.id;
+          var avatar = t.avatar_url || avatarFor(t.name);
+
+          html += '' +
+            '<div class="teacher-item ' + (isActive ? 'active' : '') + ' px-4 py-3 border-b border-slate-50 flex items-center gap-3" data-teacher-id="' + t.id + '">' +
+              '<div class="relative flex-shrink-0">' +
+                '<img src="' + avatar + '" alt="' + escapeHtml(t.name) + '" class="w-11 h-11 rounded-full border border-slate-200 object-cover">' +
+                '<span class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-emerald-500 rounded-full border-2 border-white"></span>' +
+              '</div>' +
+              '<div class="flex-1 min-w-0">' +
+                '<div class="flex items-center justify-between gap-2">' +
+                  '<div class="font-semibold text-slate-800 text-sm truncate">' + escapeHtml(t.name) + '</div>' +
+                  '<div class="text-[10px] text-slate-400 whitespace-nowrap">' + lastTs + '</div>' +
+                '</div>' +
+                '<div class="flex items-center justify-between gap-2">' +
+                  '<div class="text-xs text-slate-500 truncate">' + lastText + '</div>' +
+                  (unread > 0
+                    ? '<span class="unread-dot bg-bh-accent text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">' + unread + '</span>'
+                    : '') +
+                '</div>' +
+                '<div class="text-[10px] text-bh-navy mt-0.5"><i class="fas fa-book mr-1"></i>' + escapeHtml(t.subject || 'Teacher') + '</div>' +
+              '</div>' +
+            '</div>';
+        });
+        box.innerHTML = html;
+
+        // Bind click
+        box.querySelectorAll('.teacher-item').forEach(function (el) {
+          el.addEventListener('click', function () {
+            var id = el.getAttribute('data-teacher-id');
+            selectTeacher(id);
+          });
+        });
+      }
+
+      function updateUnreadBadge() {
+        var total = Object.keys(state.conversations).reduce(function (s, k) {
+          return s + (state.conversations[k].unread || 0);
+        }, 0);
+        var badge = document.getElementById('messengerBadge');
+        if (!badge) return;
+        if (total > 0) {
+          badge.textContent = total;
+          badge.classList.remove('hidden');
+        } else {
+          badge.classList.add('hidden');
+        }
+      }
+
+      // ---------- Select teacher & load messages ----------
+      function selectTeacher(teacherId) {
+        var teacher = state.teachers.find(function (t) { return t.id === teacherId; });
+        if (!teacher) return;
+
+        state.activeTeacherId = teacherId;
+        // clear unread
+        if (state.conversations[teacherId]) state.conversations[teacherId].unread = 0;
+        updateUnreadBadge();
+
+        // Update chat header
+        document.getElementById('chatEmpty').classList.add('hidden');
+        document.getElementById('chatActive').classList.remove('hidden');
+        document.getElementById('chatTeacherName').textContent = teacher.name;
+        document.getElementById('chatTeacherSubject').textContent = teacher.subject || 'Teacher';
+        document.getElementById('chatTeacherAvatar').src = teacher.avatar_url || avatarFor(teacher.name);
+
+        // On mobile, switch view
+        document.body.classList.add('show-chat');
+        var backBtn = document.getElementById('backToList');
+        if (backBtn) backBtn.classList.remove('hidden');
+
+        // Re-render list to show active state
+        renderTeacherList();
+
+        // Load messages
+        loadMessages(teacherId);
+        // Subscribe to real-time updates
+        subscribeToMessages(teacherId);
+      }
+
+      // ---------- Load messages for the active conversation ----------
+      function loadMessages(teacherId) {
+        var container = document.getElementById('messagesContainer');
+        container.innerHTML = '' +
+          '<div class="flex items-center justify-center py-8">' +
+            '<div class="w-8 h-8 border-4 border-bh-navy/20 border-t-bh-navy rounded-full animate-spin"></div>' +
+          '</div>';
+
+        // Call the get-messages edge function
+        BH.edge('get-messages', {
+          headers: state.session && state.session.access_token
+            ? { Authorization: 'Bearer ' + state.session.access_token } : {},
+          body: { user_id: state.userId, teacher_id: teacherId, limit: 100 }
+        }).then(function (res) {
+          if (res.ok && res.data && Array.isArray(res.data.messages)) {
+            renderMessages(res.data.messages);
+          } else {
+            // Fallback: direct Supabase query (RLS-protected)
+            return window.supabaseClient
+              .from('messages')
+              .select('*')
+              .or('and(sender_id.eq.' + state.userId + ',recipient_id.eq.' + teacherId + '),and(sender_id.eq.' + teacherId + ',recipient_id.eq.' + state.userId + '))')
+              .order('created_at', { ascending: true })
+              .limit(100)
+              .then(function (r) {
+                if (r.data) renderMessages(r.data);
+                else renderMessages([]);
+              });
+          }
+        }).catch(function (err) {
+          console.warn('[BH] loadMessages error', err);
+          container.innerHTML = '' +
+            '<div class="text-center py-8 text-rose-500 text-sm">' +
+              '<i class="fas fa-exclamation-circle mb-2"></i><br>Failed to load messages. Tap to retry.' +
+            '</div>';
+          container.onclick = function () { loadMessages(teacherId); };
+        });
+      }
+
+      function renderMessages(messages) {
+        var container = document.getElementById('messagesContainer');
+        if (!messages || messages.length === 0) {
+          container.innerHTML = '' +
+            '<div class="text-center py-12 text-slate-400">' +
+              '<i class="fas fa-comment-dots text-4xl mb-3 opacity-40"></i>' +
+              '<p class="text-sm">No messages yet.</p>' +
+              '<p class="text-xs mt-1">Say hello to start the conversation!</p>' +
+            '</div>';
+          return;
+        }
+        var html = '';
+        var lastDate = '';
+        messages.forEach(function (m) {
+          var d = new Date(m.created_at || m.timestamp);
+          var dateStr = d.toLocaleDateString();
+          if (dateStr !== lastDate) {
+            html += '' +
+              '<div class="flex items-center justify-center my-3">' +
+                '<span class="text-[10px] uppercase tracking-wide text-slate-400 bg-slate-100 px-3 py-1 rounded-full">' + dateStr + '</span>' +
+              '</div>';
+            lastDate = dateStr;
+          }
+          var mine = (m.sender_id === state.userId);
+          html += '' +
+            '<div class="flex ' + (mine ? 'justify-end' : 'justify-start') + '">' +
+              '<div class="bubble ' + (mine ? 'bubble-me' : 'bubble-them') + '">' +
+                escapeHtml(m.content || m.body || '') +
+                '<div class="text-[10px] mt-1 ' + (mine ? 'text-white/70' : 'text-slate-400') + ' text-right">' + formatTime(m.created_at || m.timestamp) + '</div>' +
+              '</div>' +
+            '</div>';
+        });
+        container.innerHTML = html;
+        // Auto-scroll
+        container.scrollTop = container.scrollHeight;
+      }
+
+      // ---------- Real-time subscription ----------
+      function subscribeToMessages(teacherId) {
+        if (state.activeChannel) {
+          try { state.activeChannel.unsubscribe(); } catch (e) {}
+        }
+        if (!window.supabaseClient) return;
+
+        setConnStatus('Connecting…', '#f59e0b');
+
+        var channel = window.supabaseClient.channel('messenger:' + teacherId, {
+          config: { broadcast: { self: false }, presence: { key: state.userId || 'student' } }
+        });
+
+        channel.on('postgres_changes',
+          { event: 'INSERT', schema: 'public', table: 'messages', filter: 'recipient_id=eq.' + state.userId },
+          function (payload) {
+            var msg = payload.new;
+            if (msg && msg.sender_id === teacherId) {
+              appendMessage(msg, false);
+              bumpConversation(teacherId, msg.content || msg.body || '', msg.created_at, false);
+              if (state.activeTeacherId === teacherId) {
+                // Already viewing → mark read
+                state.conversations[teacherId].unread = 0;
+              } else {
+                state.conversations[teacherId].unread = (state.conversations[teacherId].unread || 0) + 1;
+              }
+              updateUnreadBadge();
+              renderTeacherList();
+            }
+          }
+        );
+
+        channel.on('postgres_changes',
+          { event: 'INSERT', schema: 'public', table: 'messages', filter: 'sender_id=eq.' + state.userId },
+          function (payload) {
+            // Optimistic message already added; just ensure scroll
+            appendMessage(payload.new, true);
+          }
+        );
+
+        channel.subscribe(function (status) {
+          if (status === 'SUBSCRIBED')      setConnStatus('Live', '#10b981');
+          else if (status === 'CLOSED')     setConnStatus('Disconnected', '#ef4444');
+          else if (status === 'CHANNEL_ERROR') setConnStatus('Error', '#ef4444');
+          else setConnStatus('Connecting…', '#f59e0b');
+        });
+
+        state.activeChannel = channel;
+      }
+
+      function appendMessage(msg, mine) {
+        var container = document.getElementById('messagesContainer');
+        if (!container) return;
+        // Strip the empty state if present
+        if (container.querySelector('.text-center')) container.innerHTML = '';
+
+        var d = new Date(msg.created_at || msg.timestamp);
+        var dateStr = d.toLocaleDateString();
+        var lastSep = container.querySelector('[data-date-sep]');
+        if (!lastSep || lastSep.getAttribute('data-date-sep') !== dateStr) {
+          var sep = document.createElement('div');
+          sep.className = 'flex items-center justify-center my-3';
+          sep.setAttribute('data-date-sep', dateStr);
+          sep.innerHTML = '<span class="text-[10px] uppercase tracking-wide text-slate-400 bg-slate-100 px-3 py-1 rounded-full">' + dateStr + '</span>';
+          container.appendChild(sep);
+        }
+
+        var wrap = document.createElement('div');
+        wrap.className = 'flex ' + (mine ? 'justify-end' : 'justify-start');
+        wrap.innerHTML = '' +
+          '<div class="bubble ' + (mine ? 'bubble-me' : 'bubble-them') + '">' +
+            escapeHtml(msg.content || msg.body || '') +
+            '<div class="text-[10px] mt-1 ' + (mine ? 'text-white/70' : 'text-slate-400') + ' text-right">' + formatTime(msg.created_at || msg.timestamp) + '</div>' +
+          '</div>';
+        container.appendChild(wrap);
+        container.scrollTop = container.scrollHeight;
+      }
+
+      function bumpConversation(teacherId, text, ts, sentByMe) {
+        if (!state.conversations[teacherId]) state.conversations[teacherId] = { unread: 0 };
+        state.conversations[teacherId].lastText = text;
+        state.conversations[teacherId].lastTs = ts;
+        state.conversations[teacherId].sent_by_me = sentByMe;
+      }
+
+      // ---------- Send message ----------
+      document.getElementById('messageForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+        var input = document.getElementById('messageInput');
+        var text = input.value.trim();
+        if (!text || !state.activeTeacherId) return;
+        input.value = '';
+
+        var teacherId = state.activeTeacherId;
+        var ts = new Date().toISOString();
+
+        // Optimistic UI
+        var optimistic = { sender_id: state.userId, recipient_id: teacherId, content: text, created_at: ts };
+        appendMessage(optimistic, true);
+        bumpConversation(teacherId, text, ts, true);
+        renderTeacherList();
+
+        // Disable send button briefly to prevent duplicates
+        var btn = document.getElementById('sendBtn');
+        btn.disabled = true;
+
+        BH.edge('send-message', {
+          headers: state.session && state.session.access_token
+            ? { Authorization: 'Bearer ' + state.session.access_token } : {},
+          body: {
+            sender_id: state.userId,
+            sender_role: 'student',
+            recipient_id: teacherId,
+            recipient_role: 'teacher',
+            content: text
+          }
+        }).then(function (res) {
+          btn.disabled = false;
+          if (!res.ok) {
+            showToast('Failed to send message. Please retry.', 'error');
+          }
+        }).catch(function (err) {
+          btn.disabled = false;
+          console.error('[BH] send-message error', err);
+          showToast('Network error sending message.', 'error');
+        });
+      });
+
+      // ---------- Search ----------
+      document.getElementById('searchTeachers').addEventListener('input', function (e) {
+        state.searchQuery = e.target.value;
+        renderTeacherList();
+      });
+
+      // ---------- Back to list (mobile) ----------
+      document.getElementById('backToList').addEventListener('click', function () {
+        document.body.classList.remove('show-chat');
+      });
+
+      // ---------- Load teacher list from Supabase ----------
+      function loadTeachers() {
+        if (!window.supabaseClient) return;
+        // Try student_classes → teachers join first; fall back to teachers table.
+        window.supabaseClient.from('teachers').select('id, name, subject, avatar_url').order('name', { ascending: true })
+          .then(function (res) {
+            if (res.data) {
+              state.teachers = res.data.map(function (t) {
+                return { id: t.id, name: t.name || 'Teacher', subject: t.subject || '', avatar_url: t.avatar_url || '' };
+              });
+            } else {
+              state.teachers = [];
+            }
+            renderTeacherList();
+            loadConversationPreviews();
+          })
+          .catch(function (err) {
+            console.warn('[BH] loadTeachers error', err);
+            state.teachers = [];
+            renderTeacherList();
+          });
+      }
+
+      // Pre-fetch the latest message for each teacher to populate previews.
+      function loadConversationPreviews() {
+        if (!window.supabaseClient || state.teachers.length === 0) return;
+        state.teachers.forEach(function (t) {
+          window.supabaseClient.from('messages')
+            .select('content, body, created_at, sender_id')
+            .or('and(sender_id.eq.' + state.userId + ',recipient_id.eq.' + t.id + '),and(sender_id.eq.' + t.id + ',recipient_id.eq.' + state.userId + '))')
+            .order('created_at', { ascending: false })
+            .limit(1)
+            .then(function (r) {
+              if (r.data && r.data.length > 0) {
+                var m = r.data[0];
+                bumpConversation(t.id, m.content || m.body || '', m.created_at, m.sender_id === state.userId);
+                renderTeacherList();
+              }
+            });
+        });
+      }
+
+      // ---------- Auth gate ----------
+      function boot() {
+        if (!window.BH || !window.BH.requireAuth) {
+          return document.addEventListener('bh:ready', boot);
+        }
+        BH.requireAuth().then(function (session) {
+          if (!session) return;
+          state.session = session;
+          state.userId = (session.user && session.user.id) || null;
+          var meta = (session.user && session.user.user_metadata) || {};
+          state.userName = meta.full_name || meta.name || (session.user.email ? session.user.email.split('@')[0] : 'Student');
+
+          // Update profile UI
+          var avatar = meta.avatar_url || avatarFor(state.userName);
+          document.getElementById('userName').textContent = state.userName;
+          document.getElementById('topName').textContent = state.userName;
+          document.getElementById('userLevel').textContent = meta.class || meta.level || 'Student';
+          document.getElementById('topLevel').textContent = meta.class || meta.level || 'Student';
+          var av1 = document.getElementById('avatar-sm');
+          var av2 = document.getElementById('topAvatar');
+          if (av1) av1.src = avatar;
+          if (av2) av2.src = avatar;
+
+          loadTeachers();
+        });
+      }
+
+      boot();
+    </script>
+  </body>
+</html>

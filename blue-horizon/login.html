@@ -1,0 +1,469 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Sign In — Blue Horizon E-Learning</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+      * { font-family: 'Plus Jakarta Sans', system-ui, sans-serif; }
+      :root {
+        --bh-navy:   #1f507b;
+        --bh-navy-2: #2c5282;
+        --bh-accent: #0195db;
+        --bh-bg:     #fafafa;
+      }
+
+      body { background: var(--bh-bg); }
+
+      /* Animated background */
+      .bg-mesh {
+        background:
+          radial-gradient(circle at 20% 20%, rgba(31,80,123,0.18), transparent 40%),
+          radial-gradient(circle at 80% 0%, rgba(1,149,219,0.20), transparent 45%),
+          radial-gradient(circle at 50% 100%, rgba(44,82,130,0.18), transparent 50%),
+          #fafafa;
+      }
+
+      .glass {
+        background: rgba(255,255,255,0.92);
+        backdrop-filter: blur(14px);
+        border: 1px solid rgba(255,255,255,0.4);
+      }
+
+      .field-icon {
+        position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+        color: #94a3b8; pointer-events: none;
+      }
+
+      .toggle-pw {
+        position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+        color: #94a3b8; cursor: pointer; padding: 4px;
+      }
+      .toggle-pw:hover { color: var(--bh-navy); }
+
+      .role-btn {
+        transition: all .2s ease;
+        border: 1.5px solid #e2e8f0;
+        background: #fff;
+      }
+      .role-btn.active {
+        border-color: var(--bh-navy);
+        background: linear-gradient(135deg, rgba(31,80,123,0.06), rgba(1,149,219,0.04));
+        color: var(--bh-navy);
+        font-weight: 600;
+      }
+
+      .btn-primary {
+        background: linear-gradient(135deg, var(--bh-navy), var(--bh-navy-2));
+        transition: transform .15s ease, box-shadow .15s ease, filter .15s ease;
+        box-shadow: 0 12px 28px -10px rgba(31,80,123,0.55);
+      }
+      .btn-primary:hover { transform: translateY(-1px); filter: brightness(1.05); }
+      .btn-primary:active { transform: translateY(0); }
+      .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+      .toast {
+        position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%);
+        z-index: 9999; padding: 0.9rem 1.2rem; border-radius: 0.75rem; color: #fff;
+        font-size: 0.875rem; box-shadow: 0 12px 30px -10px rgba(0,0,0,0.25);
+        max-width: 92vw; text-align: center;
+      }
+      .toast.success { background: #16a34a; }
+      .toast.error   { background: #dc2626; }
+      .toast.info    { background: var(--bh-navy); }
+
+      .spinner {
+        width: 16px; height: 16px;
+        border: 2px solid rgba(255,255,255,0.4);
+        border-top-color: #fff;
+        border-radius: 50%;
+        animation: spin 0.7s linear infinite;
+        display: inline-block;
+      }
+      @keyframes spin { to { transform: rotate(360deg); } }
+
+      /* Floating particles in BG */
+      .float-blob {
+        position: absolute; border-radius: 50%; filter: blur(40px); opacity: 0.45;
+        animation: floatBlob 14s ease-in-out infinite;
+      }
+      @keyframes floatBlob {
+        0%,100% { transform: translate(0,0) scale(1); }
+        50%     { transform: translate(20px, -30px) scale(1.1); }
+      }
+    </style>
+    <script>
+      tailwind.config = {
+        theme: { extend: { colors: {
+          'bh-navy':   '#1f507b',
+          'bh-navy-2': '#2c5282',
+          'bh-accent': '#0195db',
+          'bh-bg':     '#fafafa'
+        } } }
+      };
+    </script>
+  </head>
+  <body class="bg-mesh text-slate-800 min-h-screen">
+
+    <!-- Decorative blobs -->
+    <div class="float-blob w-72 h-72 bg-bh-navy/30  top-10 left-10"></div>
+    <div class="float-blob w-80 h-80 bg-bh-accent/25 bottom-0 right-10" style="animation-delay:-4s;"></div>
+
+    <div class="min-h-screen flex items-center justify-center p-4 relative">
+
+      <div class="w-full max-w-md">
+
+        <!-- Brand -->
+        <div class="text-center mb-6">
+          <img src="_next/static/media/logo-name.1dd6ad53.webp" alt="Blue Horizon Schools"
+               class="h-16 mx-auto mb-3 object-contain"
+               onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-flex';">
+          <div class="w-16 h-16 mx-auto mb-3 rounded-2xl bg-gradient-to-br from-bh-navy to-bh-navy-2 items-center justify-center shadow-lg hidden">
+            <i class="fas fa-water text-white text-2xl"></i>
+          </div>
+          <h1 class="text-2xl font-extrabold tracking-wide text-bh-navy">BLUE HORIZON</h1>
+          <p class="text-xs text-slate-500 -mt-0.5">Schools · E-Learning Platform</p>
+        </div>
+
+        <!-- Card -->
+        <div class="glass rounded-3xl shadow-xl p-6 sm:p-8">
+
+          <h2 class="text-xl font-bold text-slate-800 mb-1">Welcome back</h2>
+          <p class="text-sm text-slate-500 mb-5">Sign in to continue to your dashboard.</p>
+
+          <!-- Role selector -->
+          <div class="mb-5">
+            <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">Sign in as</label>
+            <div class="grid grid-cols-3 gap-2">
+              <button type="button" data-role="student" class="role-btn active rounded-xl py-2.5 text-sm flex flex-col items-center gap-1">
+                <i class="fas fa-user-graduate text-base"></i>
+                <span>Student</span>
+              </button>
+              <button type="button" data-role="teacher" class="role-btn rounded-xl py-2.5 text-sm flex flex-col items-center gap-1">
+                <i class="fas fa-chalkboard-teacher text-base"></i>
+                <span>Teacher</span>
+              </button>
+              <button type="button" data-role="admin" class="role-btn rounded-xl py-2.5 text-sm flex flex-col items-center gap-1">
+                <i class="fas fa-user-shield text-base"></i>
+                <span>Admin</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Form -->
+          <form id="loginForm" autocomplete="on" novalidate>
+            <input type="hidden" id="roleInput" name="role" value="student" />
+
+            <!-- Username -->
+            <div class="mb-4">
+              <label for="username" class="block text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">Username or Email</label>
+              <div class="relative">
+                <i class="fas fa-user field-icon"></i>
+                <input id="username" name="username" type="text" required
+                       autocomplete="username"
+                       placeholder="e.g. john.doe or john@bluehorizon.edu"
+                       class="w-full pl-11 pr-4 py-3 rounded-xl border border-slate-200 bg-white/80 focus:outline-none focus:ring-2 focus:ring-bh-navy/20 focus:border-bh-navy/50 transition-all text-sm">
+              </div>
+            </div>
+
+            <!-- Password -->
+            <div class="mb-2">
+              <label for="password" class="block text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">Password</label>
+              <div class="relative">
+                <i class="fas fa-lock field-icon"></i>
+                <input id="password" name="password" type="password" required
+                       autocomplete="current-password"
+                       placeholder="Your password"
+                       class="w-full pl-11 pr-12 py-3 rounded-xl border border-slate-200 bg-white/80 focus:outline-none focus:ring-2 focus:ring-bh-navy/20 focus:border-bh-navy/50 transition-all text-sm">
+                <span class="toggle-pw" id="togglePw" title="Show/Hide password">
+                  <i class="fas fa-eye" id="pwIcon"></i>
+                </span>
+              </div>
+            </div>
+
+            <!-- Remember / help -->
+            <div class="flex items-center justify-between text-xs mt-3 mb-5">
+              <label class="flex items-center gap-2 text-slate-500 cursor-pointer">
+                <input type="checkbox" id="remember" class="w-3.5 h-3.5 rounded border-slate-300 text-bh-navy focus:ring-bh-navy/30">
+                <span>Remember me</span>
+              </label>
+              <span id="helpLink" class="text-bh-navy hover:underline cursor-pointer">Need help?</span>
+            </div>
+
+            <!-- Error -->
+            <div id="errorBox" class="hidden bg-rose-50 border border-rose-200 text-rose-700 rounded-xl p-3 text-xs mb-4 leading-relaxed">
+              <div class="flex items-start gap-2">
+                <i class="fas fa-exclamation-circle mt-0.5"></i>
+                <span id="errorText"></span>
+              </div>
+            </div>
+
+            <!-- Submit -->
+            <button type="submit" id="submitBtn"
+                    class="btn-primary w-full py-3 rounded-xl text-white font-semibold flex items-center justify-center gap-2">
+              <span id="submitText">Sign In</span>
+              <i class="fas fa-arrow-right" id="submitIcon"></i>
+            </button>
+          </form>
+
+          <!-- Footer info (NO signup) -->
+          <div class="mt-6 pt-5 border-t border-slate-100 text-center">
+            <p class="text-xs text-slate-500 leading-relaxed">
+              Accounts are created by the school administrator.<br>
+              Need access or forgot your password?<br>
+              <span class="text-bh-navy font-medium">Please contact your school admin.</span>
+            </p>
+          </div>
+        </div>
+
+        <!-- Back to website -->
+        <div class="text-center mt-5">
+          <a href="website.html" class="text-xs text-slate-500 hover:text-bh-navy inline-flex items-center gap-1">
+            <i class="fas fa-arrow-left"></i> Back to Blue Horizon website
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Help modal -->
+    <div id="helpModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+      <div class="bg-white rounded-2xl w-full max-w-md p-6 shadow-2xl relative">
+        <button id="closeHelp" class="absolute top-3 right-3 w-9 h-9 rounded-full hover:bg-slate-100 flex items-center justify-center" aria-label="Close">
+          <i class="fas fa-times text-slate-500"></i>
+        </button>
+        <div class="flex items-center gap-3 mb-4">
+          <div class="w-11 h-11 rounded-xl bg-bh-navy/10 flex items-center justify-center">
+            <i class="fas fa-headset text-bh-navy text-lg"></i>
+          </div>
+          <div>
+            <h3 class="font-bold text-slate-800">Need help signing in?</h3>
+            <p class="text-xs text-slate-500">We're here to assist.</p>
+          </div>
+        </div>
+        <div class="text-sm text-slate-600 space-y-3 leading-relaxed">
+          <p><strong class="text-slate-700">No account yet?</strong> Students and teachers are registered by the school administrator. Please contact your school admin to request access.</p>
+          <p><strong class="text-slate-700">Forgot your password?</strong> Your school admin can reset your credentials. Reach out to them directly.</p>
+          <p><strong class="text-slate-700">Wrong credentials?</strong> Double-check your username and password. If issues persist, contact your school admin for a change in credentials.</p>
+        </div>
+        <button id="closeHelp2" class="mt-5 w-full py-2.5 bg-bh-navy text-white rounded-xl font-medium hover:bg-bh-navy-2 transition-colors text-sm">
+          Got it
+        </button>
+      </div>
+    </div>
+
+    <div id="toastContainer"></div>
+
+    <script>
+      // =====================================================
+      // Blue Horizon Login
+      // =====================================================
+      var SUPABASE_URL = 'https://kruwfhzfqieuiuhqlutt.supabase.co';
+      var SUPABASE_ANON_KEY =
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.' +
+        'eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtydXdmaHpmcWlldWl1aHFsdXR0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjIxOTk0OTAsImV4cCI6MjA3Nzc3NTQ5MH0.' +
+        'XD3-PDjDtKwCVsBILYgVrHF7Yc9tHkzpvpN2b7ojvB4';
+
+      // Standard error message (verbatim per spec)
+      var STD_ERROR =
+        'Please ensure your credentials are correct or ensure you are registered by your school admin. ' +
+        'If not registered, contact your school admin. ' +
+        'You can also contact your school admin for a change in credentials.';
+
+      var selectedRole = 'student';
+
+      function showToast(msg, type) {
+        type = type || 'info';
+        var c = document.getElementById('toastContainer');
+        var el = document.createElement('div');
+        el.className = 'toast ' + type;
+        el.textContent = msg;
+        c.appendChild(el);
+        setTimeout(function () {
+          el.style.opacity = '0';
+          el.style.transition = 'opacity .3s';
+          setTimeout(function () { el.remove(); }, 300);
+        }, 3500);
+      }
+
+      function showError(msg) {
+        var box = document.getElementById('errorBox');
+        document.getElementById('errorText').textContent = msg;
+        box.classList.remove('hidden');
+      }
+      function hideError() {
+        document.getElementById('errorBox').classList.add('hidden');
+      }
+
+      function setLoading(loading) {
+        var btn = document.getElementById('submitBtn');
+        var text = document.getElementById('submitText');
+        var icon = document.getElementById('submitIcon');
+        if (loading) {
+          btn.disabled = true;
+          text.textContent = 'Signing in…';
+          icon.className = 'spinner';
+        } else {
+          btn.disabled = false;
+          text.textContent = 'Sign In';
+          icon.className = 'fas fa-arrow-right';
+        }
+      }
+
+      // Role selector buttons
+      document.querySelectorAll('.role-btn').forEach(function (b) {
+        b.addEventListener('click', function () {
+          document.querySelectorAll('.role-btn').forEach(function (x) { x.classList.remove('active'); });
+          b.classList.add('active');
+          selectedRole = b.getAttribute('data-role');
+          document.getElementById('roleInput').value = selectedRole;
+          hideError();
+        });
+      });
+
+      // Password toggle
+      document.getElementById('togglePw').addEventListener('click', function () {
+        var pw = document.getElementById('password');
+        var ic = document.getElementById('pwIcon');
+        if (pw.type === 'password') {
+          pw.type = 'text';
+          ic.className = 'fas fa-eye-slash';
+        } else {
+          pw.type = 'password';
+          ic.className = 'fas fa-eye';
+        }
+      });
+
+      // Help modal
+      var helpModal = document.getElementById('helpModal');
+      function openHelp() { helpModal.classList.remove('hidden'); helpModal.classList.add('flex'); }
+      function closeHelp() { helpModal.classList.add('hidden'); helpModal.classList.remove('flex'); }
+      document.getElementById('helpLink').addEventListener('click', openHelp);
+      document.getElementById('closeHelp').addEventListener('click', closeHelp);
+      document.getElementById('closeHelp2').addEventListener('click', closeHelp);
+      helpModal.addEventListener('click', function (e) { if (e.target === helpModal) closeHelp(); });
+
+      // Compute the dashboard URL based on role
+      function dashboardUrlForRole(role) {
+        if (role === 'admin') return 'admin/index.html';
+        if (role === 'teacher') return 'teachers/teacher-dashboard-mathematics.html';
+        // student → class template dashboard
+        return 'classes/_template/dashboard.html';
+      }
+
+      // Submit
+      document.getElementById('loginForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+        hideError();
+
+        var username = document.getElementById('username').value.trim();
+        var password = document.getElementById('password').value;
+        if (!username || !password) {
+          showError('Please enter both your username and password.');
+          return;
+        }
+
+        setLoading(true);
+
+        // Call the auth-login edge function (which uses the service_role key server-side
+        // to validate credentials against the students / teachers / admins tables).
+        fetch(SUPABASE_URL + '/functions/v1/auth-login', {
+          method: 'POST',
+          headers: {
+            'apikey': SUPABASE_ANON_KEY,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            username: username,
+            password: password,
+            role: selectedRole
+          })
+        })
+          .then(function (res) { return res.json().then(function (data) { return { ok: res.ok, data: data }; }); })
+          .then(function (result) {
+            setLoading(false);
+            if (result.ok && result.data && result.data.success) {
+              var session = result.data.session || result.data;
+              var redirect = result.data.redirect || dashboardUrlForRole(selectedRole);
+
+              // Persist the session via Supabase auth (if a JWT was issued)
+              persistSessionAndRedirect(session, redirect, username);
+            } else {
+              // Show the standard error message
+              showError(STD_ERROR);
+            }
+          })
+          .catch(function (err) {
+            console.error('[BH] auth-login error', err);
+            setLoading(false);
+            showError('Unable to reach the sign-in service. Please check your internet connection and try again.');
+          });
+      });
+
+      // Persist the issued session via the Supabase JS client (cookie storage),
+      // then redirect. Falls back to a plain redirect if Supabase JS is unavailable.
+      function persistSessionAndRedirect(session, redirect, username) {
+        // Try loading Supabase JS dynamically
+        var s = document.createElement('script');
+        s.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';
+        s.async = true;
+        s.onload = function () {
+          try {
+            var client = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+              auth: { persistSession: true, storageKey: 'bh-auth-session' }
+            });
+            if (session && session.access_token && session.refresh_token) {
+              client.auth.setSession({
+                access_token: session.access_token,
+                refresh_token: session.refresh_token
+              }).then(function () {
+                showToast('Welcome back! Redirecting…', 'success');
+                setTimeout(function () { window.location.href = redirect; }, 600);
+              }).catch(function () {
+                // Even if setSession fails, redirect with the role in the URL
+                showToast('Welcome back! Redirecting…', 'success');
+                setTimeout(function () { window.location.href = redirect; }, 600);
+              });
+            } else {
+              // No JWT — just redirect. The dashboard will re-auth via edge fn.
+              showToast('Welcome back! Redirecting…', 'success');
+              setTimeout(function () { window.location.href = redirect; }, 600);
+            }
+          } catch (e) {
+            showToast('Welcome back! Redirecting…', 'success');
+            setTimeout(function () { window.location.href = redirect; }, 600);
+          }
+        };
+        s.onerror = function () {
+          showToast('Welcome back! Redirecting…', 'success');
+          setTimeout(function () { window.location.href = redirect; }, 600);
+        };
+        document.head.appendChild(s);
+      }
+
+      // If user is already signed in, send them straight to their dashboard.
+      (function checkExistingSession() {
+        var s = document.createElement('script');
+        s.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';
+        s.async = true;
+        s.onload = function () {
+          try {
+            var client = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+              auth: { persistSession: true, storageKey: 'bh-auth-session', autoRefreshToken: true }
+            });
+            client.auth.getSession().then(function (res) {
+              if (res.data && res.data.session) {
+                var meta = (res.data.session.user && res.data.session.user.user_metadata) || {};
+                var role = meta.role || 'student';
+                window.location.replace(dashboardUrlForRole(role));
+              }
+            });
+          } catch (e) { /* ignore */ }
+        };
+        document.head.appendChild(s);
+      })();
+    </script>
+  </body>
+</html>

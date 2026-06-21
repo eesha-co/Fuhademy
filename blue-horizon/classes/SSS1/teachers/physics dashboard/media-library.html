@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Physics — Media Library</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+  </head>
+  <body class="bg-slate-50 min-h-screen text-slate-800">
+    <div class="p-8 max-w-4xl mx-auto">
+      <div class="bg-white p-6 rounded-lg shadow">
+        <h1 class="text-2xl font-semibold mb-2">Media Library</h1>
+        <p class="text-sm text-slate-600">Upload images (small) and store links to media. Note: localStorage has limited space — prefer external hosting for large media.</p>
+
+        <div class="mt-4">
+          <label for="mediaInput" class="text-sm font-medium">Choose file</label>
+          <input id="mediaInput" type="file" accept="image/*,video/*" class="mb-2" />
+          <input id="mediaTitle" class="w-full rounded-md border p-2 mb-2" placeholder="Title (optional)" />
+          <div class="flex gap-2"><button id="uploadMedia" class="px-4 py-2 bg-indigo-600 text-white rounded-md">Upload</button><button id="clearMedia" class="px-4 py-2 border rounded-md">Clear Library</button></div>
+        </div>
+
+        <div id="mediaList" class="mt-4 grid grid-cols-1 md:grid-cols-3 gap-3"></div>
+      </div>
+    </div>
+    <script>
+      const MLK = 'physics_media_v1';
+      function getMedia(){ return JSON.parse(localStorage.getItem(MLK)||'[]'); }
+      function saveMedia(a){ localStorage.setItem(MLK, JSON.stringify(a)); }
+      function renderMedia(){ const out=document.getElementById('mediaList'); out.innerHTML=''; getMedia().forEach((m,i)=>{ const d=document.createElement('div'); d.className='p-2 bg-slate-50 rounded'; if(m.type && m.type.startsWith('image')){ d.innerHTML = `<div class="text-sm font-medium mb-1">${escapeHtml(m.title||'Image')}</div><img src="${m.data}" alt="${escapeHtml(m.title||'media')}" class="w-full h-40 object-contain rounded"/><div class="mt-2 text-xs text-slate-500 flex justify-between"><span>${new Date(m.t).toLocaleString()}</span><button data-i="${i}" class="text-red-600" data-action="del">Delete</button></div>`; } else { d.innerHTML = `<div class="text-sm font-medium mb-1">${escapeHtml(m.title||'Media')}</div><a href="${m.data}" target="_blank" class="text-indigo-600">Open media</a><div class="mt-2 text-xs text-slate-500 flex justify-between"><span>${new Date(m.t).toLocaleString()}</span><button data-i="${i}" class="text-red-600" data-action="del">Delete</button></div>`; } out.appendChild(d); }); }
+      function escapeHtml(s){ return (s||'').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;'); }
+      document.getElementById('uploadMedia').addEventListener('click', ()=>{
+        const f = document.getElementById('mediaInput').files[0]; if(!f) return alert('Choose a file'); const title=document.getElementById('mediaTitle').value.trim(); if(f.size > 1024*200) { if(!confirm('File is larger than 200KB and may exceed localStorage limits. Continue?')) return; }
+        const reader=new FileReader(); reader.onload = function(e){ const data = e.target.result; const a=getMedia(); a.unshift({title, data, type:f.type, t:Date.now()}); saveMedia(a); renderMedia(); document.getElementById('mediaInput').value=''; document.getElementById('mediaTitle').value=''; }; reader.readAsDataURL(f);
+      });
+      document.getElementById('mediaList').addEventListener('click', e=>{ const b=e.target; if(b.dataset && b.dataset.action==='del'){ const i=Number(b.dataset.i); const a=getMedia(); a.splice(i,1); saveMedia(a); renderMedia(); } });
+      document.getElementById('clearMedia').addEventListener('click', ()=>{ if(confirm('Clear entire media library?')){ saveMedia([]); renderMedia(); } });
+      renderMedia();
+    </script>
+  </body>
+</html>

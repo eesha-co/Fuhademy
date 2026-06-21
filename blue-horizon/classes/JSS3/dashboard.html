@@ -1,0 +1,1102 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Student Dashboard — Blue Horizon (JSS3) E-Learning</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+      * { font-family: 'Plus Jakarta Sans', system-ui, sans-serif; }
+
+      :root {
+        --bh-navy:   #1f507b;
+        --bh-navy-2: #2c5282;
+        --bh-accent: #0195db;
+        --bh-bg:     #fafafa;
+      }
+
+      body { background: var(--bh-bg); }
+
+      /* Custom Scrollbar */
+      ::-webkit-scrollbar { width: 6px; height: 6px; }
+      ::-webkit-scrollbar-track { background: #eef2f7; border-radius: 3px; }
+      ::-webkit-scrollbar-thumb { background: #c1cee0; border-radius: 3px; }
+      ::-webkit-scrollbar-thumb:hover { background: #8aa0bd; }
+
+      /* Sidebar */
+      #sidebar { transition: transform 0.3s ease-in-out; }
+      #sidebar.hide { transform: translateX(-100%); }
+      @media (min-width: 1024px) { #sidebar { transform: translateX(0) !important; } }
+
+      /* Navy gradient hero */
+      .hero-gradient {
+        background: linear-gradient(-45deg, #1f507b, #2c5282, #0195db, #1f507b);
+        background-size: 400% 400%;
+        animation: gradientFlow 18s ease infinite;
+      }
+      @keyframes gradientFlow {
+        0%   { background-position: 0% 50%; }
+        50%  { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+      }
+
+      .particle {
+        position: absolute;
+        background: rgba(255,255,255,0.12);
+        border-radius: 50%;
+        animation: particleFloat 8s infinite ease-in-out;
+      }
+      @keyframes particleFloat {
+        0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0.7; }
+        50%      { transform: translateY(-30px) rotate(180deg); opacity: 0.3; }
+      }
+
+      /* Card hover */
+      .hover-lift { transition: all 0.4s cubic-bezier(0.175,0.885,0.32,1.275); }
+      .hover-lift:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 22px 45px -15px rgba(31, 80, 123, 0.35);
+      }
+
+      /* Subject cards */
+      .subject-card { position: relative; overflow: hidden; }
+      .subject-card::before {
+        content: ''; position: absolute; top:0; left:0; right:0; height: 4px;
+        background: var(--subject-color);
+      }
+      .subject-card::after {
+        content: ''; position: absolute; bottom:-50%; right:-50%; width:100%; height:100%;
+        background: radial-gradient(circle, var(--subject-color) 0%, transparent 70%);
+        opacity: 0.05;
+      }
+
+      .subject-math       { --subject-color:#ef4444; }
+      .subject-physics    { --subject-color:#f59e0b; }
+      .subject-chemistry  { --subject-color:#ec4899; }
+      .subject-biology    { --subject-color:#22c55e; }
+      .subject-english    { --subject-color:#8b5cf6; }
+      .subject-economics  { --subject-color:#0195db; }
+      .subject-government { --subject-color:#f43f5e; }
+      .subject-commerce   { --subject-color:#14b8a6; }
+      .subject-accounting { --subject-color:#64748b; }
+      .subject-literature { --subject-color:#a855f7; }
+
+      /* Progress ring */
+      .progress-ring { transform: rotate(-90deg); }
+      .progress-ring__circle { transition: stroke-dashoffset 1s ease-in-out; }
+
+      /* Streak glow */
+      .streak-glow { animation: fireGlow 2s ease-in-out infinite alternate; }
+      @keyframes fireGlow {
+        0%   { filter: drop-shadow(0 0 5px #f97316) drop-shadow(0 0 10px #fb923c); }
+        100% { filter: drop-shadow(0 0 15px #f97316) drop-shadow(0 0 25px #fb923c); }
+      }
+
+      /* Skeleton loading */
+      .skeleton {
+        background: linear-gradient(90deg, #eef2f7 25%, #dbe3ee 50%, #eef2f7 75%);
+        background-size: 200% 100%;
+        animation: skeleton-loading 1.5s infinite;
+      }
+      @keyframes skeleton-loading {
+        0%   { background-position: 200% 0; }
+        100% { background-position: -200% 0; }
+      }
+
+      /* Notification dot */
+      .notif-dot { animation: notifPulse 2s infinite; }
+      @keyframes notifPulse {
+        0%,100% { box-shadow: 0 0 0 0 rgba(239,68,68,0.4); }
+        50%     { box-shadow: 0 0 0 8px rgba(239,68,68,0); }
+      }
+
+      /* Sidebar active link */
+      .nav-link-active {
+        background: linear-gradient(135deg, rgba(31,80,123,0.10), rgba(1,149,219,0.06));
+        color: var(--bh-navy);
+        font-weight: 600;
+      }
+
+      /* Countdown */
+      .countdown-box {
+        background: linear-gradient(135deg, #eef6ff 0%, #d8e9fa 100%);
+        border: 2px solid #b9d4ec;
+      }
+
+      /* Toast */
+      .toast {
+        position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 9999;
+        padding: 0.9rem 1.2rem; border-radius: 0.75rem; color: #fff; font-size: 0.875rem;
+        box-shadow: 0 12px 30px -10px rgba(0,0,0,0.25);
+        animation: toastIn 0.25s ease-out;
+      }
+      .toast.success { background: #16a34a; }
+      .toast.error   { background: #dc2626; }
+      .toast.info    { background: var(--bh-navy); }
+      @keyframes toastIn {
+        from { transform: translateY(20px); opacity: 0; }
+        to   { transform: translateY(0);    opacity: 1; }
+      }
+
+      /* Mobile sidebar overlay */
+      #sidebar-overlay {
+        position: fixed; inset: 0; background: rgba(15, 35, 60, 0.5);
+        backdrop-filter: blur(4px); z-index: 30;
+        opacity: 0; pointer-events: none; transition: opacity 0.25s ease;
+      }
+      #sidebar-overlay.show { opacity: 1; pointer-events: auto; }
+      @media (min-width: 1024px) { #sidebar-overlay { display: none !important; } }
+    </style>
+    <script>
+      // Tailwind theme extension — make navy available as utility class
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              'bh-navy':   '#1f507b',
+              'bh-navy-2': '#2c5282',
+              'bh-accent': '#0195db',
+              'bh-bg':     '#fafafa'
+            }
+          }
+        }
+      };
+    </script>
+  </head>
+  <body class="bg-bh-bg text-slate-800">
+    <div class="min-h-screen flex">
+
+      <!-- Sidebar overlay (mobile) -->
+      <div id="sidebar-overlay"></div>
+
+      <!-- Sidebar -->
+      <aside id="sidebar" class="w-72 lg:w-80 fixed left-0 top-0 h-full bg-white border-r border-slate-200 flex flex-col z-40 hide lg:translate-x-0">
+        <!-- Logo -->
+        <div class="p-5 border-b border-slate-100">
+          <div class="flex items-center gap-3">
+            <img src="../../_next/static/media/logo-name.1dd6ad53.webp" alt="Blue Horizon logo"
+                 class="w-12 h-12 object-contain rounded-xl bg-white p-1 shadow-sm border border-slate-100"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-bh-navy to-bh-navy-2 flex items-center justify-center shadow-lg" style="display:none;">
+              <i class="fas fa-water text-white text-xl"></i>
+            </div>
+            <div>
+              <div class="text-base font-extrabold tracking-wide text-bh-navy">BLUE HORIZON</div>
+              <div class="text-[11px] text-slate-400 -mt-0.5">E-Learning Platform</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="flex-1 overflow-y-auto p-4 space-y-5">
+          <!-- Main Menu -->
+          <div>
+            <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider px-3 mb-2">Main Menu</div>
+            <ul class="space-y-1">
+              <li>
+                <a href="dashboard.html" class="nav-link-active flex items-center gap-3 px-3 py-2.5 rounded-xl">
+                  <i class="fas fa-home text-bh-navy w-5"></i><span>Dashboard</span>
+                </a>
+              </li>
+              <li>
+                <a href="../../students/study-plan-supabase.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 hover:bg-slate-50 transition-colors">
+                  <i class="fas fa-calendar-alt text-emerald-500 w-5"></i><span>Study Plan</span>
+                </a>
+              </li>
+              <li>
+                <a href="../../students/mock-exams.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 hover:bg-slate-50 transition-colors">
+                  <i class="fas fa-clipboard-list text-amber-500 w-5"></i><span>Practice Tests</span>
+                </a>
+              </li>
+              <li>
+                <a href="../../students/learning-progress.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 hover:bg-slate-50 transition-colors">
+                  <i class="fas fa-clock text-rose-500 w-5"></i><span>Timetable</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Learning -->
+          <div>
+            <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider px-3 mb-2">Learning</div>
+            <ul class="space-y-1">
+              <li>
+                <a href="../../students/video-library-modern.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 hover:bg-slate-50 transition-colors">
+                  <i class="fas fa-play-circle text-rose-500 w-5"></i><span>Video Lessons</span>
+                </a>
+              </li>
+              <li>
+                <a href="../../students/notes.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 hover:bg-slate-50 transition-colors">
+                  <i class="fas fa-sticky-note text-yellow-500 w-5"></i><span>My Notes</span>
+                </a>
+              </li>
+              <li>
+                <a href="../../students/textbooks.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 hover:bg-slate-50 transition-colors">
+                  <i class="fas fa-book text-violet-500 w-5"></i><span>Textbooks</span>
+                </a>
+              </li>
+              <li>
+                <a href="../../students/formula-bank.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 hover:bg-slate-50 transition-colors">
+                  <i class="fas fa-square-root-alt text-teal-500 w-5"></i><span>Formula Bank</span>
+                </a>
+              </li>
+              <li>
+                <a href="../../students/digital-library.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 hover:bg-slate-50 transition-colors">
+                  <i class="fas fa-folder-open text-cyan-500 w-5"></i><span>Digital Library</span>
+                </a>
+              </li>
+              <li>
+                <a href="../../students/student-live-session.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 hover:bg-slate-50 transition-colors">
+                  <i class="fas fa-video text-purple-500 w-5"></i><span>Live Sessions</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Communication -->
+          <div>
+            <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider px-3 mb-2">Communication</div>
+            <ul class="space-y-1">
+              <li>
+                <a href="messenger/messenger.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 hover:bg-slate-50 transition-colors">
+                  <i class="fas fa-comments text-bh-accent w-5"></i><span>Messenger</span>
+                  <span id="messengerBadge" class="ml-auto text-[10px] bg-bh-accent text-white px-1.5 py-0.5 rounded-full hidden">0</span>
+                </a>
+              </li>
+              <li>
+                <a href="#" id="assignmentsLink" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 hover:bg-slate-50 transition-colors">
+                  <i class="fas fa-tasks text-indigo-500 w-5"></i><span>Assignments</span>
+                  <span id="assignmentsBadge" class="ml-auto text-[10px] bg-rose-500 text-white px-1.5 py-0.5 rounded-full hidden">0</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Results -->
+          <div>
+            <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider px-3 mb-2">Results</div>
+            <ul class="space-y-1">
+              <li>
+                <a href="../../students/progress.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 hover:bg-slate-50 transition-colors">
+                  <i class="fas fa-chart-bar text-green-600 w-5"></i><span>My Scores</span>
+                </a>
+              </li>
+              <li>
+                <a href="../../students/learning-progress.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 hover:bg-slate-50 transition-colors">
+                  <i class="fas fa-chart-line text-cyan-600 w-5"></i><span>Performance</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+
+        <!-- User Profile -->
+        <div class="p-4 border-t border-slate-100">
+          <div class="flex items-center gap-3 p-2 rounded-xl bg-slate-50">
+            <img id="avatar-sm" alt="avatar"
+                 src="https://ui-avatars.com/api/?name=S&background=1f507b&color=fff&size=80&bold=true"
+                 class="w-10 h-10 rounded-full border-2 border-bh-navy/30 object-cover">
+            <div class="flex-1 min-w-0">
+              <div id="userName" class="font-semibold text-slate-800 truncate">Student</div>
+              <div id="userLevel" class="text-xs text-slate-500">Loading class…</div>
+            </div>
+            <button id="logoutBtn" title="Sign out" class="p-2 rounded-lg hover:bg-rose-50 text-slate-400 hover:text-rose-500 transition-colors">
+              <i class="fas fa-sign-out-alt"></i>
+            </button>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Main Content -->
+      <div id="main-content" class="flex-1 flex flex-col ml-0 lg:ml-80">
+
+        <!-- Top Header -->
+        <header class="sticky top-0 z-30 bg-white/85 backdrop-blur-xl border-b border-slate-200/60 px-4 md:px-6 py-3.5">
+          <div class="flex items-center justify-between gap-4">
+            <button id="toggleSidebar" class="p-2 rounded-xl hover:bg-slate-100 lg:hidden transition-colors" aria-label="Toggle sidebar">
+              <i class="fas fa-bars text-slate-500"></i>
+            </button>
+
+            <!-- Search -->
+            <div class="flex-1 max-w-xl">
+              <div class="relative">
+                <input type="search" placeholder="Search subjects, topics, resources…"
+                  class="w-full pl-11 pr-4 py-2.5 rounded-xl border border-slate-200 bg-slate-50/60 focus:outline-none focus:ring-2 focus:ring-bh-navy/15 focus:border-bh-navy/40 focus:bg-white transition-all">
+                <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
+              </div>
+            </div>
+
+            <!-- Right actions -->
+            <div class="flex items-center gap-3">
+              <a href="#" id="notifBtn" class="relative p-2.5 rounded-xl hover:bg-slate-100 transition-colors" aria-label="Notifications">
+                <i class="fas fa-bell text-slate-500 text-lg"></i>
+                <span id="notifDot" class="absolute top-1 right-1 w-2.5 h-2.5 bg-red-500 rounded-full notif-dot hidden"></span>
+              </a>
+              <div class="hidden sm:flex items-center gap-3">
+                <div class="text-right">
+                  <div id="topName" class="font-semibold text-slate-800 text-sm">Student</div>
+                  <div id="topLevel" class="text-xs text-slate-500">—</div>
+                </div>
+                <img id="topAvatar" alt="avatar"
+                     src="https://ui-avatars.com/api/?name=S&background=1f507b&color=fff&size=80&bold=true"
+                     class="w-10 h-10 rounded-full border-2 border-bh-navy/30 object-cover">
+              </div>
+            </div>
+          </div>
+        </header>
+
+        <!-- Main Body -->
+        <main class="p-4 md:p-6 space-y-6 overflow-y-auto">
+
+          <!-- Loading overlay -->
+          <div id="loadingOverlay" class="fixed inset-0 bg-white/70 backdrop-blur z-50 flex items-center justify-center">
+            <div class="text-center">
+              <div class="w-12 h-12 border-4 border-bh-navy/20 border-t-bh-navy rounded-full animate-spin mx-auto mb-3"></div>
+              <p class="text-slate-500 text-sm">Loading your dashboard…</p>
+            </div>
+          </div>
+
+          <!-- Error banner -->
+          <div id="errorBanner" class="hidden bg-rose-50 border border-rose-200 text-rose-700 rounded-2xl p-4 text-sm flex items-center gap-3">
+            <i class="fas fa-exclamation-triangle"></i>
+            <span id="errorBannerText">Something went wrong.</span>
+          </div>
+
+          <!-- Hero Welcome Section -->
+          <section class="hero-gradient rounded-3xl p-6 md:p-8 text-white relative overflow-hidden">
+            <div class="particle w-20 h-20 top-10 right-20" style="animation-delay: 0s;"></div>
+            <div class="particle w-12 h-12 bottom-20 right-40" style="animation-delay: 2s;"></div>
+            <div class="particle w-16 h-16 top-20 right-1/3" style="animation-delay: 4s;"></div>
+
+            <div class="relative z-10 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8">
+              <div>
+                <div class="flex items-center gap-3 mb-4">
+                  <span id="timeGreeting" class="px-4 py-1.5 bg-white/20 backdrop-blur rounded-full text-sm font-medium">Good Morning</span>
+                  <span id="currentDate" class="text-white/70 text-sm"></span>
+                </div>
+                <h1 class="text-2xl md:text-4xl font-bold mb-3">
+                  Welcome back, <span id="heroName">Student</span>! <span class="inline-block">👋</span>
+                </h1>
+                <p class="text-white/85 text-base md:text-lg mb-6 max-w-xl">Your learning journey continues. Every study session brings you closer to your goals.</p>
+
+                <div class="flex flex-wrap gap-3">
+                  <a href="../../students/study-plan-supabase.html" class="px-5 py-2.5 bg-white text-bh-navy rounded-xl font-semibold flex items-center gap-2 shadow-lg hover:bg-white/95 transition-colors">
+                    <i class="fas fa-plus-circle"></i><span>New Study Plan</span>
+                  </a>
+                  <a href="../../students/mock-exams.html" class="px-5 py-2.5 bg-white/20 backdrop-blur rounded-xl font-medium flex items-center gap-2 hover:bg-white/30 transition-colors">
+                    <i class="fas fa-clipboard-list"></i><span>Take Practice Test</span>
+                  </a>
+                  <a href="messenger/messenger.html" class="px-5 py-2.5 bg-white/20 backdrop-blur rounded-xl font-medium flex items-center gap-2 hover:bg-white/30 transition-colors">
+                    <i class="fas fa-comments"></i><span>Message Teacher</span>
+                  </a>
+                </div>
+              </div>
+
+              <!-- Stats: streak + overall progress -->
+              <div class="flex items-center gap-4">
+                <div class="text-center bg-white/10 backdrop-blur rounded-2xl p-5">
+                  <div class="w-16 h-16 bg-gradient-to-br from-orange-400 to-red-500 rounded-2xl flex items-center justify-center mx-auto mb-3 streak-glow">
+                    <i class="fas fa-fire text-white text-2xl"></i>
+                  </div>
+                  <div id="streakCount" class="text-3xl font-bold text-white">0</div>
+                  <div class="text-white/70 text-sm">Day Streak</div>
+                </div>
+
+                <div class="text-center bg-white/10 backdrop-blur rounded-2xl p-5">
+                  <div class="relative w-20 h-20 mx-auto mb-3">
+                    <svg class="progress-ring w-20 h-20" viewBox="0 0 80 80">
+                      <circle cx="40" cy="40" r="35" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="6"/>
+                      <circle id="progressRing" class="progress-ring__circle" cx="40" cy="40" r="35" fill="none" stroke="white" stroke-width="6" stroke-linecap="round" stroke-dasharray="220" stroke-dashoffset="220"/>
+                    </svg>
+                    <div id="progressValue" class="absolute inset-0 flex items-center justify-center text-xl font-bold text-white">0%</div>
+                  </div>
+                  <div class="text-white/70 text-sm">Weekly Goal</div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Stat Cards -->
+          <section class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            <!-- Attendance -->
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 hover-lift">
+              <div class="flex items-center justify-between mb-3">
+                <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-bh-navy to-bh-navy-2 flex items-center justify-center">
+                  <i class="fas fa-calendar-check text-white"></i>
+                </div>
+                <span id="attendanceTrend" class="text-xs font-medium text-emerald-600"><i class="fas fa-arrow-up"></i> Good</span>
+              </div>
+              <div id="statAttendance" class="text-2xl font-bold text-slate-800">—</div>
+              <p class="text-xs text-slate-500 mt-1">Attendance Rate</p>
+            </div>
+            <!-- Avg score -->
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 hover-lift">
+              <div class="flex items-center justify-between mb-3">
+                <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center">
+                  <i class="fas fa-star text-white"></i>
+                </div>
+                <span id="scoreTrend" class="text-xs font-medium text-emerald-600"><i class="fas fa-arrow-up"></i> Improving</span>
+              </div>
+              <div id="statAvgScore" class="text-2xl font-bold text-slate-800">—</div>
+              <p class="text-xs text-slate-500 mt-1">Average Score</p>
+            </div>
+            <!-- Pending assignments -->
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 hover-lift">
+              <div class="flex items-center justify-between mb-3">
+                <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center">
+                  <i class="fas fa-tasks text-white"></i>
+                </div>
+                <span id="assignmentsTrend" class="text-xs font-medium text-amber-600"><i class="fas fa-clock"></i> Due soon</span>
+              </div>
+              <div id="statPending" class="text-2xl font-bold text-slate-800">—</div>
+              <p class="text-xs text-slate-500 mt-1">Pending Assignments</p>
+            </div>
+            <!-- Live sessions -->
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 hover-lift">
+              <div class="flex items-center justify-between mb-3">
+                <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-rose-500 to-pink-600 flex items-center justify-center">
+                  <i class="fas fa-video text-white"></i>
+                </div>
+                <span class="text-xs font-medium text-rose-600"><i class="fas fa-circle text-[8px] animate-pulse"></i> Live</span>
+              </div>
+              <div id="statLive" class="text-2xl font-bold text-slate-800">—</div>
+              <p class="text-xs text-slate-500 mt-1">Live Sessions Today</p>
+            </div>
+          </section>
+
+          <!-- Subject Cards -->
+          <section>
+            <div class="flex items-center justify-between mb-5">
+              <div>
+                <h2 class="text-xl font-bold text-slate-800">Your Subjects</h2>
+                <p class="text-sm text-slate-500">Continue where you left off</p>
+              </div>
+              <a href="../../students/digital-library.html" class="text-sm font-medium text-bh-navy hover:text-bh-navy-2 flex items-center gap-1">
+                View All <i class="fas fa-arrow-right"></i>
+              </a>
+            </div>
+
+            <div id="subjectCardsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+              <!-- Skeletons injected by JS -->
+            </div>
+          </section>
+
+          <!-- Two Column Layout -->
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+            <!-- Left column -->
+            <div class="lg:col-span-2 space-y-6">
+
+              <!-- Upcoming classes / timetable preview -->
+              <section class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                <div class="p-5 border-b border-slate-100 flex items-center justify-between">
+                  <div>
+                    <h2 class="text-lg font-bold text-slate-800">Upcoming Classes</h2>
+                    <p class="text-xs text-slate-500">Your timetable for today & tomorrow</p>
+                  </div>
+                  <a href="../../students/learning-progress.html" class="text-xs font-medium text-bh-navy hover:underline">Full timetable →</a>
+                </div>
+                <div id="timetableList" class="p-5 space-y-3">
+                  <!-- timetable items injected -->
+                </div>
+              </section>
+
+              <!-- Recent results -->
+              <section class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                <div class="p-5 border-b border-slate-100 flex items-center justify-between">
+                  <div>
+                    <h2 class="text-lg font-bold text-slate-800">Recent Results</h2>
+                    <p class="text-xs text-slate-500">Your latest practice test scores</p>
+                  </div>
+                  <a href="../../students/progress.html" class="text-xs font-medium text-bh-navy hover:underline">All results →</a>
+                </div>
+                <div id="recentResults" class="p-5 space-y-3">
+                  <!-- results injected -->
+                </div>
+              </section>
+            </div>
+
+            <!-- Right column -->
+            <aside class="space-y-6">
+
+              <!-- Daily motivation -->
+              <div class="bg-gradient-to-br from-bh-navy to-bh-navy-2 rounded-2xl p-5 text-white">
+                <div class="flex items-start gap-3">
+                  <div class="w-10 h-10 rounded-xl bg-white/15 flex items-center justify-center flex-shrink-0">
+                    <i class="fas fa-quote-left"></i>
+                  </div>
+                  <div>
+                    <p class="italic text-sm leading-relaxed" id="dailyQuote">"The secret of getting ahead is getting started."</p>
+                    <p class="text-white/70 text-xs font-medium mt-2" id="quoteAuthor">— Mark Twain</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Focus timer -->
+              <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                <div class="p-5 border-b border-slate-100">
+                  <h3 class="font-semibold text-slate-800">Focus Timer</h3>
+                  <p class="text-xs text-slate-500">Stay productive with Pomodoro</p>
+                </div>
+                <div class="p-5">
+                  <div class="text-center mb-4">
+                    <div id="timerDisplay" class="text-5xl font-bold text-bh-navy mb-1">25:00</div>
+                    <p id="timerLabel" class="text-sm text-slate-500">Focus Session</p>
+                  </div>
+                  <div class="flex gap-2">
+                    <button onclick="BH.startTimer()" id="startBtn" class="flex-1 py-2.5 bg-bh-navy text-white font-medium rounded-xl hover:bg-bh-navy-2 transition-colors text-sm">
+                      <i class="fas fa-play mr-1"></i> Start
+                    </button>
+                    <button onclick="BH.pauseTimer()" id="pauseBtn" class="hidden flex-1 py-2.5 bg-amber-500 text-white font-medium rounded-xl hover:bg-amber-600 transition-colors text-sm">
+                      <i class="fas fa-pause mr-1"></i> Pause
+                    </button>
+                    <button onclick="BH.resetTimer()" class="py-2.5 px-4 bg-slate-100 text-slate-600 font-medium rounded-xl hover:bg-slate-200 transition-colors text-sm">
+                      <i class="fas fa-redo"></i>
+                    </button>
+                  </div>
+                  <div class="flex justify-center gap-2 mt-3">
+                    <button onclick="BH.setTimer(15)" class="px-3 py-1 text-xs bg-slate-100 rounded-full hover:bg-slate-200 transition-colors">15m</button>
+                    <button onclick="BH.setTimer(25)" class="px-3 py-1 text-xs bg-bh-navy/10 text-bh-navy rounded-full hover:bg-bh-navy/20 transition-colors">25m</button>
+                    <button onclick="BH.setTimer(45)" class="px-3 py-1 text-xs bg-slate-100 rounded-full hover:bg-slate-200 transition-colors">45m</button>
+                    <button onclick="BH.setTimer(60)" class="px-3 py-1 text-xs bg-slate-100 rounded-full hover:bg-slate-200 transition-colors">60m</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Pending assignments -->
+              <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                <div class="p-5 border-b border-slate-100 flex items-center justify-between">
+                  <h3 class="font-semibold text-slate-800">Pending Assignments</h3>
+                  <span id="pendingCount" class="text-xs text-slate-500">—</span>
+                </div>
+                <div id="pendingAssignments" class="p-3 space-y-2 max-h-72 overflow-y-auto">
+                  <!-- injected -->
+                </div>
+              </div>
+
+            </aside>
+          </div>
+
+          <!-- Footer -->
+          <footer class="text-center text-xs text-slate-400 py-6">
+            &copy; <span id="footerYear"></span> Blue Horizon Schools. E-Learning Platform. All rights reserved.
+          </footer>
+        </main>
+      </div>
+    </div>
+
+    <!-- Toast container -->
+    <div id="toastContainer"></div>
+
+    <!-- Supabase client -->
+    <script src="js/supabase-client.js"></script>
+    <script>
+      // =====================================================
+      // Blue Horizon Student Dashboard
+      // =====================================================
+
+      // ----- Small UI helpers -----
+      function showToast(message, type) {
+        type = type || 'info';
+        var container = document.getElementById('toastContainer');
+        var el = document.createElement('div');
+        el.className = 'toast ' + type;
+        el.textContent = message;
+        container.appendChild(el);
+        setTimeout(function () {
+          el.style.opacity = '0';
+          el.style.transition = 'opacity .3s';
+          setTimeout(function () { el.remove(); }, 300);
+        }, 3500);
+      }
+
+      function showError(msg) {
+        var banner = document.getElementById('errorBanner');
+        document.getElementById('errorBannerText').textContent = msg;
+        banner.classList.remove('hidden');
+      }
+      function hideError() {
+        document.getElementById('errorBanner').classList.add('hidden');
+      }
+
+      function getInitials(fullName) {
+        try { return String(fullName || '').split(' ').slice(0, 2).map(function (n) { return n.charAt(0); }).join('').toUpperCase(); }
+        catch (e) { return 'S'; }
+      }
+
+      function avatarFor(name) {
+        return 'https://ui-avatars.com/api/?name=' + encodeURIComponent(getInitials(name) || 'S') +
+               '&background=1f507b&color=fff&size=128&bold=true';
+      }
+
+      function timeAgo(dateStr) {
+        if (!dateStr) return '';
+        var d = new Date(dateStr);
+        var diff = (Date.now() - d.getTime()) / 1000;
+        if (diff < 60) return 'just now';
+        if (diff < 3600) return Math.floor(diff / 60) + 'm ago';
+        if (diff < 86400) return Math.floor(diff / 3600) + 'h ago';
+        if (diff < 604800) return Math.floor(diff / 86400) + 'd ago';
+        return d.toLocaleDateString();
+      }
+
+      function formatTime(dateStr) {
+        if (!dateStr) return '';
+        var d = new Date(dateStr);
+        return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      }
+
+      // ----- Greeting & date -----
+      (function setGreeting() {
+        var dateEl = document.getElementById('currentDate');
+        var greetingEl = document.getElementById('timeGreeting');
+        if (dateEl) {
+          var opts = { weekday: 'long', month: 'short', day: 'numeric' };
+          dateEl.textContent = new Date().toLocaleDateString('en-US', opts);
+        }
+        if (greetingEl) {
+          var h = new Date().getHours();
+          var g = 'Good Morning';
+          if (h >= 12 && h < 17) g = 'Good Afternoon';
+          else if (h >= 17) g = 'Good Evening';
+          greetingEl.textContent = g;
+        }
+        var fy = document.getElementById('footerYear');
+        if (fy) fy.textContent = new Date().getFullYear();
+      })();
+
+      // ----- Daily quotes -----
+      (function setQuote() {
+        var quotes = [
+          { text: "The secret of getting ahead is getting started.", author: "Mark Twain" },
+          { text: "Success is not final, failure is not fatal.", author: "Winston Churchill" },
+          { text: "The only way to do great work is to love what you do.", author: "Steve Jobs" },
+          { text: "Education is the most powerful weapon.", author: "Nelson Mandela" },
+          { text: "The beautiful thing about learning is that no one can take it away from you.", author: "B.B. King" },
+          { text: "It does not matter how slowly you go as long as you do not stop.", author: "Confucius" },
+          { text: "The more that you read, the more things you will know.", author: "Dr. Seuss" }
+        ];
+        var q = quotes[Math.floor(Math.random() * quotes.length)];
+        document.getElementById('dailyQuote').textContent = '"' + q.text + '"';
+        document.getElementById('quoteAuthor').textContent = '— ' + q.author;
+      })();
+
+      // ----- Sidebar toggle (mobile) -----
+      (function bindSidebar() {
+        var sidebar = document.getElementById('sidebar');
+        var overlay = document.getElementById('sidebar-overlay');
+        var toggleBtn = document.getElementById('toggleSidebar');
+        function open() { sidebar.classList.remove('hide'); overlay.classList.add('show'); }
+        function close() { sidebar.classList.add('hide'); overlay.classList.remove('show'); }
+        if (toggleBtn) toggleBtn.addEventListener('click', function (e) {
+          e.stopPropagation();
+          sidebar.classList.contains('hide') ? open() : close();
+        });
+        if (overlay) overlay.addEventListener('click', close);
+        window.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+      })();
+
+      // ----- Logout -----
+      document.getElementById('logoutBtn').addEventListener('click', function () {
+        if (window.BH) BH.signOut();
+      });
+
+      // ----- Subjects data -----
+      var SUBJECTS_DATA = {
+        mathematics: { id:'mathematics', name:'Mathematics', icon:'fa-calculator', color:'red',     gradient:'from-red-400 to-red-600',         link:'../../students/digital-library.html', topics:['Number Bases','Indices','Logarithms','Sets','Modular Arithmetic','Algebra','Equations','Quadratic Equations','Simultaneous Equations','Polynomials','Mensuration','Geometry','Trigonometry','Vectors','Statistics','Probability','Differentiation','Integration','Matrices'] },
+        english:     { id:'english',     name:'English Language', icon:'fa-book-open', color:'violet', gradient:'from-violet-400 to-violet-600', link:'../../students/digital-library.html', topics:['Parts of Speech','Sentence Structure','Tenses','Articles','Punctuation','Comprehension','Summary Writing','Essay Writing','Letter Writing','Vocabulary','Idioms','Figures of Speech'] },
+        physics:     { id:'physics',     name:'Physics', icon:'fa-atom', color:'amber',     gradient:'from-amber-400 to-amber-600',     link:'../../students/digital-library.html', topics:['Measurements','Motion','Newton\'s Laws','Work, Energy, Power','Momentum','Projectile Motion','SHM','Waves','Sound','Light','Optics','Heat','Electricity','Magnetism','EM Induction','Modern Physics','Nuclear Physics'] },
+        chemistry:   { id:'chemistry',   name:'Chemistry', icon:'fa-flask', color:'pink',   gradient:'from-pink-400 to-pink-600',       link:'../../students/digital-library.html', topics:['Atomic Structure','Periodic Table','Chemical Bonding','Reactions','Stoichiometry','States of Matter','Gas Laws','Solutions','Acids & Bases','Electrochemistry','Organic Chemistry','Environmental Chemistry','Nuclear Chemistry'] },
+        biology:     { id:'biology',     name:'Biology', icon:'fa-dna', color:'green',     gradient:'from-green-400 to-green-600',     link:'../../students/digital-library.html', topics:['Cell Structure','Cell Division','Nutrition','Photosynthesis','Respiration','Transport','Excretion','Reproduction','Genetics','Evolution','Ecology','Nervous System','Endocrine System'] },
+        economics:   { id:'economics',   name:'Economics', icon:'fa-chart-line', color:'cyan', gradient:'from-cyan-400 to-cyan-600',     link:'../../students/digital-library.html', topics:['Basic Concepts','Demand & Supply','Market Structures','National Income','Money & Banking','Public Finance','International Trade','Economic Development','Population'] },
+        government:  { id:'government',  name:'Government', icon:'fa-landmark', color:'rose', gradient:'from-rose-400 to-rose-600',     link:'../../students/digital-library.html', topics:['Basic Concepts','Constitution','Arms of Government','Federalism','Political Parties','Electoral Systems','Public Administration','Local Government','Human Rights'] },
+        commerce:    { id:'commerce',    name:'Commerce', icon:'fa-store', color:'teal',   gradient:'from-teal-400 to-teal-600',       link:'../../students/digital-library.html', topics:['Introduction','Trade','Business Units','Business Management','Banking','Insurance','Transportation','Communication','Marketing','Consumer Protection'] }
+      };
+
+      // ----- Render subject skeleton -----
+      function renderSubjectSkeleton() {
+        var grid = document.getElementById('subjectCardsGrid');
+        var html = '';
+        for (var i = 0; i < 8; i++) {
+          html += '' +
+            '<div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5">' +
+              '<div class="flex items-start justify-between mb-4">' +
+                '<div class="w-12 h-12 rounded-xl skeleton"></div>' +
+                '<div class="h-5 w-16 skeleton rounded-full"></div>' +
+              '</div>' +
+              '<div class="h-4 w-2/3 skeleton rounded mb-2"></div>' +
+              '<div class="h-3 w-1/2 skeleton rounded mb-3"></div>' +
+              '<div class="h-1.5 w-full skeleton rounded-full"></div>' +
+            '</div>';
+        }
+        grid.innerHTML = html;
+      }
+
+      function renderSubjectCards(progressMap) {
+        progressMap = progressMap || {};
+        var grid = document.getElementById('subjectCardsGrid');
+        var html = '';
+        Object.values(SUBJECTS_DATA).forEach(function (subject) {
+          var prog = progressMap[subject.id] || { completed: 0, total: subject.topics.length };
+          var pct = prog.total > 0 ? Math.round((prog.completed / prog.total) * 100) : 0;
+          html += '' +
+            '<a href="' + subject.link + '" class="subject-card subject-' + subject.color + ' hover-lift bg-white rounded-2xl p-5 border border-slate-200 shadow-sm block">' +
+              '<div class="flex items-start justify-between mb-4">' +
+                '<div class="w-12 h-12 rounded-xl bg-gradient-to-br ' + subject.gradient + ' flex items-center justify-center shadow-lg">' +
+                  '<i class="fas ' + subject.icon + ' text-white text-xl"></i>' +
+                '</div>' +
+                '<span class="text-xs font-medium text-' + subject.color + '-500 bg-' + subject.color + '-50 px-2 py-1 rounded-full">' + subject.topics.length + ' Topics</span>' +
+              '</div>' +
+              '<h3 class="font-semibold text-slate-800 mb-1">' + subject.name + '</h3>' +
+              '<p class="text-xs text-slate-500 mb-3">' + prog.completed + ' of ' + prog.total + ' completed</p>' +
+              '<div class="flex items-center gap-2">' +
+                '<div class="flex-1 h-1.5 bg-' + subject.color + '-100 rounded-full overflow-hidden">' +
+                  '<div class="h-full bg-' + subject.color + '-500 rounded-full transition-all duration-1000" style="width:' + pct + '%"></div>' +
+                '</div>' +
+                '<span class="text-xs font-medium text-' + subject.color + '-500">' + pct + '%</span>' +
+              '</div>' +
+            '</a>';
+        });
+        grid.innerHTML = html;
+      }
+
+      function renderTimetable(items) {
+        var box = document.getElementById('timetableList');
+        if (!items || items.length === 0) {
+          box.innerHTML = '' +
+            '<div class="text-center py-10 text-slate-400">' +
+              '<i class="fas fa-calendar-day text-4xl mb-3 opacity-40"></i>' +
+              '<p class="text-sm">No upcoming classes scheduled.</p>' +
+              '<p class="text-xs mt-1">Your timetable will appear here when classes are added.</p>' +
+            '</div>';
+          return;
+        }
+        var html = '';
+        items.slice(0, 6).forEach(function (it) {
+          html += '' +
+            '<div class="flex items-center gap-4 p-3 rounded-xl hover:bg-slate-50 transition-colors border border-slate-100">' +
+              '<div class="text-center min-w-[64px]">' +
+                '<div class="text-sm font-bold text-bh-navy">' + (it.start || '--:--') + '</div>' +
+                '<div class="text-[10px] text-slate-400">' + (it.end || '--:--') + '</div>' +
+              '</div>' +
+              '<div class="w-px h-10 bg-slate-200"></div>' +
+              '<div class="flex-1 min-w-0">' +
+                '<div class="font-medium text-slate-800 text-sm truncate">' + (it.subject || 'Class') + '</div>' +
+                '<div class="text-xs text-slate-500 flex items-center gap-2 mt-0.5">' +
+                  '<span><i class="fas fa-user-tie mr-1"></i>' + (it.teacher || 'TBA') + '</span>' +
+                  (it.room ? '<span><i class="fas fa-map-marker-alt mr-1"></i>' + it.room + '</span>' : '') +
+                '</div>' +
+              '</div>' +
+              (it.live
+                ? '<a href="../../students/student-live-session.html" class="px-3 py-1.5 bg-rose-500 text-white text-xs rounded-lg hover:bg-rose-600">Join</a>'
+                : '<span class="text-xs text-slate-400">' + (it.day || '') + '</span>') +
+            '</div>';
+        });
+        box.innerHTML = html;
+      }
+
+      function renderRecentResults(results) {
+        var box = document.getElementById('recentResults');
+        if (!results || results.length === 0) {
+          box.innerHTML = '' +
+            '<div class="text-center py-10 text-slate-400">' +
+              '<i class="fas fa-chart-bar text-4xl mb-3 opacity-40"></i>' +
+              '<p class="text-sm">No recent results yet.</p>' +
+              '<p class="text-xs mt-1">Take a practice test to see your scores here.</p>' +
+              '<a href="../../students/mock-exams.html" class="inline-block mt-3 px-4 py-2 bg-bh-navy text-white text-xs rounded-lg hover:bg-bh-navy-2">Take a test</a>' +
+            '</div>';
+          return;
+        }
+        var html = '';
+        results.slice(0, 5).forEach(function (r) {
+          var pct = r.score != null ? Math.round(r.score) : null;
+          var tone = pct == null ? 'slate' : (pct >= 75 ? 'emerald' : (pct >= 50 ? 'amber' : 'rose'));
+          html += '' +
+            '<div class="flex items-center gap-4 p-3 rounded-xl hover:bg-slate-50 transition-colors">' +
+              '<div class="w-11 h-11 rounded-xl bg-' + tone + '-100 flex items-center justify-center">' +
+                '<i class="fas fa-' + (pct == null ? 'circle-notch' : 'star') + ' text-' + tone + '-600"></i>' +
+              '</div>' +
+              '<div class="flex-1 min-w-0">' +
+                '<div class="font-medium text-slate-800 text-sm truncate">' + (r.subject || 'Test') + ' — ' + (r.title || 'Practice Test') + '</div>' +
+                '<div class="text-xs text-slate-500">' + (r.date ? new Date(r.date).toLocaleDateString() : '') + '</div>' +
+              '</div>' +
+              '<div class="text-right">' +
+                '<div class="font-bold text-' + tone + '-600">' + (pct == null ? '—' : pct + '%') + '</div>' +
+                '<div class="text-[10px] text-slate-400">' + (r.duration || '') + '</div>' +
+              '</div>' +
+            '</div>';
+        });
+        box.innerHTML = html;
+      }
+
+      function renderPendingAssignments(items) {
+        var box = document.getElementById('pendingAssignments');
+        var badge = document.getElementById('assignmentsBadge');
+        var pendingCount = document.getElementById('pendingCount');
+        if (!items || items.length === 0) {
+          box.innerHTML = '' +
+            '<div class="text-center py-8 text-slate-400">' +
+              '<i class="fas fa-check-circle text-3xl mb-2 text-emerald-300"></i>' +
+              '<p class="text-sm">You\'re all caught up!</p>' +
+            '</div>';
+          pendingCount.textContent = '0';
+          badge.classList.add('hidden');
+          return;
+        }
+        pendingCount.textContent = items.length + ' pending';
+        badge.textContent = items.length;
+        badge.classList.remove('hidden');
+        var html = '';
+        items.slice(0, 6).forEach(function (a) {
+          var due = a.due_date ? new Date(a.due_date) : null;
+          var overdue = due && due < new Date();
+          html += '' +
+            '<div class="p-3 rounded-xl border border-slate-100 hover:border-bh-navy/30 hover:bg-slate-50 transition-colors">' +
+              '<div class="flex items-start justify-between gap-2">' +
+                '<div class="flex-1 min-w-0">' +
+                  '<div class="font-medium text-slate-800 text-sm truncate">' + (a.title || 'Assignment') + '</div>' +
+                  '<div class="text-xs text-slate-500 mt-0.5">' + (a.subject || '') + '</div>' +
+                '</div>' +
+                '<span class="text-[10px] px-2 py-0.5 rounded-full ' + (overdue ? 'bg-rose-100 text-rose-600' : 'bg-amber-100 text-amber-700') + '">' +
+                  (overdue ? 'Overdue' : 'Due') +
+                '</span>' +
+              '</div>' +
+              (due ? '<div class="text-xs text-slate-400 mt-2"><i class="fas fa-clock mr-1"></i>Due ' + due.toLocaleDateString() + '</div>' : '') +
+            '</div>';
+        });
+        box.innerHTML = html;
+      }
+
+      function setStat(id, value) {
+        var el = document.getElementById(id);
+        if (el) el.textContent = value;
+      }
+
+      // ----- Default UI state -----
+      renderSubjectSkeleton();
+      renderTimetable([]);
+      renderRecentResults([]);
+      renderPendingAssignments([]);
+
+      // ----- Auth gate + dashboard load -----
+      function loadDashboard() {
+        if (!window.BH || !window.BH.requireAuth) {
+          // wait for the client to be ready
+          return document.addEventListener('bh:ready', loadDashboard);
+        }
+        BH.requireAuth().then(function (session) {
+          if (!session) return; // redirected to login
+          hideLoading();
+          loadProfile(session);
+          loadDashboardData(session);
+        });
+      }
+
+      function hideLoading() {
+        var ov = document.getElementById('loadingOverlay');
+        if (ov) { ov.style.opacity = '0'; ov.style.transition = 'opacity .3s'; setTimeout(function () { ov.remove(); }, 300); }
+      }
+
+      function loadProfile(session) {
+        var user = session.user || {};
+        var meta = user.user_metadata || {};
+        var name = meta.full_name || meta.name || (user.email ? user.email.split('@')[0] : 'Student');
+        var cls  = meta.class || meta.level || 'Student';
+        var initials = getInitials(name);
+        var avatar = meta.avatar_url || avatarFor(name);
+
+        document.getElementById('heroName').textContent = name.split(' ')[0];
+        document.getElementById('userName').textContent = name;
+        document.getElementById('userLevel').textContent = cls;
+        document.getElementById('topName').textContent = name;
+        document.getElementById('topLevel').textContent = cls;
+
+        var av1 = document.getElementById('avatar-sm');
+        var av2 = document.getElementById('topAvatar');
+        if (av1) av1.src = avatar;
+        if (av2) av2.src = avatar;
+      }
+
+      function loadDashboardData(session) {
+        var userId = (session.user && session.user.id) || null;
+        var token = session.access_token;
+
+        // 1) Call the get-student-dashboard edge function for aggregated data
+        BH.edge('get-student-dashboard', {
+          headers: { Authorization: 'Bearer ' + token },
+          body: { user_id: userId }
+        }).then(function (res) {
+          if (res.ok && res.data) {
+            applyDashboardPayload(res.data);
+          } else {
+            // Fall back to client-side reads (RLS-protected)
+            return clientSideFallback(session);
+          }
+        }).catch(function (err) {
+          console.warn('[BH] edge function failed, falling back:', err);
+          return clientSideFallback(session);
+        });
+      }
+
+      function applyDashboardPayload(p) {
+        // Stats
+        if (p.stats) {
+          setStat('statAttendance', p.stats.attendance != null ? p.stats.attendance + '%' : '—');
+          setStat('statAvgScore',   p.stats.average_score != null ? p.stats.average_score + '%' : '—');
+          setStat('statPending',    p.stats.pending_assignments != null ? p.stats.pending_assignments : '—');
+          setStat('statLive',       p.stats.live_sessions != null ? p.stats.live_sessions : '—');
+        }
+        if (typeof p.streak === 'number') {
+          document.getElementById('streakCount').textContent = p.streak;
+        }
+        if (typeof p.weekly_progress === 'number') {
+          var pct = Math.min(100, Math.max(0, p.weekly_progress));
+          var circ = 2 * Math.PI * 35;
+          var ring = document.getElementById('progressRing');
+          var val  = document.getElementById('progressValue');
+          if (ring) ring.style.strokeDashoffset = circ - (pct / 100) * circ;
+          if (val)  val.textContent = pct + '%';
+        }
+        if (Array.isArray(p.subjects_progress)) {
+          var map = {};
+          p.subjects_progress.forEach(function (s) {
+            map[(s.subject || '').toLowerCase()] = { completed: s.completed || 0, total: s.total || 0 };
+          });
+          renderSubjectCards(map);
+        } else {
+          renderSubjectCards({});
+        }
+        if (Array.isArray(p.timetable))         renderTimetable(p.timetable);
+        if (Array.isArray(p.recent_results))    renderRecentResults(p.recent_results);
+        if (Array.isArray(p.pending_assignments)) renderPendingAssignments(p.pending_assignments);
+      }
+
+      // RLS-protected client-side reads (fallback if edge function is missing)
+      function clientSideFallback(session) {
+        if (!window.supabaseClient) {
+          renderSubjectCards({});
+          return;
+        }
+        var client = window.supabaseClient;
+        var userId = (session.user && session.user.id) || null;
+
+        // Subject progress (topic_progress table)
+        client.from('topic_progress').select('subject, topic, status').eq('user_id', userId).eq('status', 'completed')
+          .then(function (res) {
+            var map = {};
+            Object.keys(SUBJECTS_DATA).forEach(function (id) { map[id] = { completed: 0, total: SUBJECTS_DATA[id].topics.length }; });
+            if (res.data) {
+              res.data.forEach(function (row) {
+                var sid = (row.subject || '').toLowerCase();
+                if (map[sid]) map[sid].completed++;
+              });
+            }
+            renderSubjectCards(map);
+            var totalCompleted = Object.values(map).reduce(function (s, p) { return s + p.completed; }, 0);
+            var totalTopics    = Object.values(map).reduce(function (s, p) { return s + p.total; }, 0);
+            var pct = totalTopics > 0 ? Math.round((totalCompleted / totalTopics) * 100) : 0;
+            var circ = 2 * Math.PI * 35;
+            var ring = document.getElementById('progressRing');
+            var val  = document.getElementById('progressValue');
+            if (ring) ring.style.strokeDashoffset = circ - (pct / 100) * circ;
+            if (val)  val.textContent = pct + '%';
+          });
+
+        // Scores
+        client.from('scores').select('subject, title, score, date, duration').eq('student_id', userId).order('date', { ascending: false }).limit(5)
+          .then(function (res) {
+            if (res.data) renderRecentResults(res.data);
+          });
+
+        // Assignments
+        client.from('assignments').select('title, subject, due_date').eq('student_id', userId).eq('status', 'pending').order('due_date', { ascending: true })
+          .then(function (res) {
+            if (res.data) {
+              renderPendingAssignments(res.data);
+              setStat('statPending', res.data.length);
+            } else {
+              setStat('statPending', '0');
+            }
+          });
+
+        // Timetable
+        client.from('timetable').select('day, start, end, subject, teacher, room, live').order('start', { ascending: true })
+          .then(function (res) {
+            if (res.data) renderTimetable(res.data);
+          });
+
+        // Stats placeholders (no aggregation edge function available)
+        setStat('statAttendance', '—');
+        setStat('statAvgScore',   '—');
+        setStat('statLive',       '0');
+      }
+
+      // ----- Focus timer (exposed on BH for inline onclick) -----
+      var timerMinutes = 25, timerSeconds = 0, timerInterval = null, isRunning = false;
+      function updateTimerDisplay() {
+        var m = String(timerMinutes).padStart(2, '0');
+        var s = String(timerSeconds).padStart(2, '0');
+        document.getElementById('timerDisplay').textContent = m + ':' + s;
+      }
+      function startTimer() {
+        if (isRunning) return;
+        isRunning = true;
+        document.getElementById('startBtn').classList.add('hidden');
+        document.getElementById('pauseBtn').classList.remove('hidden');
+        timerInterval = setInterval(function () {
+          if (timerSeconds === 0) {
+            if (timerMinutes === 0) {
+              clearInterval(timerInterval);
+              isRunning = false;
+              document.getElementById('timerLabel').textContent = 'Session complete! 🎉';
+              showToast('Focus session complete. Well done!', 'success');
+              return;
+            }
+            timerMinutes--; timerSeconds = 59;
+          } else { timerSeconds--; }
+          updateTimerDisplay();
+        }, 1000);
+      }
+      function pauseTimer() {
+        clearInterval(timerInterval);
+        isRunning = false;
+        document.getElementById('startBtn').classList.remove('hidden');
+        document.getElementById('pauseBtn').classList.add('hidden');
+        document.getElementById('startBtn').innerHTML = '<i class="fas fa-play mr-1"></i> Resume';
+      }
+      function resetTimer() {
+        clearInterval(timerInterval);
+        isRunning = false;
+        timerMinutes = 25; timerSeconds = 0;
+        updateTimerDisplay();
+        document.getElementById('startBtn').classList.remove('hidden');
+        document.getElementById('pauseBtn').classList.add('hidden');
+        document.getElementById('startBtn').innerHTML = '<i class="fas fa-play mr-1"></i> Start';
+        document.getElementById('timerLabel').textContent = 'Focus Session';
+      }
+      function setTimer(mins) {
+        clearInterval(timerInterval);
+        isRunning = false;
+        timerMinutes = mins; timerSeconds = 0;
+        updateTimerDisplay();
+        document.getElementById('startBtn').classList.remove('hidden');
+        document.getElementById('pauseBtn').classList.add('hidden');
+        document.getElementById('startBtn').innerHTML = '<i class="fas fa-play mr-1"></i> Start';
+        document.getElementById('timerLabel').textContent = 'Focus Session';
+      }
+
+      // Expose timer fns on BH
+      window.BH = window.BH || {};
+      window.BH.startTimer = startTimer;
+      window.BH.pauseTimer = pauseTimer;
+      window.BH.resetTimer = resetTimer;
+      window.BH.setTimer   = setTimer;
+
+      // ----- Boot -----
+      loadDashboard();
+    </script>
+  </body>
+</html>

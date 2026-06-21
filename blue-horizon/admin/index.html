@@ -1,0 +1,1042 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Admin Panel — Blue Horizon E-Learning</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+      * { font-family: 'Plus Jakarta Sans', system-ui, sans-serif; }
+      :root {
+        --bh-navy:   #1f507b;
+        --bh-navy-2: #2c5282;
+        --bh-accent: #0195db;
+        --bh-bg:     #fafafa;
+      }
+      body { background: var(--bh-bg); }
+
+      ::-webkit-scrollbar { width: 6px; height: 6px; }
+      ::-webkit-scrollbar-track { background: #eef2f7; border-radius: 3px; }
+      ::-webkit-scrollbar-thumb { background: #c1cee0; border-radius: 3px; }
+      ::-webkit-scrollbar-thumb:hover { background: #8aa0bd; }
+
+      #sidebar { transition: transform 0.3s ease-in-out; }
+      #sidebar.hide { transform: translateX(-100%); }
+      @media (min-width: 1024px) { #sidebar { transform: translateX(0) !important; } }
+
+      .nav-link-active {
+        background: linear-gradient(135deg, rgba(31,80,123,0.10), rgba(1,149,219,0.06));
+        color: var(--bh-navy);
+        font-weight: 600;
+      }
+
+      .toast {
+        position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 9999;
+        padding: 0.9rem 1.2rem; border-radius: 0.75rem; color: #fff; font-size: 0.875rem;
+        box-shadow: 0 12px 30px -10px rgba(0,0,0,0.25);
+      }
+      .toast.success { background: #16a34a; }
+      .toast.error   { background: #dc2626; }
+      .toast.info    { background: var(--bh-navy); }
+
+      .stat-card { transition: all .25s ease; }
+      .stat-card:hover { transform: translateY(-3px); box-shadow: 0 18px 35px -15px rgba(31,80,123,0.35); }
+
+      .form-input {
+        width: 100%; padding: 0.65rem 0.9rem; border-radius: 0.75rem;
+        border: 1px solid #e2e8f0; background: #fff; font-size: 0.875rem;
+        transition: all .15s ease;
+      }
+      .form-input:focus {
+        outline: none; border-color: rgba(31,80,123,0.5);
+        box-shadow: 0 0 0 3px rgba(31,80,123,0.15);
+      }
+      .form-label {
+        display: block; font-size: 0.75rem; font-weight: 600;
+        color: #475569; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.35rem;
+      }
+
+      .tab-btn { transition: all .15s ease; }
+      .tab-btn.active {
+        background: linear-gradient(135deg, var(--bh-navy), var(--bh-navy-2));
+        color: #fff;
+        box-shadow: 0 8px 18px -8px rgba(31,80,123,0.55);
+      }
+
+      #sidebar-overlay {
+        position: fixed; inset: 0; background: rgba(15, 35, 60, 0.5);
+        backdrop-filter: blur(4px); z-index: 30;
+        opacity: 0; pointer-events: none; transition: opacity 0.25s ease;
+      }
+      #sidebar-overlay.show { opacity: 1; pointer-events: auto; }
+      @media (min-width: 1024px) { #sidebar-overlay { display: none !important; } }
+
+      .spinner-sm {
+        width: 14px; height: 14px; border: 2px solid rgba(255,255,255,0.4);
+        border-top-color: #fff; border-radius: 50%; animation: spin .7s linear infinite;
+        display: inline-block;
+      }
+      @keyframes spin { to { transform: rotate(360deg); } }
+
+      .table-row:hover { background: #f8fafc; }
+    </style>
+    <script>
+      tailwind.config = {
+        theme: { extend: { colors: {
+          'bh-navy':   '#1f507b',
+          'bh-navy-2': '#2c5282',
+          'bh-accent': '#0195db',
+          'bh-bg':     '#fafafa'
+        } } }
+      };
+    </script>
+  </head>
+  <body class="bg-bh-bg text-slate-800">
+    <div class="min-h-screen flex">
+
+      <div id="sidebar-overlay"></div>
+
+      <!-- Sidebar -->
+      <aside id="sidebar" class="w-72 lg:w-80 fixed left-0 top-0 h-full bg-white border-r border-slate-200 flex flex-col z-40 hide lg:translate-x-0">
+        <div class="p-5 border-b border-slate-100">
+          <div class="flex items-center gap-3">
+            <img src="../_next/static/media/logo-name.1dd6ad53.webp" alt="Blue Horizon logo"
+                 class="w-12 h-12 object-contain rounded-xl bg-white p-1 shadow-sm border border-slate-100"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-bh-navy to-bh-navy-2 flex items-center justify-center shadow-lg" style="display:none;">
+              <i class="fas fa-water text-white text-xl"></i>
+            </div>
+            <div>
+              <div class="text-base font-extrabold tracking-wide text-bh-navy">BLUE HORIZON</div>
+              <div class="text-[11px] text-slate-400 -mt-0.5">Admin Panel</div>
+            </div>
+          </div>
+        </div>
+
+        <nav class="flex-1 overflow-y-auto p-4 space-y-5">
+          <div>
+            <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider px-3 mb-2">Management</div>
+            <ul class="space-y-1">
+              <li><a href="#" data-view="dashboard"   class="nav-link nav-link-active flex items-center gap-3 px-3 py-2.5 rounded-xl">
+                <i class="fas fa-tachometer-alt text-bh-navy w-5"></i><span>Dashboard</span></a></li>
+              <li><a href="#" data-view="students"    class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 hover:bg-slate-50 transition-colors">
+                <i class="fas fa-user-graduate text-emerald-500 w-5"></i><span>Students</span></a></li>
+              <li><a href="#" data-view="teachers"    class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 hover:bg-slate-50 transition-colors">
+                <i class="fas fa-chalkboard-teacher text-violet-500 w-5"></i><span>Teachers</span></a></li>
+              <li><a href="#" data-view="classes"     class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 hover:bg-slate-50 transition-colors">
+                <i class="fas fa-school text-amber-500 w-5"></i><span>Classes</span></a></li>
+              <li><a href="#" data-view="timetables"  class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 hover:bg-slate-50 transition-colors">
+                <i class="fas fa-clock text-rose-500 w-5"></i><span>Timetables</span></a></li>
+              <li><a href="#" data-view="scores"      class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 hover:bg-slate-50 transition-colors">
+                <i class="fas fa-chart-bar text-cyan-600 w-5"></i><span>Scores</span></a></li>
+              <li><a href="#" data-view="subscriptions" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 hover:bg-slate-50 transition-colors">
+                <i class="fas fa-credit-card text-indigo-500 w-5"></i><span>Subscriptions</span></a></li>
+              <li><a href="#" data-view="reports"     class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 hover:bg-slate-50 transition-colors">
+                <i class="fas fa-file-alt text-teal-600 w-5"></i><span>Reports</span></a></li>
+            </ul>
+          </div>
+
+          <div>
+            <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider px-3 mb-2">Quick Links</div>
+            <ul class="space-y-1">
+              <li><a href="../website.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 hover:bg-slate-50 transition-colors">
+                <i class="fas fa-globe text-slate-500 w-5"></i><span>School Website</span></a></li>
+              <li><a href="../login.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 hover:bg-slate-50 transition-colors">
+                <i class="fas fa-sign-out-alt text-slate-500 w-5"></i><span>Switch Account</span></a></li>
+            </ul>
+          </div>
+        </nav>
+
+        <div class="p-4 border-t border-slate-100">
+          <div class="flex items-center gap-3 p-2 rounded-xl bg-slate-50">
+            <img id="avatar-sm" alt="avatar" src="https://ui-avatars.com/api/?name=A&background=1f507b&color=fff&size=80&bold=true" class="w-10 h-10 rounded-full border-2 border-bh-navy/30 object-cover">
+            <div class="flex-1 min-w-0">
+              <div id="adminName" class="font-semibold text-slate-800 truncate">Administrator</div>
+              <div id="adminRole" class="text-xs text-slate-500">School Admin</div>
+            </div>
+            <button id="logoutBtn" title="Sign out" class="p-2 rounded-lg hover:bg-rose-50 text-slate-400 hover:text-rose-500 transition-colors">
+              <i class="fas fa-sign-out-alt"></i>
+            </button>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Main Content -->
+      <div id="main-content" class="flex-1 flex flex-col ml-0 lg:ml-80">
+
+        <!-- Top Header -->
+        <header class="sticky top-0 z-30 bg-white/85 backdrop-blur-xl border-b border-slate-200/60 px-4 md:px-6 py-3.5">
+          <div class="flex items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+              <button id="toggleSidebar" class="p-2 rounded-xl hover:bg-slate-100 lg:hidden transition-colors" aria-label="Toggle sidebar">
+                <i class="fas fa-bars text-slate-500"></i>
+              </button>
+              <div>
+                <h1 id="pageTitle" class="text-lg font-bold text-slate-800">Dashboard</h1>
+                <p id="pageSubtitle" class="text-xs text-slate-500 hidden sm:block">School overview at a glance</p>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-3">
+              <button id="quickAddBtn" class="hidden md:inline-flex px-3 py-2 bg-bh-navy text-white text-sm rounded-xl hover:bg-bh-navy-2 transition-colors items-center gap-2">
+                <i class="fas fa-plus"></i><span>Quick Add</span>
+              </button>
+              <div class="hidden sm:flex items-center gap-3">
+                <img id="topAvatar" alt="avatar" src="https://ui-avatars.com/api/?name=A&background=1f507b&color=fff&size=80&bold=true" class="w-9 h-9 rounded-full border-2 border-bh-navy/30">
+                <div class="text-right">
+                  <div id="topName" class="font-semibold text-slate-800 text-sm">Administrator</div>
+                  <div class="text-xs text-slate-500">School Admin</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        <!-- Main Body -->
+        <main class="p-4 md:p-6 space-y-6 overflow-y-auto">
+
+          <!-- Loading overlay -->
+          <div id="loadingOverlay" class="fixed inset-0 bg-white/70 backdrop-blur z-50 flex items-center justify-center">
+            <div class="text-center">
+              <div class="w-12 h-12 border-4 border-bh-navy/20 border-t-bh-navy rounded-full animate-spin mx-auto mb-3"></div>
+              <p class="text-slate-500 text-sm">Loading admin panel…</p>
+            </div>
+          </div>
+
+          <!-- ============ DASHBOARD VIEW ============ -->
+          <section id="view-dashboard" class="space-y-6">
+            <!-- Stat cards -->
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+              <div class="stat-card bg-white rounded-2xl border border-slate-200 shadow-sm p-5">
+                <div class="flex items-center justify-between mb-3">
+                  <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-bh-navy to-bh-navy-2 flex items-center justify-center">
+                    <i class="fas fa-user-graduate text-white"></i>
+                  </div>
+                  <span class="text-xs font-medium text-emerald-600"><i class="fas fa-arrow-up"></i> Active</span>
+                </div>
+                <div id="statStudents" class="text-2xl font-bold text-slate-800">—</div>
+                <p class="text-xs text-slate-500 mt-1">Total Students</p>
+              </div>
+              <div class="stat-card bg-white rounded-2xl border border-slate-200 shadow-sm p-5">
+                <div class="flex items-center justify-between mb-3">
+                  <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center">
+                    <i class="fas fa-chalkboard-teacher text-white"></i>
+                  </div>
+                  <span class="text-xs font-medium text-emerald-600"><i class="fas fa-arrow-up"></i> Teaching</span>
+                </div>
+                <div id="statTeachers" class="text-2xl font-bold text-slate-800">—</div>
+                <p class="text-xs text-slate-500 mt-1">Total Teachers</p>
+              </div>
+              <div class="stat-card bg-white rounded-2xl border border-slate-200 shadow-sm p-5">
+                <div class="flex items-center justify-between mb-3">
+                  <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center">
+                    <i class="fas fa-credit-card text-white"></i>
+                  </div>
+                  <span class="text-xs font-medium text-amber-600"><i class="fas fa-clock"></i> Active</span>
+                </div>
+                <div id="statSubs" class="text-2xl font-bold text-slate-800">—</div>
+                <p class="text-xs text-slate-500 mt-1">Active Subscriptions</p>
+              </div>
+              <div class="stat-card bg-white rounded-2xl border border-slate-200 shadow-sm p-5">
+                <div class="flex items-center justify-between mb-3">
+                  <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center">
+                    <i class="fas fa-naira-sign fa-money-bill text-white"></i>
+                  </div>
+                  <span class="text-xs font-medium text-emerald-600"><i class="fas fa-arrow-up"></i> This term</span>
+                </div>
+                <div id="statRevenue" class="text-2xl font-bold text-slate-800">—</div>
+                <p class="text-xs text-slate-500 mt-1">Revenue (₦)</p>
+              </div>
+            </div>
+
+            <!-- Recent registrations + payments -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              <div class="lg:col-span-2 bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                <div class="p-5 border-b border-slate-100 flex items-center justify-between">
+                  <div>
+                    <h2 class="text-lg font-bold text-slate-800">Recent Registrations</h2>
+                    <p class="text-xs text-slate-500">Latest students &amp; teachers added</p>
+                  </div>
+                  <a href="#" data-view="students" class="nav-link text-xs font-medium text-bh-navy hover:underline">View all →</a>
+                </div>
+                <div class="overflow-x-auto">
+                  <table class="w-full text-sm">
+                    <thead class="bg-slate-50/60 text-slate-500 text-xs uppercase tracking-wide">
+                      <tr>
+                        <th class="text-left p-3">Name</th>
+                        <th class="text-left p-3">Role</th>
+                        <th class="text-left p-3">Class / Subject</th>
+                        <th class="text-left p-3">Date</th>
+                        <th class="text-left p-3">Status</th>
+                      </tr>
+                    </thead>
+                    <tbody id="recentRegsBody">
+                      <tr><td colspan="5" class="p-8 text-center text-slate-400 text-sm">Loading…</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <!-- Payment status -->
+              <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                <div class="p-5 border-b border-slate-100">
+                  <h2 class="text-lg font-bold text-slate-800">Payment Status</h2>
+                  <p class="text-xs text-slate-500">Current term subscriptions</p>
+                </div>
+                <div id="paymentStatus" class="p-5 space-y-3">
+                  <div class="text-center text-slate-400 text-sm py-6">Loading…</div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- ============ STUDENTS VIEW ============ -->
+          <section id="view-students" class="hidden space-y-6">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              <!-- Registration form -->
+              <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+                <div class="flex items-center gap-3 mb-4">
+                  <div class="w-10 h-10 rounded-xl bg-emerald-100 flex items-center justify-center">
+                    <i class="fas fa-user-plus text-emerald-600"></i>
+                  </div>
+                  <div>
+                    <h3 class="font-bold text-slate-800">Register Student</h3>
+                    <p class="text-xs text-slate-500">Create a new student account</p>
+                  </div>
+                </div>
+                <form id="studentForm" class="space-y-3">
+                  <div>
+                    <label class="form-label">Full Name *</label>
+                    <input name="name" required class="form-input" placeholder="John Doe">
+                  </div>
+                  <div class="grid grid-cols-2 gap-3">
+                    <div>
+                      <label class="form-label">Username *</label>
+                      <input name="username" required class="form-input" placeholder="john.doe">
+                    </div>
+                    <div>
+                      <label class="form-label">Password *</label>
+                      <input name="password" required type="text" class="form-input" placeholder="temp password">
+                    </div>
+                  </div>
+                  <div class="grid grid-cols-2 gap-3">
+                    <div>
+                      <label class="form-label">Class</label>
+                      <select name="class_name" class="form-input">
+                        <option value="JSS 1">JSS 1</option>
+                        <option value="JSS 2">JSS 2</option>
+                        <option value="JSS 3">JSS 3</option>
+                        <option value="SS 1">SS 1</option>
+                        <option value="SS 2">SS 2</option>
+                        <option value="SS 3" selected>SS 3</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label class="form-label">Gender</label>
+                      <select name="gender" class="form-input">
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div>
+                    <label class="form-label">Guardian Email</label>
+                    <input name="email" type="email" class="form-input" placeholder="parent@email.com">
+                  </div>
+                  <div>
+                    <label class="form-label">Guardian Phone</label>
+                    <input name="phone" class="form-input" placeholder="+234 800 000 0000">
+                  </div>
+                  <button type="submit" class="w-full py-2.5 bg-bh-navy text-white rounded-xl font-medium hover:bg-bh-navy-2 transition-colors text-sm flex items-center justify-center gap-2">
+                    <i class="fas fa-user-plus"></i><span>Register Student</span>
+                  </button>
+                </form>
+              </div>
+
+              <!-- Student list -->
+              <div class="lg:col-span-2 bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                <div class="p-5 border-b border-slate-100 flex items-center justify-between">
+                  <div>
+                    <h3 class="font-bold text-slate-800">Student Directory</h3>
+                    <p class="text-xs text-slate-500">All registered students</p>
+                  </div>
+                  <div class="relative">
+                    <input id="studentSearch" type="search" placeholder="Search…"
+                      class="pl-9 pr-3 py-2 rounded-lg border border-slate-200 bg-slate-50/60 text-sm focus:outline-none focus:ring-2 focus:ring-bh-navy/15">
+                    <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+                  </div>
+                </div>
+                <div class="overflow-x-auto max-h-[28rem] overflow-y-auto">
+                  <table class="w-full text-sm">
+                    <thead class="bg-slate-50/60 text-slate-500 text-xs uppercase tracking-wide sticky top-0">
+                      <tr>
+                        <th class="text-left p-3">Name</th>
+                        <th class="text-left p-3">Username</th>
+                        <th class="text-left p-3">Class</th>
+                        <th class="text-left p-3">Status</th>
+                      </tr>
+                    </thead>
+                    <tbody id="studentsBody">
+                      <tr><td colspan="4" class="p-8 text-center text-slate-400 text-sm">Loading…</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- ============ TEACHERS VIEW ============ -->
+          <section id="view-teachers" class="hidden space-y-6">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+                <div class="flex items-center gap-3 mb-4">
+                  <div class="w-10 h-10 rounded-xl bg-violet-100 flex items-center justify-center">
+                    <i class="fas fa-user-tie text-violet-600"></i>
+                  </div>
+                  <div>
+                    <h3 class="font-bold text-slate-800">Register Teacher</h3>
+                    <p class="text-xs text-slate-500">Create a new teacher account</p>
+                  </div>
+                </div>
+                <form id="teacherForm" class="space-y-3">
+                  <div>
+                    <label class="form-label">Full Name *</label>
+                    <input name="name" required class="form-input" placeholder="Mrs. Jane Smith">
+                  </div>
+                  <div class="grid grid-cols-2 gap-3">
+                    <div>
+                      <label class="form-label">Username *</label>
+                      <input name="username" required class="form-input" placeholder="jane.smith">
+                    </div>
+                    <div>
+                      <label class="form-label">Password *</label>
+                      <input name="password" required type="text" class="form-input" placeholder="temp password">
+                    </div>
+                  </div>
+                  <div>
+                    <label class="form-label">Subject *</label>
+                    <select name="subject" required class="form-input">
+                      <option value="Mathematics">Mathematics</option>
+                      <option value="English Language">English Language</option>
+                      <option value="Physics">Physics</option>
+                      <option value="Chemistry">Chemistry</option>
+                      <option value="Biology">Biology</option>
+                      <option value="Economics">Economics</option>
+                      <option value="Government">Government</option>
+                      <option value="Commerce">Commerce</option>
+                      <option value="Accounting">Accounting</option>
+                      <option value="Literature in English">Literature in English</option>
+                    </select>
+                  </div>
+                  <div class="grid grid-cols-2 gap-3">
+                    <div>
+                      <label class="form-label">Gender</label>
+                      <select name="gender" class="form-input">
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label class="form-label">Phone</label>
+                      <input name="phone" class="form-input" placeholder="+234 800 000 0000">
+                    </div>
+                  </div>
+                  <div>
+                    <label class="form-label">Email</label>
+                    <input name="email" type="email" class="form-input" placeholder="teacher@bluehorizon.edu">
+                  </div>
+                  <button type="submit" class="w-full py-2.5 bg-bh-navy text-white rounded-xl font-medium hover:bg-bh-navy-2 transition-colors text-sm flex items-center justify-center gap-2">
+                    <i class="fas fa-user-tie"></i><span>Register Teacher</span>
+                  </button>
+                </form>
+              </div>
+
+              <div class="lg:col-span-2 bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                <div class="p-5 border-b border-slate-100 flex items-center justify-between">
+                  <div>
+                    <h3 class="font-bold text-slate-800">Teacher Directory</h3>
+                    <p class="text-xs text-slate-500">All registered teachers</p>
+                  </div>
+                  <div class="relative">
+                    <input id="teacherSearch" type="search" placeholder="Search…"
+                      class="pl-9 pr-3 py-2 rounded-lg border border-slate-200 bg-slate-50/60 text-sm focus:outline-none focus:ring-2 focus:ring-bh-navy/15">
+                    <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+                  </div>
+                </div>
+                <div class="overflow-x-auto max-h-[28rem] overflow-y-auto">
+                  <table class="w-full text-sm">
+                    <thead class="bg-slate-50/60 text-slate-500 text-xs uppercase tracking-wide sticky top-0">
+                      <tr>
+                        <th class="text-left p-3">Name</th>
+                        <th class="text-left p-3">Username</th>
+                        <th class="text-left p-3">Subject</th>
+                        <th class="text-left p-3">Status</th>
+                      </tr>
+                    </thead>
+                    <tbody id="teachersBody">
+                      <tr><td colspan="4" class="p-8 text-center text-slate-400 text-sm">Loading…</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- ============ CLASSES VIEW ============ -->
+          <section id="view-classes" class="hidden space-y-6">
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-8 text-center">
+              <i class="fas fa-school text-4xl text-slate-300 mb-3"></i>
+              <h3 class="font-bold text-slate-800">Class Management</h3>
+              <p class="text-sm text-slate-500 mt-1 max-w-md mx-auto">Create classes, assign teachers to subjects, and manage student class membership. Connect via Supabase <code class="text-xs bg-slate-100 px-1 py-0.5 rounded">classes</code> table.</p>
+              <div id="classesGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-6 text-left"></div>
+            </div>
+          </section>
+
+          <!-- ============ TIMETABLES VIEW ============ -->
+          <section id="view-timetables" class="hidden space-y-6">
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-8 text-center">
+              <i class="fas fa-clock text-4xl text-slate-300 mb-3"></i>
+              <h3 class="font-bold text-slate-800">Timetable Builder</h3>
+              <p class="text-sm text-slate-500 mt-1 max-w-md mx-auto">Build weekly timetables per class. Insert rows into the <code class="text-xs bg-slate-100 px-1 py-0.5 rounded">timetable</code> table via Supabase.</p>
+            </div>
+          </section>
+
+          <!-- ============ SCORES VIEW ============ -->
+          <section id="view-scores" class="hidden space-y-6">
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-8 text-center">
+              <i class="fas fa-chart-bar text-4xl text-slate-300 mb-3"></i>
+              <h3 class="font-bold text-slate-800">Score Management</h3>
+              <p class="text-sm text-slate-500 mt-1 max-w-md mx-auto">Enter and review student scores. Score writes go through an Edge Function (service_role).</p>
+            </div>
+          </section>
+
+          <!-- ============ SUBSCRIPTIONS VIEW ============ -->
+          <section id="view-subscriptions" class="hidden space-y-6">
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+              <div class="p-5 border-b border-slate-100">
+                <h3 class="font-bold text-slate-800">Subscriptions</h3>
+                <p class="text-xs text-slate-500">All student subscription &amp; payment records</p>
+              </div>
+              <div class="overflow-x-auto">
+                <table class="w-full text-sm">
+                  <thead class="bg-slate-50/60 text-slate-500 text-xs uppercase tracking-wide">
+                    <tr>
+                      <th class="text-left p-3">Student</th>
+                      <th class="text-left p-3">Plan</th>
+                      <th class="text-left p-3">Amount</th>
+                      <th class="text-left p-3">Status</th>
+                      <th class="text-left p-3">Expires</th>
+                    </tr>
+                  </thead>
+                  <tbody id="subsBody">
+                    <tr><td colspan="5" class="p-8 text-center text-slate-400 text-sm">Loading…</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+
+          <!-- ============ REPORTS VIEW ============ -->
+          <section id="view-reports" class="hidden space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5">
+                <i class="fas fa-file-export text-bh-navy text-2xl mb-3"></i>
+                <h3 class="font-bold text-slate-800">Student Roster</h3>
+                <p class="text-xs text-slate-500 mt-1">Export all students with class &amp; contact details.</p>
+                <button onclick="BH.exportCSV('students')" class="mt-3 w-full py-2 bg-slate-100 text-slate-700 rounded-lg text-sm hover:bg-slate-200">Export CSV</button>
+              </div>
+              <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5">
+                <i class="fas fa-chart-pie text-violet-600 text-2xl mb-3"></i>
+                <h3 class="font-bold text-slate-800">Performance Report</h3>
+                <p class="text-xs text-slate-500 mt-1">Aggregate scores by class &amp; subject.</p>
+                <button onclick="BH.exportCSV('scores')" class="mt-3 w-full py-2 bg-slate-100 text-slate-700 rounded-lg text-sm hover:bg-slate-200">Export CSV</button>
+              </div>
+              <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5">
+                <i class="fas fa-credit-card text-emerald-600 text-2xl mb-3"></i>
+                <h3 class="font-bold text-slate-800">Payment Report</h3>
+                <p class="text-xs text-slate-500 mt-1">Outstanding &amp; completed payments.</p>
+                <button onclick="BH.exportCSV('subscriptions')" class="mt-3 w-full py-2 bg-slate-100 text-slate-700 rounded-lg text-sm hover:bg-slate-200">Export CSV</button>
+              </div>
+            </div>
+          </section>
+
+          <!-- Footer -->
+          <footer class="text-center text-xs text-slate-400 py-6">
+            &copy; <span id="footerYear"></span> Blue Horizon Schools. Admin Panel. All rights reserved.
+          </footer>
+        </main>
+      </div>
+    </div>
+
+    <div id="toastContainer"></div>
+
+    <!-- Shared supabase client (lives one level up: classes/_template/js/) -->
+    <script src="../classes/_template/js/supabase-client.js"></script>
+    <script>
+      // =====================================================
+      // Blue Horizon Admin Panel
+      // =====================================================
+
+      var state = { session: null, adminId: null, adminName: 'Administrator' };
+
+      // ---------- Helpers ----------
+      function showToast(msg, type) {
+        type = type || 'info';
+        var c = document.getElementById('toastContainer');
+        var el = document.createElement('div');
+        el.className = 'toast ' + type;
+        el.textContent = msg;
+        c.appendChild(el);
+        setTimeout(function () {
+          el.style.opacity = '0'; el.style.transition = 'opacity .3s';
+          setTimeout(function () { el.remove(); }, 300);
+        }, 3500);
+      }
+      function escapeHtml(s) {
+        if (s == null) return '';
+        return String(s).replace(/[&<>"']/g, function (c) {
+          return ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' })[c];
+        });
+      }
+      function avatarFor(name) {
+        var initials = 'A';
+        try { initials = String(name || '').split(' ').slice(0, 2).map(function (n) { return n.charAt(0); }).join('').toUpperCase(); } catch (e) {}
+        return 'https://ui-avatars.com/api/?name=' + encodeURIComponent(initials) +
+               '&background=1f507b&color=fff&size=128&bold=true';
+      }
+
+      // ---------- Sidebar toggle ----------
+      (function bindSidebar() {
+        var sidebar = document.getElementById('sidebar');
+        var overlay = document.getElementById('sidebar-overlay');
+        var toggleBtn = document.getElementById('toggleSidebar');
+        function open()  { sidebar.classList.remove('hide'); overlay.classList.add('show'); }
+        function close() { sidebar.classList.add('hide');    overlay.classList.remove('show'); }
+        if (toggleBtn) toggleBtn.addEventListener('click', function (e) {
+          e.stopPropagation();
+          sidebar.classList.contains('hide') ? open() : close();
+        });
+        if (overlay) overlay.addEventListener('click', close);
+        window.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+      })();
+
+      document.getElementById('logoutBtn').addEventListener('click', function () {
+        if (window.BH) BH.signOut();
+      });
+
+      // ---------- View navigation ----------
+      var viewTitles = {
+        dashboard:     { title: 'Dashboard',         sub: 'School overview at a glance' },
+        students:      { title: 'Students',          sub: 'Register and manage student accounts' },
+        teachers:      { title: 'Teachers',          sub: 'Register and manage teacher accounts' },
+        classes:       { title: 'Classes',           sub: 'Manage classes & section membership' },
+        timetables:    { title: 'Timetables',        sub: 'Build weekly class timetables' },
+        scores:        { title: 'Scores',            sub: 'Enter and review student scores' },
+        subscriptions: { title: 'Subscriptions',     sub: 'Track payments & subscriptions' },
+        reports:       { title: 'Reports',           sub: 'Export data & generate reports' }
+      };
+
+      function switchView(view) {
+        document.querySelectorAll('section[id^="view-"]').forEach(function (s) { s.classList.add('hidden'); });
+        var target = document.getElementById('view-' + view);
+        if (target) { target.classList.remove('hidden'); target.classList.add('space-y-6'); }
+
+        document.querySelectorAll('.nav-link').forEach(function (a) { a.classList.remove('nav-link-active'); });
+        document.querySelectorAll('.nav-link[data-view="' + view + '"]').forEach(function (a) { a.classList.add('nav-link-active'); });
+
+        var meta = viewTitles[view] || {};
+        document.getElementById('pageTitle').textContent = meta.title || view;
+        document.getElementById('pageSubtitle').textContent = meta.sub || '';
+
+        // Load view data
+        if (view === 'dashboard')     loadDashboardData();
+        if (view === 'students')      loadStudents();
+        if (view === 'teachers')      loadTeachers();
+        if (view === 'classes')       loadClasses();
+        if (view === 'subscriptions') loadSubscriptions();
+      }
+
+      document.querySelectorAll('.nav-link[data-view]').forEach(function (a) {
+        a.addEventListener('click', function (e) {
+          e.preventDefault();
+          switchView(a.getAttribute('data-view'));
+        });
+      });
+      document.getElementById('quickAddBtn').addEventListener('click', function () { switchView('students'); });
+
+      // ---------- Auth gate ----------
+      function boot() {
+        if (!window.BH || !window.BH.requireRole) {
+          return document.addEventListener('bh:ready', boot);
+        }
+        BH.requireRole('admin').then(function (session) {
+          if (!session) return;
+          state.session = session;
+          state.adminId = (session.user && session.user.id) || null;
+          var meta = (session.user && session.user.user_metadata) || {};
+          state.adminName = meta.full_name || meta.name || 'Administrator';
+
+          document.getElementById('adminName').textContent = state.adminName;
+          document.getElementById('topName').textContent  = state.adminName;
+          var av = meta.avatar_url || avatarFor(state.adminName);
+          document.getElementById('avatar-sm').src = av;
+          document.getElementById('topAvatar').src = av;
+
+          var fy = document.getElementById('footerYear');
+          if (fy) fy.textContent = new Date().getFullYear();
+
+          hideLoading();
+          loadDashboardData();
+        });
+      }
+
+      function hideLoading() {
+        var ov = document.getElementById('loadingOverlay');
+        if (ov) { ov.style.opacity = '0'; ov.style.transition = 'opacity .3s'; setTimeout(function () { ov.remove(); }, 300); }
+      }
+
+      // ---------- Dashboard data ----------
+      function loadDashboardData() {
+        if (!window.supabaseClient) return;
+        var client = window.supabaseClient;
+
+        // Total students
+        client.from('students').select('id', { count: 'exact', head: true }).then(function (r) {
+          document.getElementById('statStudents').textContent = (r.count != null) ? r.count : '—';
+        });
+        // Total teachers
+        client.from('teachers').select('id', { count: 'exact', head: true }).then(function (r) {
+          document.getElementById('statTeachers').textContent = (r.count != null) ? r.count : '—';
+        });
+        // Active subscriptions
+        client.from('subscriptions').select('id', { count: 'exact', head: true }).eq('status', 'active').then(function (r) {
+          document.getElementById('statSubs').textContent = (r.count != null) ? r.count : '—';
+        });
+        // Revenue (sum of amount_paid)
+        client.from('subscriptions').select('amount_paid').eq('status', 'active').then(function (r) {
+          var total = 0;
+          if (r.data) r.data.forEach(function (row) { total += Number(row.amount_paid || 0); });
+          document.getElementById('statRevenue').textContent = '₦' + total.toLocaleString();
+        });
+
+        // Recent registrations
+        Promise.all([
+          client.from('students').select('id, name, username, class_name, created_at, status').order('created_at', { ascending: false }).limit(5),
+          client.from('teachers').select('id, name, username, subject, created_at, status').order('created_at', { ascending: false }).limit(5)
+        ]).then(function (results) {
+          var rows = [];
+          (results[0].data || []).forEach(function (s) { rows.push({ name: s.name, role: 'Student', meta: s.class_name || '—', date: s.created_at, status: s.status || 'active' }); });
+          (results[1].data || []).forEach(function (t) { rows.push({ name: t.name, role: 'Teacher', meta: t.subject || '—', date: t.created_at, status: t.status || 'active' }); });
+          rows.sort(function (a, b) { return new Date(b.date) - new Date(a.date); });
+          renderRecentRegs(rows.slice(0, 8));
+        });
+
+        // Payment status
+        client.from('subscriptions').select('id, student_id, plan, amount_paid, status, expires_at').order('created_at', { ascending: false }).limit(6)
+          .then(function (r) { renderPaymentStatus(r.data || []); });
+      }
+
+      function renderRecentRegs(rows) {
+        var body = document.getElementById('recentRegsBody');
+        if (!rows || rows.length === 0) {
+          body.innerHTML = '<tr><td colspan="5" class="p-8 text-center text-slate-400 text-sm">No registrations yet.</td></tr>';
+          return;
+        }
+        var html = '';
+        rows.forEach(function (r) {
+          var dt = r.date ? new Date(r.date).toLocaleDateString() : '—';
+          var stClass = (r.status === 'active') ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700';
+          var roleClass = (r.role === 'Student') ? 'bg-emerald-50 text-emerald-600' : 'bg-violet-50 text-violet-600';
+          html += '' +
+            '<tr class="table-row border-t border-slate-50">' +
+              '<td class="p-3"><div class="flex items-center gap-2">' +
+                '<img src="' + avatarFor(r.name) + '" class="w-8 h-8 rounded-full" alt="">' +
+                '<span class="font-medium text-slate-800">' + escapeHtml(r.name) + '</span>' +
+              '</div></td>' +
+              '<td class="p-3"><span class="text-xs px-2 py-0.5 rounded-full ' + roleClass + '">' + r.role + '</span></td>' +
+              '<td class="p-3 text-slate-600">' + escapeHtml(r.meta) + '</td>' +
+              '<td class="p-3 text-slate-500 text-xs">' + dt + '</td>' +
+              '<td class="p-3"><span class="text-xs px-2 py-0.5 rounded-full ' + stClass + '">' + escapeHtml(r.status || 'active') + '</span></td>' +
+            '</tr>';
+        });
+        body.innerHTML = html;
+      }
+
+      function renderPaymentStatus(rows) {
+        var box = document.getElementById('paymentStatus');
+        if (!rows || rows.length === 0) {
+          box.innerHTML = '' +
+            '<div class="text-center py-6 text-slate-400 text-sm">' +
+              '<i class="fas fa-receipt text-3xl mb-2 opacity-40"></i><br>No subscription records yet.' +
+            '</div>';
+          return;
+        }
+        var html = '';
+        rows.forEach(function (s) {
+          var stClass = (s.status === 'active') ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700';
+          var amt = Number(s.amount_paid || 0).toLocaleString();
+          html += '' +
+            '<div class="flex items-center justify-between p-3 rounded-xl border border-slate-100">' +
+              '<div>' +
+                '<div class="text-sm font-medium text-slate-800">' + escapeHtml(s.plan || 'Subscription') + '</div>' +
+                '<div class="text-xs text-slate-500">Expires ' + (s.expires_at ? new Date(s.expires_at).toLocaleDateString() : '—') + '</div>' +
+              '</div>' +
+              '<div class="text-right">' +
+                '<div class="text-sm font-bold text-slate-800">₦' + amt + '</div>' +
+                '<span class="text-xs px-2 py-0.5 rounded-full ' + stClass + '">' + escapeHtml(s.status) + '</span>' +
+              '</div>' +
+            '</div>';
+        });
+        box.innerHTML = html;
+      }
+
+      // ---------- Students ----------
+      function loadStudents(query) {
+        if (!window.supabaseClient) return;
+        var q = (query || '').trim().toLowerCase();
+        var req = window.supabaseClient.from('students')
+          .select('id, name, username, class_name, status, created_at')
+          .order('created_at', { ascending: false })
+          .limit(200);
+        req.then(function (r) {
+          var rows = (r.data || []);
+          if (q) rows = rows.filter(function (s) {
+            return (s.name || '').toLowerCase().indexOf(q) !== -1 ||
+                   (s.username || '').toLowerCase().indexOf(q) !== -1 ||
+                   (s.class_name || '').toLowerCase().indexOf(q) !== -1;
+          });
+          renderStudents(rows);
+        });
+      }
+      function renderStudents(rows) {
+        var body = document.getElementById('studentsBody');
+        if (!rows || rows.length === 0) {
+          body.innerHTML = '<tr><td colspan="4" class="p-8 text-center text-slate-400 text-sm">No students found. Register your first student using the form.</td></tr>';
+          return;
+        }
+        var html = '';
+        rows.forEach(function (s) {
+          var stClass = (s.status === 'active') ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700';
+          html += '' +
+            '<tr class="table-row border-t border-slate-50">' +
+              '<td class="p-3"><div class="flex items-center gap-2">' +
+                '<img src="' + avatarFor(s.name) + '" class="w-8 h-8 rounded-full" alt="">' +
+                '<span class="font-medium text-slate-800">' + escapeHtml(s.name) + '</span>' +
+              '</div></td>' +
+              '<td class="p-3 text-slate-600">' + escapeHtml(s.username || '—') + '</td>' +
+              '<td class="p-3 text-slate-600">' + escapeHtml(s.class_name || '—') + '</td>' +
+              '<td class="p-3"><span class="text-xs px-2 py-0.5 rounded-full ' + stClass + '">' + escapeHtml(s.status || 'active') + '</span></td>' +
+            '</tr>';
+        });
+        body.innerHTML = html;
+      }
+      document.getElementById('studentSearch').addEventListener('input', function (e) { loadStudents(e.target.value); });
+
+      // ---------- Teachers ----------
+      function loadTeachers(query) {
+        if (!window.supabaseClient) return;
+        var q = (query || '').trim().toLowerCase();
+        window.supabaseClient.from('teachers')
+          .select('id, name, username, subject, status, created_at')
+          .order('created_at', { ascending: false })
+          .limit(200)
+          .then(function (r) {
+            var rows = (r.data || []);
+            if (q) rows = rows.filter(function (t) {
+              return (t.name || '').toLowerCase().indexOf(q) !== -1 ||
+                     (t.username || '').toLowerCase().indexOf(q) !== -1 ||
+                     (t.subject || '').toLowerCase().indexOf(q) !== -1;
+            });
+            renderTeachers(rows);
+          });
+      }
+      function renderTeachers(rows) {
+        var body = document.getElementById('teachersBody');
+        if (!rows || rows.length === 0) {
+          body.innerHTML = '<tr><td colspan="4" class="p-8 text-center text-slate-400 text-sm">No teachers found. Register your first teacher using the form.</td></tr>';
+          return;
+        }
+        var html = '';
+        rows.forEach(function (t) {
+          var stClass = (t.status === 'active') ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700';
+          html += '' +
+            '<tr class="table-row border-t border-slate-50">' +
+              '<td class="p-3"><div class="flex items-center gap-2">' +
+                '<img src="' + avatarFor(t.name) + '" class="w-8 h-8 rounded-full" alt="">' +
+                '<span class="font-medium text-slate-800">' + escapeHtml(t.name) + '</span>' +
+              '</div></td>' +
+              '<td class="p-3 text-slate-600">' + escapeHtml(t.username || '—') + '</td>' +
+              '<td class="p-3 text-slate-600">' + escapeHtml(t.subject || '—') + '</td>' +
+              '<td class="p-3"><span class="text-xs px-2 py-0.5 rounded-full ' + stClass + '">' + escapeHtml(t.status || 'active') + '</span></td>' +
+            '</tr>';
+        });
+        body.innerHTML = html;
+      }
+      document.getElementById('teacherSearch').addEventListener('input', function (e) { loadTeachers(e.target.value); });
+
+      // ---------- Classes (lightweight) ----------
+      function loadClasses() {
+        if (!window.supabaseClient) return;
+        window.supabaseClient.from('classes').select('id, name, level, teacher_id').order('name', { ascending: true })
+          .then(function (r) {
+            var grid = document.getElementById('classesGrid');
+            var rows = r.data || [];
+            if (rows.length === 0) {
+              grid.innerHTML = '<div class="col-span-full text-center py-6 text-slate-400 text-sm">No classes created yet.</div>';
+              return;
+            }
+            var html = '';
+            rows.forEach(function (c) {
+              html += '' +
+                '<div class="border border-slate-200 rounded-xl p-4">' +
+                  '<div class="font-semibold text-slate-800">' + escapeHtml(c.name) + '</div>' +
+                  '<div class="text-xs text-slate-500 mt-1">Level: ' + escapeHtml(c.level || '—') + '</div>' +
+                '</div>';
+            });
+            grid.innerHTML = html;
+          });
+      }
+
+      // ---------- Subscriptions ----------
+      function loadSubscriptions() {
+        if (!window.supabaseClient) return;
+        window.supabaseClient.from('subscriptions').select('id, student_id, plan, amount_paid, status, expires_at, created_at').order('created_at', { ascending: false }).limit(100)
+          .then(function (r) {
+            var body = document.getElementById('subsBody');
+            var rows = r.data || [];
+            if (rows.length === 0) {
+              body.innerHTML = '<tr><td colspan="5" class="p-8 text-center text-slate-400 text-sm">No subscriptions yet.</td></tr>';
+              return;
+            }
+            var html = '';
+            rows.forEach(function (s) {
+              var stClass = (s.status === 'active') ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700';
+              html += '' +
+                '<tr class="table-row border-t border-slate-50">' +
+                  '<td class="p-3 text-slate-600">' + escapeHtml(s.student_id || '—') + '</td>' +
+                  '<td class="p-3 text-slate-600">' + escapeHtml(s.plan || '—') + '</td>' +
+                  '<td class="p-3 font-medium text-slate-800">₦' + Number(s.amount_paid || 0).toLocaleString() + '</td>' +
+                  '<td class="p-3"><span class="text-xs px-2 py-0.5 rounded-full ' + stClass + '">' + escapeHtml(s.status) + '</span></td>' +
+                  '<td class="p-3 text-slate-500 text-xs">' + (s.expires_at ? new Date(s.expires_at).toLocaleDateString() : '—') + '</td>' +
+                '</tr>';
+            });
+            body.innerHTML = html;
+          });
+      }
+
+      // ---------- Registration forms ----------
+      function formToObj(form) {
+        var obj = {};
+        new FormData(form).forEach(function (v, k) { obj[k] = v; });
+        return obj;
+      }
+      function setFormLoading(form, loading, btnText) {
+        var btn = form.querySelector('button[type="submit"]');
+        if (!btn) return;
+        if (loading) {
+          btn.disabled = true;
+          btn.dataset.originalHtml = btn.innerHTML;
+          btn.innerHTML = '<span class="spinner-sm"></span> <span>Working…</span>';
+        } else {
+          btn.disabled = false;
+          btn.innerHTML = btn.dataset.originalHtml || btnText || btn.innerHTML;
+        }
+      }
+
+      document.getElementById('studentForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+        var form = e.target;
+        var data = formToObj(form);
+        hideError();
+        setFormLoading(form, true);
+
+        // Call the admin-register-student edge function (service_role on the server).
+        BH.edge('admin-register-student', {
+          headers: state.session && state.session.access_token
+            ? { Authorization: 'Bearer ' + state.session.access_token } : {},
+          body: data
+        }).then(function (res) {
+          setFormLoading(form, false);
+          if (res.ok && res.data && (res.data.success || res.data.id)) {
+            showToast('Student registered successfully!', 'success');
+            form.reset();
+            loadStudents();
+            loadDashboardData();
+          } else {
+            var msg = (res.data && (res.data.error || res.data.message)) || 'Failed to register student.';
+            showToast(msg, 'error');
+          }
+        }).catch(function (err) {
+          setFormLoading(form, false);
+          console.error('[BH] register student error', err);
+          showToast('Network error. Please retry.', 'error');
+        });
+      });
+
+      document.getElementById('teacherForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+        var form = e.target;
+        var data = formToObj(form);
+        setFormLoading(form, true);
+
+        BH.edge('admin-register-teacher', {
+          headers: state.session && state.session.access_token
+            ? { Authorization: 'Bearer ' + state.session.access_token } : {},
+          body: data
+        }).then(function (res) {
+          setFormLoading(form, false);
+          if (res.ok && res.data && (res.data.success || res.data.id)) {
+            showToast('Teacher registered successfully!', 'success');
+            form.reset();
+            loadTeachers();
+            loadDashboardData();
+          } else {
+            var msg = (res.data && (res.data.error || res.data.message)) || 'Failed to register teacher.';
+            showToast(msg, 'error');
+          }
+        }).catch(function (err) {
+          setFormLoading(form, false);
+          console.error('[BH] register teacher error', err);
+          showToast('Network error. Please retry.', 'error');
+        });
+      });
+
+      function hideError() { /* placeholder for parity with login */ }
+
+      // ---------- CSV export ----------
+      function exportCSV(table) {
+        if (!window.supabaseClient) return;
+        window.supabaseClient.from(table).select('*').limit(2000).then(function (r) {
+          if (!r.data || r.data.length === 0) { showToast('No data to export.', 'info'); return; }
+          var keys = Object.keys(r.data[0]);
+          var lines = [keys.join(',')];
+          r.data.forEach(function (row) {
+            lines.push(keys.map(function (k) {
+              var v = row[k];
+              if (v == null) return '';
+              v = String(v).replace(/"/g, '""');
+              if (/[",\n]/.test(v)) v = '"' + v + '"';
+              return v;
+            }).join(','));
+          });
+          var blob = new Blob([lines.join('\n')], { type: 'text/csv' });
+          var url = URL.createObjectURL(blob);
+          var a = document.createElement('a');
+          a.href = url; a.download = table + '-' + new Date().toISOString().slice(0,10) + '.csv';
+          document.body.appendChild(a); a.click(); a.remove();
+          URL.revokeObjectURL(url);
+          showToast('Export ready!', 'success');
+        });
+      }
+
+      // Expose
+      window.BH = window.BH || {};
+      window.BH.exportCSV = exportCSV;
+
+      // ---------- Boot ----------
+      boot();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Redirecting...</title>
+  <!-- dedupe: removed duplicate favicon/manifest block -->
+    <meta http-equiv="refresh" content="0; url=../teacher-dashboard-physics.html" />
+  </head>
+  <body>
+    <p>Redirecting to the Physics dashboard — <a href="../teacher-dashboard-physics.html">click here</a> if not redirected.</p>
+  </body>
+</html>
+      document.getElementById('clearAll').addEventListener('click', ()=>{ if(confirm('Clear all plans?')){ savePlans([]); render(); }});
+      document.getElementById('plannerList').addEventListener('click', e=>{ const b=e.target; if(b.dataset && b.dataset.action==='del'){ const idx=Number(b.dataset.idx); const p=getPlans(); p.splice(idx,1); savePlans(p); render(); }});
+      render();
+    </script>
+  </body>
+</html>

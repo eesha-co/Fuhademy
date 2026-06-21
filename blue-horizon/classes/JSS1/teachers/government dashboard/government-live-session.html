@@ -1,0 +1,162 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <!-- Favicon -->
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Teacher Live Session — Government</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://8x8.vc/vpaas-magic-cookie-29d1aa3d1dd04579a28364a8dfdabc89/external_api.js" async></script>
+  </head>
+
+  <link rel="stylesheet" href="./modern-session.css">
+
+  <body class="font-sans">
+    <div class="min-h-screen p-8 bg-gradient-to-br from-blue-100 via-indigo-100 to-white relative">
+      <div class="absolute inset-0 pointer-events-none z-0 bg-cubes"></div>
+      <div class="w-full max-w-7xl bg-white/90 rounded-3xl shadow-2xl border border-blue-100 p-6 sm:p-8 md:p-10 backdrop-blur-lg mx-auto flex gap-6">
+        <div class="left flex-1 flex gap-4">
+          <div class="main flex-1 bg-white rounded-xl p-4 shadow-sm">
+            <div class="header-bar">
+              <h2 class="text-2xl font-bold text-gray-900">Live Session — Government</h2>
+              <div class="header-sub text-sm text-gray-500">Teacher view</div>
+            </div>
+            <div class="mt-4 flex items-center justify-between gap-4">
+              <div class="text-sm text-gray-600">Tools open as tabs — close them when done.</div>
+              <div class="flex gap-2">
+                <button id="exportNotes" class="px-3 py-1 rounded-md bg-white border text-sm">Export Notes</button>
+                <button id="closeAll" class="px-3 py-1 rounded-md bg-red-50 text-red-600 text-sm">Close All</button>
+              </div>
+            </div>
+            <div class="mb-3">
+              <div id="tabs" class="flex gap-2 items-center overflow-x-auto p-2 bg-white/50 rounded-md shadow-inner"></div>
+            </div>
+            <div class="tab-content p-3" id="tabContent">
+              <div id="welcomePanel" class="bg-gradient-to-br from-white to-blue-50 rounded-2xl shadow-lg p-6 border border-transparent">
+                <h3 class="text-xl font-semibold text-gray-900">Welcome</h3>
+                <p class="text-gray-600 mt-2">Use the tools on the right to open content — each tool opens as a tab so you can switch between them.</p>
+                <div class="mt-4 text-sm text-gray-500">Tip: open the Whiteboard, then pop it out or export to share with students.</div>
+              </div>
+            </div>
+          </div>
+
+          <aside class="tools w-64 mt-2">
+            <h3 class="text-lg font-semibold mb-3 text-gray-700">Tools</h3>
+            <div class="flex flex-col gap-3">
+              <button class="tool-btn flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50 transition shadow-sm text-gray-800" data-tool="whiteboard">
+                <span class="w-9 h-9 rounded-md bg-gradient-to-br from-blue-500 to-indigo-500 text-white flex items-center justify-center">✏️</span>
+                <span class="font-medium">Whiteboard</span>
+              </button>
+              <button class="tool-btn flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50 transition shadow-sm text-gray-800" data-tool="photo">
+                <span class="w-9 h-9 rounded-md bg-gradient-to-br from-green-400 to-teal-500 text-white flex items-center justify-center">🖼️</span>
+                <span class="font-medium">Add Photo</span>
+              </button>
+              <button class="tool-btn flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50 transition shadow-sm text-gray-800" data-tool="video">
+                <span class="w-9 h-9 rounded-md bg-gradient-to-br from-red-400 to-pink-500 text-white flex items-center justify-center">📹</span>
+                <span class="font-medium">Add Video</span>
+              </button>
+              <button class="tool-btn flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50 transition shadow-sm text-gray-800" data-tool="notes">
+                <span class="w-9 h-9 rounded-md bg-gradient-to-br from-yellow-400 to-orange-500 text-white flex items-center justify-center">🗒️</span>
+                <span class="font-medium">Lecture Notes</span>
+              </button>
+            </div>
+          </aside>
+        </div>
+
+        <div class="right w-[800px]">
+          <div class="video-card relative rounded-3xl overflow-hidden h-[500px] shadow-2xl bg-gradient-to-br from-gray-900 via-blue-900 to-blue-700 border border-blue-200 flex items-center justify-center">
+            <div class="absolute top-7 left-7 z-10 bg-white/20 text-white px-7 py-3 rounded-2xl backdrop-blur-md text-xl font-semibold shadow">Live Video</div>
+            <div id="jitsi-target" class="w-full h-full"></div>
+          </div>
+          <div class="video-controls flex justify-end gap-6 mt-8">
+            <button id="shareScreenBtn" class="px-6 py-3 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white shadow">Share screen</button>
+            <button id="fullscreenBtn" class="px-6 py-3 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white shadow">Fullscreen</button>
+            <button id="popoutBtn" class="px-6 py-3 rounded-2xl bg-gray-900 hover:bg-gray-800 text-white shadow">Pop-out</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Tabs manager
+      const tabsEl = document.getElementById('tabs');
+      const tabContent = document.getElementById('tabContent');
+      const openTabs = new Map(); // key -> {tabEl, panelEl}
+
+      function activateTab(key){
+        for (const [k,v] of openTabs.entries()){
+          if (k===key){
+            v.tabEl.classList.remove('bg-white','text-gray-800');
+            v.tabEl.classList.add('bg-blue-600','text-white');
+            v.panelEl.style.display = 'block';
+          } else {
+            v.tabEl.classList.remove('bg-blue-600','text-white');
+            v.tabEl.classList.add('bg-white','text-gray-800');
+            v.panelEl.style.display = 'none';
+          }
+        }
+      }
+
+      function openTool(key, title, html){
+        if (openTabs.has(key)) { activateTab(key); return; }
+        const tab = document.createElement('div');
+        tab.className='inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white text-gray-800 shadow-sm transition cursor-pointer hover:shadow-md focus:outline-none';
+        tab.tabIndex = 0; tab.textContent = title;
+        const close = document.createElement('button'); close.className='ml-2 text-xs text-gray-600 bg-white hover:bg-gray-100 rounded-full w-6 h-6 flex items-center justify-center border'; close.textContent='✕'; close.onclick = (e)=>{ e.stopPropagation(); closeTab(key); };
+        tab.appendChild(close); tab.onclick = ()=> activateTab(key); tabsEl.appendChild(tab);
+        const panel = document.createElement('div'); panel.className = 'mt-4 p-4 bg-white/90 rounded-2xl shadow-md'; panel.innerHTML = html; panel.style.display='block'; tabContent.appendChild(panel);
+        for (const v of openTabs.values()){ v.tabEl.classList.remove('bg-blue-600','text-white'); v.tabEl.classList.add('bg-white','text-gray-800'); v.panelEl.style.display='none'; }
+        try { if (typeof initToolUI === 'function') initToolUI(panel); } catch(e){ console.error('initToolUI failed', e); }
+        openTabs.set(key, { tabEl: tab, panelEl: panel }); activateTab(key);
+      }
+
+      function closeTab(key){ const obj = openTabs.get(key); if(!obj) return; obj.tabEl.remove(); obj.panelEl.remove(); openTabs.delete(key); const last = Array.from(openTabs.keys()).pop(); if (last) activateTab(last); else { const w = document.getElementById('welcomePanel'); if (w) w.style.display='block'; } }
+
+      document.querySelectorAll('.tool-btn').forEach(btn=>{ btn.addEventListener('click', ()=>{ const tool = btn.dataset.tool; if (tool==='whiteboard') openTool('whiteboard','Whiteboard', '<h3 class="text-lg font-semibold">Whiteboard</h3><div class="flex gap-4 items-start"><div class="flex-1"><div class="mb-2 flex gap-2"><button id="useDrawChat" class="px-3 py-1 rounded-md bg-indigo-600 text-white text-sm">Open Draw.Chat</button> <button id="wbExport" class="px-3 py-1 rounded-md bg-white border text-sm">Export PNG</button> <button id="wbCopy" class="px-3 py-1 rounded-md bg-white border text-sm">Copy Image</button></div><canvas id="wb" class="w-full h-96 border rounded-md" style="touch-action:none"></canvas><div class="mt-2"><button id="wbClear" class="px-3 py-1 rounded-md bg-red-500 text-white">Clear</button> <label class="ml-3 inline-flex items-center">Color <input type="color" id="wbColor" value="#000000" class="ml-2"></label> <label class="ml-3 inline-flex items-center">Size <input type="range" id="wbSize" min="1" max="24" value="2" class="ml-2"></label></div></div><div class="w-80"><h4 class="font-medium">Draw.Chat (optional)</h4><iframe id="drawChat" src="https://draw.chat/" class="w-full h-96 border rounded-md"></iframe><div class="text-sm text-gray-500 mt-2">If embedding is blocked, use the "Open Draw.Chat" button to open in a new tab and share the room link with students.</div></div></div>'); if (tool==='photo') openTool('photo','Photo', '<h3 class="text-lg font-semibold">Add Photo</h3><input type="file" accept="image/*" id="photoInput" class="block w-full rounded-md border p-2"> <p class="text-sm text-gray-500">Selected photo will show here.</p><div id="photoPreview" class="mt-2"></div>'); if (tool==='video') openTool('video','Video', '<h3 class="text-lg font-semibold">Add Video</h3><input type="file" accept="video/*" id="videoInput" class="block w-full rounded-md border p-2"><p class="text-sm text-gray-500 mt-2">Or paste a YouTube URL below:</p><input id="videoUrl" class="w-full rounded-md border mt-2 p-2" placeholder="https://youtube.com/..."> <div class="text-sm text-gray-500 mt-2">You can open the video in a new window to share via screen share.</div><div id="videoPreview" class="mt-2"></div>'); if (tool==='notes') openTool('notes','Notes', '<h3 class="text-lg font-semibold">Lecture Notes</h3><textarea id="notesArea" class="w-full h-80 rounded-md border p-3"></textarea>'); }); });
+
+      function initToolUI(panel){ const canvas = panel.querySelector('#wb'); if (canvas){ function resizeCanvas(){ const rect = canvas.getBoundingClientRect(); canvas.width = rect.width * devicePixelRatio; canvas.height = rect.height * devicePixelRatio; const ctx = canvas.getContext('2d'); ctx.scale(devicePixelRatio, devicePixelRatio); } resizeCanvas(); window.addEventListener('resize', resizeCanvas); const ctx = canvas.getContext('2d'); ctx.lineCap = 'round'; ctx.lineJoin='round'; let drawing=false, last={x:0,y:0}; const colorEl = panel.querySelector('#wbColor'); const sizeEl = panel.querySelector('#wbSize'); canvas.addEventListener('pointerdown', e=>{ drawing=true; last={x:e.offsetX,y:e.offsetY}; }); canvas.addEventListener('pointermove', e=>{ if(!drawing) return; ctx.strokeStyle = colorEl.value; ctx.lineWidth = sizeEl.value; ctx.beginPath(); ctx.moveTo(last.x,last.y); ctx.lineTo(e.offsetX,e.offsetY); ctx.stroke(); last={x:e.offsetX,y:e.offsetY}; }); ['pointerup','pointercancel','pointerout'].forEach(ev=>canvas.addEventListener(ev, ()=>drawing=false)); const clearBtn = panel.querySelector('#wbClear'); if (clearBtn) clearBtn.onclick = ()=>{ ctx.clearRect(0,0,canvas.width,canvas.height); }; const exportBtn = panel.querySelector('#wbExport'); if (exportBtn) exportBtn.onclick = ()=>{ const data = canvas.toDataURL('image/png'); const a = document.createElement('a'); a.href = data; a.download = 'whiteboard.png'; a.click(); }; const copyBtn = panel.querySelector('#wbCopy'); if (copyBtn) copyBtn.onclick = async ()=>{ try{ const blob = await (await fetch(canvas.toDataURL('image/png'))).blob(); await navigator.clipboard.write([new ClipboardItem({ [blob.type]: blob })]); alert('Image copied to clipboard'); }catch(e){ alert('Copy failed: '+e.message); } }; const drawPop = panel.querySelector('#useDrawChat'); if (drawPop) drawPop.onclick = ()=>{ window.open('https://draw.chat/', '_blank', 'toolbar=0,location=0,menubar=0,width=1000,height=700'); }; }
+
+        const photoInput = panel.querySelector('#photoInput'); const photoPreview = panel.querySelector('#photoPreview'); if (photoInput && photoPreview){ photoInput.onchange = ()=>{ const f = photoInput.files && photoInput.files[0]; if (!f) return; const reader = new FileReader(); reader.onload = e=>{ photoPreview.innerHTML = '<div class="text-xs text-gray-500">'+(f.name||'Selected image')+'</div><img src="'+e.target.result+'" class="mt-2 rounded-md w-full h-auto"/>'; }; reader.readAsDataURL(f); }; }
+
+        const videoInput = panel.querySelector('#videoInput'); const videoUrl = panel.querySelector('#videoUrl'); const videoPreview = panel.querySelector('#videoPreview'); if (videoInput && videoPreview){ videoInput.onchange = ()=>{ const f = videoInput.files && videoInput.files[0]; if (!f) return; const reader = new FileReader(); reader.onload = e=>{ videoPreview.innerHTML = '<video controls src="'+e.target.result+'" class="w-full max-h-96 rounded-md"></video>'; }; reader.readAsDataURL(f); }; }
+        if (videoUrl && videoPreview){ videoUrl.addEventListener('change', ()=>{ const v = videoUrl.value.trim(); if (!v) return; let id = null; const m = v.match(/(?:v=|youtu\.be\/|embed\/)([\w-]{11})/); if (m) id = m[1]; if (id) videoPreview.innerHTML = '<iframe src="https://www.youtube.com/embed/'+id+'" class="w-full h-96 rounded-md border-0" allowfullscreen></iframe>'; else alert('Paste a YouTube URL'); }); }
+
+        const notesArea = panel.querySelector('#notesArea'); if (notesArea){ const key = 'live_notes_government'; notesArea.value = localStorage.getItem(key) || notesArea.value || ''; notesArea.addEventListener('input', ()=> localStorage.setItem(key, notesArea.value)); }
+      }
+
+      const observer = new MutationObserver(muts=>{ for (const m of muts) for (const n of m.addedNodes) if (n.nodeType===1) initToolUI(n); }); observer.observe(tabContent, { childList:true });
+
+      const fsBtn = document.getElementById('fullscreenBtn'); const jitsiTarget = document.getElementById('jitsi-target'); if (fsBtn){ fsBtn.addEventListener('click', async ()=>{ try{ if (document.fullscreenElement) await document.exitFullscreen(); else await jitsiTarget.requestFullscreen(); }catch(e){ alert('Fullscreen failed: '+e.message); } }); }
+      const popBtn = document.getElementById('popoutBtn'); if (popBtn) popBtn.addEventListener('click', ()=>{ window.open(location.href, '_blank', 'toolbar=0,location=0,menubar=0,width=900,height=700'); });
+
+      const exportBtn = document.getElementById('exportNotes'); if (exportBtn){ exportBtn.addEventListener('click', ()=>{ const key = 'live_notes_government'; const data = localStorage.getItem(key) || ''; const blob = new Blob([data], { type: 'text/plain' }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'notes-government.txt'; a.click(); }); }
+
+      const closeAll = document.getElementById('closeAll'); if (closeAll) closeAll.addEventListener('click', ()=>{ for (const k of Array.from(openTabs.keys())) closeTab(k); });
+
+      function initJitsi(){ try { const domain = '8x8.vc'; const options = { roomName: 'vpaas-magic-cookie-29d1aa3d1dd04579a28364a8dfdabc89/SampleAppHilariousFibresCoordinateAny', parentNode: document.querySelector('#jitsi-target') }; const api = new JitsiMeetExternalAPI(domain, options); console.log('Jitsi started', api); } catch (err) { console.error('Failed to start Jitsi', err); const jt = document.getElementById('jitsi-target'); if (jt) jt.innerHTML = '<div style="color:#fff;padding:16px">Failed to load video. See console for details.</div>'; } }
+      (function waitForJitsi(){ if (typeof JitsiMeetExternalAPI !== 'undefined') return initJitsi(); setTimeout(waitForJitsi, 250); })();
+    </script>
+    <script>
+    (function(){
+      function isDisplayCaptureSupported(){ return !!(navigator.mediaDevices && navigator.mediaDevices.getDisplayMedia); }
+      async function tryJitsiToggle(){ try{ if (window.api && typeof window.api.executeCommand==='function'){ window.api.executeCommand('toggleShareScreen'); return true; } }catch(e){ console.warn('Jitsi toggle failed', e); } return false; }
+      async function handleShare(){ if (await tryJitsiToggle()) return; if (isDisplayCaptureSupported()){ try{ const s = await navigator.mediaDevices.getDisplayMedia({video:true}); const w = window.open('','_blank'); if (w){ const v = w.document.createElement('video'); v.autoplay=true; v.playsInline=true; v.srcObject = s; w.document.body.style.margin='0'; w.document.body.appendChild(v); s.getVideoTracks()[0].addEventListener('ended', ()=> w.close()); } else alert('Screen sharing started — popup blocked.'); return; } catch(e){ console.warn('getDisplayMedia failed', e); }
+      }
+      alert('Screen sharing is unsupported on this device/browser. Use Chrome on Android or the Jitsi Meet app for best results.'); }
+      const btn = document.getElementById('shareScreenBtn'); if (btn) btn.addEventListener('click', handleShare);
+    })();
+    </script>
+
+    </script>
+    <script src="/students/js/live-session.js"></script>
+  </body>
+</html>
+  

@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <!-- Favicon -->
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Teacher Sessions</title>
+  <script src="https://8x8.vc/vpaas-magic-cookie-29d1aa3d1dd04579a28364a8dfdabc89/external_api.js" async></script>
+  <style>
+    html, body, #jaas-container {
+      height: 100%;
+      width: 100vw;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: 'Open Sans', Arial, sans-serif;
+      background: #f5f6fa;
+      margin: 0;
+      padding: 0;
+    }
+    .canvas-layout {
+      display: flex;
+      min-height: 100vh;
+      width: 100vw;
+    }
+    .canvas-sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 220px;
+      height: 100vh;
+      background: #1a2236;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem 0 1rem 0;
+      box-shadow: 2px 0 12px rgba(45,59,69,0.12);
+      z-index: 100;
+      border-right: 1px solid #232b3e;
+      overflow-y: auto;
+    }
+    .canvas-sidebar .canvas-logo {
+      margin-bottom: 2.5rem;
+      width: 56px;
+      height: 56px;
+      border-radius: 16px;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.2rem;
+      color: #1a2236;
+      font-weight: bold;
+      box-shadow: 0 2px 8px rgba(45,59,69,0.10);
+    }
+    .canvas-sidebar nav {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+      width: 100%;
+      align-items: center;
+    }
+    .canvas-sidebar nav a {
+      width: 90%;
+      min-width: 80px;
+      height: 56px;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: flex-start;
+      color: #fff;
+      font-size: 1.3rem;
+      border-radius: 10px;
+      background: none;
+      transition: background 0.2s, color 0.2s;
+      text-decoration: none;
+      position: relative;
+      margin-bottom: 0.2rem;
+      padding-left: 1.2rem;
+      gap: 0.7rem;
+    }
+    .canvas-sidebar nav a .menu-label {
+      display: inline-block;
+      font-size: 1rem;
+      font-weight: 600;
+      color: #eaf2ff;
+      margin-left: 0.5rem;
+      text-align: left;
+      letter-spacing: 0.01em;
+    }
+    .canvas-sidebar nav a.active, .canvas-sidebar nav a:hover {
+      background: #fff;
+      color: #2d3b45;
+      box-shadow: 0 2px 8px rgba(45,59,69,0.10);
+    }
+    .canvas-footer {
+      margin-top: auto;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding-bottom: 1rem;
+    }
+    .sessions-container {
+      flex: 1;
+      margin-left: 220px;
+      min-height: 100vh;
+      background: #f5f6fa;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      justify-content: flex-start;
+    }
+    .tab-bar {
+      display: flex;
+      border-bottom: 1px solid #e3e6ea;
+      background: #fff;
+    }
+    .tab-btn {
+      flex: 1;
+      padding: 1rem;
+      font-size: 1.1rem;
+      background: none;
+      border: none;
+      border-bottom: 2px solid transparent;
+      color: #222;
+      cursor: pointer;
+    }
+    .tab-btn.active {
+      border-bottom: 2px solid #2563eb;
+      color: #2563eb;
+    }
+    #tab-content-whiteboard {
+      flex: 1;
+      display: block;
+      background: #f5f6fa;
+      height: calc(100vh - 56px);
+    }
+    #tab-content-video {
+      flex: 1;
+      display: none;
+      background: #000;
+      height: calc(100vh - 56px);
+    }
+    .whiteboard-iframe {
+      border: none;
+      min-height: 100%;
+      width: 100%;
+      height: 600px;
+    }
+    #jaas-container {
+      width: 100%;
+      height: 100%;
+    }
+    /* Session Info and Link Sharing Styles */
+    .session-info-form, .whiteboard-link-share, .upload-note, .help-section {
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(45,59,69,0.06);
+      padding: 1rem 2rem;
+      margin: 1.2rem 0 1rem 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.2rem;
+      align-items: center;
+    }
+    .session-info-form label {
+      font-weight: 600;
+      color: #2563eb;
+    }
+    .session-info-form select, .session-info-form input {
+      padding: 0.4rem 1rem;
+      border-radius: 6px;
+      border: 1px solid #e3e6ea;
+      font-size: 1rem;
+      min-width: 200px;
+    }
+    .session-info-form button {
+      margin-left: 1rem;
+      background: #2563eb;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      padding: 0.5rem 1.2rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .session-info-form span {
+      margin-left: 1.5rem;
+      color: #2d3b45;
+      font-size: 1rem;
+    }
+    .whiteboard-link-share span {
+      font-weight: 600;
+      color: #06b6d4;
+    }
+    .whiteboard-link-share input {
+      flex: 1;
+      padding: 0.4rem 1rem;
+      border-radius: 6px;
+      border: 1px solid #e3e6ea;
+      font-size: 1rem;
+      background: #f5f6fa;
+    }
+    .whiteboard-link-share button {
+      background: #06b6d4;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      padding: 0.5rem 1.2rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .whiteboard-link-share #copy-link-status {
+      color: #10b981;
+      font-size: 0.95rem;
+    }
+    .upload-note {
+      color: #6366f1;
+      font-size: 1rem;
+    }
+    .help-section summary {
+      font-weight: 600;
+      color: #f87171;
+      cursor: pointer;
+    }
+    .help-section ul {
+      margin-top: 1rem;
+      color: #2d3b45;
+    }
+    .help-section {
+      width: 100%;
+      margin-top: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="canvas-layout">
+    <aside class="canvas-sidebar">
+      <div class="canvas-logo" title="Canvas">🖼️</div>
+      <nav>
+        <a href="teacher-dashboard.html" title="Dashboard">🏠<span class="menu-label">Dashboard</span></a>
+        <a href="sticky-notes.html" title="Sticky Notes">📝<span class="menu-label">Sticky Notes</span></a>
+        <a href="todo-list.html" title="To-Do List">✅<span class="menu-label">To-Do List</span></a>
+        <a href="timer.html" title="Timer">⏲️<span class="menu-label">Timer</span></a>
+        <a href="lesson-planner.html" title="Lesson Planner">📅<span class="menu-label">Lesson Planner</span></a>
+        <a href="quick-links.html" title="Quick Links">🔗<span class="menu-label">Quick Links</span></a>
+        <a href="#" id="toggle-theme" title="Toggle Dark/Light Mode">🌓<span class="menu-label">Theme</span></a>
+        <a href="motivational-quotes.html" title="Motivational Quotes">💡<span class="menu-label">Quotes</span></a>
+        <a href="teacher-sessions.html" title="Host Live Session">🎥<span class="menu-label">Host Live Session</span></a>
+      </nav>
+      <div class="canvas-footer">
+        <button title="Open Settings" class="settings-btn"></button>
+      </div>
+    </aside>
+    <div class="sessions-container">
+      <!-- Session Info Form -->
+      <form id="session-info-form" class="session-info-form">
+        <label for="session-name">Session Name:</label>
+        <input id="session-name" name="session-name" type="text" placeholder="Enter session name..." />
+        <label for="subject">Subject:</label>
+        <select id="subject" name="subject">
+          <option>Mathematics</option>
+          <option>Biology</option>
+          <option>Chemistry</option>
+          <option>Literature</option>
+          <option>Physics</option>
+          <option>English</option>
+          <option>Economics</option>
+          <option>Accounting</option>
+          <option>Government</option>
+          <option>Commerce</option>
+        </select>
+        <label for="topic">Topic:</label>
+        <details class="help-section">
+          <summary>How to Use This Session</summary>
+          <ul>
+            <li>Start your video call in the <b>Video Call</b> tab.</li>
+            <li>Switch to the <b>Whiteboard</b> tab to teach, draw, and upload files.</li>
+            <li><strong>Upload Files:</strong> Use the <u>Upload</u> button inside the Whiteboard tab to share PDFs, images, or simulations with all students. All uploads will sync to student boards.</li>
+            <li>Use the <b>Subject/Topic</b> form to display the session info to everyone.</li>
+          </ul>
+        </details>
+        <ul>
+            <li><strong>Upload Files:</strong> Use the <u>Upload</u> button inside the Whiteboard tab to share PDFs, images, or simulations with all students. All uploads will sync to student boards.</li>
+            <li>Use the <b>Subject/Topic</b> form to display the session info to everyone.</li>
+        </ul>
+      </form>
+      <!-- Tabs and Content -->
+      <div class="tab-bar">
+        <button id="tab-whiteboard" class="tab-btn active">Whiteboard</button>
+        <button id="tab-video" class="tab-btn">Video Call</button>
+      </div>
+      <div id="tab-content-whiteboard">
+        <iframe 
+          src="https://draw.chat/dc2gkbn06jzvsnocyeq4harw9e78m3@vbvbv:a29c4c9a1028b63c06208308c6245e16" 
+          width="100%" 
+          height="600" 
+          class="whiteboard-iframe"
+          allow="camera; microphone"
+          title="Collaborative Whiteboard">
+        </iframe>
+      </div>
+      <div id="tab-content-video">
+        <div id="jaas-container"></div>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Jitsi Meet video call embed
+    let jitsiApi = null;
+    function startJitsiSession(roomName) {
+      if (jitsiApi) {
+        jitsiApi.dispose();
+      }
+      jitsiApi = new JitsiMeetExternalAPI("8x8.vc", {
+        roomName: `vpaas-magic-cookie-29d1aa3d1dd04579a28364a8dfdabc89/${roomName}`,
+        parentNode: document.querySelector('#jaas-container'),
+        // jwt: "..." // Add JWT if needed for premium features
+      });
+    }
+
+    // Tab switching logic and session/copy features
+    document.addEventListener('DOMContentLoaded', function() {
+      const tabWhiteboard = document.getElementById('tab-whiteboard');
+      const tabVideo = document.getElementById('tab-video');
+      const contentWhiteboard = document.getElementById('tab-content-whiteboard');
+      const contentVideo = document.getElementById('tab-content-video');
+      let jitsiStarted = false;
+      tabWhiteboard.addEventListener('click', function() {
+        tabWhiteboard.classList.add('active');
+        tabVideo.classList.remove('active');
+        contentWhiteboard.style.display = 'block';
+        contentVideo.style.display = 'none';
+      });
+      tabVideo.addEventListener('click', function() {
+        tabVideo.classList.add('active');
+        tabWhiteboard.classList.remove('active');
+        contentWhiteboard.style.display = 'none';
+        contentVideo.style.display = 'block';
+        if (!jitsiStarted) {
+          // Get session name from input, fallback to default if empty
+          const sessionNameInput = document.getElementById('session-name');
+          let sessionName = sessionNameInput.value.trim();
+          if (!sessionName) sessionName = 'DefaultSession';
+          startJitsiSession(sessionName);
+          jitsiStarted = true;
+        }
+      });
+
+      // Session Info Sharing
+      document.getElementById('share-session-info').onclick = function() {
+        const subject = document.getElementById('subject').value;
+        const topic = document.getElementById('topic').value;
+        const sessionName = document.getElementById('session-name').value;
+        document.getElementById('session-info-display').textContent = `Session: ${sessionName ? sessionName + ' - ' : ''}${subject} - ${topic}`;
+      };
+
+      // Removed Copy Whiteboard Link feature
+    });
+  </script>
+</body>
+</html>

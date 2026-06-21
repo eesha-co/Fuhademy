@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Physics — Assessments</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+  </head>
+  <body class="bg-slate-50 min-h-screen text-slate-800">
+    <div class="p-8 max-w-4xl mx-auto">
+      <div class="bg-white p-6 rounded-lg shadow">
+        <h1 class="text-2xl font-semibold mb-2">Assessments — Quiz Builder</h1>
+        <p class="text-sm text-slate-600">Build quick multiple-choice quizzes and run them locally. Results are stored in your browser.</p>
+
+        <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <h3 class="font-medium">Add Question</h3>
+            <input id="qText" class="w-full rounded-md border p-2 mb-2" placeholder="Question text" />
+            <input id="optA" class="w-full rounded-md border p-2 mb-1" placeholder="Option A" />
+            <input id="optB" class="w-full rounded-md border p-2 mb-1" placeholder="Option B" />
+            <input id="optC" class="w-full rounded-md border p-2 mb-1" placeholder="Option C (optional)" />
+            <input id="optD" class="w-full rounded-md border p-2 mb-2" placeholder="Option D (optional)" />
+            <label class="sr-only" for="correct">Correct option</label>
+            <select id="correct" aria-label="Correct option" class="w-full rounded-md border p-2 mb-2"><option value="A">A</option><option value="B">B</option><option value="C">C</option><option value="D">D</option></select>
+            <div class="flex gap-2"><button id="addQ" class="px-4 py-2 bg-indigo-600 text-white rounded-md">Add Question</button><button id="clearQs" class="px-4 py-2 border rounded-md">Clear Questions</button></div>
+          </div>
+
+          <div>
+            <h3 class="font-medium">Saved Questions</h3>
+            <div id="qList" class="mt-2 space-y-2"></div>
+            <div class="mt-4">
+              <button id="runQuiz" class="px-4 py-2 bg-green-600 text-white rounded-md">Run Quiz</button>
+            </div>
+          </div>
+        </div>
+
+  <div id="quizArea" class="mt-6 hidden"></div>
+      </div>
+    </div>
+    <script>
+      const QK = 'physics_quiz_v1';
+      function getQs(){ return JSON.parse(localStorage.getItem(QK)||'[]'); }
+      function saveQs(v){ localStorage.setItem(QK, JSON.stringify(v)); }
+      function renderQs(){ const out=document.getElementById('qList'); out.innerHTML=''; getQs().forEach((q,i)=>{ const d=document.createElement('div'); d.className='p-2 bg-slate-50 rounded'; d.innerHTML = `<div class="flex justify-between"><div class="text-sm"><strong>${escapeHtml(q.text)}</strong></div><div><button data-i="${i}" class="text-red-600" data-action="del">Delete</button></div></div><div class="text-xs text-slate-600">A: ${escapeHtml(q.a)} B: ${escapeHtml(q.b)} ${q.c? 'C: '+escapeHtml(q.c):''} ${q.d? 'D: '+escapeHtml(q.d):''}</div>`; out.appendChild(d); }); }
+      function escapeHtml(s){ return (s||'').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;'); }
+      document.getElementById('addQ').addEventListener('click', ()=>{ const text=document.getElementById('qText').value.trim(); if(!text) return alert('Enter question'); const a=document.getElementById('optA').value.trim(); const b=document.getElementById('optB').value.trim(); if(!a||!b) return alert('At least A and B required'); const c=document.getElementById('optC').value.trim(); const d=document.getElementById('optD').value.trim(); const correct=document.getElementById('correct').value; const arr=getQs(); arr.unshift({text,a,b,c,d,correct}); saveQs(arr); document.getElementById('qText').value=''; document.getElementById('optA').value=''; document.getElementById('optB').value=''; document.getElementById('optC').value=''; document.getElementById('optD').value=''; renderQs(); });
+      document.getElementById('clearQs').addEventListener('click', ()=>{ if(confirm('Clear all questions?')){ saveQs([]); renderQs(); } });
+      document.getElementById('qList').addEventListener('click', e=>{ const b=e.target; if(b.dataset && b.dataset.action==='del'){ const i=Number(b.dataset.i); const a=getQs(); a.splice(i,1); saveQs(a); renderQs(); } });
+      document.getElementById('runQuiz').addEventListener('click', ()=>{ const qs=getQs(); if(!qs.length) return alert('No questions'); const area=document.getElementById('quizArea'); area.style.display='block'; area.innerHTML=''; const form=document.createElement('form'); qs.forEach((q,idx)=>{ const div=document.createElement('div'); div.className='mb-4 p-3 bg-white rounded shadow'; const choices=[['A',q.a],['B',q.b]]; if(q.c) choices.push(['C',q.c]); if(q.d) choices.push(['D',q.d]); div.innerHTML = `<div class="font-medium mb-2">${idx+1}. ${escapeHtml(q.text)}</div>`; choices.forEach(ch=>{ const id='q'+idx+ch[0]; const r=document.createElement('div'); r.innerHTML = `<label class="inline-flex items-center gap-2"><input type="radio" name="q${idx}" value="${ch[0]}"> ${escapeHtml(ch[1]||'')}</label>`; div.appendChild(r); }); form.appendChild(div); }); const submit=document.createElement('button'); submit.className='px-4 py-2 bg-blue-600 text-white rounded-md'; submit.textContent='Submit'; form.appendChild(submit); form.onsubmit=function(ev){ ev.preventDefault(); let score=0; qs.forEach((q,idx)=>{ const v=form['q'+idx].value; if(v===q.correct) score++; }); alert('Score: '+score+' / '+qs.length); }; area.appendChild(form); });
+      renderQs();
+    </script>
+  </body>
+</html>

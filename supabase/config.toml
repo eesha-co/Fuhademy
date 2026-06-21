@@ -1,0 +1,19 @@
+project_id = "kruwfhzfqieuiuhqlutt"
+
+[functions.auth-login]
+verify_jwt = false
+
+[functions.admin-register-student]
+verify_jwt = false
+
+[functions.admin-register-teacher]
+verify_jwt = false
+
+[functions.get-student-dashboard]
+verify_jwt = false
+
+[functions.send-message]
+verify_jwt = false
+
+[functions.get-messages]
+verify_jwt = false

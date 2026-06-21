@@ -1,0 +1,257 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Favicon -->
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <script src='https://8x8.vc/vpaas-magic-cookie-29d1aa3d1dd04579a28364a8dfdabc89/external_api.js'></script>
+  <script src="video-modal.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Canvas Teacher Dashboard Replica</title>
+  <link rel="stylesheet" href="../general/styles.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap');
+    body {
+      margin: 0;
+      font-family: 'Open Sans', Arial, sans-serif;
+      background: #f5f6fa;
+      color: #222;
+    }
+    .canvas-layout {
+      display: flex;
+      min-height: 100vh;
+    }
+    .syllabus-progress-box {
+      background: #f5f6fa;
+      border-radius: 8px;
+      padding: 1rem;
+      margin-bottom: 1.5rem;
+      color: #2d3b45;
+      font-size: 1rem;
+    }
+    .canvas-sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 220px;
+      height: 100vh;
+      background: #1a2236;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem 0 1rem 0;
+      box-shadow: 2px 0 12px rgba(45,59,69,0.12);
+      z-index: 100;
+      border-right: 1px solid #232b3e;
+      overflow-y: auto;
+    }
+    .canvas-sidebar .canvas-logo {
+      margin-bottom: 2.5rem;
+      width: 56px;
+      height: 56px;
+      border-radius: 16px;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.2rem;
+      color: #1a2236;
+      font-weight: bold;
+      box-shadow: 0 2px 8px rgba(45,59,69,0.10);
+    }
+    .canvas-sidebar nav {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+      width: 100%;
+      align-items: center;
+    }
+    .canvas-sidebar nav a {
+      width: 90%;
+      min-width: 80px;
+      height: 56px;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: flex-start;
+      color: #fff;
+      font-size: 1.3rem;
+      border-radius: 10px;
+      background: none;
+      transition: background 0.2s, color 0.2s;
+      text-decoration: none;
+      position: relative;
+      margin-bottom: 0.2rem;
+      padding-left: 1.2rem;
+      gap: 0.7rem;
+    }
+    .canvas-sidebar nav a .menu-label {
+      display: inline-block;
+      font-size: 1rem;
+      font-weight: 600;
+      color: #eaf2ff;
+      margin-left: 0.5rem;
+      text-align: left;
+      letter-spacing: 0.01em;
+    }
+    .canvas-sidebar nav a.active, .canvas-sidebar nav a:hover {
+      background: #fff;
+      color: #2d3b45;
+      box-shadow: 0 2px 8px rgba(45,59,69,0.10);
+    }
+    .canvas-footer {
+      margin-top: auto;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding-bottom: 1rem;
+    }
+  </style>
+  <style>
+    .settings-btn {
+      display: none;
+    }
+  </style>
+<body>
+  <div class="canvas-layout">
+  <!-- Shared sidebar will be injected here -->
+  <div id="teachers-sidebar-placeholder"></div>
+    <div class="dashboard-container">
+      <div class="dashboard-inner-container">
+        <div class="syllabus-progress-box">Track your syllabus progress here.</div>
+          <div class="dashboard-banner-image">Back to School Banner (Image Placeholder)</div>
+          <div class="dashboard-banner-syllabus">
+            <strong>Syllabus Tracker</strong>
+            <div class="dashboard-banner-syllabus-progress">Track your syllabus progress here.</div>
+          </div>
+        </div>
+        <div class="syllabus-tracker-title">Syllabus Tracker</div>
+        <div class="syllabus-progress-info">Track your syllabus progress here.</div>
+        <div class="syllabus-grid">
+          <a href="mathematics dashboard/syllabus-mathematics.html" class="syllabus-link mathematics">MATHEMATICS</a>
+          <a href="biology dashboard/syllabus-biology.html" class="syllabus-link biology">BIOLOGY</a>
+          <a href="chemistry dashboard/syllabus-chemistry.html" class="syllabus-link chemistry">CHEMISTRY</a>
+          <a href="literature dashboard/syllabus-literature.html" class="syllabus-link literature">LITERATURE</a>
+          <a href="physics dashboard/syllabus-physics.html" class="syllabus-link physics">PHYSICS</a>
+          <a href="english dashboard/syllabus-english.html" class="syllabus-link english">ENGLISH</a>
+          <a href="economics dashboard/syllabus-economics.html" class="syllabus-link economics">ECONOMICS</a>
+          <a href="accounting dashboard/syllabus-accounting.html" class="syllabus-link accounting">ACCOUNTING</a>
+          <a href="government dashboard/syllabus-government.html" class="syllabus-link government">GOVERNMENT</a>
+          <a href="commerce dashboard/syllabus-commerce.html" class="syllabus-link commerce">COMMERCE</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+  </style>
+          <!-- Sidebar injected from shared partial -->
+body.dark-mode .canvas-sidebar nav a.active, body.dark-mode .canvas-sidebar nav a:hover {
+        <script src="load-sidebar.js"></script>
+  background: #2d7ff9 !important;
+  color: #fff !important;
+}
+body.dark-mode .canvas-footerbar a {
+  color: #90caf9 !important;
+}
+</style>
+</head>
+<body>
+  <!-- Modal for video call, hidden by default. Managed by video-modal.js -->
+  <style>
+    #video-modal {
+      display: none;
+      position: fixed;
+      z-index: 9999;
+      right: 24px;
+      bottom: 24px;
+      width: 420px;
+      height: 340px;
+      background: rgba(0,0,0,0.15);
+      align-items: flex-end;
+      justify-content: flex-end;
+    }
+    #video-modal-content {
+      background: #222;
+      border-radius: 12px;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.18);
+      padding: 0.5rem 0.5rem 0.5rem 0.5rem;
+      position: relative;
+      width: 400px;
+      height: 300px;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+    }
+    #close-video-modal {
+      position: absolute;
+      top: 6px;
+      right: 10px;
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 1.5rem;
+      cursor: pointer;
+      z-index: 2;
+    }
+    #video-modal-jitsi {
+      flex: 1;
+      width: 100%;
+      height: 100%;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+  </style>
+  <div id="video-modal"></div>
+  <div class="canvas-layout">
+    <aside class="canvas-sidebar">
+      <div class="canvas-logo" title="Canvas">🖼️</div>
+      <nav>
+        <a href="teacher-dashboard-chemistry.html" title="Dashboard">🏠<span class="menu-label">Dashboard</span></a>
+        <a href="chemistry dashboard/sticky-notes.html" title="Sticky Notes">📝<span class="menu-label">Sticky Notes</span></a>
+        <a href="chemistry dashboard/todo-list.html" title="To-Do List">✅<span class="menu-label">To-Do List</span></a>
+        <a href="chemistry dashboard/timer.html" title="Timer">⏲️<span class="menu-label">Timer</span></a>
+        <a href="chemistry dashboard/lesson-planner.html" title="Lesson Planner">📅<span class="menu-label">Lesson Planner</span></a>
+        <a href="chemistry dashboard/quick-links.html" title="Quick Links">🔗<span class="menu-label">Quick Links</span></a>
+        <a href="#" id="toggle-theme-2" title="Toggle Dark/Light Mode">🌓<span class="menu-label">Theme</span></a>
+        <a href="chemistry dashboard/chemistry-live-session.html" title="Host Live Session">🎥<span class="menu-label">Host Live Session</span></a>
+      </nav>
+      <div class="canvas-footer">
+        <!-- Optionally add more icons or links here -->
+      </div>
+    </aside>
+    <main class="canvas-main">
+      <!-- Canvas demo content removed as requested -->
+    </main>
+  </div>
+<script>
+// Dark mode toggle (standalone, no sidebar fetch)
+const btn = document.getElementById('toggle-theme');
+if (btn) {
+  const darkClass = 'dark-mode';
+  function setTheme(dark) {
+    if (dark) {
+      document.body.classList.add(darkClass);
+      localStorage.setItem('teacherTheme', 'dark');
+    } else {
+      document.body.classList.remove(darkClass);
+      localStorage.setItem('teacherTheme', 'light');
+    }
+  }
+  btn.addEventListener('click', function(e) {
+    e.preventDefault();
+    setTheme(!document.body.classList.contains(darkClass));
+  });
+  if (localStorage.getItem('teacherTheme') === 'dark') {
+    setTheme(true);
+  }
+}
+</script>
+</body>
+</html>
