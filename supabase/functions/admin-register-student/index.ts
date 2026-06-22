@@ -6,18 +6,14 @@ Deno.serve(async (req: Request) => {
   if (req.method !== "POST") return errorResponse("Method not allowed", 405);
 
   try {
-    const { admin_username, admin_password, student } = await req.json();
-    if (!admin_username || !admin_password || !student) {
-      return errorResponse("admin_username, admin_password, and student data are required");
-    }
-    const supabase = await createServiceClient();
+    const { admin_id, student } = await req.json();
+    // Verify admin by ID (from session cookie — no password re-entry needed)
+    if (!admin_id) return errorResponse("Admin authentication required (no session found). Please log in again.", 401);
+    if (!student) return errorResponse("student data required");
 
-    // Verify admin
-    const { data: admin } = await supabase.from("admins").select("*").eq("username", admin_username).single();
-    const { verifyPassword } = await import("../_shared/helpers.ts");
-    if (!admin || !(await verifyPassword(admin_password, admin.password_hash))) {
-      return errorResponse("Admin authentication failed", 401);
-    }
+    const supabase = await createServiceClient();
+    const { data: admin } = await supabase.from("admins").select("id, username, full_name").eq("id", admin_id).single();
+    if (!admin) return errorResponse("Admin not found. Please log in again.", 401);
 
     // Validate student fields
     if (!student.username || !student.password || !student.full_name || !student.class_name) {
@@ -28,9 +24,11 @@ Deno.serve(async (req: Request) => {
       return errorResponse("class_name must be one of: " + validClasses.join(", "));
     }
 
-    // Check username uniqueness
-    const { data: existing } = await supabase.from("students").select("id").eq("username", student.username).single();
-    if (existing) return errorResponse("Username already exists", 409);
+    // Check username uniqueness across BOTH students and teachers
+    const { data: existingStudent } = await supabase.from("students").select("id").eq("username", student.username).single();
+    if (existingStudent) return errorResponse("Username already exists", 409);
+    const { data: existingTeacher } = await supabase.from("teachers").select("id").eq("username", student.username).single();
+    if (existingTeacher) return errorResponse("Username already exists", 409);
 
     const password_hash = await hashPassword(student.password);
     const { data: created, error } = await supabase.from("students").insert({
@@ -41,10 +39,10 @@ Deno.serve(async (req: Request) => {
       email: student.email || null,
       phone: student.phone || null,
       guardian_name: student.guardian_name || null,
-    }).select("id, username, full_name, class_name, created_at").single();
+    }).select("id, username, full_name, class_name, email, phone, guardian_name, is_active, created_at").single();
 
     if (error) return errorResponse("Failed to register student: " + error.message, 500);
-    return json({ success: true, student: created });
+    return json({ success: true, student: created, registered_by: admin.full_name });
   } catch (e) {
     return errorResponse("Server error: " + (e as Error).message, 500);
   }

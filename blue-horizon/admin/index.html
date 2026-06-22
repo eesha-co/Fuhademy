@@ -1883,12 +1883,27 @@
         e.preventDefault();
         var form = e.target;
         var data = formToObj(form);
+        // Verify class_name is included (it's already in the form via the <select name="class_name">)
+        if (!data.class_name) {
+          showToast('Please select a class for the student.', 'error');
+          return;
+        }
         var btn = form.querySelector('button[type="submit"]');
         btn.disabled = true;
         var orig = btn.innerHTML;
         btn.innerHTML = '<span class="spinner-sm"></span> <span>Registering…</span>';
 
-        BH.edge('admin-register-student', { method: 'POST', body: data }).then(function (res) {
+        // Get admin_id from the session (cookie-based) — the edge function uses
+        // service_role server-side and expects admin_id, NOT credentials.
+        var session = (window.BH && BH.getSession) ? BH.getSession() : null;
+        var adminId = (session && session.user && session.user.id) || (state.admin && state.admin.id) || null;
+        if (!adminId) {
+          btn.disabled = false; btn.innerHTML = orig;
+          showToast('Your admin session could not be verified. Please reload and sign in again.', 'error');
+          return;
+        }
+
+        BH.edge('admin-register-student', { method: 'POST', body: { admin_id: adminId, student: data } }).then(function (res) {
           btn.disabled = false; btn.innerHTML = orig;
           if (res.ok && res.data && (res.data.success || res.data.id || res.data.user)) {
             showToast('Student "' + (data.full_name || data.username) + '" registered successfully!', 'success');
@@ -1953,7 +1968,17 @@
         var orig = btn.innerHTML;
         btn.innerHTML = '<span class="spinner-sm"></span> <span>Registering…</span>';
 
-        BH.edge('admin-register-teacher', { method: 'POST', body: data }).then(function (res) {
+        // Get admin_id from the session (cookie-based) — the edge function uses
+        // service_role server-side and expects admin_id, NOT credentials.
+        var session = (window.BH && BH.getSession) ? BH.getSession() : null;
+        var adminId = (session && session.user && session.user.id) || (state.admin && state.admin.id) || null;
+        if (!adminId) {
+          btn.disabled = false; btn.innerHTML = orig;
+          showToast('Your admin session could not be verified. Please reload and sign in again.', 'error');
+          return;
+        }
+
+        BH.edge('admin-register-teacher', { method: 'POST', body: { admin_id: adminId, teacher: data } }).then(function (res) {
           btn.disabled = false; btn.innerHTML = orig;
           if (res.ok && res.data && (res.data.success || res.data.id || res.data.user)) {
             showToast('Teacher "' + (data.full_name || data.username) + '" registered successfully!', 'success');

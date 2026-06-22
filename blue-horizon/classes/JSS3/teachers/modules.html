@@ -20,7 +20,6 @@
       }
       body { background: var(--bh-bg); }
 
-      /* Scrollbar */
       ::-webkit-scrollbar { width: 6px; height: 6px; }
       ::-webkit-scrollbar-track { background: #eef2f7; border-radius: 3px; }
       ::-webkit-scrollbar-thumb { background: #c1cee0; border-radius: 3px; }
@@ -37,7 +36,6 @@
         font-weight: 600;
       }
 
-      /* Mobile sidebar overlay */
       #sidebar-overlay {
         position: fixed; inset: 0; background: rgba(15, 35, 60, 0.5);
         backdrop-filter: blur(4px); z-index: 30;
@@ -71,17 +69,17 @@
       }
       #loadingOverlay.hide { opacity: 0; pointer-events: none; transition: opacity .3s; }
 
-      /* Mode toggle */
-      .mode-toggle {
+      /* Pill toggle (Self/AI mode) */
+      .mode-toggle, .sub-toggle {
         display: inline-flex; background: #f1f5f9; border-radius: 0.75rem; padding: 0.25rem;
         border: 1px solid #e2e8f0;
       }
-      .mode-toggle button {
+      .mode-toggle button, .sub-toggle button {
         padding: 0.5rem 1.1rem; border-radius: 0.5rem; font-size: 0.8rem; font-weight: 600;
         color: #64748b; transition: all 0.18s ease;
         display: inline-flex; align-items: center; gap: 0.4rem;
       }
-      .mode-toggle button.active {
+      .mode-toggle button.active, .sub-toggle button.active {
         background: linear-gradient(135deg, var(--bh-navy), var(--bh-navy-2));
         color: #fff;
         box-shadow: 0 6px 14px -6px rgba(31,80,123,0.6);
@@ -154,6 +152,13 @@
         border-bottom-left-radius: 0.25rem;
         border: 1px solid #e2e8f0;
       }
+      .chat-bubble.system {
+        background: #ecfeff;
+        color: #0e7490;
+        border: 1px solid #a5f3fc;
+        font-size: 0.78rem;
+        border-radius: 0.65rem;
+      }
       .chat-bubble.error {
         background: #fef2f2;
         color: #991b1b;
@@ -190,6 +195,10 @@
         border: 2px solid rgba(31,80,123,0.2);
         border-top-color: var(--bh-navy);
       }
+      .spinner.cyan {
+        border: 2px solid rgba(14,116,144,0.25);
+        border-top-color: #0e7490;
+      }
       @keyframes spin { to { transform: rotate(360deg); } }
 
       /* Upload button glow */
@@ -199,6 +208,55 @@
       }
       .upload-btn:hover { box-shadow: 0 10px 24px -8px rgba(22,163,74,0.8); }
       .upload-btn:disabled { background: #94a3b8; box-shadow: none; cursor: not-allowed; }
+
+      /* Web search toggle (custom checkbox) */
+      .search-toggle { display: inline-flex; align-items: center; gap: 0.5rem; cursor: pointer; user-select: none; }
+      .search-toggle input { display: none; }
+      .search-toggle .switch {
+        width: 38px; height: 22px; background: #cbd5e1; border-radius: 999px; position: relative; transition: background .2s;
+        flex-shrink: 0;
+      }
+      .search-toggle .switch::after {
+        content: ''; position: absolute; top: 2px; left: 2px; width: 18px; height: 18px;
+        background: #fff; border-radius: 50%; transition: transform .2s; box-shadow: 0 1px 2px rgba(0,0,0,0.15);
+      }
+      .search-toggle input:checked + .switch { background: linear-gradient(135deg, var(--bh-navy), var(--bh-accent)); }
+      .search-toggle input:checked + .switch::after { transform: translateX(16px); }
+
+      /* Test Report panel */
+      .test-empty {
+        text-align: center; color: #94a3b8; font-size: 0.85rem; padding: 1.25rem 0.5rem;
+      }
+      .test-empty i { font-size: 1.6rem; display: block; margin-bottom: 0.4rem; color: #cbd5e1; }
+
+      .test-report {
+        border-radius: 0.85rem; padding: 1rem 1.1rem; font-size: 0.85rem;
+        border: 1px solid transparent;
+      }
+      .test-report.test-good       { background: #ecfdf5; border-color: #a7f3d0; color: #065f46; }
+      .test-report.test-needs-work { background: #fffbeb; border-color: #fde68a; color: #92400e; }
+      .test-report.test-broken     { background: #fef2f2; border-color: #fecaca; color: #991b1b; }
+      .test-report.test-unknown    { background: #f8fafc; border-color: #e2e8f0; color: #475569; }
+      .test-report .test-header {
+        display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem;
+        margin-bottom: 0.6rem;
+      }
+      .test-report .test-overall { font-size: 1rem; font-weight: 700; display: inline-flex; align-items: center; gap: 0.5rem; }
+      .test-report .test-meta { font-size: 0.75rem; opacity: 0.85; }
+      .test-report .test-autofix {
+        display: inline-flex; align-items: center; gap: 0.25rem;
+        background: rgba(31,80,123,0.12); color: var(--bh-navy);
+        padding: 0.1rem 0.5rem; border-radius: 999px; font-weight: 600; font-size: 0.7rem;
+      }
+      .test-report .test-section { margin-top: 0.5rem; }
+      .test-report .test-section-title { font-weight: 700; font-size: 0.8rem; margin-bottom: 0.25rem; }
+      .test-report ul { margin: 0; padding-left: 1.1rem; }
+      .test-report ul li { margin: 0.15rem 0; line-height: 1.45; }
+      .test-report .test-clean { font-style: italic; opacity: 0.85; }
+      .test-testing {
+        display: flex; align-items: center; gap: 0.6rem; justify-content: center;
+        color: var(--bh-navy); font-size: 0.85rem; padding: 1.25rem 0.5rem;
+      }
 
       /* Hide scrollbar utility for chat */
       .scrollbar-thin::-webkit-scrollbar { width: 4px; }
@@ -367,7 +425,7 @@
         </header>
 
         <!-- Main Body -->
-        <main class="flex-1 p-3 md:p-5 overflow-hidden">
+        <main class="flex-1 p-3 md:p-5">
           <!-- Error banner -->
           <div id="errorBanner" class="hidden mb-3 bg-rose-50 border border-rose-200 text-rose-700 rounded-2xl p-3 text-sm flex items-center gap-3">
             <i class="fas fa-exclamation-triangle"></i>
@@ -375,78 +433,128 @@
             <button onclick="document.getElementById('errorBanner').classList.add('hidden')" class="ml-auto p-1 hover:bg-rose-100 rounded"><i class="fas fa-times"></i></button>
           </div>
 
-          <!-- 3-column workspace -->
-          <div class="grid grid-cols-1 xl:grid-cols-12 gap-3 md:gap-4 h-full">
+          <!-- Toolbar: mode toggle + web search + refresh -->
+          <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-3 mb-3 flex flex-wrap items-center justify-between gap-3">
+            <div class="flex items-center gap-3 flex-wrap">
+              <div class="mode-toggle" role="tablist" aria-label="Build mode">
+                <button id="modeSelf" class="active" role="tab" aria-selected="true">
+                  <i class="fas fa-code"></i> Self
+                </button>
+                <button id="modeAI" role="tab" aria-selected="false">
+                  <i class="fas fa-wand-magic-sparkles"></i> AI
+                </button>
+              </div>
 
-            <!-- ============ Center column: Preview + Editor ============ -->
-            <section class="xl:col-span-8 flex flex-col gap-3 min-w-0">
+              <!-- Web search toggle (AI mode only) -->
+              <div id="aiOnlyTools" class="hidden items-center gap-3">
+                <label class="search-toggle text-xs font-semibold text-slate-600" title="When ON, the AI searches the web for context before generating">
+                  <input type="checkbox" id="searchToggle" checked>
+                  <span class="switch"></span>
+                  <span><i class="fas fa-globe text-bh-accent"></i> Search web for context</span>
+                </label>
+              </div>
+            </div>
 
-              <!-- Mode toggle + actions bar -->
-              <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-3 flex flex-wrap items-center justify-between gap-3">
-                <div class="mode-toggle" role="tablist" aria-label="Build mode">
-                  <button id="modeSelf" class="active" role="tab" aria-selected="true">
-                    <i class="fas fa-code"></i> Self
-                  </button>
-                  <button id="modeAI" role="tab" aria-selected="false">
-                    <i class="fas fa-wand-magic-sparkles"></i> AI
-                  </button>
+            <div class="flex items-center gap-2 text-xs text-slate-500">
+              <span id="charCount" class="hidden sm:inline-flex items-center gap-1 px-2 py-1 bg-slate-50 rounded-lg">
+                <i class="fas fa-font"></i> <span id="charCountValue">0</span> chars
+              </span>
+              <span id="autoSaveBadge" class="hidden sm:inline-flex items-center gap-1 px-2 py-1 bg-emerald-50 text-emerald-700 rounded-lg">
+                <i class="fas fa-circle text-[6px] animate-pulse"></i> Live
+              </span>
+              <button id="refreshPreviewBtn" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg font-medium transition-colors">
+                <i class="fas fa-rotate-right"></i> <span class="hidden sm:inline">Refresh</span> Preview
+              </button>
+            </div>
+          </div>
+
+          <!-- AI sub-toggle bar (Chat Console | Preview) — AI mode only -->
+          <div id="aiSubBar" class="hidden bg-white rounded-2xl border border-slate-200 shadow-sm p-3 mb-3">
+            <div class="flex items-center justify-between flex-wrap gap-3">
+              <div class="sub-toggle" role="tablist" aria-label="AI workspace view">
+                <button id="subChat" class="active" role="tab" aria-selected="true">
+                  <i class="fas fa-comments"></i> 💬 Chat Console
+                </button>
+                <button id="subPreview" role="tab" aria-selected="false">
+                  <i class="fas fa-eye"></i> 👁 Preview
+                </button>
+              </div>
+              <div class="text-[11px] text-slate-400 hidden sm:flex items-center gap-1.5">
+                <i class="fas fa-circle-info"></i> AI auto-tests everything it generates — switch to Preview to see results.
+              </div>
+            </div>
+          </div>
+
+          <!-- =================================================== -->
+          <!-- ==================== SELF MODE ==================== -->
+          <!-- =================================================== -->
+          <div id="selfWorkspace" class="flex flex-col gap-3">
+
+            <!-- Preview area -->
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden flex flex-col">
+              <div class="px-4 py-2.5 border-b border-slate-100 flex items-center justify-between bg-slate-50/60">
+                <div class="flex items-center gap-2 text-xs font-semibold text-slate-600 uppercase tracking-wider">
+                  <i class="fas fa-eye text-bh-navy"></i> Live Preview
                 </div>
+                <div class="flex items-center gap-1.5">
+                  <span class="w-2.5 h-2.5 rounded-full bg-rose-400"></span>
+                  <span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span>
+                  <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
+                </div>
+              </div>
+              <div class="bg-white p-2" style="min-height: 360px;">
+                <iframe id="previewFrameSelf" class="preview-frame" sandbox="allow-scripts" title="Module preview"></iframe>
+              </div>
+            </div>
 
-                <div class="flex items-center gap-2 text-xs text-slate-500">
-                  <span id="charCount" class="hidden sm:inline-flex items-center gap-1 px-2 py-1 bg-slate-50 rounded-lg">
-                    <i class="fas fa-font"></i> <span id="charCountValue">0</span> chars
-                  </span>
-                  <span id="autoSaveBadge" class="hidden sm:inline-flex items-center gap-1 px-2 py-1 bg-emerald-50 text-emerald-700 rounded-lg">
-                    <i class="fas fa-circle text-[6px] animate-pulse"></i> Live
-                  </span>
-                  <button id="refreshPreviewBtn" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg font-medium transition-colors">
-                    <i class="fas fa-rotate-right"></i> <span class="hidden sm:inline">Refresh</span> Preview
+            <!-- Test Again + Test Report -->
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+              <div class="px-4 py-2.5 border-b border-slate-100 flex items-center justify-between bg-slate-50/60 flex-wrap gap-2">
+                <div class="flex items-center gap-2 text-xs font-semibold text-slate-600 uppercase tracking-wider">
+                  <i class="fas fa-vial text-bh-navy"></i> Test Report
+                </div>
+                <button id="testAgainBtnSelf" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-bh-navy hover:bg-bh-navy-2 text-white rounded-lg font-medium text-xs transition-colors disabled:opacity-60 disabled:cursor-not-allowed">
+                  <i class="fas fa-vial"></i> Test Again
+                </button>
+              </div>
+              <div id="testReportSelf" class="p-4">
+                <div class="test-empty">
+                  <i class="fas fa-flask-vial"></i>
+                  No tests run yet. Click <strong>Test Again</strong> to validate your HTML with a real browser (Playwright).
+                </div>
+              </div>
+            </div>
+
+            <!-- Code editor (Self mode only) -->
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden flex flex-col">
+              <div class="px-4 py-2.5 border-b border-slate-100 flex items-center justify-between bg-slate-50/60">
+                <div class="flex items-center gap-2 text-xs font-semibold text-slate-600 uppercase tracking-wider">
+                  <i class="fas fa-code text-bh-navy"></i> HTML Editor
+                </div>
+                <div class="flex items-center gap-2">
+                  <button id="insertTemplateBtn" class="text-[11px] text-bh-navy hover:underline font-medium" title="Insert a starter HTML template">
+                    <i class="fas fa-file-circle-plus"></i> Template
+                  </button>
+                  <button id="clearEditorBtn" class="text-[11px] text-rose-500 hover:underline font-medium" title="Clear editor">
+                    <i class="fas fa-eraser"></i> Clear
                   </button>
                 </div>
               </div>
-
-              <!-- Preview area -->
-              <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden flex-1 flex flex-col min-h-[320px]">
-                <div class="px-4 py-2.5 border-b border-slate-100 flex items-center justify-between bg-slate-50/60">
-                  <div class="flex items-center gap-2 text-xs font-semibold text-slate-600 uppercase tracking-wider">
-                    <i class="fas fa-eye text-bh-navy"></i> Live Preview
-                  </div>
-                  <div class="flex items-center gap-1.5">
-                    <span class="w-2.5 h-2.5 rounded-full bg-rose-400"></span>
-                    <span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span>
-                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
-                  </div>
-                </div>
-                <div class="flex-1 bg-white p-2">
-                  <iframe id="previewFrame" class="preview-frame" sandbox="allow-scripts" title="Module preview"></iframe>
-                </div>
+              <div class="editor-wrap" style="min-height: 240px; max-height: 460px;">
+                <div id="lineNumbers" class="line-numbers">1</div>
+                <textarea id="codeEditor" spellcheck="false" autocapitalize="off" autocomplete="off"
+                  placeholder="<!-- Write your HTML here. Preview updates as you type. -->&#10;<h1>Hello, students!</h1>&#10;<p>Lesson content goes here…</p>"></textarea>
               </div>
+            </div>
+          </div>
 
-              <!-- Code editor (Self mode only) -->
-              <div id="editorPanel" class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden flex flex-col">
-                <div class="px-4 py-2.5 border-b border-slate-100 flex items-center justify-between bg-slate-50/60">
-                  <div class="flex items-center gap-2 text-xs font-semibold text-slate-600 uppercase tracking-wider">
-                    <i class="fas fa-code text-bh-navy"></i> HTML Editor
-                  </div>
-                  <div class="flex items-center gap-2">
-                    <button id="insertTemplateBtn" class="text-[11px] text-bh-navy hover:underline font-medium" title="Insert a starter HTML template">
-                      <i class="fas fa-file-circle-plus"></i> Template
-                    </button>
-                    <button id="clearEditorBtn" class="text-[11px] text-rose-500 hover:underline font-medium" title="Clear editor">
-                      <i class="fas fa-eraser"></i> Clear
-                    </button>
-                  </div>
-                </div>
-                <div class="editor-wrap" style="min-height: 220px; max-height: 380px;">
-                  <div id="lineNumbers" class="line-numbers">1</div>
-                  <textarea id="codeEditor" spellcheck="false" autocapitalize="off" autocomplete="off"
-                    placeholder="<!-- Write your HTML here. Preview updates as you type. -->&#10;<h1>Hello, students!</h1>&#10;<p>Lesson content goes here…</p>"></textarea>
-                </div>
-              </div>
-            </section>
+          <!-- =================================================== -->
+          <!-- ===================== AI MODE ===================== -->
+          <!-- =================================================== -->
+          <div id="aiWorkspace" class="hidden flex flex-col gap-3">
 
-            <!-- ============ Right column: AI Chat Console ============ -->
-            <aside id="chatColumn" class="xl:col-span-4 flex flex-col min-w-0 min-h-[420px] xl:min-h-0 bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            <!-- Chat Console view (full width) -->
+            <div id="aiChatView" class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden flex flex-col" style="min-height: 520px;">
               <!-- Chat header -->
               <div class="px-4 py-3 border-b border-slate-100 bg-gradient-to-r from-bh-navy to-bh-navy-2 text-white flex items-center justify-between">
                 <div class="flex items-center gap-2.5 min-w-0">
@@ -467,7 +575,7 @@
               </div>
 
               <!-- Messages -->
-              <div id="chatMessages" class="flex-1 overflow-y-auto scrollbar-thin p-4 space-y-3 flex flex-col">
+              <div id="chatMessages" class="flex-1 overflow-y-auto scrollbar-thin p-4 space-y-3 flex flex-col" style="min-height: 320px; max-height: 60vh;">
                 <!-- Messages injected by JS -->
               </div>
 
@@ -493,7 +601,45 @@
                   <i class="fas fa-paper-plane"></i>
                 </button>
               </form>
-            </aside>
+            </div>
+
+            <!-- Preview view (full width) -->
+            <div id="aiPreviewView" class="hidden flex flex-col gap-3">
+              <!-- Preview area -->
+              <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden flex flex-col">
+                <div class="px-4 py-2.5 border-b border-slate-100 flex items-center justify-between bg-slate-50/60">
+                  <div class="flex items-center gap-2 text-xs font-semibold text-slate-600 uppercase tracking-wider">
+                    <i class="fas fa-eye text-bh-navy"></i> Live Preview
+                  </div>
+                  <div class="flex items-center gap-1.5">
+                    <span class="w-2.5 h-2.5 rounded-full bg-rose-400"></span>
+                    <span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span>
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
+                  </div>
+                </div>
+                <div class="bg-white p-2" style="min-height: 360px;">
+                  <iframe id="previewFrameAI" class="preview-frame" sandbox="allow-scripts" title="Module preview (AI)"></iframe>
+                </div>
+              </div>
+
+              <!-- Test Again + Test Report -->
+              <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                <div class="px-4 py-2.5 border-b border-slate-100 flex items-center justify-between bg-slate-50/60 flex-wrap gap-2">
+                  <div class="flex items-center gap-2 text-xs font-semibold text-slate-600 uppercase tracking-wider">
+                    <i class="fas fa-vial text-bh-navy"></i> Test Report
+                  </div>
+                  <button id="testAgainBtnAI" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-bh-navy hover:bg-bh-navy-2 text-white rounded-lg font-medium text-xs transition-colors disabled:opacity-60 disabled:cursor-not-allowed">
+                    <i class="fas fa-vial"></i> Test Again
+                  </button>
+                </div>
+                <div id="testReportAI" class="p-4">
+                  <div class="test-empty">
+                    <i class="fas fa-flask-vial"></i>
+                    No tests run yet. The AI auto-tests every generation — results will appear here.
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </main>
 
@@ -519,21 +665,27 @@
     <script src="../classes/_template/js/supabase-client.js"></script>
     <script>
       // =====================================================
-      // Blue Horizon Teacher Module Builder
+      // Blue Horizon Teacher Module Builder — Overhauled
+      // Self mode: code editor + live preview (chat hidden)
+      // AI mode: toggle between Chat Console and Preview
+      // AI auto-tests everything; Test Again re-runs Playwright test
       // =====================================================
       'use strict';
 
       // ---- State (in-memory only — NO localStorage) ----
       var state = {
         mode: 'self',          // 'self' | 'ai'
-        html: '',               // current HTML content of the module
-        teacher: null,          // { id, name, full_name, username, subject }
+        aiSubTab: 'chat',      // 'chat' | 'preview'  (AI mode only)
+        search: true,          // web search toggle (default ON)
+        html: '',              // current HTML content of the module
+        teacher: null,         // { id, name, full_name, username, subject }
         isUploading: false,
         isThinking: false,
-        chat: []                // [{role:'user'|'ai'|'error', text}]
+        isTesting: false,
+        lastTest: null,        // most recent test report
+        chat: []               // [{role:'user'|'ai'|'error'|'system', text, icon?}]
       };
 
-      // ---- DOM refs ----
       var $ = function (id) { return document.getElementById(id); };
       var els = {};
 
@@ -582,38 +734,57 @@
           .substring(0, 40) || 'teacher';
       }
 
-      // ---- Mode toggle ----
+      // ---- Mode toggle (Self / AI) ----
       function setMode(mode) {
         if (mode !== 'self' && mode !== 'ai') return;
         state.mode = mode;
-        var selfBtn = $('modeSelf'), aiBtn = $('modeAI');
-        var editorPanel = $('editorPanel');
-        var chatColumn = $('chatColumn');
+        $('modeSelf').classList.toggle('active', mode === 'self');
+        $('modeAI').classList.toggle('active', mode === 'ai');
+        $('modeSelf').setAttribute('aria-selected', mode === 'self' ? 'true' : 'false');
+        $('modeAI').setAttribute('aria-selected', mode === 'ai' ? 'true' : 'false');
 
-        if (mode === 'self') {
-          selfBtn.classList.add('active'); selfBtn.setAttribute('aria-selected', 'true');
-          aiBtn.classList.remove('active'); aiBtn.setAttribute('aria-selected', 'false');
-          editorPanel.classList.remove('hidden');
-          // On small screens, hide chat in self mode to give editor + preview more space
-          if (window.innerWidth < 1280) chatColumn.classList.add('hidden');
-          else chatColumn.classList.remove('hidden');
+        $('selfWorkspace').classList.toggle('hidden', mode !== 'self');
+        $('aiWorkspace').classList.toggle('hidden', mode !== 'ai');
+
+        // AI-only tools: web search toggle + sub-toggle bar
+        if (mode === 'ai') {
+          $('aiOnlyTools').classList.remove('hidden');
+          $('aiOnlyTools').classList.add('flex');
+          $('aiSubBar').classList.remove('hidden');
         } else {
-          aiBtn.classList.add('active'); aiBtn.setAttribute('aria-selected', 'true');
-          selfBtn.classList.remove('active'); selfBtn.setAttribute('aria-selected', 'false');
-          editorPanel.classList.add('hidden');
-          chatColumn.classList.remove('hidden');
+          $('aiOnlyTools').classList.add('hidden');
+          $('aiOnlyTools').classList.remove('flex');
+          $('aiSubBar').classList.add('hidden');
         }
+
+        // Re-render preview in the now-visible iframe
+        updatePreview();
+      }
+
+      // ---- AI sub-tab toggle (Chat Console / Preview) ----
+      function setAISubTab(tab) {
+        if (tab !== 'chat' && tab !== 'preview') return;
+        state.aiSubTab = tab;
+        $('subChat').classList.toggle('active', tab === 'chat');
+        $('subPreview').classList.toggle('active', tab === 'preview');
+        $('subChat').setAttribute('aria-selected', tab === 'chat' ? 'true' : 'false');
+        $('subPreview').setAttribute('aria-selected', tab === 'preview' ? 'true' : 'false');
+        $('aiChatView').classList.toggle('hidden', tab !== 'chat');
+        $('aiPreviewView').classList.toggle('hidden', tab !== 'preview');
+        if (tab === 'preview') updatePreview();
       }
 
       // ---- Preview ----
+      var EMPTY_PREVIEW = '<!doctype html><html><body style="font-family:system-ui;padding:2rem;color:#94a3b8;text-align:center;">' +
+        '<div style="margin-top:10%"><i class="fas fa-feather" style="font-size:3rem;color:#cbd5e1;"></i>' +
+        '<p style="margin-top:1rem;font-size:0.95rem;">Start writing or ask the AI to begin. Your live preview will appear here.</p></div></body></html>';
+
       function updatePreview() {
-        var frame = $('previewFrame');
-        if (!frame) return;
-        var html = state.html || '<!doctype html><html><body style="font-family:system-ui;padding:2rem;color:#94a3b8;text-align:center;">' +
-          '<div style="margin-top:10%"><i class=\"fas fa-feather\" style=\"font-size:3rem;color:#cbd5e1;\"></i>' +
-          '<p style=\"margin-top:1rem;font-size:0.95rem;\">Start writing or ask the AI to begin. Your live preview will appear here.</p></div></body></html>';
-        // srcdoc renders HTML in the sandboxed iframe
-        frame.srcdoc = html;
+        var html = state.html || EMPTY_PREVIEW;
+        var f1 = $('previewFrameSelf');
+        var f2 = $('previewFrameAI');
+        if (f1) f1.srcdoc = html;
+        if (f2) f2.srcdoc = html;
       }
 
       // ---- Code editor + line numbers ----
@@ -625,7 +796,6 @@
         var lines = [];
         for (var i = 1; i <= lineCount; i++) lines.push(i);
         ln.textContent = lines.join('\n');
-        // Sync scroll
         ln.scrollTop = editor.scrollTop;
       }
 
@@ -636,7 +806,6 @@
 
       function setHtml(html, source) {
         state.html = html || '';
-        // Sync the textarea (e.g. when AI updates HTML)
         var editor = $('codeEditor');
         if (editor && editor.value !== state.html) editor.value = state.html;
         updateLineNumbers();
@@ -655,8 +824,8 @@
       }
 
       // ---- AI Chat ----
-      function addChatMessage(role, text) {
-        state.chat.push({ role: role, text: text });
+      function addChatMessage(role, text, icon) {
+        state.chat.push({ role: role, text: text, icon: icon });
         renderChat();
       }
 
@@ -675,17 +844,20 @@
               '</div>';
             return;
           }
-          var cls = msg.role === 'user' ? 'user' : (msg.role === 'error' ? 'error' : 'ai');
-          var icon = msg.role === 'user' ? 'fa-user' : (msg.role === 'error' ? 'fa-triangle-exclamation' : 'fa-robot');
+          var cls = msg.role === 'user' ? 'user' :
+                    (msg.role === 'error' ? 'error' :
+                    (msg.role === 'system' ? 'system' : 'ai'));
+          var defIcon = msg.role === 'user' ? 'fa-user' :
+                        (msg.role === 'error' ? 'fa-triangle-exclamation' :
+                        (msg.role === 'system' ? (msg.icon || 'fa-circle-info') : 'fa-robot'));
           var align = msg.role === 'user' ? 'flex justify-end' : 'flex items-start gap-2';
           html += '' +
             '<div class="' + align + '">' +
-              (msg.role !== 'user' ? '<div class="w-7 h-7 rounded-full bg-bh-navy/10 flex items-center justify-center flex-shrink-0"><i class="fas ' + icon + ' text-bh-navy text-xs"></i></div>' : '') +
+              (msg.role !== 'user' ? '<div class="w-7 h-7 rounded-full bg-bh-navy/10 flex items-center justify-center flex-shrink-0"><i class="fas ' + defIcon + ' text-bh-navy text-xs"></i></div>' : '') +
               '<div class="chat-bubble ' + cls + '">' + escapeHtml(msg.text) + '</div>' +
             '</div>';
         });
         box.innerHTML = html;
-        // Auto scroll
         box.scrollTop = box.scrollHeight;
 
         // Toggle quick prompts visibility (only show when chat is short)
@@ -697,12 +869,11 @@
         state.isThinking = isThinking;
         var dot = $('chatStatusDot'), txt = $('chatStatusText'), sendBtn = $('sendBtn');
         if (isThinking) {
-          // Replace any prior thinking message
           state.chat = state.chat.filter(function (m) { return m.role !== 'thinking'; });
           state.chat.push({ role: 'thinking', text: '' });
           renderChat();
           if (dot) dot.className = 'w-1.5 h-1.5 rounded-full bg-amber-300 animate-pulse';
-          if (txt) txt.textContent = 'Thinking…';
+          if (txt) txt.textContent = 'Working…';
           if (sendBtn) { sendBtn.disabled = true; sendBtn.innerHTML = '<span class="spinner"></span>'; }
         } else {
           state.chat = state.chat.filter(function (m) { return m.role !== 'thinking'; });
@@ -713,6 +884,7 @@
         }
       }
 
+      // ---- AI generation with auto-test ----
       function sendChat(prompt) {
         if (!prompt || !prompt.trim()) return;
         if (state.isThinking) {
@@ -724,31 +896,83 @@
         autoResizeChatInput();
         setThinking(true);
 
+        // Show sequential progress steps as system messages while the request is in-flight.
+        // These give the teacher visibility into the multi-step AI pipeline (generate → search → test → review).
+        var stepTimers = [];
+        var cancelled = false;
+        function scheduleStep(delay, text, icon) {
+          var t = setTimeout(function () {
+            if (cancelled) return;
+            addChatMessage('system', text, icon);
+          }, delay);
+          stepTimers.push(t);
+        }
+
+        scheduleStep(200,  '⏳ Generating HTML…', 'fa-cog');
+        if (state.search) {
+          scheduleStep(700,  '🔍 Searching the web for context…', 'fa-magnifying-glass');
+        }
+        scheduleStep(1300, '🧪 Testing with browser (Playwright)…', 'fa-vial');
+        scheduleStep(2100, '📋 Reviewing test results…', 'fa-clipboard-check');
+        // "Fixing issues…" step is added below only if auto-fix was applied
+
         var payload = {
           action: 'generate',
           prompt: prompt.trim(),
-          current_html: state.html || ''
+          current_html: state.html || '',
+          search: !!state.search
         };
 
         BH.edge('ai-module', { method: 'POST', body: payload }).then(function (res) {
+          cancelled = true;
+          stepTimers.forEach(clearTimeout);
           setThinking(false);
+
           if (!res || !res.ok || !res.data) {
             var errMsg = (res && res.data && res.data.error) || 'The AI service is unavailable right now. Try again.';
             addChatMessage('error', errMsg);
             return;
           }
           var data = res.data;
+
+          // Show web search results summary (if search was performed)
+          if (data.searched && Array.isArray(data.searchResults) && data.searchResults.length) {
+            var top = data.searchResults.slice(0, 3).map(function (r, i) {
+              var t = r.title || r.url || ('Result ' + (i + 1));
+              return (i + 1) + '. ' + t;
+            }).join('\n');
+            addChatMessage('system', '🌐 Web context found (' + data.searchResults.length + ' result(s)):\n' + top, 'fa-globe');
+          }
+
+          // If auto-fix was applied, surface that as a system step
+          if (data.test && data.test.autoFixed) {
+            addChatMessage('system', '🔧 Auto-fixed ' + (data.test.fixedCount || 'some') + ' issue(s) and re-tested.', 'fa-wrench');
+          }
+
+          // Update the HTML
           if (data.html && typeof data.html === 'string') {
             setHtml(data.html, 'ai');
           }
+
+          // Render the test report (both Self-mode and AI-mode report cards stay in sync)
+          if (data.test) {
+            updateTestReport(data.test);
+          }
+
+          // AI's reply (which per-spec includes the test summary)
           if (data.reply && typeof data.reply === 'string') {
             addChatMessage('ai', data.reply);
           } else if (data.html) {
-            addChatMessage('ai', 'I\'ve updated the preview with the new module. Let me know if you\'d like any changes!');
+            addChatMessage('ai', "I've updated the preview with the new module. Check the Test Report for browser-test results, and click Test Again any time to re-validate.");
           } else {
-            addChatMessage('ai', 'I couldn\'t generate that module. Could you describe what you\'d like in more detail?');
+            addChatMessage('ai', "I couldn't generate that module. Could you describe what you'd like in more detail?");
           }
+
+          // Auto-switch to Preview so the teacher sees the result + test report
+          setAISubTab('preview');
         }).catch(function (err) {
+          cancelled = true;
+          stepTimers.forEach(clearTimeout);
           setThinking(false);
           console.error('[BH] ai-module error:', err);
           addChatMessage('error', 'Network error reaching the AI service. Please check your connection and try again.');
@@ -761,6 +985,124 @@
         if (!ta) return;
         ta.style.height = 'auto';
         ta.style.height = Math.min(ta.scrollHeight, 128) + 'px';
+      }
+
+      // ---- Test Report rendering ----
+      function renderTestReport(test) {
+        if (!test) {
+          return '<div class="test-empty">' +
+                   '<i class="fas fa-flask-vial"></i>' +
+                   'No tests run yet. Click <strong>Test Again</strong> to validate your HTML with a real browser (Playwright).' +
+                 '</div>';
+        }
+        var overall = String(test.overall || 'unknown').toLowerCase();
+        var issues = Array.isArray(test.issues) ? test.issues : [];
+        var suggestions = Array.isArray(test.suggestions) ? test.suggestions : [];
+        var autoFixed = !!test.autoFixed;
+        var fixedCount = test.fixedCount || 0;
+
+        var overallMap = {
+          'good':       { label: 'All Good',     cls: 'test-good',       icon: 'fa-circle-check' },
+          'needs_work': { label: 'Needs Work',   cls: 'test-needs-work', icon: 'fa-triangle-exclamation' },
+          'broken':     { label: 'Broken',       cls: 'test-broken',     icon: 'fa-circle-xmark' }
+        };
+        var info = overallMap[overall] || { label: 'Unknown', cls: 'test-unknown', icon: 'fa-circle-question' };
+
+        var html = '<div class="test-report ' + info.cls + '">';
+        html += '<div class="test-header">';
+        html += '<div class="test-overall"><i class="fas ' + info.icon + '"></i> ' + escapeHtml(info.label) + '</div>';
+        html += '<div class="test-meta">' + issues.length + ' issue(s) · ' + suggestions.length + ' suggestion(s)';
+        if (autoFixed) html += ' · <span class="test-autofix"><i class="fas fa-wrench"></i> auto-fixed' + (fixedCount ? ' ' + fixedCount : '') + '</span>';
+        html += '</div>';
+        html += '</div>';
+
+        if (issues.length) {
+          html += '<div class="test-section">';
+          html += '<div class="test-section-title">⚠️ Issues Found</div>';
+          html += '<ul>';
+          issues.forEach(function (i) { html += '<li>' + escapeHtml(i) + '</li>'; });
+          html += '</ul>';
+          html += '</div>';
+        }
+        if (suggestions.length) {
+          html += '<div class="test-section">';
+          html += '<div class="test-section-title">💡 Suggestions</div>';
+          html += '<ul>';
+          suggestions.forEach(function (s) { html += '<li>' + escapeHtml(s) + '</li>'; });
+          html += '</ul>';
+          html += '</div>';
+        }
+        if (!issues.length && !suggestions.length) {
+          html += '<div class="test-clean">No issues or suggestions — the module looks great! 🎉</div>';
+        }
+        html += '</div>';
+        return html;
+      }
+
+      function updateTestReport(test) {
+        state.lastTest = test || null;
+        var html = renderTestReport(test);
+        var r1 = $('testReportSelf');
+        var r2 = $('testReportAI');
+        if (r1) r1.innerHTML = html;
+        if (r2) r2.innerHTML = html;
+      }
+
+      function setTestingUI(isTesting) {
+        state.isTesting = isTesting;
+        var ids = ['testAgainBtnSelf', 'testAgainBtnAI'];
+        ids.forEach(function (id) {
+          var b = $(id);
+          if (!b) return;
+          if (isTesting) {
+            b.disabled = true;
+            b.innerHTML = '<span class="spinner dark"></span> Testing…';
+          } else {
+            b.disabled = false;
+            b.innerHTML = '<i class="fas fa-vial"></i> Test Again';
+          }
+        });
+        if (isTesting) {
+          var testingHtml = '<div class="test-testing"><span class="spinner cyan"></span> Running Playwright test on current HTML…</div>';
+          var r1 = $('testReportSelf'), r2 = $('testReportAI');
+          if (r1) r1.innerHTML = testingHtml;
+          if (r2) r2.innerHTML = testingHtml;
+        }
+      }
+
+      // ---- "Test Again" — re-runs the Playwright test on current HTML ----
+      function testAgain() {
+        if (state.isTesting) return;
+        if (!state.html || !state.html.trim()) {
+          showToast('Nothing to test. Write or generate some HTML first.', 'error', 'fa-circle-exclamation');
+          return;
+        }
+        setTestingUI(true);
+
+        BH.edge('ai-module', { method: 'POST', body: { action: 'test', current_html: state.html } }).then(function (res) {
+          setTestingUI(false);
+          if (!res || !res.ok || !res.data) {
+            var msg = (res && res.data && res.data.error) || 'Test failed to run. Please try again.';
+            showToast(msg, 'error', 'fa-circle-exclamation');
+            updateTestReport(null);
+            return;
+          }
+          // Support both { test: {...} } and { ... } response shapes
+          var test = res.data.test || res.data;
+          updateTestReport(test);
+          var overall = String(test && test.overall || 'unknown').toLowerCase();
+          if (overall === 'good') {
+            showToast('Test complete — module looks great!', 'success', 'fa-circle-check');
+          } else if (overall === 'broken') {
+            showToast('Test complete — issues found. See the report below.', 'error', 'fa-circle-xmark');
+          } else {
+            showToast('Test complete — see the report below.', 'info', 'fa-vial');
+          }
+        }).catch(function (err) {
+          setTestingUI(false);
+          console.error('[BH] ai-module test error:', err);
+          showToast('Network error running the test. Please try again.', 'error', 'fa-circle-exclamation');
+        });
       }
 
       // ---- Upload to Students ----
@@ -782,7 +1124,6 @@
         btn.innerHTML = '<span class="spinner"></span> Uploading…';
         state.isUploading = true;
 
-        // Filename: {teacher_username}_{subject}_{timestamp}.html
         var username = slugify(state.teacher.username || state.teacher.name || 'teacher');
         var subject  = slugify(state.teacher.subject || 'general');
         var ts       = Date.now();
@@ -791,12 +1132,10 @@
         var blob = new Blob([state.html], { type: 'text/html' });
 
         BH.getClient().then(function (client) {
-          // Upload to Storage 'modules' bucket
           return client.storage.from('modules')
             .upload(filename, blob, { contentType: 'text/html', upsert: false })
             .then(function (upRes) {
               if (upRes.error) throw upRes.error;
-              // Insert a row into assignments table so it shows on the student dashboard
               var title = (state.html.match(/<title[^>]*>([\s\S]*?)<\/title>/i) || [])[1] || deriveTitleFromFilename(filename);
               return client.from('assignments').insert({
                 title: 'Module: ' + title,
@@ -809,14 +1148,12 @@
               }).then(function (insRes) {
                 if (insRes.error) {
                   console.warn('[BH] assignment insert failed (non-fatal):', insRes.error);
-                  // Don't fail the whole upload — the file is already in Storage.
                 }
                 return { upRes: upRes, insRes: insRes, filename: filename };
               });
             });
-        }).then(function (result) {
+        }).then(function () {
           showToast('Module uploaded! Students can now access it.', 'success', 'fa-circle-check');
-          // Reset button
           btn.disabled = false;
           btn.style.opacity = '';
           btn.innerHTML = originalHTML;
@@ -824,7 +1161,6 @@
         }).catch(function (err) {
           console.error('[BH] upload failed:', err);
           var msg = (err && err.message) || 'Upload failed. Please try again.';
-          // Handle file-already-exists (rare with timestamp suffix)
           if (msg.indexOf('already') !== -1) msg = 'A file with that name already exists. Try again.';
           showToast(msg, 'error', 'fa-circle-exclamation');
           btn.disabled = false;
@@ -895,17 +1231,21 @@
         // Wire up DOM refs
         els.codeEditor     = $('codeEditor');
         els.lineNumbers    = $('lineNumbers');
-        els.previewFrame   = $('previewFrame');
         els.chatMessages   = $('chatMessages');
         els.chatInput      = $('chatInput');
         els.chatForm       = $('chatForm');
         els.modeSelf       = $('modeSelf');
         els.modeAI         = $('modeAI');
+        els.subChat        = $('subChat');
+        els.subPreview     = $('subPreview');
+        els.searchToggle   = $('searchToggle');
         els.refreshBtn     = $('refreshPreviewBtn');
         els.uploadBtn      = $('uploadBtn');
         els.insertTplBtn   = $('insertTemplateBtn');
         els.clearEditorBtn = $('clearEditorBtn');
         els.clearChatBtn   = $('clearChatBtn');
+        els.testAgainSelf  = $('testAgainBtnSelf');
+        els.testAgainAI    = $('testAgainBtnAI');
         els.sidebar        = $('sidebar');
         els.sidebarOverlay = $('sidebar-overlay');
         els.toggleSidebar  = $('toggleSidebar');
@@ -914,15 +1254,24 @@
 
         if (els.footerYear) els.footerYear.textContent = new Date().getFullYear();
 
-        // Bind events
+        // ---- Mode + sub-tab toggles ----
         els.modeSelf.addEventListener('click', function () { setMode('self'); });
         els.modeAI.addEventListener('click', function () { setMode('ai'); });
+        els.subChat.addEventListener('click', function () { setAISubTab('chat'); });
+        els.subPreview.addEventListener('click', function () { setAISubTab('preview'); });
 
+        // Web search toggle (default ON)
+        els.searchToggle.addEventListener('change', function () {
+          state.search = !!els.searchToggle.checked;
+          showToast(state.search ? 'Web search enabled — AI will look up context.' : 'Web search disabled.', 'info',
+                    state.search ? 'fa-globe' : 'fa-circle-minus');
+        });
+
+        // ---- Code editor ----
         els.codeEditor.addEventListener('input', onEditorInput);
         els.codeEditor.addEventListener('scroll', function () {
           els.lineNumbers.scrollTop = els.codeEditor.scrollTop;
         });
-        // Tab key inserts two spaces instead of moving focus
         els.codeEditor.addEventListener('keydown', function (e) {
           if (e.key === 'Tab') {
             e.preventDefault();
@@ -933,12 +1282,15 @@
           }
         });
 
+        // ---- Actions ----
         els.refreshBtn.addEventListener('click', function () {
           updatePreview();
           showToast('Preview refreshed.', 'info', 'fa-rotate-right');
         });
 
         els.uploadBtn.addEventListener('click', uploadToStudents);
+        els.testAgainSelf.addEventListener('click', testAgain);
+        els.testAgainAI.addEventListener('click', testAgain);
 
         els.insertTplBtn.addEventListener('click', function () {
           if (els.codeEditor.value.trim() && !confirm('Inserting a template will replace your current content. Continue?')) return;
@@ -949,6 +1301,7 @@
         els.clearEditorBtn.addEventListener('click', function () {
           if (!els.codeEditor.value.trim() || confirm('Clear the editor and preview?')) {
             setHtml('', 'clear');
+            updateTestReport(null);
           }
         });
 
@@ -959,7 +1312,7 @@
           showToast('Chat cleared.', 'info', 'fa-broom');
         });
 
-        // Chat form
+        // ---- Chat form ----
         els.chatForm.addEventListener('submit', function (e) {
           e.preventDefault();
           sendChat(els.chatInput.value);
@@ -979,9 +1332,9 @@
           });
         });
 
-        // Sidebar toggle (mobile)
-        function openSidebar() { els.sidebar.classList.remove('hide'); els.sidebarOverlay.classList.add('show'); }
-        function closeSidebar() { els.sidebar.classList.add('hide'); els.sidebarOverlay.classList.remove('show'); }
+        // ---- Sidebar toggle (mobile) ----
+        function openSidebar()  { els.sidebar.classList.remove('hide'); els.sidebarOverlay.classList.add('show'); }
+        function closeSidebar() { els.sidebar.classList.add('hide');    els.sidebarOverlay.classList.remove('show'); }
         els.toggleSidebar.addEventListener('click', function (e) {
           e.stopPropagation();
           els.sidebar.classList.contains('hide') ? openSidebar() : closeSidebar();
@@ -993,10 +1346,12 @@
           if (window.BH) BH.signOut();
         });
 
-        // Initial preview (empty state)
+        // Initial render
         updatePreview();
         updateLineNumbers();
         updateCharCount();
+        updateTestReport(null);
+        setMode('self');
 
         // ---- Auth gate ----
         if (!window.BH || !window.BH.requireRole) {
@@ -1041,7 +1396,7 @@
         if (state.chat.length === 0) {
           state.chat.push({
             role: 'ai',
-            text: "Hello! I'm your AI module assistant. Describe the lesson you want to create and I'll build it for you. You can also ask me to edit specific parts."
+            text: "Hello! I'm your AI module assistant. Describe the lesson you want and I'll generate, browser-test, and (if needed) auto-fix the HTML for you. You can also ask me to edit specific parts."
           });
           renderChat();
         }
@@ -1055,15 +1410,6 @@
           setTimeout(function () { ov.classList.add('hide'); }, 300);
         }
       }
-
-      // Handle responsive mode switching on resize
-      window.addEventListener('resize', function () {
-        if (state.mode === 'self' && window.innerWidth < 1280) {
-          $('chatColumn').classList.add('hidden');
-        } else if (state.mode === 'ai' || window.innerWidth >= 1280) {
-          $('chatColumn').classList.remove('hidden');
-        }
-      });
 
       // Kick off
       if (document.readyState === 'loading') {

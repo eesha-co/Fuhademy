@@ -345,12 +345,15 @@
       document.getElementById('closeHelp2').addEventListener('click', closeHelp);
       helpModal.addEventListener('click', function (e) { if (e.target === helpModal) closeHelp(); });
 
-      // Compute the dashboard URL based on role
-      function dashboardUrlForRole(role) {
+      // Compute the dashboard URL based on role (and class for students)
+      function dashboardUrlForRole(role, className) {
         if (role === 'admin') return 'admin/index.html';
         if (role === 'teacher') return 'teachers/dashboard.html';
-        // student → class template dashboard
-        return 'classes/_template/dashboard.html';
+        // student → their class dashboard (JSS1, JSS2, JSS3, SSS1, SSS2, SSS3)
+        if (className && className !== '_template') {
+          return 'classes/' + className + '/dashboard.html';
+        }
+        return 'classes/_template/dashboard.html'; // fallback
       }
 
       // Submit
@@ -386,7 +389,10 @@
             setLoading(false);
             if (result.ok && result.data && result.data.success) {
               var session = result.data;
-              var redirect = result.data.redirect || dashboardUrlForRole(selectedRole);
+              // For students, route them to their own class dashboard.
+              // auth-login returns the user (including class_name) in result.data.user.
+              var user = (result.data && result.data.user) || {};
+              var redirect = result.data.redirect || dashboardUrlForRole(selectedRole, user.class_name);
               persistSessionAndRedirect(session, redirect, username);
             } else {
               // Show the standard error message
@@ -419,7 +425,8 @@
           try {
             var session = JSON.parse(atob(m[1]));
             if (session && session.user && session.user.role) {
-              window.location.replace(dashboardUrlForRole(session.user.role));
+              // Route students to their class dashboard using the stored class_name.
+              window.location.replace(dashboardUrlForRole(session.user.role, session.user.class_name));
             }
           } catch (e) { /* invalid cookie — ignore */ }
         }

@@ -1,19 +1,25 @@
 import { json, errorResponse, handleOptions } from "../_shared/helpers.ts";
 
 const KIMI_URL = "https://integrate.api.nvidia.com/v1/chat/completions";
-const MODEL = "moonshotai/kimi-k2.6";
+const MODEL = "moonshotai/kimi-k2.6"; // K2.7 not available on NVIDIA platform
 
-const SYSTEM = `You are an educational web page designer. Create a visually appealing educational web page about the topic the user requests.
+const SYSTEM = `You are an expert educational content creator for Blue Horizon Schools.
+Create interactive, self-contained HTML learning modules for Nigerian secondary school students.
 
-Output requirements:
-- A complete HTML document with <!DOCTYPE html>, <html>, <head>, and <body> tags
-- CSS styles inside a <style> tag in the head
-- The page should be educational and suitable for secondary school students
-- Use the color #1f507b (navy blue) as the main color
-- Include a title, explanatory text, and a simple quiz with 2-3 questions
-- Wrap the entire HTML in a code block starting with \`\`\`html
+Requirements:
+1. Complete HTML document (<!DOCTYPE html>, <html>, <head>, <body>)
+2. Inline CSS in <style> tag — no external stylesheets
+3. Vanilla JS in <script> tags — no external libraries except fonts/icons via CDN
+4. Interactive: quizzes, drag-drop, animations, expandable sections
+5. Clear, age-appropriate language for JSS/SSS students
+6. Include: lesson title, learning objectives, content with examples, interactive practice, summary
+7. Use Blue Horizon navy #1f507b as primary color
+8. Responsive and visually appealing
+9. Wrap entire HTML in \`\`\`html code block
+10. After the code block, write a brief description of what you created
 
-After the code block, write one sentence describing what you created.`;
+You will be given a prompt and optionally web search results for context.
+Use the search results to make the content accurate and comprehensive.`;
 
 function extractHtml(text: string): string {
   if (!text) return "";
@@ -33,36 +39,77 @@ function extractHtml(text: string): string {
   return "";
 }
 
-async function callKimi(messages: Array<{role:string;content:string}>): Promise<string> {
+async function callKimi(messages: Array<{role:string;content:string}>, maxTokens = 4096): Promise<string> {
   const key = Deno.env.get("KIMI_API_KEY");
   if (!key) throw new Error("KIMI_API_KEY not configured");
-
-  // Non-streaming — simpler and more reliable
   const response = await fetch(KIMI_URL, {
     method: "POST",
-    headers: {
-      "Authorization": `Bearer ${key}`,
-      "Accept": "application/json",
-      "Content-Type": "application/json",
-    },
+    headers: { "Authorization": `Bearer ${key}`, "Accept": "application/json", "Content-Type": "application/json" },
     body: JSON.stringify({
-      model: MODEL,
-      messages,
-      max_tokens: 2048,
-      temperature: 0.3,
-      top_p: 1.0,
-      stream: false,
+      model: MODEL, messages, max_tokens: maxTokens,
+      temperature: 0.3, top_p: 1.0, stream: false,
       chat_template_kwargs: { thinking: false },
     }),
   });
-
   if (!response.ok) {
     const err = await response.text();
-    throw new Error(`Kimi API ${response.status}: ${err.substring(0, 200)}`);
+    throw new Error(`Kimi API ${response.status}: ${err.substring(0, 300)}`);
   }
-
   const data = await response.json();
   return data.choices?.[0]?.message?.content || "";
+}
+
+// Web search via DuckDuckGo (no API key needed)
+async function webSearch(query: string): Promise<string> {
+  try {
+    const url = `https://api.duckduckgo.com/?q=${encodeURIComponent(query)}&format=json&no_html=1&skip_disambig=1`;
+    const response = await fetch(url, { headers: { "User-Agent": "Mozilla/5.0" } });
+    if (!response.ok) return "";
+    const data = await response.json();
+    let results = "";
+    if (data.AbstractText) results += data.AbstractText + "\n\n";
+    if (data.RelatedTopics) {
+      for (const t of data.RelatedTopics.slice(0, 5)) {
+        if (t.Text) results += t.Text + "\n";
+        if (t.Topics) for (const sub of t.Topics.slice(0, 2)) if (sub.Text) results += sub.Text + "\n";
+      }
+    }
+    return results.substring(0, 3000);
+  } catch { return ""; }
+}
+
+// Test HTML via Render (Playwright screenshot + AI vision analysis)
+async function testHtml(html: string): Promise<{ issues: string[]; suggestions: string[]; overall: string }> {
+  const RENDER_URL = Deno.env.get("MODULE_TESTER_URL");
+  if (!RENDER_URL) return { issues: [], suggestions: [], overall: "skipped" };
+
+  try {
+    // Get a screenshot from Render
+    const startResp = await fetch(`${RENDER_URL}/start`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ htmlContent: html }),
+    });
+    if (!startResp.ok) return { issues: ["Could not render preview"], suggestions: [], overall: "error" };
+    const startData = await startResp.json();
+    const screenshot = startData.screenshot;
+
+    // Ask AI to analyze the screenshot + HTML
+    const analysis = await callKimi([
+      { role: "system", content: "You are a QA tester for educational HTML modules. Analyze the rendered screenshot and HTML. Return ONLY JSON: {\"issues\":[\"...\"],\"suggestions\":[\"...\"],\"overall\":\"good|needs_work|broken\"}" },
+      { role: "user", content: [
+        { type: "text", text: `Analyze this HTML module. Check: layout, readability, interactive elements work, content is educational, navy color used.\n\nHTML:\n${html.substring(0, 2500)}` },
+        { type: "image_url", image_url: { url: `data:image/png;base64,${screenshot}` } },
+      ] as any },
+    ], 2048);
+
+    try {
+      const jsonMatch = analysis.match(/\{[\s\S]*\}/);
+      return jsonMatch ? JSON.parse(jsonMatch[0]) : { issues: [], suggestions: [], overall: "unknown", raw: analysis };
+    } catch { return { issues: [], suggestions: [], overall: "unknown", raw: analysis }; }
+  } catch (e) {
+    return { issues: [`Test error: ${e.message}`], suggestions: [], overall: "error" };
+  }
 }
 
 Deno.serve(async (req: Request) => {
@@ -74,47 +121,106 @@ Deno.serve(async (req: Request) => {
     const body = await req.json();
     const { action } = body;
 
+    // WEB SEARCH — AI uses this to get more info before generating
+    if (action === "search") {
+      const { query } = body;
+      if (!query) return errorResponse("query required");
+      const results = await webSearch(query);
+      return json({ success: true, results });
+    }
+
+    // GENERATE or EDIT — with auto-testing
     if (action === "generate" || action === "edit") {
       const prompt = body.prompt || body.instruction || "";
       const currentHtml = body.current_html || null;
+      const useSearch = body.search !== false; // default true
       if (!prompt) return errorResponse("prompt or instruction required");
 
-      const messages = currentHtml
-        ? [
-            { role: "system", content: SYSTEM },
-            { role: "user", content: `Current module:\n\n\`\`\`html\n${currentHtml}\n\`\`\`\n\nInstruction: ${prompt}` },
-          ]
-        : [
-            { role: "system", content: SYSTEM },
-            { role: "user", content: prompt },
-          ];
+      // Step 1: Web search for context (if enabled)
+      let searchContext = "";
+      if (useSearch && !currentHtml) {
+        searchContext = await webSearch(prompt);
+      }
 
+      // Step 2: Build messages
+      let userContent = "";
+      if (currentHtml) {
+        userContent = `Current module:\n\n\`\`\`html\n${currentHtml}\n\`\`\`\n\nInstruction: ${prompt}`;
+      } else {
+        userContent = searchContext
+          ? `Web search results for context:\n${searchContext}\n\n---\n\nCreate a module: ${prompt}`
+          : `Create a module: ${prompt}`;
+      }
+
+      const messages = [
+        { role: "system", content: SYSTEM },
+        { role: "user", content: userContent },
+      ];
+
+      // Step 3: Generate HTML
       const content = await callKimi(messages);
-      const html = extractHtml(content);
-      let reply = content.replace(/```html\s*\n?[\s\S]*?```/gi, "").replace(/```[\s\S]*?```/gi, "").trim();
-      if (!reply) reply = "Module generated successfully. You can preview it below.";
-
+      let html = extractHtml(content);
       if (!html) {
         return json({ error: "AI did not generate valid HTML. Please try a different prompt.", raw: content.substring(0, 300) }, 500);
       }
 
-      return json({ html, reply });
+      let reply = content.replace(/```html\s*\n?[\s\S]*?```/gi, "").replace(/```[\s\S]*?```/gi, "").trim();
+      if (!reply) reply = "Module generated. Testing now...";
+
+      // Step 4: Auto-test with Playwright + AI vision
+      const testResult = await testHtml(html);
+
+      // Step 5: If test found issues, auto-fix (one iteration)
+      let fixesApplied = "";
+      if (testResult.overall === "needs_work" || testResult.overall === "broken") {
+        if (testResult.issues && testResult.issues.length > 0) {
+          const fixPrompt = `Fix these issues in the module:\n${testResult.issues.join("\n")}\n\nAlso apply these suggestions:\n${(testResult.suggestions || []).join("\n")}`;
+          const fixMessages = [
+            { role: "system", content: "You are an HTML editor. Fix the issues and return the complete updated HTML in a ```html block." },
+            { role: "user", content: `Current HTML:\n\n\`\`\`html\n${html}\n\`\`\`\n\n${fixPrompt}` },
+          ];
+          const fixedContent = await callKimi(fixMessages, 4096);
+          const fixedHtml = extractHtml(fixedContent);
+          if (fixedHtml) {
+            html = fixedHtml;
+            fixesApplied = "Issues found and auto-fixed. ";
+          }
+        }
+      }
+
+      return json({
+        html,
+        reply: fixesApplied + reply,
+        test: testResult,
+        searched: !!searchContext,
+        searchResults: searchContext ? searchContext.substring(0, 500) : "",
+      });
     }
 
-    if (action === "preview" || action === "test") {
+    // TEST only — test existing HTML
+    if (action === "test") {
+      const html = body.current_html || body.html;
+      if (!html) return errorResponse("current_html required");
+      const testResult = await testHtml(html);
+      return json({ success: true, test: testResult });
+    }
+
+    // PREVIEW — get screenshot from Render
+    if (action === "preview") {
       const RENDER_URL = Deno.env.get("MODULE_TESTER_URL");
       if (!RENDER_URL) return errorResponse("Render service not configured", 503);
-      const endpoint = action === "test" ? "/test" : "/start";
-      const response = await fetch(`${RENDER_URL}${endpoint}`, {
+      const html = body.current_html || body.html;
+      if (!html) return errorResponse("current_html required");
+      const response = await fetch(`${RENDER_URL}/start`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ htmlContent: body.current_html || body.html }),
+        body: JSON.stringify({ htmlContent: html }),
       });
       if (!response.ok) return errorResponse("Render error", response.status);
       return json(await response.json());
     }
 
-    return errorResponse("Unknown action. Use: generate, edit, test, preview");
+    return errorResponse("Unknown action. Use: generate, edit, test, preview, search");
   } catch (e) {
     return errorResponse("Server error: " + (e as Error).message, 500);
   }
