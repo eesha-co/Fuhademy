@@ -39,12 +39,9 @@ function extractHtml(text: string): string {
   return "";
 }
 
-// Convert Render's Buffer object {type:"Buffer",data:[137,80,...]} to base64 string
 function bufferToBase64(screenshot: any): string {
   if (!screenshot) return "";
-  // If it's already a string, return as-is
   if (typeof screenshot === "string") return screenshot;
-  // If it's a Buffer object with data array
   if (screenshot.type === "Buffer" && Array.isArray(screenshot.data)) {
     const bytes = new Uint8Array(screenshot.data);
     let binary = "";
@@ -63,7 +60,7 @@ async function callKimi(messages: Array<any>, maxTokens = 8192): Promise<string>
     body: JSON.stringify({
       model: MODEL, messages, max_tokens: maxTokens,
       temperature: 0.5, top_p: 1.0, stream: false,
-      chat_template_kwargs: { thinking: true },  // THINKING MODE ENABLED
+      chat_template_kwargs: { thinking: true },
     }),
   });
   if (!response.ok) {
@@ -72,7 +69,6 @@ async function callKimi(messages: Array<any>, maxTokens = 8192): Promise<string>
   }
   const data = await response.json();
   const msg = data.choices?.[0]?.message || {};
-  // K2.6 with thinking may put content in reasoning_content
   return msg.content || msg.reasoning_content || "";
 }
 
@@ -94,42 +90,6 @@ async function webSearch(query: string): Promise<string> {
   } catch { return ""; }
 }
 
-async function testHtml(html: string): Promise<{ issues: string[]; suggestions: string[]; overall: string; screenshot?: string }> {
-  const RENDER_URL = Deno.env.get("MODULE_TESTER_URL");
-  if (!RENDER_URL) return { issues: [], suggestions: [], overall: "skipped" };
-
-  try {
-    // Get screenshot from Render
-    const startResp = await fetch(`${RENDER_URL}/start`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ htmlContent: html }),
-    });
-    if (!startResp.ok) return { issues: ["Could not render preview"], suggestions: [], overall: "error" };
-    const startData = await startResp.json();
-    // Convert Buffer to base64 string
-    const screenshotB64 = bufferToBase64(startData.screenshot);
-    if (!screenshotB64) return { issues: ["Could not capture screenshot"], suggestions: [], overall: "error" };
-
-    // Ask AI to analyze — use text-only (no image to avoid base64 issues with Kimi)
-    const analysis = await callKimi([
-      { role: "system", content: "You are a QA tester for educational HTML modules. Analyze the HTML code and report issues. Return ONLY JSON: {\"issues\":[\"...\"],\"suggestions\":[\"...\"],\"overall\":\"good|needs_work|broken\"}" },
-      { role: "user", content: `Analyze this HTML module. Check: layout, readability, interactive elements, content is educational, navy color #1f507b is used, responsive design.\n\nHTML:\n${html.substring(0, 3000)}` },
-    ], 2048);
-
-    try {
-      const jsonMatch = analysis.match(/\{[\s\S]*\}/);
-      if (jsonMatch) {
-        const result = JSON.parse(jsonMatch[0]);
-        return { ...result, screenshot: screenshotB64 };
-      }
-    } catch {}
-    return { issues: [], suggestions: [], overall: "unknown", screenshot: screenshotB64 };
-  } catch (e) {
-    return { issues: [`Test error: ${e.message}`], suggestions: [], overall: "error" };
-  }
-}
-
 Deno.serve(async (req: Request) => {
   const preflight = handleOptions(req);
   if (preflight) return preflight;
@@ -139,6 +99,7 @@ Deno.serve(async (req: Request) => {
     const body = await req.json();
     const { action } = body;
 
+    // SEARCH — web search only
     if (action === "search") {
       const { query } = body;
       if (!query) return errorResponse("query required");
@@ -146,6 +107,7 @@ Deno.serve(async (req: Request) => {
       return json({ success: true, results });
     }
 
+    // GENERATE or EDIT — ONLY generates HTML (NO auto-test, to stay under 150s limit)
     if (action === "generate" || action === "edit") {
       const prompt = body.prompt || body.instruction || "";
       const currentHtml = body.current_html || null;
@@ -173,7 +135,7 @@ Deno.serve(async (req: Request) => {
         { role: "user", content: userContent },
       ];
 
-      // Step 3: Generate HTML (with retry — K2.6 sometimes produces garbled output)
+      // Step 3: Generate HTML (with retry)
       let content = "";
       let html = "";
       for (let attempt = 0; attempt < 2; attempt++) {
@@ -191,42 +153,77 @@ Deno.serve(async (req: Request) => {
       }
 
       let reply = content.replace(/```html\s*\n?[\s\S]*?```/gi, "").replace(/```[\s\S]*?```/gi, "").trim();
-      if (!reply) reply = "Module generated. Testing now...";
+      if (!reply) reply = "Module generated successfully.";
 
-      // Step 4: Auto-test
-      const testResult = await testHtml(html);
-
-      // Step 5: Auto-fix if issues found
-      let fixesApplied = "";
-      if ((testResult.overall === "needs_work" || testResult.overall === "broken") && testResult.issues?.length > 0) {
-        const fixMessages = [
-          { role: "system", content: "You are an HTML editor. Fix the issues and return the complete updated HTML in a ```html block." },
-          { role: "user", content: `Current HTML:\n\n\`\`\`html\n${html}\n\`\`\`\n\nFix these issues:\n${testResult.issues.join("\n")}\n\nApply suggestions:\n${(testResult.suggestions || []).join("\n")}` },
-        ];
-        const fixedContent = await callKimi(fixMessages, 8192);
-        const fixedHtml = extractHtml(fixedContent);
-        if (fixedHtml) {
-          html = fixedHtml;
-          fixesApplied = "Issues found and auto-fixed. ";
-        }
-      }
-
+      // Return HTML immediately — frontend will call 'test' separately
       return json({
         html,
-        reply: fixesApplied + reply,
-        test: testResult,
+        reply,
         searched: !!searchContext,
         searchResults: searchContext ? searchContext.substring(0, 500) : "",
+        // Tell frontend to test next
+        testNeeded: true,
       });
     }
 
+    // TEST — tests existing HTML (separate call to stay under 150s)
     if (action === "test") {
       const html = body.current_html || body.html;
       if (!html) return errorResponse("current_html required");
-      const testResult = await testHtml(html);
-      return json({ success: true, test: testResult });
+
+      const RENDER_URL = Deno.env.get("MODULE_TESTER_URL");
+      if (!RENDER_URL) return json({ success: true, test: { issues: [], suggestions: [], overall: "skipped" } });
+
+      try {
+        // Get screenshot from Render
+        const startResp = await fetch(`${RENDER_URL}/start`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ htmlContent: html }),
+        });
+        if (!startResp.ok) return json({ success: true, test: { issues: ["Could not render preview"], suggestions: [], overall: "error" } });
+        const startData = await startResp.json();
+        const screenshotB64 = bufferToBase64(startData.screenshot);
+
+        // AI analyzes the HTML (text-only, no image to avoid base64 issues)
+        const analysis = await callKimi([
+          { role: "system", content: "You are a QA tester for educational HTML modules. Analyze the HTML code and report issues. Return ONLY JSON: {\"issues\":[\"...\"],\"suggestions\":[\"...\"],\"overall\":\"good|needs_work|broken\"}" },
+          { role: "user", content: `Analyze this HTML module. Check: layout, readability, interactive elements, content is educational, navy color #1f507b is used, responsive design.\n\nHTML:\n${html.substring(0, 3000)}` },
+        ], 2048);
+
+        try {
+          const jsonMatch = analysis.match(/\{[\s\S]*\}/);
+          if (jsonMatch) {
+            const result = JSON.parse(jsonMatch[0]);
+            return json({ success: true, test: { ...result, screenshot: screenshotB64 } });
+          }
+        } catch {}
+        return json({ success: true, test: { issues: [], suggestions: [], overall: "unknown", screenshot: screenshotB64 } });
+      } catch (e) {
+        return json({ success: true, test: { issues: [`Test error: ${e.message}`], suggestions: [], overall: "error" } });
+      }
     }
 
+    // AUTO-FIX — fixes issues in existing HTML (separate call)
+    if (action === "fix") {
+      const html = body.current_html || body.html;
+      const issues = body.issues || [];
+      const suggestions = body.suggestions || [];
+      if (!html) return errorResponse("current_html required");
+
+      const fixMessages = [
+        { role: "system", content: "You are an HTML editor. Fix the issues and return the complete updated HTML in a ```html block." },
+        { role: "user", content: `Current HTML:\n\n\`\`\`html\n${html}\n\`\`\`\n\nFix these issues:\n${issues.join("\n")}\n\nApply suggestions:\n${suggestions.join("\n")}` },
+      ];
+      const fixedContent = await callKimi(fixMessages, 8192);
+      const fixedHtml = extractHtml(fixedContent);
+      if (!fixedHtml) return json({ error: "Could not auto-fix. Please try manually." }, 500);
+      let reply = fixedContent.replace(/```html\s*\n?[\s\S]*?```/gi, "").trim();
+      if (!reply) reply = "Issues auto-fixed.";
+      return json({ html: fixedHtml, reply, fixed: true });
+    }
+
+    // PREVIEW — get screenshot from Render
     if (action === "preview") {
       const RENDER_URL = Deno.env.get("MODULE_TESTER_URL");
       if (!RENDER_URL) return errorResponse("Render service not configured", 503);
@@ -239,11 +236,10 @@ Deno.serve(async (req: Request) => {
       });
       if (!response.ok) return errorResponse("Render error", response.status);
       const data = await response.json();
-      // Convert Buffer to base64 before returning to frontend
       return json({ screenshot: bufferToBase64(data.screenshot) });
     }
 
-    return errorResponse("Unknown action. Use: generate, edit, test, preview, search");
+    return errorResponse("Unknown action. Use: generate, edit, test, fix, preview, search");
   } catch (e) {
     return errorResponse("Server error: " + (e as Error).message, 500);
   }

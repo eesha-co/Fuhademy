@@ -923,12 +923,12 @@
           search: !!state.search
         };
 
+        // STEP 1: Generate HTML (separate call — stays under 150s Supabase limit)
         BH.edge('ai-module', { method: 'POST', body: payload }).then(function (res) {
-          cancelled = true;
-          stepTimers.forEach(clearTimeout);
-          setThinking(false);
-
           if (!res || !res.ok || !res.data) {
+            cancelled = true;
+            stepTimers.forEach(clearTimeout);
+            setThinking(false);
             var errMsg = (res && res.data && res.data.error) || 'The AI service is unavailable right now. Try again.';
             addChatMessage('error', errMsg);
             return;
@@ -936,40 +936,74 @@
           var data = res.data;
 
           // Show web search results summary (if search was performed)
-          if (data.searched && Array.isArray(data.searchResults) && data.searchResults.length) {
-            var top = data.searchResults.slice(0, 3).map(function (r, i) {
-              var t = r.title || r.url || ('Result ' + (i + 1));
-              return (i + 1) + '. ' + t;
-            }).join('\n');
-            addChatMessage('system', '🌐 Web context found (' + data.searchResults.length + ' result(s)):\n' + top, 'fa-globe');
+          if (data.searched && data.searchResults && typeof data.searchResults === 'string' && data.searchResults.length) {
+            addChatMessage('system', '🌐 Web context found:\n' + data.searchResults.substring(0, 300), 'fa-globe');
           }
 
-          // If auto-fix was applied, surface that as a system step
-          if (data.test && data.test.autoFixed) {
-            addChatMessage('system', '🔧 Auto-fixed ' + (data.test.fixedCount || 'some') + ' issue(s) and re-tested.', 'fa-wrench');
-          }
-
-          // Update the HTML
+          // Update the HTML immediately
           if (data.html && typeof data.html === 'string') {
             setHtml(data.html, 'ai');
           }
 
-          // Render the test report (both Self-mode and AI-mode report cards stay in sync)
-          if (data.test) {
-            updateTestReport(data.test);
-          }
-
-          // AI's reply (which per-spec includes the test summary)
+          // AI's reply
           if (data.reply && typeof data.reply === 'string') {
             addChatMessage('ai', data.reply);
           } else if (data.html) {
-            addChatMessage('ai', "I've updated the preview with the new module. Check the Test Report for browser-test results, and click Test Again any time to re-validate.");
-          } else {
-            addChatMessage('ai', "I couldn't generate that module. Could you describe what you'd like in more detail?");
+            addChatMessage('ai', "I've generated the module. Testing it now...");
           }
 
-          // Auto-switch to Preview so the teacher sees the result + test report
+          // Auto-switch to Preview so the teacher sees the result
           setAISubTab('preview');
+
+          // STEP 2: Auto-test the generated HTML (separate call)
+          if (data.html && data.testNeeded !== false) {
+            addChatMessage('system', '🧪 Testing the module with the browser...', 'fa-vial');
+            return BH.edge('ai-module', { method: 'POST', body: { action: 'test', current_html: data.html } });
+          }
+          cancelled = true;
+          stepTimers.forEach(clearTimeout);
+          setThinking(false);
+          return null;
+        }).then(function (res) {
+          // Handle test result
+          if (!res) return; // no test was run
+          if (!res || !res.ok || !res.data) {
+            cancelled = true;
+            stepTimers.forEach(clearTimeout);
+            setThinking(false);
+            return;
+          }
+          var testData = res.data;
+          if (testData.test) {
+            updateTestReport(testData.test);
+            var overall = testData.test.overall || 'unknown';
+            var issueCount = (testData.test.issues || []).length;
+            addChatMessage('system', '📋 Test complete: ' + overall.toUpperCase() + (issueCount > 0 ? ' (' + issueCount + ' issue(s) found)' : ' — no issues found!'), 'fa-clipboard-check');
+
+            // STEP 3: Auto-fix if issues found
+            if ((overall === 'needs_work' || overall === 'broken') && issueCount > 0) {
+              addChatMessage('system', '🔧 Auto-fixing ' + issueCount + ' issue(s)...', 'fa-wrench');
+              BH.edge('ai-module', { method: 'POST', body: { action: 'fix', current_html: state.html, issues: testData.test.issues, suggestions: testData.test.suggestions || [] } }).then(function (fixRes) {
+                cancelled = true;
+                stepTimers.forEach(clearTimeout);
+                setThinking(false);
+                if (fixRes && fixRes.ok && fixRes.data && fixRes.data.html) {
+                  setHtml(fixRes.data.html, 'ai');
+                  addChatMessage('system', '✅ Auto-fix applied! Module updated.', 'fa-check-circle');
+                } else {
+                  addChatMessage('system', '⚠️ Could not auto-fix all issues. You can edit manually in Self mode.', 'fa-triangle-exclamation');
+                }
+              }).catch(function () {
+                cancelled = true;
+                stepTimers.forEach(clearTimeout);
+                setThinking(false);
+              });
+            } else {
+              cancelled = true;
+              stepTimers.forEach(clearTimeout);
+              setThinking(false);
+            }
+          }
         }).catch(function (err) {
           cancelled = true;
           stepTimers.forEach(clearTimeout);
