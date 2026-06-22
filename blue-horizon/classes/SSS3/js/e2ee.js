@@ -90,6 +90,10 @@ window.BHE2EE = {
     return new TextDecoder().decode(decrypted);
   },
 
+  // Aliases for backward compatibility (login.html uses these names)
+  _bytesToBase64: _b64encode,
+  _base64ToBytes: _b64decode,
+
   // Check if a string looks like ciphertext (for fallback detection)
   looksLikeCiphertext: function(text) {
     if (!text || text.length < 16) return false;
