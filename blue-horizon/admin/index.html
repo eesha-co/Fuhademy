@@ -437,11 +437,12 @@
                       <th class="p-3 font-semibold">Status</th>
                       <th class="p-3 font-semibold">Subscription</th>
                       <th class="p-3 font-semibold">Registered</th>
-                      <th class="p-3 font-semibold text-right">Actions</th>
+                      <th class="p-3 font-semibold text-center">Suspend</th>
+                      <th class="p-3 font-semibold text-center">Delete</th>
                     </tr>
                   </thead>
                   <tbody id="studentsBody">
-                    <tr><td colspan="7" class="p-8 text-center text-slate-400 text-sm">Loading students…</td></tr>
+                    <tr><td colspan="9" class="p-8 text-center text-slate-400 text-sm">Loading students…</td></tr>
                   </tbody>
                 </table>
               </div>
@@ -1167,15 +1168,19 @@
       // ---------- Students ----------
       function loadStudents() {
         var body = $('studentsBody');
-        body.innerHTML = '<tr><td colspan="7" class="p-8 text-center text-slate-400 text-sm"><span class="spinner-sm spinner-navy mr-2"></span>Loading students…</td></tr>';
-        dbSelect('students', '*', { order: { column: 'created_at', ascending: false }, limit: 500 })
+        body.innerHTML = '<tr><td colspan="9" class="p-8 text-center text-slate-400 text-sm"><span class="spinner-sm spinner-navy mr-2"></span>Loading students…</td></tr>';
+        var adminId = (BH.getSession() && BH.getSession().user && BH.getSession().user.id) || (state.admin && state.admin.id);
+        if (!adminId) { body.innerHTML = errorRow(9, 'Admin session not found. Please log in again.'); return; }
+        var cf = $('studentClassFilter') ? $('studentClassFilter').value : 'All';
+        BH.edge('admin-list-students', { method: 'POST', body: JSON.stringify({ admin_id: adminId, class_name: cf }) })
+          .then(function (res) { return res.json(); })
           .then(function (r) {
-            state.cache.students = r.data || [];
-            renderStudents();
+            if (r.success) { state.cache.students = r.students || []; renderStudents(); }
+            else { body.innerHTML = errorRow(9, 'Failed to load students. ' + (r.error || '')); }
           })
           .catch(function (e) {
             console.error('[students]', e);
-            body.innerHTML = errorRow(7, 'Failed to load students. ' + (e.message || ''));
+            body.innerHTML = errorRow(9, 'Failed to load students. ' + (e.message || ''));
           });
       }
       function getFilteredStudents() {
@@ -1195,7 +1200,7 @@
         var body = $('studentsBody');
         var rows = getFilteredStudents();
         if (rows.length === 0) {
-          body.innerHTML = emptyRow(7, 'No students found. Register your first student to get started.', 'fa-user-graduate');
+          body.innerHTML = emptyRow(9, 'No students found. Register your first student to get started.', 'fa-user-graduate');
           return;
         }
         // Pre-fetch subscriptions for student → status mapping
@@ -1206,7 +1211,7 @@
         });
         var html = '';
         rows.forEach(function (s) {
-          var status = s.status || 'active';
+          var status = s.is_active === false ? 'inactive' : 'active';
           var sub = subByStudent[s.id] || subByStudent[(s.full_name || s.name)] || null;
           var subStatus = sub ? sub.status : 'inactive';
           html += '' +
@@ -1220,9 +1225,14 @@
               '<td class="p-3">' + statusBadge(status) + '</td>' +
               '<td class="p-3">' + statusBadge(subStatus) + '</td>' +
               '<td class="p-3 text-slate-500 text-xs">' + fmtDate(s.created_at) + '</td>' +
-              '<td class="p-3 text-right whitespace-nowrap">' +
+              '<td class="p-3 text-center whitespace-nowrap">' +
                 '<button class="edit-student-btn text-bh-navy hover:bg-blue-50 p-1.5 rounded-lg mr-1" data-id="' + escapeHtml(s.id) + '" title="Edit"><i class="fas fa-pen-to-square"></i></button>' +
-                '<button class="toggle-student-btn text-amber-600 hover:bg-amber-50 p-1.5 rounded-lg" data-id="' + escapeHtml(s.id) + '" data-status="' + escapeHtml(status) + '" title="Activate/Deactivate"><i class="fas fa-power-off"></i></button>' +
+              '</td>' +
+              '<td class="p-3 text-center">' +
+                '<button class="suspend-student-btn px-2.5 py-1 rounded-lg text-xs font-semibold ' + (s.is_active === false ? 'bg-emerald-50 text-emerald-600 hover:bg-emerald-100' : 'bg-amber-50 text-amber-600 hover:bg-amber-100') + '" data-id="' + escapeHtml(s.id) + '" data-active="' + escapeHtml(String(s.is_active)) + '">' + (s.is_active === false ? '<i class="fas fa-check mr-1"></i>Activate' : '<i class="fas fa-pause mr-1"></i>Suspend') + '</button>' +
+              '</td>' +
+              '<td class="p-3 text-center">' +
+                '<button class="delete-student-btn px-2.5 py-1 rounded-lg text-xs font-semibold bg-rose-50 text-rose-600 hover:bg-rose-100" data-id="' + escapeHtml(s.id) + '" data-name="' + escapeHtml(s.full_name || s.name || '') + '"><i class="fas fa-trash mr-1"></i>Delete</button>' +
               '</td>' +
             '</tr>';
         });
@@ -1230,8 +1240,11 @@
         $$('#studentsBody .edit-student-btn').forEach(function (b) {
           b.addEventListener('click', function () { openEditStudent(b.getAttribute('data-id')); });
         });
-        $$('#studentsBody .toggle-student-btn').forEach(function (b) {
-          b.addEventListener('click', function () { toggleStudentStatus(b.getAttribute('data-id'), b.getAttribute('data-status')); });
+        $$('#studentsBody .suspend-student-btn').forEach(function (b) {
+          b.addEventListener('click', function () { suspendStudent(b.getAttribute('data-id'), b.getAttribute('data-active') === 'true'); });
+        });
+        $$('#studentsBody .delete-student-btn').forEach(function (b) {
+          b.addEventListener('click', function () { deleteStudent(b.getAttribute('data-id'), b.getAttribute('data-name')); });
         });
       }
 
@@ -1239,10 +1252,13 @@
       function loadTeachers() {
         var body = $('teachersBody');
         body.innerHTML = '<tr><td colspan="7" class="p-8 text-center text-slate-400 text-sm"><span class="spinner-sm spinner-navy mr-2"></span>Loading teachers…</td></tr>';
-        dbSelect('teachers', '*', { order: { column: 'created_at', ascending: false }, limit: 500 })
+        var adminId = (BH.getSession() && BH.getSession().user && BH.getSession().user.id) || (state.admin && state.admin.id);
+        if (!adminId) { body.innerHTML = errorRow(7, 'Admin session not found.'); return; }
+        BH.edge('admin-list-teachers', { method: 'POST', body: JSON.stringify({ admin_id: adminId }) })
+          .then(function (res) { return res.json(); })
           .then(function (r) {
-            state.cache.teachers = r.data || [];
-            renderTeachers();
+            if (r.success) { state.cache.teachers = r.teachers || []; renderTeachers(); }
+            else { body.innerHTML = errorRow(7, 'Failed: ' + (r.error || '')); }
           })
           .catch(function (e) {
             console.error('[teachers]', e);
@@ -2076,20 +2092,39 @@
           });
         });
       }
-      function toggleStudentStatus(id, currentStatus) {
-        var newStatus = String(currentStatus).toLowerCase() === 'inactive' ? 'active' : 'inactive';
-        getClient().then(function (c) {
-          return c.from('students').update({ status: newStatus }).eq('id', id);
-        }).then(function (r) {
-          if (r.error) throw r.error;
-          var s = (state.cache.students || []).find(function (x) { return String(x.id) === String(id); });
-          if (s) s.status = newStatus;
-          renderStudents();
-          showToast('Student ' + (newStatus === 'active' ? 'activated' : 'deactivated') + '.', 'success');
-        }).catch(function (e) {
-          console.error('[toggle student]', e);
-          showToast('Failed to update status: ' + (e.message || ''), 'error');
-        });
+      function suspendStudent(id, isActive) {
+        var adminId = (BH.getSession() && BH.getSession().user && BH.getSession().user.id) || (state.admin && state.admin.id);
+        if (!adminId) { showToast('Admin session not found.', 'error'); return; }
+        var suspend = isActive; // if currently active, suspend; if suspended, activate
+        if (!confirm(suspend ? 'Suspend this student? They will not be able to log in.' : 'Activate this student?')) return;
+        BH.edge('admin-suspend-student', { method: 'POST', body: JSON.stringify({ admin_id: adminId, student_id: id, suspend: suspend }) })
+          .then(function (res) { return res.json(); })
+          .then(function (r) {
+            if (r.success) {
+              var s = (state.cache.students || []).find(function (x) { return String(x.id) === String(id); });
+              if (s) s.is_active = r.student.is_active;
+              renderStudents();
+              showToast('Student ' + r.action + '.', 'success');
+            } else { showToast('Failed: ' + (r.error || ''), 'error'); }
+          })
+          .catch(function (e) { showToast('Failed: ' + (e.message || ''), 'error'); });
+      }
+
+      function deleteStudent(id, name) {
+        var adminId = (BH.getSession() && BH.getSession().user && BH.getSession().user.id) || (state.admin && state.admin.id);
+        if (!adminId) { showToast('Admin session not found.', 'error'); return; }
+        if (!confirm('DELETE ' + name + '?\n\nThis permanently removes the student and all their records (scores, subscriptions, attendance, messages). This cannot be undone.')) return;
+        if (!confirm('Are you absolutely sure? This action is irreversible.')) return;
+        BH.edge('admin-delete-student', { method: 'POST', body: JSON.stringify({ admin_id: adminId, student_id: id }) })
+          .then(function (res) { return res.json(); })
+          .then(function (r) {
+            if (r.success) {
+              state.cache.students = (state.cache.students || []).filter(function (x) { return String(x.id) !== String(id); });
+              renderStudents();
+              showToast(name + ' deleted permanently.', 'success');
+            } else { showToast('Failed: ' + (r.error || ''), 'error'); }
+          })
+          .catch(function (e) { showToast('Failed: ' + (e.message || ''), 'error'); });
       }
 
       // ---------- Edit Teacher Modal ----------
