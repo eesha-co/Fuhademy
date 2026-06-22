@@ -129,6 +129,7 @@ CREATE TABLE IF NOT EXISTS public.messages (
     receiver_role TEXT NOT NULL CHECK (receiver_role IN ('student','teacher','admin')),
     receiver_name TEXT NOT NULL,
     content       TEXT NOT NULL,
+    iv            TEXT,
     read_at       TIMESTAMPTZ,
     created_at    TIMESTAMPTZ NOT NULL DEFAULT now()
 );
