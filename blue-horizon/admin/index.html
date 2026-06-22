@@ -1172,9 +1172,9 @@
         var adminId = (BH.getSession() && BH.getSession().user && BH.getSession().user.id) || (state.admin && state.admin.id);
         if (!adminId) { body.innerHTML = errorRow(9, 'Admin session not found. Please log in again.'); return; }
         var cf = $('studentClassFilter') ? $('studentClassFilter').value : 'All';
-        BH.edge('admin-list-students', { method: 'POST', body: JSON.stringify({ admin_id: adminId, class_name: cf }) })
-          .then(function (res) { return res.json(); })
+        BH.edge('admin-list-students', { method: 'POST', body: { admin_id: adminId, class_name: cf } })
           .then(function (r) {
+            r = r.data || r;
             if (r.success) { state.cache.students = r.students || []; renderStudents(); }
             else { body.innerHTML = errorRow(9, 'Failed to load students. ' + (r.error || '')); }
           })
@@ -1254,9 +1254,9 @@
         body.innerHTML = '<tr><td colspan="7" class="p-8 text-center text-slate-400 text-sm"><span class="spinner-sm spinner-navy mr-2"></span>Loading teachers…</td></tr>';
         var adminId = (BH.getSession() && BH.getSession().user && BH.getSession().user.id) || (state.admin && state.admin.id);
         if (!adminId) { body.innerHTML = errorRow(7, 'Admin session not found.'); return; }
-        BH.edge('admin-list-teachers', { method: 'POST', body: JSON.stringify({ admin_id: adminId }) })
-          .then(function (res) { return res.json(); })
+        BH.edge('admin-list-teachers', { method: 'POST', body: { admin_id: adminId } })
           .then(function (r) {
+            r = r.data || r;
             if (r.success) { state.cache.teachers = r.teachers || []; renderTeachers(); }
             else { body.innerHTML = errorRow(7, 'Failed: ' + (r.error || '')); }
           })
@@ -1919,7 +1919,7 @@
           return;
         }
 
-        BH.edge('admin-register-student', { method: 'POST', body: { admin_id: adminId, student: data } }).then(function (res) {
+        BH.edge('admin-register-student', { method: 'POST', body: { admin_id: adminId, student: data } }).then(function (r) {
           btn.disabled = false; btn.innerHTML = orig;
           if (res.ok && res.data && (res.data.success || res.data.id || res.data.user)) {
             showToast('Student "' + (data.full_name || data.username) + '" registered successfully!', 'success');
@@ -2097,9 +2097,9 @@
         if (!adminId) { showToast('Admin session not found.', 'error'); return; }
         var suspend = isActive; // if currently active, suspend; if suspended, activate
         if (!confirm(suspend ? 'Suspend this student? They will not be able to log in.' : 'Activate this student?')) return;
-        BH.edge('admin-suspend-student', { method: 'POST', body: JSON.stringify({ admin_id: adminId, student_id: id, suspend: suspend }) })
-          .then(function (res) { return res.json(); })
+        BH.edge('admin-suspend-student', { method: 'POST', body: { admin_id: adminId, student_id: id, suspend: suspend } })
           .then(function (r) {
+            r = r.data || r;
             if (r.success) {
               var s = (state.cache.students || []).find(function (x) { return String(x.id) === String(id); });
               if (s) s.is_active = r.student.is_active;
@@ -2115,9 +2115,9 @@
         if (!adminId) { showToast('Admin session not found.', 'error'); return; }
         if (!confirm('DELETE ' + name + '?\n\nThis permanently removes the student and all their records (scores, subscriptions, attendance, messages). This cannot be undone.')) return;
         if (!confirm('Are you absolutely sure? This action is irreversible.')) return;
-        BH.edge('admin-delete-student', { method: 'POST', body: JSON.stringify({ admin_id: adminId, student_id: id }) })
-          .then(function (res) { return res.json(); })
+        BH.edge('admin-delete-student', { method: 'POST', body: { admin_id: adminId, student_id: id } })
           .then(function (r) {
+            r = r.data || r;
             if (r.success) {
               state.cache.students = (state.cache.students || []).filter(function (x) { return String(x.id) !== String(id); });
               renderStudents();
