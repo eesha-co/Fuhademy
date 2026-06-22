@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Student Dashboard — Blue Horizon (JSS1) E-Learning</title>
+    <title>Student Dashboard — Blue Horizon E-Learning</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -383,37 +383,12 @@
                 <p class="text-white/85 text-base md:text-lg mb-6 max-w-xl">Your learning journey continues. Every study session brings you closer to your goals.</p>
 
                 <div class="flex flex-wrap gap-3">
-                  <a href="../../students/study-plan-supabase.html" class="px-5 py-2.5 bg-white text-bh-navy rounded-xl font-semibold flex items-center gap-2 shadow-lg hover:bg-white/95 transition-colors">
-                    <i class="fas fa-plus-circle"></i><span>New Study Plan</span>
-                  </a>
-                  <a href="../../students/mock-exams.html" class="px-5 py-2.5 bg-white/20 backdrop-blur rounded-xl font-medium flex items-center gap-2 hover:bg-white/30 transition-colors">
-                    <i class="fas fa-clipboard-list"></i><span>Take Practice Test</span>
+                  <a href="#learningModules" class="px-5 py-2.5 bg-white text-bh-navy rounded-xl font-semibold flex items-center gap-2 shadow-lg hover:bg-white/95 transition-colors">
+                    <i class="fas fa-book-open"></i><span>Browse Modules</span>
                   </a>
                   <a href="messenger/messenger.html" class="px-5 py-2.5 bg-white/20 backdrop-blur rounded-xl font-medium flex items-center gap-2 hover:bg-white/30 transition-colors">
                     <i class="fas fa-comments"></i><span>Message Teacher</span>
                   </a>
-                </div>
-              </div>
-
-              <!-- Stats: streak + overall progress -->
-              <div class="flex items-center gap-4">
-                <div class="text-center bg-white/10 backdrop-blur rounded-2xl p-5">
-                  <div class="w-16 h-16 bg-gradient-to-br from-orange-400 to-red-500 rounded-2xl flex items-center justify-center mx-auto mb-3 streak-glow">
-                    <i class="fas fa-fire text-white text-2xl"></i>
-                  </div>
-                  <div id="streakCount" class="text-3xl font-bold text-white">0</div>
-                  <div class="text-white/70 text-sm">Day Streak</div>
-                </div>
-
-                <div class="text-center bg-white/10 backdrop-blur rounded-2xl p-5">
-                  <div class="relative w-20 h-20 mx-auto mb-3">
-                    <svg class="progress-ring w-20 h-20" viewBox="0 0 80 80">
-                      <circle cx="40" cy="40" r="35" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="6"/>
-                      <circle id="progressRing" class="progress-ring__circle" cx="40" cy="40" r="35" fill="none" stroke="white" stroke-width="6" stroke-linecap="round" stroke-dasharray="220" stroke-dashoffset="220"/>
-                    </svg>
-                    <div id="progressValue" class="absolute inset-0 flex items-center justify-center text-xl font-bold text-white">0%</div>
-                  </div>
-                  <div class="text-white/70 text-sm">Weekly Goal</div>
                 </div>
               </div>
             </div>
@@ -467,19 +442,19 @@
             </div>
           </section>
 
-          <!-- Subject Cards -->
-          <section>
+          <!-- Learning Modules -->
+          <section id="learningModules">
             <div class="flex items-center justify-between mb-5">
               <div>
-                <h2 class="text-xl font-bold text-slate-800">Your Subjects</h2>
-                <p class="text-sm text-slate-500">Continue where you left off</p>
+                <h2 class="text-xl font-bold text-slate-800">Learning Modules</h2>
+                <p class="text-sm text-slate-500">Interactive lessons uploaded by your teachers</p>
               </div>
-              <a href="../../students/digital-library.html" class="text-sm font-medium text-bh-navy hover:text-bh-navy-2 flex items-center gap-1">
-                View All <i class="fas fa-arrow-right"></i>
-              </a>
+              <button id="refreshModulesBtn" class="text-sm font-medium text-bh-navy hover:text-bh-navy-2 flex items-center gap-1.5 px-3 py-1.5 rounded-lg hover:bg-bh-navy/5 transition-colors">
+                <i class="fas fa-rotate-right"></i> Refresh
+              </button>
             </div>
 
-            <div id="subjectCardsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            <div id="modulesGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
               <!-- Skeletons injected by JS -->
             </div>
           </section>
@@ -704,21 +679,82 @@
         if (window.BH) BH.signOut();
       });
 
-      // ----- Subjects data -----
-      var SUBJECTS_DATA = {
-        mathematics: { id:'mathematics', name:'Mathematics', icon:'fa-calculator', color:'red',     gradient:'from-red-400 to-red-600',         link:'../../students/digital-library.html', topics:['Number Bases','Indices','Logarithms','Sets','Modular Arithmetic','Algebra','Equations','Quadratic Equations','Simultaneous Equations','Polynomials','Mensuration','Geometry','Trigonometry','Vectors','Statistics','Probability','Differentiation','Integration','Matrices'] },
-        english:     { id:'english',     name:'English Language', icon:'fa-book-open', color:'violet', gradient:'from-violet-400 to-violet-600', link:'../../students/digital-library.html', topics:['Parts of Speech','Sentence Structure','Tenses','Articles','Punctuation','Comprehension','Summary Writing','Essay Writing','Letter Writing','Vocabulary','Idioms','Figures of Speech'] },
-        physics:     { id:'physics',     name:'Physics', icon:'fa-atom', color:'amber',     gradient:'from-amber-400 to-amber-600',     link:'../../students/digital-library.html', topics:['Measurements','Motion','Newton\'s Laws','Work, Energy, Power','Momentum','Projectile Motion','SHM','Waves','Sound','Light','Optics','Heat','Electricity','Magnetism','EM Induction','Modern Physics','Nuclear Physics'] },
-        chemistry:   { id:'chemistry',   name:'Chemistry', icon:'fa-flask', color:'pink',   gradient:'from-pink-400 to-pink-600',       link:'../../students/digital-library.html', topics:['Atomic Structure','Periodic Table','Chemical Bonding','Reactions','Stoichiometry','States of Matter','Gas Laws','Solutions','Acids & Bases','Electrochemistry','Organic Chemistry','Environmental Chemistry','Nuclear Chemistry'] },
-        biology:     { id:'biology',     name:'Biology', icon:'fa-dna', color:'green',     gradient:'from-green-400 to-green-600',     link:'../../students/digital-library.html', topics:['Cell Structure','Cell Division','Nutrition','Photosynthesis','Respiration','Transport','Excretion','Reproduction','Genetics','Evolution','Ecology','Nervous System','Endocrine System'] },
-        economics:   { id:'economics',   name:'Economics', icon:'fa-chart-line', color:'cyan', gradient:'from-cyan-400 to-cyan-600',     link:'../../students/digital-library.html', topics:['Basic Concepts','Demand & Supply','Market Structures','National Income','Money & Banking','Public Finance','International Trade','Economic Development','Population'] },
-        government:  { id:'government',  name:'Government', icon:'fa-landmark', color:'rose', gradient:'from-rose-400 to-rose-600',     link:'../../students/digital-library.html', topics:['Basic Concepts','Constitution','Arms of Government','Federalism','Political Parties','Electoral Systems','Public Administration','Local Government','Human Rights'] },
-        commerce:    { id:'commerce',    name:'Commerce', icon:'fa-store', color:'teal',   gradient:'from-teal-400 to-teal-600',       link:'../../students/digital-library.html', topics:['Introduction','Trade','Business Units','Business Management','Banking','Insurance','Transportation','Communication','Marketing','Consumer Protection'] }
+      // =====================================================
+      // Learning Modules — fetched from Supabase Storage bucket
+      // =====================================================
+      var MODULES_BUCKET = 'modules';
+      var MODULES_PUBLIC_BASE =
+        'https://kruwfhzfqieuiuhqlutt.supabase.co/storage/v1/object/public/modules/';
+
+      // Subject color/icon helpers (so module cards still feel alive)
+      var SUBJECT_THEME = {
+        mathematics: { color: 'red',     gradient: 'from-red-400 to-red-600',          icon: 'fa-calculator' },
+        maths:       { color: 'red',     gradient: 'from-red-400 to-red-600',          icon: 'fa-calculator' },
+        math:        { color: 'red',     gradient: 'from-red-400 to-red-600',          icon: 'fa-calculator' },
+        english:     { color: 'violet',  gradient: 'from-violet-400 to-violet-600',    icon: 'fa-book-open' },
+        physics:     { color: 'amber',   gradient: 'from-amber-400 to-amber-600',      icon: 'fa-atom' },
+        chemistry:   { color: 'pink',    gradient: 'from-pink-400 to-pink-600',        icon: 'fa-flask' },
+        biology:     { color: 'green',   gradient: 'from-green-400 to-green-600',      icon: 'fa-dna' },
+        economics:   { color: 'cyan',    gradient: 'from-cyan-400 to-cyan-600',        icon: 'fa-chart-line' },
+        government:  { color: 'rose',    gradient: 'from-rose-400 to-rose-600',        icon: 'fa-landmark' },
+        commerce:    { color: 'teal',    gradient: 'from-teal-400 to-teal-600',        icon: 'fa-store' },
+        accounting:  { color: 'slate',   gradient: 'from-slate-400 to-slate-600',      icon: 'fa-coins' },
+        literature:  { color: 'purple',  gradient: 'from-purple-400 to-purple-600',    icon: 'fa-feather' },
+        default:     { color: 'slate',   gradient: 'from-bh-navy to-bh-navy-2',        icon: 'fa-book' }
       };
 
-      // ----- Render subject skeleton -----
-      function renderSubjectSkeleton() {
-        var grid = document.getElementById('subjectCardsGrid');
+      function subjectTheme(subject) {
+        var key = (subject || '').toLowerCase().trim();
+        // partial-match lookup (so "English Language" -> english)
+        for (var k in SUBJECT_THEME) {
+          if (k === 'default') continue;
+          if (key.indexOf(k) !== -1 || k.indexOf(key) !== -1) return SUBJECT_THEME[k];
+        }
+        return SUBJECT_THEME.default;
+      }
+
+      // Parse a module filename into { teacher, subject, title }.
+      // Expected pattern: teacher_subject_title.html  (underscores as separators)
+      // Falls back gracefully to just the filename.
+      function parseModuleFilename(name) {
+        var clean = name.replace(/\.html?$/i, '');
+        var parts = clean.split('_');
+        var info = { teacher: '', subject: '', title: clean };
+        if (parts.length >= 3) {
+          info.teacher = parts[0].replace(/-/g, ' ');
+          info.subject = parts[1].replace(/-/g, ' ');
+          info.title  = parts.slice(2).join(' ').replace(/-/g, ' ');
+        } else if (parts.length === 2) {
+          info.teacher = parts[0].replace(/-/g, ' ');
+          info.title  = parts[1].replace(/-/g, ' ');
+        } else {
+          info.title = clean.replace(/-/g, ' ');
+        }
+        // Title-case first letter of each piece
+        info.teacher = titleCase(info.teacher);
+        info.subject = titleCase(info.subject);
+        info.title   = titleCase(info.title);
+        return info;
+      }
+
+      function titleCase(str) {
+        if (!str) return '';
+        return str.replace(/\b\w/g, function (c) { return c.toUpperCase(); });
+      }
+
+      function formatModuleDate(ts) {
+        if (!ts) return 'Recently';
+        try {
+          var d = new Date(ts);
+          if (isNaN(d.getTime())) return 'Recently';
+          return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+        } catch (e) { return 'Recently'; }
+      }
+
+      // Skeleton loaders
+      function renderModulesSkeleton() {
+        var grid = document.getElementById('modulesGrid');
+        if (!grid) return;
         var html = '';
         for (var i = 0; i < 8; i++) {
           html += '' +
@@ -729,38 +765,112 @@
               '</div>' +
               '<div class="h-4 w-2/3 skeleton rounded mb-2"></div>' +
               '<div class="h-3 w-1/2 skeleton rounded mb-3"></div>' +
-              '<div class="h-1.5 w-full skeleton rounded-full"></div>' +
+              '<div class="h-8 w-full skeleton rounded-xl"></div>' +
             '</div>';
         }
         grid.innerHTML = html;
       }
 
-      function renderSubjectCards(progressMap) {
-        progressMap = progressMap || {};
-        var grid = document.getElementById('subjectCardsGrid');
+      function renderModulesEmpty() {
+        var grid = document.getElementById('modulesGrid');
+        if (!grid) return;
+        grid.innerHTML = '' +
+          '<div class="col-span-full text-center py-16 text-slate-400">' +
+            '<div class="w-20 h-20 mx-auto mb-4 rounded-2xl bg-slate-50 flex items-center justify-center">' +
+              '<i class="fas fa-folder-open text-4xl opacity-50"></i>' +
+            '</div>' +
+            '<p class="text-base font-medium text-slate-600">No modules uploaded yet.</p>' +
+            '<p class="text-sm mt-1">Check back soon! Your teachers are preparing lessons.</p>' +
+          '</div>';
+      }
+
+      function renderModulesError(msg) {
+        var grid = document.getElementById('modulesGrid');
+        if (!grid) return;
+        grid.innerHTML = '' +
+          '<div class="col-span-full text-center py-16">' +
+            '<div class="w-20 h-20 mx-auto mb-4 rounded-2xl bg-rose-50 flex items-center justify-center">' +
+              '<i class="fas fa-cloud-exclamation text-4xl text-rose-400"></i>' +
+            '</div>' +
+            '<p class="text-base font-medium text-slate-700">Could not load modules.</p>' +
+            '<p class="text-sm text-slate-500 mt-1">' + escapeHtml(msg || 'Network error.') + '</p>' +
+            '<button onclick="loadModules()" class="mt-4 px-4 py-2 bg-bh-navy text-white text-sm rounded-xl hover:bg-bh-navy-2 transition-colors">' +
+              '<i class="fas fa-rotate-right mr-1"></i> Try again' +
+            '</button>' +
+          '</div>';
+      }
+
+      function renderModuleCards(files) {
+        var grid = document.getElementById('modulesGrid');
+        if (!grid) return;
+        if (!files || files.length === 0) { renderModulesEmpty(); return; }
+
+        // Sort newest first (Storage API returns metadata.updated_at or created_at)
+        files.sort(function (a, b) {
+          var ta = new Date(a.updated_at || a.created_at || 0).getTime();
+          var tb = new Date(b.updated_at || b.created_at || 0).getTime();
+          return tb - ta;
+        });
+
         var html = '';
-        Object.values(SUBJECTS_DATA).forEach(function (subject) {
-          var prog = progressMap[subject.id] || { completed: 0, total: subject.topics.length };
-          var pct = prog.total > 0 ? Math.round((prog.completed / prog.total) * 100) : 0;
+        files.forEach(function (f) {
+          var info  = parseModuleFilename(f.name);
+          var theme = subjectTheme(info.subject);
+          var url   = MODULES_PUBLIC_BASE + encodeURIComponent(f.name);
+          var dateLabel = formatModuleDate(f.updated_at || f.created_at);
+          var safeTitle   = escapeHtml(info.title || 'Untitled Module');
+          var safeTeacher = escapeHtml(info.teacher || 'Teacher');
+          var safeSubject = escapeHtml(info.subject || 'General');
+
           html += '' +
-            '<a href="' + subject.link + '" class="subject-card subject-' + subject.color + ' hover-lift bg-white rounded-2xl p-5 border border-slate-200 shadow-sm block">' +
-              '<div class="flex items-start justify-between mb-4">' +
-                '<div class="w-12 h-12 rounded-xl bg-gradient-to-br ' + subject.gradient + ' flex items-center justify-center shadow-lg">' +
-                  '<i class="fas ' + subject.icon + ' text-white text-xl"></i>' +
+            '<div class="module-card hover-lift bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden flex flex-col">' +
+              '<div class="p-5 flex-1 flex flex-col">' +
+                '<div class="flex items-start justify-between mb-4">' +
+                  '<div class="w-12 h-12 rounded-xl bg-gradient-to-br ' + theme.gradient + ' flex items-center justify-center shadow-lg">' +
+                    '<i class="fas ' + theme.icon + ' text-white text-xl"></i>' +
+                  '</div>' +
+                  '<span class="text-[10px] font-semibold text-' + theme.color + '-700 bg-' + theme.color + '-50 px-2 py-1 rounded-full uppercase tracking-wide">' + safeSubject + '</span>' +
                 '</div>' +
-                '<span class="text-xs font-medium text-' + subject.color + '-500 bg-' + subject.color + '-50 px-2 py-1 rounded-full">' + subject.topics.length + ' Topics</span>' +
-              '</div>' +
-              '<h3 class="font-semibold text-slate-800 mb-1">' + subject.name + '</h3>' +
-              '<p class="text-xs text-slate-500 mb-3">' + prog.completed + ' of ' + prog.total + ' completed</p>' +
-              '<div class="flex items-center gap-2">' +
-                '<div class="flex-1 h-1.5 bg-' + subject.color + '-100 rounded-full overflow-hidden">' +
-                  '<div class="h-full bg-' + subject.color + '-500 rounded-full transition-all duration-1000" style="width:' + pct + '%"></div>' +
+                '<h3 class="font-semibold text-slate-800 mb-2 line-clamp-2" title="' + safeTitle + '">' + safeTitle + '</h3>' +
+                '<div class="text-xs text-slate-500 space-y-1 mb-4 mt-auto">' +
+                  '<div class="flex items-center gap-1.5"><i class="fas fa-user-tie w-3.5 text-slate-400"></i><span class="truncate">' + safeTeacher + '</span></div>' +
+                  '<div class="flex items-center gap-1.5"><i class="fas fa-clock w-3.5 text-slate-400"></i><span>' + dateLabel + '</span></div>' +
                 '</div>' +
-                '<span class="text-xs font-medium text-' + subject.color + '-500">' + pct + '%</span>' +
               '</div>' +
-            '</a>';
+              '<a href="' + url + '" target="_blank" rel="noopener noreferrer" ' +
+                 'class="block text-center py-3 bg-gradient-to-r from-bh-navy to-bh-navy-2 text-white text-sm font-semibold hover:from-bh-navy-2 hover:to-bh-navy transition-all">' +
+                '<i class="fas fa-up-right-from-square mr-1.5"></i> Open Module' +
+              '</a>' +
+            '</div>';
         });
         grid.innerHTML = html;
+      }
+
+      function escapeHtml(s) {
+        if (s == null) return '';
+        return String(s).replace(/[&<>"']/g, function (c) {
+          return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c];
+        });
+      }
+
+      // Fetch modules list from Supabase Storage 'modules' bucket
+      function loadModules() {
+        renderModulesSkeleton();
+        BH.getClient().then(function (client) {
+          // Storage list — public bucket, anon key works.
+          // supabase-js v2: client.storage.from('modules').list()
+          return client.storage.from(MODULES_BUCKET).list('', { limit: 100, sortBy: { column: 'created_at', order: 'desc' } });
+        }).then(function (res) {
+          if (res.error) throw res.error;
+          var files = (res.data || []).filter(function (item) {
+            // Only actual HTML files (skip folders & non-html)
+            return item && !item.id.endsWith('.') && /\.html?$/i.test(item.name);
+          });
+          renderModuleCards(files);
+        }).catch(function (err) {
+          console.warn('[BH] modules list failed:', err);
+          renderModulesError(err && err.message ? err.message : 'Unable to reach storage.');
+        });
       }
 
       function renderTimetable(items) {
@@ -876,10 +986,19 @@
       }
 
       // ----- Default UI state -----
-      renderSubjectSkeleton();
+      renderModulesSkeleton();
       renderTimetable([]);
       renderRecentResults([]);
       renderPendingAssignments([]);
+
+      // Refresh-modules button
+      (function bindRefresh() {
+        var btn = document.getElementById('refreshModulesBtn');
+        if (btn) btn.addEventListener('click', function () {
+          showToast('Refreshing modules…', 'info');
+          loadModules();
+        });
+      })();
 
       // ----- Auth gate + dashboard load -----
       function loadDashboard() {
@@ -949,61 +1068,21 @@
           setStat('statPending',    p.stats.pending_assignments != null ? p.stats.pending_assignments : '—');
           setStat('statLive',       p.stats.live_sessions != null ? p.stats.live_sessions : '—');
         }
-        if (typeof p.streak === 'number') {
-          document.getElementById('streakCount').textContent = p.streak;
-        }
-        if (typeof p.weekly_progress === 'number') {
-          var pct = Math.min(100, Math.max(0, p.weekly_progress));
-          var circ = 2 * Math.PI * 35;
-          var ring = document.getElementById('progressRing');
-          var val  = document.getElementById('progressValue');
-          if (ring) ring.style.strokeDashoffset = circ - (pct / 100) * circ;
-          if (val)  val.textContent = pct + '%';
-        }
-        if (Array.isArray(p.subjects_progress)) {
-          var map = {};
-          p.subjects_progress.forEach(function (s) {
-            map[(s.subject || '').toLowerCase()] = { completed: s.completed || 0, total: s.total || 0 };
-          });
-          renderSubjectCards(map);
-        } else {
-          renderSubjectCards({});
-        }
         if (Array.isArray(p.timetable))         renderTimetable(p.timetable);
         if (Array.isArray(p.recent_results))    renderRecentResults(p.recent_results);
         if (Array.isArray(p.pending_assignments)) renderPendingAssignments(p.pending_assignments);
+        // Always load modules from Storage regardless of edge payload
+        loadModules();
       }
 
       // RLS-protected client-side reads (fallback if edge function is missing)
       function clientSideFallback(session) {
         if (!window.supabaseClient) {
-          renderSubjectCards({});
+          loadModules();
           return;
         }
         var client = window.supabaseClient;
         var userId = (session.user && session.user.id) || null;
-
-        // Subject progress (topic_progress table)
-        client.from('topic_progress').select('subject, topic, status').eq('user_id', userId).eq('status', 'completed')
-          .then(function (res) {
-            var map = {};
-            Object.keys(SUBJECTS_DATA).forEach(function (id) { map[id] = { completed: 0, total: SUBJECTS_DATA[id].topics.length }; });
-            if (res.data) {
-              res.data.forEach(function (row) {
-                var sid = (row.subject || '').toLowerCase();
-                if (map[sid]) map[sid].completed++;
-              });
-            }
-            renderSubjectCards(map);
-            var totalCompleted = Object.values(map).reduce(function (s, p) { return s + p.completed; }, 0);
-            var totalTopics    = Object.values(map).reduce(function (s, p) { return s + p.total; }, 0);
-            var pct = totalTopics > 0 ? Math.round((totalCompleted / totalTopics) * 100) : 0;
-            var circ = 2 * Math.PI * 35;
-            var ring = document.getElementById('progressRing');
-            var val  = document.getElementById('progressValue');
-            if (ring) ring.style.strokeDashoffset = circ - (pct / 100) * circ;
-            if (val)  val.textContent = pct + '%';
-          });
 
         // Scores
         client.from('scores').select('subject, title, score, date, duration').eq('student_id', userId).order('date', { ascending: false }).limit(5)
@@ -1027,6 +1106,9 @@
           .then(function (res) {
             if (res.data) renderTimetable(res.data);
           });
+
+        // Modules from Storage (always)
+        loadModules();
 
         // Stats placeholders (no aggregation edge function available)
         setStat('statAttendance', '—');
