@@ -1919,9 +1919,9 @@
           return;
         }
 
-        BH.edge('admin-register-student', { method: 'POST', body: { admin_id: adminId, student: data } }).then(function (r) {
+        BH.edge('admin-register-student', { method: 'POST', body: { admin_id: adminId, student: data } }).then(function (res) {
           btn.disabled = false; btn.innerHTML = orig;
-          if (res.ok && res.data && (res.data.success || res.data.id || res.data.user)) {
+          if (res && res.ok && res.data && (res.data.success || res.data.student)) {
             showToast('Student "' + (data.full_name || data.username) + '" registered successfully!', 'success');
             closeModal();
             // Refresh relevant views
@@ -1929,7 +1929,7 @@
             if (state.view === 'students') loadStudents();
             if (state.view === 'dashboard') loadDashboard();
           } else {
-            var msg = (res.data && (res.data.error || res.data.message)) || 'Failed to register student.';
+            var msg = (res && res.data && (res.data.error || res.data.message)) || 'Failed to register student.';
             showToast(msg, 'error');
           }
         }).catch(function (err) {
@@ -1996,14 +1996,14 @@
 
         BH.edge('admin-register-teacher', { method: 'POST', body: { admin_id: adminId, teacher: data } }).then(function (res) {
           btn.disabled = false; btn.innerHTML = orig;
-          if (res.ok && res.data && (res.data.success || res.data.id || res.data.user)) {
+          if (res && res.ok && res.data && (res.data.success || res.data.teacher)) {
             showToast('Teacher "' + (data.full_name || data.username) + '" registered successfully!', 'success');
             closeModal();
             state.cache.teachers = null;
             if (state.view === 'teachers') loadTeachers();
             if (state.view === 'dashboard') loadDashboard();
           } else {
-            var msg = (res.data && (res.data.error || res.data.message)) || 'Failed to register teacher.';
+            var msg = (res && res.data && (res.data.error || res.data.message)) || 'Failed to register teacher.';
             showToast(msg, 'error');
           }
         }).catch(function (err) {
