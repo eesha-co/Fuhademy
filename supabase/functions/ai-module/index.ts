@@ -39,7 +39,7 @@ function extractHtml(text: string): string {
   return "";
 }
 
-async function callKimi(messages: Array<{role:string;content:string}>, maxTokens = 4096): Promise<string> {
+async function callKimi(messages: Array<{role:string;content:string}>, maxTokens = 6144): Promise<string> {
   const key = Deno.env.get("KIMI_API_KEY");
   if (!key) throw new Error("KIMI_API_KEY not configured");
   const response = await fetch(KIMI_URL, {
@@ -158,7 +158,17 @@ Deno.serve(async (req: Request) => {
       ];
 
       // Step 3: Generate HTML
-      const content = await callKimi(messages);
+      // Try up to 2 times (K2.6 sometimes produces garbled output)
+      let content = '';
+      for (let attempt = 0; attempt < 2; attempt++) {
+        content = await callKimi(messages);
+        if (extractHtml(content)) break;
+        if (attempt === 0) {
+          // Add a reminder for the retry
+          messages.push({ role: 'assistant', content: content.substring(0, 200) });
+          messages.push({ role: 'user', content: 'Please generate the HTML module now. Return ONLY the HTML in a ```html code block.' });
+        }
+      }
       let html = extractHtml(content);
       if (!html) {
         return json({ error: "AI did not generate valid HTML. Please try a different prompt.", raw: content.substring(0, 300) }, 500);
