@@ -1942,6 +1942,15 @@
       // ---------- Register Teacher Modal ----------
       function openRegisterTeacher() {
         var subjectOpts = SUBJECTS.map(function (s) { return '<option value="' + s + '">' + s + '</option>'; }).join('');
+        // Build the class-access checkbox grid (6 classes)
+        var classAccessCheckboxes = CLASSES.map(function (c) {
+          return '' +
+            '<label class="class-access-chip flex items-center gap-2 px-3 py-2 rounded-xl border border-slate-200 bg-slate-50/60 cursor-pointer hover:border-bh-navy/40 hover:bg-white transition-colors text-sm">' +
+              '<input type="checkbox" name="class_access" value="' + c + '" class="w-4 h-4 rounded border-slate-300 text-bh-navy focus:ring-bh-navy/30">' +
+              '<span class="font-medium text-slate-700">' + c + '</span>' +
+            '</label>';
+        }).join('');
+
         openModal(
           '<div class="p-5 sm:p-6">' +
             '<div class="flex items-start justify-between mb-4">' +
@@ -1964,6 +1973,11 @@
                 '<div><label class="form-label">Email</label><input name="email" type="email" class="form-input" placeholder="teacher@example.com"></div>' +
                 '<div><label class="form-label">Phone</label><input name="phone" class="form-input" placeholder="+234…"></div>' +
               '</div>' +
+              '<div>' +
+                '<label class="form-label">Class Access (classes this teacher teaches) *</label>' +
+                '<div class="grid grid-cols-2 sm:grid-cols-3 gap-2">' + classAccessCheckboxes + '</div>' +
+                '<p class="text-[11px] text-slate-400 mt-1.5">Select at least one class. The teacher will only see students in the classes you grant access to.</p>' +
+              '</div>' +
               '<div class="flex justify-end gap-2 pt-3">' +
                 '<button type="button" class="modal-close bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-semibold px-4 py-2.5 rounded-xl">Cancel</button>' +
                 '<button type="submit" class="bg-bh-navy hover:bg-bh-navy-2 text-white text-sm font-semibold px-5 py-2.5 rounded-xl flex items-center gap-2">' +
@@ -1973,12 +1987,43 @@
             '</form>' +
           '</div>'
         );
+
+        // Visual feedback: highlight selected chips
+        var form = $('teacherForm');
+        if (form) {
+          form.querySelectorAll('input[name="class_access"]').forEach(function (cb) {
+            cb.addEventListener('change', function () {
+              var chip = cb.closest('.class-access-chip');
+              if (!chip) return;
+              if (cb.checked) {
+                chip.classList.add('border-bh-navy', 'bg-bh-navy/5');
+                chip.classList.remove('border-slate-200', 'bg-slate-50/60');
+              } else {
+                chip.classList.remove('border-bh-navy', 'bg-bh-navy/5');
+                chip.classList.add('border-slate-200', 'bg-slate-50/60');
+              }
+            });
+          });
+        }
+
         $('teacherForm').addEventListener('submit', handleRegisterTeacher);
       }
       function handleRegisterTeacher(e) {
         e.preventDefault();
         var form = e.target;
         var data = formToObj(form);
+
+        // Collect the class_access checkboxes into an array (formToObj
+        // would otherwise keep only the last checked value).
+        var classAccess = Array.prototype.slice
+          .call(form.querySelectorAll('input[name="class_access"]:checked'))
+          .map(function (cb) { return cb.value; });
+        if (classAccess.length === 0) {
+          showToast('Please select at least one class for the teacher.', 'error');
+          return;
+        }
+        data.class_access = classAccess;
+
         var btn = form.querySelector('button[type="submit"]');
         btn.disabled = true;
         var orig = btn.innerHTML;

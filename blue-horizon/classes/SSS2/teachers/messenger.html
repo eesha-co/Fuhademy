@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>SSS1 Messenger — Blue Horizon E-Learning</title>
+    <title>SSS2 Teacher Messenger — Blue Horizon E-Learning</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -37,7 +37,6 @@
       .nav-link { transition: all .15s ease; }
       .nav-link:hover { background: #f1f5f9; color: var(--bh-navy); }
 
-      /* Chat bubbles */
       .bubble {
         max-width: 78%;
         padding: 0.65rem 0.95rem;
@@ -81,7 +80,6 @@
         to   { transform: translateY(0);    opacity: 1; }
       }
 
-      /* E2EE shield badge */
       .e2ee-pill {
         display: inline-flex; align-items: center; gap: 0.3rem;
         font-size: 10px; font-weight: 600;
@@ -92,7 +90,6 @@
       .e2ee-pill.warn  { background: rgba(217,119,6,0.10); color: #b45309; border-color: rgba(217,119,6,0.25); }
       .e2ee-pill.off   { background: rgba(100,116,139,0.10); color: #475569; border-color: rgba(100,116,139,0.25); }
 
-      /* Typing indicator */
       .typing-dot {
         display: inline-block; width: 6px; height: 6px; border-radius: 50%;
         background: #94a3b8; margin: 0 1px; animation: typingBlink 1.4s infinite both;
@@ -112,7 +109,6 @@
       #sidebar-overlay.show { opacity: 1; pointer-events: auto; }
       @media (min-width: 1024px) { #sidebar-overlay { display: none !important; } }
 
-      /* On small screens, hide the conversation list when a chat is open */
       @media (max-width: 767px) {
         .show-chat #contactListWrap { display: none; }
         .show-chat #chatPanel { display: flex; }
@@ -122,23 +118,12 @@
         #chatPanel { display: flex !important; }
       }
 
-      .spinner {
-        width: 16px; height: 16px;
-        border: 2px solid rgba(255,255,255,0.4);
-        border-top-color: #fff;
-        border-radius: 50%;
-        animation: spin 0.7s linear infinite;
-        display: inline-block;
-      }
-      @keyframes spin { to { transform: rotate(360deg); } }
-
       .fade-in { animation: fadeIn 0.25s ease-out; }
       @keyframes fadeIn {
         from { opacity: 0; transform: translateY(4px); }
         to   { opacity: 1; transform: translateY(0); }
       }
 
-      /* Loading overlay */
       #bootOverlay {
         position: fixed; inset: 0; z-index: 9999;
         background: linear-gradient(135deg, #1f507b, #2c5282);
@@ -160,11 +145,10 @@
   </head>
   <body class="bg-bh-bg text-slate-800">
 
-    <!-- Boot / auth overlay -->
     <div id="bootOverlay">
       <div class="text-center text-white">
         <div class="w-12 h-12 mx-auto mb-4 rounded-full border-4 border-white/30 border-t-white animate-spin"></div>
-        <p class="text-sm font-medium">Loading SSS1 Messenger…</p>
+        <p class="text-sm font-medium">Loading SSS2 Teacher Messenger…</p>
       </div>
     </div>
 
@@ -184,7 +168,7 @@
             </div>
             <div>
               <div class="text-base font-extrabold tracking-wide text-bh-navy">BLUE HORIZON</div>
-              <div class="text-[11px] text-slate-400 -mt-0.5">SSS3 · Student Messenger</div>
+              <div class="text-[11px] text-slate-400 -mt-0.5">SSS3 · Teacher Messenger</div>
             </div>
           </div>
         </div>
@@ -193,26 +177,12 @@
           <div>
             <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider px-3 mb-2">Main Menu</div>
             <ul class="space-y-1">
-              <li><a href="../dashboard.html" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600">
+              <li><a href="dashboard.html" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600">
                 <i class="fas fa-home text-bh-navy w-5"></i><span>Dashboard</span></a></li>
-              <li><a href="../../students/study-plan-supabase.html" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600">
-                <i class="fas fa-calendar-alt text-emerald-500 w-5"></i><span>Study Plan</span></a></li>
-              <li><a href="../../students/mock-exams.html" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600">
-                <i class="fas fa-clipboard-list text-amber-500 w-5"></i><span>Practice Tests</span></a></li>
-            </ul>
-          </div>
-
-          <div>
-            <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider px-3 mb-2">Learning</div>
-            <ul class="space-y-1">
-              <li><a href="../../students/video-library-modern.html" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600">
-                <i class="fas fa-play-circle text-rose-500 w-5"></i><span>Video Lessons</span></a></li>
-              <li><a href="../../students/notes.html" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600">
-                <i class="fas fa-sticky-note text-yellow-500 w-5"></i><span>My Notes</span></a></li>
-              <li><a href="../../students/textbooks.html" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600">
-                <i class="fas fa-book text-violet-500 w-5"></i><span>Textbooks</span></a></li>
-              <li><a href="../../students/formula-bank.html" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600">
-                <i class="fas fa-square-root-alt text-teal-500 w-5"></i><span>Formula Bank</span></a></li>
+              <li><a href="modules.html" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600">
+                <i class="fas fa-cube text-emerald-500 w-5"></i><span>AI Modules</span></a></li>
+              <li><a href="teacher-sessions.html" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600">
+                <i class="fas fa-video text-rose-500 w-5"></i><span>Live Sessions</span></a></li>
             </ul>
           </div>
 
@@ -225,13 +195,21 @@
               </a></li>
             </ul>
           </div>
+
+          <div>
+            <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider px-3 mb-2">Class</div>
+            <ul class="space-y-1">
+              <li><a href="modules.html" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600">
+                <i class="fas fa-folder-open text-violet-500 w-5"></i><span>Shared Modules</span></a></li>
+            </ul>
+          </div>
         </nav>
 
         <div class="p-4 border-t border-slate-100">
           <div class="flex items-center gap-3 p-2 rounded-xl bg-slate-50">
-            <img id="avatar-sm" alt="avatar" src="https://ui-avatars.com/api/?name=S&background=1f507b&color=fff&size=80&bold=true" class="w-10 h-10 rounded-full border-2 border-bh-navy/30 object-cover">
+            <img id="avatar-sm" alt="avatar" src="https://ui-avatars.com/api/?name=T&background=1f507b&color=fff&size=80&bold=true" class="w-10 h-10 rounded-full border-2 border-bh-navy/30 object-cover">
             <div class="flex-1 min-w-0">
-              <div id="userName" class="font-semibold text-slate-800 truncate">Student</div>
+              <div id="userName" class="font-semibold text-slate-800 truncate">Teacher</div>
               <div id="userLevel" class="text-xs text-slate-500">SSS3</div>
             </div>
             <button id="logoutBtn" title="Sign out" class="p-2 rounded-lg hover:bg-rose-50 text-slate-400 hover:text-rose-500 transition-colors">
@@ -244,7 +222,6 @@
       <!-- Main Content -->
       <div id="main-content" class="flex-1 flex flex-col ml-0 lg:ml-80">
 
-        <!-- Top Header -->
         <header class="sticky top-0 z-30 bg-white/85 backdrop-blur-xl border-b border-slate-200/60 px-4 md:px-6 py-3.5">
           <div class="flex items-center justify-between gap-4">
             <div class="flex items-center gap-3">
@@ -256,10 +233,10 @@
               </button>
               <div>
                 <h1 class="text-lg font-bold text-slate-800 flex items-center gap-2">
-                  <i class="fas fa-comments text-bh-accent"></i> SSS1 Messenger
+                  <i class="fas fa-comments text-bh-accent"></i> SSS3 Messenger
                 </h1>
                 <p class="text-xs text-slate-500 hidden sm:flex items-center gap-1.5">
-                  Chat with your teachers
+                  Chat with your students
                   <span id="e2eeStatusPill" class="e2ee-pill">
                     <i class="fas fa-shield-halved"></i> End-to-end encrypted
                   </span>
@@ -272,9 +249,9 @@
                 <span class="w-2 h-2 bg-amber-400 rounded-full"></span> Connecting…
               </span>
               <div class="hidden sm:flex items-center gap-3">
-                <img id="topAvatar" alt="avatar" src="https://ui-avatars.com/api/?name=S&background=1f507b&color=fff&size=80&bold=true" class="w-9 h-9 rounded-full border-2 border-bh-navy/30">
+                <img id="topAvatar" alt="avatar" src="https://ui-avatars.com/api/?name=T&background=1f507b&color=fff&size=80&bold=true" class="w-9 h-9 rounded-full border-2 border-bh-navy/30">
                 <div class="text-right">
-                  <div id="topName" class="font-semibold text-slate-800 text-sm">Student</div>
+                  <div id="topName" class="font-semibold text-slate-800 text-sm">Teacher</div>
                   <div id="topLevel" class="text-xs text-slate-500">SSS3</div>
                 </div>
               </div>
@@ -282,7 +259,6 @@
           </div>
         </header>
 
-        <!-- Main Body: split chat layout -->
         <main class="flex-1 p-3 md:p-6 overflow-hidden">
           <div class="bg-white rounded-2xl border border-slate-200 shadow-sm flex h-[calc(100vh-9.5rem)] overflow-hidden">
 
@@ -290,7 +266,7 @@
             <div id="contactListWrap" class="w-full md:w-80 border-r border-slate-100 flex flex-col">
               <div class="p-4 border-b border-slate-100">
                 <div class="relative">
-                  <input id="searchContacts" type="search" placeholder="Search teachers…"
+                  <input id="searchContacts" type="search" placeholder="Search students…"
                     class="w-full pl-10 pr-3 py-2.5 rounded-xl border border-slate-200 bg-slate-50/60 focus:outline-none focus:ring-2 focus:ring-bh-navy/15 focus:border-bh-navy/40 focus:bg-white text-sm">
                   <i class="fas fa-search absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
                 </div>
@@ -302,15 +278,14 @@
 
             <!-- Chat panel -->
             <div id="chatPanel" class="flex-1 flex flex-col bg-slate-50/40">
-              <!-- Empty state -->
               <div id="chatEmpty" class="flex-1 flex items-center justify-center text-center px-6">
                 <div>
                   <div class="w-20 h-20 rounded-full bg-bh-navy/10 flex items-center justify-center mx-auto mb-4">
                     <i class="fas fa-comments text-3xl text-bh-navy"></i>
                   </div>
-                  <h3 class="text-lg font-bold text-slate-800">Select a teacher to start chatting</h3>
+                  <h3 class="text-lg font-bold text-slate-800">Select a student to start chatting</h3>
                   <p class="text-sm text-slate-500 mt-1 max-w-xs mx-auto">
-                    Pick a conversation from the list, or search for a teacher to begin a new chat.
+                    Pick a conversation from the list, or search for a student to begin a new chat.
                   </p>
                   <p class="text-xs text-slate-400 mt-3 flex items-center justify-center gap-1.5">
                     <i class="fas fa-shield-halved text-emerald-500"></i>
@@ -319,15 +294,13 @@
                 </div>
               </div>
 
-              <!-- Active chat (hidden until a contact is selected) -->
               <div id="chatActive" class="flex-1 flex flex-col hidden">
-                <!-- Chat header -->
                 <div class="px-4 py-3 bg-white border-b border-slate-100 flex items-center gap-3">
-                  <img id="chatAvatar" alt="teacher avatar" src="" class="w-10 h-10 rounded-full border-2 border-bh-navy/20">
+                  <img id="chatAvatar" alt="student avatar" src="" class="w-10 h-10 rounded-full border-2 border-bh-navy/20">
                   <div class="flex-1 min-w-0">
-                    <div id="chatName" class="font-semibold text-slate-800 text-sm truncate">Teacher</div>
+                    <div id="chatName" class="font-semibold text-slate-800 text-sm truncate">Student</div>
                     <div id="chatSubject" class="text-xs text-slate-500 truncate flex items-center gap-1.5">
-                      <i class="fas fa-book text-[10px]"></i> Subject
+                      <i class="fas fa-user-graduate text-[10px]"></i> SSS3 Student
                     </div>
                   </div>
                   <span id="chatEncBadge" class="e2ee-pill">
@@ -335,12 +308,10 @@
                   </span>
                 </div>
 
-                <!-- Messages -->
                 <div id="messagesContainer" class="flex-1 overflow-y-auto p-4 space-y-3">
                   <!-- messages injected -->
                 </div>
 
-                <!-- Composer -->
                 <form id="messageForm" class="p-3 bg-white border-t border-slate-100 flex items-center gap-2">
                   <button type="button" id="attachBtn" class="p-2.5 text-slate-400 hover:text-bh-navy hover:bg-slate-100 rounded-xl transition-colors" title="Attachments (coming soon)">
                     <i class="fas fa-paperclip"></i>
@@ -365,50 +336,43 @@
     <script src="../js/e2ee.js"></script>
     <script>
       // =====================================================
-      // Blue Horizon — SSS3 Student Messenger (E2EE)
+      // Blue Horizon — SSS2 Teacher Messenger (E2EE)
       // =====================================================
-      //
-      // Architecture:
-      //   1. On boot, the student's ECDH private key (base64 PKCS8) is
-      //      read from the session cookie. If absent (user registered
-      //      before E2EE was added), messaging falls back to plaintext
-      //      with a visible warning.
-      //   2. The contacts list is fetched via `get-class-contacts`.
-      //      Each contact includes their `public_key` (base64 raw).
-      //   3. When a chat is opened, an ECDH shared AES-GCM key is
-      //      derived (own private + recipient's public) and cached.
-      //   4. Outgoing messages are AES-GCM encrypted → {ciphertext,iv}
-      //      and stored on the server via `send-message`. The server
-      //      NEVER has the plaintext or the shared key.
-      //   5. Incoming messages are fetched via `get-messages` every 3s
-      //      and decrypted locally with the shared key.
+      // Same E2EE architecture as the student messenger:
+      //   - On boot, the teacher's ECDH private key (base64 PKCS8)
+      //     is read from the session cookie and imported.
+      //   - `get-class-contacts` (role=teacher) returns SSS3 students
+      //     with their public keys.
+      //   - Per-student shared AES-GCM keys are derived on demand.
+      //   - Outgoing: AES-GCM encrypt → {ciphertext, iv} → `send-message`.
+      //   - Incoming: `get-messages` polled every 3s → decrypt locally.
+      // The server NEVER has the plaintext or the shared key.
       // =====================================================
 
-      // ---------- State ----------
       var state = {
         session: null,
         user: null,
         userId: null,
         className: 'SSS3',
-        privateKeyB64: null,        // own ECDH private key (base64 PKCS8)
-        privateKeyCrypto: null,     // imported CryptoKey
-        publicKeyB64: null,         // own ECDH public key
-        contacts: [],               // [{id, name, subject, public_key, ...}]
-        conversations: {},          // contactId -> { lastText, lastTs, unread, sent_by_me }
-        sharedKeys: {},             // contactId -> CryptoKey (AES-GCM)
+        privateKeyB64: null,
+        privateKeyCrypto: null,
+        publicKeyB64: null,
+        contacts: [],
+        conversations: {},
+        sharedKeys: {},
         activeContactId: null,
         searchQuery: '',
         pollTimer: null,
-        lastMsgTs: {}               // contactId -> ISO ts of last fetched message
+        lastMsgTs: {}
       };
 
       // ---------- Helpers ----------
       function getInitials(name) {
         try { return String(name || '').split(' ').slice(0, 2).map(function (n) { return n.charAt(0); }).join('').toUpperCase(); }
-        catch (e) { return 'T'; }
+        catch (e) { return 'S'; }
       }
       function avatarFor(name) {
-        return 'https://ui-avatars.com/api/?name=' + encodeURIComponent(getInitials(name) || 'T') +
+        return 'https://ui-avatars.com/api/?name=' + encodeURIComponent(getInitials(name) || 'S') +
                '&background=1f507b&color=fff&size=128&bold=true';
       }
       function timeAgo(dateStr) {
@@ -459,19 +423,15 @@
       }
 
       // ---------- E2EE helpers ----------
-      // Returns true if the current session can encrypt/decrypt (own private key loaded).
       function e2eeReady() {
         return !!(state.privateKeyCrypto);
       }
 
-      // Returns the cached shared key for a contact, or derives it (and caches).
       async function getSharedKeyFor(contact) {
         if (!contact) return null;
         if (state.sharedKeys[contact.id]) return state.sharedKeys[contact.id];
-
         if (!e2eeReady()) return null;
         if (!contact.public_key) return null;
-
         try {
           var pub = await BHE2EE.importPublicKey(contact.public_key);
           var shared = await BHE2EE.deriveSharedKey(state.privateKeyCrypto, pub);
@@ -483,24 +443,18 @@
         }
       }
 
-      // Try to decrypt an incoming message; returns {text, encrypted:boolean, fallback:boolean}.
       async function tryDecrypt(content, iv, sharedKey) {
-        // No content / no iv → likely plaintext
         if (!content) return { text: '', encrypted: false, fallback: false };
         if (!iv) {
-          // Stored as plaintext (legacy or partner without E2EE)
           return { text: content, encrypted: false, fallback: false };
         }
         if (!sharedKey) {
-          // We have an encrypted message but no key → show ciphertext as warning
           return { text: '[Encrypted — key unavailable]', encrypted: true, fallback: true };
         }
         try {
           var text = await BHE2EE.decryptMessage(content, iv, sharedKey);
           return { text: text, encrypted: true, fallback: false };
         } catch (e) {
-          // Decryption failed — fall back to showing the raw content if it
-          // doesn't look like base64 ciphertext; otherwise warn the user.
           if (BHE2EE.looksLikeCiphertext(content)) {
             return { text: '[Unable to decrypt message]', encrypted: true, fallback: true };
           }
@@ -527,7 +481,6 @@
         if (window.BH) BH.signOut();
       });
 
-      // ---------- E2EE status pill (top header) ----------
       function refreshE2eePill() {
         var pill = document.getElementById('e2eeStatusPill');
         if (!pill) return;
@@ -553,9 +506,9 @@
         if (state.contacts.length === 0) {
           box.innerHTML = '' +
             '<div class="p-8 text-center text-slate-400">' +
-              '<i class="fas fa-chalkboard-teacher text-4xl mb-3 opacity-40"></i>' +
-              '<p class="text-sm">No teachers available yet.</p>' +
-              '<p class="text-xs mt-1">Your school admin will assign teachers to SSS3.</p>' +
+              '<i class="fas fa-user-graduate text-4xl mb-3 opacity-40"></i>' +
+              '<p class="text-sm">No students available yet.</p>' +
+              '<p class="text-xs mt-1">Students will appear here once they register for SSS3.</p>' +
             '</div>';
           return;
         }
@@ -563,7 +516,7 @@
           box.innerHTML = '' +
             '<div class="p-8 text-center text-slate-400">' +
               '<i class="fas fa-search text-3xl mb-2 opacity-40"></i>' +
-              '<p class="text-sm">No teachers match your search.</p>' +
+              '<p class="text-sm">No students match your search.</p>' +
             '</div>';
           return;
         }
@@ -597,7 +550,7 @@
                     ? '<span class="unread-dot bg-bh-accent text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">' + unread + '</span>'
                     : '') +
                 '</div>' +
-                '<div class="text-[10px] text-bh-navy mt-0.5"><i class="fas fa-book mr-1"></i>' + escapeHtml(t.subject || 'Teacher') + '</div>' +
+                '<div class="text-[10px] text-bh-navy mt-0.5"><i class="fas fa-user-graduate mr-1"></i>' + escapeHtml(t.subject || 'SSS3 Student') + '</div>' +
               '</div>' +
             '</div>';
         });
@@ -634,14 +587,12 @@
         if (state.conversations[contactId]) state.conversations[contactId].unread = 0;
         updateUnreadBadge();
 
-        // Update chat header
         document.getElementById('chatEmpty').classList.add('hidden');
         document.getElementById('chatActive').classList.remove('hidden');
         document.getElementById('chatName').textContent = contact.name;
-        document.getElementById('chatSubject').innerHTML = '<i class="fas fa-book text-[10px]"></i> ' + escapeHtml(contact.subject || 'Teacher');
+        document.getElementById('chatSubject').innerHTML = '<i class="fas fa-user-graduate text-[10px]"></i> ' + escapeHtml(contact.subject || 'SSS3 Student');
         document.getElementById('chatAvatar').src = contact.avatar_url || avatarFor(contact.name);
 
-        // E2EE badge in chat header
         var badge = document.getElementById('chatEncBadge');
         if (e2eeReady() && contact.public_key) {
           badge.className = 'e2ee-pill';
@@ -654,17 +605,13 @@
           badge.innerHTML = '<i class="fas fa-triangle-exclamation"></i> No recipient key';
         }
 
-        // On mobile, switch view
         document.body.classList.add('show-chat');
         var backBtn = document.getElementById('backToList');
         if (backBtn) backBtn.classList.remove('hidden');
 
         renderContactList();
 
-        // Pre-derive the shared key for this contact (so sending is instant)
         await getSharedKeyFor(contact);
-
-        // Load messages immediately, then start polling
         await loadMessages(contactId);
         startPolling();
       }
@@ -674,7 +621,6 @@
         var container = document.getElementById('messagesContainer');
         if (!container) return;
 
-        // Only show the spinner on the very first load (avoid flicker during polling)
         if (!state.lastMsgTs[contactId]) {
           container.innerHTML = '' +
             '<div class="flex items-center justify-center py-8">' +
@@ -714,7 +660,6 @@
         var contact = state.contacts.find(function (t) { return String(t.id) === String(contactId); });
         var sharedKey = await getSharedKeyFor(contact);
 
-        // Decrypt each message
         var decrypted = [];
         for (var i = 0; i < messages.length; i++) {
           var m = messages[i];
@@ -730,7 +675,6 @@
 
         renderMessages(decrypted);
 
-        // Update conversation preview
         if (decrypted.length > 0) {
           var last = decrypted[decrypted.length - 1];
           bumpConversation(contactId, last.text, last.created_at, last.sender_id === state.userId);
@@ -795,7 +739,6 @@
         state.pollTimer = setInterval(function () {
           if (state.activeContactId) {
             loadMessages(state.activeContactId);
-            // Also refresh previews for other conversations (cheap)
             refreshAllPreviews();
           }
         }, 3000);
@@ -805,8 +748,6 @@
       }
 
       async function refreshAllPreviews() {
-        // Fetch last message preview for each contact (single round-trip per
-        // contact — acceptable given small class sizes).
         for (var i = 0; i < state.contacts.length; i++) {
           var c = state.contacts[i];
           if (String(c.id) === String(state.activeContactId)) continue;
@@ -820,7 +761,6 @@
                 var dec = await tryDecrypt(last.content, last.iv, shared);
                 var prev = state.conversations[c.id];
                 var wasUnread = prev ? prev.unread : 0;
-                // If the last message is newer than what we had, increment unread
                 if (!prev || (prev.lastTs !== last.created_at && String(last.sender_id) !== String(state.userId))) {
                   if (prev && prev.lastTs !== last.created_at) wasUnread = (wasUnread || 0) + 1;
                 }
@@ -852,21 +792,19 @@
         var btn = document.getElementById('sendBtn');
         btn.disabled = true;
 
-        // Optimistic UI
         var ts = new Date().toISOString();
         var optimistic = { sender_id: state.userId, text: text, encrypted: e2eeReady() && !!contact.public_key, fallback: false, created_at: ts };
         appendMessage(optimistic, true);
         bumpConversation(state.activeContactId, text, ts, true);
 
         try {
-          // Encrypt if possible
           var payload = {
             sender_id: state.userId,
-            sender_role: 'student',
-            sender_name: state.user.full_name || state.user.username || 'Student',
+            sender_role: 'teacher',
+            sender_name: state.user.full_name || state.user.username || 'Teacher',
             receiver_id: contact.id,
-            receiver_role: 'teacher',
-            receiver_name: contact.name || contact.full_name || 'Teacher',
+            receiver_role: 'student',
+            receiver_name: contact.name || contact.full_name || 'Student',
             ciphertext: text,
             iv: null
           };
@@ -901,7 +839,6 @@
       function appendMessage(msg, mine) {
         var container = document.getElementById('messagesContainer');
         if (!container) return;
-        // Strip the empty state if present
         var emptyEl = container.querySelector('.text-center');
         if (emptyEl) container.innerHTML = '';
 
@@ -949,12 +886,16 @@
       async function loadContacts() {
         setConnStatus('Loading contacts…', '#f59e0b');
         try {
+          var classAccess = state.user.class_access && state.user.class_access.length
+            ? state.user.class_access
+            : [state.className];
+
           var res = await BH.edge('get-class-contacts', {
             body: {
               user_id: state.userId,
-              role: 'student',
+              role: 'teacher',
               class_name: state.className,
-              class_access: [state.className]
+              class_access: classAccess
             }
           });
 
@@ -962,8 +903,8 @@
             state.contacts = res.data.contacts.map(function (c) {
               return {
                 id: c.id,
-                name: c.full_name || c.name || c.username || 'Teacher',
-                subject: c.subject || '',
+                name: c.full_name || c.name || c.username || 'Student',
+                subject: c.subject || c.class_name || 'SSS3 Student',
                 public_key: c.public_key || null,
                 avatar_url: c.avatar_url || ''
               };
@@ -973,13 +914,13 @@
             console.warn('[BH] get-class-contacts did not return contacts:', res);
             state.contacts = [];
             setConnStatus('No contacts', '#94a3b8');
-            showToast('Could not load your teachers. Please retry later.', 'warn');
+            showToast('Could not load your students. Please retry later.', 'warn');
           }
         } catch (err) {
           console.warn('[BH] loadContacts error', err);
           state.contacts = [];
           setConnStatus('Error', '#ef4444');
-          showToast('Network error loading teachers.', 'error');
+          showToast('Network error loading students.', 'error');
         }
         renderContactList();
         refreshAllPreviews();
@@ -990,7 +931,7 @@
         if (!window.BH || !window.BH.requireRole) {
           return document.addEventListener('bh:ready', boot);
         }
-        var session = await BH.requireRole('student');
+        var session = await BH.requireRole('teacher');
         if (!session) { hideBoot(); return; }
 
         state.session = session;
@@ -1002,9 +943,8 @@
           return;
         }
 
-        // Class name (default SSS3 since this is the SSS3 messenger)
-        state.className = (state.user.class_name || 'SSS3').toUpperCase();
-        state.user.full_name = state.user.full_name || state.user.name || state.user.username || 'Student';
+        state.className = 'SSS3';
+        state.user.full_name = state.user.full_name || state.user.name || state.user.username || 'Teacher';
 
         // Load own ECDH private key from session (decrypted at login time)
         state.privateKeyB64 = state.user.private_key || null;
@@ -1021,12 +961,11 @@
 
         refreshE2eePill();
 
-        // Profile UI
         var avatar = state.user.avatar_url || avatarFor(state.user.full_name);
         document.getElementById('userName').textContent = state.user.full_name;
         document.getElementById('topName').textContent  = state.user.full_name;
-        document.getElementById('userLevel').textContent = state.className + ' Student';
-        document.getElementById('topLevel').textContent  = state.className + ' Student';
+        document.getElementById('userLevel').textContent = (state.user.subject || 'Teacher') + ' · SSS3';
+        document.getElementById('topLevel').textContent  = (state.user.subject || 'Teacher') + ' · SSS3';
         document.getElementById('avatar-sm').src = avatar;
         document.getElementById('topAvatar').src  = avatar;
 
@@ -1036,7 +975,6 @@
         await loadContacts();
       }
 
-      // Cleanup on unload
       window.addEventListener('beforeunload', stopPolling);
 
       boot();

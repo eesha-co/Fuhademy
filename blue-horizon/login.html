@@ -7,6 +7,8 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- E2EE library — decrypts the user's private key client-side using their password -->
+    <script src="classes/_template/js/e2ee.js"></script>
     <style>
       * { font-family: 'Plus Jakarta Sans', system-ui, sans-serif; }
       :root {
@@ -393,7 +395,9 @@
               // auth-login returns the user (including class_name) in result.data.user.
               var user = (result.data && result.data.user) || {};
               var redirect = result.data.redirect || dashboardUrlForRole(selectedRole, user.class_name);
-              persistSessionAndRedirect(session, redirect, username);
+              // Decrypt the E2EE private key client-side using the password.
+              // The server NEVER has the unencrypted private key — true E2EE.
+              persistSessionAndRedirect(session, redirect, username, password);
             } else {
               // Show the standard error message
               showError(STD_ERROR);
@@ -406,10 +410,40 @@
           });
       });
 
-      // Persist session via cookie (custom auth — no Supabase JWT needed)
-      function persistSessionAndRedirect(session, redirect, username) {
+      // Persist session via cookie (custom auth — no Supabase JWT needed).
+      // Also decrypts the user's E2EE private key client-side using their
+      // password (NEVER sent to the server in plaintext form after registration).
+      async function persistSessionAndRedirect(session, redirect, username, password) {
         // session is the user object returned by auth-login edge function
         var userData = session.user || session;
+
+        // ---- E2EE: decrypt the private key client-side using the password ----
+        if (
+          window.BHE2EE &&
+          session.e2ee &&
+          session.e2ee.encrypted_private_key &&
+          password
+        ) {
+          try {
+            var privateKeyBuf = await BHE2EE.decryptPrivateKey(
+              session.e2ee.encrypted_private_key,
+              password
+            );
+            // Store the private key (base64 of PKCS8) + public key in the
+            // session cookie. This is the only place the unencrypted private
+            // key material lives — and it is never sent to the server.
+            var privateKeyB64 = BHE2EE._bytesToBase64(new Uint8Array(privateKeyBuf));
+            userData.private_key = privateKeyB64;
+            userData.public_key = session.e2ee.public_key || null;
+          } catch (e) {
+            console.warn('[BH][E2EE] Private key decryption failed — messaging will fall back to plaintext.', e);
+          }
+        } else if (session.e2ee && session.e2ee.public_key) {
+          // Even if we couldn't decrypt the private key, keep the public key
+          // so other people can still send us encrypted messages.
+          userData.public_key = session.e2ee.public_key;
+        }
+
         var payload = btoa(JSON.stringify({ user: userData, ts: Date.now() }));
         document.cookie = 'bh-session=' + payload + ';path=/;max-age=86400;SameSite=Lax';
         showToast('Welcome back! Redirecting…', 'success');
