@@ -1,0 +1,1487 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Teacher Dashboard — Blue Horizon E-Learning</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+      * { font-family: 'Plus Jakarta Sans', system-ui, sans-serif; }
+
+      :root {
+        --bh-navy:   #1f507b;
+        --bh-navy-2: #2c5282;
+        --bh-accent: #0195db;
+        --bh-bg:     #fafafa;
+      }
+
+      body { background: var(--bh-bg); }
+
+      /* Custom Scrollbar */
+      ::-webkit-scrollbar { width: 6px; height: 6px; }
+      ::-webkit-scrollbar-track { background: #eef2f7; border-radius: 3px; }
+      ::-webkit-scrollbar-thumb { background: #c1cee0; border-radius: 3px; }
+      ::-webkit-scrollbar-thumb:hover { background: #8aa0bd; }
+
+      /* Sidebar */
+      #sidebar { transition: transform 0.3s ease-in-out; }
+      #sidebar.hide { transform: translateX(-100%); }
+      @media (min-width: 1024px) { #sidebar { transform: translateX(0) !important; } }
+
+      /* Navy gradient hero */
+      .hero-gradient {
+        background: linear-gradient(-45deg, #1f507b, #2c5282, #0195db, #1f507b);
+        background-size: 400% 400%;
+        animation: gradientFlow 18s ease infinite;
+      }
+      @keyframes gradientFlow {
+        0%   { background-position: 0% 50%; }
+        50%  { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+      }
+
+      .particle {
+        position: absolute;
+        background: rgba(255,255,255,0.12);
+        border-radius: 50%;
+        animation: particleFloat 8s infinite ease-in-out;
+      }
+      @keyframes particleFloat {
+        0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0.7; }
+        50%      { transform: translateY(-30px) rotate(180deg); opacity: 0.3; }
+      }
+
+      /* Card hover */
+      .hover-lift { transition: all 0.4s cubic-bezier(0.175,0.885,0.32,1.275); }
+      .hover-lift:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 22px 45px -15px rgba(31, 80, 123, 0.35);
+      }
+
+      /* Class cards */
+      .class-card { position: relative; overflow: hidden; }
+      .class-card::before {
+        content: ''; position: absolute; top:0; left:0; right:0; height: 4px;
+        background: var(--class-color);
+      }
+      .class-card::after {
+        content: ''; position: absolute; bottom:-50%; right:-50%; width:100%; height:100%;
+        background: radial-gradient(circle, var(--class-color) 0%, transparent 70%);
+        opacity: 0.05;
+      }
+      .class-jss1 { --class-color:#0195db; }
+      .class-jss2 { --class-color:#14b8a6; }
+      .class-jss3 { --class-color:#22c55e; }
+      .class-sss1 { --class-color:#f59e0b; }
+      .class-sss2 { --class-color:#ef4444; }
+      .class-sss3 { --class-color:#8b5cf6; }
+
+      /* Skeleton loading */
+      .skeleton {
+        background: linear-gradient(90deg, #eef2f7 25%, #dbe3ee 50%, #eef2f7 75%);
+        background-size: 200% 100%;
+        animation: skeleton-loading 1.5s infinite;
+      }
+      @keyframes skeleton-loading {
+        0%   { background-position: 200% 0; }
+        100% { background-position: -200% 0; }
+      }
+
+      /* Notification dot */
+      .notif-dot { animation: notifPulse 2s infinite; }
+      @keyframes notifPulse {
+        0%,100% { box-shadow: 0 0 0 0 rgba(239,68,68,0.4); }
+        50%     { box-shadow: 0 0 0 8px rgba(239,68,68,0); }
+      }
+
+      /* Sidebar active link */
+      .nav-link-active {
+        background: linear-gradient(135deg, rgba(31,80,123,0.10), rgba(1,149,219,0.06));
+        color: var(--bh-navy);
+        font-weight: 600;
+      }
+
+      /* Form inputs */
+      .form-input {
+        width: 100%;
+        padding: 0.625rem 0.875rem;
+        border-radius: 0.75rem;
+        border: 1px solid #e2e8f0;
+        background: #f8fafc;
+        font-size: 0.875rem;
+        color: #1e293b;
+        transition: all 0.15s ease;
+      }
+      .form-input:focus {
+        outline: none;
+        background: #fff;
+        border-color: rgba(31,80,123,0.5);
+        box-shadow: 0 0 0 3px rgba(31,80,123,0.10);
+      }
+      .form-label {
+        display: block;
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: #475569;
+        margin-bottom: 0.35rem;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+      }
+
+      /* Toast */
+      .toast {
+        position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 9999;
+        padding: 0.9rem 1.2rem; border-radius: 0.75rem; color: #fff; font-size: 0.875rem;
+        box-shadow: 0 12px 30px -10px rgba(0,0,0,0.25);
+        animation: toastIn 0.25s ease-out;
+        max-width: 360px;
+      }
+      .toast.success { background: #16a34a; }
+      .toast.error   { background: #dc2626; }
+      .toast.info    { background: var(--bh-navy); }
+      @keyframes toastIn {
+        from { transform: translateY(20px); opacity: 0; }
+        to   { transform: translateY(0);    opacity: 1; }
+      }
+
+      /* Mobile sidebar overlay */
+      #sidebar-overlay {
+        position: fixed; inset: 0; background: rgba(15, 35, 60, 0.5);
+        backdrop-filter: blur(4px); z-index: 30;
+        opacity: 0; pointer-events: none; transition: opacity 0.25s ease;
+      }
+      #sidebar-overlay.show { opacity: 1; pointer-events: auto; }
+      @media (min-width: 1024px) { #sidebar-overlay { display: none !important; } }
+
+      /* Table row hover */
+      .table-row { transition: background-color 0.15s ease; }
+      .table-row:hover { background-color: #f8fafc; }
+    </style>
+    <script>
+      // Tailwind theme extension — make navy available as utility class
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              'bh-navy':   '#1f507b',
+              'bh-navy-2': '#2c5282',
+              'bh-accent': '#0195db',
+              'bh-bg':     '#fafafa'
+            }
+          }
+        }
+      };
+    </script>
+  </head>
+  <body class="bg-bh-bg text-slate-800">
+    <div class="min-h-screen flex">
+
+      <!-- Sidebar overlay (mobile) -->
+      <div id="sidebar-overlay"></div>
+
+      <!-- ===================== Sidebar ===================== -->
+      <aside id="sidebar" class="w-72 lg:w-80 fixed left-0 top-0 h-full bg-white border-r border-slate-200 flex flex-col z-40 hide lg:translate-x-0">
+        <!-- Logo -->
+        <div class="p-5 border-b border-slate-100">
+          <div class="flex items-center gap-3">
+            <img src="../_next/static/media/logo-name.1dd6ad53.webp" alt="Blue Horizon logo"
+                 class="w-12 h-12 object-contain rounded-xl bg-white p-1 shadow-sm border border-slate-100"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-bh-navy to-bh-navy-2 flex items-center justify-center shadow-lg" style="display:none;">
+              <i class="fas fa-water text-white text-xl"></i>
+            </div>
+            <div>
+              <div class="text-base font-extrabold tracking-wide text-bh-navy">BLUE HORIZON</div>
+              <div class="text-[11px] text-slate-400 -mt-0.5">Teacher Portal</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="flex-1 overflow-y-auto p-4 space-y-5">
+          <!-- Main Menu -->
+          <div>
+            <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider px-3 mb-2">Main Menu</div>
+            <ul class="space-y-1">
+              <li>
+                <a href="dashboard.html" class="nav-link-active flex items-center gap-3 px-3 py-2.5 rounded-xl">
+                  <i class="fas fa-home text-bh-navy w-5"></i><span>Dashboard</span>
+                </a>
+              </li>
+              <li>
+                <a href="#myClasses" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 hover:bg-slate-50 transition-colors">
+                  <i class="fas fa-chalkboard text-emerald-500 w-5"></i><span>My Classes</span>
+                </a>
+              </li>
+              <li>
+                <a href="#timetable" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 hover:bg-slate-50 transition-colors">
+                  <i class="fas fa-calendar-alt text-rose-500 w-5"></i><span>Timetable</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Teaching -->
+          <div>
+            <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider px-3 mb-2">Teaching</div>
+            <ul class="space-y-1">
+              <li>
+                <a href="#postAssignment" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 hover:bg-slate-50 transition-colors">
+                  <i class="fas fa-plus-circle text-amber-500 w-5"></i><span>Post Assignment</span>
+                </a>
+              </li>
+              <li>
+                <a href="#scoresSection" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 hover:bg-slate-50 transition-colors">
+                  <i class="fas fa-chart-bar text-cyan-600 w-5"></i><span>Scores &amp; Results</span>
+                </a>
+              </li>
+              <li>
+                <a href="#topicTemplates" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 hover:bg-slate-50 transition-colors">
+                  <i class="fas fa-folder-tree text-violet-500 w-5"></i><span>Topic Templates</span>
+                </a>
+              </li>
+              <li>
+                <a href="#liveSessions" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 hover:bg-slate-50 transition-colors">
+                  <i class="fas fa-video text-purple-500 w-5"></i><span>Live Sessions</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Communication -->
+          <div>
+            <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider px-3 mb-2">Communication</div>
+            <ul class="space-y-1">
+              <li>
+                <a href="../classes/_template/messenger/messenger.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 hover:bg-slate-50 transition-colors">
+                  <i class="fas fa-comments text-bh-accent w-5"></i><span>Messenger</span>
+                  <span id="messengerBadge" class="ml-auto text-[10px] bg-bh-accent text-white px-1.5 py-0.5 rounded-full hidden">0</span>
+                </a>
+              </li>
+              <li>
+                <a href="#studentQuestions" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 hover:bg-slate-50 transition-colors">
+                  <i class="fas fa-question-circle text-teal-500 w-5"></i><span>Student Questions</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+
+        <!-- User Profile -->
+        <div class="p-4 border-t border-slate-100">
+          <div class="flex items-center gap-3 p-2 rounded-xl bg-slate-50">
+            <img id="avatar-sm" alt="avatar"
+                 src="https://ui-avatars.com/api/?name=T&background=1f507b&color=fff&size=80&bold=true"
+                 class="w-10 h-10 rounded-full border-2 border-bh-navy/30 object-cover">
+            <div class="flex-1 min-w-0">
+              <div id="userName" class="font-semibold text-slate-800 truncate">Teacher</div>
+              <div id="userLevel" class="text-xs text-slate-500">Loading subject…</div>
+            </div>
+            <button id="logoutBtn" title="Sign out" class="p-2 rounded-lg hover:bg-rose-50 text-slate-400 hover:text-rose-500 transition-colors">
+              <i class="fas fa-sign-out-alt"></i>
+            </button>
+          </div>
+        </div>
+      </aside>
+
+      <!-- ===================== Main Content ===================== -->
+      <div id="main-content" class="flex-1 flex flex-col ml-0 lg:ml-80">
+
+        <!-- Top Header -->
+        <header class="sticky top-0 z-30 bg-white/85 backdrop-blur-xl border-b border-slate-200/60 px-4 md:px-6 py-3.5">
+          <div class="flex items-center justify-between gap-4">
+            <button id="toggleSidebar" class="p-2 rounded-xl hover:bg-slate-100 lg:hidden transition-colors" aria-label="Toggle sidebar">
+              <i class="fas fa-bars text-slate-500"></i>
+            </button>
+
+            <div class="flex-1 min-w-0">
+              <h1 id="pageTitle" class="text-base md:text-lg font-bold text-slate-800 truncate">Teacher Dashboard</h1>
+              <p id="pageSubtitle" class="text-xs text-slate-500 hidden sm:block">Manage your classes, assignments &amp; results</p>
+            </div>
+
+            <!-- Right actions -->
+            <div class="flex items-center gap-3">
+              <a href="#postAssignment" class="hidden sm:inline-flex px-4 py-2 bg-bh-navy text-white rounded-xl font-medium text-sm hover:bg-bh-navy-2 transition-colors items-center gap-2">
+                <i class="fas fa-plus"></i><span>New Assignment</span>
+              </a>
+              <a href="#" id="notifBtn" class="relative p-2.5 rounded-xl hover:bg-slate-100 transition-colors" aria-label="Notifications">
+                <i class="fas fa-bell text-slate-500 text-lg"></i>
+                <span id="notifDot" class="absolute top-1 right-1 w-2.5 h-2.5 bg-red-500 rounded-full notif-dot hidden"></span>
+              </a>
+              <div class="hidden sm:flex items-center gap-3">
+                <div class="text-right">
+                  <div id="topName" class="font-semibold text-slate-800 text-sm">Teacher</div>
+                  <div id="topLevel" class="text-xs text-slate-500">—</div>
+                </div>
+                <img id="topAvatar" alt="avatar"
+                     src="https://ui-avatars.com/api/?name=T&background=1f507b&color=fff&size=80&bold=true"
+                     class="w-10 h-10 rounded-full border-2 border-bh-navy/30 object-cover">
+              </div>
+            </div>
+          </div>
+        </header>
+
+        <!-- Main Body -->
+        <main class="p-4 md:p-6 space-y-6 overflow-y-auto">
+
+          <!-- Loading overlay -->
+          <div id="loadingOverlay" class="fixed inset-0 bg-white/70 backdrop-blur z-50 flex items-center justify-center">
+            <div class="text-center">
+              <div class="w-12 h-12 border-4 border-bh-navy/20 border-t-bh-navy rounded-full animate-spin mx-auto mb-3"></div>
+              <p class="text-slate-500 text-sm">Loading your teacher dashboard…</p>
+            </div>
+          </div>
+
+          <!-- Error banner -->
+          <div id="errorBanner" class="hidden bg-rose-50 border border-rose-200 text-rose-700 rounded-2xl p-4 text-sm flex items-center gap-3">
+            <i class="fas fa-exclamation-triangle"></i>
+            <span id="errorBannerText">Something went wrong.</span>
+            <button onclick="document.getElementById('errorBanner').classList.add('hidden')" class="ml-auto p-1 hover:bg-rose-100 rounded"><i class="fas fa-times"></i></button>
+          </div>
+
+          <!-- ===================== Hero Welcome Section ===================== -->
+          <section class="hero-gradient rounded-3xl p-6 md:p-8 text-white relative overflow-hidden">
+            <div class="particle w-20 h-20 top-10 right-20" style="animation-delay: 0s;"></div>
+            <div class="particle w-12 h-12 bottom-20 right-40" style="animation-delay: 2s;"></div>
+            <div class="particle w-16 h-16 top-20 right-1/3" style="animation-delay: 4s;"></div>
+
+            <div class="relative z-10 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8">
+              <div>
+                <div class="flex items-center gap-3 mb-4">
+                  <span id="timeGreeting" class="px-4 py-1.5 bg-white/20 backdrop-blur rounded-full text-sm font-medium">Good Morning</span>
+                  <span id="currentDate" class="text-white/70 text-sm"></span>
+                </div>
+                <h1 class="text-2xl md:text-4xl font-bold mb-3">
+                  Welcome back, <span id="heroName">Teacher</span>! <span class="inline-block">👋</span>
+                </h1>
+                <p class="text-white/85 text-base md:text-lg mb-6 max-w-xl">
+                  Subject: <span id="heroSubject" class="font-semibold">—</span> · Empower your students with assignments, scores &amp; live sessions.
+                </p>
+
+                <div class="flex flex-wrap gap-3">
+                  <a href="#postAssignment" class="px-5 py-2.5 bg-white text-bh-navy rounded-xl font-semibold flex items-center gap-2 shadow-lg hover:bg-white/95 transition-colors">
+                    <i class="fas fa-plus-circle"></i><span>Post Assignment</span>
+                  </a>
+                  <a href="#scoresSection" class="px-5 py-2.5 bg-white/20 backdrop-blur rounded-xl font-medium flex items-center gap-2 hover:bg-white/30 transition-colors">
+                    <i class="fas fa-edit"></i><span>Enter Scores</span>
+                  </a>
+                  <a href="../classes/_template/messenger/messenger.html" class="px-5 py-2.5 bg-white/20 backdrop-blur rounded-xl font-medium flex items-center gap-2 hover:bg-white/30 transition-colors">
+                    <i class="fas fa-comments"></i><span>Open Messenger</span>
+                  </a>
+                </div>
+              </div>
+
+              <!-- Quick stats -->
+              <div class="flex items-center gap-4">
+                <div class="text-center bg-white/10 backdrop-blur rounded-2xl p-5">
+                  <div class="w-16 h-16 bg-gradient-to-br from-emerald-400 to-teal-500 rounded-2xl flex items-center justify-center mx-auto mb-3">
+                    <i class="fas fa-users text-white text-2xl"></i>
+                  </div>
+                  <div id="heroStudents" class="text-3xl font-bold text-white">—</div>
+                  <div class="text-white/70 text-sm">Total Students</div>
+                </div>
+
+                <div class="text-center bg-white/10 backdrop-blur rounded-2xl p-5">
+                  <div class="w-16 h-16 bg-gradient-to-br from-amber-400 to-orange-500 rounded-2xl flex items-center justify-center mx-auto mb-3">
+                    <i class="fas fa-calendar-day text-white text-2xl"></i>
+                  </div>
+                  <div id="heroClassesToday" class="text-3xl font-bold text-white">—</div>
+                  <div class="text-white/70 text-sm">Classes Today</div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- ===================== Stat Cards ===================== -->
+          <section class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            <!-- Total Students -->
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 hover-lift">
+              <div class="flex items-center justify-between mb-3">
+                <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-bh-navy to-bh-navy-2 flex items-center justify-center">
+                  <i class="fas fa-user-graduate text-white"></i>
+                </div>
+                <span class="text-xs font-medium text-emerald-600"><i class="fas fa-arrow-up"></i> Active</span>
+              </div>
+              <div id="statStudents" class="text-2xl font-bold text-slate-800">—</div>
+              <p class="text-xs text-slate-500 mt-1">Total Students</p>
+            </div>
+            <!-- Classes Today -->
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 hover-lift">
+              <div class="flex items-center justify-between mb-3">
+                <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center">
+                  <i class="fas fa-calendar-check text-white"></i>
+                </div>
+                <span id="classesTodayTrend" class="text-xs font-medium text-amber-600"><i class="fas fa-clock"></i> Today</span>
+              </div>
+              <div id="statClassesToday" class="text-2xl font-bold text-slate-800">—</div>
+              <p class="text-xs text-slate-500 mt-1">Classes Today</p>
+            </div>
+            <!-- Pending Assignments -->
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 hover-lift">
+              <div class="flex items-center justify-between mb-3">
+                <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-rose-500 to-pink-600 flex items-center justify-center">
+                  <i class="fas fa-tasks text-white"></i>
+                </div>
+                <span id="assignmentsTrend" class="text-xs font-medium text-rose-600"><i class="fas fa-circle text-[8px]"></i> Posted</span>
+              </div>
+              <div id="statAssignments" class="text-2xl font-bold text-slate-800">—</div>
+              <p class="text-xs text-slate-500 mt-1">Pending Assignments</p>
+            </div>
+            <!-- Unread Messages -->
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 hover-lift">
+              <div class="flex items-center justify-between mb-3">
+                <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-bh-accent to-cyan-600 flex items-center justify-center">
+                  <i class="fas fa-envelope text-white"></i>
+                </div>
+                <span id="msgTrend" class="text-xs font-medium text-cyan-600"><i class="fas fa-bell"></i> New</span>
+              </div>
+              <div id="statUnread" class="text-2xl font-bold text-slate-800">—</div>
+              <p class="text-xs text-slate-500 mt-1">Unread Messages</p>
+            </div>
+          </section>
+
+          <!-- ===================== My Classes ===================== -->
+          <section id="myClasses">
+            <div class="flex items-center justify-between mb-5">
+              <div>
+                <h2 class="text-xl font-bold text-slate-800">My Classes</h2>
+                <p class="text-sm text-slate-500">Classes you teach across JSS1–SSS3</p>
+              </div>
+              <span id="classesCount" class="text-sm text-slate-400">—</span>
+            </div>
+
+            <div id="classesGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
+              <!-- Skeletons injected by JS -->
+            </div>
+          </section>
+
+          <!-- ===================== Post Assignment + Recent Scores ===================== -->
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+            <!-- Post Assignment Form -->
+            <section id="postAssignment" class="lg:col-span-2 bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+              <div class="p-5 border-b border-slate-100 flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center">
+                  <i class="fas fa-plus-circle text-white"></i>
+                </div>
+                <div>
+                  <h2 class="text-lg font-bold text-slate-800">Post Assignment</h2>
+                  <p class="text-xs text-slate-500">Create a new assignment for your students</p>
+                </div>
+              </div>
+
+              <form id="assignmentForm" class="p-5 space-y-4">
+                <div>
+                  <label class="form-label">Title *</label>
+                  <input name="title" required class="form-input" placeholder="e.g. Quadratic Equations Worksheet">
+                </div>
+
+                <div>
+                  <label class="form-label">Description *</label>
+                  <textarea name="description" required rows="3" class="form-input" placeholder="Instructions for the assignment…"></textarea>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label class="form-label">Class *</label>
+                    <select name="class_name" required class="form-input" id="assignClassSelect">
+                      <option value="">Select class…</option>
+                      <option value="JSS1">JSS 1</option>
+                      <option value="JSS2">JSS 2</option>
+                      <option value="JSS3">JSS 3</option>
+                      <option value="SSS1">SSS 1</option>
+                      <option value="SSS2">SSS 2</option>
+                      <option value="SSS3">SSS 3</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label class="form-label">Subject (auto-filled)</label>
+                    <input name="subject" id="assignSubjectInput" type="text" class="form-input bg-slate-100" readonly value="—">
+                  </div>
+                </div>
+
+                <div>
+                  <label class="form-label">Due Date *</label>
+                  <input name="due_date" required type="date" class="form-input">
+                </div>
+
+                <div class="flex items-center gap-3 pt-2">
+                  <button type="submit" id="assignSubmitBtn" class="flex-1 py-2.5 bg-bh-navy text-white rounded-xl font-medium hover:bg-bh-navy-2 transition-colors text-sm flex items-center justify-center gap-2 disabled:opacity-60">
+                    <i class="fas fa-paper-plane"></i><span>Post Assignment</span>
+                  </button>
+                  <button type="reset" class="py-2.5 px-4 bg-slate-100 text-slate-600 rounded-xl font-medium hover:bg-slate-200 transition-colors text-sm">
+                    <i class="fas fa-redo"></i>
+                  </button>
+                </div>
+              </form>
+            </section>
+
+            <!-- Recent Scores Entered -->
+            <section id="scoresSection" class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+              <div class="p-5 border-b border-slate-100 flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500 to-teal-600 flex items-center justify-center">
+                  <i class="fas fa-chart-bar text-white"></i>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <h2 class="text-lg font-bold text-slate-800">Recent Scores</h2>
+                  <p class="text-xs text-slate-500">Last 5 scores you entered</p>
+                </div>
+              </div>
+
+              <div id="recentScoresList" class="p-3 space-y-2 max-h-[28rem] overflow-y-auto">
+                <!-- Scores injected here -->
+              </div>
+            </section>
+          </div>
+
+          <!-- ===================== Enter Score Form + Student Questions ===================== -->
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+            <!-- Enter Score Form -->
+            <section class="lg:col-span-2 bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+              <div class="p-5 border-b border-slate-100 flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center">
+                  <i class="fas fa-edit text-white"></i>
+                </div>
+                <div>
+                  <h2 class="text-lg font-bold text-slate-800">Enter Score</h2>
+                  <p class="text-xs text-slate-500">Record a student's score for an assessment</p>
+                </div>
+              </div>
+
+              <form id="scoreForm" class="p-5 space-y-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label class="form-label">Class *</label>
+                    <select name="class_name" id="scoreClassSelect" required class="form-input">
+                      <option value="">Select class…</option>
+                      <option value="JSS1">JSS 1</option>
+                      <option value="JSS2">JSS 2</option>
+                      <option value="JSS3">JSS 3</option>
+                      <option value="SSS1">SSS 1</option>
+                      <option value="SSS2">SSS 2</option>
+                      <option value="SSS3">SSS 3</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label class="form-label">Student *</label>
+                    <select name="student_id" id="scoreStudentSelect" required class="form-input" disabled>
+                      <option value="">Select class first…</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                  <div>
+                    <label class="form-label">Subject (auto)</label>
+                    <input name="subject" id="scoreSubjectInput" type="text" class="form-input bg-slate-100" readonly value="—">
+                  </div>
+                  <div>
+                    <label class="form-label">Exam Type *</label>
+                    <select name="exam_type" required class="form-input">
+                      <option value="CA1">CA 1</option>
+                      <option value="CA2">CA 2</option>
+                      <option value="CA3">CA 3</option>
+                      <option value="Exam">Exam</option>
+                      <option value="Test">Test</option>
+                      <option value="Quiz">Quiz</option>
+                      <option value="Assignment">Assignment</option>
+                      <option value="Project">Project</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label class="form-label">Max Score *</label>
+                    <input name="max_score" id="maxScoreInput" type="number" min="1" required class="form-input" value="100">
+                  </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label class="form-label">Score *</label>
+                    <input name="score" id="scoreInput" type="number" min="0" step="0.1" required class="form-input" placeholder="0">
+                    <p id="scoreHint" class="text-[11px] text-slate-400 mt-1"></p>
+                  </div>
+                  <div>
+                    <label class="form-label">Teacher Remark</label>
+                    <input name="teacher_remark" type="text" class="form-input" placeholder="e.g. Excellent work!">
+                  </div>
+                </div>
+
+                <div class="flex items-center gap-3 pt-2">
+                  <button type="submit" id="scoreSubmitBtn" class="flex-1 py-2.5 bg-emerald-600 text-white rounded-xl font-medium hover:bg-emerald-700 transition-colors text-sm flex items-center justify-center gap-2 disabled:opacity-60">
+                    <i class="fas fa-save"></i><span>Save Score</span>
+                  </button>
+                  <button type="reset" class="py-2.5 px-4 bg-slate-100 text-slate-600 rounded-xl font-medium hover:bg-slate-200 transition-colors text-sm">
+                    <i class="fas fa-redo"></i>
+                  </button>
+                </div>
+              </form>
+            </section>
+
+            <!-- Student Questions -->
+            <section id="studentQuestions" class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+              <div class="p-5 border-b border-slate-100 flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-teal-500 to-cyan-600 flex items-center justify-center">
+                  <i class="fas fa-question-circle text-white"></i>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <h2 class="text-lg font-bold text-slate-800">Student Questions</h2>
+                  <p class="text-xs text-slate-500">Recent questions from your students</p>
+                </div>
+              </div>
+
+              <div id="studentQuestionsList" class="p-3 space-y-2 max-h-[28rem] overflow-y-auto">
+                <!-- Questions injected here -->
+              </div>
+            </section>
+          </div>
+
+          <!-- ===================== Topic Templates & Live Sessions ===================== -->
+          <div id="topicTemplates" class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+            <!-- Topic Templates -->
+            <section class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+              <div class="p-5 border-b border-slate-100 flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center">
+                  <i class="fas fa-folder-tree text-white"></i>
+                </div>
+                <div>
+                  <h2 class="text-lg font-bold text-slate-800">Topic Templates</h2>
+                  <p class="text-xs text-slate-500">Pre-built lesson templates for your subject</p>
+                </div>
+              </div>
+              <div id="topicTemplatesList" class="p-4 grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <!-- Templates injected -->
+              </div>
+            </section>
+
+            <!-- Live Sessions -->
+            <section id="liveSessions" class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+              <div class="p-5 border-b border-slate-100 flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500 to-pink-600 flex items-center justify-center">
+                  <i class="fas fa-video text-white"></i>
+                </div>
+                <div>
+                  <h2 class="text-lg font-bold text-slate-800">Upcoming Live Sessions</h2>
+                  <p class="text-xs text-slate-500">Your scheduled classes</p>
+                </div>
+              </div>
+              <div id="liveSessionsList" class="p-4 space-y-3">
+                <!-- Sessions injected -->
+              </div>
+            </section>
+          </div>
+
+          <!-- ===================== Today's Timetable ===================== -->
+          <section id="timetable" class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            <div class="p-5 border-b border-slate-100 flex items-center justify-between">
+              <div>
+                <h2 class="text-lg font-bold text-slate-800">Today's Timetable</h2>
+                <p class="text-xs text-slate-500">Your classes scheduled for today</p>
+              </div>
+              <span id="timetableCount" class="text-xs text-slate-400">—</span>
+            </div>
+            <div id="timetableList" class="p-5 space-y-3">
+              <!-- Injected -->
+            </div>
+          </section>
+
+          <!-- Footer -->
+          <footer class="text-center text-xs text-slate-400 py-6">
+            &copy; <span id="footerYear"></span> Blue Horizon Schools. Teacher Portal. All rights reserved.
+          </footer>
+        </main>
+      </div>
+    </div>
+
+    <!-- Toast container -->
+    <div id="toastContainer"></div>
+
+    <!-- Shared Supabase client -->
+    <script src="../classes/_template/js/supabase-client.js"></script>
+    <script>
+      // =====================================================
+      // Blue Horizon Teacher Dashboard
+      // =====================================================
+
+      var state = {
+        session: null,
+        teacher: null,           // {id, full_name, name, username, subject, role}
+        client: null,            // Supabase client (resolved from BH.getClient)
+        studentsByClass: {},     // cache: { JSS1: [{id,name}, ...], ... }
+      };
+
+      // ---------- Small UI helpers ----------
+      function showToast(message, type) {
+        type = type || 'info';
+        var container = document.getElementById('toastContainer');
+        var el = document.createElement('div');
+        el.className = 'toast ' + type;
+        el.textContent = message;
+        container.appendChild(el);
+        setTimeout(function () {
+          el.style.opacity = '0';
+          el.style.transition = 'opacity .3s';
+          setTimeout(function () { el.remove(); }, 300);
+        }, 3500);
+      }
+
+      function showError(msg) {
+        var banner = document.getElementById('errorBanner');
+        document.getElementById('errorBannerText').textContent = msg;
+        banner.classList.remove('hidden');
+      }
+      function hideError() {
+        document.getElementById('errorBanner').classList.add('hidden');
+      }
+
+      function getInitials(fullName) {
+        try { return String(fullName || '').split(' ').slice(0, 2).map(function (n) { return n.charAt(0); }).join('').toUpperCase(); }
+        catch (e) { return 'T'; }
+      }
+
+      function avatarFor(name) {
+        return 'https://ui-avatars.com/api/?name=' + encodeURIComponent(getInitials(name) || 'T') +
+               '&background=1f507b&color=fff&size=128&bold=true';
+      }
+
+      function escapeHtml(s) {
+        if (s == null) return '';
+        return String(s).replace(/[&<>"']/g, function (c) {
+          return ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' })[c];
+        });
+      }
+
+      function timeAgo(dateStr) {
+        if (!dateStr) return '';
+        var d = new Date(dateStr);
+        var diff = (Date.now() - d.getTime()) / 1000;
+        if (diff < 60) return 'just now';
+        if (diff < 3600) return Math.floor(diff / 60) + 'm ago';
+        if (diff < 86400) return Math.floor(diff / 3600) + 'h ago';
+        if (diff < 604800) return Math.floor(diff / 86400) + 'd ago';
+        return d.toLocaleDateString();
+      }
+
+      function formatDate(dateStr) {
+        if (!dateStr) return '';
+        var d = new Date(dateStr);
+        if (isNaN(d.getTime())) return String(dateStr);
+        return d.toLocaleDateString([], { month: 'short', day: 'numeric', year: 'numeric' });
+      }
+
+      // ---------- Greeting & date ----------
+      (function setGreeting() {
+        var dateEl = document.getElementById('currentDate');
+        var greetingEl = document.getElementById('timeGreeting');
+        if (dateEl) {
+          var opts = { weekday: 'long', month: 'short', day: 'numeric' };
+          dateEl.textContent = new Date().toLocaleDateString('en-US', opts);
+        }
+        if (greetingEl) {
+          var h = new Date().getHours();
+          var g = 'Good Morning';
+          if (h >= 12 && h < 17) g = 'Good Afternoon';
+          else if (h >= 17) g = 'Good Evening';
+          greetingEl.textContent = g;
+        }
+        var fy = document.getElementById('footerYear');
+        if (fy) fy.textContent = new Date().getFullYear();
+      })();
+
+      // ---------- Sidebar toggle (mobile) ----------
+      (function bindSidebar() {
+        var sidebar = document.getElementById('sidebar');
+        var overlay = document.getElementById('sidebar-overlay');
+        var toggleBtn = document.getElementById('toggleSidebar');
+        function open() { sidebar.classList.remove('hide'); overlay.classList.add('show'); }
+        function close() { sidebar.classList.add('hide'); overlay.classList.remove('show'); }
+        if (toggleBtn) toggleBtn.addEventListener('click', function (e) {
+          e.stopPropagation();
+          sidebar.classList.contains('hide') ? open() : close();
+        });
+        if (overlay) overlay.addEventListener('click', close);
+        window.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+      })();
+
+      // ---------- Logout ----------
+      document.getElementById('logoutBtn').addEventListener('click', function () {
+        if (window.BH) BH.signOut();
+      });
+
+      // ---------- Classes data ----------
+      var CLASSES = [
+        { id: 'JSS1', name: 'JSS 1', color: 'jss1', icon: 'fa-seedling',  students: 0 },
+        { id: 'JSS2', name: 'JSS 2', color: 'jss2', icon: 'fa-leaf',      students: 0 },
+        { id: 'JSS3', name: 'JSS 3', color: 'jss3', icon: 'fa-tree',      students: 0 },
+        { id: 'SSS1', name: 'SSS 1', color: 'sss1', icon: 'fa-graduation-cap', students: 0 },
+        { id: 'SSS2', name: 'SSS 2', color: 'sss2', icon: 'fa-award',     students: 0 },
+        { id: 'SSS3', name: 'SSS 3', color: 'sss3', icon: 'fa-trophy',    students: 0 }
+      ];
+
+      // ---------- Topic templates ----------
+      var TOPIC_TEMPLATES = {
+        'Mathematics':        ['Number Bases','Indices','Logarithms','Sets','Algebra','Geometry','Trigonometry','Statistics','Probability','Calculus'],
+        'English Language':   ['Parts of Speech','Sentence Structure','Comprehension','Essay Writing','Summary Writing','Lexis & Structure','Oral English'],
+        'Physics':            ['Measurements','Motion','Newton\'s Laws','Energy','Waves','Sound','Light','Electricity','Magnetism','Modern Physics'],
+        'Chemistry':          ['Atomic Structure','Periodic Table','Chemical Bonding','Reactions','Stoichiometry','Acids & Bases','Organic Chemistry'],
+        'Biology':            ['Cell Structure','Nutrition','Photosynthesis','Respiration','Genetics','Evolution','Ecology','Nervous System'],
+        'Economics':          ['Basic Concepts','Demand & Supply','Market Structures','National Income','Money & Banking','Public Finance','International Trade'],
+        'Government':         ['Basic Concepts','Constitution','Arms of Government','Federalism','Political Parties','Electoral Systems','Human Rights'],
+        'Commerce':           ['Introduction','Trade','Business Units','Banking','Insurance','Transportation','Marketing','Consumer Protection'],
+        'Accounting':         ['Book-keeping','Trial Balance','Final Accounts','Partnership Accounts','Company Accounts','Manufacturing Accounts'],
+        'Literature in English':['Prose','Poetry','Drama','Literary Devices','African Literature','Non-African Literature','Appreciation']
+      };
+
+      function renderTopicTemplates(subject) {
+        var box = document.getElementById('topicTemplatesList');
+        var topics = TOPIC_TEMPLATES[subject] || [];
+        if (topics.length === 0) {
+          box.innerHTML =
+            '<div class="col-span-2 text-center py-8 text-slate-400">' +
+              '<i class="fas fa-folder-open text-3xl mb-2 opacity-40"></i>' +
+              '<p class="text-sm">No templates for your subject yet.</p>' +
+            '</div>';
+          return;
+        }
+        var html = '';
+        topics.slice(0, 8).forEach(function (t) {
+          html += '' +
+            '<button type="button" onclick="useTopicTemplate(\'' + escapeHtml(t).replace(/'/g, "\\'") + '\')" ' +
+              'class="text-left p-3 rounded-xl border border-slate-100 hover:border-bh-navy/30 hover:bg-slate-50 transition-colors group">' +
+              '<div class="flex items-center gap-2">' +
+                '<i class="fas fa-bookmark text-violet-400 group-hover:text-violet-600 transition-colors"></i>' +
+                '<span class="font-medium text-slate-700 text-sm">' + escapeHtml(t) + '</span>' +
+              '</div>' +
+            '</button>';
+        });
+        box.innerHTML = html;
+      }
+
+      // Pre-fill the assignment title with a clicked template
+      window.useTopicTemplate = function (topic) {
+        var titleInput = document.querySelector('#assignmentForm [name="title"]');
+        if (titleInput) {
+          titleInput.value = topic + ' — Assignment';
+          titleInput.focus();
+          showToast('Template applied: ' + topic, 'info');
+        }
+      };
+
+      // ---------- Render class cards ----------
+      function renderClassCards(studentCounts) {
+        var grid = document.getElementById('classesGrid');
+        var counts = studentCounts || {};
+        var total = 0;
+        var html = '';
+        CLASSES.forEach(function (cls) {
+          var count = counts[cls.id] != null ? counts[cls.id] : 0;
+          total += count;
+          html += '' +
+            '<a href="#postAssignment" onclick="prefillClass(\'' + cls.id + '\')" ' +
+              'class="class-card class-' + cls.color + ' hover-lift bg-white rounded-2xl p-5 border border-slate-200 shadow-sm block cursor-pointer">' +
+              '<div class="flex items-start justify-between mb-3">' +
+                '<div class="w-11 h-11 rounded-xl bg-gradient-to-br from-bh-navy to-bh-navy-2 flex items-center justify-center shadow-lg">' +
+                  '<i class="fas ' + cls.icon + ' text-white"></i>' +
+                '</div>' +
+                '<span class="text-xs font-medium text-slate-500 bg-slate-100 px-2 py-1 rounded-full">' + cls.id + '</span>' +
+              '</div>' +
+              '<h3 class="font-semibold text-slate-800 mb-1">' + cls.name + '</h3>' +
+              '<p class="text-xs text-slate-500">' + count + ' Students</p>' +
+            '</a>';
+        });
+        grid.innerHTML = html;
+        document.getElementById('classesCount').textContent = CLASSES.length + ' classes';
+      }
+
+      function renderClassSkeletons() {
+        var grid = document.getElementById('classesGrid');
+        var html = '';
+        for (var i = 0; i < 6; i++) {
+          html += '' +
+            '<div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5">' +
+              '<div class="flex items-start justify-between mb-3">' +
+                '<div class="w-11 h-11 rounded-xl skeleton"></div>' +
+                '<div class="h-5 w-12 skeleton rounded-full"></div>' +
+              '</div>' +
+              '<div class="h-4 w-1/2 skeleton rounded mb-2"></div>' +
+              '<div class="h-3 w-1/3 skeleton rounded"></div>' +
+            '</div>';
+        }
+        grid.innerHTML = html;
+      }
+
+      window.prefillClass = function (clsId) {
+        var sel = document.getElementById('assignClassSelect');
+        if (sel) sel.value = clsId;
+      };
+
+      // ---------- Render recent scores ----------
+      function renderRecentScores(rows) {
+        var box = document.getElementById('recentScoresList');
+        if (!rows || rows.length === 0) {
+          box.innerHTML = '' +
+            '<div class="text-center py-10 text-slate-400">' +
+              '<i class="fas fa-chart-bar text-4xl mb-3 opacity-40"></i>' +
+              '<p class="text-sm">No scores entered yet.</p>' +
+              '<p class="text-xs mt-1">Use the form below to record your first score.</p>' +
+            '</div>';
+          return;
+        }
+        var html = '';
+        rows.slice(0, 5).forEach(function (r) {
+          var pct = (r.max_score && Number(r.max_score) > 0) ? Math.round((Number(r.score) / Number(r.max_score)) * 100) : null;
+          var tone = pct == null ? 'slate' : (pct >= 75 ? 'emerald' : (pct >= 50 ? 'amber' : 'rose'));
+          html += '' +
+            '<div class="p-3 rounded-xl border border-slate-100 hover:bg-slate-50 transition-colors">' +
+              '<div class="flex items-start justify-between gap-2 mb-1">' +
+                '<div class="flex-1 min-w-0">' +
+                  '<div class="font-medium text-slate-800 text-sm truncate">' + escapeHtml(r.student_name || 'Student') + '</div>' +
+                  '<div class="text-xs text-slate-500 mt-0.5">' +
+                    escapeHtml(r.class_name || '') + ' · ' + escapeHtml(r.exam_type || 'Test') +
+                  '</div>' +
+                '</div>' +
+                '<span class="text-xs px-2 py-0.5 rounded-full bg-' + tone + '-100 text-' + tone + '-700 font-semibold whitespace-nowrap">' +
+                  (r.score != null ? r.score : '—') + '/' + (r.max_score != null ? r.max_score : '—') +
+                '</span>' +
+              '</div>' +
+              (r.teacher_remark
+                ? '<div class="text-xs text-slate-500 italic mt-1 truncate"><i class="fas fa-quote-left mr-1 text-[10px]"></i>' + escapeHtml(r.teacher_remark) + '</div>'
+                : '') +
+              '<div class="text-[10px] text-slate-400 mt-1">' + timeAgo(r.created_at) + '</div>' +
+            '</div>';
+        });
+        box.innerHTML = html;
+      }
+
+      // ---------- Render student questions ----------
+      function renderStudentQuestions(rows) {
+        var box = document.getElementById('studentQuestionsList');
+        var badge = document.getElementById('notifDot');
+        if (!rows || rows.length === 0) {
+          box.innerHTML = '' +
+            '<div class="text-center py-10 text-slate-400">' +
+              '<i class="fas fa-comments text-4xl mb-3 opacity-40"></i>' +
+              '<p class="text-sm">No student questions yet.</p>' +
+              '<p class="text-xs mt-1">Questions from students will appear here.</p>' +
+            '</div>';
+          if (badge) badge.classList.add('hidden');
+          return;
+        }
+        if (badge) badge.classList.remove('hidden');
+        var html = '';
+        rows.slice(0, 8).forEach(function (q) {
+          html += '' +
+            '<div class="p-3 rounded-xl border border-slate-100 hover:bg-slate-50 transition-colors">' +
+              '<div class="flex items-center gap-2 mb-1">' +
+                '<img src="' + avatarFor(q.student_name || q.sender_name || 'S') + '" class="w-6 h-6 rounded-full" alt="">' +
+                '<div class="text-xs font-medium text-slate-700 truncate">' + escapeHtml(q.student_name || q.sender_name || 'Student') + '</div>' +
+                '<span class="text-[10px] text-slate-400 ml-auto">' + timeAgo(q.created_at) + '</span>' +
+              '</div>' +
+              '<p class="text-xs text-slate-600 line-clamp-2">' + escapeHtml(q.message || q.content || q.body || '') + '</p>' +
+            '</div>';
+        });
+        box.innerHTML = html;
+      }
+
+      // ---------- Render live sessions / timetable ----------
+      function renderLiveSessions(rows) {
+        var box = document.getElementById('liveSessionsList');
+        if (!rows || rows.length === 0) {
+          box.innerHTML = '' +
+            '<div class="text-center py-8 text-slate-400">' +
+              '<i class="fas fa-video-slash text-3xl mb-2 opacity-40"></i>' +
+              '<p class="text-sm">No live sessions scheduled.</p>' +
+            '</div>';
+          return;
+        }
+        var html = '';
+        rows.slice(0, 5).forEach(function (s) {
+          html += '' +
+            '<div class="p-3 rounded-xl border border-slate-100 hover:bg-slate-50 transition-colors">' +
+              '<div class="flex items-center gap-3 mb-1">' +
+                '<div class="w-9 h-9 rounded-lg bg-purple-100 flex items-center justify-center">' +
+                  '<i class="fas fa-video text-purple-600 text-sm"></i>' +
+                '</div>' +
+                '<div class="flex-1 min-w-0">' +
+                  '<div class="font-medium text-slate-800 text-sm truncate">' + escapeHtml(s.title || s.subject || 'Live Class') + '</div>' +
+                  '<div class="text-xs text-slate-500">' + escapeHtml(s.class_name || '') + '</div>' +
+                '</div>' +
+              '</div>' +
+              '<div class="text-[11px] text-slate-400 mt-1">' +
+                (s.start || s.start_time || '') + (s.end || s.end_time ? ' – ' + (s.end || s.end_time) : '') +
+              '</div>' +
+            '</div>';
+        });
+        box.innerHTML = html;
+      }
+
+      function renderTimetable(rows) {
+        var box = document.getElementById('timetableList');
+        var counter = document.getElementById('timetableCount');
+        if (!rows || rows.length === 0) {
+          box.innerHTML = '' +
+            '<div class="text-center py-10 text-slate-400">' +
+              '<i class="fas fa-calendar-day text-4xl mb-3 opacity-40"></i>' +
+              '<p class="text-sm">No classes scheduled for today.</p>' +
+              '<p class="text-xs mt-1">Enjoy your free day or schedule a session!</p>' +
+            '</div>';
+          if (counter) counter.textContent = '0 classes';
+          return;
+        }
+        if (counter) counter.textContent = rows.length + (rows.length === 1 ? ' class' : ' classes');
+        var html = '';
+        rows.slice(0, 8).forEach(function (it) {
+          html += '' +
+            '<div class="flex items-center gap-4 p-3 rounded-xl hover:bg-slate-50 transition-colors border border-slate-100">' +
+              '<div class="text-center min-w-[64px]">' +
+                '<div class="text-sm font-bold text-bh-navy">' + (it.start || it.start_time || '--:--') + '</div>' +
+                '<div class="text-[10px] text-slate-400">' + (it.end || it.end_time || '--:--') + '</div>' +
+              '</div>' +
+              '<div class="w-px h-10 bg-slate-200"></div>' +
+              '<div class="flex-1 min-w-0">' +
+                '<div class="font-medium text-slate-800 text-sm truncate">' + escapeHtml(it.subject || it.title || 'Class') + '</div>' +
+                '<div class="text-xs text-slate-500 flex items-center gap-2 mt-0.5">' +
+                  '<span><i class="fas fa-users mr-1"></i>' + escapeHtml(it.class_name || it.class || '—') + '</span>' +
+                  (it.room ? '<span><i class="fas fa-map-marker-alt mr-1"></i>' + escapeHtml(it.room) + '</span>' : '') +
+                '</div>' +
+              '</div>' +
+              '<span class="text-xs text-slate-400">' + escapeHtml(it.day || '') + '</span>' +
+            '</div>';
+        });
+        box.innerHTML = html;
+      }
+
+      function setStat(id, value) {
+        var el = document.getElementById(id);
+        if (el) el.textContent = value;
+      }
+
+      // ---------- Default UI state ----------
+      renderClassSkeletons();
+      renderRecentScores([]);
+      renderStudentQuestions([]);
+      renderLiveSessions([]);
+      renderTimetable([]);
+
+      // =====================================================
+      // Auth gate + dashboard load
+      // =====================================================
+      function boot() {
+        if (!window.BH || !window.BH.requireRole) {
+          // Wait for the BH client to be ready
+          return document.addEventListener('bh:ready', boot);
+        }
+        // Step 1 — auth gate: redirects to ../login.html if not a logged-in teacher
+        BH.requireRole('teacher').then(function (session) {
+          if (!session) return; // redirected to login
+          // Step 2 — use BH.getSession() (NOT localStorage) as the source of truth
+          // for the logged-in teacher's info throughout the page.
+          state.session = BH.getSession() || session;
+          // Build the teacher object from the session user
+          var u = (state.session && state.session.user) || {};
+          state.teacher = {
+            id:        u.id || null,
+            full_name: u.full_name || u.name || (u.username ? u.username : 'Teacher'),
+            name:      u.name || u.full_name || (u.username ? u.username : 'Teacher'),
+            username:  u.username || null,
+            subject:   u.subject || 'General',
+            role:      u.role || 'teacher'
+          };
+          // Resolve Supabase client
+          BH.getClient().then(function (client) {
+            state.client = client;
+            window.supabaseClient = client;
+            hideLoading();
+            applyProfile();
+            loadDashboardData();
+          }).catch(function (err) {
+            console.error('[BH] failed to init Supabase client', err);
+            hideLoading();
+            showError('Unable to connect to the database. Please refresh the page.');
+          });
+        });
+      }
+
+      function hideLoading() {
+        var ov = document.getElementById('loadingOverlay');
+        if (ov) { ov.style.opacity = '0'; ov.style.transition = 'opacity .3s'; setTimeout(function () { ov.remove(); }, 300); }
+      }
+
+      function applyProfile() {
+        var t = state.teacher;
+        var name = t.full_name || t.name || 'Teacher';
+        var initials = getInitials(name);
+        var avatar = avatarFor(name);
+        var subject = t.subject || 'General';
+
+        document.getElementById('heroName').textContent     = (name.split(' ')[0] || 'Teacher');
+        document.getElementById('heroSubject').textContent  = subject;
+        document.getElementById('userName').textContent     = name;
+        document.getElementById('userLevel').textContent    = subject + ' Teacher';
+        document.getElementById('topName').textContent      = name;
+        document.getElementById('topLevel').textContent     = subject;
+
+        var av1 = document.getElementById('avatar-sm');
+        var av2 = document.getElementById('topAvatar');
+        if (av1) av1.src = avatar;
+        if (av2) av2.src = avatar;
+
+        // Auto-fill subject fields in both forms
+        var assignSub = document.getElementById('assignSubjectInput');
+        var scoreSub  = document.getElementById('scoreSubjectInput');
+        if (assignSub) assignSub.value = subject;
+        if (scoreSub)  scoreSub.value  = subject;
+
+        // Render topic templates for this subject
+        renderTopicTemplates(subject);
+      }
+
+      // =====================================================
+      // Dashboard data — direct Supabase queries via BH.getClient()
+      // =====================================================
+      function loadDashboardData() {
+        if (!state.client || !state.teacher) return;
+        var client = state.client;
+        var teacher = state.teacher;
+
+        // ----- Student counts per class -----
+        CLASSES.forEach(function (cls) {
+          client.from('students')
+            .select('id', { count: 'exact', head: true })
+            .eq('class_name', cls.id)
+            .then(function (r) {
+              cls.students = (r.count != null) ? r.count : 0;
+              // Re-render once all are done (cheap)
+              var counts = {};
+              CLASSES.forEach(function (c) { counts[c.id] = c.students; });
+              renderClassCards(counts);
+              // Total students stat
+              var total = CLASSES.reduce(function (s, c) { return s + (c.students || 0); }, 0);
+              setStat('statStudents', total);
+              document.getElementById('heroStudents').textContent = total;
+            });
+        });
+
+        // ----- Classes today (timetable filtered by teacher's subject) -----
+        var todayName = new Date().toLocaleDateString('en-US', { weekday: 'long' });
+        client.from('timetable')
+          .select('id, day, start, end, subject, class_name, room, teacher')
+          .eq('day', todayName)
+          .ilike('subject', teacher.subject)
+          .order('start', { ascending: true })
+          .then(function (res) {
+            var rows = (res && res.data) || [];
+            setStat('statClassesToday', rows.length);
+            document.getElementById('heroClassesToday').textContent = rows.length;
+            renderTimetable(rows);
+          })
+          .catch(function (err) {
+            console.warn('[BH] timetable query failed:', err);
+            setStat('statClassesToday', '—');
+            document.getElementById('heroClassesToday').textContent = '—';
+          });
+
+        // ----- Pending assignments posted by this teacher -----
+        client.from('assignments')
+          .select('id, title, due_date, class_name, subject')
+          .eq('teacher_id', teacher.id)
+          .gte('due_date', new Date().toISOString().slice(0, 10))
+          .order('due_date', { ascending: true })
+          .then(function (res) {
+            var rows = (res && res.data) || [];
+            setStat('statAssignments', rows.length);
+          })
+          .catch(function (err) {
+            console.warn('[BH] assignments query failed:', err);
+            setStat('statAssignments', '—');
+          });
+
+        // ----- Unread messages -----
+        client.from('messages')
+          .select('id', { count: 'exact', head: true })
+          .eq('recipient_id', teacher.id)
+          .eq('read', false)
+          .then(function (r) {
+            var count = (r && r.count != null) ? r.count : 0;
+            setStat('statUnread', count);
+            var badge = document.getElementById('messengerBadge');
+            if (badge) {
+              if (count > 0) {
+                badge.textContent = count > 99 ? '99+' : count;
+                badge.classList.remove('hidden');
+              } else {
+                badge.classList.add('hidden');
+              }
+            }
+          })
+          .catch(function (err) {
+            console.warn('[BH] unread messages query failed:', err);
+            setStat('statUnread', '—');
+          });
+
+        // ----- Recent scores entered by this teacher -----
+        client.from('scores')
+          .select('id, student_id, student_name, subject, score, max_score, exam_type, teacher_remark, class_name, created_at')
+          .eq('teacher_id', teacher.id)
+          .order('created_at', { ascending: false })
+          .limit(5)
+          .then(function (res) {
+            renderRecentScores((res && res.data) || []);
+          })
+          .catch(function (err) {
+            console.warn('[BH] recent scores query failed:', err);
+          });
+
+        // ----- Student questions (messages addressed to teacher with a question mark) -----
+        client.from('messages')
+          .select('id, sender_id, sender_name, student_name, recipient_id, message, content, body, created_at')
+          .eq('recipient_id', teacher.id)
+          .order('created_at', { ascending: false })
+          .limit(8)
+          .then(function (res) {
+            renderStudentQuestions((res && res.data) || []);
+          })
+          .catch(function (err) {
+            console.warn('[BH] student questions query failed:', err);
+          });
+
+        // ----- Live sessions -----
+        client.from('live_sessions')
+          .select('id, title, subject, class_name, start, end, start_time, end_time, status')
+          .eq('teacher_id', teacher.id)
+          .order('start', { ascending: true })
+          .limit(5)
+          .then(function (res) {
+            renderLiveSessions((res && res.data) || []);
+          })
+          .catch(function (err) {
+            console.warn('[BH] live sessions query failed:', err);
+            // Soft fail: render empty
+            renderLiveSessions([]);
+          });
+      }
+
+      // =====================================================
+      // Post Assignment — direct Supabase insert
+      // =====================================================
+      document.getElementById('assignmentForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+        if (!state.client || !state.teacher) {
+          showToast('Session not ready yet. Please try again.', 'error');
+          return;
+        }
+        var form = e.target;
+        var title = (form.title.value || '').trim();
+        var desc  = (form.description.value || '').trim();
+        var cls   = form.class_name.value;
+        var due   = form.due_date.value;
+        var subject = state.teacher.subject;
+
+        if (!title || !desc || !cls || !due) {
+          showToast('Please fill in all required fields.', 'error');
+          return;
+        }
+
+        var btn = document.getElementById('assignSubmitBtn');
+        var original = btn.innerHTML;
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i><span>Posting…</span>';
+
+        var payload = {
+          teacher_id:   state.teacher.id,
+          teacher_name: state.teacher.full_name,
+          class_name:   cls,
+          subject:      subject,
+          title:        title,
+          description:  desc,
+          due_date:     due,
+          status:       'pending',
+          created_at:   new Date().toISOString()
+        };
+
+        state.client.from('assignments').insert(payload).then(function (res) {
+          btn.disabled = false;
+          btn.innerHTML = original;
+          if (res && res.error) {
+            console.error('[BH] insert assignment error:', res.error);
+            showToast('Failed to post assignment: ' + (res.error.message || 'Unknown error'), 'error');
+            return;
+          }
+          showToast('Assignment posted to ' + cls + ' successfully!', 'success');
+          form.reset();
+          // restore the auto-filled subject
+          document.getElementById('assignSubjectInput').value = subject;
+          // Refresh stats
+          loadDashboardData();
+        }).catch(function (err) {
+          btn.disabled = false;
+          btn.innerHTML = original;
+          console.error('[BH] insert assignment exception:', err);
+          showToast('Failed to post assignment. Please try again.', 'error');
+        });
+      });
+
+      // =====================================================
+      // Enter Score — class change loads students, then direct insert
+      // =====================================================
+      (function bindScoreForm() {
+        var classSelect   = document.getElementById('scoreClassSelect');
+        var studentSelect = document.getElementById('scoreStudentSelect');
+        var maxInput      = document.getElementById('maxScoreInput');
+        var scoreInput    = document.getElementById('scoreInput');
+        var hint          = document.getElementById('scoreHint');
+
+        function updateHint() {
+          var max = parseFloat(maxInput.value);
+          var sc  = parseFloat(scoreInput.value);
+          if (!max || isNaN(max) || isNaN(sc)) { hint.textContent = ''; return; }
+          if (sc > max) { hint.textContent = 'Score cannot exceed max score.'; hint.className = 'text-[11px] text-rose-500 mt-1'; return; }
+          var pct = Math.round((sc / max) * 100);
+          var tone = pct >= 75 ? 'text-emerald-600' : (pct >= 50 ? 'text-amber-600' : 'text-rose-600');
+          hint.textContent = pct + '% — ' + (pct >= 75 ? 'Excellent' : (pct >= 50 ? 'Good' : 'Needs improvement'));
+          hint.className = 'text-[11px] ' + tone + ' mt-1';
+        }
+        maxInput.addEventListener('input', updateHint);
+        scoreInput.addEventListener('input', updateHint);
+
+        classSelect.addEventListener('change', function () {
+          var cls = classSelect.value;
+          if (!cls) {
+            studentSelect.disabled = true;
+            studentSelect.innerHTML = '<option value="">Select class first…</option>';
+            return;
+          }
+          studentSelect.disabled = true;
+          studentSelect.innerHTML = '<option value="">Loading students…</option>';
+          loadStudentsForClass(cls).then(function (students) {
+            if (!students || students.length === 0) {
+              studentSelect.innerHTML = '<option value="">No students in ' + cls + '</option>';
+              studentSelect.disabled = true;
+              return;
+            }
+            var html = '<option value="">Select student…</option>';
+            students.forEach(function (s) {
+              html += '<option value="' + escapeHtml(s.id) + '" data-name="' + escapeHtml(s.name || '') + '">' +
+                        escapeHtml(s.name || s.username || 'Student') + ' (' + escapeHtml(s.username || '') + ')' +
+                      '</option>';
+            });
+            studentSelect.innerHTML = html;
+            studentSelect.disabled = false;
+          }).catch(function (err) {
+            console.error('[BH] load students error:', err);
+            studentSelect.innerHTML = '<option value="">Failed to load students</option>';
+            studentSelect.disabled = true;
+          });
+        });
+      })();
+
+      function loadStudentsForClass(cls) {
+        // Use cache if available
+        if (state.studentsByClass[cls]) {
+          return Promise.resolve(state.studentsByClass[cls]);
+        }
+        if (!state.client) return Promise.resolve([]);
+        return state.client.from('students')
+          .select('id, name, full_name, username, class_name')
+          .eq('class_name', cls)
+          .order('name', { ascending: true })
+          .then(function (res) {
+            var rows = (res && res.data) || [];
+            // Normalise
+            var students = rows.map(function (r) {
+              return { id: r.id, name: r.name || r.full_name || r.username || 'Student', username: r.username || '' };
+            });
+            state.studentsByClass[cls] = students;
+            return students;
+          });
+      }
+
+      document.getElementById('scoreForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+        if (!state.client || !state.teacher) {
+          showToast('Session not ready yet. Please try again.', 'error');
+          return;
+        }
+        var form = e.target;
+        var classSelect = document.getElementById('scoreClassSelect');
+        var studentSelect = document.getElementById('scoreStudentSelect');
+        var studentId = studentSelect.value;
+        var studentName = studentSelect.selectedOptions[0] ? studentSelect.selectedOptions[0].getAttribute('data-name') : '';
+        var cls = classSelect.value;
+        var subject = state.teacher.subject;
+        var examType = form.exam_type.value;
+        var maxScore = parseFloat(form.max_score.value);
+        var score = parseFloat(form.score.value);
+        var remark = (form.teacher_remark.value || '').trim();
+
+        if (!studentId || !cls) {
+          showToast('Please select a class and student.', 'error');
+          return;
+        }
+        if (isNaN(maxScore) || maxScore <= 0) {
+          showToast('Max score must be a positive number.', 'error');
+          return;
+        }
+        if (isNaN(score) || score < 0) {
+          showToast('Score must be a non-negative number.', 'error');
+          return;
+        }
+        if (score > maxScore) {
+          showToast('Score cannot be greater than max score.', 'error');
+          return;
+        }
+
+        var btn = document.getElementById('scoreSubmitBtn');
+        var original = btn.innerHTML;
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i><span>Saving…</span>';
+
+        var payload = {
+          teacher_id:     state.teacher.id,
+          teacher_name:   state.teacher.full_name,
+          student_id:     studentId,
+          student_name:   studentName,
+          subject:        subject,
+          class_name:     cls,
+          score:          score,
+          max_score:      maxScore,
+          exam_type:      examType,
+          teacher_remark: remark,
+          created_at:     new Date().toISOString()
+        };
+
+        state.client.from('scores').insert(payload).then(function (res) {
+          btn.disabled = false;
+          btn.innerHTML = original;
+          if (res && res.error) {
+            console.error('[BH] insert score error:', res.error);
+            showToast('Failed to save score: ' + (res.error.message || 'Unknown error'), 'error');
+            return;
+          }
+          showToast('Score saved for ' + (studentName || 'student') + '!', 'success');
+          form.reset();
+          // Restore the auto-filled subject + default max
+          document.getElementById('scoreSubjectInput').value = subject;
+          document.getElementById('maxScoreInput').value = '100';
+          document.getElementById('scoreStudentSelect').disabled = true;
+          document.getElementById('scoreStudentSelect').innerHTML = '<option value="">Select class first…</option>';
+          document.getElementById('scoreHint').textContent = '';
+          // Refresh recent scores
+          loadDashboardData();
+        }).catch(function (err) {
+          btn.disabled = false;
+          btn.innerHTML = original;
+          console.error('[BH] insert score exception:', err);
+          showToast('Failed to save score. Please try again.', 'error');
+        });
+      });
+
+      // ---------- Boot ----------
+      boot();
+    </script>
+  </body>
+</html>

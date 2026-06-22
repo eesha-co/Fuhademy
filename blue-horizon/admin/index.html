@@ -28,41 +28,61 @@
 
       .nav-link-active {
         background: linear-gradient(135deg, rgba(31,80,123,0.10), rgba(1,149,219,0.06));
-        color: var(--bh-navy);
+        color: var(--bh-navy) !important;
         font-weight: 600;
       }
+      .nav-link { transition: all .15s ease; }
+      .nav-link:hover { background: #f1f5f9; color: var(--bh-navy); }
 
       .toast {
         position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 9999;
         padding: 0.9rem 1.2rem; border-radius: 0.75rem; color: #fff; font-size: 0.875rem;
         box-shadow: 0 12px 30px -10px rgba(0,0,0,0.25);
+        animation: toastIn 0.25s ease-out; max-width: 380px;
+        display: flex; align-items: center; gap: 0.5rem;
       }
       .toast.success { background: #16a34a; }
       .toast.error   { background: #dc2626; }
       .toast.info    { background: var(--bh-navy); }
+      @keyframes toastIn {
+        from { transform: translateY(20px); opacity: 0; }
+        to   { transform: translateY(0);    opacity: 1; }
+      }
 
       .stat-card { transition: all .25s ease; }
       .stat-card:hover { transform: translateY(-3px); box-shadow: 0 18px 35px -15px rgba(31,80,123,0.35); }
 
+      .class-card { position: relative; overflow: hidden; transition: all .25s ease; cursor: pointer; }
+      .class-card:hover { transform: translateY(-4px); box-shadow: 0 20px 40px -15px rgba(31,80,123,0.30); }
+      .class-card::before {
+        content: ''; position: absolute; top:0; left:0; right:0; height: 4px;
+        background: var(--class-color);
+      }
+      .class-jss1 { --class-color:#0195db; }
+      .class-jss2 { --class-color:#14b8a6; }
+      .class-jss3 { --class-color:#22c55e; }
+      .class-sss1 { --class-color:#f59e0b; }
+      .class-sss2 { --class-color:#ef4444; }
+      .class-sss3 { --class-color:#8b5cf6; }
+
       .form-input {
         width: 100%; padding: 0.65rem 0.9rem; border-radius: 0.75rem;
-        border: 1px solid #e2e8f0; background: #fff; font-size: 0.875rem;
-        transition: all .15s ease;
+        border: 1px solid #e2e8f0; background: #f8fafc; font-size: 0.875rem;
+        color: #1e293b; transition: all .15s ease;
       }
       .form-input:focus {
-        outline: none; border-color: rgba(31,80,123,0.5);
-        box-shadow: 0 0 0 3px rgba(31,80,123,0.15);
+        outline: none; background: #fff; border-color: rgba(31,80,123,0.5);
+        box-shadow: 0 0 0 3px rgba(31,80,123,0.10);
       }
       .form-label {
         display: block; font-size: 0.75rem; font-weight: 600;
-        color: #475569; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.35rem;
+        color: #475569; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 0.35rem;
       }
 
       .tab-btn { transition: all .15s ease; }
       .tab-btn.active {
         background: linear-gradient(135deg, var(--bh-navy), var(--bh-navy-2));
-        color: #fff;
-        box-shadow: 0 8px 18px -8px rgba(31,80,123,0.55);
+        color: #fff; box-shadow: 0 8px 18px -8px rgba(31,80,123,0.55);
       }
 
       #sidebar-overlay {
@@ -78,9 +98,69 @@
         border-top-color: #fff; border-radius: 50%; animation: spin .7s linear infinite;
         display: inline-block;
       }
+      .spinner-navy { border-color: rgba(31,80,123,0.25); border-top-color: var(--bh-navy); }
       @keyframes spin { to { transform: rotate(360deg); } }
 
-      .table-row:hover { background: #f8fafc; }
+      .table-row { transition: background-color 0.15s ease; }
+      .table-row:hover { background-color: #f8fafc; }
+
+      .skeleton {
+        background: linear-gradient(90deg, #eef2f7 25%, #dbe3ee 50%, #eef2f7 75%);
+        background-size: 200% 100%; animation: skeleton-loading 1.5s infinite;
+        border-radius: 0.5rem;
+      }
+      @keyframes skeleton-loading {
+        0%   { background-position: 200% 0; }
+        100% { background-position: -200% 0; }
+      }
+
+      .modal-backdrop {
+        position: fixed; inset: 0; background: rgba(15, 35, 60, 0.55);
+        backdrop-filter: blur(4px); z-index: 50;
+        display: flex; align-items: flex-start; justify-content: center;
+        padding: 1.5rem 1rem; overflow-y: auto;
+        opacity: 0; pointer-events: none; transition: opacity 0.2s ease;
+      }
+      .modal-backdrop.show { opacity: 1; pointer-events: auto; }
+      .modal-card {
+        background: #fff; border-radius: 1rem; max-width: 640px; width: 100%;
+        box-shadow: 0 25px 60px -20px rgba(0,0,0,0.4);
+        transform: translateY(10px); transition: transform 0.2s ease;
+        margin: auto;
+      }
+      .modal-backdrop.show .modal-card { transform: translateY(0); }
+
+      .hero-gradient {
+        background: linear-gradient(-45deg, #1f507b, #2c5282, #0195db, #1f507b);
+        background-size: 400% 400%; animation: gradientFlow 18s ease infinite;
+      }
+      @keyframes gradientFlow {
+        0%   { background-position: 0% 50%; }
+        50%  { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+      }
+
+      .view { display: none; }
+      .view.active { display: block; animation: fadeIn 0.25s ease; }
+      @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+      .badge { display: inline-flex; align-items: center; gap: 0.25rem; padding: 0.15rem 0.55rem; border-radius: 999px; font-size: 0.7rem; font-weight: 600; }
+      .badge-active   { background: #dcfce7; color: #166534; }
+      .badge-inactive { background: #fee2e2; color: #991b1b; }
+      .badge-overdue  { background: #fef3c7; color: #92400e; }
+      .badge-present  { background: #dcfce7; color: #166534; }
+      .badge-absent   { background: #fee2e2; color: #991b1b; }
+      .badge-late     { background: #fef3c7; color: #92400e; }
+      .badge-ongoing  { background: #dbeafe; color: #1e40af; }
+      .badge-ended    { background: #f1f5f9; color: #475569; }
+
+      /* Print styles for attendance export */
+      @media print {
+        body * { visibility: hidden; }
+        #printArea, #printArea * { visibility: visible; }
+        #printArea { position: absolute; left: 0; top: 0; width: 100%; padding: 24px; }
+        .no-print { display: none !important; }
+      }
     </style>
     <script>
       tailwind.config = {
@@ -98,7 +178,7 @@
 
       <div id="sidebar-overlay"></div>
 
-      <!-- Sidebar -->
+      <!-- ===================== Sidebar ===================== -->
       <aside id="sidebar" class="w-72 lg:w-80 fixed left-0 top-0 h-full bg-white border-r border-slate-200 flex flex-col z-40 hide lg:translate-x-0">
         <div class="p-5 border-b border-slate-100">
           <div class="flex items-center gap-3">
@@ -115,928 +195,2216 @@
           </div>
         </div>
 
-        <nav class="flex-1 overflow-y-auto p-4 space-y-5">
+        <nav class="flex-1 overflow-y-auto p-4 space-y-5" id="sidebarNav">
           <div>
-            <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider px-3 mb-2">Management</div>
-            <ul class="space-y-1">
-              <li><a href="#" data-view="dashboard"   class="nav-link nav-link-active flex items-center gap-3 px-3 py-2.5 rounded-xl">
-                <i class="fas fa-tachometer-alt text-bh-navy w-5"></i><span>Dashboard</span></a></li>
-              <li><a href="#" data-view="students"    class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 hover:bg-slate-50 transition-colors">
-                <i class="fas fa-user-graduate text-emerald-500 w-5"></i><span>Students</span></a></li>
-              <li><a href="#" data-view="teachers"    class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 hover:bg-slate-50 transition-colors">
-                <i class="fas fa-chalkboard-teacher text-violet-500 w-5"></i><span>Teachers</span></a></li>
-              <li><a href="#" data-view="classes"     class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 hover:bg-slate-50 transition-colors">
-                <i class="fas fa-school text-amber-500 w-5"></i><span>Classes</span></a></li>
-              <li><a href="#" data-view="timetables"  class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 hover:bg-slate-50 transition-colors">
-                <i class="fas fa-clock text-rose-500 w-5"></i><span>Timetables</span></a></li>
-              <li><a href="#" data-view="scores"      class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 hover:bg-slate-50 transition-colors">
-                <i class="fas fa-chart-bar text-cyan-600 w-5"></i><span>Scores</span></a></li>
-              <li><a href="#" data-view="subscriptions" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 hover:bg-slate-50 transition-colors">
-                <i class="fas fa-credit-card text-indigo-500 w-5"></i><span>Subscriptions</span></a></li>
-              <li><a href="#" data-view="reports"     class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 hover:bg-slate-50 transition-colors">
-                <i class="fas fa-file-alt text-teal-600 w-5"></i><span>Reports</span></a></li>
-            </ul>
+            <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider px-3 mb-2">Overview</div>
+            <a href="#" data-view="dashboard" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-slate-600">
+              <i class="fas fa-gauge-high w-5 text-center"></i><span>Dashboard</span>
+            </a>
           </div>
 
           <div>
-            <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider px-3 mb-2">Quick Links</div>
-            <ul class="space-y-1">
-              <li><a href="../website.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 hover:bg-slate-50 transition-colors">
-                <i class="fas fa-globe text-slate-500 w-5"></i><span>School Website</span></a></li>
-              <li><a href="../login.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 hover:bg-slate-50 transition-colors">
-                <i class="fas fa-sign-out-alt text-slate-500 w-5"></i><span>Switch Account</span></a></li>
-            </ul>
+            <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider px-3 mb-2">People</div>
+            <a href="#" data-view="students" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-slate-600">
+              <i class="fas fa-user-graduate w-5 text-center"></i><span>Students</span>
+            </a>
+            <a href="#" data-view="teachers" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-slate-600">
+              <i class="fas fa-chalkboard-user w-5 text-center"></i><span>Teachers</span>
+            </a>
+            <a href="#" data-view="classes" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-slate-600">
+              <i class="fas fa-school w-5 text-center"></i><span>Classes</span>
+            </a>
+          </div>
+
+          <div>
+            <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider px-3 mb-2">Academics</div>
+            <a href="#" data-view="timetables" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-slate-600">
+              <i class="fas fa-calendar-days w-5 text-center"></i><span>Timetables</span>
+            </a>
+            <a href="#" data-view="scores" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-slate-600">
+              <i class="fas fa-chart-line w-5 text-center"></i><span>Scores</span>
+            </a>
+            <a href="#" data-view="assignments" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-slate-600">
+              <i class="fas fa-file-pen w-5 text-center"></i><span>Assignments</span>
+            </a>
+          </div>
+
+          <div>
+            <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider px-3 mb-2">Operations</div>
+            <a href="#" data-view="subscriptions" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-slate-600">
+              <i class="fas fa-credit-card w-5 text-center"></i><span>Subscriptions</span>
+            </a>
+            <a href="#" data-view="attendance" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-slate-600">
+              <i class="fas fa-clipboard-check w-5 text-center"></i><span>Attendance</span>
+            </a>
+            <a href="#" data-view="live-sessions" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-slate-600">
+              <i class="fas fa-video w-5 text-center"></i><span>Live Sessions</span>
+            </a>
+          </div>
+
+          <div>
+            <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider px-3 mb-2">System</div>
+            <a href="#" data-view="reports" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-slate-600">
+              <i class="fas fa-file-export w-5 text-center"></i><span>Reports</span>
+            </a>
+            <a href="#" data-view="settings" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-slate-600">
+              <i class="fas fa-gear w-5 text-center"></i><span>Settings</span>
+            </a>
           </div>
         </nav>
 
+        <!-- User profile -->
         <div class="p-4 border-t border-slate-100">
-          <div class="flex items-center gap-3 p-2 rounded-xl bg-slate-50">
-            <img id="avatar-sm" alt="avatar" src="https://ui-avatars.com/api/?name=A&background=1f507b&color=fff&size=80&bold=true" class="w-10 h-10 rounded-full border-2 border-bh-navy/30 object-cover">
+          <div class="flex items-center gap-3 p-3 rounded-xl bg-slate-50">
+            <div class="w-10 h-10 rounded-full bg-gradient-to-br from-bh-navy to-bh-navy-2 flex items-center justify-center text-white font-bold text-sm" id="adminAvatar">A</div>
             <div class="flex-1 min-w-0">
-              <div id="adminName" class="font-semibold text-slate-800 truncate">Administrator</div>
-              <div id="adminRole" class="text-xs text-slate-500">School Admin</div>
+              <div class="text-sm font-semibold text-slate-800 truncate" id="adminName">Admin</div>
+              <div class="text-[11px] text-slate-400 truncate" id="adminUsername">@admin</div>
             </div>
-            <button id="logoutBtn" title="Sign out" class="p-2 rounded-lg hover:bg-rose-50 text-slate-400 hover:text-rose-500 transition-colors">
-              <i class="fas fa-sign-out-alt"></i>
+            <button id="signOutBtn" title="Sign out" class="text-slate-400 hover:text-red-500 transition-colors p-2">
+              <i class="fas fa-right-from-bracket"></i>
             </button>
           </div>
         </div>
       </aside>
 
-      <!-- Main Content -->
-      <div id="main-content" class="flex-1 flex flex-col ml-0 lg:ml-80">
-
-        <!-- Top Header -->
-        <header class="sticky top-0 z-30 bg-white/85 backdrop-blur-xl border-b border-slate-200/60 px-4 md:px-6 py-3.5">
-          <div class="flex items-center justify-between gap-4">
-            <div class="flex items-center gap-3">
-              <button id="toggleSidebar" class="p-2 rounded-xl hover:bg-slate-100 lg:hidden transition-colors" aria-label="Toggle sidebar">
-                <i class="fas fa-bars text-slate-500"></i>
-              </button>
-              <div>
-                <h1 id="pageTitle" class="text-lg font-bold text-slate-800">Dashboard</h1>
-                <p id="pageSubtitle" class="text-xs text-slate-500 hidden sm:block">School overview at a glance</p>
-              </div>
+      <!-- ===================== Main ===================== -->
+      <main class="flex-1 lg:ml-80 min-w-0">
+        <!-- Top bar -->
+        <header class="sticky top-0 z-20 bg-white/85 backdrop-blur border-b border-slate-200">
+          <div class="flex items-center gap-3 px-4 sm:px-6 py-3">
+            <button id="hamburger" class="lg:hidden p-2 rounded-lg hover:bg-slate-100 text-slate-600" aria-label="Open menu">
+              <i class="fas fa-bars text-lg"></i>
+            </button>
+            <div class="flex-1 min-w-0">
+              <h1 id="pageTitle" class="text-lg sm:text-xl font-bold text-slate-800 truncate">Dashboard</h1>
+              <p id="pageSubtitle" class="text-xs text-slate-400 truncate">School-wide overview</p>
             </div>
-
-            <div class="flex items-center gap-3">
-              <button id="quickAddBtn" class="hidden md:inline-flex px-3 py-2 bg-bh-navy text-white text-sm rounded-xl hover:bg-bh-navy-2 transition-colors items-center gap-2">
-                <i class="fas fa-plus"></i><span>Quick Add</span>
-              </button>
-              <div class="hidden sm:flex items-center gap-3">
-                <img id="topAvatar" alt="avatar" src="https://ui-avatars.com/api/?name=A&background=1f507b&color=fff&size=80&bold=true" class="w-9 h-9 rounded-full border-2 border-bh-navy/30">
-                <div class="text-right">
-                  <div id="topName" class="font-semibold text-slate-800 text-sm">Administrator</div>
-                  <div class="text-xs text-slate-500">School Admin</div>
-                </div>
-              </div>
+            <div class="hidden sm:flex items-center gap-2 text-xs text-slate-500">
+              <i class="far fa-calendar"></i>
+              <span id="todayDate"></span>
             </div>
+            <button id="refreshBtn" class="ml-1 p-2 rounded-lg hover:bg-slate-100 text-slate-600" title="Refresh current view">
+              <i class="fas fa-rotate"></i>
+            </button>
           </div>
         </header>
 
-        <!-- Main Body -->
-        <main class="p-4 md:p-6 space-y-6 overflow-y-auto">
+        <!-- Loading overlay -->
+        <div id="loadingOverlay" class="fixed inset-0 z-[60] bg-white flex flex-col items-center justify-center">
+          <div class="w-14 h-14 border-4 border-slate-200 border-t-bh-navy rounded-full animate-spin"></div>
+          <div class="mt-4 text-sm text-slate-500">Loading admin panel…</div>
+        </div>
 
-          <!-- Loading overlay -->
-          <div id="loadingOverlay" class="fixed inset-0 bg-white/70 backdrop-blur z-50 flex items-center justify-center">
-            <div class="text-center">
-              <div class="w-12 h-12 border-4 border-bh-navy/20 border-t-bh-navy rounded-full animate-spin mx-auto mb-3"></div>
-              <p class="text-slate-500 text-sm">Loading admin panel…</p>
+        <!-- Views container -->
+        <div class="p-4 sm:p-6 max-w-[1400px] mx-auto">
+
+          <!-- ============== DASHBOARD ============== -->
+          <section id="view-dashboard" class="view active">
+            <!-- Welcome hero -->
+            <div class="hero-gradient rounded-2xl p-5 sm:p-7 text-white mb-6 relative overflow-hidden">
+              <div class="relative z-10">
+                <div class="text-xs uppercase tracking-wider opacity-80 mb-1">Welcome back</div>
+                <h2 class="text-xl sm:text-2xl font-extrabold mb-1" id="welcomeName">Administrator</h2>
+                <p class="text-sm opacity-90 max-w-xl">You have school-wide visibility across all 6 classes (JSS1–SSS3). Use the sidebar to manage students, teachers, timetables, scores, payments and more.</p>
+              </div>
+              <i class="fas fa-water absolute -right-6 -bottom-8 text-[8rem] opacity-10"></i>
             </div>
-          </div>
 
-          <!-- ============ DASHBOARD VIEW ============ -->
-          <section id="view-dashboard" class="space-y-6">
             <!-- Stat cards -->
-            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
-              <div class="stat-card bg-white rounded-2xl border border-slate-200 shadow-sm p-5">
-                <div class="flex items-center justify-between mb-3">
-                  <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-bh-navy to-bh-navy-2 flex items-center justify-center">
-                    <i class="fas fa-user-graduate text-white"></i>
-                  </div>
-                  <span class="text-xs font-medium text-emerald-600"><i class="fas fa-arrow-up"></i> Active</span>
+            <div class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-3 sm:gap-4 mb-6" id="statCards">
+              <div class="stat-card bg-white rounded-2xl p-4 border border-slate-100 shadow-sm">
+                <div class="flex items-center justify-between">
+                  <div class="w-10 h-10 rounded-xl bg-blue-50 text-bh-navy flex items-center justify-center"><i class="fas fa-user-graduate"></i></div>
                 </div>
-                <div id="statStudents" class="text-2xl font-bold text-slate-800">—</div>
-                <p class="text-xs text-slate-500 mt-1">Total Students</p>
+                <div class="mt-3 text-2xl font-extrabold text-slate-800" id="statStudents">—</div>
+                <div class="text-xs text-slate-500">Total Students</div>
               </div>
-              <div class="stat-card bg-white rounded-2xl border border-slate-200 shadow-sm p-5">
-                <div class="flex items-center justify-between mb-3">
-                  <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center">
-                    <i class="fas fa-chalkboard-teacher text-white"></i>
-                  </div>
-                  <span class="text-xs font-medium text-emerald-600"><i class="fas fa-arrow-up"></i> Teaching</span>
-                </div>
-                <div id="statTeachers" class="text-2xl font-bold text-slate-800">—</div>
-                <p class="text-xs text-slate-500 mt-1">Total Teachers</p>
+              <div class="stat-card bg-white rounded-2xl p-4 border border-slate-100 shadow-sm">
+                <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center"><i class="fas fa-chalkboard-user"></i></div>
+                <div class="mt-3 text-2xl font-extrabold text-slate-800" id="statTeachers">—</div>
+                <div class="text-xs text-slate-500">Total Teachers</div>
               </div>
-              <div class="stat-card bg-white rounded-2xl border border-slate-200 shadow-sm p-5">
-                <div class="flex items-center justify-between mb-3">
-                  <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center">
-                    <i class="fas fa-credit-card text-white"></i>
-                  </div>
-                  <span class="text-xs font-medium text-amber-600"><i class="fas fa-clock"></i> Active</span>
-                </div>
-                <div id="statSubs" class="text-2xl font-bold text-slate-800">—</div>
-                <p class="text-xs text-slate-500 mt-1">Active Subscriptions</p>
+              <div class="stat-card bg-white rounded-2xl p-4 border border-slate-100 shadow-sm">
+                <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center"><i class="fas fa-credit-card"></i></div>
+                <div class="mt-3 text-2xl font-extrabold text-slate-800" id="statActiveSubs">—</div>
+                <div class="text-xs text-slate-500">Active Subscriptions</div>
               </div>
-              <div class="stat-card bg-white rounded-2xl border border-slate-200 shadow-sm p-5">
-                <div class="flex items-center justify-between mb-3">
-                  <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center">
-                    <i class="fas fa-naira-sign fa-money-bill text-white"></i>
-                  </div>
-                  <span class="text-xs font-medium text-emerald-600"><i class="fas fa-arrow-up"></i> This term</span>
-                </div>
-                <div id="statRevenue" class="text-2xl font-bold text-slate-800">—</div>
-                <p class="text-xs text-slate-500 mt-1">Revenue (₦)</p>
+              <div class="stat-card bg-white rounded-2xl p-4 border border-slate-100 shadow-sm">
+                <div class="w-10 h-10 rounded-xl bg-green-50 text-green-600 flex items-center justify-center"><i class="fas fa-naira-sign"></i></div>
+                <div class="mt-3 text-2xl font-extrabold text-slate-800" id="statRevenue">—</div>
+                <div class="text-xs text-slate-500">Revenue (₦)</div>
+              </div>
+              <div class="stat-card bg-white rounded-2xl p-4 border border-slate-100 shadow-sm">
+                <div class="w-10 h-10 rounded-xl bg-red-50 text-red-500 flex items-center justify-center"><i class="fas fa-video"></i></div>
+                <div class="mt-3 text-2xl font-extrabold text-slate-800" id="statLive">—</div>
+                <div class="text-xs text-slate-500">Ongoing Live Sessions</div>
+              </div>
+              <div class="stat-card bg-white rounded-2xl p-4 border border-slate-100 shadow-sm">
+                <div class="w-10 h-10 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center"><i class="fas fa-file-pen"></i></div>
+                <div class="mt-3 text-2xl font-extrabold text-slate-800" id="statAssignments">—</div>
+                <div class="text-xs text-slate-500">Pending Assignments</div>
               </div>
             </div>
 
-            <!-- Recent registrations + payments -->
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              <div class="lg:col-span-2 bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-                <div class="p-5 border-b border-slate-100 flex items-center justify-between">
-                  <div>
-                    <h2 class="text-lg font-bold text-slate-800">Recent Registrations</h2>
-                    <p class="text-xs text-slate-500">Latest students &amp; teachers added</p>
-                  </div>
-                  <a href="#" data-view="students" class="nav-link text-xs font-medium text-bh-navy hover:underline">View all →</a>
+            <!-- Class cards -->
+            <div class="mb-6">
+              <div class="flex items-center justify-between mb-3">
+                <h3 class="text-base font-bold text-slate-800">Classes Overview</h3>
+                <span class="text-xs text-slate-400">Click a class to view details</span>
+              </div>
+              <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3 sm:gap-4" id="classCardsGrid">
+                <!-- skeleton -->
+                <div class="bg-white rounded-2xl p-5 border border-slate-100"><div class="skeleton h-6 w-24 mb-3"></div><div class="skeleton h-4 w-32 mb-2"></div><div class="skeleton h-4 w-28"></div></div>
+                <div class="bg-white rounded-2xl p-5 border border-slate-100"><div class="skeleton h-6 w-24 mb-3"></div><div class="skeleton h-4 w-32 mb-2"></div><div class="skeleton h-4 w-28"></div></div>
+                <div class="bg-white rounded-2xl p-5 border border-slate-100"><div class="skeleton h-6 w-24 mb-3"></div><div class="skeleton h-4 w-32 mb-2"></div><div class="skeleton h-4 w-28"></div></div>
+              </div>
+            </div>
+
+            <!-- Recent registrations + subscription summary -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
+              <div class="lg:col-span-2 bg-white rounded-2xl p-5 border border-slate-100 shadow-sm">
+                <div class="flex items-center justify-between mb-4">
+                  <h3 class="text-base font-bold text-slate-800">Recent Registrations</h3>
+                  <span class="text-xs text-slate-400">Last 5 added</span>
                 </div>
                 <div class="overflow-x-auto">
                   <table class="w-full text-sm">
-                    <thead class="bg-slate-50/60 text-slate-500 text-xs uppercase tracking-wide">
-                      <tr>
-                        <th class="text-left p-3">Name</th>
-                        <th class="text-left p-3">Role</th>
-                        <th class="text-left p-3">Class / Subject</th>
-                        <th class="text-left p-3">Date</th>
-                        <th class="text-left p-3">Status</th>
+                    <thead>
+                      <tr class="text-left text-xs text-slate-400 border-b border-slate-100">
+                        <th class="pb-2 font-semibold">Name</th>
+                        <th class="pb-2 font-semibold">Role</th>
+                        <th class="pb-2 font-semibold">Class / Subject</th>
+                        <th class="pb-2 font-semibold">Date</th>
                       </tr>
                     </thead>
-                    <tbody id="recentRegsBody">
-                      <tr><td colspan="5" class="p-8 text-center text-slate-400 text-sm">Loading…</td></tr>
+                    <tbody id="recentRegBody">
+                      <tr><td colspan="4" class="py-6 text-center text-slate-400 text-xs">Loading…</td></tr>
                     </tbody>
                   </table>
                 </div>
               </div>
-
-              <!-- Payment status -->
-              <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-                <div class="p-5 border-b border-slate-100">
-                  <h2 class="text-lg font-bold text-slate-800">Payment Status</h2>
-                  <p class="text-xs text-slate-500">Current term subscriptions</p>
-                </div>
-                <div id="paymentStatus" class="p-5 space-y-3">
-                  <div class="text-center text-slate-400 text-sm py-6">Loading…</div>
+              <div class="bg-white rounded-2xl p-5 border border-slate-100 shadow-sm">
+                <h3 class="text-base font-bold text-slate-800 mb-4">Subscription Status</h3>
+                <div class="space-y-3" id="subSummary">
+                  <div class="flex items-center justify-between p-3 rounded-xl bg-emerald-50">
+                    <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span><span class="text-sm text-slate-700">Active</span></div>
+                    <span class="font-bold text-emerald-700" id="subActiveCount">—</span>
+                  </div>
+                  <div class="flex items-center justify-between p-3 rounded-xl bg-amber-50">
+                    <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span><span class="text-sm text-slate-700">Overdue</span></div>
+                    <span class="font-bold text-amber-700" id="subOverdueCount">—</span>
+                  </div>
+                  <div class="flex items-center justify-between p-3 rounded-xl bg-red-50">
+                    <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-red-500"></span><span class="text-sm text-slate-700">Inactive</span></div>
+                    <span class="font-bold text-red-700" id="subInactiveCount">—</span>
+                  </div>
                 </div>
               </div>
             </div>
           </section>
 
-          <!-- ============ STUDENTS VIEW ============ -->
-          <section id="view-students" class="hidden space-y-6">
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              <!-- Registration form -->
-              <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
-                <div class="flex items-center gap-3 mb-4">
-                  <div class="w-10 h-10 rounded-xl bg-emerald-100 flex items-center justify-center">
-                    <i class="fas fa-user-plus text-emerald-600"></i>
-                  </div>
-                  <div>
-                    <h3 class="font-bold text-slate-800">Register Student</h3>
-                    <p class="text-xs text-slate-500">Create a new student account</p>
-                  </div>
-                </div>
-                <form id="studentForm" class="space-y-3">
-                  <div>
-                    <label class="form-label">Full Name *</label>
-                    <input name="name" required class="form-input" placeholder="John Doe">
-                  </div>
-                  <div class="grid grid-cols-2 gap-3">
-                    <div>
-                      <label class="form-label">Username *</label>
-                      <input name="username" required class="form-input" placeholder="john.doe">
-                    </div>
-                    <div>
-                      <label class="form-label">Password *</label>
-                      <input name="password" required type="text" class="form-input" placeholder="temp password">
-                    </div>
-                  </div>
-                  <div class="grid grid-cols-2 gap-3">
-                    <div>
-                      <label class="form-label">Class</label>
-                      <select name="class_name" class="form-input">
-                        <option value="JSS 1">JSS 1</option>
-                        <option value="JSS 2">JSS 2</option>
-                        <option value="JSS 3">JSS 3</option>
-                        <option value="SS 1">SS 1</option>
-                        <option value="SS 2">SS 2</option>
-                        <option value="SS 3" selected>SS 3</option>
-                      </select>
-                    </div>
-                    <div>
-                      <label class="form-label">Gender</label>
-                      <select name="gender" class="form-input">
-                        <option value="Male">Male</option>
-                        <option value="Female">Female</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div>
-                    <label class="form-label">Guardian Email</label>
-                    <input name="email" type="email" class="form-input" placeholder="parent@email.com">
-                  </div>
-                  <div>
-                    <label class="form-label">Guardian Phone</label>
-                    <input name="phone" class="form-input" placeholder="+234 800 000 0000">
-                  </div>
-                  <button type="submit" class="w-full py-2.5 bg-bh-navy text-white rounded-xl font-medium hover:bg-bh-navy-2 transition-colors text-sm flex items-center justify-center gap-2">
-                    <i class="fas fa-user-plus"></i><span>Register Student</span>
-                  </button>
-                </form>
-              </div>
-
-              <!-- Student list -->
-              <div class="lg:col-span-2 bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-                <div class="p-5 border-b border-slate-100 flex items-center justify-between">
-                  <div>
-                    <h3 class="font-bold text-slate-800">Student Directory</h3>
-                    <p class="text-xs text-slate-500">All registered students</p>
-                  </div>
+          <!-- ============== STUDENTS ============== -->
+          <section id="view-students" class="view">
+            <div class="bg-white rounded-2xl p-4 sm:p-5 border border-slate-100 shadow-sm">
+              <div class="flex flex-col sm:flex-row sm:items-center gap-3 mb-4">
+                <div class="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div class="relative">
-                    <input id="studentSearch" type="search" placeholder="Search…"
-                      class="pl-9 pr-3 py-2 rounded-lg border border-slate-200 bg-slate-50/60 text-sm focus:outline-none focus:ring-2 focus:ring-bh-navy/15">
                     <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+                    <input id="studentSearch" type="text" placeholder="Search by name or username…" class="form-input pl-9">
                   </div>
+                  <select id="studentClassFilter" class="form-input">
+                    <option value="">All Classes</option>
+                    <option value="JSS1">JSS1</option>
+                    <option value="JSS2">JSS2</option>
+                    <option value="JSS3">JSS3</option>
+                    <option value="SSS1">SSS1</option>
+                    <option value="SSS2">SSS2</option>
+                    <option value="SSS3">SSS3</option>
+                  </select>
                 </div>
-                <div class="overflow-x-auto max-h-[28rem] overflow-y-auto">
-                  <table class="w-full text-sm">
-                    <thead class="bg-slate-50/60 text-slate-500 text-xs uppercase tracking-wide sticky top-0">
-                      <tr>
-                        <th class="text-left p-3">Name</th>
-                        <th class="text-left p-3">Username</th>
-                        <th class="text-left p-3">Class</th>
-                        <th class="text-left p-3">Status</th>
-                      </tr>
-                    </thead>
-                    <tbody id="studentsBody">
-                      <tr><td colspan="4" class="p-8 text-center text-slate-400 text-sm">Loading…</td></tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          <!-- ============ TEACHERS VIEW ============ -->
-          <section id="view-teachers" class="hidden space-y-6">
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
-                <div class="flex items-center gap-3 mb-4">
-                  <div class="w-10 h-10 rounded-xl bg-violet-100 flex items-center justify-center">
-                    <i class="fas fa-user-tie text-violet-600"></i>
-                  </div>
-                  <div>
-                    <h3 class="font-bold text-slate-800">Register Teacher</h3>
-                    <p class="text-xs text-slate-500">Create a new teacher account</p>
-                  </div>
-                </div>
-                <form id="teacherForm" class="space-y-3">
-                  <div>
-                    <label class="form-label">Full Name *</label>
-                    <input name="name" required class="form-input" placeholder="Mrs. Jane Smith">
-                  </div>
-                  <div class="grid grid-cols-2 gap-3">
-                    <div>
-                      <label class="form-label">Username *</label>
-                      <input name="username" required class="form-input" placeholder="jane.smith">
-                    </div>
-                    <div>
-                      <label class="form-label">Password *</label>
-                      <input name="password" required type="text" class="form-input" placeholder="temp password">
-                    </div>
-                  </div>
-                  <div>
-                    <label class="form-label">Subject *</label>
-                    <select name="subject" required class="form-input">
-                      <option value="Mathematics">Mathematics</option>
-                      <option value="English Language">English Language</option>
-                      <option value="Physics">Physics</option>
-                      <option value="Chemistry">Chemistry</option>
-                      <option value="Biology">Biology</option>
-                      <option value="Economics">Economics</option>
-                      <option value="Government">Government</option>
-                      <option value="Commerce">Commerce</option>
-                      <option value="Accounting">Accounting</option>
-                      <option value="Literature in English">Literature in English</option>
-                    </select>
-                  </div>
-                  <div class="grid grid-cols-2 gap-3">
-                    <div>
-                      <label class="form-label">Gender</label>
-                      <select name="gender" class="form-input">
-                        <option value="Male">Male</option>
-                        <option value="Female">Female</option>
-                      </select>
-                    </div>
-                    <div>
-                      <label class="form-label">Phone</label>
-                      <input name="phone" class="form-input" placeholder="+234 800 000 0000">
-                    </div>
-                  </div>
-                  <div>
-                    <label class="form-label">Email</label>
-                    <input name="email" type="email" class="form-input" placeholder="teacher@bluehorizon.edu">
-                  </div>
-                  <button type="submit" class="w-full py-2.5 bg-bh-navy text-white rounded-xl font-medium hover:bg-bh-navy-2 transition-colors text-sm flex items-center justify-center gap-2">
-                    <i class="fas fa-user-tie"></i><span>Register Teacher</span>
-                  </button>
-                </form>
-              </div>
-
-              <div class="lg:col-span-2 bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-                <div class="p-5 border-b border-slate-100 flex items-center justify-between">
-                  <div>
-                    <h3 class="font-bold text-slate-800">Teacher Directory</h3>
-                    <p class="text-xs text-slate-500">All registered teachers</p>
-                  </div>
-                  <div class="relative">
-                    <input id="teacherSearch" type="search" placeholder="Search…"
-                      class="pl-9 pr-3 py-2 rounded-lg border border-slate-200 bg-slate-50/60 text-sm focus:outline-none focus:ring-2 focus:ring-bh-navy/15">
-                    <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
-                  </div>
-                </div>
-                <div class="overflow-x-auto max-h-[28rem] overflow-y-auto">
-                  <table class="w-full text-sm">
-                    <thead class="bg-slate-50/60 text-slate-500 text-xs uppercase tracking-wide sticky top-0">
-                      <tr>
-                        <th class="text-left p-3">Name</th>
-                        <th class="text-left p-3">Username</th>
-                        <th class="text-left p-3">Subject</th>
-                        <th class="text-left p-3">Status</th>
-                      </tr>
-                    </thead>
-                    <tbody id="teachersBody">
-                      <tr><td colspan="4" class="p-8 text-center text-slate-400 text-sm">Loading…</td></tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          <!-- ============ CLASSES VIEW ============ -->
-          <section id="view-classes" class="hidden space-y-6">
-            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-8 text-center">
-              <i class="fas fa-school text-4xl text-slate-300 mb-3"></i>
-              <h3 class="font-bold text-slate-800">Class Management</h3>
-              <p class="text-sm text-slate-500 mt-1 max-w-md mx-auto">Create classes, assign teachers to subjects, and manage student class membership. Connect via Supabase <code class="text-xs bg-slate-100 px-1 py-0.5 rounded">classes</code> table.</p>
-              <div id="classesGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-6 text-left"></div>
-            </div>
-          </section>
-
-          <!-- ============ TIMETABLES VIEW ============ -->
-          <section id="view-timetables" class="hidden space-y-6">
-            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-8 text-center">
-              <i class="fas fa-clock text-4xl text-slate-300 mb-3"></i>
-              <h3 class="font-bold text-slate-800">Timetable Builder</h3>
-              <p class="text-sm text-slate-500 mt-1 max-w-md mx-auto">Build weekly timetables per class. Insert rows into the <code class="text-xs bg-slate-100 px-1 py-0.5 rounded">timetable</code> table via Supabase.</p>
-            </div>
-          </section>
-
-          <!-- ============ SCORES VIEW ============ -->
-          <section id="view-scores" class="hidden space-y-6">
-            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-8 text-center">
-              <i class="fas fa-chart-bar text-4xl text-slate-300 mb-3"></i>
-              <h3 class="font-bold text-slate-800">Score Management</h3>
-              <p class="text-sm text-slate-500 mt-1 max-w-md mx-auto">Enter and review student scores. Score writes go through an Edge Function (service_role).</p>
-            </div>
-          </section>
-
-          <!-- ============ SUBSCRIPTIONS VIEW ============ -->
-          <section id="view-subscriptions" class="hidden space-y-6">
-            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-              <div class="p-5 border-b border-slate-100">
-                <h3 class="font-bold text-slate-800">Subscriptions</h3>
-                <p class="text-xs text-slate-500">All student subscription &amp; payment records</p>
+                <button id="registerStudentBtn" class="bg-bh-navy hover:bg-bh-navy-2 text-white text-sm font-semibold px-4 py-2.5 rounded-xl flex items-center justify-center gap-2 transition-colors">
+                  <i class="fas fa-plus"></i><span>Register Student</span>
+                </button>
               </div>
               <div class="overflow-x-auto">
-                <table class="w-full text-sm">
-                  <thead class="bg-slate-50/60 text-slate-500 text-xs uppercase tracking-wide">
-                    <tr>
-                      <th class="text-left p-3">Student</th>
-                      <th class="text-left p-3">Plan</th>
-                      <th class="text-left p-3">Amount</th>
-                      <th class="text-left p-3">Status</th>
-                      <th class="text-left p-3">Expires</th>
+                <table class="w-full text-sm min-w-[800px]">
+                  <thead>
+                    <tr class="text-left text-xs text-slate-500 border-b border-slate-100">
+                      <th class="p-3 font-semibold">Name</th>
+                      <th class="p-3 font-semibold">Username</th>
+                      <th class="p-3 font-semibold">Class</th>
+                      <th class="p-3 font-semibold">Status</th>
+                      <th class="p-3 font-semibold">Subscription</th>
+                      <th class="p-3 font-semibold">Registered</th>
+                      <th class="p-3 font-semibold text-right">Actions</th>
                     </tr>
                   </thead>
-                  <tbody id="subsBody">
-                    <tr><td colspan="5" class="p-8 text-center text-slate-400 text-sm">Loading…</td></tr>
+                  <tbody id="studentsBody">
+                    <tr><td colspan="7" class="p-8 text-center text-slate-400 text-sm">Loading students…</td></tr>
                   </tbody>
                 </table>
               </div>
             </div>
           </section>
 
-          <!-- ============ REPORTS VIEW ============ -->
-          <section id="view-reports" class="hidden space-y-6">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5">
-                <i class="fas fa-file-export text-bh-navy text-2xl mb-3"></i>
-                <h3 class="font-bold text-slate-800">Student Roster</h3>
-                <p class="text-xs text-slate-500 mt-1">Export all students with class &amp; contact details.</p>
-                <button onclick="BH.exportCSV('students')" class="mt-3 w-full py-2 bg-slate-100 text-slate-700 rounded-lg text-sm hover:bg-slate-200">Export CSV</button>
+          <!-- ============== TEACHERS ============== -->
+          <section id="view-teachers" class="view">
+            <div class="bg-white rounded-2xl p-4 sm:p-5 border border-slate-100 shadow-sm">
+              <div class="flex flex-col sm:flex-row sm:items-center gap-3 mb-4">
+                <div class="flex-1 relative">
+                  <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+                  <input id="teacherSearch" type="text" placeholder="Search by name or subject…" class="form-input pl-9">
+                </div>
+                <button id="registerTeacherBtn" class="bg-bh-navy hover:bg-bh-navy-2 text-white text-sm font-semibold px-4 py-2.5 rounded-xl flex items-center justify-center gap-2 transition-colors">
+                  <i class="fas fa-plus"></i><span>Register Teacher</span>
+                </button>
               </div>
-              <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5">
-                <i class="fas fa-chart-pie text-violet-600 text-2xl mb-3"></i>
-                <h3 class="font-bold text-slate-800">Performance Report</h3>
-                <p class="text-xs text-slate-500 mt-1">Aggregate scores by class &amp; subject.</p>
-                <button onclick="BH.exportCSV('scores')" class="mt-3 w-full py-2 bg-slate-100 text-slate-700 rounded-lg text-sm hover:bg-slate-200">Export CSV</button>
-              </div>
-              <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5">
-                <i class="fas fa-credit-card text-emerald-600 text-2xl mb-3"></i>
-                <h3 class="font-bold text-slate-800">Payment Report</h3>
-                <p class="text-xs text-slate-500 mt-1">Outstanding &amp; completed payments.</p>
-                <button onclick="BH.exportCSV('subscriptions')" class="mt-3 w-full py-2 bg-slate-100 text-slate-700 rounded-lg text-sm hover:bg-slate-200">Export CSV</button>
+              <div class="overflow-x-auto">
+                <table class="w-full text-sm min-w-[800px]">
+                  <thead>
+                    <tr class="text-left text-xs text-slate-500 border-b border-slate-100">
+                      <th class="p-3 font-semibold">Name</th>
+                      <th class="p-3 font-semibold">Username</th>
+                      <th class="p-3 font-semibold">Subject</th>
+                      <th class="p-3 font-semibold">Status</th>
+                      <th class="p-3 font-semibold">Students</th>
+                      <th class="p-3 font-semibold">Registered</th>
+                      <th class="p-3 font-semibold text-right">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="teachersBody">
+                    <tr><td colspan="7" class="p-8 text-center text-slate-400 text-sm">Loading teachers…</td></tr>
+                  </tbody>
+                </table>
               </div>
             </div>
           </section>
 
-          <!-- Footer -->
-          <footer class="text-center text-xs text-slate-400 py-6">
-            &copy; <span id="footerYear"></span> Blue Horizon Schools. Admin Panel. All rights reserved.
-          </footer>
-        </main>
+          <!-- ============== CLASSES ============== -->
+          <section id="view-classes" class="view">
+            <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3 sm:gap-4" id="classesGrid">
+              <div class="bg-white rounded-2xl p-5 border border-slate-100"><div class="skeleton h-6 w-24 mb-3"></div><div class="skeleton h-4 w-32 mb-2"></div><div class="skeleton h-4 w-28"></div></div>
+            </div>
+          </section>
+
+          <!-- ============== TIMETABLES ============== -->
+          <section id="view-timetables" class="view">
+            <div class="bg-white rounded-2xl p-4 sm:p-5 border border-slate-100 shadow-sm">
+              <div class="flex flex-col sm:flex-row sm:items-center gap-3 mb-4">
+                <select id="timetableClassFilter" class="form-input sm:max-w-xs">
+                  <option value="">All Classes</option>
+                  <option value="JSS1">JSS1</option>
+                  <option value="JSS2">JSS2</option>
+                  <option value="JSS3">JSS3</option>
+                  <option value="SSS1">SSS1</option>
+                  <option value="SSS2">SSS2</option>
+                  <option value="SSS3">SSS3</option>
+                </select>
+                <div class="text-xs text-slate-500 sm:ml-auto">Showing all timetables entered by teachers</div>
+              </div>
+              <div class="overflow-x-auto">
+                <table class="w-full text-sm min-w-[700px]">
+                  <thead>
+                    <tr class="text-left text-xs text-slate-500 border-b border-slate-100">
+                      <th class="p-3 font-semibold">Class</th>
+                      <th class="p-3 font-semibold">Day</th>
+                      <th class="p-3 font-semibold">Time</th>
+                      <th class="p-3 font-semibold">Subject</th>
+                      <th class="p-3 font-semibold">Teacher</th>
+                    </tr>
+                  </thead>
+                  <tbody id="timetablesBody">
+                    <tr><td colspan="5" class="p-8 text-center text-slate-400 text-sm">Loading timetables…</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+
+          <!-- ============== SCORES ============== -->
+          <section id="view-scores" class="view">
+            <div class="bg-white rounded-2xl p-4 sm:p-5 border border-slate-100 shadow-sm">
+              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-4">
+                <select id="scoreClassFilter" class="form-input">
+                  <option value="">All Classes</option>
+                  <option value="JSS1">JSS1</option><option value="JSS2">JSS2</option><option value="JSS3">JSS3</option>
+                  <option value="SSS1">SSS1</option><option value="SSS2">SSS2</option><option value="SSS3">SSS3</option>
+                </select>
+                <input id="scoreSubjectFilter" type="text" placeholder="Subject" class="form-input">
+                <input id="scoreTeacherFilter" type="text" placeholder="Teacher name" class="form-input">
+                <div class="flex gap-2">
+                  <input id="scoreFromDate" type="date" class="form-input flex-1" title="From date">
+                  <button id="exportScoresBtn" class="bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold px-3 py-2.5 rounded-xl flex items-center gap-1.5" title="Export to CSV">
+                    <i class="fas fa-file-csv"></i><span class="hidden sm:inline">CSV</span>
+                  </button>
+                </div>
+              </div>
+              <div class="overflow-x-auto">
+                <table class="w-full text-sm min-w-[900px]">
+                  <thead>
+                    <tr class="text-left text-xs text-slate-500 border-b border-slate-100">
+                      <th class="p-3 font-semibold">Student</th>
+                      <th class="p-3 font-semibold">Class</th>
+                      <th class="p-3 font-semibold">Subject</th>
+                      <th class="p-3 font-semibold">Score</th>
+                      <th class="p-3 font-semibold">%</th>
+                      <th class="p-3 font-semibold">Teacher</th>
+                      <th class="p-3 font-semibold">Date</th>
+                      <th class="p-3 font-semibold">Remark</th>
+                    </tr>
+                  </thead>
+                  <tbody id="scoresBody">
+                    <tr><td colspan="8" class="p-8 text-center text-slate-400 text-sm">Loading scores…</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+
+          <!-- ============== ASSIGNMENTS ============== -->
+          <section id="view-assignments" class="view">
+            <div class="bg-white rounded-2xl p-4 sm:p-5 border border-slate-100 shadow-sm">
+              <div class="flex items-center justify-between mb-4">
+                <div class="text-xs text-slate-500">All assignments posted by teachers across all classes</div>
+                <button id="exportAssignmentsBtn" class="bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold px-3 py-2 rounded-xl flex items-center gap-1.5">
+                  <i class="fas fa-file-csv"></i><span>Export</span>
+                </button>
+              </div>
+              <div class="overflow-x-auto">
+                <table class="w-full text-sm min-w-[800px]">
+                  <thead>
+                    <tr class="text-left text-xs text-slate-500 border-b border-slate-100">
+                      <th class="p-3 font-semibold">Title</th>
+                      <th class="p-3 font-semibold">Class</th>
+                      <th class="p-3 font-semibold">Subject</th>
+                      <th class="p-3 font-semibold">Teacher</th>
+                      <th class="p-3 font-semibold">Posted</th>
+                    </tr>
+                  </thead>
+                  <tbody id="assignmentsBody">
+                    <tr><td colspan="5" class="p-8 text-center text-slate-400 text-sm">Loading assignments…</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+
+          <!-- ============== SUBSCRIPTIONS ============== -->
+          <section id="view-subscriptions" class="view">
+            <div class="bg-white rounded-2xl p-4 sm:p-5 border border-slate-100 shadow-sm">
+              <div class="flex flex-col sm:flex-row sm:items-center gap-3 mb-4">
+                <select id="subStatusFilter" class="form-input sm:max-w-xs">
+                  <option value="">All Statuses</option>
+                  <option value="active">Active</option>
+                  <option value="overdue">Overdue</option>
+                  <option value="inactive">Inactive</option>
+                </select>
+                <button id="exportSubsBtn" class="sm:ml-auto bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold px-3 py-2.5 rounded-xl flex items-center gap-1.5">
+                  <i class="fas fa-file-csv"></i><span>Export</span>
+                </button>
+              </div>
+              <div class="overflow-x-auto">
+                <table class="w-full text-sm min-w-[900px]">
+                  <thead>
+                    <tr class="text-left text-xs text-slate-500 border-b border-slate-100">
+                      <th class="p-3 font-semibold">Student</th>
+                      <th class="p-3 font-semibold">Class</th>
+                      <th class="p-3 font-semibold">Amount</th>
+                      <th class="p-3 font-semibold">Status</th>
+                      <th class="p-3 font-semibold">Paid From</th>
+                      <th class="p-3 font-semibold">Paid Until</th>
+                      <th class="p-3 font-semibold text-right">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="subsBody">
+                    <tr><td colspan="7" class="p-8 text-center text-slate-400 text-sm">Loading subscriptions…</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+
+          <!-- ============== ATTENDANCE ============== -->
+          <section id="view-attendance" class="view">
+            <div class="bg-white rounded-2xl p-4 sm:p-5 border border-slate-100 shadow-sm mb-4">
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4">
+                <input id="attendanceDate" type="date" class="form-input">
+                <select id="attendanceClassFilter" class="form-input">
+                  <option value="">All Classes</option>
+                  <option value="JSS1">JSS1</option><option value="JSS2">JSS2</option><option value="JSS3">JSS3</option>
+                  <option value="SSS1">SSS1</option><option value="SSS2">SSS2</option><option value="SSS3">SSS3</option>
+                </select>
+                <button id="printAttendanceBtn" class="bg-bh-navy hover:bg-bh-navy-2 text-white text-sm font-semibold px-4 py-2.5 rounded-xl flex items-center justify-center gap-2">
+                  <i class="fas fa-print"></i><span>Export for Printing</span>
+                </button>
+              </div>
+
+              <!-- Attendance summary -->
+              <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 mb-4" id="attendanceSummary">
+                <div class="p-3 rounded-xl bg-slate-50 text-center">
+                  <div class="text-[11px] text-slate-500 uppercase tracking-wide">JSS1</div>
+                  <div class="text-lg font-bold text-bh-navy" data-class="JSS1">—</div>
+                </div>
+                <div class="p-3 rounded-xl bg-slate-50 text-center">
+                  <div class="text-[11px] text-slate-500 uppercase tracking-wide">JSS2</div>
+                  <div class="text-lg font-bold text-bh-navy" data-class="JSS2">—</div>
+                </div>
+                <div class="p-3 rounded-xl bg-slate-50 text-center">
+                  <div class="text-[11px] text-slate-500 uppercase tracking-wide">JSS3</div>
+                  <div class="text-lg font-bold text-bh-navy" data-class="JSS3">—</div>
+                </div>
+                <div class="p-3 rounded-xl bg-slate-50 text-center">
+                  <div class="text-[11px] text-slate-500 uppercase tracking-wide">SSS1</div>
+                  <div class="text-lg font-bold text-bh-navy" data-class="SSS1">—</div>
+                </div>
+                <div class="p-3 rounded-xl bg-slate-50 text-center">
+                  <div class="text-[11px] text-slate-500 uppercase tracking-wide">SSS2</div>
+                  <div class="text-lg font-bold text-bh-navy" data-class="SSS2">—</div>
+                </div>
+                <div class="p-3 rounded-xl bg-slate-50 text-center">
+                  <div class="text-[11px] text-slate-500 uppercase tracking-wide">SSS3</div>
+                  <div class="text-lg font-bold text-bh-navy" data-class="SSS3">—</div>
+                </div>
+              </div>
+
+              <div class="overflow-x-auto">
+                <table class="w-full text-sm min-w-[800px]">
+                  <thead>
+                    <tr class="text-left text-xs text-slate-500 border-b border-slate-100">
+                      <th class="p-3 font-semibold">Student</th>
+                      <th class="p-3 font-semibold">Class</th>
+                      <th class="p-3 font-semibold">Date</th>
+                      <th class="p-3 font-semibold">Status</th>
+                      <th class="p-3 font-semibold">Subject</th>
+                      <th class="p-3 font-semibold">Recorded At</th>
+                    </tr>
+                  </thead>
+                  <tbody id="attendanceBody">
+                    <tr><td colspan="6" class="p-8 text-center text-slate-400 text-sm">Loading attendance…</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+
+          <!-- ============== LIVE SESSIONS ============== -->
+          <section id="view-live-sessions" class="view">
+            <div class="bg-white rounded-2xl p-4 sm:p-5 border border-slate-100 shadow-sm">
+              <div class="flex items-center gap-2 mb-4">
+                <div class="flex gap-1 p-1 bg-slate-100 rounded-xl">
+                  <button class="tab-btn active px-3 py-1.5 rounded-lg text-xs font-semibold" data-ls-filter="all">All</button>
+                  <button class="tab-btn px-3 py-1.5 rounded-lg text-xs font-semibold" data-ls-filter="ongoing">Ongoing</button>
+                  <button class="tab-btn px-3 py-1.5 rounded-lg text-xs font-semibold" data-ls-filter="ended">Ended</button>
+                </div>
+                <span class="text-xs text-slate-500 sm:ml-auto">Showing all live class sessions</span>
+              </div>
+              <div class="overflow-x-auto">
+                <table class="w-full text-sm min-w-[800px]">
+                  <thead>
+                    <tr class="text-left text-xs text-slate-500 border-b border-slate-100">
+                      <th class="p-3 font-semibold">Teacher</th>
+                      <th class="p-3 font-semibold">Class</th>
+                      <th class="p-3 font-semibold">Subject</th>
+                      <th class="p-3 font-semibold">Status</th>
+                      <th class="p-3 font-semibold">Started</th>
+                      <th class="p-3 font-semibold">Ended</th>
+                    </tr>
+                  </thead>
+                  <tbody id="liveSessionsBody">
+                    <tr><td colspan="6" class="p-8 text-center text-slate-400 text-sm">Loading live sessions…</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+
+          <!-- ============== REPORTS ============== -->
+          <section id="view-reports" class="view">
+            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3 sm:gap-4">
+              <div class="bg-white rounded-2xl p-5 border border-slate-100 shadow-sm">
+                <div class="w-12 h-12 rounded-xl bg-blue-50 text-bh-navy flex items-center justify-center mb-3"><i class="fas fa-user-graduate text-xl"></i></div>
+                <h3 class="text-base font-bold text-slate-800 mb-1">Students Report</h3>
+                <p class="text-xs text-slate-500 mb-4">Export the full student roster with class, status and registration date.</p>
+                <button class="report-btn w-full bg-bh-navy hover:bg-bh-navy-2 text-white text-sm font-semibold px-4 py-2.5 rounded-xl flex items-center justify-center gap-2" data-report="students">
+                  <i class="fas fa-download"></i><span>Download CSV</span>
+                </button>
+              </div>
+              <div class="bg-white rounded-2xl p-5 border border-slate-100 shadow-sm">
+                <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center mb-3"><i class="fas fa-chalkboard-user text-xl"></i></div>
+                <h3 class="text-base font-bold text-slate-800 mb-1">Teachers Report</h3>
+                <p class="text-xs text-slate-500 mb-4">Export the full teacher roster with subject, status and registration date.</p>
+                <button class="report-btn w-full bg-bh-navy hover:bg-bh-navy-2 text-white text-sm font-semibold px-4 py-2.5 rounded-xl flex items-center justify-center gap-2" data-report="teachers">
+                  <i class="fas fa-download"></i><span>Download CSV</span>
+                </button>
+              </div>
+              <div class="bg-white rounded-2xl p-5 border border-slate-100 shadow-sm">
+                <div class="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center mb-3"><i class="fas fa-chart-line text-xl"></i></div>
+                <h3 class="text-base font-bold text-slate-800 mb-1">Scores Report</h3>
+                <p class="text-xs text-slate-500 mb-4">Export all scores entered by teachers across every class and subject.</p>
+                <button class="report-btn w-full bg-bh-navy hover:bg-bh-navy-2 text-white text-sm font-semibold px-4 py-2.5 rounded-xl flex items-center justify-center gap-2" data-report="scores">
+                  <i class="fas fa-download"></i><span>Download CSV</span>
+                </button>
+              </div>
+              <div class="bg-white rounded-2xl p-5 border border-slate-100 shadow-sm">
+                <div class="w-12 h-12 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center mb-3"><i class="fas fa-credit-card text-xl"></i></div>
+                <h3 class="text-base font-bold text-slate-800 mb-1">Subscriptions Report</h3>
+                <p class="text-xs text-slate-500 mb-4">Export every subscription with status, amount, paid-from and paid-until dates.</p>
+                <button class="report-btn w-full bg-bh-navy hover:bg-bh-navy-2 text-white text-sm font-semibold px-4 py-2.5 rounded-xl flex items-center justify-center gap-2" data-report="subscriptions">
+                  <i class="fas fa-download"></i><span>Download CSV</span>
+                </button>
+              </div>
+              <div class="bg-white rounded-2xl p-5 border border-slate-100 shadow-sm">
+                <div class="w-12 h-12 rounded-xl bg-red-50 text-red-500 flex items-center justify-center mb-3"><i class="fas fa-clipboard-check text-xl"></i></div>
+                <h3 class="text-base font-bold text-slate-800 mb-1">Attendance Report</h3>
+                <p class="text-xs text-slate-500 mb-4">Export all attendance records with student, class, date, status and subject.</p>
+                <button class="report-btn w-full bg-bh-navy hover:bg-bh-navy-2 text-white text-sm font-semibold px-4 py-2.5 rounded-xl flex items-center justify-center gap-2" data-report="attendance">
+                  <i class="fas fa-download"></i><span>Download CSV</span>
+                </button>
+              </div>
+              <div class="bg-white rounded-2xl p-5 border border-slate-100 shadow-sm">
+                <div class="w-12 h-12 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center mb-3"><i class="fas fa-file-pen text-xl"></i></div>
+                <h3 class="text-base font-bold text-slate-800 mb-1">Assignments Report</h3>
+                <p class="text-xs text-slate-500 mb-4">Export all assignments posted by teachers across every class and subject.</p>
+                <button class="report-btn w-full bg-bh-navy hover:bg-bh-navy-2 text-white text-sm font-semibold px-4 py-2.5 rounded-xl flex items-center justify-center gap-2" data-report="assignments">
+                  <i class="fas fa-download"></i><span>Download CSV</span>
+                </button>
+              </div>
+            </div>
+          </section>
+
+          <!-- ============== SETTINGS ============== -->
+          <section id="view-settings" class="view">
+            <div class="max-w-2xl">
+              <div class="bg-white rounded-2xl p-5 sm:p-6 border border-slate-100 shadow-sm">
+                <h3 class="text-base font-bold text-slate-800 mb-1">School Settings</h3>
+                <p class="text-xs text-slate-500 mb-5">These details are used across reports and printed attendance sheets.</p>
+                <form id="settingsForm" class="space-y-4">
+                  <div>
+                    <label class="form-label">School Name</label>
+                    <input name="school_name" class="form-input" placeholder="Blue Horizon International School" required>
+                  </div>
+                  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label class="form-label">Current Term</label>
+                      <select name="term" class="form-input">
+                        <option value="First Term">First Term</option>
+                        <option value="Second Term">Second Term</option>
+                        <option value="Third Term">Third Term</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label class="form-label">Session</label>
+                      <input name="session" class="form-input" placeholder="2025 / 2026">
+                    </div>
+                  </div>
+                  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label class="form-label">Default Subscription (₦)</label>
+                      <input name="default_fee" type="number" min="0" class="form-input" placeholder="15000">
+                    </div>
+                    <div>
+                      <label class="form-label">Currency Symbol</label>
+                      <input name="currency" class="form-input" placeholder="₦" value="₦">
+                    </div>
+                  </div>
+                  <div class="flex justify-end pt-2">
+                    <button type="submit" class="bg-bh-navy hover:bg-bh-navy-2 text-white text-sm font-semibold px-5 py-2.5 rounded-xl flex items-center gap-2">
+                      <i class="fas fa-save"></i><span>Save Settings</span>
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </section>
+
+        </div>
+      </main>
+    </div>
+
+    <!-- ===================== Modal Container ===================== -->
+    <div id="modalRoot" class="modal-backdrop">
+      <div class="modal-card">
+        <div id="modalContent"></div>
       </div>
     </div>
 
-    <div id="toastContainer"></div>
+    <!-- ===================== Print Area (hidden, used by window.print) ===================== -->
+    <div id="printArea" class="hidden"></div>
 
-    <!-- Shared supabase client (lives one level up: classes/_template/js/) -->
+    <!-- ===================== Shared Supabase Client ===================== -->
     <script src="../classes/_template/js/supabase-client.js"></script>
-    <script>
-      // =====================================================
-      // Blue Horizon Admin Panel
-      // =====================================================
 
-      var state = { session: null, adminId: null, adminName: 'Administrator' };
+    <!-- ===================== App ===================== -->
+    <script>
+    (function () {
+      'use strict';
+
+      // ---------- Constants ----------
+      var CLASSES = ['JSS1','JSS2','JSS3','SSS1','SSS2','SSS3'];
+      var SUBJECTS = [
+        'Mathematics','English Language','Physics','Chemistry','Biology',
+        'Government','Economics','Commerce','Accounting','Literature in English',
+        'Geography','Civic Education','Computer Science','Further Mathematics',
+        'Agricultural Science','Christian Religious Studies','Islamic Religious Studies',
+        'French','Yoruba','Visual Arts','Technical Drawing','Home Economics'
+      ];
+
+      var VIEW_META = {
+        'dashboard':     { title: 'Dashboard',       subtitle: 'School-wide overview' },
+        'students':      { title: 'Students',        subtitle: 'Manage student accounts across all classes' },
+        'teachers':      { title: 'Teachers',        subtitle: 'Manage teaching staff' },
+        'classes':       { title: 'Classes',         subtitle: 'Overview of JSS1 – SSS3' },
+        'timetables':    { title: 'Timetables',      subtitle: 'Weekly schedules per class' },
+        'scores':        { title: 'Scores',          subtitle: 'All scores entered by teachers' },
+        'assignments':   { title: 'Assignments',     subtitle: 'All assignments posted by teachers' },
+        'subscriptions': { title: 'Subscriptions',   subtitle: 'Track monthly payments' },
+        'attendance':    { title: 'Attendance',      subtitle: 'Online tracker with print export' },
+        'live-sessions': { title: 'Live Sessions',   subtitle: 'Ongoing & ended live class sessions' },
+        'reports':       { title: 'Reports',         subtitle: 'Generate CSV exports' },
+        'settings':      { title: 'Settings',        subtitle: 'School-wide configuration' }
+      };
+
+      // In-memory state only (NO localStorage)
+      var state = {
+        view: 'dashboard',
+        admin: null,
+        client: null,
+        cache: {
+          students: null,
+          teachers: null,
+          scores: null,
+          assignments: null,
+          timetables: null,
+          subscriptions: null,
+          attendance: null,
+          liveSessions: null
+        },
+        liveSessionFilter: 'all',
+        settings: { school_name: 'Blue Horizon International School', term: 'First Term', session: '2025 / 2026', default_fee: 15000, currency: '₦' }
+      };
 
       // ---------- Helpers ----------
-      function showToast(msg, type) {
-        type = type || 'info';
-        var c = document.getElementById('toastContainer');
-        var el = document.createElement('div');
-        el.className = 'toast ' + type;
-        el.textContent = msg;
-        c.appendChild(el);
-        setTimeout(function () {
-          el.style.opacity = '0'; el.style.transition = 'opacity .3s';
-          setTimeout(function () { el.remove(); }, 300);
-        }, 3500);
-      }
-      function escapeHtml(s) {
-        if (s == null) return '';
-        return String(s).replace(/[&<>"']/g, function (c) {
-          return ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' })[c];
+      function $(id) { return document.getElementById(id); }
+      function $$(sel, root) { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); }
+      function escapeHtml(v) {
+        if (v == null) return '';
+        return String(v).replace(/[&<>"']/g, function (c) {
+          return { '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c];
         });
       }
       function avatarFor(name) {
-        var initials = 'A';
-        try { initials = String(name || '').split(' ').slice(0, 2).map(function (n) { return n.charAt(0); }).join('').toUpperCase(); } catch (e) {}
-        return 'https://ui-avatars.com/api/?name=' + encodeURIComponent(initials) +
-               '&background=1f507b&color=fff&size=128&bold=true';
+        var n = (name || '?').trim();
+        var initial = n.charAt(0).toUpperCase();
+        return 'https://ui-avatars.com/api/?name=' + encodeURIComponent(n || 'User') +
+               '&background=1f507b&color=fff&bold=true&size=64';
+      }
+      function classColorClass(c) {
+        return 'class-' + String(c || '').toLowerCase();
+      }
+      function showToast(msg, type) {
+        type = type || 'info';
+        var el = document.createElement('div');
+        el.className = 'toast ' + type;
+        var icon = type === 'success' ? 'fa-circle-check' : (type === 'error' ? 'fa-circle-exclamation' : 'fa-circle-info');
+        el.innerHTML = '<i class="fas ' + icon + '"></i><span>' + escapeHtml(msg) + '</span>';
+        document.body.appendChild(el);
+        setTimeout(function () {
+          el.style.transition = 'opacity .25s ease';
+          el.style.opacity = '0';
+          setTimeout(function () { el.remove(); }, 250);
+        }, 3500);
+      }
+      function fmtDate(v) {
+        if (!v) return '—';
+        var d = new Date(v);
+        if (isNaN(d.getTime())) return escapeHtml(v);
+        return d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+      }
+      function fmtDateTime(v) {
+        if (!v) return '—';
+        var d = new Date(v);
+        if (isNaN(d.getTime())) return escapeHtml(v);
+        return d.toLocaleString('en-GB', { day:'2-digit', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' });
+      }
+      function fmtMoney(n) {
+        n = Number(n || 0);
+        return '₦' + n.toLocaleString('en-NG', { maximumFractionDigits: 0 });
+      }
+      function emptyRow(cols, msg, icon) {
+        icon = icon || 'fa-inbox';
+        return '<tr><td colspan="' + cols + '" class="p-10 text-center">' +
+          '<div class="flex flex-col items-center gap-2 text-slate-400">' +
+            '<i class="fas ' + icon + ' text-3xl opacity-50"></i>' +
+            '<div class="text-sm">' + escapeHtml(msg) + '</div>' +
+          '</div></td></tr>';
+      }
+      function errorRow(cols, msg) {
+        return '<tr><td colspan="' + cols + '" class="p-8 text-center text-red-500 text-sm">' +
+          '<i class="fas fa-triangle-exclamation mr-1"></i>' + escapeHtml(msg) + '</td></tr>';
+      }
+      function statusBadge(status) {
+        var s = String(status || 'active').toLowerCase();
+        if (s === 'active')   return '<span class="badge badge-active">Active</span>';
+        if (s === 'inactive') return '<span class="badge badge-inactive">Inactive</span>';
+        if (s === 'overdue')  return '<span class="badge badge-overdue">Overdue</span>';
+        return '<span class="badge" style="background:#f1f5f9;color:#475569">' + escapeHtml(status || '—') + '</span>';
+      }
+      function attendanceBadge(status) {
+        var s = String(status || '').toLowerCase();
+        if (s === 'present') return '<span class="badge badge-present"><i class="fas fa-check"></i> Present</span>';
+        if (s === 'absent')  return '<span class="badge badge-absent"><i class="fas fa-xmark"></i> Absent</span>';
+        if (s === 'late')    return '<span class="badge badge-late"><i class="fas fa-clock"></i> Late</span>';
+        return '<span class="badge" style="background:#f1f5f9;color:#475569">' + escapeHtml(status || '—') + '</span>';
+      }
+      function liveBadge(status) {
+        var s = String(status || '').toLowerCase();
+        if (s === 'ongoing' || s === 'active' || s === 'live') return '<span class="badge badge-ongoing"><i class="fas fa-circle text-[8px] animate-pulse"></i> Ongoing</span>';
+        if (s === 'ended' || s === 'completed' || s === 'inactive') return '<span class="badge badge-ended">Ended</span>';
+        return '<span class="badge" style="background:#f1f5f9;color:#475569">' + escapeHtml(status || '—') + '</span>';
       }
 
-      // ---------- Sidebar toggle ----------
-      (function bindSidebar() {
-        var sidebar = document.getElementById('sidebar');
-        var overlay = document.getElementById('sidebar-overlay');
-        var toggleBtn = document.getElementById('toggleSidebar');
-        function open()  { sidebar.classList.remove('hide'); overlay.classList.add('show'); }
-        function close() { sidebar.classList.add('hide');    overlay.classList.remove('show'); }
-        if (toggleBtn) toggleBtn.addEventListener('click', function (e) {
-          e.stopPropagation();
-          sidebar.classList.contains('hide') ? open() : close();
+      // ---------- Direct Supabase queries ----------
+      function getClient() {
+        if (state.client) return Promise.resolve(state.client);
+        return BH.getClient().then(function (c) { state.client = c; return c; });
+      }
+      function dbSelect(table, columns, opts) {
+        opts = opts || {};
+        return getClient().then(function (c) {
+          var q = c.from(table).select(columns || '*');
+          if (opts.order) q = q.order(opts.order.column, { ascending: opts.order.ascending !== false });
+          if (opts.limit) q = q.limit(opts.limit);
+          return q;
         });
-        if (overlay) overlay.addEventListener('click', close);
-        window.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
-      })();
-
-      document.getElementById('logoutBtn').addEventListener('click', function () {
-        if (window.BH) BH.signOut();
-      });
-
-      // ---------- View navigation ----------
-      var viewTitles = {
-        dashboard:     { title: 'Dashboard',         sub: 'School overview at a glance' },
-        students:      { title: 'Students',          sub: 'Register and manage student accounts' },
-        teachers:      { title: 'Teachers',          sub: 'Register and manage teacher accounts' },
-        classes:       { title: 'Classes',           sub: 'Manage classes & section membership' },
-        timetables:    { title: 'Timetables',        sub: 'Build weekly class timetables' },
-        scores:        { title: 'Scores',            sub: 'Enter and review student scores' },
-        subscriptions: { title: 'Subscriptions',     sub: 'Track payments & subscriptions' },
-        reports:       { title: 'Reports',           sub: 'Export data & generate reports' }
-      };
-
-      function switchView(view) {
-        document.querySelectorAll('section[id^="view-"]').forEach(function (s) { s.classList.add('hidden'); });
-        var target = document.getElementById('view-' + view);
-        if (target) { target.classList.remove('hidden'); target.classList.add('space-y-6'); }
-
-        document.querySelectorAll('.nav-link').forEach(function (a) { a.classList.remove('nav-link-active'); });
-        document.querySelectorAll('.nav-link[data-view="' + view + '"]').forEach(function (a) { a.classList.add('nav-link-active'); });
-
-        var meta = viewTitles[view] || {};
-        document.getElementById('pageTitle').textContent = meta.title || view;
-        document.getElementById('pageSubtitle').textContent = meta.sub || '';
-
-        // Load view data
-        if (view === 'dashboard')     loadDashboardData();
-        if (view === 'students')      loadStudents();
-        if (view === 'teachers')      loadTeachers();
-        if (view === 'classes')       loadClasses();
-        if (view === 'subscriptions') loadSubscriptions();
       }
 
-      document.querySelectorAll('.nav-link[data-view]').forEach(function (a) {
-        a.addEventListener('click', function (e) {
-          e.preventDefault();
-          switchView(a.getAttribute('data-view'));
+      // ---------- View router ----------
+      function switchView(name) {
+        if (!VIEW_META[name]) name = 'dashboard';
+        state.view = name;
+        $$('.view').forEach(function (v) { v.classList.remove('active'); });
+        var target = $('view-' + name);
+        if (target) target.classList.add('active');
+        $$('#sidebarNav .nav-link').forEach(function (a) {
+          a.classList.toggle('nav-link-active', a.getAttribute('data-view') === name);
         });
-      });
-      document.getElementById('quickAddBtn').addEventListener('click', function () { switchView('students'); });
-
-      // ---------- Auth gate ----------
-      function boot() {
-        if (!window.BH || !window.BH.requireRole) {
-          return document.addEventListener('bh:ready', boot);
+        var meta = VIEW_META[name];
+        $('pageTitle').textContent = meta.title;
+        $('pageSubtitle').textContent = meta.subtitle;
+        // Close mobile sidebar on navigation
+        $('sidebar').classList.add('hide');
+        $('sidebar-overlay').classList.remove('show');
+        // Lazy-load view data
+        loadView(name);
+      }
+      function loadView(name) {
+        switch (name) {
+          case 'dashboard':     loadDashboard(); break;
+          case 'students':      loadStudents(); break;
+          case 'teachers':      loadTeachers(); break;
+          case 'classes':       loadClasses(); break;
+          case 'timetables':    loadTimetables(); break;
+          case 'scores':        loadScores(); break;
+          case 'assignments':   loadAssignments(); break;
+          case 'subscriptions': loadSubscriptions(); break;
+          case 'attendance':    loadAttendance(); break;
+          case 'live-sessions': loadLiveSessions(); break;
+          case 'settings':      initSettings(); break;
+          // reports needs no load
         }
-        BH.requireRole('admin').then(function (session) {
-          if (!session) return;
-          state.session = session;
-          state.adminId = (session.user && session.user.id) || null;
-          var meta = (session.user && session.user.user_metadata) || {};
-          state.adminName = meta.full_name || meta.name || 'Administrator';
+      }
 
-          document.getElementById('adminName').textContent = state.adminName;
-          document.getElementById('topName').textContent  = state.adminName;
-          var av = meta.avatar_url || avatarFor(state.adminName);
-          document.getElementById('avatar-sm').src = av;
-          document.getElementById('topAvatar').src = av;
+      // ---------- Dashboard ----------
+      function loadDashboard() {
+        // Stat cards
+        dbSelect('students', '*', { order: { column: 'created_at', ascending: false } })
+          .then(function (r) {
+            state.cache.students = r.data || [];
+            $('statStudents').textContent = (r.data || []).length;
+            renderRecentRegistrations();
+            renderDashboardClasses();
+          })
+          .catch(function (e) { console.warn('[dashboard] students', e); $('statStudents').textContent = '0'; });
 
-          var fy = document.getElementById('footerYear');
-          if (fy) fy.textContent = new Date().getFullYear();
+        dbSelect('teachers', '*', { order: { column: 'created_at', ascending: false } })
+          .then(function (r) {
+            state.cache.teachers = r.data || [];
+            $('statTeachers').textContent = (r.data || []).length;
+            renderRecentRegistrations();
+            renderDashboardClasses();
+          })
+          .catch(function (e) { console.warn('[dashboard] teachers', e); $('statTeachers').textContent = '0'; });
 
-          hideLoading();
-          loadDashboardData();
+        dbSelect('subscriptions', '*')
+          .then(function (r) {
+            var rows = r.data || [];
+            state.cache.subscriptions = rows;
+            var active = 0, overdue = 0, inactive = 0, revenue = 0;
+            rows.forEach(function (s) {
+              var st = String(s.status || '').toLowerCase();
+              if (st === 'active') active++;
+              else if (st === 'overdue') overdue++;
+              else if (st === 'inactive') inactive++;
+              if (st === 'active') revenue += Number(s.amount || 0);
+            });
+            $('statActiveSubs').textContent = active;
+            $('subActiveCount').textContent = active;
+            $('subOverdueCount').textContent = overdue;
+            $('subInactiveCount').textContent = inactive;
+            $('statRevenue').textContent = fmtMoney(revenue);
+          })
+          .catch(function (e) { console.warn('[dashboard] subs', e); $('statActiveSubs').textContent = '0'; });
+
+        dbSelect('live_sessions', '*')
+          .then(function (r) {
+            var rows = r.data || [];
+            var ongoing = rows.filter(function (s) {
+              var st = String(s.status || '').toLowerCase();
+              return st === 'ongoing' || st === 'active' || st === 'live';
+            }).length;
+            $('statLive').textContent = ongoing;
+          })
+          .catch(function (e) { console.warn('[dashboard] live', e); $('statLive').textContent = '0'; });
+
+        dbSelect('assignments', '*', { order: { column: 'created_at', ascending: false } })
+          .then(function (r) {
+            $('statAssignments').textContent = (r.data || []).length;
+          })
+          .catch(function (e) { console.warn('[dashboard] assignments', e); $('statAssignments').textContent = '0'; });
+      }
+
+      function renderDashboardClasses() {
+        var grid = $('classCardsGrid');
+        if (!state.cache.students) return;
+        // Group students + teachers by class
+        var byClass = {};
+        CLASSES.forEach(function (c) { byClass[c] = { students: 0, teachers: [] }; });
+        (state.cache.students || []).forEach(function (s) {
+          var c = (s.class_name || '').toUpperCase();
+          if (byClass[c]) byClass[c].students++;
+        });
+        // Teachers don't belong to a class but may teach subjects — we just count assigned to each class via timetables if available
+        if (state.cache.teachers) {
+          // No class on teachers table directly; show total teachers as a global line per card
+        }
+        var html = '';
+        CLASSES.forEach(function (c) {
+          var info = byClass[c];
+          html += '' +
+            '<div class="class-card ' + classColorClass(c) + ' bg-white rounded-2xl p-5 border border-slate-100 shadow-sm" data-class="' + c + '">' +
+              '<div class="flex items-start justify-between">' +
+                '<div>' +
+                  '<div class="text-xs uppercase tracking-wider text-slate-400">' + (c.indexOf('JSS') === 0 ? 'Junior' : 'Senior') + '</div>' +
+                  '<div class="text-xl font-extrabold text-slate-800 mt-0.5">' + c + '</div>' +
+                '</div>' +
+                '<div class="w-10 h-10 rounded-xl bg-slate-50 text-bh-navy flex items-center justify-center"><i class="fas fa-school"></i></div>' +
+              '</div>' +
+              '<div class="mt-4 grid grid-cols-2 gap-3">' +
+                '<div class="p-2.5 rounded-xl bg-blue-50/60">' +
+                  '<div class="text-[11px] text-slate-500 uppercase tracking-wide">Students</div>' +
+                  '<div class="text-lg font-bold text-bh-navy">' + info.students + '</div>' +
+                '</div>' +
+                '<div class="p-2.5 rounded-xl bg-emerald-50/60">' +
+                  '<div class="text-[11px] text-slate-500 uppercase tracking-wide">Teachers</div>' +
+                  '<div class="text-lg font-bold text-emerald-600">' + ((state.cache.teachers || []).length) + '</div>' +
+                '</div>' +
+              '</div>' +
+              '<div class="mt-4 flex items-center justify-between text-xs text-slate-400">' +
+                '<span>Tap to view class</span>' +
+                '<i class="fas fa-arrow-right text-bh-navy"></i>' +
+              '</div>' +
+            '</div>';
+        });
+        grid.innerHTML = html;
+        // Wire click → classes view with this class pre-selected (filter)
+        $$('#classCardsGrid .class-card').forEach(function (card) {
+          card.addEventListener('click', function () {
+            switchView('classes');
+            // After view switch, filter classes detail to this class
+            setTimeout(function () { openClassDetail(card.getAttribute('data-class')); }, 50);
+          });
         });
       }
 
-      function hideLoading() {
-        var ov = document.getElementById('loadingOverlay');
-        if (ov) { ov.style.opacity = '0'; ov.style.transition = 'opacity .3s'; setTimeout(function () { ov.remove(); }, 300); }
-      }
-
-      // ---------- Dashboard data ----------
-      function loadDashboardData() {
-        if (!window.supabaseClient) return;
-        var client = window.supabaseClient;
-
-        // Total students
-        client.from('students').select('id', { count: 'exact', head: true }).then(function (r) {
-          document.getElementById('statStudents').textContent = (r.count != null) ? r.count : '—';
+      function renderRecentRegistrations() {
+        var body = $('recentRegBody');
+        if (!state.cache.students && !state.cache.teachers) return;
+        var combined = [];
+        (state.cache.students || []).forEach(function (s) {
+          combined.push({ name: s.full_name || s.name, role: 'Student', sub: s.class_name, date: s.created_at });
         });
-        // Total teachers
-        client.from('teachers').select('id', { count: 'exact', head: true }).then(function (r) {
-          document.getElementById('statTeachers').textContent = (r.count != null) ? r.count : '—';
+        (state.cache.teachers || []).forEach(function (t) {
+          combined.push({ name: t.full_name || t.name, role: 'Teacher', sub: t.subject, date: t.created_at });
         });
-        // Active subscriptions
-        client.from('subscriptions').select('id', { count: 'exact', head: true }).eq('status', 'active').then(function (r) {
-          document.getElementById('statSubs').textContent = (r.count != null) ? r.count : '—';
+        combined.sort(function (a, b) {
+          var da = a.date ? new Date(a.date).getTime() : 0;
+          var db = b.date ? new Date(b.date).getTime() : 0;
+          return db - da;
         });
-        // Revenue (sum of amount_paid)
-        client.from('subscriptions').select('amount_paid').eq('status', 'active').then(function (r) {
-          var total = 0;
-          if (r.data) r.data.forEach(function (row) { total += Number(row.amount_paid || 0); });
-          document.getElementById('statRevenue').textContent = '₦' + total.toLocaleString();
-        });
-
-        // Recent registrations
-        Promise.all([
-          client.from('students').select('id, name, username, class_name, created_at, status').order('created_at', { ascending: false }).limit(5),
-          client.from('teachers').select('id, name, username, subject, created_at, status').order('created_at', { ascending: false }).limit(5)
-        ]).then(function (results) {
-          var rows = [];
-          (results[0].data || []).forEach(function (s) { rows.push({ name: s.name, role: 'Student', meta: s.class_name || '—', date: s.created_at, status: s.status || 'active' }); });
-          (results[1].data || []).forEach(function (t) { rows.push({ name: t.name, role: 'Teacher', meta: t.subject || '—', date: t.created_at, status: t.status || 'active' }); });
-          rows.sort(function (a, b) { return new Date(b.date) - new Date(a.date); });
-          renderRecentRegs(rows.slice(0, 8));
-        });
-
-        // Payment status
-        client.from('subscriptions').select('id, student_id, plan, amount_paid, status, expires_at').order('created_at', { ascending: false }).limit(6)
-          .then(function (r) { renderPaymentStatus(r.data || []); });
-      }
-
-      function renderRecentRegs(rows) {
-        var body = document.getElementById('recentRegsBody');
-        if (!rows || rows.length === 0) {
-          body.innerHTML = '<tr><td colspan="5" class="p-8 text-center text-slate-400 text-sm">No registrations yet.</td></tr>';
+        combined = combined.slice(0, 5);
+        if (combined.length === 0) {
+          body.innerHTML = emptyRow(4, 'No registrations yet', 'fa-user-plus');
           return;
         }
         var html = '';
-        rows.forEach(function (r) {
-          var dt = r.date ? new Date(r.date).toLocaleDateString() : '—';
-          var stClass = (r.status === 'active') ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700';
-          var roleClass = (r.role === 'Student') ? 'bg-emerald-50 text-emerald-600' : 'bg-violet-50 text-violet-600';
+        combined.forEach(function (r) {
+          var roleClass = r.role === 'Student' ? 'bg-blue-50 text-bh-navy' : 'bg-emerald-50 text-emerald-600';
           html += '' +
             '<tr class="table-row border-t border-slate-50">' +
               '<td class="p-3"><div class="flex items-center gap-2">' +
-                '<img src="' + avatarFor(r.name) + '" class="w-8 h-8 rounded-full" alt="">' +
-                '<span class="font-medium text-slate-800">' + escapeHtml(r.name) + '</span>' +
+                '<img src="' + avatarFor(r.name) + '" class="w-7 h-7 rounded-full" alt="">' +
+                '<span class="font-medium text-slate-800">' + escapeHtml(r.name || '—') + '</span>' +
               '</div></td>' +
-              '<td class="p-3"><span class="text-xs px-2 py-0.5 rounded-full ' + roleClass + '">' + r.role + '</span></td>' +
-              '<td class="p-3 text-slate-600">' + escapeHtml(r.meta) + '</td>' +
-              '<td class="p-3 text-slate-500 text-xs">' + dt + '</td>' +
-              '<td class="p-3"><span class="text-xs px-2 py-0.5 rounded-full ' + stClass + '">' + escapeHtml(r.status || 'active') + '</span></td>' +
+              '<td class="p-3"><span class="badge ' + roleClass + '">' + r.role + '</span></td>' +
+              '<td class="p-3 text-slate-600">' + escapeHtml(r.sub || '—') + '</td>' +
+              '<td class="p-3 text-slate-500 text-xs">' + fmtDate(r.date) + '</td>' +
             '</tr>';
         });
         body.innerHTML = html;
-      }
-
-      function renderPaymentStatus(rows) {
-        var box = document.getElementById('paymentStatus');
-        if (!rows || rows.length === 0) {
-          box.innerHTML = '' +
-            '<div class="text-center py-6 text-slate-400 text-sm">' +
-              '<i class="fas fa-receipt text-3xl mb-2 opacity-40"></i><br>No subscription records yet.' +
-            '</div>';
-          return;
-        }
-        var html = '';
-        rows.forEach(function (s) {
-          var stClass = (s.status === 'active') ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700';
-          var amt = Number(s.amount_paid || 0).toLocaleString();
-          html += '' +
-            '<div class="flex items-center justify-between p-3 rounded-xl border border-slate-100">' +
-              '<div>' +
-                '<div class="text-sm font-medium text-slate-800">' + escapeHtml(s.plan || 'Subscription') + '</div>' +
-                '<div class="text-xs text-slate-500">Expires ' + (s.expires_at ? new Date(s.expires_at).toLocaleDateString() : '—') + '</div>' +
-              '</div>' +
-              '<div class="text-right">' +
-                '<div class="text-sm font-bold text-slate-800">₦' + amt + '</div>' +
-                '<span class="text-xs px-2 py-0.5 rounded-full ' + stClass + '">' + escapeHtml(s.status) + '</span>' +
-              '</div>' +
-            '</div>';
-        });
-        box.innerHTML = html;
       }
 
       // ---------- Students ----------
-      function loadStudents(query) {
-        if (!window.supabaseClient) return;
-        var q = (query || '').trim().toLowerCase();
-        var req = window.supabaseClient.from('students')
-          .select('id, name, username, class_name, status, created_at')
-          .order('created_at', { ascending: false })
-          .limit(200);
-        req.then(function (r) {
-          var rows = (r.data || []);
-          if (q) rows = rows.filter(function (s) {
-            return (s.name || '').toLowerCase().indexOf(q) !== -1 ||
-                   (s.username || '').toLowerCase().indexOf(q) !== -1 ||
-                   (s.class_name || '').toLowerCase().indexOf(q) !== -1;
+      function loadStudents() {
+        var body = $('studentsBody');
+        body.innerHTML = '<tr><td colspan="7" class="p-8 text-center text-slate-400 text-sm"><span class="spinner-sm spinner-navy mr-2"></span>Loading students…</td></tr>';
+        dbSelect('students', '*', { order: { column: 'created_at', ascending: false }, limit: 500 })
+          .then(function (r) {
+            state.cache.students = r.data || [];
+            renderStudents();
+          })
+          .catch(function (e) {
+            console.error('[students]', e);
+            body.innerHTML = errorRow(7, 'Failed to load students. ' + (e.message || ''));
           });
-          renderStudents(rows);
+      }
+      function getFilteredStudents() {
+        var q = ($('studentSearch').value || '').trim().toLowerCase();
+        var cf = $('studentClassFilter').value;
+        var rows = state.cache.students || [];
+        return rows.filter(function (s) {
+          var name = (s.full_name || s.name || '').toLowerCase();
+          var uname = (s.username || '').toLowerCase();
+          var cls = (s.class_name || '').toUpperCase();
+          var matchesQ = !q || name.indexOf(q) !== -1 || uname.indexOf(q) !== -1;
+          var matchesC = !cf || cls === cf;
+          return matchesQ && matchesC;
         });
       }
-      function renderStudents(rows) {
-        var body = document.getElementById('studentsBody');
-        if (!rows || rows.length === 0) {
-          body.innerHTML = '<tr><td colspan="4" class="p-8 text-center text-slate-400 text-sm">No students found. Register your first student using the form.</td></tr>';
+      function renderStudents() {
+        var body = $('studentsBody');
+        var rows = getFilteredStudents();
+        if (rows.length === 0) {
+          body.innerHTML = emptyRow(7, 'No students found. Register your first student to get started.', 'fa-user-graduate');
           return;
         }
+        // Pre-fetch subscriptions for student → status mapping
+        var subByStudent = {};
+        (state.cache.subscriptions || []).forEach(function (s) {
+          var key = s.student_id || s.student_name;
+          if (!subByStudent[key]) subByStudent[key] = s;
+        });
         var html = '';
         rows.forEach(function (s) {
-          var stClass = (s.status === 'active') ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700';
+          var status = s.status || 'active';
+          var sub = subByStudent[s.id] || subByStudent[(s.full_name || s.name)] || null;
+          var subStatus = sub ? sub.status : 'inactive';
           html += '' +
             '<tr class="table-row border-t border-slate-50">' +
               '<td class="p-3"><div class="flex items-center gap-2">' +
-                '<img src="' + avatarFor(s.name) + '" class="w-8 h-8 rounded-full" alt="">' +
-                '<span class="font-medium text-slate-800">' + escapeHtml(s.name) + '</span>' +
+                '<img src="' + avatarFor(s.full_name || s.name) + '" class="w-8 h-8 rounded-full" alt="">' +
+                '<span class="font-medium text-slate-800">' + escapeHtml(s.full_name || s.name || '—') + '</span>' +
               '</div></td>' +
               '<td class="p-3 text-slate-600">' + escapeHtml(s.username || '—') + '</td>' +
-              '<td class="p-3 text-slate-600">' + escapeHtml(s.class_name || '—') + '</td>' +
-              '<td class="p-3"><span class="text-xs px-2 py-0.5 rounded-full ' + stClass + '">' + escapeHtml(s.status || 'active') + '</span></td>' +
+              '<td class="p-3"><span class="text-xs px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 font-medium">' + escapeHtml(s.class_name || '—') + '</span></td>' +
+              '<td class="p-3">' + statusBadge(status) + '</td>' +
+              '<td class="p-3">' + statusBadge(subStatus) + '</td>' +
+              '<td class="p-3 text-slate-500 text-xs">' + fmtDate(s.created_at) + '</td>' +
+              '<td class="p-3 text-right whitespace-nowrap">' +
+                '<button class="edit-student-btn text-bh-navy hover:bg-blue-50 p-1.5 rounded-lg mr-1" data-id="' + escapeHtml(s.id) + '" title="Edit"><i class="fas fa-pen-to-square"></i></button>' +
+                '<button class="toggle-student-btn text-amber-600 hover:bg-amber-50 p-1.5 rounded-lg" data-id="' + escapeHtml(s.id) + '" data-status="' + escapeHtml(status) + '" title="Activate/Deactivate"><i class="fas fa-power-off"></i></button>' +
+              '</td>' +
             '</tr>';
         });
         body.innerHTML = html;
+        $$('#studentsBody .edit-student-btn').forEach(function (b) {
+          b.addEventListener('click', function () { openEditStudent(b.getAttribute('data-id')); });
+        });
+        $$('#studentsBody .toggle-student-btn').forEach(function (b) {
+          b.addEventListener('click', function () { toggleStudentStatus(b.getAttribute('data-id'), b.getAttribute('data-status')); });
+        });
       }
-      document.getElementById('studentSearch').addEventListener('input', function (e) { loadStudents(e.target.value); });
 
       // ---------- Teachers ----------
-      function loadTeachers(query) {
-        if (!window.supabaseClient) return;
-        var q = (query || '').trim().toLowerCase();
-        window.supabaseClient.from('teachers')
-          .select('id, name, username, subject, status, created_at')
-          .order('created_at', { ascending: false })
-          .limit(200)
+      function loadTeachers() {
+        var body = $('teachersBody');
+        body.innerHTML = '<tr><td colspan="7" class="p-8 text-center text-slate-400 text-sm"><span class="spinner-sm spinner-navy mr-2"></span>Loading teachers…</td></tr>';
+        dbSelect('teachers', '*', { order: { column: 'created_at', ascending: false }, limit: 500 })
           .then(function (r) {
-            var rows = (r.data || []);
-            if (q) rows = rows.filter(function (t) {
-              return (t.name || '').toLowerCase().indexOf(q) !== -1 ||
-                     (t.username || '').toLowerCase().indexOf(q) !== -1 ||
-                     (t.subject || '').toLowerCase().indexOf(q) !== -1;
-            });
-            renderTeachers(rows);
+            state.cache.teachers = r.data || [];
+            renderTeachers();
+          })
+          .catch(function (e) {
+            console.error('[teachers]', e);
+            body.innerHTML = errorRow(7, 'Failed to load teachers. ' + (e.message || ''));
           });
       }
-      function renderTeachers(rows) {
-        var body = document.getElementById('teachersBody');
-        if (!rows || rows.length === 0) {
-          body.innerHTML = '<tr><td colspan="4" class="p-8 text-center text-slate-400 text-sm">No teachers found. Register your first teacher using the form.</td></tr>';
+      function getFilteredTeachers() {
+        var q = ($('teacherSearch').value || '').trim().toLowerCase();
+        var rows = state.cache.teachers || [];
+        if (!q) return rows;
+        return rows.filter(function (t) {
+          var name = (t.full_name || t.name || '').toLowerCase();
+          var uname = (t.username || '').toLowerCase();
+          var subject = (t.subject || '').toLowerCase();
+          return name.indexOf(q) !== -1 || uname.indexOf(q) !== -1 || subject.indexOf(q) !== -1;
+        });
+      }
+      function renderTeachers() {
+        var body = $('teachersBody');
+        var rows = getFilteredTeachers();
+        if (rows.length === 0) {
+          body.innerHTML = emptyRow(7, 'No teachers found. Register your first teacher to get started.', 'fa-chalkboard-user');
+          return;
+        }
+        // Count students per teacher (rough heuristic: same subject taught → assigned students)
+        var studentCounts = {};
+        if (state.cache.students) {
+          // We don't have a teacher→student mapping directly; just show students count overall
+        }
+        var html = '';
+        rows.forEach(function (t) {
+          var status = t.status || 'active';
+          html += '' +
+            '<tr class="table-row border-t border-slate-50">' +
+              '<td class="p-3"><div class="flex items-center gap-2">' +
+                '<img src="' + avatarFor(t.full_name || t.name) + '" class="w-8 h-8 rounded-full" alt="">' +
+                '<span class="font-medium text-slate-800">' + escapeHtml(t.full_name || t.name || '—') + '</span>' +
+              '</div></td>' +
+              '<td class="p-3 text-slate-600">' + escapeHtml(t.username || '—') + '</td>' +
+              '<td class="p-3"><span class="text-xs px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-600 font-medium">' + escapeHtml(t.subject || '—') + '</span></td>' +
+              '<td class="p-3">' + statusBadge(status) + '</td>' +
+              '<td class="p-3 text-slate-600">' + ((state.cache.students || []).length) + '</td>' +
+              '<td class="p-3 text-slate-500 text-xs">' + fmtDate(t.created_at) + '</td>' +
+              '<td class="p-3 text-right whitespace-nowrap">' +
+                '<button class="edit-teacher-btn text-bh-navy hover:bg-blue-50 p-1.5 rounded-lg mr-1" data-id="' + escapeHtml(t.id) + '" title="Edit"><i class="fas fa-pen-to-square"></i></button>' +
+                '<button class="toggle-teacher-btn text-amber-600 hover:bg-amber-50 p-1.5 rounded-lg" data-id="' + escapeHtml(t.id) + '" data-status="' + escapeHtml(status) + '" title="Activate/Deactivate"><i class="fas fa-power-off"></i></button>' +
+              '</td>' +
+            '</tr>';
+        });
+        body.innerHTML = html;
+        $$('#teachersBody .edit-teacher-btn').forEach(function (b) {
+          b.addEventListener('click', function () { openEditTeacher(b.getAttribute('data-id')); });
+        });
+        $$('#teachersBody .toggle-teacher-btn').forEach(function (b) {
+          b.addEventListener('click', function () { toggleTeacherStatus(b.getAttribute('data-id'), b.getAttribute('data-status')); });
+        });
+      }
+
+      // ---------- Classes ----------
+      function loadClasses() {
+        var grid = $('classesGrid');
+        grid.innerHTML = '<div class="bg-white rounded-2xl p-5 border border-slate-100"><div class="skeleton h-6 w-24 mb-3"></div><div class="skeleton h-4 w-32 mb-2"></div><div class="skeleton h-4 w-28"></div></div>';
+        // Ensure both students + teachers are loaded
+        Promise.all([
+          state.cache.students ? Promise.resolve({ data: state.cache.students }) : dbSelect('students', '*'),
+          state.cache.teachers ? Promise.resolve({ data: state.cache.teachers }) : dbSelect('teachers', '*')
+        ]).then(function (results) {
+          state.cache.students = results[0].data || [];
+          state.cache.teachers = results[1].data || [];
+          renderClassesGrid();
+        }).catch(function (e) {
+          console.error('[classes]', e);
+          grid.innerHTML = '<div class="col-span-full text-center py-10 text-red-500 text-sm"><i class="fas fa-triangle-exclamation mr-1"></i>Failed to load classes.</div>';
+        });
+      }
+      function renderClassesGrid() {
+        var grid = $('classesGrid');
+        var studentsByClass = {};
+        CLASSES.forEach(function (c) { studentsByClass[c] = []; });
+        (state.cache.students || []).forEach(function (s) {
+          var c = (s.class_name || '').toUpperCase();
+          if (studentsByClass[c]) studentsByClass[c].push(s);
+        });
+        var html = '';
+        CLASSES.forEach(function (c) {
+          var count = studentsByClass[c].length;
+          html += '' +
+            '<div class="class-card ' + classColorClass(c) + ' bg-white rounded-2xl p-5 border border-slate-100 shadow-sm" data-class="' + c + '">' +
+              '<div class="flex items-start justify-between">' +
+                '<div>' +
+                  '<div class="text-xs uppercase tracking-wider text-slate-400">' + (c.indexOf('JSS') === 0 ? 'Junior Secondary' : 'Senior Secondary') + '</div>' +
+                  '<div class="text-2xl font-extrabold text-slate-800 mt-0.5">' + c + '</div>' +
+                '</div>' +
+                '<div class="w-12 h-12 rounded-xl bg-slate-50 text-bh-navy flex items-center justify-center"><i class="fas fa-school text-xl"></i></div>' +
+              '</div>' +
+              '<div class="mt-4 grid grid-cols-2 gap-3">' +
+                '<div class="p-3 rounded-xl bg-blue-50/60">' +
+                  '<div class="text-[11px] text-slate-500 uppercase tracking-wide">Students</div>' +
+                  '<div class="text-xl font-bold text-bh-navy">' + count + '</div>' +
+                '</div>' +
+                '<div class="p-3 rounded-xl bg-emerald-50/60">' +
+                  '<div class="text-[11px] text-slate-500 uppercase tracking-wide">Teachers</div>' +
+                  '<div class="text-xl font-bold text-emerald-600">' + ((state.cache.teachers || []).length) + '</div>' +
+                '</div>' +
+              '</div>' +
+              '<div class="mt-4 flex items-center justify-between text-xs">' +
+                '<span class="text-slate-400">View roster & details</span>' +
+                '<i class="fas fa-arrow-right text-bh-navy"></i>' +
+              '</div>' +
+            '</div>';
+        });
+        grid.innerHTML = html;
+        $$('#classesGrid .class-card').forEach(function (card) {
+          card.addEventListener('click', function () { openClassDetail(card.getAttribute('data-class')); });
+        });
+      }
+      function openClassDetail(className) {
+        var students = (state.cache.students || []).filter(function (s) {
+          return (s.class_name || '').toUpperCase() === className;
+        });
+        var teachers = state.cache.teachers || [];
+        var teacherChips = teachers.slice(0, 8).map(function (t) {
+          return '<span class="text-xs px-2 py-1 rounded-full bg-emerald-50 text-emerald-600 font-medium">' + escapeHtml(t.subject || '—') + '</span>';
+        }).join('');
+        if (teachers.length > 8) teacherChips += '<span class="text-xs text-slate-400 px-2 py-1">+' + (teachers.length - 8) + ' more</span>';
+        if (teacherChips === '') teacherChips = '<span class="text-xs text-slate-400">No teachers registered yet</span>';
+
+        var rowsHtml = '';
+        if (students.length === 0) {
+          rowsHtml = '<tr>' + emptyRow(4, 'No students enrolled in ' + className + ' yet.', 'fa-user-graduate').replace('<td colspan="4"', '<td colspan="4"') + '</tr>';
+        } else {
+          students.forEach(function (s) {
+            rowsHtml += '' +
+              '<tr class="border-t border-slate-50">' +
+                '<td class="p-3"><div class="flex items-center gap-2">' +
+                  '<img src="' + avatarFor(s.full_name || s.name) + '" class="w-7 h-7 rounded-full" alt="">' +
+                  '<span class="font-medium text-slate-800">' + escapeHtml(s.full_name || s.name || '—') + '</span>' +
+                '</div></td>' +
+                '<td class="p-3 text-slate-600">' + escapeHtml(s.username || '—') + '</td>' +
+                '<td class="p-3">' + statusBadge(s.status || 'active') + '</td>' +
+                '<td class="p-3 text-slate-500 text-xs">' + fmtDate(s.created_at) + '</td>' +
+              '</tr>';
+          });
+        }
+        openModal(
+          '<div class="p-5 sm:p-6">' +
+            '<div class="flex items-start justify-between mb-1">' +
+              '<div>' +
+                '<div class="text-xs uppercase tracking-wider text-slate-400">' + (className.indexOf('JSS') === 0 ? 'Junior Secondary' : 'Senior Secondary') + '</div>' +
+                '<h3 class="text-xl font-extrabold text-slate-800">' + className + ' — Class Details</h3>' +
+              '</div>' +
+              '<button class="modal-close text-slate-400 hover:text-slate-700 p-2"><i class="fas fa-xmark text-lg"></i></button>' +
+            '</div>' +
+            '<div class="grid grid-cols-2 gap-3 my-4">' +
+              '<div class="p-3 rounded-xl bg-blue-50/60">' +
+                '<div class="text-[11px] text-slate-500 uppercase tracking-wide">Students</div>' +
+                '<div class="text-2xl font-bold text-bh-navy">' + students.length + '</div>' +
+              '</div>' +
+              '<div class="p-3 rounded-xl bg-emerald-50/60">' +
+                '<div class="text-[11px] text-slate-500 uppercase tracking-wide">Teachers</div>' +
+                '<div class="text-2xl font-bold text-emerald-600">' + teachers.length + '</div>' +
+              '</div>' +
+            '</div>' +
+            '<div class="mb-4">' +
+              '<div class="text-[11px] text-slate-500 uppercase tracking-wide mb-2">Assigned Subjects</div>' +
+              '<div class="flex flex-wrap gap-1.5">' + teacherChips + '</div>' +
+            '</div>' +
+            '<div class="text-[11px] text-slate-500 uppercase tracking-wide mb-2">Student Roster</div>' +
+            '<div class="overflow-x-auto max-h-80 overflow-y-auto border border-slate-100 rounded-xl">' +
+              '<table class="w-full text-sm">' +
+                '<thead class="sticky top-0 bg-slate-50">' +
+                  '<tr class="text-left text-xs text-slate-500 border-b border-slate-100">' +
+                    '<th class="p-3 font-semibold">Name</th>' +
+                    '<th class="p-3 font-semibold">Username</th>' +
+                    '<th class="p-3 font-semibold">Status</th>' +
+                    '<th class="p-3 font-semibold">Registered</th>' +
+                  '</tr>' +
+                '</thead>' +
+                '<tbody>' + rowsHtml + '</tbody>' +
+              '</table>' +
+            '</div>' +
+            '<div class="flex justify-end pt-4">' +
+              '<button class="modal-close bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-semibold px-4 py-2 rounded-xl">Close</button>' +
+            '</div>' +
+          '</div>'
+        );
+      }
+
+      // ---------- Timetables ----------
+      function loadTimetables() {
+        var body = $('timetablesBody');
+        body.innerHTML = '<tr><td colspan="5" class="p-8 text-center text-slate-400 text-sm"><span class="spinner-sm spinner-navy mr-2"></span>Loading timetables…</td></tr>';
+        dbSelect('timetables', '*', { order: { column: 'created_at', ascending: false }, limit: 500 })
+          .then(function (r) {
+            state.cache.timetables = r.data || [];
+            renderTimetables();
+          })
+          .catch(function (e) {
+            console.error('[timetables]', e);
+            body.innerHTML = errorRow(5, 'Failed to load timetables. ' + (e.message || ''));
+          });
+      }
+      function renderTimetables() {
+        var body = $('timetablesBody');
+        var cf = $('timetableClassFilter').value;
+        var rows = (state.cache.timetables || []).filter(function (t) {
+          return !cf || (t.class_name || '').toUpperCase() === cf;
+        });
+        if (rows.length === 0) {
+          body.innerHTML = emptyRow(5, 'No timetables found. Teachers will appear here once they create timetables.', 'fa-calendar-days');
           return;
         }
         var html = '';
         rows.forEach(function (t) {
-          var stClass = (t.status === 'active') ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700';
           html += '' +
             '<tr class="table-row border-t border-slate-50">' +
-              '<td class="p-3"><div class="flex items-center gap-2">' +
-                '<img src="' + avatarFor(t.name) + '" class="w-8 h-8 rounded-full" alt="">' +
-                '<span class="font-medium text-slate-800">' + escapeHtml(t.name) + '</span>' +
-              '</div></td>' +
-              '<td class="p-3 text-slate-600">' + escapeHtml(t.username || '—') + '</td>' +
+              '<td class="p-3"><span class="text-xs px-2 py-0.5 rounded-full bg-slate-100 text-slate-700 font-medium">' + escapeHtml(t.class_name || '—') + '</span></td>' +
+              '<td class="p-3 text-slate-700 font-medium">' + escapeHtml(t.day || '—') + '</td>' +
+              '<td class="p-3 text-slate-600">' + escapeHtml(t.time || t.start_time || '—') + '</td>' +
               '<td class="p-3 text-slate-600">' + escapeHtml(t.subject || '—') + '</td>' +
-              '<td class="p-3"><span class="text-xs px-2 py-0.5 rounded-full ' + stClass + '">' + escapeHtml(t.status || 'active') + '</span></td>' +
+              '<td class="p-3 text-slate-600">' + escapeHtml(t.teacher_name || '—') + '</td>' +
             '</tr>';
         });
         body.innerHTML = html;
       }
-      document.getElementById('teacherSearch').addEventListener('input', function (e) { loadTeachers(e.target.value); });
 
-      // ---------- Classes (lightweight) ----------
-      function loadClasses() {
-        if (!window.supabaseClient) return;
-        window.supabaseClient.from('classes').select('id, name, level, teacher_id').order('name', { ascending: true })
+      // ---------- Scores ----------
+      function loadScores() {
+        var body = $('scoresBody');
+        body.innerHTML = '<tr><td colspan="8" class="p-8 text-center text-slate-400 text-sm"><span class="spinner-sm spinner-navy mr-2"></span>Loading scores…</td></tr>';
+        dbSelect('scores', '*', { order: { column: 'created_at', ascending: false }, limit: 1000 })
           .then(function (r) {
-            var grid = document.getElementById('classesGrid');
-            var rows = r.data || [];
-            if (rows.length === 0) {
-              grid.innerHTML = '<div class="col-span-full text-center py-6 text-slate-400 text-sm">No classes created yet.</div>';
-              return;
-            }
-            var html = '';
-            rows.forEach(function (c) {
-              html += '' +
-                '<div class="border border-slate-200 rounded-xl p-4">' +
-                  '<div class="font-semibold text-slate-800">' + escapeHtml(c.name) + '</div>' +
-                  '<div class="text-xs text-slate-500 mt-1">Level: ' + escapeHtml(c.level || '—') + '</div>' +
-                '</div>';
-            });
-            grid.innerHTML = html;
+            state.cache.scores = r.data || [];
+            renderScores();
+          })
+          .catch(function (e) {
+            console.error('[scores]', e);
+            body.innerHTML = errorRow(8, 'Failed to load scores. ' + (e.message || ''));
           });
+      }
+      function getFilteredScores() {
+        var cf = $('scoreClassFilter').value;
+        var subj = ($('scoreSubjectFilter').value || '').trim().toLowerCase();
+        var teacher = ($('scoreTeacherFilter').value || '').trim().toLowerCase();
+        var from = $('scoreFromDate').value;
+        var rows = (state.cache.scores || []).filter(function (s) {
+          if (cf && (s.class_name || '').toUpperCase() !== cf) return false;
+          if (subj && (s.subject || '').toLowerCase().indexOf(subj) === -1) return false;
+          if (teacher && (s.teacher_name || '').toLowerCase().indexOf(teacher) === -1) return false;
+          if (from) {
+            var d = s.created_at ? new Date(s.created_at) : null;
+            if (!d || d.toISOString().slice(0,10) < from) return false;
+          }
+          return true;
+        });
+        return rows;
+      }
+      function renderScores() {
+        var body = $('scoresBody');
+        var rows = getFilteredScores();
+        if (rows.length === 0) {
+          body.innerHTML = emptyRow(8, 'No scores match the current filters.', 'fa-chart-line');
+          return;
+        }
+        var html = '';
+        rows.forEach(function (s) {
+          var score = Number(s.score || 0);
+          var max = Number(s.max_score || 0);
+          var pct = max > 0 ? Math.round((score / max) * 100) : 0;
+          var pctClass = pct >= 70 ? 'text-emerald-600' : (pct >= 50 ? 'text-amber-600' : 'text-red-500');
+          html += '' +
+            '<tr class="table-row border-t border-slate-50">' +
+              '<td class="p-3"><div class="flex items-center gap-2">' +
+                '<img src="' + avatarFor(s.student_name) + '" class="w-7 h-7 rounded-full" alt="">' +
+                '<span class="font-medium text-slate-800">' + escapeHtml(s.student_name || '—') + '</span>' +
+              '</div></td>' +
+              '<td class="p-3"><span class="text-xs px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 font-medium">' + escapeHtml(s.class_name || '—') + '</span></td>' +
+              '<td class="p-3 text-slate-700">' + escapeHtml(s.subject || '—') + '</td>' +
+              '<td class="p-3 font-semibold text-slate-800">' + escapeHtml(String(score)) + ' / ' + escapeHtml(String(max)) + '</td>' +
+              '<td class="p-3 font-bold ' + pctClass + '">' + pct + '%</td>' +
+              '<td class="p-3 text-slate-600">' + escapeHtml(s.teacher_name || '—') + '</td>' +
+              '<td class="p-3 text-slate-500 text-xs">' + fmtDate(s.created_at) + '</td>' +
+              '<td class="p-3 text-slate-600 text-xs">' + escapeHtml(s.remark || '—') + '</td>' +
+            '</tr>';
+        });
+        body.innerHTML = html;
+      }
+
+      // ---------- Assignments ----------
+      function loadAssignments() {
+        var body = $('assignmentsBody');
+        body.innerHTML = '<tr><td colspan="5" class="p-8 text-center text-slate-400 text-sm"><span class="spinner-sm spinner-navy mr-2"></span>Loading assignments…</td></tr>';
+        dbSelect('assignments', '*', { order: { column: 'created_at', ascending: false }, limit: 500 })
+          .then(function (r) {
+            state.cache.assignments = r.data || [];
+            renderAssignments();
+          })
+          .catch(function (e) {
+            console.error('[assignments]', e);
+            body.innerHTML = errorRow(5, 'Failed to load assignments. ' + (e.message || ''));
+          });
+      }
+      function renderAssignments() {
+        var body = $('assignmentsBody');
+        var rows = state.cache.assignments || [];
+        if (rows.length === 0) {
+          body.innerHTML = emptyRow(5, 'No assignments posted yet.', 'fa-file-pen');
+          return;
+        }
+        var html = '';
+        rows.forEach(function (a) {
+          html += '' +
+            '<tr class="table-row border-t border-slate-50">' +
+              '<td class="p-3"><div class="flex items-center gap-2">' +
+                '<div class="w-8 h-8 rounded-lg bg-purple-50 text-purple-600 flex items-center justify-center"><i class="fas fa-file-pen"></i></div>' +
+                '<div><div class="font-medium text-slate-800">' + escapeHtml(a.title || 'Untitled') + '</div>' +
+                (a.description ? '<div class="text-xs text-slate-400 line-clamp-1 max-w-md">' + escapeHtml(a.description) + '</div>' : '') +
+              '</div></div></td>' +
+              '<td class="p-3"><span class="text-xs px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 font-medium">' + escapeHtml(a.class_name || 'All') + '</span></td>' +
+              '<td class="p-3"><span class="text-xs px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-600 font-medium">' + escapeHtml(a.subject || '—') + '</span></td>' +
+              '<td class="p-3 text-slate-600">' + escapeHtml(a.teacher_name || '—') + '</td>' +
+              '<td class="p-3 text-slate-500 text-xs">' + fmtDate(a.created_at) + '</td>' +
+            '</tr>';
+        });
+        body.innerHTML = html;
       }
 
       // ---------- Subscriptions ----------
       function loadSubscriptions() {
-        if (!window.supabaseClient) return;
-        window.supabaseClient.from('subscriptions').select('id, student_id, plan, amount_paid, status, expires_at, created_at').order('created_at', { ascending: false }).limit(100)
+        var body = $('subsBody');
+        body.innerHTML = '<tr><td colspan="7" class="p-8 text-center text-slate-400 text-sm"><span class="spinner-sm spinner-navy mr-2"></span>Loading subscriptions…</td></tr>';
+        dbSelect('subscriptions', '*', { order: { column: 'created_at', ascending: false }, limit: 1000 })
           .then(function (r) {
-            var body = document.getElementById('subsBody');
-            var rows = r.data || [];
-            if (rows.length === 0) {
-              body.innerHTML = '<tr><td colspan="5" class="p-8 text-center text-slate-400 text-sm">No subscriptions yet.</td></tr>';
-              return;
-            }
-            var html = '';
-            rows.forEach(function (s) {
-              var stClass = (s.status === 'active') ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700';
-              html += '' +
-                '<tr class="table-row border-t border-slate-50">' +
-                  '<td class="p-3 text-slate-600">' + escapeHtml(s.student_id || '—') + '</td>' +
-                  '<td class="p-3 text-slate-600">' + escapeHtml(s.plan || '—') + '</td>' +
-                  '<td class="p-3 font-medium text-slate-800">₦' + Number(s.amount_paid || 0).toLocaleString() + '</td>' +
-                  '<td class="p-3"><span class="text-xs px-2 py-0.5 rounded-full ' + stClass + '">' + escapeHtml(s.status) + '</span></td>' +
-                  '<td class="p-3 text-slate-500 text-xs">' + (s.expires_at ? new Date(s.expires_at).toLocaleDateString() : '—') + '</td>' +
-                '</tr>';
-            });
-            body.innerHTML = html;
+            state.cache.subscriptions = r.data || [];
+            renderSubscriptions();
+          })
+          .catch(function (e) {
+            console.error('[subscriptions]', e);
+            body.innerHTML = errorRow(7, 'Failed to load subscriptions. ' + (e.message || ''));
           });
       }
-
-      // ---------- Registration forms ----------
-      function formToObj(form) {
-        var obj = {};
-        new FormData(form).forEach(function (v, k) { obj[k] = v; });
-        return obj;
-      }
-      function setFormLoading(form, loading, btnText) {
-        var btn = form.querySelector('button[type="submit"]');
-        if (!btn) return;
-        if (loading) {
-          btn.disabled = true;
-          btn.dataset.originalHtml = btn.innerHTML;
-          btn.innerHTML = '<span class="spinner-sm"></span> <span>Working…</span>';
-        } else {
-          btn.disabled = false;
-          btn.innerHTML = btn.dataset.originalHtml || btnText || btn.innerHTML;
+      function renderSubscriptions() {
+        var body = $('subsBody');
+        var sf = $('subStatusFilter').value;
+        var rows = (state.cache.subscriptions || []).filter(function (s) {
+          return !sf || String(s.status || '').toLowerCase() === sf;
+        });
+        if (rows.length === 0) {
+          body.innerHTML = emptyRow(7, 'No subscriptions found. Subscriptions appear here once students are registered.', 'fa-credit-card');
+          return;
         }
+        var html = '';
+        rows.forEach(function (s) {
+          html += '' +
+            '<tr class="table-row border-t border-slate-50">' +
+              '<td class="p-3"><div class="flex items-center gap-2">' +
+                '<img src="' + avatarFor(s.student_name) + '" class="w-7 h-7 rounded-full" alt="">' +
+                '<span class="font-medium text-slate-800">' + escapeHtml(s.student_name || '—') + '</span>' +
+              '</div></td>' +
+              '<td class="p-3"><span class="text-xs px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 font-medium">' + escapeHtml(s.class_name || '—') + '</span></td>' +
+              '<td class="p-3 font-semibold text-slate-800">' + fmtMoney(s.amount) + '</td>' +
+              '<td class="p-3">' + statusBadge(s.status) + '</td>' +
+              '<td class="p-3 text-slate-600 text-xs">' + fmtDate(s.paid_from) + '</td>' +
+              '<td class="p-3 text-slate-600 text-xs">' + fmtDate(s.paid_until) + '</td>' +
+              '<td class="p-3 text-right">' +
+                '<button class="mark-paid-btn bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold px-3 py-1.5 rounded-lg" data-id="' + escapeHtml(s.id) + '">' +
+                  '<i class="fas fa-check mr-1"></i>Mark as Paid' +
+                '</button>' +
+              '</td>' +
+            '</tr>';
+        });
+        body.innerHTML = html;
+        $$('#subsBody .mark-paid-btn').forEach(function (b) {
+          b.addEventListener('click', function () { markSubscriptionPaid(b.getAttribute('data-id')); });
+        });
+      }
+      function markSubscriptionPaid(id) {
+        var sub = (state.cache.subscriptions || []).find(function (s) { return String(s.id) === String(id); });
+        if (!sub) { showToast('Subscription not found.', 'error'); return; }
+        // Extend paid_until by 1 month from today (or from existing paid_until if in future)
+        var base = sub.paid_until ? new Date(sub.paid_until) : new Date();
+        if (isNaN(base.getTime())) base = new Date();
+        var now = new Date();
+        if (base < now) base = now;
+        var newUntil = new Date(base);
+        newUntil.setMonth(newUntil.getMonth() + 1);
+        var paidFrom = now.toISOString().slice(0,10);
+        var paidUntil = newUntil.toISOString().slice(0,10);
+
+        var btn = document.querySelector('.mark-paid-btn[data-id="' + id + '"]');
+        if (btn) { btn.disabled = true; btn.innerHTML = '<span class="spinner-sm"></span>'; }
+
+        getClient().then(function (c) {
+          return c.from('subscriptions').update({
+            status: 'active',
+            paid_from: paidFrom,
+            paid_until: paidUntil
+          }).eq('id', id);
+        }).then(function (r) {
+          if (r.error) throw r.error;
+          // Update local cache
+          sub.status = 'active';
+          sub.paid_from = paidFrom;
+          sub.paid_until = paidUntil;
+          renderSubscriptions();
+          showToast('Subscription extended by 1 month (until ' + fmtDate(paidUntil) + ').', 'success');
+        }).catch(function (e) {
+          console.error('[subs] mark paid', e);
+          if (btn) { btn.disabled = false; btn.innerHTML = '<i class="fas fa-check mr-1"></i>Mark as Paid'; }
+          showToast('Failed to update subscription: ' + (e.message || 'Unknown error'), 'error');
+        });
       }
 
-      document.getElementById('studentForm').addEventListener('submit', function (e) {
+      // ---------- Attendance ----------
+      function loadAttendance() {
+        var body = $('attendanceBody');
+        body.innerHTML = '<tr><td colspan="6" class="p-8 text-center text-slate-400 text-sm"><span class="spinner-sm spinner-navy mr-2"></span>Loading attendance…</td></tr>';
+        dbSelect('attendance', '*', { order: { column: 'recorded_at', ascending: false }, limit: 1000 })
+          .then(function (r) {
+            state.cache.attendance = r.data || [];
+            renderAttendance();
+          })
+          .catch(function (e) {
+            console.error('[attendance]', e);
+            body.innerHTML = errorRow(6, 'Failed to load attendance. ' + (e.message || ''));
+          });
+      }
+      function getFilteredAttendance() {
+        var date = $('attendanceDate').value;
+        var cf = $('attendanceClassFilter').value;
+        return (state.cache.attendance || []).filter(function (a) {
+          if (date) {
+            var d = a.date ? new Date(a.date) : (a.recorded_at ? new Date(a.recorded_at) : null);
+            if (!d || d.toISOString().slice(0,10) !== date) return false;
+          }
+          if (cf && (a.class_name || '').toUpperCase() !== cf) return false;
+          return true;
+        });
+      }
+      function renderAttendance() {
+        var body = $('attendanceBody');
+        var rows = getFilteredAttendance();
+        // Compute summary per class
+        var byClass = {};
+        CLASSES.forEach(function (c) { byClass[c] = { total: 0, present: 0 }; });
+        rows.forEach(function (a) {
+          var c = (a.class_name || '').toUpperCase();
+          if (byClass[c]) {
+            byClass[c].total++;
+            if (String(a.status || '').toLowerCase() === 'present') byClass[c].present++;
+          }
+        });
+        $$('#attendanceSummary [data-class]').forEach(function (el) {
+          var info = byClass[el.getAttribute('data-class')];
+          if (!info || info.total === 0) {
+            el.textContent = '—';
+          } else {
+            var rate = Math.round((info.present / info.total) * 100);
+            el.textContent = rate + '%';
+            el.className = 'text-lg font-bold ' + (rate >= 75 ? 'text-emerald-600' : (rate >= 50 ? 'text-amber-600' : 'text-red-500'));
+          }
+        });
+
+        if (rows.length === 0) {
+          body.innerHTML = emptyRow(6, 'No attendance records match the current filters.', 'fa-clipboard-check');
+          return;
+        }
+        var html = '';
+        rows.forEach(function (a) {
+          html += '' +
+            '<tr class="table-row border-t border-slate-50">' +
+              '<td class="p-3"><div class="flex items-center gap-2">' +
+                '<img src="' + avatarFor(a.student_name) + '" class="w-7 h-7 rounded-full" alt="">' +
+                '<span class="font-medium text-slate-800">' + escapeHtml(a.student_name || '—') + '</span>' +
+              '</div></td>' +
+              '<td class="p-3"><span class="text-xs px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 font-medium">' + escapeHtml(a.class_name || '—') + '</span></td>' +
+              '<td class="p-3 text-slate-600 text-xs">' + fmtDate(a.date || a.recorded_at) + '</td>' +
+              '<td class="p-3">' + attendanceBadge(a.status) + '</td>' +
+              '<td class="p-3 text-slate-600">' + escapeHtml(a.subject || '—') + '</td>' +
+              '<td class="p-3 text-slate-500 text-xs">' + fmtDateTime(a.recorded_at) + '</td>' +
+            '</tr>';
+        });
+        body.innerHTML = html;
+      }
+      function printAttendance() {
+        var rows = getFilteredAttendance();
+        if (rows.length === 0) { showToast('No attendance records to print.', 'info'); return; }
+        var todayStr = new Date().toLocaleString('en-GB');
+        var filterDate = $('attendanceDate').value;
+        var filterClass = $('attendanceClassFilter').value;
+        var title = 'Attendance Report — ' + state.settings.school_name;
+        if (filterClass) title += ' — ' + filterClass;
+        if (filterDate) title += ' — ' + fmtDate(filterDate);
+
+        var html = '' +
+          '<html><head><title>' + escapeHtml(title) + '</title>' +
+          '<style>' +
+            'body { font-family: "Plus Jakarta Sans", Arial, sans-serif; padding: 32px; color: #1e293b; }' +
+            'h1 { color: #1f507b; margin-bottom: 4px; }' +
+            '.meta { color: #64748b; font-size: 13px; margin-bottom: 24px; }' +
+            'table { width: 100%; border-collapse: collapse; font-size: 13px; }' +
+            'th { background: #1f507b; color: #fff; padding: 10px 12px; text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; }' +
+            'td { padding: 10px 12px; border-bottom: 1px solid #e2e8f0; }' +
+            'tr:nth-child(even) td { background: #f8fafc; }' +
+            '.badge { padding: 2px 10px; border-radius: 999px; font-size: 11px; font-weight: 600; }' +
+            '.present { background: #dcfce7; color: #166534; }' +
+            '.absent { background: #fee2e2; color: #991b1b; }' +
+            '.late { background: #fef3c7; color: #92400e; }' +
+            '.footer { margin-top: 32px; padding-top: 16px; border-top: 1px solid #e2e8f0; font-size: 11px; color: #94a3b8; text-align: center; }' +
+          '</style></head><body>' +
+          '<h1>' + escapeHtml(state.settings.school_name) + '</h1>' +
+          '<div class="meta">' +
+            escapeHtml(title.replace(state.settings.school_name + ' — ', '')) +
+            ' &middot; Generated ' + escapeHtml(todayStr) +
+            ' &middot; Term: ' + escapeHtml(state.settings.term) + ' ' + escapeHtml(state.settings.session) +
+          '</div>' +
+          '<table><thead><tr>' +
+            '<th>#</th><th>Student</th><th>Class</th><th>Date</th><th>Status</th><th>Subject</th><th>Recorded At</th>' +
+          '</tr></thead><tbody>';
+        rows.forEach(function (a, i) {
+          var s = String(a.status || '').toLowerCase();
+          var cls = s === 'present' ? 'present' : (s === 'absent' ? 'absent' : (s === 'late' ? 'late' : ''));
+          html += '<tr>' +
+            '<td>' + (i+1) + '</td>' +
+            '<td>' + escapeHtml(a.student_name || '—') + '</td>' +
+            '<td>' + escapeHtml(a.class_name || '—') + '</td>' +
+            '<td>' + fmtDate(a.date || a.recorded_at) + '</td>' +
+            '<td><span class="badge ' + cls + '">' + escapeHtml(a.status || '—') + '</span></td>' +
+            '<td>' + escapeHtml(a.subject || '—') + '</td>' +
+            '<td>' + fmtDateTime(a.recorded_at) + '</td>' +
+          '</tr>';
+        });
+        html += '</tbody></table>' +
+          '<div class="footer">Blue Horizon E-Learning Platform &middot; Printed by ' + escapeHtml(state.admin && state.admin.full_name || 'Administrator') + '</div>' +
+          '</body></html>';
+
+        var w = window.open('', '_blank');
+        if (!w) { showToast('Please allow pop-ups to print attendance.', 'error'); return; }
+        w.document.open(); w.document.write(html); w.document.close();
+        setTimeout(function () { w.focus(); w.print(); }, 400);
+      }
+
+      // ---------- Live Sessions ----------
+      function loadLiveSessions() {
+        var body = $('liveSessionsBody');
+        body.innerHTML = '<tr><td colspan="6" class="p-8 text-center text-slate-400 text-sm"><span class="spinner-sm spinner-navy mr-2"></span>Loading live sessions…</td></tr>';
+        dbSelect('live_sessions', '*', { order: { column: 'started_at', ascending: false }, limit: 500 })
+          .then(function (r) {
+            state.cache.liveSessions = r.data || [];
+            renderLiveSessions();
+          })
+          .catch(function (e) {
+            console.error('[live-sessions]', e);
+            body.innerHTML = errorRow(6, 'Failed to load live sessions. ' + (e.message || ''));
+          });
+      }
+      function renderLiveSessions() {
+        var body = $('liveSessionsBody');
+        var rows = (state.cache.liveSessions || []).filter(function (s) {
+          var st = String(s.status || '').toLowerCase();
+          if (state.liveSessionFilter === 'ongoing') return st === 'ongoing' || st === 'active' || st === 'live';
+          if (state.liveSessionFilter === 'ended') return st === 'ended' || st === 'completed' || st === 'inactive';
+          return true;
+        });
+        if (rows.length === 0) {
+          body.innerHTML = emptyRow(6, 'No live sessions match the current filter.', 'fa-video');
+          return;
+        }
+        var html = '';
+        rows.forEach(function (s) {
+          html += '' +
+            '<tr class="table-row border-t border-slate-50">' +
+              '<td class="p-3"><div class="flex items-center gap-2">' +
+                '<img src="' + avatarFor(s.teacher_name) + '" class="w-7 h-7 rounded-full" alt="">' +
+                '<span class="font-medium text-slate-800">' + escapeHtml(s.teacher_name || '—') + '</span>' +
+              '</div></td>' +
+              '<td class="p-3"><span class="text-xs px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 font-medium">' + escapeHtml(s.class_name || '—') + '</span></td>' +
+              '<td class="p-3"><span class="text-xs px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-600 font-medium">' + escapeHtml(s.subject || '—') + '</span></td>' +
+              '<td class="p-3">' + liveBadge(s.status) + '</td>' +
+              '<td class="p-3 text-slate-500 text-xs">' + fmtDateTime(s.started_at || s.created_at) + '</td>' +
+              '<td class="p-3 text-slate-500 text-xs">' + fmtDateTime(s.ended_at) + '</td>' +
+            '</tr>';
+        });
+        body.innerHTML = html;
+      }
+
+      // ---------- Modals ----------
+      function openModal(html) {
+        $('modalContent').innerHTML = html;
+        $('modalRoot').classList.add('show');
+        $$('.modal-close', $('modalContent')).forEach(function (b) {
+          b.addEventListener('click', closeModal);
+        });
+      }
+      function closeModal() {
+        $('modalRoot').classList.remove('show');
+        setTimeout(function () { $('modalContent').innerHTML = ''; }, 200);
+      }
+
+      // ---------- Register Student Modal ----------
+      function openRegisterStudent() {
+        var classOpts = CLASSES.map(function (c) { return '<option value="' + c + '">' + c + '</option>'; }).join('');
+        openModal(
+          '<div class="p-5 sm:p-6">' +
+            '<div class="flex items-start justify-between mb-4">' +
+              '<div>' +
+                '<h3 class="text-lg font-extrabold text-slate-800">Register Student</h3>' +
+                '<p class="text-xs text-slate-500">Create a new student account across any class.</p>' +
+              '</div>' +
+              '<button class="modal-close text-slate-400 hover:text-slate-700 p-2"><i class="fas fa-xmark text-lg"></i></button>' +
+            '</div>' +
+            '<form id="studentForm" class="space-y-3">' +
+              '<div class="grid grid-cols-1 sm:grid-cols-2 gap-3">' +
+                '<div><label class="form-label">Full Name *</label><input name="full_name" required class="form-input" placeholder="Jane Doe"></div>' +
+                '<div><label class="form-label">Username *</label><input name="username" required class="form-input" placeholder="jane.doe"></div>' +
+              '</div>' +
+              '<div class="grid grid-cols-1 sm:grid-cols-2 gap-3">' +
+                '<div><label class="form-label">Password *</label><input name="password" type="password" required class="form-input" placeholder="Min 8 characters"></div>' +
+                '<div><label class="form-label">Class *</label><select name="class_name" required class="form-input">' + classOpts + '</select></div>' +
+              '</div>' +
+              '<div class="grid grid-cols-1 sm:grid-cols-2 gap-3">' +
+                '<div><label class="form-label">Email</label><input name="email" type="email" class="form-input" placeholder="student@example.com"></div>' +
+                '<div><label class="form-label">Phone</label><input name="phone" class="form-input" placeholder="+234…"></div>' +
+              '</div>' +
+              '<div><label class="form-label">Guardian Name</label><input name="guardian_name" class="form-input" placeholder="Parent / Guardian full name"></div>' +
+              '<div class="flex justify-end gap-2 pt-3">' +
+                '<button type="button" class="modal-close bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-semibold px-4 py-2.5 rounded-xl">Cancel</button>' +
+                '<button type="submit" class="bg-bh-navy hover:bg-bh-navy-2 text-white text-sm font-semibold px-5 py-2.5 rounded-xl flex items-center gap-2">' +
+                  '<i class="fas fa-user-plus"></i><span>Register</span>' +
+                '</button>' +
+              '</div>' +
+            '</form>' +
+          '</div>'
+        );
+        $('studentForm').addEventListener('submit', handleRegisterStudent);
+      }
+      function handleRegisterStudent(e) {
         e.preventDefault();
         var form = e.target;
         var data = formToObj(form);
-        hideError();
-        setFormLoading(form, true);
+        var btn = form.querySelector('button[type="submit"]');
+        btn.disabled = true;
+        var orig = btn.innerHTML;
+        btn.innerHTML = '<span class="spinner-sm"></span> <span>Registering…</span>';
 
-        // Call the admin-register-student edge function (service_role on the server).
-        BH.edge('admin-register-student', {
-          headers: state.session && state.session.access_token
-            ? { Authorization: 'Bearer ' + state.session.access_token } : {},
-          body: data
-        }).then(function (res) {
-          setFormLoading(form, false);
-          if (res.ok && res.data && (res.data.success || res.data.id)) {
-            showToast('Student registered successfully!', 'success');
-            form.reset();
-            loadStudents();
-            loadDashboardData();
+        BH.edge('admin-register-student', { method: 'POST', body: data }).then(function (res) {
+          btn.disabled = false; btn.innerHTML = orig;
+          if (res.ok && res.data && (res.data.success || res.data.id || res.data.user)) {
+            showToast('Student "' + (data.full_name || data.username) + '" registered successfully!', 'success');
+            closeModal();
+            // Refresh relevant views
+            state.cache.students = null;
+            if (state.view === 'students') loadStudents();
+            if (state.view === 'dashboard') loadDashboard();
           } else {
             var msg = (res.data && (res.data.error || res.data.message)) || 'Failed to register student.';
             showToast(msg, 'error');
           }
         }).catch(function (err) {
-          setFormLoading(form, false);
+          btn.disabled = false; btn.innerHTML = orig;
           console.error('[BH] register student error', err);
           showToast('Network error. Please retry.', 'error');
         });
-      });
+      }
 
-      document.getElementById('teacherForm').addEventListener('submit', function (e) {
+      // ---------- Register Teacher Modal ----------
+      function openRegisterTeacher() {
+        var subjectOpts = SUBJECTS.map(function (s) { return '<option value="' + s + '">' + s + '</option>'; }).join('');
+        openModal(
+          '<div class="p-5 sm:p-6">' +
+            '<div class="flex items-start justify-between mb-4">' +
+              '<div>' +
+                '<h3 class="text-lg font-extrabold text-slate-800">Register Teacher</h3>' +
+                '<p class="text-xs text-slate-500">Create a new teacher account.</p>' +
+              '</div>' +
+              '<button class="modal-close text-slate-400 hover:text-slate-700 p-2"><i class="fas fa-xmark text-lg"></i></button>' +
+            '</div>' +
+            '<form id="teacherForm" class="space-y-3">' +
+              '<div class="grid grid-cols-1 sm:grid-cols-2 gap-3">' +
+                '<div><label class="form-label">Full Name *</label><input name="full_name" required class="form-input" placeholder="John Smith"></div>' +
+                '<div><label class="form-label">Username *</label><input name="username" required class="form-input" placeholder="john.smith"></div>' +
+              '</div>' +
+              '<div class="grid grid-cols-1 sm:grid-cols-2 gap-3">' +
+                '<div><label class="form-label">Password *</label><input name="password" type="password" required class="form-input" placeholder="Min 8 characters"></div>' +
+                '<div><label class="form-label">Subject *</label><select name="subject" required class="form-input">' + subjectOpts + '</select></div>' +
+              '</div>' +
+              '<div class="grid grid-cols-1 sm:grid-cols-2 gap-3">' +
+                '<div><label class="form-label">Email</label><input name="email" type="email" class="form-input" placeholder="teacher@example.com"></div>' +
+                '<div><label class="form-label">Phone</label><input name="phone" class="form-input" placeholder="+234…"></div>' +
+              '</div>' +
+              '<div class="flex justify-end gap-2 pt-3">' +
+                '<button type="button" class="modal-close bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-semibold px-4 py-2.5 rounded-xl">Cancel</button>' +
+                '<button type="submit" class="bg-bh-navy hover:bg-bh-navy-2 text-white text-sm font-semibold px-5 py-2.5 rounded-xl flex items-center gap-2">' +
+                  '<i class="fas fa-user-plus"></i><span>Register</span>' +
+                '</button>' +
+              '</div>' +
+            '</form>' +
+          '</div>'
+        );
+        $('teacherForm').addEventListener('submit', handleRegisterTeacher);
+      }
+      function handleRegisterTeacher(e) {
         e.preventDefault();
         var form = e.target;
         var data = formToObj(form);
-        setFormLoading(form, true);
+        var btn = form.querySelector('button[type="submit"]');
+        btn.disabled = true;
+        var orig = btn.innerHTML;
+        btn.innerHTML = '<span class="spinner-sm"></span> <span>Registering…</span>';
 
-        BH.edge('admin-register-teacher', {
-          headers: state.session && state.session.access_token
-            ? { Authorization: 'Bearer ' + state.session.access_token } : {},
-          body: data
-        }).then(function (res) {
-          setFormLoading(form, false);
-          if (res.ok && res.data && (res.data.success || res.data.id)) {
-            showToast('Teacher registered successfully!', 'success');
-            form.reset();
-            loadTeachers();
-            loadDashboardData();
+        BH.edge('admin-register-teacher', { method: 'POST', body: data }).then(function (res) {
+          btn.disabled = false; btn.innerHTML = orig;
+          if (res.ok && res.data && (res.data.success || res.data.id || res.data.user)) {
+            showToast('Teacher "' + (data.full_name || data.username) + '" registered successfully!', 'success');
+            closeModal();
+            state.cache.teachers = null;
+            if (state.view === 'teachers') loadTeachers();
+            if (state.view === 'dashboard') loadDashboard();
           } else {
             var msg = (res.data && (res.data.error || res.data.message)) || 'Failed to register teacher.';
             showToast(msg, 'error');
           }
         }).catch(function (err) {
-          setFormLoading(form, false);
+          btn.disabled = false; btn.innerHTML = orig;
           console.error('[BH] register teacher error', err);
           showToast('Network error. Please retry.', 'error');
         });
-      });
+      }
 
-      function hideError() { /* placeholder for parity with login */ }
-
-      // ---------- CSV export ----------
-      function exportCSV(table) {
-        if (!window.supabaseClient) return;
-        window.supabaseClient.from(table).select('*').limit(2000).then(function (r) {
-          if (!r.data || r.data.length === 0) { showToast('No data to export.', 'info'); return; }
-          var keys = Object.keys(r.data[0]);
-          var lines = [keys.join(',')];
-          r.data.forEach(function (row) {
-            lines.push(keys.map(function (k) {
-              var v = row[k];
-              if (v == null) return '';
-              v = String(v).replace(/"/g, '""');
-              if (/[",\n]/.test(v)) v = '"' + v + '"';
-              return v;
-            }).join(','));
+      // ---------- Edit Student Modal ----------
+      function openEditStudent(id) {
+        var s = (state.cache.students || []).find(function (x) { return String(x.id) === String(id); });
+        if (!s) { showToast('Student not found.', 'error'); return; }
+        var classOpts = CLASSES.map(function (c) {
+          return '<option value="' + c + '"' + ((s.class_name || '').toUpperCase() === c ? ' selected' : '') + '>' + c + '</option>';
+        }).join('');
+        openModal(
+          '<div class="p-5 sm:p-6">' +
+            '<div class="flex items-start justify-between mb-4">' +
+              '<div>' +
+                '<h3 class="text-lg font-extrabold text-slate-800">Edit Student</h3>' +
+                '<p class="text-xs text-slate-500">Update student info, reset password, or change status.</p>' +
+              '</div>' +
+              '<button class="modal-close text-slate-400 hover:text-slate-700 p-2"><i class="fas fa-xmark text-lg"></i></button>' +
+            '</div>' +
+            '<form id="editStudentForm" class="space-y-3">' +
+              '<div class="grid grid-cols-1 sm:grid-cols-2 gap-3">' +
+                '<div><label class="form-label">Full Name</label><input name="full_name" class="form-input" value="' + escapeHtml(s.full_name || s.name || '') + '"></div>' +
+                '<div><label class="form-label">Username</label><input name="username" class="form-input" value="' + escapeHtml(s.username || '') + '"></div>' +
+              '</div>' +
+              '<div class="grid grid-cols-1 sm:grid-cols-2 gap-3">' +
+                '<div><label class="form-label">Class</label><select name="class_name" class="form-input">' + classOpts + '</select></div>' +
+                '<div><label class="form-label">Status</label><select name="status" class="form-input">' +
+                  '<option value="active"' + (String(s.status||'').toLowerCase()==='active'?' selected':'') + '>Active</option>' +
+                  '<option value="inactive"' + (String(s.status||'').toLowerCase()==='inactive'?' selected':'') + '>Inactive</option>' +
+                '</select></div>' +
+              '</div>' +
+              '<div class="grid grid-cols-1 sm:grid-cols-2 gap-3">' +
+                '<div><label class="form-label">Email</label><input name="email" type="email" class="form-input" value="' + escapeHtml(s.email || '') + '"></div>' +
+                '<div><label class="form-label">Phone</label><input name="phone" class="form-input" value="' + escapeHtml(s.phone || '') + '"></div>' +
+              '</div>' +
+              '<div><label class="form-label">Guardian Name</label><input name="guardian_name" class="form-input" value="' + escapeHtml(s.guardian_name || '') + '"></div>' +
+              '<div><label class="form-label">Reset Password (leave blank to keep)</label><input name="new_password" type="password" class="form-input" placeholder="Enter new password to reset"></div>' +
+              '<div class="flex justify-end gap-2 pt-3">' +
+                '<button type="button" class="modal-close bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-semibold px-4 py-2.5 rounded-xl">Cancel</button>' +
+                '<button type="submit" class="bg-bh-navy hover:bg-bh-navy-2 text-white text-sm font-semibold px-5 py-2.5 rounded-xl flex items-center gap-2">' +
+                  '<i class="fas fa-save"></i><span>Save Changes</span>' +
+                '</button>' +
+              '</div>' +
+            '</form>' +
+          '</div>'
+        );
+        $('editStudentForm').addEventListener('submit', function (e) {
+          e.preventDefault();
+          var form = e.target;
+          var data = formToObj(form);
+          var update = {
+            full_name: data.full_name,
+            name: data.full_name,
+            username: data.username,
+            class_name: data.class_name,
+            status: data.status,
+            email: data.email,
+            phone: data.phone,
+            guardian_name: data.guardian_name
+          };
+          if (data.new_password) update.password = data.new_password;
+          var btn = form.querySelector('button[type="submit"]');
+          btn.disabled = true;
+          var orig = btn.innerHTML;
+          btn.innerHTML = '<span class="spinner-sm"></span> <span>Saving…</span>';
+          getClient().then(function (c) {
+            return c.from('students').update(update).eq('id', id);
+          }).then(function (r) {
+            btn.disabled = false; btn.innerHTML = orig;
+            if (r.error) throw r.error;
+            // Update local cache
+            Object.keys(update).forEach(function (k) { s[k] = update[k]; });
+            renderStudents();
+            showToast('Student updated successfully.', 'success');
+            closeModal();
+          }).catch(function (e) {
+            btn.disabled = false; btn.innerHTML = orig;
+            console.error('[edit student]', e);
+            showToast('Failed to update: ' + (e.message || 'Unknown error'), 'error');
           });
-          var blob = new Blob([lines.join('\n')], { type: 'text/csv' });
-          var url = URL.createObjectURL(blob);
-          var a = document.createElement('a');
-          a.href = url; a.download = table + '-' + new Date().toISOString().slice(0,10) + '.csv';
-          document.body.appendChild(a); a.click(); a.remove();
-          URL.revokeObjectURL(url);
-          showToast('Export ready!', 'success');
+        });
+      }
+      function toggleStudentStatus(id, currentStatus) {
+        var newStatus = String(currentStatus).toLowerCase() === 'inactive' ? 'active' : 'inactive';
+        getClient().then(function (c) {
+          return c.from('students').update({ status: newStatus }).eq('id', id);
+        }).then(function (r) {
+          if (r.error) throw r.error;
+          var s = (state.cache.students || []).find(function (x) { return String(x.id) === String(id); });
+          if (s) s.status = newStatus;
+          renderStudents();
+          showToast('Student ' + (newStatus === 'active' ? 'activated' : 'deactivated') + '.', 'success');
+        }).catch(function (e) {
+          console.error('[toggle student]', e);
+          showToast('Failed to update status: ' + (e.message || ''), 'error');
         });
       }
 
-      // Expose
-      window.BH = window.BH || {};
-      window.BH.exportCSV = exportCSV;
+      // ---------- Edit Teacher Modal ----------
+      function openEditTeacher(id) {
+        var t = (state.cache.teachers || []).find(function (x) { return String(x.id) === String(id); });
+        if (!t) { showToast('Teacher not found.', 'error'); return; }
+        var subjectOpts = SUBJECTS.map(function (s) {
+          return '<option value="' + s + '"' + ((t.subject || '') === s ? ' selected' : '') + '>' + s + '</option>';
+        }).join('');
+        openModal(
+          '<div class="p-5 sm:p-6">' +
+            '<div class="flex items-start justify-between mb-4">' +
+              '<div>' +
+                '<h3 class="text-lg font-extrabold text-slate-800">Edit Teacher</h3>' +
+                '<p class="text-xs text-slate-500">Update teacher info, reset password, or change status.</p>' +
+              '</div>' +
+              '<button class="modal-close text-slate-400 hover:text-slate-700 p-2"><i class="fas fa-xmark text-lg"></i></button>' +
+            '</div>' +
+            '<form id="editTeacherForm" class="space-y-3">' +
+              '<div class="grid grid-cols-1 sm:grid-cols-2 gap-3">' +
+                '<div><label class="form-label">Full Name</label><input name="full_name" class="form-input" value="' + escapeHtml(t.full_name || t.name || '') + '"></div>' +
+                '<div><label class="form-label">Username</label><input name="username" class="form-input" value="' + escapeHtml(t.username || '') + '"></div>' +
+              '</div>' +
+              '<div class="grid grid-cols-1 sm:grid-cols-2 gap-3">' +
+                '<div><label class="form-label">Subject</label><select name="subject" class="form-input">' + subjectOpts + '</select></div>' +
+                '<div><label class="form-label">Status</label><select name="status" class="form-input">' +
+                  '<option value="active"' + (String(t.status||'').toLowerCase()==='active'?' selected':'') + '>Active</option>' +
+                  '<option value="inactive"' + (String(t.status||'').toLowerCase()==='inactive'?' selected':'') + '>Inactive</option>' +
+                '</select></div>' +
+              '</div>' +
+              '<div class="grid grid-cols-1 sm:grid-cols-2 gap-3">' +
+                '<div><label class="form-label">Email</label><input name="email" type="email" class="form-input" value="' + escapeHtml(t.email || '') + '"></div>' +
+                '<div><label class="form-label">Phone</label><input name="phone" class="form-input" value="' + escapeHtml(t.phone || '') + '"></div>' +
+              '</div>' +
+              '<div><label class="form-label">Reset Password (leave blank to keep)</label><input name="new_password" type="password" class="form-input" placeholder="Enter new password to reset"></div>' +
+              '<div class="flex justify-end gap-2 pt-3">' +
+                '<button type="button" class="modal-close bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-semibold px-4 py-2.5 rounded-xl">Cancel</button>' +
+                '<button type="submit" class="bg-bh-navy hover:bg-bh-navy-2 text-white text-sm font-semibold px-5 py-2.5 rounded-xl flex items-center gap-2">' +
+                  '<i class="fas fa-save"></i><span>Save Changes</span>' +
+                '</button>' +
+              '</div>' +
+            '</form>' +
+          '</div>'
+        );
+        $('editTeacherForm').addEventListener('submit', function (e) {
+          e.preventDefault();
+          var form = e.target;
+          var data = formToObj(form);
+          var update = {
+            full_name: data.full_name,
+            name: data.full_name,
+            username: data.username,
+            subject: data.subject,
+            status: data.status,
+            email: data.email,
+            phone: data.phone
+          };
+          if (data.new_password) update.password = data.new_password;
+          var btn = form.querySelector('button[type="submit"]');
+          btn.disabled = true;
+          var orig = btn.innerHTML;
+          btn.innerHTML = '<span class="spinner-sm"></span> <span>Saving…</span>';
+          getClient().then(function (c) {
+            return c.from('teachers').update(update).eq('id', id);
+          }).then(function (r) {
+            btn.disabled = false; btn.innerHTML = orig;
+            if (r.error) throw r.error;
+            Object.keys(update).forEach(function (k) { t[k] = update[k]; });
+            renderTeachers();
+            showToast('Teacher updated successfully.', 'success');
+            closeModal();
+          }).catch(function (e) {
+            btn.disabled = false; btn.innerHTML = orig;
+            console.error('[edit teacher]', e);
+            showToast('Failed to update: ' + (e.message || 'Unknown error'), 'error');
+          });
+        });
+      }
+      function toggleTeacherStatus(id, currentStatus) {
+        var newStatus = String(currentStatus).toLowerCase() === 'inactive' ? 'active' : 'inactive';
+        getClient().then(function (c) {
+          return c.from('teachers').update({ status: newStatus }).eq('id', id);
+        }).then(function (r) {
+          if (r.error) throw r.error;
+          var t = (state.cache.teachers || []).find(function (x) { return String(x.id) === String(id); });
+          if (t) t.status = newStatus;
+          renderTeachers();
+          showToast('Teacher ' + (newStatus === 'active' ? 'activated' : 'deactivated') + '.', 'success');
+        }).catch(function (e) {
+          console.error('[toggle teacher]', e);
+          showToast('Failed to update status: ' + (e.message || ''), 'error');
+        });
+      }
+
+      // ---------- CSV export ----------
+      function exportRowsToCSV(filename, rows) {
+        if (!rows || rows.length === 0) { showToast('No data to export.', 'info'); return; }
+        var keys = Object.keys(rows[0]);
+        var lines = [keys.join(',')];
+        rows.forEach(function (row) {
+          lines.push(keys.map(function (k) {
+            var v = row[k];
+            if (v == null) return '';
+            v = String(v).replace(/"/g, '""');
+            if (/[",\n\r]/.test(v)) v = '"' + v + '"';
+            return v;
+          }).join(','));
+        });
+        var blob = new Blob([lines.join('\n')], { type: 'text/csv;charset=utf-8;' });
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url; a.download = filename + '-' + new Date().toISOString().slice(0,10) + '.csv';
+        document.body.appendChild(a); a.click(); a.remove();
+        URL.revokeObjectURL(url);
+        showToast('Export ready: ' + a.download, 'success');
+      }
+      function exportTable(table, label) {
+        getClient().then(function (c) {
+          return c.from(table).select('*').limit(5000).order('created_at', { ascending: false });
+        }).then(function (r) {
+          if (r.error) throw r.error;
+          exportRowsToCSV(label || table, r.data || []);
+        }).catch(function (e) {
+          console.error('[export]', e);
+          showToast('Export failed: ' + (e.message || ''), 'error');
+        });
+      }
+
+      // ---------- Settings ----------
+      function initSettings() {
+        var form = $('settingsForm');
+        if (!form) return;
+        // Pre-fill from in-memory state
+        form.school_name.value = state.settings.school_name || '';
+        form.term.value = state.settings.term || 'First Term';
+        form.session.value = state.settings.session || '';
+        form.default_fee.value = state.settings.default_fee || '';
+        form.currency.value = state.settings.currency || '₦';
+        // Try to load from a settings table (gracefully ignore if it doesn't exist)
+        getClient().then(function (c) {
+          return c.from('school_settings').select('*').limit(1);
+        }).then(function (r) {
+          if (r && r.data && r.data.length > 0) {
+            var s = r.data[0];
+            state.settings = {
+              school_name: s.school_name || state.settings.school_name,
+              term: s.term || state.settings.term,
+              session: s.session || state.settings.session,
+              default_fee: s.default_fee || state.settings.default_fee,
+              currency: s.currency || state.settings.currency
+            };
+            form.school_name.value = state.settings.school_name;
+            form.term.value = state.settings.term;
+            form.session.value = state.settings.session;
+            form.default_fee.value = state.settings.default_fee;
+            form.currency.value = state.settings.currency;
+          }
+        }).catch(function (e) {
+          // school_settings table may not exist — that's OK, we'll save in-memory
+          console.info('[settings] using defaults (school_settings table not available)');
+        });
+      }
+
+      // ---------- Form helpers ----------
+      function formToObj(form) {
+        var obj = {};
+        new FormData(form).forEach(function (v, k) { obj[k] = v; });
+        return obj;
+      }
+
+      // ---------- Sidebar toggle ----------
+      function openSidebar() {
+        $('sidebar').classList.remove('hide');
+        $('sidebar-overlay').classList.add('show');
+      }
+      function closeSidebar() {
+        $('sidebar').classList.add('hide');
+        $('sidebar-overlay').classList.remove('show');
+      }
+
+      // ---------- Wire up nav & buttons ----------
+      function wireUI() {
+        // Sidebar nav
+        $$('#sidebarNav .nav-link').forEach(function (a) {
+          a.addEventListener('click', function (e) {
+            e.preventDefault();
+            switchView(a.getAttribute('data-view'));
+          });
+        });
+        // Hamburger
+        $('hamburger').addEventListener('click', openSidebar);
+        $('sidebar-overlay').addEventListener('click', closeSidebar);
+        // Escape closes sidebar / modal
+        document.addEventListener('keydown', function (e) {
+          if (e.key === 'Escape') {
+            if ($('modalRoot').classList.contains('show')) closeModal();
+            else closeSidebar();
+          }
+        });
+        // Modal backdrop click closes
+        $('modalRoot').addEventListener('click', function (e) {
+          if (e.target === $('modalRoot')) closeModal();
+        });
+        // Sign out
+        $('signOutBtn').addEventListener('click', function () {
+          if (confirm('Sign out of the admin panel?')) {
+            BH.signOut();
+          }
+        });
+        // Refresh current view
+        $('refreshBtn').addEventListener('click', function () {
+          // Bust cache for current view
+          if (state.view === 'dashboard') { state.cache.students = null; state.cache.teachers = null; state.cache.subscriptions = null; }
+          if (state.cache[state.view] !== undefined) state.cache[state.view] = null;
+          loadView(state.view);
+          showToast('Refreshed.', 'info');
+        });
+
+        // Students view
+        $('registerStudentBtn').addEventListener('click', openRegisterStudent);
+        $('studentSearch').addEventListener('input', renderStudents);
+        $('studentClassFilter').addEventListener('change', renderStudents);
+
+        // Teachers view
+        $('registerTeacherBtn').addEventListener('click', openRegisterTeacher);
+        $('teacherSearch').addEventListener('input', renderTeachers);
+
+        // Timetables
+        $('timetableClassFilter').addEventListener('change', renderTimetables);
+
+        // Scores
+        $('scoreClassFilter').addEventListener('change', renderScores);
+        $('scoreSubjectFilter').addEventListener('input', renderScores);
+        $('scoreTeacherFilter').addEventListener('input', renderScores);
+        $('scoreFromDate').addEventListener('change', renderScores);
+        $('exportScoresBtn').addEventListener('click', function () {
+          exportRowsToCSV('scores', getFilteredScores());
+        });
+
+        // Assignments
+        $('exportAssignmentsBtn').addEventListener('click', function () {
+          exportRowsToCSV('assignments', state.cache.assignments || []);
+        });
+
+        // Subscriptions
+        $('subStatusFilter').addEventListener('change', renderSubscriptions);
+        $('exportSubsBtn').addEventListener('click', function () {
+          exportRowsToCSV('subscriptions', state.cache.subscriptions || []);
+        });
+
+        // Attendance
+        $('attendanceDate').addEventListener('change', renderAttendance);
+        $('attendanceClassFilter').addEventListener('change', renderAttendance);
+        $('printAttendanceBtn').addEventListener('click', printAttendance);
+
+        // Live sessions tabs
+        $$('.tab-btn[data-ls-filter]').forEach(function (b) {
+          b.addEventListener('click', function () {
+            $$('.tab-btn[data-ls-filter]').forEach(function (x) { x.classList.remove('active'); });
+            b.classList.add('active');
+            state.liveSessionFilter = b.getAttribute('data-ls-filter');
+            renderLiveSessions();
+          });
+        });
+
+        // Reports
+        $$('.report-btn').forEach(function (b) {
+          b.addEventListener('click', function () {
+            var r = b.getAttribute('data-report');
+            exportTable(r, r);
+          });
+        });
+
+        // Settings form
+        $('settingsForm').addEventListener('submit', function (e) {
+          e.preventDefault();
+          var data = formToObj(e.target);
+          state.settings = {
+            school_name: data.school_name,
+            term: data.term,
+            session: data.session,
+            default_fee: Number(data.default_fee || 0),
+            currency: data.currency || '₦'
+          };
+          // Try to persist (upsert to school_settings table if it exists)
+          getClient().then(function (c) {
+            return c.from('school_settings').upsert([state.settings]);
+          }).then(function (r) {
+            if (r && r.error) {
+              // Table likely missing — settings stay in-memory only
+              showToast('Settings saved for this session (school_settings table not available).', 'info');
+            } else {
+              showToast('Settings saved successfully.', 'success');
+            }
+          }).catch(function (e) {
+            console.info('[settings] persist skipped:', e.message);
+            showToast('Settings saved for this session.', 'info');
+          });
+        });
+      }
 
       // ---------- Boot ----------
-      boot();
+      function boot() {
+        // Today's date
+        $('todayDate').textContent = new Date().toLocaleDateString('en-GB', { weekday: 'short', day: '2-digit', month: 'short', year: 'numeric' });
+
+        BH.requireRole('admin').then(function (session) {
+          if (!session) return; // redirected
+          state.admin = (session && session.user) || { full_name: 'Administrator', username: 'admin' };
+
+          // Populate admin profile
+          var name = state.admin.full_name || state.admin.name || 'Administrator';
+          $('adminName').textContent = name;
+          $('adminUsername').textContent = '@' + (state.admin.username || 'admin');
+          $('adminAvatar').textContent = (name.charAt(0) || 'A').toUpperCase();
+          $('welcomeName').textContent = name;
+
+          wireUI();
+          // Hide loading overlay
+          $('loadingOverlay').style.display = 'none';
+          // Initial view
+          switchView('dashboard');
+        }).catch(function (e) {
+          console.error('[BH admin] boot error', e);
+          $('loadingOverlay').innerHTML = '' +
+            '<div class="text-center">' +
+              '<i class="fas fa-triangle-exclamation text-4xl text-red-500 mb-3"></i>' +
+              '<div class="text-sm text-slate-600 mb-3">Failed to initialise admin panel.</div>' +
+              '<button onclick="location.reload()" class="bg-bh-navy text-white text-sm font-semibold px-4 py-2 rounded-xl">Retry</button>' +
+            '</div>';
+        });
+      }
+
+      // Wait for DOM + BH client to be available
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', boot);
+      } else {
+        boot();
+      }
+    })();
     </script>
   </body>
 </html>

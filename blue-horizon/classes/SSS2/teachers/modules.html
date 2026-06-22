@@ -1,0 +1,1076 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Module Builder — Blue Horizon Teacher Portal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+      * { font-family: 'Plus Jakarta Sans', system-ui, sans-serif; }
+      .mono, .mono * { font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace !important; }
+
+      :root {
+        --bh-navy:   #1f507b;
+        --bh-navy-2: #2c5282;
+        --bh-accent: #0195db;
+        --bh-bg:     #fafafa;
+      }
+      body { background: var(--bh-bg); }
+
+      /* Scrollbar */
+      ::-webkit-scrollbar { width: 6px; height: 6px; }
+      ::-webkit-scrollbar-track { background: #eef2f7; border-radius: 3px; }
+      ::-webkit-scrollbar-thumb { background: #c1cee0; border-radius: 3px; }
+      ::-webkit-scrollbar-thumb:hover { background: #8aa0bd; }
+
+      /* Sidebar */
+      #sidebar { transition: transform 0.3s ease-in-out; }
+      #sidebar.hide { transform: translateX(-100%); }
+      @media (min-width: 1024px) { #sidebar { transform: translateX(0) !important; } }
+
+      .nav-link-active {
+        background: linear-gradient(135deg, rgba(31,80,123,0.10), rgba(1,149,219,0.06));
+        color: var(--bh-navy);
+        font-weight: 600;
+      }
+
+      /* Mobile sidebar overlay */
+      #sidebar-overlay {
+        position: fixed; inset: 0; background: rgba(15, 35, 60, 0.5);
+        backdrop-filter: blur(4px); z-index: 30;
+        opacity: 0; pointer-events: none; transition: opacity 0.25s ease;
+      }
+      #sidebar-overlay.show { opacity: 1; pointer-events: auto; }
+      @media (min-width: 1024px) { #sidebar-overlay { display: none !important; } }
+
+      /* Toast */
+      .toast {
+        position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 9999;
+        padding: 0.9rem 1.2rem; border-radius: 0.75rem; color: #fff; font-size: 0.875rem;
+        box-shadow: 0 12px 30px -10px rgba(0,0,0,0.25);
+        animation: toastIn 0.25s ease-out;
+        max-width: 380px;
+        display: flex; align-items: center; gap: 0.6rem;
+      }
+      .toast.success { background: #16a34a; }
+      .toast.error   { background: #dc2626; }
+      .toast.info    { background: var(--bh-navy); }
+      @keyframes toastIn {
+        from { transform: translateY(20px); opacity: 0; }
+        to   { transform: translateY(0);    opacity: 1; }
+      }
+
+      /* Loading overlay */
+      #loadingOverlay {
+        position: fixed; inset: 0; background: rgba(255,255,255,0.85);
+        backdrop-filter: blur(6px); z-index: 60;
+        display: flex; align-items: center; justify-content: center;
+      }
+      #loadingOverlay.hide { opacity: 0; pointer-events: none; transition: opacity .3s; }
+
+      /* Mode toggle */
+      .mode-toggle {
+        display: inline-flex; background: #f1f5f9; border-radius: 0.75rem; padding: 0.25rem;
+        border: 1px solid #e2e8f0;
+      }
+      .mode-toggle button {
+        padding: 0.5rem 1.1rem; border-radius: 0.5rem; font-size: 0.8rem; font-weight: 600;
+        color: #64748b; transition: all 0.18s ease;
+        display: inline-flex; align-items: center; gap: 0.4rem;
+      }
+      .mode-toggle button.active {
+        background: linear-gradient(135deg, var(--bh-navy), var(--bh-navy-2));
+        color: #fff;
+        box-shadow: 0 6px 14px -6px rgba(31,80,123,0.6);
+      }
+
+      /* Code editor with line numbers */
+      .editor-wrap {
+        position: relative;
+        display: flex;
+        background: #0f172a;
+        border-radius: 0.75rem;
+        overflow: hidden;
+        border: 1px solid #1e293b;
+      }
+      .line-numbers {
+        flex: 0 0 auto;
+        padding: 0.85rem 0.6rem 0.85rem 0.85rem;
+        text-align: right;
+        color: #475569;
+        font-size: 0.78rem;
+        line-height: 1.55;
+        background: #0b1220;
+        user-select: none;
+        overflow: hidden;
+        white-space: pre;
+        font-family: 'JetBrains Mono', ui-monospace, monospace;
+        min-width: 3rem;
+      }
+      #codeEditor {
+        flex: 1 1 auto;
+        background: transparent;
+        color: #e2e8f0;
+        border: 0; outline: 0; resize: none;
+        padding: 0.85rem 1rem;
+        font-family: 'JetBrains Mono', ui-monospace, monospace;
+        font-size: 0.82rem;
+        line-height: 1.55;
+        white-space: pre;
+        overflow: auto;
+        tab-size: 2;
+      }
+      #codeEditor::placeholder { color: #64748b; }
+
+      /* Iframe wrapper */
+      .preview-frame {
+        width: 100%; height: 100%; min-height: 320px; background: #fff;
+        border: 0; border-radius: 0.75rem;
+      }
+
+      /* Chat bubbles */
+      .chat-bubble {
+        max-width: 88%;
+        padding: 0.65rem 0.85rem;
+        border-radius: 1rem;
+        font-size: 0.85rem;
+        line-height: 1.5;
+        word-wrap: break-word;
+        white-space: pre-wrap;
+        animation: bubbleIn 0.25s ease-out;
+      }
+      .chat-bubble.user {
+        background: linear-gradient(135deg, var(--bh-navy), var(--bh-navy-2));
+        color: #fff;
+        border-bottom-right-radius: 0.25rem;
+        margin-left: auto;
+      }
+      .chat-bubble.ai {
+        background: #f1f5f9;
+        color: #1e293b;
+        border-bottom-left-radius: 0.25rem;
+        border: 1px solid #e2e8f0;
+      }
+      .chat-bubble.error {
+        background: #fef2f2;
+        color: #991b1b;
+        border: 1px solid #fecaca;
+      }
+      @keyframes bubbleIn {
+        from { transform: translateY(6px); opacity: 0; }
+        to   { transform: translateY(0); opacity: 1; }
+      }
+
+      /* Thinking dots */
+      .thinking-dots span {
+        display: inline-block; width: 6px; height: 6px; margin: 0 1px;
+        border-radius: 50%; background: var(--bh-navy); opacity: 0.4;
+        animation: dotPulse 1.2s infinite ease-in-out;
+      }
+      .thinking-dots span:nth-child(2) { animation-delay: 0.2s; }
+      .thinking-dots span:nth-child(3) { animation-delay: 0.4s; }
+      @keyframes dotPulse {
+        0%, 80%, 100% { transform: scale(0.7); opacity: 0.4; }
+        40%           { transform: scale(1);   opacity: 1; }
+      }
+
+      /* Spinner */
+      .spinner {
+        width: 14px; height: 14px;
+        border: 2px solid rgba(255,255,255,0.4);
+        border-top-color: #fff;
+        border-radius: 50%;
+        animation: spin 0.7s linear infinite;
+        display: inline-block;
+      }
+      .spinner.dark {
+        border: 2px solid rgba(31,80,123,0.2);
+        border-top-color: var(--bh-navy);
+      }
+      @keyframes spin { to { transform: rotate(360deg); } }
+
+      /* Upload button glow */
+      .upload-btn {
+        background: linear-gradient(135deg, #16a34a, #15803d);
+        box-shadow: 0 8px 20px -8px rgba(22,163,74,0.6);
+      }
+      .upload-btn:hover { box-shadow: 0 10px 24px -8px rgba(22,163,74,0.8); }
+      .upload-btn:disabled { background: #94a3b8; box-shadow: none; cursor: not-allowed; }
+
+      /* Hide scrollbar utility for chat */
+      .scrollbar-thin::-webkit-scrollbar { width: 4px; }
+    </style>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              'bh-navy':   '#1f507b',
+              'bh-navy-2': '#2c5282',
+              'bh-accent': '#0195db',
+              'bh-bg':     '#fafafa'
+            }
+          }
+        }
+      };
+    </script>
+  </head>
+  <body class="bg-bh-bg text-slate-800">
+    <div class="min-h-screen flex">
+
+      <!-- Sidebar overlay (mobile) -->
+      <div id="sidebar-overlay"></div>
+
+      <!-- ===================== Sidebar ===================== -->
+      <aside id="sidebar" class="w-72 lg:w-80 fixed left-0 top-0 h-full bg-white border-r border-slate-200 flex flex-col z-40 hide lg:translate-x-0">
+        <!-- Logo -->
+        <div class="p-5 border-b border-slate-100">
+          <div class="flex items-center gap-3">
+            <img src="../_next/static/media/logo-name.1dd6ad53.webp" alt="Blue Horizon logo"
+                 class="w-12 h-12 object-contain rounded-xl bg-white p-1 shadow-sm border border-slate-100"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-bh-navy to-bh-navy-2 flex items-center justify-center shadow-lg" style="display:none;">
+              <i class="fas fa-water text-white text-xl"></i>
+            </div>
+            <div>
+              <div class="text-base font-extrabold tracking-wide text-bh-navy">BLUE HORIZON</div>
+              <div class="text-[11px] text-slate-400 -mt-0.5">Teacher Portal</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="flex-1 overflow-y-auto p-4 space-y-5">
+          <!-- Main Menu -->
+          <div>
+            <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider px-3 mb-2">Main Menu</div>
+            <ul class="space-y-1">
+              <li>
+                <a href="dashboard.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 hover:bg-slate-50 transition-colors">
+                  <i class="fas fa-home text-bh-navy w-5"></i><span>Dashboard</span>
+                </a>
+              </li>
+              <li>
+                <a href="modules.html" class="nav-link-active flex items-center gap-3 px-3 py-2.5 rounded-xl">
+                  <i class="fas fa-cube text-bh-navy w-5"></i><span>Modules</span>
+                  <span class="ml-auto text-[10px] bg-bh-accent text-white px-1.5 py-0.5 rounded-full">NEW</span>
+                </a>
+              </li>
+              <li>
+                <a href="dashboard.html#myClasses" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 hover:bg-slate-50 transition-colors">
+                  <i class="fas fa-chalkboard text-emerald-500 w-5"></i><span>My Classes</span>
+                </a>
+              </li>
+              <li>
+                <a href="dashboard.html#timetable" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 hover:bg-slate-50 transition-colors">
+                  <i class="fas fa-calendar-alt text-rose-500 w-5"></i><span>Timetable</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Teaching -->
+          <div>
+            <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider px-3 mb-2">Teaching</div>
+            <ul class="space-y-1">
+              <li>
+                <a href="dashboard.html#postAssignment" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 hover:bg-slate-50 transition-colors">
+                  <i class="fas fa-plus-circle text-amber-500 w-5"></i><span>Post Assignment</span>
+                </a>
+              </li>
+              <li>
+                <a href="dashboard.html#scoresSection" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 hover:bg-slate-50 transition-colors">
+                  <i class="fas fa-chart-bar text-cyan-600 w-5"></i><span>Scores &amp; Results</span>
+                </a>
+              </li>
+              <li>
+                <a href="dashboard.html#liveSessions" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 hover:bg-slate-50 transition-colors">
+                  <i class="fas fa-video text-purple-500 w-5"></i><span>Live Sessions</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Communication -->
+          <div>
+            <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider px-3 mb-2">Communication</div>
+            <ul class="space-y-1">
+              <li>
+                <a href="../classes/_template/messenger/messenger.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 hover:bg-slate-50 transition-colors">
+                  <i class="fas fa-comments text-bh-accent w-5"></i><span>Messenger</span>
+                </a>
+              </li>
+              <li>
+                <a href="dashboard.html#studentQuestions" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 hover:bg-slate-50 transition-colors">
+                  <i class="fas fa-question-circle text-teal-500 w-5"></i><span>Student Questions</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+
+        <!-- User Profile -->
+        <div class="p-4 border-t border-slate-100">
+          <div class="flex items-center gap-3 p-2 rounded-xl bg-slate-50">
+            <img id="avatar-sm" alt="avatar"
+                 src="https://ui-avatars.com/api/?name=T&background=1f507b&color=fff&size=80&bold=true"
+                 class="w-10 h-10 rounded-full border-2 border-bh-navy/30 object-cover">
+            <div class="flex-1 min-w-0">
+              <div id="userName" class="font-semibold text-slate-800 truncate">Teacher</div>
+              <div id="userLevel" class="text-xs text-slate-500">Loading subject…</div>
+            </div>
+            <button id="logoutBtn" title="Sign out" class="p-2 rounded-lg hover:bg-rose-50 text-slate-400 hover:text-rose-500 transition-colors">
+              <i class="fas fa-sign-out-alt"></i>
+            </button>
+          </div>
+        </div>
+      </aside>
+
+      <!-- ===================== Main Content ===================== -->
+      <div id="main-content" class="flex-1 flex flex-col ml-0 lg:ml-80 min-w-0">
+
+        <!-- Top Header -->
+        <header class="sticky top-0 z-30 bg-white/85 backdrop-blur-xl border-b border-slate-200/60 px-4 md:px-6 py-3.5">
+          <div class="flex items-center justify-between gap-3">
+            <div class="flex items-center gap-3 min-w-0">
+              <button id="toggleSidebar" class="p-2 rounded-xl hover:bg-slate-100 lg:hidden transition-colors" aria-label="Toggle sidebar">
+                <i class="fas fa-bars text-slate-500"></i>
+              </button>
+              <div class="min-w-0">
+                <h1 class="text-base md:text-lg font-bold text-slate-800 truncate flex items-center gap-2">
+                  <i class="fas fa-cube text-bh-navy"></i> Module Builder
+                </h1>
+                <p class="text-xs text-slate-500 hidden sm:block">Create interactive HTML lessons &amp; share with students</p>
+              </div>
+            </div>
+
+            <!-- Right actions -->
+            <div class="flex items-center gap-2 md:gap-3">
+              <button id="uploadBtn" class="upload-btn inline-flex items-center gap-2 px-3 md:px-4 py-2 text-white rounded-xl font-semibold text-sm transition-all">
+                <i class="fas fa-cloud-arrow-up"></i>
+                <span class="hidden sm:inline">Upload to Students</span>
+                <span class="sm:hidden">Upload</span>
+              </button>
+              <a href="dashboard.html" class="hidden md:inline-flex p-2.5 rounded-xl hover:bg-slate-100 transition-colors" aria-label="Back to dashboard" title="Back to dashboard">
+                <i class="fas fa-arrow-left text-slate-500"></i>
+              </a>
+              <div class="hidden sm:flex items-center gap-3">
+                <img id="topAvatar" alt="avatar"
+                     src="https://ui-avatars.com/api/?name=T&background=1f507b&color=fff&size=80&bold=true"
+                     class="w-10 h-10 rounded-full border-2 border-bh-navy/30 object-cover">
+              </div>
+            </div>
+          </div>
+        </header>
+
+        <!-- Main Body -->
+        <main class="flex-1 p-3 md:p-5 overflow-hidden">
+          <!-- Error banner -->
+          <div id="errorBanner" class="hidden mb-3 bg-rose-50 border border-rose-200 text-rose-700 rounded-2xl p-3 text-sm flex items-center gap-3">
+            <i class="fas fa-exclamation-triangle"></i>
+            <span id="errorBannerText">Something went wrong.</span>
+            <button onclick="document.getElementById('errorBanner').classList.add('hidden')" class="ml-auto p-1 hover:bg-rose-100 rounded"><i class="fas fa-times"></i></button>
+          </div>
+
+          <!-- 3-column workspace -->
+          <div class="grid grid-cols-1 xl:grid-cols-12 gap-3 md:gap-4 h-full">
+
+            <!-- ============ Center column: Preview + Editor ============ -->
+            <section class="xl:col-span-8 flex flex-col gap-3 min-w-0">
+
+              <!-- Mode toggle + actions bar -->
+              <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-3 flex flex-wrap items-center justify-between gap-3">
+                <div class="mode-toggle" role="tablist" aria-label="Build mode">
+                  <button id="modeSelf" class="active" role="tab" aria-selected="true">
+                    <i class="fas fa-code"></i> Self
+                  </button>
+                  <button id="modeAI" role="tab" aria-selected="false">
+                    <i class="fas fa-wand-magic-sparkles"></i> AI
+                  </button>
+                </div>
+
+                <div class="flex items-center gap-2 text-xs text-slate-500">
+                  <span id="charCount" class="hidden sm:inline-flex items-center gap-1 px-2 py-1 bg-slate-50 rounded-lg">
+                    <i class="fas fa-font"></i> <span id="charCountValue">0</span> chars
+                  </span>
+                  <span id="autoSaveBadge" class="hidden sm:inline-flex items-center gap-1 px-2 py-1 bg-emerald-50 text-emerald-700 rounded-lg">
+                    <i class="fas fa-circle text-[6px] animate-pulse"></i> Live
+                  </span>
+                  <button id="refreshPreviewBtn" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg font-medium transition-colors">
+                    <i class="fas fa-rotate-right"></i> <span class="hidden sm:inline">Refresh</span> Preview
+                  </button>
+                </div>
+              </div>
+
+              <!-- Preview area -->
+              <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden flex-1 flex flex-col min-h-[320px]">
+                <div class="px-4 py-2.5 border-b border-slate-100 flex items-center justify-between bg-slate-50/60">
+                  <div class="flex items-center gap-2 text-xs font-semibold text-slate-600 uppercase tracking-wider">
+                    <i class="fas fa-eye text-bh-navy"></i> Live Preview
+                  </div>
+                  <div class="flex items-center gap-1.5">
+                    <span class="w-2.5 h-2.5 rounded-full bg-rose-400"></span>
+                    <span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span>
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
+                  </div>
+                </div>
+                <div class="flex-1 bg-white p-2">
+                  <iframe id="previewFrame" class="preview-frame" sandbox="allow-scripts" title="Module preview"></iframe>
+                </div>
+              </div>
+
+              <!-- Code editor (Self mode only) -->
+              <div id="editorPanel" class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden flex flex-col">
+                <div class="px-4 py-2.5 border-b border-slate-100 flex items-center justify-between bg-slate-50/60">
+                  <div class="flex items-center gap-2 text-xs font-semibold text-slate-600 uppercase tracking-wider">
+                    <i class="fas fa-code text-bh-navy"></i> HTML Editor
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <button id="insertTemplateBtn" class="text-[11px] text-bh-navy hover:underline font-medium" title="Insert a starter HTML template">
+                      <i class="fas fa-file-circle-plus"></i> Template
+                    </button>
+                    <button id="clearEditorBtn" class="text-[11px] text-rose-500 hover:underline font-medium" title="Clear editor">
+                      <i class="fas fa-eraser"></i> Clear
+                    </button>
+                  </div>
+                </div>
+                <div class="editor-wrap" style="min-height: 220px; max-height: 380px;">
+                  <div id="lineNumbers" class="line-numbers">1</div>
+                  <textarea id="codeEditor" spellcheck="false" autocapitalize="off" autocomplete="off"
+                    placeholder="<!-- Write your HTML here. Preview updates as you type. -->&#10;<h1>Hello, students!</h1>&#10;<p>Lesson content goes here…</p>"></textarea>
+                </div>
+              </div>
+            </section>
+
+            <!-- ============ Right column: AI Chat Console ============ -->
+            <aside id="chatColumn" class="xl:col-span-4 flex flex-col min-w-0 min-h-[420px] xl:min-h-0 bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+              <!-- Chat header -->
+              <div class="px-4 py-3 border-b border-slate-100 bg-gradient-to-r from-bh-navy to-bh-navy-2 text-white flex items-center justify-between">
+                <div class="flex items-center gap-2.5 min-w-0">
+                  <div class="w-9 h-9 rounded-xl bg-white/15 flex items-center justify-center flex-shrink-0">
+                    <i class="fas fa-robot"></i>
+                  </div>
+                  <div class="min-w-0">
+                    <div class="font-semibold text-sm truncate">AI Module Assistant</div>
+                    <div class="text-[11px] text-white/70 flex items-center gap-1">
+                      <span id="chatStatusDot" class="w-1.5 h-1.5 rounded-full bg-emerald-300"></span>
+                      <span id="chatStatusText">Ready</span>
+                    </div>
+                  </div>
+                </div>
+                <button id="clearChatBtn" class="p-1.5 rounded-lg hover:bg-white/15 transition-colors" title="Clear chat">
+                  <i class="fas fa-broom text-sm"></i>
+                </button>
+              </div>
+
+              <!-- Messages -->
+              <div id="chatMessages" class="flex-1 overflow-y-auto scrollbar-thin p-4 space-y-3 flex flex-col">
+                <!-- Messages injected by JS -->
+              </div>
+
+              <!-- Quick prompts (visible when chat is mostly empty) -->
+              <div id="quickPrompts" class="px-3 pb-2 flex flex-wrap gap-1.5">
+                <button class="quick-prompt text-[11px] px-2.5 py-1.5 bg-slate-100 hover:bg-bh-navy/10 text-slate-700 hover:text-bh-navy rounded-full transition-colors" data-prompt="Create a 5-question multiple-choice quiz on photosynthesis with answer explanations.">
+                  <i class="fas fa-lightbulb"></i> Photosynthesis quiz
+                </button>
+                <button class="quick-prompt text-[11px] px-2.5 py-1.5 bg-slate-100 hover:bg-bh-navy/10 text-slate-700 hover:text-bh-navy rounded-full transition-colors" data-prompt="Build an interactive lesson on quadratic equations with examples and a practice problem.">
+                  <i class="fas fa-lightbulb"></i> Quadratic equations
+                </button>
+                <button class="quick-prompt text-[11px] px-2.5 py-1.5 bg-slate-100 hover:bg-bh-navy/10 text-slate-700 hover:text-bh-navy rounded-full transition-colors" data-prompt="Make a labelled diagram of the human heart with hover descriptions for each part.">
+                  <i class="fas fa-lightbulb"></i> Human heart diagram
+                </button>
+              </div>
+
+              <!-- Input -->
+              <form id="chatForm" class="p-3 border-t border-slate-100 flex items-end gap-2 bg-white">
+                <textarea id="chatInput" rows="1" placeholder="Describe the lesson you want to create…"
+                  class="flex-1 resize-none px-3 py-2 rounded-xl border border-slate-200 bg-slate-50 focus:outline-none focus:ring-2 focus:ring-bh-navy/15 focus:border-bh-navy/40 focus:bg-white text-sm transition-all max-h-32"></textarea>
+                <button id="sendBtn" type="submit"
+                  class="w-10 h-10 flex-shrink-0 rounded-xl bg-gradient-to-br from-bh-navy to-bh-navy-2 text-white flex items-center justify-center hover:from-bh-navy-2 hover:to-bh-navy transition-all disabled:opacity-50 disabled:cursor-not-allowed">
+                  <i class="fas fa-paper-plane"></i>
+                </button>
+              </form>
+            </aside>
+          </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="text-center text-xs text-slate-400 py-4 px-4">
+          &copy; <span id="footerYear"></span> Blue Horizon Schools. Module Builder.
+        </footer>
+      </div>
+    </div>
+
+    <!-- Loading overlay -->
+    <div id="loadingOverlay">
+      <div class="text-center">
+        <div class="w-12 h-12 border-4 border-bh-navy/20 border-t-bh-navy rounded-full animate-spin mx-auto mb-3"></div>
+        <p class="text-slate-500 text-sm">Loading Module Builder…</p>
+      </div>
+    </div>
+
+    <!-- Toast container -->
+    <div id="toastContainer"></div>
+
+    <!-- Supabase shared client -->
+    <script src="../classes/_template/js/supabase-client.js"></script>
+    <script>
+      // =====================================================
+      // Blue Horizon Teacher Module Builder
+      // =====================================================
+      'use strict';
+
+      // ---- State (in-memory only — NO localStorage) ----
+      var state = {
+        mode: 'self',          // 'self' | 'ai'
+        html: '',               // current HTML content of the module
+        teacher: null,          // { id, name, full_name, username, subject }
+        isUploading: false,
+        isThinking: false,
+        chat: []                // [{role:'user'|'ai'|'error', text}]
+      };
+
+      // ---- DOM refs ----
+      var $ = function (id) { return document.getElementById(id); };
+      var els = {};
+
+      // ---- Helpers ----
+      function showToast(message, type, icon) {
+        type = type || 'info';
+        var container = $('toastContainer');
+        var el = document.createElement('div');
+        el.className = 'toast ' + type;
+        el.innerHTML = (icon ? '<i class="fas ' + icon + '"></i>' : '') + '<span>' + escapeHtml(message) + '</span>';
+        container.appendChild(el);
+        setTimeout(function () {
+          el.style.opacity = '0';
+          el.style.transition = 'opacity .3s';
+          setTimeout(function () { el.remove(); }, 300);
+        }, 3800);
+      }
+
+      function showError(msg) {
+        $('errorBannerText').textContent = msg;
+        $('errorBanner').classList.remove('hidden');
+      }
+      function hideError() { $('errorBanner').classList.add('hidden'); }
+
+      function escapeHtml(s) {
+        if (s == null) return '';
+        return String(s).replace(/[&<>"']/g, function (c) {
+          return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c];
+        });
+      }
+
+      function getInitials(fullName) {
+        try { return String(fullName || '').split(' ').slice(0, 2).map(function (n) { return n.charAt(0); }).join('').toUpperCase(); }
+        catch (e) { return 'T'; }
+      }
+      function avatarFor(name) {
+        return 'https://ui-avatars.com/api/?name=' + encodeURIComponent(getInitials(name) || 'T') +
+               '&background=1f507b&color=fff&size=128&bold=true';
+      }
+
+      function slugify(str) {
+        if (!str) return 'teacher';
+        return String(str).toLowerCase().trim()
+          .replace(/[^a-z0-9]+/g, '-')
+          .replace(/^-+|-+$/g, '')
+          .substring(0, 40) || 'teacher';
+      }
+
+      // ---- Mode toggle ----
+      function setMode(mode) {
+        if (mode !== 'self' && mode !== 'ai') return;
+        state.mode = mode;
+        var selfBtn = $('modeSelf'), aiBtn = $('modeAI');
+        var editorPanel = $('editorPanel');
+        var chatColumn = $('chatColumn');
+
+        if (mode === 'self') {
+          selfBtn.classList.add('active'); selfBtn.setAttribute('aria-selected', 'true');
+          aiBtn.classList.remove('active'); aiBtn.setAttribute('aria-selected', 'false');
+          editorPanel.classList.remove('hidden');
+          // On small screens, hide chat in self mode to give editor + preview more space
+          if (window.innerWidth < 1280) chatColumn.classList.add('hidden');
+          else chatColumn.classList.remove('hidden');
+        } else {
+          aiBtn.classList.add('active'); aiBtn.setAttribute('aria-selected', 'true');
+          selfBtn.classList.remove('active'); selfBtn.setAttribute('aria-selected', 'false');
+          editorPanel.classList.add('hidden');
+          chatColumn.classList.remove('hidden');
+        }
+      }
+
+      // ---- Preview ----
+      function updatePreview() {
+        var frame = $('previewFrame');
+        if (!frame) return;
+        var html = state.html || '<!doctype html><html><body style="font-family:system-ui;padding:2rem;color:#94a3b8;text-align:center;">' +
+          '<div style="margin-top:10%"><i class=\"fas fa-feather\" style=\"font-size:3rem;color:#cbd5e1;\"></i>' +
+          '<p style=\"margin-top:1rem;font-size:0.95rem;\">Start writing or ask the AI to begin. Your live preview will appear here.</p></div></body></html>';
+        // srcdoc renders HTML in the sandboxed iframe
+        frame.srcdoc = html;
+      }
+
+      // ---- Code editor + line numbers ----
+      function updateLineNumbers() {
+        var editor = $('codeEditor');
+        var ln = $('lineNumbers');
+        if (!editor || !ln) return;
+        var lineCount = editor.value.split('\n').length;
+        var lines = [];
+        for (var i = 1; i <= lineCount; i++) lines.push(i);
+        ln.textContent = lines.join('\n');
+        // Sync scroll
+        ln.scrollTop = editor.scrollTop;
+      }
+
+      function updateCharCount() {
+        var el = $('charCountValue');
+        if (el) el.textContent = (state.html || '').length;
+      }
+
+      function setHtml(html, source) {
+        state.html = html || '';
+        // Sync the textarea (e.g. when AI updates HTML)
+        var editor = $('codeEditor');
+        if (editor && editor.value !== state.html) editor.value = state.html;
+        updateLineNumbers();
+        updateCharCount();
+        updatePreview();
+      }
+
+      // Debounced self-mode preview
+      var previewTimer = null;
+      function onEditorInput() {
+        state.html = $('codeEditor').value;
+        updateLineNumbers();
+        updateCharCount();
+        if (previewTimer) clearTimeout(previewTimer);
+        previewTimer = setTimeout(updatePreview, 500);
+      }
+
+      // ---- AI Chat ----
+      function addChatMessage(role, text) {
+        state.chat.push({ role: role, text: text });
+        renderChat();
+      }
+
+      function renderChat() {
+        var box = $('chatMessages');
+        if (!box) return;
+        var html = '';
+        state.chat.forEach(function (msg) {
+          if (msg.role === 'thinking') {
+            html += '' +
+              '<div class="flex items-center gap-2 text-xs text-slate-500">' +
+                '<div class="w-7 h-7 rounded-full bg-bh-navy/10 flex items-center justify-center"><i class="fas fa-robot text-bh-navy"></i></div>' +
+                '<div class="chat-bubble ai" style="background:#f1f5f9;">' +
+                  '<span class="thinking-dots"><span></span><span></span><span></span></span>' +
+                '</div>' +
+              '</div>';
+            return;
+          }
+          var cls = msg.role === 'user' ? 'user' : (msg.role === 'error' ? 'error' : 'ai');
+          var icon = msg.role === 'user' ? 'fa-user' : (msg.role === 'error' ? 'fa-triangle-exclamation' : 'fa-robot');
+          var align = msg.role === 'user' ? 'flex justify-end' : 'flex items-start gap-2';
+          html += '' +
+            '<div class="' + align + '">' +
+              (msg.role !== 'user' ? '<div class="w-7 h-7 rounded-full bg-bh-navy/10 flex items-center justify-center flex-shrink-0"><i class="fas ' + icon + ' text-bh-navy text-xs"></i></div>' : '') +
+              '<div class="chat-bubble ' + cls + '">' + escapeHtml(msg.text) + '</div>' +
+            '</div>';
+        });
+        box.innerHTML = html;
+        // Auto scroll
+        box.scrollTop = box.scrollHeight;
+
+        // Toggle quick prompts visibility (only show when chat is short)
+        var qp = $('quickPrompts');
+        if (qp) qp.style.display = state.chat.length <= 1 ? 'flex' : 'none';
+      }
+
+      function setThinking(isThinking) {
+        state.isThinking = isThinking;
+        var dot = $('chatStatusDot'), txt = $('chatStatusText'), sendBtn = $('sendBtn');
+        if (isThinking) {
+          // Replace any prior thinking message
+          state.chat = state.chat.filter(function (m) { return m.role !== 'thinking'; });
+          state.chat.push({ role: 'thinking', text: '' });
+          renderChat();
+          if (dot) dot.className = 'w-1.5 h-1.5 rounded-full bg-amber-300 animate-pulse';
+          if (txt) txt.textContent = 'Thinking…';
+          if (sendBtn) { sendBtn.disabled = true; sendBtn.innerHTML = '<span class="spinner"></span>'; }
+        } else {
+          state.chat = state.chat.filter(function (m) { return m.role !== 'thinking'; });
+          renderChat();
+          if (dot) dot.className = 'w-1.5 h-1.5 rounded-full bg-emerald-300';
+          if (txt) txt.textContent = 'Ready';
+          if (sendBtn) { sendBtn.disabled = false; sendBtn.innerHTML = '<i class="fas fa-paper-plane"></i>'; }
+        }
+      }
+
+      function sendChat(prompt) {
+        if (!prompt || !prompt.trim()) return;
+        if (state.isThinking) {
+          showToast('Please wait for the AI to finish responding.', 'info', 'fa-hourglass-half');
+          return;
+        }
+        addChatMessage('user', prompt.trim());
+        $('chatInput').value = '';
+        autoResizeChatInput();
+        setThinking(true);
+
+        var payload = {
+          action: 'generate',
+          prompt: prompt.trim(),
+          current_html: state.html || ''
+        };
+
+        BH.edge('ai-module', { method: 'POST', body: payload }).then(function (res) {
+          setThinking(false);
+          if (!res || !res.ok || !res.data) {
+            var errMsg = (res && res.data && res.data.error) || 'The AI service is unavailable right now. Try again.';
+            addChatMessage('error', errMsg);
+            return;
+          }
+          var data = res.data;
+          if (data.html && typeof data.html === 'string') {
+            setHtml(data.html, 'ai');
+          }
+          if (data.reply && typeof data.reply === 'string') {
+            addChatMessage('ai', data.reply);
+          } else if (data.html) {
+            addChatMessage('ai', 'I\'ve updated the preview with the new module. Let me know if you\'d like any changes!');
+          } else {
+            addChatMessage('ai', 'I couldn\'t generate that module. Could you describe what you\'d like in more detail?');
+          }
+        }).catch(function (err) {
+          setThinking(false);
+          console.error('[BH] ai-module error:', err);
+          addChatMessage('error', 'Network error reaching the AI service. Please check your connection and try again.');
+        });
+      }
+
+      // Auto-resize chat textarea
+      function autoResizeChatInput() {
+        var ta = $('chatInput');
+        if (!ta) return;
+        ta.style.height = 'auto';
+        ta.style.height = Math.min(ta.scrollHeight, 128) + 'px';
+      }
+
+      // ---- Upload to Students ----
+      function uploadToStudents() {
+        if (state.isUploading) return;
+        if (!state.html || !state.html.trim()) {
+          showToast('Nothing to upload. Write or generate some HTML first.', 'error', 'fa-circle-exclamation');
+          return;
+        }
+        if (!state.teacher) {
+          showToast('Teacher session not loaded. Please reload the page.', 'error', 'fa-circle-exclamation');
+          return;
+        }
+
+        var btn = $('uploadBtn');
+        var originalHTML = btn.innerHTML;
+        btn.disabled = true;
+        btn.style.opacity = '0.85';
+        btn.innerHTML = '<span class="spinner"></span> Uploading…';
+        state.isUploading = true;
+
+        // Filename: {teacher_username}_{subject}_{timestamp}.html
+        var username = slugify(state.teacher.username || state.teacher.name || 'teacher');
+        var subject  = slugify(state.teacher.subject || 'general');
+        var ts       = Date.now();
+        var filename = username + '_' + subject + '_' + ts + '.html';
+
+        var blob = new Blob([state.html], { type: 'text/html' });
+
+        BH.getClient().then(function (client) {
+          // Upload to Storage 'modules' bucket
+          return client.storage.from('modules')
+            .upload(filename, blob, { contentType: 'text/html', upsert: false })
+            .then(function (upRes) {
+              if (upRes.error) throw upRes.error;
+              // Insert a row into assignments table so it shows on the student dashboard
+              var title = (state.html.match(/<title[^>]*>([\s\S]*?)<\/title>/i) || [])[1] || deriveTitleFromFilename(filename);
+              return client.from('assignments').insert({
+                title: 'Module: ' + title,
+                description: 'Interactive module uploaded by ' + (state.teacher.full_name || state.teacher.name) +
+                             '. Open the module file to view the full lesson.',
+                class_name: 'All Classes',
+                subject: state.teacher.subject || 'General',
+                teacher_id: state.teacher.id || null,
+                teacher_name: state.teacher.full_name || state.teacher.name || state.teacher.username
+              }).then(function (insRes) {
+                if (insRes.error) {
+                  console.warn('[BH] assignment insert failed (non-fatal):', insRes.error);
+                  // Don't fail the whole upload — the file is already in Storage.
+                }
+                return { upRes: upRes, insRes: insRes, filename: filename };
+              });
+            });
+        }).then(function (result) {
+          showToast('Module uploaded! Students can now access it.', 'success', 'fa-circle-check');
+          // Reset button
+          btn.disabled = false;
+          btn.style.opacity = '';
+          btn.innerHTML = originalHTML;
+          state.isUploading = false;
+        }).catch(function (err) {
+          console.error('[BH] upload failed:', err);
+          var msg = (err && err.message) || 'Upload failed. Please try again.';
+          // Handle file-already-exists (rare with timestamp suffix)
+          if (msg.indexOf('already') !== -1) msg = 'A file with that name already exists. Try again.';
+          showToast(msg, 'error', 'fa-circle-exclamation');
+          btn.disabled = false;
+          btn.style.opacity = '';
+          btn.innerHTML = originalHTML;
+          state.isUploading = false;
+        });
+      }
+
+      function deriveTitleFromFilename(filename) {
+        var clean = filename.replace(/\.html?$/i, '');
+        var parts = clean.split('_');
+        if (parts.length >= 3) {
+          return parts.slice(2).join(' ').replace(/-/g, ' ');
+        }
+        return clean.replace(/-/g, ' ');
+      }
+
+      // ---- Starter template ----
+      function starterTemplate() {
+        return '' +
+'<!doctype html>\n' +
+'<html lang="en">\n' +
+'<head>\n' +
+'  <meta charset="utf-8">\n' +
+'  <meta name="viewport" content="width=device-width,initial-scale=1">\n' +
+'  <title>Lesson Title</title>\n' +
+'  <script src="https://cdn.tailwindcss.com"><\/script>\n' +
+'  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">\n' +
+'  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">\n' +
+'  <style>body{font-family:\'Plus Jakarta Sans\',system-ui,sans-serif;background:#fafafa;}</style>\n' +
+'</head>\n' +
+'<body class="text-slate-800">\n' +
+'  <div class="max-w-3xl mx-auto p-6 md:p-10">\n' +
+'    <header class="mb-8">\n' +
+'      <span class="inline-block px-3 py-1 bg-bh-navy/10 text-bh-navy rounded-full text-xs font-semibold mb-3">SUBJECT</span>\n' +
+'      <h1 class="text-3xl md:text-4xl font-bold text-bh-navy mb-2">Lesson Title</h1>\n' +
+'      <p class="text-slate-500">A short description of what students will learn in this lesson.</p>\n' +
+'    </header>\n' +
+'\n' +
+'    <section class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 mb-6">\n' +
+'      <h2 class="text-xl font-bold text-slate-800 mb-3"><i class="fas fa-book-open text-bh-navy mr-2"></i>Introduction</h2>\n' +
+'      <p class="text-slate-600 leading-relaxed">Write your lesson content here. Use headings, paragraphs, lists, and images to explain the topic clearly.</p>\n' +
+'    </section>\n' +
+'\n' +
+'    <section class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 mb-6">\n' +
+'      <h2 class="text-xl font-bold text-slate-800 mb-3"><i class="fas fa-list-check text-bh-navy mr-2"></i>Key Points</h2>\n' +
+'      <ul class="space-y-2 text-slate-600">\n' +
+'        <li class="flex gap-2"><i class="fas fa-check-circle text-emerald-500 mt-1"></i><span>First key takeaway</span></li>\n' +
+'        <li class="flex gap-2"><i class="fas fa-check-circle text-emerald-500 mt-1"></i><span>Second key takeaway</span></li>\n' +
+'        <li class="flex gap-2"><i class="fas fa-check-circle text-emerald-500 mt-1"></i><span>Third key takeaway</span></li>\n' +
+'      </ul>\n' +
+'    </section>\n' +
+'\n' +
+'    <section class="bg-gradient-to-br from-bh-navy to-bh-navy-2 text-white rounded-2xl p-6">\n' +
+'      <h2 class="text-xl font-bold mb-3"><i class="fas fa-pen-to-square mr-2"></i>Practice Question</h2>\n' +
+'      <p class="text-white/90 mb-4">Try this question to test your understanding.</p>\n' +
+'      <p class="font-medium mb-3">What is the capital of France?</p>\n' +
+'      <button onclick="alert(\'Correct!\')" class="px-4 py-2 bg-white text-bh-navy rounded-xl font-semibold hover:bg-white/90 transition-colors">Show Answer</button>\n' +
+'    </section>\n' +
+'  </div>\n' +
+'</body>\n' +
+'</html>';
+      }
+
+      // ---- Boot ----
+      function boot() {
+        // Wire up DOM refs
+        els.codeEditor     = $('codeEditor');
+        els.lineNumbers    = $('lineNumbers');
+        els.previewFrame   = $('previewFrame');
+        els.chatMessages   = $('chatMessages');
+        els.chatInput      = $('chatInput');
+        els.chatForm       = $('chatForm');
+        els.modeSelf       = $('modeSelf');
+        els.modeAI         = $('modeAI');
+        els.refreshBtn     = $('refreshPreviewBtn');
+        els.uploadBtn      = $('uploadBtn');
+        els.insertTplBtn   = $('insertTemplateBtn');
+        els.clearEditorBtn = $('clearEditorBtn');
+        els.clearChatBtn   = $('clearChatBtn');
+        els.sidebar        = $('sidebar');
+        els.sidebarOverlay = $('sidebar-overlay');
+        els.toggleSidebar  = $('toggleSidebar');
+        els.logoutBtn      = $('logoutBtn');
+        els.footerYear     = $('footerYear');
+
+        if (els.footerYear) els.footerYear.textContent = new Date().getFullYear();
+
+        // Bind events
+        els.modeSelf.addEventListener('click', function () { setMode('self'); });
+        els.modeAI.addEventListener('click', function () { setMode('ai'); });
+
+        els.codeEditor.addEventListener('input', onEditorInput);
+        els.codeEditor.addEventListener('scroll', function () {
+          els.lineNumbers.scrollTop = els.codeEditor.scrollTop;
+        });
+        // Tab key inserts two spaces instead of moving focus
+        els.codeEditor.addEventListener('keydown', function (e) {
+          if (e.key === 'Tab') {
+            e.preventDefault();
+            var s = this.selectionStart, en = this.selectionEnd;
+            this.value = this.value.substring(0, s) + '  ' + this.value.substring(en);
+            this.selectionStart = this.selectionEnd = s + 2;
+            onEditorInput.call(this);
+          }
+        });
+
+        els.refreshBtn.addEventListener('click', function () {
+          updatePreview();
+          showToast('Preview refreshed.', 'info', 'fa-rotate-right');
+        });
+
+        els.uploadBtn.addEventListener('click', uploadToStudents);
+
+        els.insertTplBtn.addEventListener('click', function () {
+          if (els.codeEditor.value.trim() && !confirm('Inserting a template will replace your current content. Continue?')) return;
+          setHtml(starterTemplate(), 'template');
+          showToast('Starter template inserted.', 'success', 'fa-file-circle-plus');
+        });
+
+        els.clearEditorBtn.addEventListener('click', function () {
+          if (!els.codeEditor.value.trim() || confirm('Clear the editor and preview?')) {
+            setHtml('', 'clear');
+          }
+        });
+
+        els.clearChatBtn.addEventListener('click', function () {
+          if (state.isThinking) return;
+          state.chat = [];
+          seedInitialAIMessage();
+          showToast('Chat cleared.', 'info', 'fa-broom');
+        });
+
+        // Chat form
+        els.chatForm.addEventListener('submit', function (e) {
+          e.preventDefault();
+          sendChat(els.chatInput.value);
+        });
+        els.chatInput.addEventListener('input', autoResizeChatInput);
+        els.chatInput.addEventListener('keydown', function (e) {
+          if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            sendChat(els.chatInput.value);
+          }
+        });
+
+        // Quick prompts
+        Array.prototype.forEach.call(document.querySelectorAll('.quick-prompt'), function (btn) {
+          btn.addEventListener('click', function () {
+            sendChat(btn.getAttribute('data-prompt'));
+          });
+        });
+
+        // Sidebar toggle (mobile)
+        function openSidebar() { els.sidebar.classList.remove('hide'); els.sidebarOverlay.classList.add('show'); }
+        function closeSidebar() { els.sidebar.classList.add('hide'); els.sidebarOverlay.classList.remove('show'); }
+        els.toggleSidebar.addEventListener('click', function (e) {
+          e.stopPropagation();
+          els.sidebar.classList.contains('hide') ? openSidebar() : closeSidebar();
+        });
+        els.sidebarOverlay.addEventListener('click', closeSidebar);
+        window.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeSidebar(); });
+
+        els.logoutBtn.addEventListener('click', function () {
+          if (window.BH) BH.signOut();
+        });
+
+        // Initial preview (empty state)
+        updatePreview();
+        updateLineNumbers();
+        updateCharCount();
+
+        // ---- Auth gate ----
+        if (!window.BH || !window.BH.requireRole) {
+          return document.addEventListener('bh:ready', boot);
+        }
+        BH.requireRole('teacher').then(function (session) {
+          if (!session) return; // redirected
+          loadTeacher(session);
+          hideLoading();
+        });
+      }
+
+      function loadTeacher(session) {
+        var user = (session && session.user) || {};
+        var name = user.full_name || user.name || (user.username ? user.username : 'Teacher');
+        var subject = user.subject || 'General';
+        state.teacher = {
+          id: user.id || null,
+          name: name,
+          full_name: name,
+          username: user.username || (name ? slugify(name) : 'teacher'),
+          subject: subject
+        };
+
+        // Sidebar profile
+        $('userName').textContent = name;
+        $('userLevel').textContent = subject;
+        var avatarUrl = avatarFor(name);
+        $('avatar-sm').src = avatarUrl;
+        $('topAvatar').src = avatarUrl;
+
+        // Welcome toast (subtle)
+        setTimeout(function () {
+          showToast('Welcome, ' + (name.split(' ')[0]) + '! Build a module and share it with your students.', 'info', 'fa-cube');
+        }, 600);
+
+        // Seed the AI chat with its greeting
+        seedInitialAIMessage();
+      }
+
+      function seedInitialAIMessage() {
+        if (state.chat.length === 0) {
+          state.chat.push({
+            role: 'ai',
+            text: "Hello! I'm your AI module assistant. Describe the lesson you want to create and I'll build it for you. You can also ask me to edit specific parts."
+          });
+          renderChat();
+        }
+      }
+
+      function hideLoading() {
+        var ov = $('loadingOverlay');
+        if (ov) {
+          ov.style.opacity = '0';
+          ov.style.transition = 'opacity .3s';
+          setTimeout(function () { ov.classList.add('hide'); }, 300);
+        }
+      }
+
+      // Handle responsive mode switching on resize
+      window.addEventListener('resize', function () {
+        if (state.mode === 'self' && window.innerWidth < 1280) {
+          $('chatColumn').classList.add('hidden');
+        } else if (state.mode === 'ai' || window.innerWidth >= 1280) {
+          $('chatColumn').classList.remove('hidden');
+        }
+      });
+
+      // Kick off
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', boot);
+      } else {
+        boot();
+      }
+    </script>
+  </body>
+</html>
