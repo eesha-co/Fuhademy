@@ -258,6 +258,61 @@
         color: var(--bh-navy); font-size: 0.85rem; padding: 1.25rem 0.5rem;
       }
 
+      /* Import Existing Module modal */
+      #importModal {
+        position: fixed; inset: 0; z-index: 80;
+        background: rgba(15, 35, 60, 0.55);
+        backdrop-filter: blur(6px);
+        display: flex; align-items: center; justify-content: center;
+        padding: 1rem;
+        opacity: 0; pointer-events: none;
+        transition: opacity 0.25s ease;
+      }
+      #importModal.show { opacity: 1; pointer-events: auto; }
+      #importModal .import-card {
+        background: #fff; border-radius: 1.25rem; width: 100%; max-width: 760px;
+        max-height: 88vh; display: flex; flex-direction: column; overflow: hidden;
+        box-shadow: 0 30px 60px -20px rgba(15, 35, 60, 0.6);
+        transform: translateY(12px) scale(0.98); transition: transform 0.25s ease;
+      }
+      #importModal.show .import-card { transform: translateY(0) scale(1); }
+      #importModal .import-header {
+        background: linear-gradient(135deg, var(--bh-navy), var(--bh-navy-2));
+        color: #fff; padding: 1.1rem 1.4rem;
+        display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem;
+      }
+      #importModal .import-body { padding: 1.25rem 1.4rem; overflow-y: auto; flex: 1 1 auto; }
+      #importModal .import-footer {
+        padding: 0.9rem 1.4rem; border-top: 1px solid #e2e8f0;
+        display: flex; justify-content: flex-end; gap: 0.6rem; background: #f8fafc;
+      }
+      .module-card {
+        border: 1px solid #e2e8f0; border-radius: 0.85rem; padding: 0.9rem 1rem;
+        background: #fff; transition: all 0.18s ease; cursor: pointer;
+        display: flex; flex-direction: column; gap: 0.4rem; text-align: left;
+      }
+      .module-card:hover, .module-card:focus-visible {
+        border-color: var(--bh-navy); box-shadow: 0 8px 18px -10px rgba(31, 80, 123, 0.4);
+        transform: translateY(-2px); outline: none;
+      }
+      .module-card .mc-title { font-weight: 700; color: var(--bh-navy); font-size: 0.95rem; line-height: 1.3; word-break: break-word; }
+      .module-card .mc-meta { font-size: 0.72rem; color: #64748b; display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; }
+      .module-card .mc-load {
+        align-self: flex-start; margin-top: 0.2rem;
+        background: linear-gradient(135deg, var(--bh-navy), var(--bh-navy-2));
+        color: #fff; font-size: 0.72rem; font-weight: 600;
+        padding: 0.35rem 0.8rem; border-radius: 0.6rem;
+        display: inline-flex; align-items: center; gap: 0.35rem;
+      }
+      .import-btn {
+        background: #fff; border: 1px solid rgba(31, 80, 123, 0.35); color: var(--bh-navy);
+      }
+      .import-btn:hover {
+        background: linear-gradient(135deg, var(--bh-navy), var(--bh-navy-2));
+        color: #fff; border-color: transparent;
+        box-shadow: 0 8px 18px -8px rgba(31, 80, 123, 0.55);
+      }
+
       /* Hide scrollbar utility for chat */
       .scrollbar-thin::-webkit-scrollbar { width: 4px; }
     </style>
@@ -407,6 +462,11 @@
 
             <!-- Right actions -->
             <div class="flex items-center gap-2 md:gap-3">
+              <button id="importModuleBtn" class="import-btn inline-flex items-center gap-2 px-3 md:px-4 py-2 rounded-xl font-semibold text-sm transition-all" title="Import an existing module for your subject">
+                <i class="fas fa-folder-open"></i>
+                <span class="hidden sm:inline">Import Existing Module</span>
+                <span class="sm:hidden">Import</span>
+              </button>
               <button id="uploadBtn" class="upload-btn inline-flex items-center gap-2 px-3 md:px-4 py-2 text-white rounded-xl font-semibold text-sm transition-all">
                 <i class="fas fa-cloud-arrow-up"></i>
                 <span class="hidden sm:inline">Upload to Students</span>
@@ -655,6 +715,31 @@
       <div class="text-center">
         <div class="w-12 h-12 border-4 border-bh-navy/20 border-t-bh-navy rounded-full animate-spin mx-auto mb-3"></div>
         <p class="text-slate-500 text-sm">Loading Module Builder…</p>
+      </div>
+    </div>
+
+    <!-- Import Existing Module modal -->
+    <div id="importModal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="importModalTitle">
+      <div class="import-card" role="document">
+        <div class="import-header">
+          <div class="min-w-0">
+            <h2 id="importModalTitle" class="text-base md:text-lg font-bold flex items-center gap-2">
+              <i class="fas fa-folder-open"></i> Import Existing Module
+            </h2>
+            <p id="importModalSubtitle" class="text-xs text-white/80 mt-0.5">Select a module to edit</p>
+          </div>
+          <button id="importModalClose" class="p-2 rounded-lg hover:bg-white/15 transition-colors flex-shrink-0" aria-label="Close" title="Close (Esc)">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        <div class="import-body">
+          <div id="importModalContent"><!-- Loading / list / empty state injected by JS --></div>
+        </div>
+        <div class="import-footer">
+          <button id="importModalCancel" class="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-sm transition-colors">
+            Cancel
+          </button>
+        </div>
       </div>
     </div>
 
@@ -1260,6 +1345,176 @@
 '</html>';
       }
 
+      // ---- Import Existing Module ----
+      function subjectToFolder(subject) {
+        return (subject || '').toLowerCase().trim();
+      }
+
+      function formatBytes(bytes) {
+        var b = Number(bytes);
+        if (!b || isNaN(b)) return '—';
+        if (b < 1024) return b + ' B';
+        if (b < 1024 * 1024) return (b / 1024).toFixed(1) + ' KB';
+        return (b / (1024 * 1024)).toFixed(1) + ' MB';
+      }
+
+      function formatModuleTitle(mod) {
+        var t = (mod && mod.title) ? String(mod.title).trim() : '';
+        if (t) return t;
+        var name = (mod && mod.name) ? String(mod.name).replace(/\.html?$/i, '') : '';
+        if (!name) return 'Untitled Module';
+        // Strip a leading "user_subject_" prefix if present (e.g. jdoe_chemistry_electrolysis)
+        name = name.replace(/^[a-z0-9-]+_[a-z0-9-]+_/i, '');
+        name = name.replace(/[-_]+/g, ' ').trim();
+        if (!name) return 'Untitled Module';
+        return name.replace(/\b\w/g, function (c) { return c.toUpperCase(); });
+      }
+
+      function formatModuleDate(mod) {
+        var d = mod && mod.created_at ? new Date(mod.created_at) : null;
+        if (!d || isNaN(d.getTime())) return '';
+        return d.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
+      }
+
+      function openImportModal() {
+        var modal = $('importModal');
+        if (!modal) return;
+        if (!state.teacher || !state.teacher.subject) {
+          showToast('Your teacher profile is still loading. Please try again in a moment.', 'info', 'fa-hourglass-half');
+          return;
+        }
+        modal.classList.add('show');
+        modal.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+        renderImportLoading();
+        loadModulesList();
+      }
+
+      function closeImportModal() {
+        var modal = $('importModal');
+        if (!modal) return;
+        modal.classList.remove('show');
+        modal.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+      }
+
+      function renderImportLoading() {
+        var subject = (state.teacher && state.teacher.subject) || 'your subject';
+        $('importModalSubtitle').textContent = 'Select a ' + subject + ' module to edit';
+        $('importModalContent').innerHTML =
+          '<div class="flex flex-col items-center justify-center py-12 text-slate-500">' +
+            '<div class="w-10 h-10 border-4 border-bh-navy/20 border-t-bh-navy rounded-full animate-spin mb-3"></div>' +
+            '<p class="text-sm">Loading modules…</p>' +
+          '</div>';
+      }
+
+      function renderImportEmpty() {
+        var subject = (state.teacher && state.teacher.subject) || 'your subject';
+        $('importModalContent').innerHTML =
+          '<div class="flex flex-col items-center justify-center py-10 text-center">' +
+            '<div class="w-14 h-14 rounded-2xl bg-bh-navy/10 flex items-center justify-center mb-3">' +
+              '<i class="fas fa-folder-open text-bh-navy text-xl"></i>' +
+            '</div>' +
+            '<p class="text-sm text-slate-700 font-semibold mb-1">No modules found for ' + escapeHtml(subject) + '.</p>' +
+            '<p class="text-xs text-slate-500 max-w-sm">You can still create one from scratch using AI or Self mode.</p>' +
+          '</div>';
+      }
+
+      function renderImportError(msg) {
+        $('importModalContent').innerHTML =
+          '<div class="flex flex-col items-center justify-center py-10 text-center">' +
+            '<div class="w-14 h-14 rounded-2xl bg-rose-50 flex items-center justify-center mb-3">' +
+              '<i class="fas fa-triangle-exclamation text-rose-500 text-xl"></i>' +
+            '</div>' +
+            '<p class="text-sm text-slate-700 font-semibold mb-1">Couldn\'t load modules.</p>' +
+            '<p class="text-xs text-slate-500 max-w-sm">' + escapeHtml(msg || 'Please try again in a moment.') + '</p>' +
+            '<button id="importRetryBtn" class="mt-4 px-4 py-2 rounded-xl bg-bh-navy hover:bg-bh-navy-2 text-white text-xs font-semibold transition-colors">' +
+              '<i class="fas fa-rotate-right mr-1"></i> Retry' +
+            '</button>' +
+          '</div>';
+        var rb = $('importRetryBtn');
+        if (rb) rb.addEventListener('click', function () { renderImportLoading(); loadModulesList(); });
+      }
+
+      function renderImportList(modules) {
+        if (!modules || !modules.length) { renderImportEmpty(); return; }
+        var cards = modules.map(function (m, i) {
+          var title = formatModuleTitle(m);
+          var size  = formatBytes(m.size);
+          var date  = formatModuleDate(m);
+          return '' +
+            '<div class="module-card" data-idx="' + i + '" role="button" tabindex="0" aria-label="Load module ' + escapeHtml(title) + '">' +
+              '<div class="mc-title">' + escapeHtml(title) + '</div>' +
+              '<div class="mc-meta">' +
+                '<span><i class="fas fa-database text-[10px]"></i> ' + size + '</span>' +
+                (date ? '<span><i class="fas fa-calendar text-[10px]"></i> ' + date + '</span>' : '') +
+              '</div>' +
+              '<span class="mc-load"><i class="fas fa-download"></i> Load</span>' +
+            '</div>';
+        }).join('');
+        $('importModalContent').innerHTML =
+          '<div class="grid grid-cols-1 sm:grid-cols-2 gap-3">' + cards + '</div>';
+        // Wire up click + keyboard handlers
+        Array.prototype.forEach.call($('importModalContent').querySelectorAll('.module-card'), function (card) {
+          var idx = parseInt(card.getAttribute('data-idx'), 10);
+          var mod = modules[idx];
+          var trigger = function () { importModule(mod); };
+          card.addEventListener('click', trigger);
+          card.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); trigger(); }
+          });
+        });
+      }
+
+      function loadModulesList() {
+        var subject = subjectToFolder(state.teacher && state.teacher.subject);
+        if (!subject) {
+          renderImportError('No subject found on your teacher profile.');
+          return;
+        }
+        BH.edge('list-modules', { body: { subject: subject } }).then(function (res) {
+          if (!res || !res.ok || !res.data || !res.data.success) {
+            var msg = (res && res.data && res.data.error) || 'The module service did not respond correctly.';
+            renderImportError(msg);
+            return;
+          }
+          renderImportList(res.data.modules || []);
+        }).catch(function (err) {
+          console.error('[BH] list-modules error:', err);
+          renderImportError('Network error reaching the module service.');
+        });
+      }
+
+      function importModule(mod) {
+        if (!mod || !mod.url) {
+          showToast('This module has no downloadable URL.', 'error', 'fa-circle-exclamation');
+          return;
+        }
+        var title = formatModuleTitle(mod);
+        // Show an in-modal loading state while fetching the file
+        $('importModalContent').innerHTML =
+          '<div class="flex flex-col items-center justify-center py-12 text-slate-500">' +
+            '<div class="w-10 h-10 border-4 border-bh-navy/20 border-t-bh-navy rounded-full animate-spin mb-3"></div>' +
+            '<p class="text-sm">Loading "' + escapeHtml(title) + '"…</p>' +
+          '</div>';
+
+        fetch(mod.url).then(function (res) {
+          if (!res.ok) throw new Error('HTTP ' + res.status);
+          return res.text();
+        }).then(function (html) {
+          setHtml(html, 'import');
+          setMode('self');
+          closeImportModal();
+          showToast("Module '" + title + "' loaded. You can now edit it or ask the AI to modify it.", 'success', 'fa-circle-check');
+        }).catch(function (err) {
+          console.error('[BH] import fetch error:', err);
+          // Restore the list so the teacher can try another module
+          renderImportLoading();
+          loadModulesList();
+          showToast('Could not download that module. Please try another one.', 'error', 'fa-circle-exclamation');
+        });
+      }
+
       // ---- Boot ----
       function boot() {
         // Wire up DOM refs
@@ -1285,6 +1540,10 @@
         els.toggleSidebar  = $('toggleSidebar');
         els.logoutBtn      = $('logoutBtn');
         els.footerYear     = $('footerYear');
+        els.importBtn      = $('importModuleBtn');
+        els.importModal    = $('importModal');
+        els.importClose    = $('importModalClose');
+        els.importCancel   = $('importModalCancel');
 
         if (els.footerYear) els.footerYear.textContent = new Date().getFullYear();
 
@@ -1323,6 +1582,18 @@
         });
 
         els.uploadBtn.addEventListener('click', uploadToStudents);
+
+        // ---- Import Existing Module ----
+        if (els.importBtn)    els.importBtn.addEventListener('click', openImportModal);
+        if (els.importClose)  els.importClose.addEventListener('click', closeImportModal);
+        if (els.importCancel) els.importCancel.addEventListener('click', closeImportModal);
+        if (els.importModal) {
+          // Close when clicking the backdrop itself (not its children)
+          els.importModal.addEventListener('click', function (e) {
+            if (e.target === els.importModal) closeImportModal();
+          });
+        }
+
         els.testAgainSelf.addEventListener('click', testAgain);
         els.testAgainAI.addEventListener('click', testAgain);
 
@@ -1374,7 +1645,15 @@
           els.sidebar.classList.contains('hide') ? openSidebar() : closeSidebar();
         });
         els.sidebarOverlay.addEventListener('click', closeSidebar);
-        window.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeSidebar(); });
+        window.addEventListener('keydown', function (e) {
+          if (e.key !== 'Escape') return;
+          // Modal takes priority when open
+          if ($('importModal') && $('importModal').classList.contains('show')) {
+            closeImportModal();
+            return;
+          }
+          closeSidebar();
+        });
 
         els.logoutBtn.addEventListener('click', function () {
           if (window.BH) BH.signOut();
