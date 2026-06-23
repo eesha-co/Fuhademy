@@ -13,7 +13,7 @@ Deno.serve(async (req: Request) => {
     // List files in the subject folder within the 'modules' bucket
     const { data, error } = await supabase.storage
       .from("modules")
-      .list(subject, { limit: 100, sortBy: { column: "name", order: "asc" } });
+      .list(subject, { limit: 500, sortBy: { column: "name", order: "asc" } });
 
     if (error) return errorResponse("Failed to list modules: " + error.message, 500);
 

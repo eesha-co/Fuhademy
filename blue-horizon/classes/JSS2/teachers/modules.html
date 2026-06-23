@@ -467,6 +467,11 @@
                 <span class="hidden sm:inline">Import Existing Module</span>
                 <span class="sm:hidden">Import</span>
               </button>
+              <button id="saveModuleBtn" class="bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 text-sm font-semibold px-4 py-2.5 rounded-xl flex items-center gap-2 transition-colors" title="Save this module">
+                <i class="fas fa-floppy-disk"></i>
+                <span class="hidden sm:inline">Save Module</span>
+                <span class="sm:hidden">Save</span>
+              </button>
               <button id="uploadBtn" class="upload-btn inline-flex items-center gap-2 px-3 md:px-4 py-2 text-white rounded-xl font-semibold text-sm transition-all">
                 <i class="fas fa-cloud-arrow-up"></i>
                 <span class="hidden sm:inline">Upload to Students</span>
@@ -743,6 +748,26 @@
       </div>
     </div>
 
+    <!-- Save Module modal -->
+    <div id="saveModal" class="hidden fixed inset-0 z-50 bg-black/40 flex items-center justify-center p-4">
+      <div class="bg-white rounded-2xl shadow-xl max-w-md w-full p-6">
+        <h3 class="text-lg font-bold text-slate-800 mb-1">Save Module</h3>
+        <p class="text-sm text-slate-500 mb-4">Choose how to save your module.</p>
+        <div class="space-y-3">
+          <div>
+            <label class="text-xs font-semibold text-slate-500 uppercase">Module Name</label>
+            <input id="saveModuleName" type="text" placeholder="my-edited-module" class="w-full mt-1 px-3 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:border-bh-navy">
+            <p class="text-xs text-slate-400 mt-1">.html extension added automatically</p>
+          </div>
+          <div class="flex gap-2 pt-2">
+            <button id="saveOnlyBtn" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-semibold py-2.5 rounded-xl">Save Only</button>
+            <button id="saveUpdateBtn" class="flex-1 bg-bh-navy hover:bg-bh-navy-2 text-white text-sm font-semibold py-2.5 rounded-xl">Save &amp; Update Bucket</button>
+          </div>
+          <button id="saveCancelBtn" class="w-full text-slate-400 hover:text-slate-600 text-sm py-1">Cancel</button>
+        </div>
+      </div>
+    </div>
+
     <!-- Toast container -->
     <div id="toastContainer"></div>
 
@@ -908,10 +933,40 @@
         previewTimer = setTimeout(updatePreview, 500);
       }
 
+      // ---- Chat persistence (cookie — survives page reload, NO localStorage) ----
+      function saveChatToCookie() {
+        try {
+          var cookieName = 'bh-module-chat';
+          var maxMessages = 50; // keep last 50 messages
+          // Filter out ephemeral 'thinking' indicators so they never get persisted
+          var toSave = state.chat.filter(function (m) { return m.role !== 'thinking'; }).slice(-maxMessages);
+          var encoded = btoa(encodeURIComponent(JSON.stringify(toSave)));
+          document.cookie = cookieName + '=' + encoded + ';path=/;max-age=3600;SameSite=Lax'; // 1 hour
+        } catch (e) {}
+      }
+
+      function loadChatFromCookie() {
+        try {
+          var m = document.cookie.match(/bh-module-chat=([^;]+)/);
+          if (m) {
+            var chat = JSON.parse(decodeURIComponent(atob(m[1])));
+            if (Array.isArray(chat) && chat.length > 0) {
+              state.chat = chat;
+              renderChat();
+            }
+          }
+        } catch (e) {}
+      }
+
+      function clearChatCookie() {
+        document.cookie = 'bh-module-chat=;path=/;max-age=0';
+      }
+
       // ---- AI Chat ----
       function addChatMessage(role, text, icon) {
         state.chat.push({ role: role, text: text, icon: icon });
         renderChat();
+        saveChatToCookie();
       }
 
       function renderChat() {
@@ -1228,64 +1283,124 @@
       function uploadToStudents() {
         if (state.isUploading) return;
         if (!state.html || !state.html.trim()) {
-          showToast('Nothing to upload. Write or generate some HTML first.', 'error', 'fa-circle-exclamation');
+          showToast('Nothing to upload. Write or generate some HTML first.', 'error');
           return;
         }
-        if (!state.teacher) {
-          showToast('Teacher session not loaded. Please reload the page.', 'error', 'fa-circle-exclamation');
-          return;
-        }
+        if (!state.teacher) { showToast('Teacher session not loaded.', 'error'); return; }
 
         var btn = $('uploadBtn');
         var originalHTML = btn.innerHTML;
         btn.disabled = true;
-        btn.style.opacity = '0.85';
         btn.innerHTML = '<span class="spinner"></span> Uploading…';
         state.isUploading = true;
 
-        var username = slugify(state.teacher.username || state.teacher.name || 'teacher');
-        var subject  = slugify(state.teacher.subject || 'general');
-        var ts       = Date.now();
-        var filename = username + '_' + subject + '_' + ts + '.html';
+        var filename = slugify(state.teacher.username) + '_' + slugify(state.teacher.subject) + '_' + Date.now() + '.html';
 
-        var blob = new Blob([state.html], { type: 'text/html' });
-
-        BH.getClient().then(function (client) {
-          return client.storage.from('modules')
-            .upload(filename, blob, { contentType: 'text/html', upsert: false })
-            .then(function (upRes) {
-              if (upRes.error) throw upRes.error;
-              var title = (state.html.match(/<title[^>]*>([\s\S]*?)<\/title>/i) || [])[1] || deriveTitleFromFilename(filename);
-              return client.from('assignments').insert({
-                title: 'Module: ' + title,
-                description: 'Interactive module uploaded by ' + (state.teacher.full_name || state.teacher.name) +
-                             '. Open the module file to view the full lesson.',
-                class_name: 'All Classes',
-                subject: state.teacher.subject || 'General',
-                teacher_id: state.teacher.id || null,
-                teacher_name: state.teacher.full_name || state.teacher.name || state.teacher.username
-              }).then(function (insRes) {
-                if (insRes.error) {
-                  console.warn('[BH] assignment insert failed (non-fatal):', insRes.error);
-                }
-                return { upRes: upRes, insRes: insRes, filename: filename };
-              });
-            });
-        }).then(function () {
-          showToast('Module uploaded! Students can now access it.', 'success', 'fa-circle-check');
+        BH.edge('save-module', { body: {
+          teacher_id: state.teacher.id,
+          teacher_name: state.teacher.full_name || state.teacher.username,
+          subject: state.teacher.subject,
+          filename: filename,
+          html: state.html,
+          mode: 'save'
+        }}).then(function (res) {
           btn.disabled = false;
-          btn.style.opacity = '';
           btn.innerHTML = originalHTML;
           state.isUploading = false;
+          var data = res.data || res;
+          if (data.success) {
+            showToast('Module uploaded! Students can now access it.', 'success');
+          } else {
+            showToast('Upload failed: ' + (data.error || ''), 'error');
+          }
         }).catch(function (err) {
-          console.error('[BH] upload failed:', err);
-          var msg = (err && err.message) || 'Upload failed. Please try again.';
-          if (msg.indexOf('already') !== -1) msg = 'A file with that name already exists. Try again.';
-          showToast(msg, 'error', 'fa-circle-exclamation');
           btn.disabled = false;
-          btn.style.opacity = '';
           btn.innerHTML = originalHTML;
           state.isUploading = false;
+          showToast('Upload failed: ' + (err.message || ''), 'error');
+        });
+      }
+
+      // ---- Save Module (modal) ----
+      function openSaveModal() {
+        if (!state.html || !state.html.trim()) {
+          showToast('Nothing to save. Write or generate some HTML first.', 'error', 'fa-circle-exclamation');
+          return;
+        }
+        var modal = $('saveModal');
+        if (!modal) return;
+        modal.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+        // Pre-fill the name with a slug derived from the current <title> or teacher username
+        var input = $('saveModuleName');
+        if (input) {
+          var titleMatch = (state.html.match(/<title[^>]*>([\s\S]*?)<\/title>/i) || [])[1];
+          var defaultName = titleMatch ? slugify(titleMatch) :
+                            (slugify((state.teacher && state.teacher.username) || 'module') + '-' + Date.now());
+          input.value = defaultName;
+          input.setSelectionRange(0, input.value.length);
+          setTimeout(function () { input.focus(); }, 50);
+        }
+      }
+
+      function closeSaveModal() {
+        var modal = $('saveModal');
+        if (!modal) return;
+        modal.classList.add('hidden');
+        document.body.style.overflow = '';
+      }
+
+      function saveOnly() {
+        // HTML is already in state.html — "Save Only" just keeps it in the editor
+        closeSaveModal();
+        showToast('Module kept in editor.', 'success', 'fa-floppy-disk');
+      }
+
+      function saveAndUpdateBucket() {
+        if (!state.teacher) {
+          showToast('Teacher session not loaded. Please reload the page.', 'error', 'fa-circle-exclamation');
+          return;
+        }
+        if (!state.html || !state.html.trim()) {
+          showToast('Nothing to save. Write or generate some HTML first.', 'error', 'fa-circle-exclamation');
+          return;
+        }
+        var raw = (($('saveModuleName') && $('saveModuleName').value) || '').trim();
+        if (!raw) {
+          showToast('Please enter a module name.', 'error', 'fa-circle-exclamation');
+          if ($('saveModuleName')) $('saveModuleName').focus();
+          return;
+        }
+        // Normalize: strip any .html/.htm the user typed, then add .html automatically
+        var filename = raw.replace(/\.html?$/i, '') + '.html';
+
+        var btn = $('saveUpdateBtn');
+        var originalHTML = btn.innerHTML;
+        btn.disabled = true;
+        btn.innerHTML = '<span class="spinner"></span> Saving…';
+
+        BH.edge('save-module', { body: {
+          teacher_id: state.teacher.id,
+          teacher_name: state.teacher.full_name || state.teacher.username,
+          subject: state.teacher.subject,
+          filename: filename,
+          html: state.html,
+          mode: 'update'
+        }}).then(function (res) {
+          btn.disabled = false;
+          btn.innerHTML = originalHTML;
+          var data = (res && res.data) || res || {};
+          if (data.success) {
+            showToast('Module saved to bucket as ' + filename, 'success', 'fa-circle-check');
+            closeSaveModal();
+          } else {
+            showToast('Save failed: ' + (data.error || data.message || 'Unknown error'), 'error', 'fa-circle-exclamation');
+          }
+        }).catch(function (err) {
+          btn.disabled = false;
+          btn.innerHTML = originalHTML;
+          console.error('[BH] save-module error:', err);
+          showToast('Save failed: ' + (err && err.message || 'Network error'), 'error', 'fa-circle-exclamation');
         });
       }
 
@@ -1544,6 +1659,11 @@
         els.importModal    = $('importModal');
         els.importClose    = $('importModalClose');
         els.importCancel   = $('importModalCancel');
+        els.saveModuleBtn  = $('saveModuleBtn');
+        els.saveModal      = $('saveModal');
+        els.saveOnlyBtn    = $('saveOnlyBtn');
+        els.saveUpdateBtn  = $('saveUpdateBtn');
+        els.saveCancelBtn  = $('saveCancelBtn');
 
         if (els.footerYear) els.footerYear.textContent = new Date().getFullYear();
 
@@ -1583,6 +1703,18 @@
 
         els.uploadBtn.addEventListener('click', uploadToStudents);
 
+        // ---- Save Module modal ----
+        if (els.saveModuleBtn) els.saveModuleBtn.addEventListener('click', openSaveModal);
+        if (els.saveCancelBtn) els.saveCancelBtn.addEventListener('click', closeSaveModal);
+        if (els.saveOnlyBtn)   els.saveOnlyBtn.addEventListener('click', saveOnly);
+        if (els.saveUpdateBtn) els.saveUpdateBtn.addEventListener('click', saveAndUpdateBucket);
+        if (els.saveModal) {
+          // Close when clicking the backdrop itself (not its children)
+          els.saveModal.addEventListener('click', function (e) {
+            if (e.target === els.saveModal) closeSaveModal();
+          });
+        }
+
         // ---- Import Existing Module ----
         if (els.importBtn)    els.importBtn.addEventListener('click', openImportModal);
         if (els.importClose)  els.importClose.addEventListener('click', closeImportModal);
@@ -1613,7 +1745,9 @@
         els.clearChatBtn.addEventListener('click', function () {
           if (state.isThinking) return;
           state.chat = [];
+          clearChatCookie();
           seedInitialAIMessage();
+          saveChatToCookie();
           showToast('Chat cleared.', 'info', 'fa-broom');
         });
 
@@ -1647,9 +1781,13 @@
         els.sidebarOverlay.addEventListener('click', closeSidebar);
         window.addEventListener('keydown', function (e) {
           if (e.key !== 'Escape') return;
-          // Modal takes priority when open
+          // Modals take priority when open
           if ($('importModal') && $('importModal').classList.contains('show')) {
             closeImportModal();
+            return;
+          }
+          if ($('saveModal') && !$('saveModal').classList.contains('hidden')) {
+            closeSaveModal();
             return;
           }
           closeSidebar();
@@ -1673,6 +1811,8 @@
         BH.requireRole('teacher').then(function (session) {
           if (!session) return; // redirected
           loadTeacher(session);
+          // Restore chat from cookie (after seedInitialAIMessage has run inside loadTeacher)
+          loadChatFromCookie();
           hideLoading();
         });
       }
