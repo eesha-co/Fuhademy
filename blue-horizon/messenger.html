@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Messenger — Blue Horizon E-Learning</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * { font-family: 'Plus Jakarta Sans', sans-serif; }
+    :root { --bh-navy: #1f507b; --bh-navy-2: #2c5282; }
+    .bg-bh-navy { background-color: var(--bh-navy); }
+    .bg-bh-navy-2 { background-color: var(--bh-navy-2); }
+    .text-bh-navy { color: var(--bh-navy); }
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+    .chat-bubble-mine { background: var(--bh-navy); color: white; border-radius: 18px 18px 4px 18px; }
+    .chat-bubble-other { background: #f1f5f9; color: #1e293b; border-radius: 18px 18px 18px 4px; }
+    .contact-item.active { background: rgba(31,80,123,0.08); border-left: 3px solid var(--bh-navy); }
+    .contact-item:hover { background: rgba(31,80,123,0.04); }
+    .toast { position: fixed; top: 20px; right: 20px; padding: 12px 20px; border-radius: 12px; color: white; font-size: 14px; z-index: 9999; animation: slideIn 0.3s ease; }
+    .toast.success { background: #16a34a; }
+    .toast.error { background: #dc2626; }
+    .toast.warn { background: #d97706; }
+    @keyframes slideIn { from { transform: translateX(100%); } to { transform: translateX(0); } }
+  </style>
+</head>
+<body class="bg-slate-50 h-screen overflow-hidden">
+  <div class="flex h-full">
+    <!-- Sidebar -->
+    <aside class="w-72 bg-white border-r border-slate-200 flex flex-col">
+      <div class="p-4 border-b border-slate-100">
+        <div class="flex items-center gap-3">
+          <img src="_next/static/media/logo-name.1dd6ad53.webp" alt="Blue Horizon" class="h-8 w-auto">
+          <div>
+            <div class="font-bold text-slate-800 text-sm">BLUE HORIZON</div>
+            <div class="text-xs text-slate-400">Messenger</div>
+          </div>
+        </div>
+      </div>
+      <div class="p-3 border-b border-slate-100">
+        <div class="relative">
+          <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+          <input id="searchInput" type="text" placeholder="Search…" class="w-full pl-8 pr-3 py-2 text-sm border border-slate-200 rounded-lg focus:outline-none focus:border-bh-navy">
+        </div>
+      </div>
+      <div class="flex-1 overflow-y-auto" id="contactList">
+        <div class="p-8 text-center text-slate-400 text-sm">
+          <span class="spinner-sm inline-block w-4 h-4 border-2 border-slate-300 border-t-bh-navy rounded-full animate-spin mr-2"></span>
+          Loading contacts…
+        </div>
+      </div>
+      <div class="p-3 border-t border-slate-100">
+        <div class="flex items-center gap-2">
+          <div id="userAvatar" class="w-8 h-8 rounded-full bg-bh-navy text-white flex items-center justify-center text-xs font-bold">?</div>
+          <div class="flex-1 min-w-0">
+            <div id="userName" class="text-sm font-semibold text-slate-800 truncate">Loading…</div>
+            <div id="userRole" class="text-xs text-slate-400">—</div>
+          </div>
+          <a href="#" id="backLink" class="text-slate-400 hover:text-slate-700 p-2"><i class="fas fa-arrow-left"></i></a>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Chat area -->
+    <main class="flex-1 flex flex-col">
+      <header class="bg-white border-b border-slate-200 px-6 py-3 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div id="chatAvatar" class="w-10 h-10 rounded-full bg-slate-200 flex items-center justify-center text-slate-500">
+            <i class="fas fa-user"></i>
+          </div>
+          <div>
+            <div id="chatName" class="font-semibold text-slate-800">Select a contact</div>
+            <div id="chatSub" class="text-xs text-slate-400">Choose someone to start chatting</div>
+          </div>
+        </div>
+        <div class="flex items-center gap-2">
+          <span id="connStatus" class="flex items-center gap-1.5 text-xs text-emerald-600 font-medium">
+            <span class="w-2 h-2 bg-emerald-500 rounded-full"></span> Connected
+          </span>
+          <span id="e2eeBadge" class="hidden items-center gap-1 text-xs text-emerald-600 font-medium bg-emerald-50 px-2 py-1 rounded-full">
+            <i class="fas fa-lock"></i> Encrypted
+          </span>
+        </div>
+      </header>
+
+      <div id="messagesContainer" class="flex-1 overflow-y-auto p-6 space-y-3">
+        <div class="text-center text-slate-400 py-20">
+          <i class="fas fa-comments text-5xl mb-3 opacity-30"></i>
+          <p class="text-sm">Select a contact to view messages</p>
+        </div>
+      </div>
+
+      <footer class="bg-white border-t border-slate-200 p-4">
+        <form id="messageForm" class="flex gap-2">
+          <input id="messageInput" type="text" placeholder="Type a message…" class="flex-1 px-4 py-2.5 border border-slate-200 rounded-xl focus:outline-none focus:border-bh-navy text-sm" disabled>
+          <button type="submit" id="sendBtn" class="bg-bh-navy hover:bg-bh-navy-2 text-white px-5 py-2.5 rounded-xl text-sm font-semibold disabled:opacity-50" disabled>
+            <i class="fas fa-paper-plane"></i>
+          </button>
+        </form>
+      </footer>
+    </main>
+  </div>
+
+  <div id="toastContainer"></div>
+
+  <script src="classes/_template/js/supabase-client.js"></script>
+  <script src="classes/_template/js/e2ee.js"></script>
+  <script>
+    var state = {
+      session: null, user: null, userId: null, role: null,
+      className: null, classAccess: null,
+      privateKeyB64: null, privateKeyCrypto: null, publicKeyB64: null,
+      contacts: [], sharedKeys: {}, activeContactId: null, pollTimer: null
+    };
+
+    function showToast(msg, type) {
+      var el = document.createElement('div');
+      el.className = 'toast ' + (type || 'info');
+      el.textContent = msg;
+      document.getElementById('toastContainer').appendChild(el);
+      setTimeout(function() { el.remove(); }, 3000);
+    }
+
+    function avatarFor(name) {
+      if (!name) return '?';
+      var parts = name.trim().split(/\s+/);
+      return (parts[0][0] || '') + (parts[1] ? parts[1][0] : '').toUpperCase();
+    }
+
+    // E2EE helpers
+    function e2eeReady() { return !!state.privateKeyCrypto; }
+
+    async function getSharedKeyFor(contact) {
+      if (!contact || !e2eeReady() || !contact.public_key) return null;
+      if (state.sharedKeys[contact.id]) return state.sharedKeys[contact.id];
+      try {
+        var pub = await BHE2EE.importPublicKey(contact.public_key);
+        var shared = await BHE2EE.deriveSharedKey(state.privateKeyCrypto, pub);
+        state.sharedKeys[contact.id] = shared;
+        return shared;
+      } catch(e) { console.warn('[E2EE] derive failed:', e); return null; }
+    }
+
+    async function decryptMsg(content, iv, contactId) {
+      if (!content) return '';
+      // If no IV, it's plaintext (fallback mode)
+      if (!iv) return content;
+      var shared = await getSharedKeyFor(state.contacts.find(function(c) { return c.id === contactId; }));
+      if (!shared) return content; // can't decrypt, show ciphertext
+      try { return await BHE2EE.decryptMessage(content, iv, shared); }
+      catch(e) { return content; }
+    }
+
+    // Load contacts
+    async function loadContacts() {
+      var body = { user_id: state.userId, role: state.role };
+      if (state.role === 'student') body.class_name = state.className;
+      else body.class_access = state.classAccess || [];
+
+      try {
+        var res = await BH.edge('get-class-contacts', { body: body });
+        var data = res.data || res;
+        if (data.success) {
+          state.contacts = data.contacts || [];
+          renderContacts();
+        }
+      } catch(e) { console.error('contacts error:', e); }
+    }
+
+    function renderContacts() {
+      var list = document.getElementById('contactList');
+      var q = (document.getElementById('searchInput').value || '').toLowerCase();
+      var filtered = state.contacts.filter(function(c) {
+        var name = (c.full_name || '').toLowerCase();
+        var subject = (c.subject || '').toLowerCase();
+        return !q || name.indexOf(q) !== -1 || subject.indexOf(q) !== -1;
+      });
+      if (filtered.length === 0) {
+        list.innerHTML = '<div class="p-8 text-center text-slate-400 text-sm">No contacts found</div>';
+        return;
+      }
+      list.innerHTML = filtered.map(function(c) {
+        var active = c.id === state.activeContactId ? ' active' : '';
+        var sub = c.subject || c.class_name || '';
+        return '<div class="contact-item' + active + ' px-4 py-3 cursor-pointer border-b border-slate-50" data-id="' + c.id + '">' +
+          '<div class="flex items-center gap-3">' +
+            '<div class="w-10 h-10 rounded-full bg-bh-navy text-white flex items-center justify-center text-sm font-bold">' + avatarFor(c.full_name) + '</div>' +
+            '<div class="flex-1 min-w-0">' +
+              '<div class="font-semibold text-slate-800 text-sm truncate">' + escapeHtml(c.full_name) + '</div>' +
+              '<div class="text-xs text-slate-400">' + escapeHtml(sub) + '</div>' +
+            '</div>' +
+            '<div class="contact-unread text-xs bg-rose-500 text-white rounded-full px-1.5 py-0.5 hidden" data-id="' + c.id + '"></div>' +
+          '</div>' +
+        '</div>';
+      }).join('');
+      list.querySelectorAll('.contact-item').forEach(function(el) {
+        el.addEventListener('click', function() { openChat(el.getAttribute('data-id')); });
+      });
+    }
+
+    async function openChat(contactId) {
+      state.activeContactId = contactId;
+      renderContacts();
+      var contact = state.contacts.find(function(c) { return c.id === contactId; });
+      if (!contact) return;
+      document.getElementById('chatName').textContent = contact.full_name;
+      document.getElementById('chatSub').textContent = contact.subject || contact.class_name || '';
+      document.getElementById('chatAvatar').textContent = avatarFor(contact.full_name);
+      document.getElementById('messageInput').disabled = false;
+      document.getElementById('sendBtn').disabled = false;
+
+      // Show E2EE badge if both have keys
+      if (e2eeReady() && contact.public_key) {
+        document.getElementById('e2eeBadge').classList.remove('hidden');
+        document.getElementById('e2eeBadge').classList.add('flex');
+      } else {
+        document.getElementById('e2eeBadge').classList.add('hidden');
+        document.getElementById('e2eeBadge').classList.remove('flex');
+      }
+
+      // Derive shared key
+      await getSharedKeyFor(contact);
+      // Load messages
+      await loadMessages(contactId);
+      // Start polling
+      if (state.pollTimer) clearInterval(state.pollTimer);
+      state.pollTimer = setInterval(function() { loadMessages(contactId, true); }, 3000);
+    }
+
+    async function loadMessages(contactId, silent) {
+      try {
+        var res = await BH.edge('get-messages', { body: { user_id: state.userId, partner_id: contactId } });
+        var data = res.data || res;
+        if (data.success) {
+          await renderMessages(data.messages || [], contactId, silent);
+        }
+      } catch(e) { if (!silent) console.error('load messages error:', e); }
+    }
+
+    async function renderMessages(messages, contactId, silent) {
+      var container = document.getElementById('messagesContainer');
+      var html = '';
+      for (var i = 0; i < messages.length; i++) {
+        var m = messages[i];
+        var mine = m.sender_id === state.userId;
+        var text = await decryptMsg(m.content, m.iv, m.sender_id === state.userId ? contactId : state.userId);
+        var time = new Date(m.created_at).toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'});
+        var lockIcon = m.iv ? '<i class="fas fa-lock text-[10px] opacity-60 ml-1"></i>' : '';
+        html += '<div class="flex ' + (mine ? 'justify-end' : 'justify-start') + '">' +
+          '<div class="' + (mine ? 'chat-bubble-mine' : 'chat-bubble-other') + ' px-4 py-2 max-w-[70%] text-sm">' +
+            escapeHtml(text) + lockIcon +
+            '<div class="text-[10px] ' + (mine ? 'text-white/60' : 'text-slate-400') + ' mt-1">' + time + '</div>' +
+          '</div>' +
+        '</div>';
+      }
+      if (html === '') html = '<div class="text-center text-slate-400 py-20"><i class="fas fa-comment text-4xl mb-3 opacity-30"></i><p class="text-sm">No messages yet. Say hello!</p></div>';
+      container.innerHTML = html;
+      container.scrollTop = container.scrollHeight;
+    }
+
+    // Send message
+    document.getElementById('messageForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      var input = document.getElementById('messageInput');
+      var text = input.value.trim();
+      if (!text || !state.activeContactId) return;
+      input.value = '';
+      var contact = state.contacts.find(function(c) { return c.id === state.activeContactId; });
+      if (!contact) return;
+
+      var payload = {
+        sender_id: state.userId,
+        sender_role: state.role,
+        sender_name: state.user.full_name || state.user.username,
+        receiver_id: contact.id,
+        receiver_role: state.role === 'student' ? 'teacher' : 'student',
+        receiver_name: contact.full_name,
+        ciphertext: text,
+        iv: null
+      };
+
+      // Encrypt if possible
+      if (e2eeReady() && contact.public_key) {
+        try {
+          var shared = await getSharedKeyFor(contact);
+          if (shared) {
+            var enc = await BHE2EE.encryptMessage(text, shared);
+            payload.ciphertext = enc.ciphertext;
+            payload.iv = enc.iv;
+          }
+        } catch(e) { console.warn('encrypt failed, sending plaintext', e); }
+      }
+
+      try {
+        var res = await BH.edge('send-message', { body: payload });
+        var data = res.data || res;
+        if (!data.success) { showToast('Failed to send', 'error'); return; }
+        await loadMessages(state.activeContactId, true);
+      } catch(e) { showToast('Network error', 'error'); }
+    });
+
+    function escapeHtml(s) { return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+    // Boot
+    (async function() {
+      if (!window.BH || !window.BH.requireRole) {
+        return setTimeout(arguments.callee, 100);
+      }
+      var session = await BH.requireAuth(); // accepts any role
+      if (!session) return;
+      state.session = session;
+      state.user = session.user || {};
+      state.userId = state.user.id;
+      state.role = state.user.role;
+      state.className = state.user.class_name;
+      state.classAccess = state.user.class_access || [];
+      state.privateKeyB64 = state.user.private_key;
+      state.publicKeyB64 = state.user.public_key;
+
+      // Import private key for E2EE
+      if (state.privateKeyB64 && window.BHE2EE) {
+        try {
+          state.privateKeyCrypto = await BHE2EE.importPrivateKeyFromBase64(state.privateKeyB64);
+        } catch(e) { console.warn('[E2EE] import failed:', e); }
+      }
+
+      // UI
+      document.getElementById('userName').textContent = state.user.full_name || state.user.username;
+      document.getElementById('userRole').textContent = state.role === 'teacher' ? (state.user.subject + ' Teacher') : (state.className + ' Student');
+      document.getElementById('userAvatar').textContent = avatarFor(state.user.full_name);
+
+      // Back link
+      var back = document.getElementById('backLink');
+      if (state.role === 'teacher') {
+        var pc = state.user.primary_class || 'SSS3';
+        back.href = 'classes/' + pc + '/teachers/dashboard.html';
+      } else if (state.role === 'student') {
+        back.href = 'classes/' + state.className + '/dashboard.html';
+      } else {
+        back.href = 'admin/index.html';
+      }
+
+      // Status indicator (always "Connected" since we use polling, not WebSocket)
+      document.getElementById('connStatus').innerHTML = '<span class="w-2 h-2 bg-emerald-500 rounded-full"></span> Connected';
+
+      await loadContacts();
+    })();
+
+    document.getElementById('searchInput').addEventListener('input', renderContacts);
+  </script>
+</body>
+</html>

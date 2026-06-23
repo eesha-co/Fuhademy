@@ -59,6 +59,10 @@ Deno.serve(async (req: Request) => {
 
     // Validate class_access
     const validClasses = ["JSS1","JSS2","JSS3","SSS1","SSS2","SSS3"];
+    var primaryClass = teacher.primary_class || null;
+    if (primaryClass && !validClasses.includes(primaryClass)) {
+      return errorResponse("primary_class must be one of: " + validClasses.join(", "));
+    }
     let classAccess = teacher.class_access || [];
     if (typeof classAccess === "string") classAccess = [classAccess];
     classAccess = classAccess.filter((c: string) => validClasses.includes(c));
@@ -71,9 +75,10 @@ Deno.serve(async (req: Request) => {
       email: teacher.email || null,
       phone: teacher.phone || null,
       class_access: classAccess,
+      primary_class: primaryClass,
       public_key: pubKeyB64,
       encrypted_private_key: encryptedBlob,
-    }).select("id, username, full_name, subject, class_access, email, phone, is_active, created_at").single();
+    }).select("id, username, full_name, subject, class_access, primary_class, email, phone, is_active, created_at").single();
 
     if (error) return errorResponse("Failed: " + error.message, 500);
     return json({ success: true, teacher: created });

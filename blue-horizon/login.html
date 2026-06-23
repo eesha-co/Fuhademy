@@ -394,7 +394,7 @@
               // For students, route them to their own class dashboard.
               // auth-login returns the user (including class_name) in result.data.user.
               var user = (result.data && result.data.user) || {};
-              var redirect = result.data.redirect || dashboardUrlForRole(selectedRole, user.class_name);
+              var redirect = result.data.redirect || dashboardUrlForRole(selectedRole, user.class_name, user.primary_class);
               // Decrypt the E2EE private key client-side using the password.
               // The server NEVER has the unencrypted private key — true E2EE.
               persistSessionAndRedirect(session, redirect, username, password);
@@ -460,7 +460,7 @@
             var session = JSON.parse(atob(m[1]));
             if (session && session.user && session.user.role) {
               // Route students to their class dashboard using the stored class_name.
-              window.location.replace(dashboardUrlForRole(session.user.role, session.user.class_name));
+              window.location.replace(dashboardUrlForRole(session.user.role, session.user.class_name, session.user.primary_class));
             }
           } catch (e) { /* invalid cookie — ignore */ }
         }

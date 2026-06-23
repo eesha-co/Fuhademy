@@ -1978,6 +1978,14 @@
                 '<div class="grid grid-cols-2 sm:grid-cols-3 gap-2">' + classAccessCheckboxes + '</div>' +
                 '<p class="text-[11px] text-slate-400 mt-1.5">Select at least one class. The teacher will only see students in the classes you grant access to.</p>' +
               '</div>' +
+              '<div>' +
+                '<label class="form-label">Primary Class (determines dashboard folder) *</label>' +
+                '<select name="primary_class" required class="form-input">' +
+                  '<option value="">Select primary class…</option>' +
+                  CLASSES.map(function (c) { return '<option value="' + c + '">' + c + '</option>'; }).join('') +
+                '</select>' +
+                '<p class="text-[11px] text-slate-400 mt-1.5">The teacher\'s dashboard will be in this class folder. Must be one of the selected classes above.</p>' +
+              '</div>' +
               '<div class="flex justify-end gap-2 pt-3">' +
                 '<button type="button" class="modal-close bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-semibold px-4 py-2.5 rounded-xl">Cancel</button>' +
                 '<button type="submit" class="bg-bh-navy hover:bg-bh-navy-2 text-white text-sm font-semibold px-5 py-2.5 rounded-xl flex items-center gap-2">' +
@@ -2023,6 +2031,16 @@
           return;
         }
         data.class_access = classAccess;
+
+        // Validate primary_class is in class_access
+        if (!data.primary_class) {
+          showToast('Please select a primary class.', 'error');
+          return;
+        }
+        if (classAccess.indexOf(data.primary_class) === -1) {
+          showToast('Primary class must be one of the selected classes above.', 'error');
+          return;
+        }
 
         var btn = form.querySelector('button[type="submit"]');
         btn.disabled = true;
