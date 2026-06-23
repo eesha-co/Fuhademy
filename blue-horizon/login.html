@@ -348,9 +348,16 @@
       helpModal.addEventListener('click', function (e) { if (e.target === helpModal) closeHelp(); });
 
       // Compute the dashboard URL based on role (and class for students)
-      function dashboardUrlForRole(role, className) {
+      function dashboardUrlForRole(role, className, primaryClass) {
         if (role === 'admin') return 'admin/index.html';
-        if (role === 'teacher') return 'teachers/dashboard.html';
+        if (role === 'teacher') {
+          // Teachers go to their PRIMARY class dashboard folder
+          var pc = primaryClass || className;
+          if (pc && pc !== '_template') {
+            return 'classes/' + pc + '/teachers/dashboard.html';
+          }
+          return 'teachers/dashboard.html'; // fallback
+        }
         // student → their class dashboard (JSS1, JSS2, JSS3, SSS1, SSS2, SSS3)
         if (className && className !== '_template') {
           return 'classes/' + className + '/dashboard.html';
