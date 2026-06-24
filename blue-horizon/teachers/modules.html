@@ -973,7 +973,30 @@
         var box = $('chatMessages');
         if (!box) return;
         var html = '';
-        state.chat.forEach(function (msg) {
+        state.chat.forEach(function (msg, idx) {
+          if (msg.role === 'build-now') {
+            html += '' +
+              '<div class="flex items-start gap-2">' +
+                '<div class="w-7 h-7 rounded-full bg-bh-navy/10 flex items-center justify-center flex-shrink-0"><i class="fas fa-hammer text-bh-navy text-xs"></i></div>' +
+                '<div class="chat-bubble ai" style="padding:12px 16px;">' +
+                  '<p class="text-sm text-slate-700 mb-2">Review the plan above, then click to build:</p>' +
+                  '<button onclick="executePlan()" class="bg-bh-navy hover:bg-bh-navy-2 text-white text-sm font-bold px-5 py-2 rounded-lg flex items-center gap-2 transition-colors">' +
+                    '<i class="fas fa-play"></i> Build Now' +
+                  '</button>' +
+                '</div>' +
+              '</div>';
+            return;
+          }
+          if (msg.role === 'building') {
+            html += '' +
+              '<div class="flex items-start gap-2">' +
+                '<div class="w-7 h-7 rounded-full bg-bh-navy/10 flex items-center justify-center flex-shrink-0"><i class="fas fa-cog fa-spin text-bh-navy text-xs"></i></div>' +
+                '<div class="chat-bubble ai" style="background:#f1f5f9;">' +
+                  '<span class="text-sm text-slate-500">Building module based on the plan...</span>' +
+                '</div>' +
+              '</div>';
+            return;
+          }
           if (msg.role === 'thinking') {
             html += '' +
               '<div class="flex items-center gap-2 text-xs text-slate-500">' +
@@ -1025,6 +1048,10 @@
       }
 
       // ---- AI generation with auto-test ----
+      // =====================================================
+      // PHASE 1: sendChat — Plan only (Understand + Search + Decide)
+      // Shows the plan + a "Build Now" button. Stops here.
+      // =====================================================
       function sendChat(prompt) {
         if (!prompt || !prompt.trim()) return;
         if (state.isThinking) {
@@ -1040,7 +1067,6 @@
         var isEdit = !!(state.html && state.html.length > 50);
         var searchEnabled = !!state.search;
 
-        // === STEP 1: PLAN (Understand + Search + Decide) ===
         addChatMessage('system', '🤔 Understanding your request...', 'fa-brain');
 
         var planPayload = {
@@ -1051,8 +1077,8 @@
         };
 
         BH.edge('ai-module', { body: planPayload }).then(function (res) {
+          setThinking(false);
           if (!res || !res.ok || !res.data || !res.data.success) {
-            setThinking(false);
             var errMsg = (res && res.data && res.data.error) || 'Could not create a plan. Please try again.';
             addChatMessage('error', errMsg);
             return;
@@ -1070,29 +1096,72 @@
             addChatMessage('ai', '📋 Here is my plan:\n\n' + planData.plan);
           }
 
-          // === STEP 2: EXECUTE (Generate or Edit based on the plan) ===
-          addChatMessage('system', '⚙️ ' + (isEdit ? 'Editing' : 'Building') + ' the module based on the plan...', 'fa-cog');
-
-          var execPayload = {
-            action: isEdit ? 'edit' : 'generate',
+          // Store plan data for the execute phase
+          state.pendingPlan = {
             prompt: userPrompt,
-            current_html: state.html || '',
             plan: planData.plan || '',
-            search_results: planData.searchResults || '',
-            search: false // already searched in plan step
+            searchResults: planData.searchResults || '',
+            isEdit: isEdit,
+            html: state.html || ''
           };
 
-          return BH.edge('ai-module', { body: execPayload });
-        }).then(function (res) {
-          if (!res) return; // error occurred
+          // Show the Build Now button (stops here — user clicks to proceed)
+          addChatMessage('build-now', '');
+        }).catch(function (err) {
+          setThinking(false);
+          console.error('[BH] plan error:', err);
+          addChatMessage('error', 'Network error. Please check your connection and try again.');
+        });
+      }
+
+      // =====================================================
+      // PHASE 2: executePlan — Build + Test + Confirm
+      // Called when the user clicks "Build Now"
+      // =====================================================
+      function executePlan() {
+        if (!state.pendingPlan) {
+          showToast('No plan to execute. Send a message first.', 'error');
+          return;
+        }
+        if (state.isThinking) {
+          showToast('Already building. Please wait...', 'info');
+          return;
+        }
+
+        var p = state.pendingPlan;
+        state.pendingPlan = null; // consume it
+        setThinking(true);
+
+        // Replace the Build Now button with a building indicator
+        state.chat = state.chat.filter(function (m) { return m.role !== 'build-now'; });
+        addChatMessage('building', '');
+        addChatMessage('system', '⚙️ ' + (p.isEdit ? 'Editing' : 'Building') + ' the module based on the plan...', 'fa-cog');
+
+        var execPayload = {
+          action: p.isEdit ? 'edit' : 'generate',
+          prompt: p.prompt,
+          current_html: p.html,
+          plan: p.plan,
+          search_results: p.searchResults,
+          search: false
+        };
+
+        BH.edge('ai-module', { body: execPayload }).then(function (res) {
           if (!res || !res.ok || !res.data || res.data.error) {
             setThinking(false);
             var errMsg = (res && res.data && res.data.error) || 'Could not build the module. Please try again.';
+            // Remove building indicator
+            state.chat = state.chat.filter(function (m) { return m.role !== 'building'; });
+            renderChat();
             addChatMessage('error', errMsg);
             return;
           }
 
           var data = res.data;
+
+          // Remove building indicator
+          state.chat = state.chat.filter(function (m) { return m.role !== 'building'; });
+          renderChat();
 
           // Update the HTML
           if (data.html) {
@@ -1107,7 +1176,7 @@
           // Switch to preview
           setAISubTab('preview');
 
-          // === STEP 3: TEST ===
+          // === TEST ===
           if (data.html) {
             addChatMessage('system', '🧪 Testing the module with the browser...', 'fa-vial');
             return BH.edge('ai-module', { body: { action: 'test', current_html: data.html } });
@@ -1128,7 +1197,7 @@
             var issueCount = (testData.test.issues || []).length;
             addChatMessage('system', '📋 Test result: ' + overall.toUpperCase() + (issueCount > 0 ? ' (' + issueCount + ' issue(s))' : ' — no issues!'), 'fa-clipboard-check');
 
-            // === STEP 4: AUTO-FIX if needed ===
+            // === AUTO-FIX if needed ===
             if ((overall === 'needs_work' || overall === 'broken') && issueCount > 0) {
               addChatMessage('system', '🔧 Auto-fixing ' + issueCount + ' issue(s)...', 'fa-wrench');
               BH.edge('ai-module', { body: { action: 'fix', current_html: state.html, issues: testData.test.issues, suggestions: testData.test.suggestions || [] } }).then(function (fixRes) {
@@ -1154,7 +1223,9 @@
           }
         }).catch(function (err) {
           setThinking(false);
-          console.error('[BH] ai-module error:', err);
+          state.chat = state.chat.filter(function (m) { return m.role !== 'building'; });
+          renderChat();
+          console.error('[BH] execute error:', err);
           addChatMessage('error', 'Network error. Please check your connection and try again.');
         });
       }

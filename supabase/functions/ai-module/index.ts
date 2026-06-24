@@ -86,7 +86,7 @@ function bufferToBase64(screenshot: any): string {
   return "";
 }
 
-async function callKimi(messages: Array<any>, maxTokens = 16384, temperature = 0.3): Promise<string> {
+async function callKimi(messages: Array<any>, maxTokens = 16384, temperature = 0.3, thinking = true): Promise<string> {
   const key = Deno.env.get("KIMI_API_KEY");
   if (!key) throw new Error("KIMI_API_KEY not configured");
   const response = await fetch(KIMI_URL, {
@@ -95,7 +95,7 @@ async function callKimi(messages: Array<any>, maxTokens = 16384, temperature = 0
     body: JSON.stringify({
       model: MODEL, messages, max_tokens: maxTokens,
       temperature: temperature, top_p: 1.0, stream: false,
-      chat_template_kwargs: { thinking: true },
+      chat_template_kwargs: { thinking: thinking },
     }),
   });
   if (!response.ok) {
@@ -210,8 +210,10 @@ Deno.serve(async (req: Request) => {
 
       let content = "";
       let html = "";
+      // Execute step: thinking DISABLED (plan already did the thinking — this just follows it mechanically)
+      // This prevents timeout on large modules (thinking + large input = >150s)
       for (let attempt = 0; attempt < 2; attempt++) {
-        content = await callKimi(messages, maxTokens, temperature);
+        content = await callKimi(messages, maxTokens, temperature, false);
         html = extractHtml(content);
         if (html) break;
         if (attempt === 0) {
@@ -277,7 +279,7 @@ Deno.serve(async (req: Request) => {
         { role: "system", content: SYSTEM_EDIT },
         { role: "user", content: `EXISTING HTML:\n\n\`\`\`html\n${html}\n\`\`\`\n\nFix these issues:\n${issues.join("\n")}\n\nSuggestions:\n${suggestions.join("\n")}\n\nReturn the COMPLETE updated HTML in a \`\`\`html code block.` },
       ];
-      const fixedContent = await callKimi(fixMessages, 16384, 0.2);
+      const fixedContent = await callKimi(fixMessages, 16384, 0.2, false);
       const fixedHtml = extractHtml(fixedContent);
       if (!fixedHtml) return json({ error: "Could not auto-fix." }, 500);
       let reply = fixedContent.replace(/```html\s*\n?[\s\S]*?```/gi, "").trim();
