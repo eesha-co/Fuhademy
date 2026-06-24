@@ -1057,7 +1057,7 @@
         // "Fixing issues…" step is added below only if auto-fix was applied
 
         var payload = {
-          action: 'generate',
+          action: (state.html && state.html.length > 50) ? 'edit' : 'generate',
           prompt: prompt.trim(),
           current_html: state.html || '',
           search: !!state.search
