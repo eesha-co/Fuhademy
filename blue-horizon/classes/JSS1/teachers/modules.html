@@ -987,6 +987,19 @@
               '</div>';
             return;
           }
+          if (msg.role === 'test-now') {
+            html += '' +
+              '<div class="flex items-start gap-2">' +
+                '<div class="w-7 h-7 rounded-full bg-emerald-50 flex items-center justify-center flex-shrink-0"><i class="fas fa-vial-circle-check text-emerald-600 text-xs"></i></div>' +
+                '<div class="chat-bubble ai" style="padding:12px 16px;">' +
+                  '<p class="text-sm text-slate-700 mb-2">Module built! Click to test & verify:</p>' +
+                  '<button onclick="testAndFix()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-bold px-5 py-2 rounded-lg flex items-center gap-2 transition-colors">' +
+                    '<i class="fas fa-vial"></i> Test Now' +
+                  '</button>' +
+                '</div>' +
+              '</div>';
+            return;
+          }
           if (msg.role === 'building') {
             html += '' +
               '<div class="flex items-start gap-2">' +
@@ -1115,7 +1128,7 @@
       }
 
       // =====================================================
-      // PHASE 2: executePlan — Build + Test + Confirm
+      // PHASE 2: executePlan — Build ONLY (no test)
       // Called when the user clicks "Build Now"
       // =====================================================
       function executePlan() {
@@ -1147,21 +1160,18 @@
         };
 
         BH.edge('ai-module', { body: execPayload }).then(function (res) {
+          setThinking(false);
+          // Remove building indicator
+          state.chat = state.chat.filter(function (m) { return m.role !== 'building'; });
+          renderChat();
+
           if (!res || !res.ok || !res.data || res.data.error) {
-            setThinking(false);
             var errMsg = (res && res.data && res.data.error) || 'Could not build the module. Please try again.';
-            // Remove building indicator
-            state.chat = state.chat.filter(function (m) { return m.role !== 'building'; });
-            renderChat();
             addChatMessage('error', errMsg);
             return;
           }
 
           var data = res.data;
-
-          // Remove building indicator
-          state.chat = state.chat.filter(function (m) { return m.role !== 'building'; });
-          renderChat();
 
           // Update the HTML
           if (data.html) {
@@ -1176,17 +1186,41 @@
           // Switch to preview
           setAISubTab('preview');
 
-          // === TEST ===
-          if (data.html) {
-            addChatMessage('system', '🧪 Testing the module with the browser...', 'fa-vial');
-            return BH.edge('ai-module', { body: { action: 'test', current_html: data.html } });
-          }
+          // Show the Test Now button (stops here — user clicks to proceed to testing)
+          addChatMessage('test-now', '');
+        }).catch(function (err) {
           setThinking(false);
-          return null;
-        }).then(function (res) {
-          if (!res) return;
+          state.chat = state.chat.filter(function (m) { return m.role !== 'building'; });
+          renderChat();
+          console.error('[BH] execute error:', err);
+          addChatMessage('error', 'Network error. Please check your connection and try again.');
+        });
+      }
+
+      // =====================================================
+      // PHASE 3: testAndFix — Test + Fix + Confirm
+      // Called when the user clicks "Test Now"
+      // =====================================================
+      function testAndFix() {
+        if (state.isThinking) {
+          showToast('Already testing. Please wait...', 'info');
+          return;
+        }
+        if (!state.html || state.html.length < 10) {
+          showToast('No module to test. Build one first.', 'error');
+          return;
+        }
+
+        setThinking(true);
+
+        // Replace the Test Now button with a testing indicator
+        state.chat = state.chat.filter(function (m) { return m.role !== 'test-now'; });
+        addChatMessage('system', '🧪 Testing the module with the browser...', 'fa-vial');
+
+        BH.edge('ai-module', { body: { action: 'test', current_html: state.html } }).then(function (res) {
           if (!res || !res.ok || !res.data) {
             setThinking(false);
+            addChatMessage('error', 'Could not run the test. Please try again.');
             return;
           }
 
@@ -1205,6 +1239,7 @@
                 if (fixRes && fixRes.ok && fixRes.data && fixRes.data.html) {
                   setHtml(fixRes.data.html, 'ai');
                   addChatMessage('system', '✅ Auto-fix applied! Module updated and verified.', 'fa-check-circle');
+                  addChatMessage('system', '🎉 Module is ready! You can save it or upload to students.', 'fa-check-double');
                 } else {
                   addChatMessage('system', '⚠️ Could not auto-fix all issues. You can edit manually in Self mode.', 'fa-triangle-exclamation');
                 }
@@ -1223,9 +1258,7 @@
           }
         }).catch(function (err) {
           setThinking(false);
-          state.chat = state.chat.filter(function (m) { return m.role !== 'building'; });
-          renderChat();
-          console.error('[BH] execute error:', err);
+          console.error('[BH] test error:', err);
           addChatMessage('error', 'Network error. Please check your connection and try again.');
         });
       }
