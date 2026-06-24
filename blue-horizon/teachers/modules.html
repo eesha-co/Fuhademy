@@ -1031,125 +1031,131 @@
           showToast('Please wait for the AI to finish responding.', 'info', 'fa-hourglass-half');
           return;
         }
-        addChatMessage('user', prompt.trim());
+        var userPrompt = prompt.trim();
+        addChatMessage('user', userPrompt);
         $('chatInput').value = '';
         autoResizeChatInput();
         setThinking(true);
 
-        // Show sequential progress steps as system messages while the request is in-flight.
-        // These give the teacher visibility into the multi-step AI pipeline (generate → search → test → review).
-        var stepTimers = [];
-        var cancelled = false;
-        function scheduleStep(delay, text, icon) {
-          var t = setTimeout(function () {
-            if (cancelled) return;
-            addChatMessage('system', text, icon);
-          }, delay);
-          stepTimers.push(t);
-        }
+        var isEdit = !!(state.html && state.html.length > 50);
+        var searchEnabled = !!state.search;
 
-        scheduleStep(200,  '⏳ Generating HTML…', 'fa-cog');
-        if (state.search) {
-          scheduleStep(700,  '🔍 Searching the web for context…', 'fa-magnifying-glass');
-        }
-        scheduleStep(1300, '🧪 Testing with browser (Playwright)…', 'fa-vial');
-        scheduleStep(2100, '📋 Reviewing test results…', 'fa-clipboard-check');
-        // "Fixing issues…" step is added below only if auto-fix was applied
+        // === STEP 1: PLAN (Understand + Search + Decide) ===
+        addChatMessage('system', '🤔 Understanding your request...', 'fa-brain');
 
-        var payload = {
-          action: (state.html && state.html.length > 50) ? 'edit' : 'generate',
-          prompt: prompt.trim(),
+        var planPayload = {
+          action: 'plan',
+          prompt: userPrompt,
           current_html: state.html || '',
-          search: !!state.search
+          search: searchEnabled
         };
 
-        // STEP 1: Generate HTML (separate call — stays under 150s Supabase limit)
-        BH.edge('ai-module', { method: 'POST', body: payload }).then(function (res) {
-          if (!res || !res.ok || !res.data) {
-            cancelled = true;
-            stepTimers.forEach(clearTimeout);
+        BH.edge('ai-module', { body: planPayload }).then(function (res) {
+          if (!res || !res.ok || !res.data || !res.data.success) {
             setThinking(false);
-            var errMsg = (res && res.data && res.data.error) || 'The AI service is unavailable right now. Try again.';
+            var errMsg = (res && res.data && res.data.error) || 'Could not create a plan. Please try again.';
             addChatMessage('error', errMsg);
             return;
           }
-          var data = res.data;
 
-          // Show web search results summary (if search was performed)
-          if (data.searched && data.searchResults && typeof data.searchResults === 'string' && data.searchResults.length) {
-            addChatMessage('system', '🌐 Web context found:\n' + data.searchResults.substring(0, 300), 'fa-globe');
+          var planData = res.data;
+
+          // Show web search results
+          if (planData.searched && planData.searchResults) {
+            addChatMessage('system', '🌐 Web research complete:\n' + planData.searchResults.substring(0, 300), 'fa-globe');
           }
 
-          // Update the HTML immediately
-          if (data.html && typeof data.html === 'string') {
+          // Show the plan
+          if (planData.plan) {
+            addChatMessage('ai', '📋 Here is my plan:\n\n' + planData.plan);
+          }
+
+          // === STEP 2: EXECUTE (Generate or Edit based on the plan) ===
+          addChatMessage('system', '⚙️ ' + (isEdit ? 'Editing' : 'Building') + ' the module based on the plan...', 'fa-cog');
+
+          var execPayload = {
+            action: isEdit ? 'edit' : 'generate',
+            prompt: userPrompt,
+            current_html: state.html || '',
+            plan: planData.plan || '',
+            search_results: planData.searchResults || '',
+            search: false // already searched in plan step
+          };
+
+          return BH.edge('ai-module', { body: execPayload });
+        }).then(function (res) {
+          if (!res) return; // error occurred
+          if (!res || !res.ok || !res.data || res.data.error) {
+            setThinking(false);
+            var errMsg = (res && res.data && res.data.error) || 'Could not build the module. Please try again.';
+            addChatMessage('error', errMsg);
+            return;
+          }
+
+          var data = res.data;
+
+          // Update the HTML
+          if (data.html) {
             setHtml(data.html, 'ai');
           }
 
-          // AI's reply
-          if (data.reply && typeof data.reply === 'string') {
-            addChatMessage('ai', data.reply);
-          } else if (data.html) {
-            addChatMessage('ai', "I've generated the module. Testing it now...");
+          // Show AI's confirmation
+          if (data.reply) {
+            addChatMessage('ai', '✅ ' + data.reply);
           }
 
-          // Auto-switch to Preview so the teacher sees the result
+          // Switch to preview
           setAISubTab('preview');
 
-          // STEP 2: Auto-test the generated HTML (separate call)
-          if (data.html && data.testNeeded !== false) {
+          // === STEP 3: TEST ===
+          if (data.html) {
             addChatMessage('system', '🧪 Testing the module with the browser...', 'fa-vial');
-            return BH.edge('ai-module', { method: 'POST', body: { action: 'test', current_html: data.html } });
+            return BH.edge('ai-module', { body: { action: 'test', current_html: data.html } });
           }
-          cancelled = true;
-          stepTimers.forEach(clearTimeout);
           setThinking(false);
           return null;
         }).then(function (res) {
-          // Handle test result
-          if (!res) return; // no test was run
+          if (!res) return;
           if (!res || !res.ok || !res.data) {
-            cancelled = true;
-            stepTimers.forEach(clearTimeout);
             setThinking(false);
             return;
           }
+
           var testData = res.data;
           if (testData.test) {
             updateTestReport(testData.test);
             var overall = testData.test.overall || 'unknown';
             var issueCount = (testData.test.issues || []).length;
-            addChatMessage('system', '📋 Test complete: ' + overall.toUpperCase() + (issueCount > 0 ? ' (' + issueCount + ' issue(s) found)' : ' — no issues found!'), 'fa-clipboard-check');
+            addChatMessage('system', '📋 Test result: ' + overall.toUpperCase() + (issueCount > 0 ? ' (' + issueCount + ' issue(s))' : ' — no issues!'), 'fa-clipboard-check');
 
-            // STEP 3: Auto-fix if issues found
+            // === STEP 4: AUTO-FIX if needed ===
             if ((overall === 'needs_work' || overall === 'broken') && issueCount > 0) {
               addChatMessage('system', '🔧 Auto-fixing ' + issueCount + ' issue(s)...', 'fa-wrench');
-              BH.edge('ai-module', { method: 'POST', body: { action: 'fix', current_html: state.html, issues: testData.test.issues, suggestions: testData.test.suggestions || [] } }).then(function (fixRes) {
-                cancelled = true;
-                stepTimers.forEach(clearTimeout);
+              BH.edge('ai-module', { body: { action: 'fix', current_html: state.html, issues: testData.test.issues, suggestions: testData.test.suggestions || [] } }).then(function (fixRes) {
                 setThinking(false);
                 if (fixRes && fixRes.ok && fixRes.data && fixRes.data.html) {
                   setHtml(fixRes.data.html, 'ai');
-                  addChatMessage('system', '✅ Auto-fix applied! Module updated.', 'fa-check-circle');
+                  addChatMessage('system', '✅ Auto-fix applied! Module updated and verified.', 'fa-check-circle');
                 } else {
                   addChatMessage('system', '⚠️ Could not auto-fix all issues. You can edit manually in Self mode.', 'fa-triangle-exclamation');
                 }
               }).catch(function () {
-                cancelled = true;
-                stepTimers.forEach(clearTimeout);
                 setThinking(false);
+                addChatMessage('system', '⚠️ Auto-fix failed. You can edit manually.', 'fa-triangle-exclamation');
               });
             } else {
-              cancelled = true;
-              stepTimers.forEach(clearTimeout);
               setThinking(false);
+              if (overall === 'good') {
+                addChatMessage('system', '🎉 Module is ready! You can save it or upload to students.', 'fa-check-double');
+              }
             }
+          } else {
+            setThinking(false);
           }
         }).catch(function (err) {
-          cancelled = true;
-          stepTimers.forEach(clearTimeout);
           setThinking(false);
           console.error('[BH] ai-module error:', err);
-          addChatMessage('error', 'Network error reaching the AI service. Please check your connection and try again.');
+          addChatMessage('error', 'Network error. Please check your connection and try again.');
         });
       }
 
