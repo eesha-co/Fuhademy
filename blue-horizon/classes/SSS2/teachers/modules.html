@@ -1158,90 +1158,46 @@
         var isEdit = !!(state.html && state.html.length > 50);
         var searchEnabled = !!state.search;
 
-        if (isEdit) {
-          // === EDIT MODE: Skip plan, go straight to targeted edits (fast, 2-10s) ===
-          addChatMessage('system', '✏️ Making targeted edits...', 'fa-pen');
-          var editPayload = {
-            action: 'edit-targeted',
+        // === BOTH edit and generate go through Plan → [Build Now] → Execute → [Test Now] ===
+        // The plan phase includes web search + understanding + decisions for BOTH modes.
+        // For edits, the plan helps the AI understand what to change before making targeted edits.
+        // For new modules, the plan guides the generation.
+
+        addChatMessage('system', '🤔 Understanding your request...', 'fa-brain');
+
+        var planPayload = {
+          action: 'plan',
+          prompt: userPrompt,
+          current_html: state.html || '',
+          search: searchEnabled
+        };
+
+        edgeWithTimeout(planPayload, 'Planning', function (res) {
+          setThinking(false);
+          if (!res || !res.ok || !res.data || !res.data.success) {
+            var errMsg = (res && res.data && res.data.error) || 'Could not create a plan. Please try again.';
+            addChatMessage('error', errMsg);
+            return;
+          }
+
+          var planData = res.data;
+          if (planData.searched && planData.searchResults) {
+            addChatMessage('system', '🌐 Web research complete:\n' + planData.searchResults.substring(0, 300), 'fa-globe');
+          }
+          if (planData.plan) {
+            addChatMessage('ai', '📋 Here is my plan:\n\n' + planData.plan);
+          }
+
+          state.pendingPlan = {
             prompt: userPrompt,
-            current_html: state.html,
-            plan: null,
-            search: searchEnabled
+            plan: planData.plan || '',
+            searchResults: planData.searchResults || '',
+            isEdit: isEdit,
+            html: state.html || ''
           };
 
-          edgeWithTimeout(editPayload, 'Editing module', function (res) {
-            setThinking(false);
-            if (!res || !res.ok || !res.data || res.data.error) {
-              var errMsg = (res && res.data && res.data.error) || 'Could not edit the module. Please try again.';
-              addChatMessage('error', errMsg);
-              return;
-            }
-
-            var data = res.data;
-
-            // Apply each SEARCH/REPLACE edit incrementally (like Copilot)
-            if (data.edits && Array.isArray(data.edits)) {
-              var applied = 0;
-              var failed = 0;
-              data.edits.forEach(function (edit, i) {
-                if (state.html && state.html.indexOf(edit.search) !== -1) {
-                  state.html = state.html.replace(edit.search, edit.replace);
-                  applied++;
-                  setHtml(state.html, 'ai');
-                  addChatMessage('system', '✏️ Applied edit ' + (i + 1) + '/' + data.edits.length + ': ' + edit.search.substring(0, 40) + '...', 'fa-pen');
-                } else {
-                  failed++;
-                  addChatMessage('system', '⚠️ Edit ' + (i + 1) + ' target not found: ' + edit.search.substring(0, 40) + '...', 'fa-triangle-exclamation');
-                }
-              });
-              addChatMessage('ai', '✅ ' + (data.summary || 'Applied ' + applied + ' edit(s).') + ' (' + applied + ' applied, ' + failed + ' not found)');
-              setAISubTab('preview');
-              addChatMessage('test-now', '');
-            } else if (data.html) {
-              setHtml(data.html, 'ai');
-              addChatMessage('ai', '✅ Module updated.');
-              setAISubTab('preview');
-              addChatMessage('test-now', '');
-            }
-          });
-        } else {
-          // === GENERATE MODE: Plan → [Build Now] → Generate → [Test Now] ===
-          addChatMessage('system', '🤔 Understanding your request...', 'fa-brain');
-
-          var planPayload = {
-            action: 'plan',
-            prompt: userPrompt,
-            current_html: '',
-            search: searchEnabled
-          };
-
-          edgeWithTimeout(planPayload, 'Planning', function (res) {
-            setThinking(false);
-            if (!res || !res.ok || !res.data || !res.data.success) {
-              var errMsg = (res && res.data && res.data.error) || 'Could not create a plan. Please try again.';
-              addChatMessage('error', errMsg);
-              return;
-            }
-
-            var planData = res.data;
-            if (planData.searched && planData.searchResults) {
-              addChatMessage('system', '🌐 Web research complete:\n' + planData.searchResults.substring(0, 300), 'fa-globe');
-            }
-            if (planData.plan) {
-              addChatMessage('ai', '📋 Here is my plan:\n\n' + planData.plan);
-            }
-
-            state.pendingPlan = {
-              prompt: userPrompt,
-              plan: planData.plan || '',
-              searchResults: planData.searchResults || '',
-              isEdit: false,
-              html: ''
-            };
-
-            addChatMessage('build-now', '');
-          });
-        }
+          addChatMessage('build-now', '');
+        });
       }
 
       // =====================================================
