@@ -343,7 +343,7 @@
         <div class="p-5 border-b border-slate-100">
           <div class="flex items-center gap-3">
             <img src="../../../_next/static/media/logo-name.1dd6ad53.webp" alt="Blue Horizon logo"
-                 class="w-12 h-12 object-contain rounded-xl bg-white p-1 shadow-sm border border-slate-100"
+                 class="w-12 h-12 object-contain"
                  onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
             <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-bh-navy to-bh-navy-2 flex items-center justify-center shadow-lg" style="display:none;">
               <i class="fas fa-water text-white text-xl"></i>
@@ -1496,10 +1496,57 @@
         }
         if (!state.teacher) { showToast('Teacher session not loaded.', 'error'); return; }
 
+        // Get the teacher's class_access from session
+        var session = BH.getSession();
+        var classAccess = (session && session.user && session.user.class_access) || [];
+        if (!classAccess.length) {
+          showToast('No classes assigned. Contact admin.', 'error');
+          return;
+        }
+
+        // If only one class, upload directly
+        if (classAccess.length === 1) {
+          doUpload(classAccess[0]);
+          return;
+        }
+
+        // Show class selection modal
+        var modalHtml = '<div id="uploadClassModal" class="fixed inset-0 z-50 bg-black/40 flex items-center justify-center p-4">' +
+          '<div class="bg-white rounded-2xl shadow-xl max-w-md w-full p-6">' +
+            '<h3 class="text-lg font-bold text-slate-800 mb-1">Upload to Students</h3>' +
+            '<p class="text-sm text-slate-500 mb-4">Select which class should receive this module:</p>' +
+            '<div class="space-y-2 mb-4">' +
+              classAccess.map(function(c) {
+                return '<label class="flex items-center gap-3 p-3 border border-slate-200 rounded-xl cursor-pointer hover:bg-slate-50">' +
+                  '<input type="radio" name="uploadClass" value="' + c + '" class="w-4 h-4 text-bh-navy">' +
+                  '<span class="font-semibold text-slate-700">' + c + '</span>' +
+                '</label>';
+              }).join('') +
+            '</div>' +
+            '<div class="flex gap-2">' +
+              '<button id="uploadClassCancel" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-semibold py-2.5 rounded-xl">Cancel</button>' +
+              '<button id="uploadClassConfirm" class="flex-1 bg-bh-navy hover:bg-bh-navy-2 text-white text-sm font-semibold py-2.5 rounded-xl">Upload</button>' +
+            '</div>' +
+          '</div>' +
+        '</div>';
+        document.body.insertAdjacentHTML('beforeend', modalHtml);
+
+        document.getElementById('uploadClassCancel').addEventListener('click', function() {
+          document.getElementById('uploadClassModal').remove();
+        });
+        document.getElementById('uploadClassConfirm').addEventListener('click', function() {
+          var selected = document.querySelector('input[name="uploadClass"]:checked');
+          if (!selected) { showToast('Please select a class.', 'error'); return; }
+          document.getElementById('uploadClassModal').remove();
+          doUpload(selected.value);
+        });
+      }
+
+      function doUpload(className) {
         var btn = $('uploadBtn');
         var originalHTML = btn.innerHTML;
         btn.disabled = true;
-        btn.innerHTML = '<span class="spinner"></span> Uploading…';
+        btn.innerHTML = '<span class="spinner"></span> Uploading to ' + className + '…';
         state.isUploading = true;
 
         var filename = slugify(state.teacher.username) + '_' + slugify(state.teacher.subject) + '_' + Date.now() + '.html';
@@ -1510,14 +1557,15 @@
           subject: state.teacher.subject,
           filename: filename,
           html: state.html,
-          mode: 'save'
+          mode: 'save',
+          class_name: className
         }}).then(function (res) {
           btn.disabled = false;
           btn.innerHTML = originalHTML;
           state.isUploading = false;
           var data = res.data || res;
           if (data.success) {
-            showToast('Module uploaded! Students can now access it.', 'success');
+            showToast('Module uploaded to ' + className + '! Students can now access it.', 'success');
           } else {
             showToast('Upload failed: ' + (data.error || ''), 'error');
           }

@@ -7,7 +7,7 @@ Deno.serve(async (req: Request) => {
   if (preflight) return preflight;
   if (req.method !== "POST") return errorResponse("Method not allowed", 405);
   try {
-    const { teacher_id, teacher_name, subject, filename, html, mode } = await req.json();
+    const { teacher_id, teacher_name, subject, filename, html, mode, class_name } = await req.json();
     if (!teacher_id) return errorResponse("teacher_id required");
     if (!subject) return errorResponse("subject required");
     if (!filename) return errorResponse("filename required");
@@ -35,7 +35,7 @@ Deno.serve(async (req: Request) => {
     await supabase.from("assignments").upsert({
       title: "Module: " + filename.replace(".html", "").replace(/-/g, " "),
       description: `Interactive module by ${teacher_name}. Open to view the full lesson.`,
-      class_name: "All Classes",
+      class_name: class_name || "All Classes",
       subject: subject,
       teacher_id: teacher_id,
       teacher_name: teacher_name,
