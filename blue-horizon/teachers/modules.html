@@ -1223,16 +1223,23 @@
         addChatMessage('building', '');
         addChatMessage('system', '⚙️ ' + (p.isEdit ? 'Editing' : 'Building') + ' the module based on the plan...', 'fa-cog');
 
-        var execPayload = {
-          action: p.isEdit ? 'edit' : 'generate',
+        // For edits: use targeted SEARCH/REPLACE (fast, no timeout, preserves existing content)
+        // For new modules: use generate (returns full HTML)
+        var execPayload = p.isEdit ? {
+          action: 'edit-targeted',
           prompt: p.prompt,
-          current_html: p.html,
+          current_html: state.html || p.html,
+          plan: p.plan,
+          search: false
+        } : {
+          action: 'generate',
+          prompt: p.prompt,
           plan: p.plan,
           search_results: p.searchResults,
           search: false
         };
 
-        edgeWithTimeout(execPayload, 'Building module', function (res) {
+        edgeWithTimeout(execPayload, p.isEdit ? 'Editing module' : 'Building module', function (res) {
           setThinking(false);
           // Remove building indicator
           state.chat = state.chat.filter(function (m) { return m.role !== 'building'; });
@@ -1246,14 +1253,33 @@
 
           var data = res.data;
 
-          // Update the HTML
-          if (data.html) {
+          // Check if this is a targeted edit response (has edits array)
+          if (data.edits && Array.isArray(data.edits)) {
+            // Apply each SEARCH/REPLACE edit incrementally (like Copilot)
+            var applied = 0;
+            var failed = 0;
+            data.edits.forEach(function (edit, i) {
+              var searchStr = edit.search;
+              var replaceStr = edit.replace;
+              if (state.html && state.html.indexOf(searchStr) !== -1) {
+                // Found the search text — apply the replacement
+                state.html = state.html.replace(searchStr, replaceStr);
+                applied++;
+                // Update preview live after each edit
+                setHtml(state.html, 'ai');
+                addChatMessage('system', '✏️ Applied edit ' + (i + 1) + '/' + data.edits.length + ': ' + searchStr.substring(0, 40) + '...', 'fa-pen');
+              } else {
+                failed++;
+                addChatMessage('system', '⚠️ Could not find edit ' + (i + 1) + ' target: ' + searchStr.substring(0, 40) + '...', 'fa-triangle-exclamation');
+              }
+            });
+            addChatMessage('ai', '✅ ' + (data.summary || 'Applied ' + applied + ' edit(s).') + ' (' + applied + ' applied, ' + failed + ' not found)');
+          } else if (data.html) {
+            // Full HTML response (new module generation)
             setHtml(data.html, 'ai');
-          }
-
-          // Show AI's confirmation
-          if (data.reply) {
-            addChatMessage('ai', '✅ ' + data.reply);
+            if (data.reply) {
+              addChatMessage('ai', '✅ ' + data.reply);
+            }
           }
 
           // Switch to preview
@@ -1303,7 +1329,19 @@
               addChatMessage('system', '🔧 Auto-fixing ' + issueCount + ' issue(s)...', 'fa-wrench');
               edgeWithTimeout({ action: 'fix', current_html: state.html, issues: testData.test.issues, suggestions: testData.test.suggestions || [] }, 'Auto-fixing', function (fixRes) {
                 setThinking(false);
-                if (fixRes && fixRes.ok && fixRes.data && fixRes.data.html) {
+                if (fixRes && fixRes.ok && fixRes.data && fixRes.data.edits) {
+                  // Apply targeted fixes (SEARCH/REPLACE)
+                  var applied = 0;
+                  fixRes.data.edits.forEach(function (edit) {
+                    if (state.html && state.html.indexOf(edit.search) !== -1) {
+                      state.html = state.html.replace(edit.search, edit.replace);
+                      applied++;
+                    }
+                  });
+                  setHtml(state.html, 'ai');
+                  addChatMessage('system', '✅ Auto-fix applied! ' + applied + ' fix(es) applied. Module updated.', 'fa-check-circle');
+                  addChatMessage('system', '🎉 Module is ready! You can save it or upload to students.', 'fa-check-double');
+                } else if (fixRes && fixRes.ok && fixRes.data && fixRes.data.html) {
                   setHtml(fixRes.data.html, 'ai');
                   addChatMessage('system', '✅ Auto-fix applied! Module updated and verified.', 'fa-check-circle');
                   addChatMessage('system', '🎉 Module is ready! You can save it or upload to students.', 'fa-check-double');

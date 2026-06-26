@@ -7,54 +7,66 @@ const MODEL = "moonshotai/kimi-k2.6";
 const SYSTEM_PLAN = `You are an expert educational content strategist. The user wants to create or edit an HTML learning module.
 
 Your job is to:
-1. UNDERSTAND exactly what the user wants (analyze their request carefully)
-2. Use the web search results to gather accurate information about the topic
+1. UNDERSTAND exactly what the user wants
+2. Use the web search results to gather accurate information
 3. Make PRECISE DECISIONS about what to build or change
 4. Return a detailed plan
 
 Your plan must include:
 - WHAT YOU UNDERSTOOD: A clear restatement of what the user wants
-- WEB RESEARCH: Key facts found from the web (if relevant)
-- DECISIONS: Exactly what changes you will make (be specific — which sections, what content, what interactive elements)
-- APPROACH: How you will implement it (what HTML/CSS/JS techniques)
+- WEB RESEARCH: Key facts found from the web
+- DECISIONS: Exactly what changes you will make
+- APPROACH: How you will implement it
 
-Be thorough but concise. This plan will be given to the coding AI to execute.`;
+Be thorough but concise.`;
 
 // === SYSTEM PROMPT FOR GENERATING NEW MODULES ===
 const SYSTEM_GENERATE = `You are an expert educational content creator for Blue Horizon Schools.
 Create interactive, self-contained HTML learning modules for Nigerian secondary school students.
 
-You will be given a PLAN created by a strategist. Follow the plan EXACTLY.
-Use the web research and decisions from the plan to guide your implementation.
-
 Requirements:
-1. Complete HTML document (<!DOCTYPE html>, <html>, <head>, <body>)
-2. Inline CSS in <style> tag — no external stylesheets
-3. Vanilla JS in <script> tags — no external libraries except fonts/icons via CDN
-4. Interactive: quizzes, drag-drop, animations, expandable sections
+1. Complete HTML document with <!DOCTYPE html>, <html>, <head>, <body>
+2. Inline CSS in <style> tag
+3. Vanilla JS in <script> tags
+4. Interactive: quizzes, drag-drop, animations
 5. Clear, age-appropriate language for JSS/SSS students
 6. Use Blue Horizon navy #1f507b as primary color
 7. Responsive and visually appealing
-8. Wrap entire HTML in a \`\`\`html code block
-9. After the code block, confirm what you built (matching the plan)`;
+8. Wrap entire HTML in a code block starting with triple-backtick html
+9. After the code block, confirm what you built`;
 
-// === SYSTEM PROMPT FOR EDITING EXISTING MODULES ===
-const SYSTEM_EDIT = `You are an expert HTML editor for educational modules.
+// === SYSTEM PROMPT FOR TARGETED EDITS (Copilot-style SEARCH/REPLACE) ===
+const SYSTEM_TARGETED = `You are an expert HTML editor that makes targeted edits using SEARCH/REPLACE blocks (like GitHub Copilot).
 
-You will be given:
-1. An existing HTML module
-2. A PLAN created by a strategist (with web research and precise decisions)
-3. The user's original request
+You will receive an existing HTML module and an edit instruction. Instead of returning the complete HTML, return ONLY the changes using SEARCH/REPLACE blocks.
 
-CRITICAL RULES:
-1. Follow the PLAN exactly — make ONLY the changes described in the plan
-2. PRESERVE all existing content, structure, styling, and functionality that the plan doesn't mention changing
-3. Return the COMPLETE updated HTML document
-4. Keep all existing CSS classes, IDs, and JavaScript functions intact
-5. Think of yourself as a surgeon — make precise, targeted changes based on the plan
-6. Do NOT rewrite the entire module from scratch
-7. Return the result in a \`\`\`html code block
-8. After the code block, confirm what you changed (matching the plan)`;
+Format for each edit:
+<<<< SEARCH
+[exact text from the original HTML to find]
+==== REPLACE
+[new text to replace it with]
+>>>>
+
+Rules:
+1. Each SEARCH block must contain text that EXISTS in the original HTML (copy it exactly)
+2. Each REPLACE block contains the new text
+3. You can have MULTIPLE SEARCH/REPLACE blocks
+4. Keep SEARCH blocks as small as possible
+5. If inserting new content, SEARCH for the element after which to insert, REPLACE with original + new content
+6. After all blocks, write one sentence describing what you changed
+
+Example:
+<<<< SEARCH
+<title>Acids and Bases</title>
+==== REPLACE
+<title>Acids and Bases Quiz</title>
+>>>>
+<<<< SEARCH
+</body>
+==== REPLACE
+<div class="quiz"><p>Q1: What is the pH of water?</p><button onclick="alert(7)">Answer</button></div>
+</body>
+>>>>`;
 
 function extractHtml(text: string): string {
   if (!text) return "";
@@ -134,33 +146,36 @@ Deno.serve(async (req: Request) => {
     const body = await req.json();
     const { action } = body;
 
+    // === SEARCH ===
+    if (action === "search") {
+      const { query } = body;
+      if (!query) return errorResponse("query required");
+      const results = await webSearch(query);
+      return json({ success: true, results });
+    }
+
     // === PLAN: Understand + Search + Decide ===
     if (action === "plan") {
       const prompt = body.prompt || body.instruction || "";
       const currentHtml = body.current_html || null;
       if (!prompt) return errorResponse("prompt required");
 
-      // Step 1: Search the web for context (ALWAYS, even for edits)
-      const searchQuery = currentHtml 
-        ? `${prompt} educational content` 
+      const searchQuery = currentHtml
+        ? `${prompt} educational content`
         : `${prompt} educational module Nigerian secondary school`;
       const searchResults = await webSearch(searchQuery);
 
-      // Step 2: Build the planning message
       let userContent = "";
       if (currentHtml) {
-        userContent = `USER REQUEST: ${prompt}\n\nEXISTING MODULE (summary):\n${currentHtml.substring(0, 2000)}\n\nWEB RESEARCH:\n${searchResults || "No web results found."}\n\nCreate a detailed plan for editing this module.`;
+        userContent = `USER REQUEST: ${prompt}\n\nEXISTING MODULE (first 2000 chars):\n${currentHtml.substring(0, 2000)}\n\nWEB RESEARCH:\n${searchResults || "No results."}\n\nCreate a detailed plan for editing this module.`;
       } else {
-        userContent = `USER REQUEST: ${prompt}\n\nWEB RESEARCH:\n${searchResults || "No web results found."}\n\nCreate a detailed plan for building this module.`;
+        userContent = `USER REQUEST: ${prompt}\n\nWEB RESEARCH:\n${searchResults || "No results."}\n\nCreate a detailed plan for building this module.`;
       }
 
-      const messages = [
-        { role: "system", content: SYSTEM_PLAN },
-        { role: "user", content: userContent },
-      ];
-
-      // Step 3: Get the plan
-      const plan = await callKimi(messages, 4096, 0.4);
+      const plan = await callKimi(
+        [{ role: "system", content: SYSTEM_PLAN }, { role: "user", content: userContent }],
+        4096, 0.4, true
+      );
 
       return json({
         success: true,
@@ -170,74 +185,85 @@ Deno.serve(async (req: Request) => {
       });
     }
 
-    // === GENERATE or EDIT: Execute the plan ===
-    if (action === "generate" || action === "edit") {
+    // === EDIT-TARGETED: Copilot-style SEARCH/REPLACE blocks ===
+    if (action === "edit-targeted") {
       const prompt = body.prompt || body.instruction || "";
       const currentHtml = body.current_html || null;
+      const plan = body.plan || null;
+      if (!prompt) return errorResponse("prompt required");
+      if (!currentHtml) return errorResponse("current_html required for targeted edits");
+
+      let userContent = `EXISTING HTML MODULE:\n\n${currentHtml.substring(0, 8000)}\n\n`;
+      if (plan) userContent += `PLAN:\n${plan}\n\n`;
+      userContent += `EDIT INSTRUCTION: ${prompt}\n\nReturn ONLY the changes as SEARCH/REPLACE blocks. Do NOT return the full HTML.`;
+
+      // Targeted edits produce SMALL output → fast, no timeout
+      const content = await callKimi(
+        [{ role: "system", content: SYSTEM_TARGETED }, { role: "user", content: userContent }],
+        4096, 0.2, false  // thinking OFF, low temp for precise edits
+      );
+
+      // Parse SEARCH/REPLACE blocks
+      const edits: Array<{search: string, replace: string}> = [];
+      const regex = /<<<<\s*SEARCH\s*\n([\s\S]*?)\n====\s*REPLACE\s*\n([\s\S]*?)\n>>>>/g;
+      let match;
+      while ((match = regex.exec(content)) !== null) {
+        edits.push({ search: match[1], replace: match[2] });
+      }
+
+      let summary = content.replace(/<<<<\s*SEARCH[\s\S]*?>>>>/g, "").trim();
+      if (!summary) summary = `Applied ${edits.length} edit(s).`;
+
+      if (edits.length === 0) {
+        return json({ error: "AI did not return SEARCH/REPLACE blocks. Try rephrasing.", raw: content.substring(0, 300) }, 500);
+      }
+
+      return json({
+        success: true,
+        edits: edits,
+        summary: summary,
+        mode: "targeted",
+      });
+    }
+
+    // === GENERATE: Build new module from scratch ===
+    if (action === "generate") {
+      const prompt = body.prompt || "";
       const plan = body.plan || null;
       const searchResults = body.search_results || null;
       if (!prompt) return errorResponse("prompt required");
 
-      const isEdit = !!currentHtml && currentHtml.length > 50;
-
-      // Build messages with the plan as context
       let userContent = "";
-      let systemPrompt = isEdit ? SYSTEM_EDIT : SYSTEM_GENERATE;
-
       if (plan) {
-        // Execute with the plan
-        if (isEdit) {
-          userContent = `EXISTING HTML MODULE:\n\n\`\`\`html\n${currentHtml}\n\`\`\`\n\nUSER REQUEST: ${prompt}\n\nSTRATEGIST'S PLAN:\n${plan}\n\n${searchResults ? `WEB RESEARCH:\n${searchResults}\n\n` : ""}Follow the plan EXACTLY. Apply ONLY the changes described. Return the COMPLETE updated HTML in a \`\`\`html code block.`;
-        } else {
-          userContent = `USER REQUEST: ${prompt}\n\nSTRATEGIST'S PLAN:\n${plan}\n\n${searchResults ? `WEB RESEARCH:\n${searchResults}\n\n` : ""}Follow the plan EXACTLY. Build the module as described. Return the HTML in a \`\`\`html code block.`;
-        }
+        userContent = `USER REQUEST: ${prompt}\n\nPLAN:\n${plan}\n\n${searchResults ? `WEB RESEARCH:\n${searchResults}\n\n` : ""}Follow the plan. Return the HTML in a code block.`;
       } else {
-        // No plan — direct execution (fallback)
-        if (isEdit) {
-          userContent = `EXISTING HTML MODULE:\n\n\`\`\`html\n${currentHtml}\n\`\`\`\n\nEDIT INSTRUCTION: ${prompt}\n\nApply ONLY this edit. Return the COMPLETE updated HTML in a \`\`\`html code block.`;
-        } else {
-          userContent = `Create a module: ${prompt}`;
-        }
+        userContent = `Create a module: ${prompt}`;
       }
 
       let messages: any[] = [
-        { role: "system", content: systemPrompt },
+        { role: "system", content: SYSTEM_GENERATE },
         { role: "user", content: userContent },
       ];
 
-      const maxTokens = isEdit ? 16384 : 8192;
-      const temperature = isEdit ? 0.2 : 0.5;
-
       let content = "";
       let html = "";
-      // Execute step: thinking DISABLED (plan already did the thinking — this just follows it mechanically)
-      // This prevents timeout on large modules (thinking + large input = >150s)
       for (let attempt = 0; attempt < 2; attempt++) {
-        content = await callKimi(messages, maxTokens, temperature, false);
+        content = await callKimi(messages, 8192, 0.5, false);
         html = extractHtml(content);
         if (html) break;
         if (attempt === 0) {
           messages.push({ role: "assistant", content: content.substring(0, 200) });
-          messages.push({ role: "user", content: "Please return the complete HTML module in a \`\`\`html code block." });
+          messages.push({ role: "user", content: "Return the HTML in a code block." });
         }
       }
 
-      if (!html) {
-        return json({ error: "AI did not generate valid HTML. Please try a different prompt.", raw: content.substring(0, 300) }, 500);
-      }
-
+      if (!html) return json({ error: "AI did not generate valid HTML.", raw: content.substring(0, 300) }, 500);
       let reply = content.replace(/```html\s*\n?[\s\S]*?```/gi, "").replace(/```[\s\S]*?```/gi, "").trim();
-      if (!reply) reply = isEdit ? "Module edited successfully." : "Module generated successfully.";
-
-      return json({
-        html,
-        reply,
-        mode: isEdit ? "edit" : "generate",
-        testNeeded: true,
-      });
+      if (!reply) reply = "Module generated.";
+      return json({ html, reply, mode: "generate", testNeeded: true });
     }
 
-    // === TEST: Verify the result ===
+    // === TEST: Verify with Playwright ===
     if (action === "test") {
       const html = body.current_html || body.html;
       if (!html) return errorResponse("current_html required");
@@ -249,19 +275,16 @@ Deno.serve(async (req: Request) => {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ htmlContent: html }),
         });
-        if (!startResp.ok) return json({ success: true, test: { issues: ["Could not render preview"], suggestions: [], overall: "error" } });
+        if (!startResp.ok) return json({ success: true, test: { issues: ["Could not render"], suggestions: [], overall: "error" } });
         const startData = await startResp.json();
         const screenshotB64 = bufferToBase64(startData.screenshot);
         const analysis = await callKimi([
-          { role: "system", content: "You are a QA tester for educational HTML modules. Analyze the HTML code and report issues. Return ONLY JSON: {\"issues\":[\"...\"],\"suggestions\":[\"...\"],\"overall\":\"good|needs_work|broken\"}" },
-          { role: "user", content: `Analyze this HTML module. Check: layout, readability, interactive elements, content is educational, navy color #1f507b is used, responsive design.\n\nHTML:\n${html.substring(0, 3000)}` },
-        ], 2048, 0.3);
+          { role: "system", content: "You are a QA tester. Return JSON: {\"issues\":[\"...\"],\"suggestions\":[\"...\"],\"overall\":\"good|needs_work|broken\"}" },
+          { role: "user", content: `Analyze this HTML:\n${html.substring(0, 3000)}` },
+        ], 2048, 0.3, false);
         try {
           const jsonMatch = analysis.match(/\{[\s\S]*\}/);
-          if (jsonMatch) {
-            const result = JSON.parse(jsonMatch[0]);
-            return json({ success: true, test: { ...result, screenshot: screenshotB64 } });
-          }
+          if (jsonMatch) return json({ success: true, test: { ...JSON.parse(jsonMatch[0]), screenshot: screenshotB64 } });
         } catch {}
         return json({ success: true, test: { issues: [], suggestions: [], overall: "unknown", screenshot: screenshotB64 } });
       } catch (e) {
@@ -275,16 +298,22 @@ Deno.serve(async (req: Request) => {
       const issues = body.issues || [];
       const suggestions = body.suggestions || [];
       if (!html) return errorResponse("current_html required");
-      const fixMessages = [
-        { role: "system", content: SYSTEM_EDIT },
-        { role: "user", content: `EXISTING HTML:\n\n\`\`\`html\n${html}\n\`\`\`\n\nFix these issues:\n${issues.join("\n")}\n\nSuggestions:\n${suggestions.join("\n")}\n\nReturn the COMPLETE updated HTML in a \`\`\`html code block.` },
-      ];
-      const fixedContent = await callKimi(fixMessages, 16384, 0.2, false);
-      const fixedHtml = extractHtml(fixedContent);
-      if (!fixedHtml) return json({ error: "Could not auto-fix." }, 500);
-      let reply = fixedContent.replace(/```html\s*\n?[\s\S]*?```/gi, "").trim();
-      if (!reply) reply = "Issues auto-fixed.";
-      return json({ html: fixedHtml, reply, fixed: true });
+      // Use targeted edits for fixing too (faster, no timeout)
+      let userContent = `EXISTING HTML:\n\n${html.substring(0, 8000)}\n\nFix these issues:\n${issues.join("\n")}\n\nSuggestions:\n${suggestions.join("\n")}\n\nReturn ONLY the changes as SEARCH/REPLACE blocks.`;
+      const content = await callKimi(
+        [{ role: "system", content: SYSTEM_TARGETED }, { role: "user", content: userContent }],
+        4096, 0.2, false
+      );
+      const edits: Array<{search: string, replace: string}> = [];
+      const regex = /<<<<\s*SEARCH\s*\n([\s\S]*?)\n====\s*REPLACE\s*\n([\s\S]*?)\n>>>>/g;
+      let match;
+      while ((match = regex.exec(content)) !== null) {
+        edits.push({ search: match[1], replace: match[2] });
+      }
+      let summary = content.replace(/<<<<\s*SEARCH[\s\S]*?>>>>/g, "").trim();
+      if (!summary) summary = `Applied ${edits.length} fix(es).`;
+      if (edits.length === 0) return json({ error: "Could not parse fixes." }, 500);
+      return json({ success: true, edits, summary, mode: "targeted-fix" });
     }
 
     // === PREVIEW ===
@@ -303,15 +332,7 @@ Deno.serve(async (req: Request) => {
       return json({ screenshot: bufferToBase64(data.screenshot) });
     }
 
-    // === SEARCH ===
-    if (action === "search") {
-      const { query } = body;
-      if (!query) return errorResponse("query required");
-      const results = await webSearch(query);
-      return json({ success: true, results });
-    }
-
-    return errorResponse("Unknown action. Use: plan, generate, edit, test, fix, preview, search");
+    return errorResponse("Unknown action. Use: plan, edit-targeted, generate, test, fix, preview, search");
   } catch (e) {
     return errorResponse("Server error: " + (e as Error).message, 500);
   }
