@@ -1,7 +1,7 @@
 import { json, errorResponse, handleOptions } from "../_shared/helpers.ts";
 
-const KIMI_URL = "https://integrate.api.nvidia.com/v1/chat/completions";
-const MODEL = "moonshotai/kimi-k2.6";
+const API_URL = "https://integrate.api.nvidia.com/v1/chat/completions";
+const MODEL = "deepseek-ai/deepseek-v4-pro"; // Replaced Kimi K2.6 (unstable) with DeepSeek V4 Pro (handles full 128KB HTML, 54s)
 
 // === SYSTEM PROMPT FOR PLANNING ===
 const SYSTEM_PLAN = `You are an expert educational content strategist. The user wants to create or edit an HTML learning module.
@@ -99,9 +99,9 @@ function bufferToBase64(screenshot: any): string {
 }
 
 async function callKimi(messages: Array<any>, maxTokens = 16384, temperature = 0.3, thinking = true): Promise<string> {
-  const key = Deno.env.get("KIMI_API_KEY");
+  const key = Deno.env.get("KIMI_API_KEY"); // Same NVIDIA API key works for DeepSeek V4 Pro
   if (!key) throw new Error("KIMI_API_KEY not configured");
-  const response = await fetch(KIMI_URL, {
+  const response = await fetch(API_URL, {
     method: "POST",
     headers: { "Authorization": `Bearer ${key}`, "Accept": "application/json", "Content-Type": "application/json" },
     body: JSON.stringify({
@@ -112,7 +112,7 @@ async function callKimi(messages: Array<any>, maxTokens = 16384, temperature = 0
   });
   if (!response.ok) {
     const err = await response.text();
-    throw new Error(`Kimi API ${response.status}: ${err.substring(0, 300)}`);
+    throw new Error(`AI API ${response.status}: ${err.substring(0, 300)}`);
   }
   const data = await response.json();
   const msg = data.choices?.[0]?.message || {};
@@ -167,7 +167,7 @@ Deno.serve(async (req: Request) => {
 
       let userContent = "";
       if (currentHtml) {
-        userContent = `USER REQUEST: ${prompt}\n\nEXISTING MODULE (first 2000 chars):\n${currentHtml.substring(0, 2000)}\n\nWEB RESEARCH:\n${searchResults || "No results."}\n\nCreate a detailed plan for editing this module.`;
+        userContent = `USER REQUEST: ${prompt}\n\nEXISTING MODULE:\n${currentHtml}\n\nWEB RESEARCH:\n${searchResults || "No results."}\n\nCreate a detailed plan for editing this module.`;
       } else {
         userContent = `USER REQUEST: ${prompt}\n\nWEB RESEARCH:\n${searchResults || "No results."}\n\nCreate a detailed plan for building this module.`;
       }
@@ -193,12 +193,9 @@ Deno.serve(async (req: Request) => {
       if (!prompt) return errorResponse("prompt required");
       if (!currentHtml) return errorResponse("current_html required for targeted edits");
 
-      // Truncate HTML for large modules: send first 2500 + last 1000 chars
-      var htmlPreview = currentHtml.length > 4000
-        ? currentHtml.substring(0, 2500) + '\n\n<!-- ... MIDDLE TRUNCATED ... -->\n\n' + currentHtml.substring(currentHtml.length - 1000)
-        : currentHtml;
-      let userContent = `EXISTING HTML MODULE (structure):\n\n${htmlPreview}\n\n`;
-      if (plan) userContent += `PLAN (summary):\n${plan.substring(0, 500)}\n\n`;
+      // Send FULL HTML — DeepSeek V4 Pro can handle 128KB+ inputs (tested: 54s for 128KB)
+      let userContent = `EXISTING HTML MODULE:\n\n${currentHtml}\n\n`;
+      if (plan) userContent += `PLAN:\n${plan}\n\n`;
       userContent += `EDIT INSTRUCTION: ${prompt}\n\nReturn ONLY the changes as SEARCH/REPLACE blocks. Do NOT return the full HTML.`;
 
       // Targeted edits produce SMALL output → fast, no timeout
@@ -302,8 +299,8 @@ Deno.serve(async (req: Request) => {
       const issues = body.issues || [];
       const suggestions = body.suggestions || [];
       if (!html) return errorResponse("current_html required");
-      // Use targeted edits for fixing too (faster, no timeout)
-      let userContent = `EXISTING HTML:\n\n${html.substring(0, 8000)}\n\nFix these issues:\n${issues.join("\n")}\n\nSuggestions:\n${suggestions.join("\n")}\n\nReturn ONLY the changes as SEARCH/REPLACE blocks.`;
+      // Use targeted edits for fixing too — send FULL HTML (DeepSeek V4 Pro handles it)
+      let userContent = `EXISTING HTML:\n\n${html}\n\nFix these issues:\n${issues.join("\n")}\n\nSuggestions:\n${suggestions.join("\n")}\n\nReturn ONLY the changes as SEARCH/REPLACE blocks.`;
       const content = await callKimi(
         [{ role: "system", content: SYSTEM_TARGETED }, { role: "user", content: userContent }],
         4096, 0.2, false
