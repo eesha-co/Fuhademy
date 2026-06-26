@@ -200,7 +200,7 @@ Deno.serve(async (req: Request) => {
       // Targeted edits produce SMALL output → fast, no timeout
       const content = await callKimi(
         [{ role: "system", content: SYSTEM_TARGETED }, { role: "user", content: userContent }],
-        4096, 0.2, false  // thinking OFF, low temp for precise edits
+        8192, 0.2, true
       );
 
       // Parse SEARCH/REPLACE blocks
@@ -248,7 +248,7 @@ Deno.serve(async (req: Request) => {
       let content = "";
       let html = "";
       for (let attempt = 0; attempt < 2; attempt++) {
-        content = await callKimi(messages, 8192, 0.5, false);
+        content = await callKimi(messages, 8192, 0.5, true);
         html = extractHtml(content);
         if (html) break;
         if (attempt === 0) {
@@ -302,7 +302,7 @@ Deno.serve(async (req: Request) => {
       let userContent = `EXISTING HTML:\n\n${html.substring(0, 8000)}\n\nFix these issues:\n${issues.join("\n")}\n\nSuggestions:\n${suggestions.join("\n")}\n\nReturn ONLY the changes as SEARCH/REPLACE blocks.`;
       const content = await callKimi(
         [{ role: "system", content: SYSTEM_TARGETED }, { role: "user", content: userContent }],
-        4096, 0.2, false
+        8192, 0.2, true
       );
       const edits: Array<{search: string, replace: string}> = [];
       const regex = /<<<<\s*SEARCH\s*\n([\s\S]*?)\n====\s*REPLACE\s*\n([\s\S]*?)\n>>>>/g;
