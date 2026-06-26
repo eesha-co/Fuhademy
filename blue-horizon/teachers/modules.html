@@ -1102,6 +1102,7 @@
             if (timedOut) return; // already timed out, ignore
             clearTimeout(timer);
             state.retryContext = null; // success — clear retry context
+            if (onSuccess) onSuccess(res);
             resolve(res);
           }).catch(function (err) {
             if (timedOut) return;
