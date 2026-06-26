@@ -193,14 +193,18 @@ Deno.serve(async (req: Request) => {
       if (!prompt) return errorResponse("prompt required");
       if (!currentHtml) return errorResponse("current_html required for targeted edits");
 
-      let userContent = `EXISTING HTML MODULE:\n\n${currentHtml.substring(0, 8000)}\n\n`;
-      if (plan) userContent += `PLAN:\n${plan}\n\n`;
+      // Truncate HTML for large modules: send first 2500 + last 1000 chars
+      var htmlPreview = currentHtml.length > 4000
+        ? currentHtml.substring(0, 2500) + '\n\n<!-- ... MIDDLE TRUNCATED ... -->\n\n' + currentHtml.substring(currentHtml.length - 1000)
+        : currentHtml;
+      let userContent = `EXISTING HTML MODULE (structure):\n\n${htmlPreview}\n\n`;
+      if (plan) userContent += `PLAN (summary):\n${plan.substring(0, 500)}\n\n`;
       userContent += `EDIT INSTRUCTION: ${prompt}\n\nReturn ONLY the changes as SEARCH/REPLACE blocks. Do NOT return the full HTML.`;
 
       // Targeted edits produce SMALL output → fast, no timeout
       const content = await callKimi(
         [{ role: "system", content: SYSTEM_TARGETED }, { role: "user", content: userContent }],
-        8192, 0.2, true
+        4096, 0.2, false
       );
 
       // Parse SEARCH/REPLACE blocks
@@ -302,7 +306,7 @@ Deno.serve(async (req: Request) => {
       let userContent = `EXISTING HTML:\n\n${html.substring(0, 8000)}\n\nFix these issues:\n${issues.join("\n")}\n\nSuggestions:\n${suggestions.join("\n")}\n\nReturn ONLY the changes as SEARCH/REPLACE blocks.`;
       const content = await callKimi(
         [{ role: "system", content: SYSTEM_TARGETED }, { role: "user", content: userContent }],
-        8192, 0.2, true
+        4096, 0.2, false
       );
       const edits: Array<{search: string, replace: string}> = [];
       const regex = /<<<<\s*SEARCH\s*\n([\s\S]*?)\n====\s*REPLACE\s*\n([\s\S]*?)\n>>>>/g;
