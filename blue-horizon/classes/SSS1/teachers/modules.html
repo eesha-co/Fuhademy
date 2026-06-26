@@ -1000,6 +1000,20 @@
               '</div>';
             return;
           }
+          if (msg.role === 'timeout') {
+            html += '' +
+              '<div class="flex items-start gap-2">' +
+                '<div class="w-7 h-7 rounded-full bg-amber-50 flex items-center justify-center flex-shrink-0"><i class="fas fa-clock text-amber-500 text-xs"></i></div>' +
+                '<div class="chat-bubble ai" style="padding:12px 16px;">' +
+                  '<p class="text-sm text-slate-700 mb-1">⏱️ The AI is taking longer than expected.</p>' +
+                  '<p class="text-xs text-slate-500 mb-2">This can happen with large modules. Click Continue to retry — the AI may respond faster on the next attempt.</p>' +
+                  '<button onclick="continueFromTimeout()" class="bg-amber-500 hover:bg-amber-600 text-white text-sm font-bold px-5 py-2 rounded-lg flex items-center gap-2 transition-colors">' +
+                    '<i class="fas fa-rotate-right"></i> Continue' +
+                  '</button>' +
+                '</div>' +
+              '</div>';
+            return;
+          }
           if (msg.role === 'building') {
             html += '' +
               '<div class="flex items-start gap-2">' +
@@ -1062,6 +1076,69 @@
 
       // ---- AI generation with auto-test ----
       // =====================================================
+      // Timeout-safe edge call: wraps BH.edge with a timeout + retry
+      // =====================================================
+      function edgeWithTimeout(payload, phaseLabel, onSuccess) {
+        // Store context for retry
+        state.retryContext = { payload: payload, phaseLabel: phaseLabel, onSuccess: onSuccess };
+
+        return new Promise(function (resolve, reject) {
+          var timedOut = false;
+          var timer = setTimeout(function () {
+            timedOut = true;
+            setThinking(false);
+            // Remove any building/thinking indicators
+            state.chat = state.chat.filter(function (m) {
+              return m.role !== 'building' && m.role !== 'thinking';
+            });
+            renderChat();
+            // Show timeout message + Continue button
+            addChatMessage('system', '⏱️ ' + phaseLabel + ' timed out. Click Continue to retry.', 'fa-clock');
+            addChatMessage('timeout', '');
+            resolve(null); // resolve with null (not an error — user can retry)
+          }, 120000); // 120 second timeout (leaves margin before Supabase's 150s)
+
+          BH.edge('ai-module', { body: payload }).then(function (res) {
+            if (timedOut) return; // already timed out, ignore
+            clearTimeout(timer);
+            state.retryContext = null; // success — clear retry context
+            resolve(res);
+          }).catch(function (err) {
+            if (timedOut) return;
+            clearTimeout(timer);
+            setThinking(false);
+            state.chat = state.chat.filter(function (m) {
+              return m.role !== 'building' && m.role !== 'thinking';
+            });
+            renderChat();
+            // Network error — also show Continue button
+            addChatMessage('system', '⚠️ ' + phaseLabel + ' failed: ' + (err.message || 'Network error'), 'fa-triangle-exclamation');
+            addChatMessage('timeout', '');
+            resolve(null);
+          });
+        });
+      }
+
+      // Called when user clicks "Continue" after a timeout
+      function continueFromTimeout() {
+        if (!state.retryContext) {
+          showToast('Nothing to continue. Send a new message.', 'info');
+          return;
+        }
+        var ctx = state.retryContext;
+        state.retryContext = null;
+
+        // Remove timeout message
+        state.chat = state.chat.filter(function (m) { return m.role !== 'timeout'; });
+        addChatMessage('system', '🔄 Retrying ' + ctx.phaseLabel + '...', 'fa-rotate-right');
+        setThinking(true);
+
+        edgeWithTimeout(ctx.payload, ctx.phaseLabel, ctx.onSuccess).then(function (res) {
+          if (res) ctx.onSuccess(res);
+        });
+      }
+
+      // =====================================================
       // PHASE 1: sendChat — Plan only (Understand + Search + Decide)
       // Shows the plan + a "Build Now" button. Stops here.
       // =====================================================
@@ -1089,7 +1166,7 @@
           search: searchEnabled
         };
 
-        BH.edge('ai-module', { body: planPayload }).then(function (res) {
+        edgeWithTimeout(planPayload, 'Planning', function (res) {
           setThinking(false);
           if (!res || !res.ok || !res.data || !res.data.success) {
             var errMsg = (res && res.data && res.data.error) || 'Could not create a plan. Please try again.';
@@ -1120,10 +1197,6 @@
 
           // Show the Build Now button (stops here — user clicks to proceed)
           addChatMessage('build-now', '');
-        }).catch(function (err) {
-          setThinking(false);
-          console.error('[BH] plan error:', err);
-          addChatMessage('error', 'Network error. Please check your connection and try again.');
         });
       }
 
@@ -1159,7 +1232,7 @@
           search: false
         };
 
-        BH.edge('ai-module', { body: execPayload }).then(function (res) {
+        edgeWithTimeout(execPayload, 'Building module', function (res) {
           setThinking(false);
           // Remove building indicator
           state.chat = state.chat.filter(function (m) { return m.role !== 'building'; });
@@ -1186,14 +1259,8 @@
           // Switch to preview
           setAISubTab('preview');
 
-          // Show the Test Now button (stops here — user clicks to proceed to testing)
+          // Show the Test Now button
           addChatMessage('test-now', '');
-        }).catch(function (err) {
-          setThinking(false);
-          state.chat = state.chat.filter(function (m) { return m.role !== 'building'; });
-          renderChat();
-          console.error('[BH] execute error:', err);
-          addChatMessage('error', 'Network error. Please check your connection and try again.');
         });
       }
 
@@ -1217,7 +1284,7 @@
         state.chat = state.chat.filter(function (m) { return m.role !== 'test-now'; });
         addChatMessage('system', '🧪 Testing the module with the browser...', 'fa-vial');
 
-        BH.edge('ai-module', { body: { action: 'test', current_html: state.html } }).then(function (res) {
+        edgeWithTimeout({ action: 'test', current_html: state.html }, 'Testing module', function (res) {
           if (!res || !res.ok || !res.data) {
             setThinking(false);
             addChatMessage('error', 'Could not run the test. Please try again.');
@@ -1234,7 +1301,7 @@
             // === AUTO-FIX if needed ===
             if ((overall === 'needs_work' || overall === 'broken') && issueCount > 0) {
               addChatMessage('system', '🔧 Auto-fixing ' + issueCount + ' issue(s)...', 'fa-wrench');
-              BH.edge('ai-module', { body: { action: 'fix', current_html: state.html, issues: testData.test.issues, suggestions: testData.test.suggestions || [] } }).then(function (fixRes) {
+              edgeWithTimeout({ action: 'fix', current_html: state.html, issues: testData.test.issues, suggestions: testData.test.suggestions || [] }, 'Auto-fixing', function (fixRes) {
                 setThinking(false);
                 if (fixRes && fixRes.ok && fixRes.data && fixRes.data.html) {
                   setHtml(fixRes.data.html, 'ai');
@@ -1243,9 +1310,6 @@
                 } else {
                   addChatMessage('system', '⚠️ Could not auto-fix all issues. You can edit manually in Self mode.', 'fa-triangle-exclamation');
                 }
-              }).catch(function () {
-                setThinking(false);
-                addChatMessage('system', '⚠️ Auto-fix failed. You can edit manually.', 'fa-triangle-exclamation');
               });
             } else {
               setThinking(false);
@@ -1256,10 +1320,6 @@
           } else {
             setThinking(false);
           }
-        }).catch(function (err) {
-          setThinking(false);
-          console.error('[BH] test error:', err);
-          addChatMessage('error', 'Network error. Please check your connection and try again.');
         });
       }
 
