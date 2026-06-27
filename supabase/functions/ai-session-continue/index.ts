@@ -36,7 +36,7 @@ Deno.serve(async (req: Request) => {
 
     // Get the session to find where we stopped
     const { data: session } = await supabase.from("ai_sessions")
-      .select("*").eq("session_id", session_id).order("created_at", { ascending: false }).limit(1).single();
+      .select("*").eq("session_id", session_id).order("created_at", { ascending: false }).limit(1).maybeSingle();
 
     if (!session) return errorResponse("Session not found", 404);
 

@@ -53,7 +53,7 @@ Deno.serve(async (req: Request) => {
     const isEdit = !!(current_html && current_html.length > 50);
 
     // Check if session exists (continuation)
-    const { data: existing } = await supabase.from("ai_sessions").select("*").eq("session_id", sessionId).order("created_at", { ascending: false }).limit(1).single();
+    const { data: existing } = await supabase.from("ai_sessions").select("*").eq("session_id", sessionId).order("created_at", { ascending: false }).limit(1).maybeSingle();
     
     if (existing && existing.status === "completed" && existing.phase === "plan") {
       // Plan already done — skip to build
