@@ -343,7 +343,7 @@
         <div class="p-5 border-b border-slate-100">
           <div class="flex items-center gap-3">
             <img src="../_next/static/media/logo-name.1dd6ad53.webp" alt="Blue Horizon logo"
-                 class="w-12 h-12 object-contain"
+                 class="w-20 h-20 object-contain"
                  onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
             <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-bh-navy to-bh-navy-2 flex items-center justify-center shadow-lg" style="display:none;">
               <i class="fas fa-water text-white text-xl"></i>
@@ -1121,6 +1121,7 @@
       }
 
       // Called when user clicks "Continue" after a timeout
+      // Uses the session ID to resume from where the AI stopped
       function continueFromTimeout() {
         if (!state.retryContext) {
           showToast('Nothing to continue. Send a new message.', 'info');
@@ -1131,17 +1132,57 @@
 
         // Remove timeout message
         state.chat = state.chat.filter(function (m) { return m.role !== 'timeout'; });
-        addChatMessage('system', '🔄 Retrying ' + ctx.phaseLabel + '...', 'fa-rotate-right');
+        addChatMessage('system', '🔄 Resuming from where the AI stopped...', 'fa-rotate-right');
         setThinking(true);
 
-        edgeWithTimeout(ctx.payload, ctx.phaseLabel, ctx.onSuccess).then(function (res) {
-          if (res) ctx.onSuccess(res);
+        // The session_id in the payload tells the edge function to check
+        // the ai_sessions table and continue from where it left off
+        BH.edge('ai-session-continue', { body: ctx.payload }).then(function (res) {
+          setThinking(false);
+          state.chat = state.chat.filter(function (m) { return m.role !== 'building'; });
+          renderChat();
+
+          if (!res || !res.ok || !res.data || res.data.error) {
+            // Still failed — show Continue again
+            state.retryContext = ctx;
+            addChatMessage('system', '⏱️ Still working. Click Continue to retry.', 'fa-clock');
+            addChatMessage('timeout', '');
+            return;
+          }
+
+          var data = res.data;
+          if (data.edits && Array.isArray(data.edits)) {
+            var applied = 0;
+            var failed = 0;
+            data.edits.forEach(function (edit, i) {
+              if (state.html && state.html.indexOf(edit.search) !== -1) {
+                state.html = state.html.replace(edit.search, edit.replace);
+                applied++;
+                setHtml(state.html, 'ai');
+                addChatMessage('system', '✏️ Applied edit ' + (i + 1) + '/' + data.edits.length + ': ' + edit.search.substring(0, 40) + '...', 'fa-pen');
+              } else {
+                failed++;
+              }
+            });
+            addChatMessage('ai', '✅ ' + (data.summary || 'Applied ' + applied + ' edit(s).') + ' (' + applied + ' applied, ' + failed + ' not found)');
+            setAISubTab('preview');
+            addChatMessage('test-now', '');
+          }
+        }).catch(function (err) {
+          setThinking(false);
+          state.retryContext = ctx;
+          addChatMessage('system', '⏱️ Still working. Click Continue to retry.', 'fa-clock');
+          addChatMessage('timeout', '');
         });
       }
 
       // =====================================================
       // PHASE 1: sendChat — Plan only (Understand + Search + Decide)
       // Shows the plan + a "Build Now" button. Stops here.
+      // =====================================================
+      // =====================================================
+      // PHASE 1: sendChat — Plan with live progress tracking
+      // Uses ai_sessions table for progress + timeout recovery
       // =====================================================
       function sendChat(prompt) {
         if (!prompt || !prompt.trim()) return;
@@ -1158,25 +1199,21 @@
         var isEdit = !!(state.html && state.html.length > 50);
         var searchEnabled = !!state.search;
 
-        // === BOTH edit and generate go through Plan → [Build Now] → Execute → [Test Now] ===
-        // The plan phase includes web search + understanding + decisions for BOTH modes.
-        // For edits, the plan helps the AI understand what to change before making targeted edits.
-        // For new modules, the plan guides the generation.
-
         addChatMessage('system', '🤔 Understanding your request...', 'fa-brain');
 
-        var planPayload = {
-          action: 'plan',
+        // Start session — the edge function writes progress to ai_sessions table
+        BH.edge('ai-session-start', { body: {
           prompt: userPrompt,
           current_html: state.html || '',
           search: searchEnabled
-        };
-
-        edgeWithTimeout(planPayload, 'Planning', function (res) {
+        }}).then(function (res) {
           setThinking(false);
           if (!res || !res.ok || !res.data || !res.data.success) {
             var errMsg = (res && res.data && res.data.error) || 'Could not create a plan. Please try again.';
             addChatMessage('error', errMsg);
+            // Show retry button
+            state.pendingPlan = { prompt: userPrompt, isEdit: isEdit, html: state.html || '', searchResults: '', plan: '' };
+            addChatMessage('timeout', '');
             return;
           }
 
@@ -1193,16 +1230,24 @@
             plan: planData.plan || '',
             searchResults: planData.searchResults || '',
             isEdit: isEdit,
-            html: state.html || ''
+            html: state.html || '',
+            sessionId: planData.session_id
           };
 
           addChatMessage('build-now', '');
+        }).catch(function (err) {
+          setThinking(false);
+          addChatMessage('error', 'Network error: ' + (err.message || ''));
         });
       }
 
       // =====================================================
       // PHASE 2: executePlan — Build ONLY (no test)
       // Called when the user clicks "Build Now"
+      // =====================================================
+      // =====================================================
+      // PHASE 2: executePlan — Build with session-based continuation
+      // If timeout, the session stores progress. Continue resumes.
       // =====================================================
       function executePlan() {
         if (!state.pendingPlan) {
@@ -1215,7 +1260,6 @@
         }
 
         var p = state.pendingPlan;
-        state.pendingPlan = null; // consume it
         setThinking(true);
 
         // Replace the Build Now button with a building indicator
@@ -1223,70 +1267,67 @@
         addChatMessage('building', '');
         addChatMessage('system', '⚙️ ' + (p.isEdit ? 'Editing' : 'Building') + ' the module based on the plan...', 'fa-cog');
 
-        // For edits: use targeted SEARCH/REPLACE (fast, no timeout, preserves existing content)
-        // For new modules: use generate (returns full HTML)
-        var execPayload = p.isEdit ? {
-          action: 'edit-targeted',
-          prompt: p.prompt,
+        // Use the session-based continue endpoint
+        // This writes to ai_sessions table and can be resumed on timeout
+        BH.edge('ai-session-continue', { body: {
+          session_id: p.sessionId,
           current_html: state.html || p.html,
-          plan: p.plan,
-          search: false
-        } : {
-          action: 'generate',
-          prompt: p.prompt,
-          plan: p.plan,
-          search_results: p.searchResults,
-          search: false
-        };
-
-        edgeWithTimeout(execPayload, p.isEdit ? 'Editing module' : 'Building module', function (res) {
+          prompt: p.prompt
+        }}).then(function (res) {
           setThinking(false);
-          // Remove building indicator
           state.chat = state.chat.filter(function (m) { return m.role !== 'building'; });
           renderChat();
 
           if (!res || !res.ok || !res.data || res.data.error) {
-            var errMsg = (res && res.data && res.data.error) || 'Could not build the module. Please try again.';
+            var errMsg = (res && res.data && res.data.error) || 'Could not build. Click Continue to retry.';
             addChatMessage('error', errMsg);
+            // Store for retry — same session, so it continues from where it stopped
+            state.retryContext = {
+              payload: { session_id: p.sessionId, current_html: state.html || p.html, prompt: p.prompt },
+              phaseLabel: 'Building module',
+              onSuccess: null
+            };
+            addChatMessage('timeout', '');
             return;
           }
 
           var data = res.data;
+          state.pendingPlan = null; // consume on success
 
-          // Check if this is a targeted edit response (has edits array)
           if (data.edits && Array.isArray(data.edits)) {
-            // Apply each SEARCH/REPLACE edit incrementally (like Copilot)
             var applied = 0;
             var failed = 0;
             data.edits.forEach(function (edit, i) {
-              var searchStr = edit.search;
-              var replaceStr = edit.replace;
-              if (state.html && state.html.indexOf(searchStr) !== -1) {
-                // Found the search text — apply the replacement
-                state.html = state.html.replace(searchStr, replaceStr);
+              if (state.html && state.html.indexOf(edit.search) !== -1) {
+                state.html = state.html.replace(edit.search, edit.replace);
                 applied++;
-                // Update preview live after each edit
                 setHtml(state.html, 'ai');
-                addChatMessage('system', '✏️ Applied edit ' + (i + 1) + '/' + data.edits.length + ': ' + searchStr.substring(0, 40) + '...', 'fa-pen');
+                addChatMessage('system', '✏️ Applied edit ' + (i + 1) + '/' + data.edits.length + ': ' + edit.search.substring(0, 40) + '...', 'fa-pen');
               } else {
                 failed++;
-                addChatMessage('system', '⚠️ Could not find edit ' + (i + 1) + ' target: ' + searchStr.substring(0, 40) + '...', 'fa-triangle-exclamation');
+                addChatMessage('system', '⚠️ Edit ' + (i + 1) + ' target not found: ' + edit.search.substring(0, 40) + '...', 'fa-triangle-exclamation');
               }
             });
             addChatMessage('ai', '✅ ' + (data.summary || 'Applied ' + applied + ' edit(s).') + ' (' + applied + ' applied, ' + failed + ' not found)');
           } else if (data.html) {
-            // Full HTML response (new module generation)
             setHtml(data.html, 'ai');
-            if (data.reply) {
-              addChatMessage('ai', '✅ ' + data.reply);
-            }
+            addChatMessage('ai', '✅ Module generated.');
           }
 
-          // Switch to preview
           setAISubTab('preview');
-
-          // Show the Test Now button
           addChatMessage('test-now', '');
+        }).catch(function (err) {
+          setThinking(false);
+          state.chat = state.chat.filter(function (m) { return m.role !== 'building'; });
+          renderChat();
+          // Timeout/error — show Continue button (session stores progress)
+          state.retryContext = {
+            payload: { session_id: p.sessionId, current_html: state.html || p.html, prompt: p.prompt },
+            phaseLabel: 'Building module',
+            onSuccess: null
+          };
+          addChatMessage('system', '⏱️ Build timed out. The AI saved its progress. Click Continue to resume from where it stopped.', 'fa-clock');
+          addChatMessage('timeout', '');
         });
       }
 
