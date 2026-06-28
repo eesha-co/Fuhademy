@@ -1128,9 +1128,9 @@
         addChatMessage('system', '🔄 Resuming from where the AI stopped...', 'fa-rotate-right');
         setThinking(true);
 
-        // The session_id in the payload tells the edge function to check
-        // the ai_sessions table and continue from where it left off
-        BH.edge('ai-session-continue', { body: ctx.payload }).then(function (res) {
+        // The session_id tells the edge function to load SAVED messages from DB
+        // and send the EXACT same messages to the API — true continuation
+        BH.edge('ai-session-continue', { body: { session_id: ctx.sessionId } }).then(function (res) {
           setThinking(false);
           state.chat = state.chat.filter(function (m) { return m.role !== 'building'; });
           renderChat();
@@ -1202,10 +1202,16 @@
         }}).then(function (res) {
           setThinking(false);
           if (!res || !res.ok || !res.data || !res.data.success) {
-            var errMsg = (res && res.data && res.data.error) || 'Could not create a plan. Please try again.';
-            addChatMessage('error', errMsg);
-            // Show retry button
-            state.pendingPlan = { prompt: userPrompt, isEdit: isEdit, html: state.html || '', searchResults: '', plan: '' };
+            // Check if the edge function saved the session (can_continue)
+            var sessionId = res && res.data && res.data.session_id;
+            if (sessionId && res.data.can_continue) {
+              // Messages were saved to DB — show Continue button
+              state.retryContext = { sessionId: sessionId };
+              addChatMessage('system', '⏱️ The AI saved its progress. Click Continue to resume from where it stopped.', 'fa-clock');
+            } else {
+              var errMsg = (res && res.data && res.data.error) || 'Could not create a plan. Please try again.';
+              addChatMessage('error', errMsg);
+            }
             addChatMessage('timeout', '');
             return;
           }
@@ -1277,11 +1283,7 @@
             var errMsg = (res && res.data && res.data.error) || 'Could not build. Click Continue to retry.';
             addChatMessage('error', errMsg);
             // Store for retry — same session, so it continues from where it stopped
-            state.retryContext = {
-              payload: { session_id: p.sessionId, current_html: state.html || p.html, prompt: p.prompt, is_edit: p.isEdit, plan: p.plan },
-              phaseLabel: 'Building module',
-              onSuccess: null
-            };
+            state.retryContext = { sessionId: p.sessionId };
             addChatMessage('timeout', '');
             return;
           }
@@ -1316,11 +1318,7 @@
           state.chat = state.chat.filter(function (m) { return m.role !== 'building'; });
           renderChat();
           // Timeout/error — show Continue button (session stores progress)
-          state.retryContext = {
-            payload: { session_id: p.sessionId, current_html: state.html || p.html, prompt: p.prompt, is_edit: p.isEdit, plan: p.plan },
-            phaseLabel: 'Building module',
-            onSuccess: null
-          };
+          state.retryContext = { sessionId: p.sessionId };
           addChatMessage('system', '⏱️ Build timed out. The AI saved its progress. Click Continue to resume from where it stopped.', 'fa-clock');
           addChatMessage('timeout', '');
         });

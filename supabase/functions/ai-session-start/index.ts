@@ -5,16 +5,7 @@ const MODEL = "deepseek-ai/deepseek-v4-pro";
 
 const SYSTEM_PLAN = `You are an expert educational content strategist. Create a detailed plan for building or editing an HTML learning module. Include: WHAT YOU UNDERSTOOD, WEB RESEARCH, DECISIONS, and APPROACH.`;
 
-const SYSTEM_TARGETED = `You are an expert HTML editor. Return ONLY changes as SEARCH/REPLACE blocks.
-Format:
-<<<< SEARCH
-[text to find]
-==== REPLACE
-[new text]
->>>>
-After blocks, write one sentence about what you changed.`;
-
-async function callAI(messages: Array<any>, maxTokens = 4096, temperature = 0.3): Promise<string> {
+async function callAI(messages: Array<any>, maxTokens = 4096, temperature = 0.4): Promise<string> {
   const key = Deno.env.get("KIMI_API_KEY");
   if (!key) throw new Error("API key not configured");
   const response = await fetch(API_URL, {
@@ -22,7 +13,7 @@ async function callAI(messages: Array<any>, maxTokens = 4096, temperature = 0.3)
     headers: { "Authorization": `Bearer ${key}`, "Accept": "application/json", "Content-Type": "application/json" },
     body: JSON.stringify({ model: MODEL, messages, max_tokens: maxTokens, temperature, stream: false }),
   });
-  if (!response.ok) throw new Error(`AI API ${response.status}: ${(await response.text()).substring(0, 200)}`);
+  if (!response.ok) throw new Error(`AI API ${response.status}: ${(await response.text()).substring(0, 300)}`);
   const data = await response.json();
   return data.choices?.[0]?.message?.content || "";
 }
@@ -43,57 +34,50 @@ Deno.serve(async (req: Request) => {
   const preflight = handleOptions(req);
   if (preflight) return preflight;
   if (req.method !== "POST") return errorResponse("Method not allowed", 405);
+  
+  const body = await req.json();
+  const { prompt, current_html, search, session_id } = body;
+  
+  if (!prompt) return errorResponse("prompt required");
+  const supabase = await createServiceClient();
+  const sessionId = session_id || crypto.randomUUID();
+
   try {
-    const { prompt, current_html, search, session_id } = await req.json();
-    if (!prompt) return errorResponse("prompt required");
-    const supabase = await createServiceClient();
+    // Step 1: Web search
+    const searchQuery = current_html ? `${prompt} educational content` : `${prompt} educational module`;
+    const searchResults = search !== false ? await webSearch(searchQuery) : "";
 
-    // Create or update session
-    const sessionId = session_id || crypto.randomUUID();
-    const isEdit = !!(current_html && current_html.length > 50);
+    // Step 2: Build full messages array — NO TRUNCATION, full HTML included
+    let userContent = `USER REQUEST: ${prompt}\n\n`;
+    if (current_html) userContent += `EXISTING MODULE:\n${current_html}\n\n`;
+    if (searchResults) userContent += `WEB RESEARCH:\n${searchResults}\n\n`;
+    userContent += current_html ? "Create a detailed plan for editing this module." : "Create a detailed plan for building this module.";
 
-    // Check if session exists (continuation)
-    const { data: existing } = await supabase.from("ai_sessions").select("*").eq("session_id", sessionId).order("created_at", { ascending: false }).limit(1).maybeSingle();
-    
-    if (existing && existing.status === "completed" && existing.phase === "plan") {
-      // Plan already done — skip to build
-      return json({ success: true, session_id: sessionId, phase: "plan_done", plan: existing.content });
-    }
+    const messages = [
+      { role: "system", content: SYSTEM_PLAN },
+      { role: "user", content: userContent }
+    ];
 
-    // Write initial session state
+    // Step 3: SAVE FULL MESSAGES TO DB BEFORE calling API
+    // This is the key — if the API times out, the exact messages survive
     await supabase.from("ai_sessions").upsert({
       session_id: sessionId,
       phase: "plan",
       status: "in_progress",
       content: "",
-    }, { onConflict: "session_id" }).select("*").single();
+      messages: messages,  // FULL messages array saved here
+    }, { onConflict: "session_id" });
 
-    // Step 1: Web search
-    const searchQuery = isEdit ? `${prompt} educational content` : `${prompt} educational module`;
-    const searchResults = search !== false ? await webSearch(searchQuery) : "";
+    // Step 4: Call AI
+    const plan = await callAI(messages, 4096, 0.4);
 
-    // Update session with search results
-    await supabase.from("ai_sessions").update({ 
-      content: `WEB RESEARCH:\n${searchResults.substring(0, 500)}\n\nPlanning...`,
-      updated_at: new Date().toISOString()
-    }).eq("session_id", sessionId);
-
-    // Step 2: Generate plan
-    let userContent = `USER REQUEST: ${prompt}\n\n`;
-    if (current_html) userContent += `EXISTING MODULE:\n${current_html}\n\n`;
-    if (searchResults) userContent += `WEB RESEARCH:\n${searchResults}\n\n`;
-    userContent += isEdit ? "Create a detailed plan for editing this module." : "Create a detailed plan for building this module.";
-
-    const plan = await callAI(
-      [{ role: "system", content: SYSTEM_PLAN }, { role: "user", content: userContent }],
-      4096, 0.4
-    );
-
-    // Save completed plan
+    // Step 5: SUCCESS — append assistant response to messages and save
+    messages.push({ role: "assistant", content: plan });
     await supabase.from("ai_sessions").update({
       phase: "plan",
       status: "completed",
       content: plan,
+      messages: messages,  // Updated with assistant response
       updated_at: new Date().toISOString()
     }).eq("session_id", sessionId);
 
@@ -106,7 +90,21 @@ Deno.serve(async (req: Request) => {
       searchResults: searchResults.substring(0, 500),
       searched: !!searchResults,
     });
+
   } catch (e) {
-    return errorResponse("Server error: " + (e as Error).message, 500);
+    // ERROR — messages are ALREADY saved in DB from Step 3
+    // The Continue button will load them and retry with the EXACT same messages
+    await supabase.from("ai_sessions").update({
+      status: "paused_on_error",
+      error: (e as Error).message,
+      updated_at: new Date().toISOString()
+    }).eq("session_id", sessionId);
+
+    return json({
+      success: false,
+      session_id: sessionId,
+      error: (e as Error).message,
+      can_continue: true,  // Tell frontend to show Continue button
+    }, 500);
   }
 });
