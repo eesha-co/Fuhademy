@@ -1265,7 +1265,9 @@
         BH.edge('ai-session-continue', { body: {
           session_id: p.sessionId,
           current_html: state.html || p.html,
-          prompt: p.prompt
+          prompt: p.prompt,
+          is_edit: p.isEdit,
+          plan: p.plan
         }}).then(function (res) {
           setThinking(false);
           state.chat = state.chat.filter(function (m) { return m.role !== 'building'; });
@@ -1276,7 +1278,7 @@
             addChatMessage('error', errMsg);
             // Store for retry — same session, so it continues from where it stopped
             state.retryContext = {
-              payload: { session_id: p.sessionId, current_html: state.html || p.html, prompt: p.prompt },
+              payload: { session_id: p.sessionId, current_html: state.html || p.html, prompt: p.prompt, is_edit: p.isEdit, plan: p.plan },
               phaseLabel: 'Building module',
               onSuccess: null
             };
@@ -1315,7 +1317,7 @@
           renderChat();
           // Timeout/error — show Continue button (session stores progress)
           state.retryContext = {
-            payload: { session_id: p.sessionId, current_html: state.html || p.html, prompt: p.prompt },
+            payload: { session_id: p.sessionId, current_html: state.html || p.html, prompt: p.prompt, is_edit: p.isEdit, plan: p.plan },
             phaseLabel: 'Building module',
             onSuccess: null
           };
