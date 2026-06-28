@@ -27,18 +27,6 @@ async function callAI(messages: Array<any>, maxTokens = 8192, temperature = 0.2)
   return data.choices?.[0]?.message?.content || "";
 }
 
-function parseEdits(content: string) {
-  const edits: Array<{search: string, replace: string}> = [];
-  const regex = /<<<<\s*SEARCH\s*\n([\s\S]*?)\n====\s*REPLACE\s*\n([\s\S]*?)\n>>>>/g;
-  let match;
-  while ((match = regex.exec(content)) !== null) {
-    edits.push({ search: match[1], replace: match[2] });
-  }
-  let summary = content.replace(/<<<<\s*SEARCH[\s\S]*?>>>>/g, "").trim();
-  if (!summary) summary = `Applied ${edits.length} edit(s).`;
-  return { edits, summary };
-}
-
 Deno.serve(async (req: Request) => {
   const preflight = handleOptions(req);
   if (preflight) return preflight;
@@ -48,86 +36,58 @@ Deno.serve(async (req: Request) => {
     if (!session_id) return errorResponse("session_id required");
     const supabase = await createServiceClient();
 
-    // Load the saved session from DB
+    // Load session — just check if build already completed
     const { data: session } = await supabase.from("ai_sessions")
-      .select("*").eq("session_id", session_id).order("created_at", { ascending: false }).limit(1).maybeSingle();
+      .select("phase, status, content").eq("session_id", session_id).order("created_at", { ascending: false }).limit(1).maybeSingle();
 
-    if (!session) return errorResponse("Session not found", 404);
-
-    // CASE 1: Build already completed — return saved result
-    if (session.phase === "build" && session.status === "completed") {
-      const { edits, summary } = parseEdits(session.content || "");
+    // If build already completed, return saved result (don't redo)
+    if (session && session.phase === "build" && session.status === "completed") {
+      const content = session.content || "";
+      const edits: Array<{search: string, replace: string}> = [];
+      const regex = /<<<<\s*SEARCH\s*\n([\s\S]*?)\n====\s*REPLACE\s*\n([\s\S]*?)\n>>>>/g;
+      let match;
+      while ((match = regex.exec(content)) !== null) edits.push({ search: match[1], replace: match[2] });
+      let summary = content.replace(/<<<<\s*SEARCH[\s\S]*?>>>>/g, "").trim();
+      if (!summary) summary = `Applied ${edits.length} edit(s).`;
       return json({ success: true, session_id, phase: "build", status: "completed", edits, summary });
     }
 
-    // CASE 2: Build was in progress or paused — RESUME with saved messages
-    // Load the SAVED messages from DB (this is the key: same conversation context)
+    // Build messages — NO TRUNCATION, full HTML
+    const editMode = is_edit !== false;
     let buildMessages: Array<any>;
-
-    if (session.phase === "build" && (session.status === "in_progress" || session.status === "paused_on_error")) {
-      // Resume: use the SAVED messages from DB (don't rebuild from scratch)
-      buildMessages = session.messages || [];
-      if (!buildMessages.length) {
-        // Fallback: rebuild if messages weren't saved
-        const savedPlan = session.content || plan || "";
-        let userContent = `EXISTING HTML MODULE:\n\n${current_html}\n\n`;
-        if (savedPlan) userContent += `PLAN:\n${savedPlan}\n\n`;
-        userContent += `EDIT INSTRUCTION: ${prompt}\n\nReturn ONLY the changes as SEARCH/REPLACE blocks.`;
-        buildMessages = [
-          { role: "system", content: SYSTEM_TARGETED },
-          { role: "user", content: userContent }
-        ];
-      }
-    } else if (session.phase === "plan" && session.status === "completed") {
-      // Plan done, start build — build messages fresh
-      const savedPlan = session.content || plan || "";
-      const editMode = is_edit !== false;
-      if (editMode) {
-        let userContent = `EXISTING HTML MODULE:\n\n${current_html}\n\n`;
-        if (savedPlan) userContent += `PLAN:\n${savedPlan}\n\n`;
-        userContent += `EDIT INSTRUCTION: ${prompt}\n\nReturn ONLY the changes as SEARCH/REPLACE blocks.`;
-        buildMessages = [
-          { role: "system", content: SYSTEM_TARGETED },
-          { role: "user", content: userContent }
-        ];
-      } else {
-        let userContent = `USER REQUEST: ${prompt}\n\n`;
-        if (savedPlan) userContent += `PLAN:\n${savedPlan}\n\n`;
-        userContent += `Build the module. Return the HTML in a code block.`;
-        buildMessages = [
-          { role: "system", content: SYSTEM_GENERATE },
-          { role: "user", content: userContent }
-        ];
-      }
+    if (editMode) {
+      let userContent = `EXISTING HTML MODULE:\n\n${current_html}\n\n`;
+      if (plan) userContent += `PLAN:\n${plan}\n\n`;
+      userContent += `EDIT INSTRUCTION: ${prompt}\n\nReturn ONLY the changes as SEARCH/REPLACE blocks.`;
+      buildMessages = [{ role: "system", content: SYSTEM_TARGETED }, { role: "user", content: userContent }];
     } else {
-      return json({ success: false, message: "Session in unexpected state", phase: session.phase, status: session.status });
+      let userContent = `USER REQUEST: ${prompt}\n\n`;
+      if (plan) userContent += `PLAN:\n${plan}\n\n`;
+      userContent += `Build the module. Return the HTML in a code block.`;
+      buildMessages = [{ role: "system", content: SYSTEM_GENERATE }, { role: "user", content: userContent }];
     }
 
-    // Save messages to DB BEFORE calling API (so they survive timeout)
+    // Save build state (lean — just phase + status, not the 128KB messages)
     await supabase.from("ai_sessions").update({
-      phase: "build",
-      status: "in_progress",
-      messages: buildMessages,
-      updated_at: new Date().toISOString()
+      phase: "build", status: "in_progress", updated_at: new Date().toISOString()
     }).eq("session_id", session_id);
 
-    // Call AI with the messages (either saved or freshly built)
-    const editMode = is_edit !== false;
+    // Call AI — this is the main time cost (~54s for 128KB)
     const content = await callAI(buildMessages, editMode ? 4096 : 8192, editMode ? 0.2 : 0.5);
 
-    // Save completed build result + updated messages
-    buildMessages.push({ role: "assistant", content });
+    // Save result
     await supabase.from("ai_sessions").update({
-      phase: "build",
-      status: "completed",
-      content: content,
-      messages: buildMessages,
-      updated_at: new Date().toISOString()
+      phase: "build", status: "completed", content: content, updated_at: new Date().toISOString()
     }).eq("session_id", session_id);
 
     // Return result
     if (editMode) {
-      const { edits, summary } = parseEdits(content);
+      const edits: Array<{search: string, replace: string}> = [];
+      const regex = /<<<<\s*SEARCH\s*\n([\s\S]*?)\n====\s*REPLACE\s*\n([\s\S]*?)\n>>>>/g;
+      let match;
+      while ((match = regex.exec(content)) !== null) edits.push({ search: match[1], replace: match[2] });
+      let summary = content.replace(/<<<<\s*SEARCH[\s\S]*?>>>>/g, "").trim();
+      if (!summary) summary = `Applied ${edits.length} edit(s).`;
       return json({ success: true, session_id, phase: "build", status: "completed", edits, summary });
     } else {
       let html = "";
@@ -138,16 +98,6 @@ Deno.serve(async (req: Request) => {
       return json({ success: true, session_id, phase: "build", status: "completed", html, reply: "Module generated." });
     }
   } catch (e) {
-    // Save error state — messages preserved for Continue
-    const body = await req.json().catch(() => ({}));
-    if (body.session_id) {
-      const supabase = await createServiceClient();
-      await supabase.from("ai_sessions").update({
-        status: "paused_on_error",
-        error: (e as Error).message,
-        updated_at: new Date().toISOString()
-      }).eq("session_id", body.session_id);
-    }
     return errorResponse("Server error: " + (e as Error).message, 500);
   }
 });
