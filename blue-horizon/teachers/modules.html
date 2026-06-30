@@ -1194,24 +1194,29 @@
 
         addChatMessage('system', '🤔 Understanding your request...', 'fa-brain');
 
+        // Generate session_id BEFORE calling the edge function
+        // This way we always know which session to resume, even if the
+        // edge function times out and returns no JSON body
+        var sessionId = (window.crypto && window.crypto.randomUUID) ? window.crypto.randomUUID() : 'sess_' + Date.now();
+        state.currentSessionId = sessionId;  // Store globally for Continue button
+
         // Start session — the edge function writes progress to ai_sessions table
         BH.edge('ai-session-start', { body: {
           prompt: userPrompt,
           current_html: state.html || '',
-          search: searchEnabled
+          search: searchEnabled,
+          session_id: sessionId  // Pass our session_id so we know it even on timeout
         }}).then(function (res) {
           setThinking(false);
           if (!res || !res.ok || !res.data || !res.data.success) {
-            // Check if the edge function saved the session (can_continue)
-            var sessionId = res && res.data && res.data.session_id;
-            if (sessionId && res.data.can_continue) {
-              // Messages were saved to DB — show Continue button
-              state.retryContext = { sessionId: sessionId };
-              addChatMessage('system', '⏱️ The AI saved its progress. Click Continue to resume from where it stopped.', 'fa-clock');
-            } else {
-              var errMsg = (res && res.data && res.data.error) || 'Could not create a plan. Please try again.';
-              addChatMessage('error', errMsg);
-            }
+            // The edge function may have timed out (HTTP 546) with no JSON body
+            // But the session_id was passed in the request, and the edge function
+            // saved messages to DB BEFORE calling the API
+            // So we can always resume with this session_id
+            var errMsg = (res && res.data && res.data.error) || 'Could not create a plan. Please try again.';
+            addChatMessage('error', errMsg);
+            state.retryContext = { sessionId: sessionId };
+            addChatMessage('system', '⏱️ The AI saved its progress. Click Continue to resume from where it stopped.', 'fa-clock');
             addChatMessage('timeout', '');
             return;
           }
@@ -1236,7 +1241,11 @@
           addChatMessage('build-now', '');
         }).catch(function (err) {
           setThinking(false);
-          addChatMessage('error', 'Network error: ' + (err.message || ''));
+          // Network error/timeout — session_id was passed to the edge function
+          // which saved messages to DB before calling the API
+          state.retryContext = { sessionId: sessionId };
+          addChatMessage('system', '⏱️ The AI saved its progress. Click Continue to resume from where it stopped.', 'fa-clock');
+          addChatMessage('timeout', '');
         });
       }
 
