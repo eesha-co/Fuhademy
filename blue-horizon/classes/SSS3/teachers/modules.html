@@ -1067,51 +1067,8 @@
         }
       }
 
-      // ---- AI generation with auto-test ----
-      // =====================================================
-      // Timeout-safe edge call: wraps BH.edge with a timeout + retry
-      // =====================================================
-      function edgeWithTimeout(payload, phaseLabel, onSuccess) {
-        // Store context for retry
-        state.retryContext = { payload: payload, phaseLabel: phaseLabel, onSuccess: onSuccess };
-
-        return new Promise(function (resolve, reject) {
-          var timedOut = false;
-          var timer = setTimeout(function () {
-            timedOut = true;
-            setThinking(false);
-            // Remove any building/thinking indicators
-            state.chat = state.chat.filter(function (m) {
-              return m.role !== 'building' && m.role !== 'thinking';
-            });
-            renderChat();
-            // Show timeout message + Continue button
-            addChatMessage('system', '⏱️ ' + phaseLabel + ' timed out. Click Continue to retry.', 'fa-clock');
-            addChatMessage('timeout', '');
-            resolve(null); // resolve with null (not an error — user can retry)
-          }, 120000); // 120 second timeout (leaves margin before Supabase's 150s)
-
-          BH.edge('ai-module', { body: payload }).then(function (res) {
-            if (timedOut) return; // already timed out, ignore
-            clearTimeout(timer);
-            state.retryContext = null; // success — clear retry context
-            if (onSuccess) onSuccess(res);
-            resolve(res);
-          }).catch(function (err) {
-            if (timedOut) return;
-            clearTimeout(timer);
-            setThinking(false);
-            state.chat = state.chat.filter(function (m) {
-              return m.role !== 'building' && m.role !== 'thinking';
-            });
-            renderChat();
-            // Network error — also show Continue button
-            addChatMessage('system', '⚠️ ' + phaseLabel + ' failed: ' + (err.message || 'Network error'), 'fa-triangle-exclamation');
-            addChatMessage('timeout', '');
-            resolve(null);
-          });
-        });
-      }
+      // ---- AI generation with session-based continuation ----
+      // (edgeWithTimeout removed — session-based approach handles timeouts properly)
 
       // Called when user clicks "Continue" after a timeout
       // Uses the session ID to resume from where the AI stopped
@@ -1353,7 +1310,7 @@
         state.chat = state.chat.filter(function (m) { return m.role !== 'test-now'; });
         addChatMessage('system', '🧪 Testing the module with the browser...', 'fa-vial');
 
-        edgeWithTimeout({ action: 'test', current_html: state.html }, 'Testing module', function (res) {
+        BH.edge('ai-module', { body: { action: 'test', current_html: state.html } }).then(function (res) {
           if (!res || !res.ok || !res.data) {
             setThinking(false);
             addChatMessage('error', 'Could not run the test. Please try again.');
@@ -1370,7 +1327,7 @@
             // === AUTO-FIX if needed ===
             if ((overall === 'needs_work' || overall === 'broken') && issueCount > 0) {
               addChatMessage('system', '🔧 Auto-fixing ' + issueCount + ' issue(s)...', 'fa-wrench');
-              edgeWithTimeout({ action: 'fix', current_html: state.html, issues: testData.test.issues, suggestions: testData.test.suggestions || [] }, 'Auto-fixing', function (fixRes) {
+              BH.edge('ai-module', { body: { action: 'fix', current_html: state.html, issues: testData.test.issues, suggestions: testData.test.suggestions || [] } }).then(function (fixRes) {
                 setThinking(false);
                 if (fixRes && fixRes.ok && fixRes.data && fixRes.data.edits) {
                   // Apply targeted fixes (SEARCH/REPLACE)
