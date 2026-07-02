@@ -1,140 +1,49 @@
-import { json, errorResponse, handleOptions } from "../_shared/helpers.ts";
+import { json, errorResponse, handleOptions, createServiceClient } from "../_shared/helpers.ts";
 
 const API_URL = "https://integrate.api.nvidia.com/v1/chat/completions";
-const MODEL = "deepseek-ai/deepseek-v4-pro"; // Replaced Kimi K2.6 (unstable) with DeepSeek V4 Pro (handles full 128KB HTML, 54s)
+const MODEL = "deepseek-ai/deepseek-v4-pro";
 
-// === SYSTEM PROMPT FOR PLANNING ===
-const SYSTEM_PLAN = `You are an expert educational content strategist. The user wants to create or edit an HTML learning module.
-
-Your job is to:
-1. UNDERSTAND exactly what the user wants
-2. Use the web search results to gather accurate information
-3. Make PRECISE DECISIONS about what to build or change
-4. Return a detailed plan
-
-Your plan must include:
-- WHAT YOU UNDERSTOOD: A clear restatement of what the user wants
-- WEB RESEARCH: Key facts found from the web
-- DECISIONS: Exactly what changes you will make
-- APPROACH: How you will implement it
-
-Be thorough but concise.`;
-
-// === SYSTEM PROMPT FOR GENERATING NEW MODULES ===
-const SYSTEM_GENERATE = `You are an expert educational content creator for Blue Horizon Schools.
-Create interactive, self-contained HTML learning modules for Nigerian secondary school students.
-
-Requirements:
-1. Complete HTML document with <!DOCTYPE html>, <html>, <head>, <body>
-2. Inline CSS in <style> tag
-3. Vanilla JS in <script> tags
-4. Interactive: quizzes, drag-drop, animations
-5. Clear, age-appropriate language for JSS/SSS students
-6. Use Blue Horizon navy #1f507b as primary color
-7. Responsive and visually appealing
-8. Wrap entire HTML in a code block starting with triple-backtick html
-9. After the code block, confirm what you built`;
-
-// === SYSTEM PROMPT FOR TARGETED EDITS (Copilot-style SEARCH/REPLACE) ===
-const SYSTEM_TARGETED = `You are an expert HTML editor that makes targeted edits using SEARCH/REPLACE blocks (like GitHub Copilot).
-
-You will receive an existing HTML module and an edit instruction. Instead of returning the complete HTML, return ONLY the changes using SEARCH/REPLACE blocks.
-
-Format for each edit:
+const SYSTEM_TARGETED = `You are an expert HTML editor. Return ONLY changes as SEARCH/REPLACE blocks.
+Format:
 <<<< SEARCH
-[exact text from the original HTML to find]
+[text to find]
 ==== REPLACE
-[new text to replace it with]
+[new text]
 >>>>
+After blocks, write one sentence about what you changed.`;
 
-Rules:
-1. Each SEARCH block must contain text that EXISTS in the original HTML (copy it exactly)
-2. Each REPLACE block contains the new text
-3. You can have MULTIPLE SEARCH/REPLACE blocks
-4. Keep SEARCH blocks as small as possible
-5. If inserting new content, SEARCH for the element after which to insert, REPLACE with original + new content
-6. After all blocks, write one sentence describing what you changed
-
-Example:
-<<<< SEARCH
-<title>Acids and Bases</title>
-==== REPLACE
-<title>Acids and Bases Quiz</title>
->>>>
-<<<< SEARCH
-</body>
-==== REPLACE
-<div class="quiz"><p>Q1: What is the pH of water?</p><button onclick="alert(7)">Answer</button></div>
-</body>
->>>>`;
-
-function extractHtml(text: string): string {
-  if (!text) return "";
-  let m = text.match(/```html\s*\n?([\s\S]*?)```/i);
-  if (m) return m[1].trim();
-  m = text.match(/```(?:\w*\s*\n?)?([\s\S]*?)```/i);
-  if (m && m[1] && m[1].includes("<")) return m[1].trim();
-  const trimmed = text.trim();
-  if (trimmed.match(/^<!DOCTYPE|<html|<div/i)) return trimmed;
-  const idx = text.search(/<!DOCTYPE|<html/i);
-  if (idx >= 0) {
-    const sub = text.substring(idx);
-    const end = sub.lastIndexOf("</html>");
-    if (end >= 0) return sub.substring(0, end + 7).trim();
-    return sub.trim();
-  }
-  return "";
-}
-
-function bufferToBase64(screenshot: any): string {
-  if (!screenshot) return "";
-  if (typeof screenshot === "string") return screenshot;
-  if (screenshot.type === "Buffer" && Array.isArray(screenshot.data)) {
-    const bytes = new Uint8Array(screenshot.data);
-    let binary = "";
-    for (let i = 0; i < bytes.length; i++) binary += String.fromCharCode(bytes[i]);
-    return btoa(binary);
-  }
-  return "";
-}
-
-async function callKimi(messages: Array<any>, maxTokens = 16384, temperature = 0.3, thinking = true): Promise<string> {
-  const key = Deno.env.get("KIMI_API_KEY"); // Same NVIDIA API key works for DeepSeek V4 Pro
-  if (!key) throw new Error("KIMI_API_KEY not configured");
-  const response = await fetch(API_URL, {
-    method: "POST",
-    headers: { "Authorization": `Bearer ${key}`, "Accept": "application/json", "Content-Type": "application/json" },
-    body: JSON.stringify({
-      model: MODEL, messages, max_tokens: maxTokens,
-      temperature: temperature, top_p: 1.0, stream: false,
-      chat_template_kwargs: { thinking: thinking },
-    }),
-  });
-  if (!response.ok) {
-    const err = await response.text();
-    throw new Error(`AI API ${response.status}: ${err.substring(0, 300)}`);
-  }
-  const data = await response.json();
-  const msg = data.choices?.[0]?.message || {};
-  return msg.content || msg.reasoning_content || "";
-}
+const SYSTEM_GENERATE = `You are an expert educational content creator. Create a complete HTML document with inline CSS and JS. Use navy #1f507b. Wrap in a code block.`;
 
 async function webSearch(query: string): Promise<string> {
   try {
-    const url = `https://api.duckduckgo.com/?q=${encodeURIComponent(query)}&format=json&no_html=1&skip_disambig=1`;
-    const response = await fetch(url, { headers: { "User-Agent": "Mozilla/5.0" } });
-    if (!response.ok) return "";
-    const data = await response.json();
-    let results = "";
-    if (data.AbstractText) results += data.AbstractText + "\n\n";
-    if (data.RelatedTopics) {
-      for (const t of data.RelatedTopics.slice(0, 5)) {
-        if (t.Text) results += t.Text + "\n";
-        if (t.Topics) for (const sub of t.Topics.slice(0, 2)) if (sub.Text) results += sub.Text + "\n";
-      }
-    }
-    return results.substring(0, 3000);
+    const url = `https://api.duckduckgo.com/?q=${encodeURIComponent(query)}&format=json&no_html=1`;
+    const r = await fetch(url, { headers: { "User-Agent": "Mozilla/5.0" } });
+    if (!r.ok) return "";
+    const d = await r.json();
+    let results = d.AbstractText ? d.AbstractText + "\n" : "";
+    if (d.RelatedTopics) for (const t of d.RelatedTopics.slice(0, 3)) if (t.Text) results += t.Text + "\n";
+    return results.substring(0, 2000);
   } catch { return ""; }
+}
+
+function parseEdits(content: string) {
+  const edits: Array<{search: string, replace: string}> = [];
+  const regex = /<<<<\s*SEARCH\s*\n([\s\S]*?)\n====\s*REPLACE\s*\n([\s\S]*?)\n>>>>/g;
+  let match;
+  while ((match = regex.exec(content)) !== null) {
+    edits.push({ search: match[1], replace: match[2] });
+  }
+  let summary = content.replace(/<<<<\s*SEARCH[\s\S]*?>>>>/g, "").trim();
+  if (!summary) summary = `Applied ${edits.length} edit(s).`;
+  return { edits, summary };
+}
+
+function extractHtml(content: string) {
+  let m = content.match(/```html\s*\n?([\s\S]*?)```/i);
+  if (m) return m[1].trim();
+  m = content.match(/```(?:\w*\s*\n?)?([\s\S]*?)```/i);
+  if (m && m[1] && m[1].includes("<")) return m[1].trim();
+  return content.trim();
 }
 
 Deno.serve(async (req: Request) => {
@@ -142,199 +51,292 @@ Deno.serve(async (req: Request) => {
   if (preflight) return preflight;
   if (req.method !== "POST") return errorResponse("Method not allowed", 405);
 
+  const body = await req.json();
+  const { action, session_id } = body;
+
   try {
-    const body = await req.json();
-    const { action } = body;
-
-    // === SEARCH ===
-    if (action === "search") {
-      const { query } = body;
-      if (!query) return errorResponse("query required");
-      const results = await webSearch(query);
-      return json({ success: true, results });
-    }
-
-    // === PLAN: Understand + Search + Decide ===
+    // ========================================
+    // PLAN: understand + search + decide
+    // ========================================
     if (action === "plan") {
-      const prompt = body.prompt || body.instruction || "";
-      const currentHtml = body.current_html || null;
+      const { prompt, current_html, search } = body;
       if (!prompt) return errorResponse("prompt required");
+      const supabase = await createServiceClient();
+      const sessionId = session_id || crypto.randomUUID();
 
-      const searchQuery = currentHtml
-        ? `${prompt} educational content`
-        : `${prompt} educational module Nigerian secondary school`;
-      const searchResults = await webSearch(searchQuery);
+      const searchQuery = current_html ? `${prompt} educational content` : `${prompt} educational module`;
+      const searchResults = search !== false ? await webSearch(searchQuery) : "";
 
-      let userContent = "";
-      if (currentHtml) {
-        userContent = `USER REQUEST: ${prompt}\n\nEXISTING MODULE:\n${currentHtml}\n\nWEB RESEARCH:\n${searchResults || "No results."}\n\nCreate a detailed plan for editing this module.`;
-      } else {
-        userContent = `USER REQUEST: ${prompt}\n\nWEB RESEARCH:\n${searchResults || "No results."}\n\nCreate a detailed plan for building this module.`;
-      }
+      let userContent = `USER REQUEST: ${prompt}\n\n`;
+      if (current_html) userContent += `EXISTING MODULE:\n${current_html}\n\n`;
+      if (searchResults) userContent += `WEB RESEARCH:\n${searchResults}\n\n`;
+      userContent += current_html ? "Create a detailed plan for editing this module." : "Create a detailed plan for building this module.";
 
-      const plan = await callKimi(
-        [{ role: "system", content: SYSTEM_PLAN }, { role: "user", content: userContent }],
-        4096, 0.4, true
-      );
-
-      return json({
-        success: true,
-        plan,
-        searchResults: searchResults.substring(0, 500),
-        searched: !!searchResults,
-      });
-    }
-
-    // === EDIT-TARGETED: Copilot-style SEARCH/REPLACE blocks ===
-    if (action === "edit-targeted") {
-      const prompt = body.prompt || body.instruction || "";
-      const currentHtml = body.current_html || null;
-      const plan = body.plan || null;
-      if (!prompt) return errorResponse("prompt required");
-      if (!currentHtml) return errorResponse("current_html required for targeted edits");
-
-      // Send FULL HTML — DeepSeek V4 Pro can handle 128KB+ inputs (tested: 54s for 128KB)
-      let userContent = `EXISTING HTML MODULE:\n\n${currentHtml}\n\n`;
-      if (plan) userContent += `PLAN:\n${plan}\n\n`;
-      userContent += `EDIT INSTRUCTION: ${prompt}\n\nReturn ONLY the changes as SEARCH/REPLACE blocks. Do NOT return the full HTML.`;
-
-      // Targeted edits produce SMALL output → fast, no timeout
-      const content = await callKimi(
-        [{ role: "system", content: SYSTEM_TARGETED }, { role: "user", content: userContent }],
-        4096, 0.2, false
-      );
-
-      // Parse SEARCH/REPLACE blocks
-      const edits: Array<{search: string, replace: string}> = [];
-      const regex = /<<<<\s*SEARCH\s*\n([\s\S]*?)\n====\s*REPLACE\s*\n([\s\S]*?)\n>>>>/g;
-      let match;
-      while ((match = regex.exec(content)) !== null) {
-        edits.push({ search: match[1], replace: match[2] });
-      }
-
-      let summary = content.replace(/<<<<\s*SEARCH[\s\S]*?>>>>/g, "").trim();
-      if (!summary) summary = `Applied ${edits.length} edit(s).`;
-
-      if (edits.length === 0) {
-        return json({ error: "AI did not return SEARCH/REPLACE blocks. Try rephrasing.", raw: content.substring(0, 300) }, 500);
-      }
-
-      return json({
-        success: true,
-        edits: edits,
-        summary: summary,
-        mode: "targeted",
-      });
-    }
-
-    // === GENERATE: Build new module from scratch ===
-    if (action === "generate") {
-      const prompt = body.prompt || "";
-      const plan = body.plan || null;
-      const searchResults = body.search_results || null;
-      if (!prompt) return errorResponse("prompt required");
-
-      let userContent = "";
-      if (plan) {
-        userContent = `USER REQUEST: ${prompt}\n\nPLAN:\n${plan}\n\n${searchResults ? `WEB RESEARCH:\n${searchResults}\n\n` : ""}Follow the plan. Return the HTML in a code block.`;
-      } else {
-        userContent = `Create a module: ${prompt}`;
-      }
-
-      let messages: any[] = [
-        { role: "system", content: SYSTEM_GENERATE },
-        { role: "user", content: userContent },
+      const messages = [
+        { role: "system", content: `You are an expert educational content strategist. Create a detailed plan. Include: WHAT YOU UNDERSTOOD, WEB RESEARCH, DECISIONS, APPROACH.` },
+        { role: "user", content: userContent }
       ];
 
-      let content = "";
-      let html = "";
-      for (let attempt = 0; attempt < 2; attempt++) {
-        content = await callKimi(messages, 8192, 0.5, true);
-        html = extractHtml(content);
-        if (html) break;
-        if (attempt === 0) {
-          messages.push({ role: "assistant", content: content.substring(0, 200) });
-          messages.push({ role: "user", content: "Return the HTML in a code block." });
+      // Save to DB before calling API
+      await supabase.from("ai_sessions").upsert({
+        session_id: sessionId, phase: "plan", status: "in_progress", content: "", messages: messages,
+      }, { onConflict: "session_id" });
+
+      // Call API
+      const key = Deno.env.get("KIMI_API_KEY");
+      if (!key) throw new Error("API key not configured");
+      const response = await fetch(API_URL, {
+        method: "POST",
+        headers: { "Authorization": `Bearer ${key}`, "Accept": "application/json", "Content-Type": "application/json" },
+        body: JSON.stringify({ model: MODEL, messages, max_tokens: 4096, temperature: 0.4, stream: false }),
+      });
+      if (!response.ok) throw new Error(`AI API ${response.status}`);
+      const data = await response.json();
+      const plan = data.choices?.[0]?.message?.content || "";
+
+      messages.push({ role: "assistant", content: plan });
+      await supabase.from("ai_sessions").update({
+        phase: "plan", status: "completed", content: plan, messages: messages,
+        updated_at: new Date().toISOString()
+      }).eq("session_id", sessionId);
+
+      return json({ success: true, session_id: sessionId, phase: "plan", status: "completed", plan, searchResults: searchResults.substring(0, 500), searched: !!searchResults });
+    }
+
+    // ========================================
+    // BUILD: generate/edit with STREAMING
+    // ========================================
+    if (action === "build") {
+      const { prompt, current_html, is_edit, plan: buildPlan } = body;
+      if (!prompt) return errorResponse("prompt required");
+      const supabase = await createServiceClient();
+      const sessionId = session_id || crypto.randomUUID();
+      const editMode = is_edit !== false;
+
+      // If session exists with completed plan, use saved plan
+      let savedPlan = buildPlan || "";
+      if (session_id) {
+        const { data: session } = await supabase.from("ai_sessions")
+          .select("*").eq("session_id", session_id).order("created_at", { ascending: false }).limit(1).maybeSingle();
+        if (session) {
+          if (session.phase === "build" && session.status === "completed") {
+            const { edits, summary } = parseEdits(session.content || "");
+            return json({ success: true, session_id, edits, summary, already_done: true });
+          }
+          savedPlan = session.content || buildPlan || "";
         }
       }
 
-      if (!html) return json({ error: "AI did not generate valid HTML.", raw: content.substring(0, 300) }, 500);
-      let reply = content.replace(/```html\s*\n?[\s\S]*?```/gi, "").replace(/```[\s\S]*?```/gi, "").trim();
-      if (!reply) reply = "Module generated.";
-      return json({ html, reply, mode: "generate", testNeeded: true });
-    }
-
-    // === TEST: Verify with Playwright ===
-    if (action === "test") {
-      const html = body.current_html || body.html;
-      if (!html) return errorResponse("current_html required");
-      const RENDER_URL = Deno.env.get("MODULE_TESTER_URL");
-      if (!RENDER_URL) return json({ success: true, test: { issues: [], suggestions: [], overall: "skipped" } });
-      try {
-        const startResp = await fetch(`${RENDER_URL}/start`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ htmlContent: html }),
-        });
-        if (!startResp.ok) return json({ success: true, test: { issues: ["Could not render"], suggestions: [], overall: "error" } });
-        const startData = await startResp.json();
-        const screenshotB64 = bufferToBase64(startData.screenshot);
-        const analysis = await callKimi([
-          { role: "system", content: "You are a QA tester. Return JSON: {\"issues\":[\"...\"],\"suggestions\":[\"...\"],\"overall\":\"good|needs_work|broken\"}" },
-          { role: "user", content: `Analyze this HTML:\n${html.substring(0, 3000)}` },
-        ], 2048, 0.3, false);
-        try {
-          const jsonMatch = analysis.match(/\{[\s\S]*\}/);
-          if (jsonMatch) return json({ success: true, test: { ...JSON.parse(jsonMatch[0]), screenshot: screenshotB64 } });
-        } catch {}
-        return json({ success: true, test: { issues: [], suggestions: [], overall: "unknown", screenshot: screenshotB64 } });
-      } catch (e) {
-        return json({ success: true, test: { issues: [`Test error: ${e.message}`], suggestions: [], overall: "error" } });
+      // Build messages — full HTML, no truncation
+      let buildMessages: Array<any>;
+      if (editMode) {
+        let userContent = `EXISTING HTML MODULE:\n\n${current_html}\n\n`;
+        if (savedPlan) userContent += `PLAN:\n${savedPlan}\n\n`;
+        userContent += `EDIT INSTRUCTION: ${prompt}\n\nReturn ONLY the changes as SEARCH/REPLACE blocks.`;
+        buildMessages = [{ role: "system", content: SYSTEM_TARGETED }, { role: "user", content: userContent }];
+      } else {
+        let userContent = `USER REQUEST: ${prompt}\n\nPLAN:\n${savedPlan}\n\nBuild the module. Return the HTML in a code block.`;
+        buildMessages = [{ role: "system", content: SYSTEM_GENERATE }, { role: "user", content: userContent }];
       }
-    }
 
-    // === FIX: Auto-fix issues ===
-    if (action === "fix") {
-      const html = body.current_html || body.html;
-      const issues = body.issues || [];
-      const suggestions = body.suggestions || [];
-      if (!html) return errorResponse("current_html required");
-      // Use targeted edits for fixing too — send FULL HTML (DeepSeek V4 Pro handles it)
-      let userContent = `EXISTING HTML:\n\n${html}\n\nFix these issues:\n${issues.join("\n")}\n\nSuggestions:\n${suggestions.join("\n")}\n\nReturn ONLY the changes as SEARCH/REPLACE blocks.`;
-      const content = await callKimi(
-        [{ role: "system", content: SYSTEM_TARGETED }, { role: "user", content: userContent }],
-        4096, 0.2, false
-      );
-      const edits: Array<{search: string, replace: string}> = [];
-      const regex = /<<<<\s*SEARCH\s*\n([\s\S]*?)\n====\s*REPLACE\s*\n([\s\S]*?)\n>>>>/g;
-      let match;
-      while ((match = regex.exec(content)) !== null) {
-        edits.push({ search: match[1], replace: match[2] });
-      }
-      let summary = content.replace(/<<<<\s*SEARCH[\s\S]*?>>>>/g, "").trim();
-      if (!summary) summary = `Applied ${edits.length} fix(es).`;
-      if (edits.length === 0) return json({ error: "Could not parse fixes." }, 500);
-      return json({ success: true, edits, summary, mode: "targeted-fix" });
-    }
+      // Save messages before calling API
+      await supabase.from("ai_sessions").upsert({
+        session_id: sessionId, phase: "build", status: "in_progress", messages: buildMessages,
+      }, { onConflict: "session_id" });
 
-    // === PREVIEW ===
-    if (action === "preview") {
-      const RENDER_URL = Deno.env.get("MODULE_TESTER_URL");
-      if (!RENDER_URL) return errorResponse("Render service not configured", 503);
-      const html = body.current_html || body.html;
-      if (!html) return errorResponse("current_html required");
-      const response = await fetch(`${RENDER_URL}/start`, {
+      // Call API with STREAMING
+      const key = Deno.env.get("KIMI_API_KEY");
+      if (!key) throw new Error("API key not configured");
+      const response = await fetch(API_URL, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ htmlContent: html }),
+        headers: { "Authorization": `Bearer ${key}`, "Accept": "text/event-stream", "Content-Type": "application/json" },
+        body: JSON.stringify({ model: MODEL, messages: buildMessages, max_tokens: editMode ? 4096 : 8192, temperature: editMode ? 0.2 : 0.5, stream: true }),
       });
-      if (!response.ok) return errorResponse("Render error", response.status);
-      const data = await response.json();
-      return json({ screenshot: bufferToBase64(data.screenshot) });
+
+      if (!response.ok) throw new Error(`AI API ${response.status}`);
+
+      // Read the stream and accumulate content
+      let fullContent = "";
+      const reader = response.body!.getReader();
+      const decoder = new TextDecoder();
+      let buffer = "";
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split("\n");
+        buffer = lines.pop() || "";
+        for (const line of lines) {
+          if (line.startsWith("data: ")) {
+            const jsonStr = line.slice(6).trim();
+            if (jsonStr === "[DONE]") continue;
+            try {
+              const chunk = JSON.parse(jsonStr);
+              const delta = chunk.choices?.[0]?.delta;
+              if (delta?.content) fullContent += delta.content;
+            } catch {}
+          }
+        }
+      }
+
+      // Save completed result
+      buildMessages.push({ role: "assistant", content: fullContent });
+      await supabase.from("ai_sessions").update({
+        phase: "build", status: "completed", content: fullContent, messages: buildMessages,
+        updated_at: new Date().toISOString()
+      }).eq("session_id", sessionId);
+
+      if (editMode) {
+        const { edits, summary } = parseEdits(fullContent);
+        return json({ success: true, session_id, edits, summary });
+      } else {
+        return json({ success: true, session_id, html: extractHtml(fullContent), reply: "Module generated." });
+      }
     }
 
-    return errorResponse("Unknown action. Use: plan, edit-targeted, generate, test, fix, preview, search");
+    // ========================================
+    // CONTINUE: resume from saved messages
+    // ========================================
+    if (action === "continue") {
+      if (!session_id) return errorResponse("session_id required");
+      const supabase = await createServiceClient();
+
+      const { data: session } = await supabase.from("ai_sessions")
+        .select("*").eq("session_id", session_id).order("created_at", { ascending: false }).limit(1).maybeSingle();
+
+      if (!session) return errorResponse("Session not found", 404);
+
+      // If already completed, return saved result
+      if (session.status === "completed") {
+        if (session.phase === "plan") {
+          return json({ success: true, session_id, phase: "plan", status: "completed", plan: session.content });
+        } else if (session.phase === "build") {
+          const { edits, summary } = parseEdits(session.content || "");
+          return json({ success: true, session_id, edits, summary, already_done: true });
+        }
+      }
+
+      // Resume: load saved messages and retry with STREAMING
+      const savedMessages = session.messages || [];
+      if (!savedMessages.length) return errorResponse("No saved messages", 400);
+
+      // Mark as in_progress
+      await supabase.from("ai_sessions").update({
+        status: "in_progress", error: null, updated_at: new Date().toISOString()
+      }).eq("session_id", session_id);
+
+      const key = Deno.env.get("KIMI_API_KEY");
+      if (!key) throw new Error("API key not configured");
+
+      // Use streaming to avoid timeout
+      const response = await fetch(API_URL, {
+        method: "POST",
+        headers: { "Authorization": `Bearer ${key}`, "Accept": "text/event-stream", "Content-Type": "application/json" },
+        body: JSON.stringify({ model: MODEL, messages: savedMessages, max_tokens: 8192, temperature: 0.2, stream: true }),
+      });
+
+      if (!response.ok) throw new Error(`AI API ${response.status}`);
+
+      let fullContent = "";
+      const reader = response.body!.getReader();
+      const decoder = new TextDecoder();
+      let buffer = "";
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split("\n");
+        buffer = lines.pop() || "";
+        for (const line of lines) {
+          if (line.startsWith("data: ")) {
+            const jsonStr = line.slice(6).trim();
+            if (jsonStr === "[DONE]") continue;
+            try {
+              const chunk = JSON.parse(jsonStr);
+              const delta = chunk.choices?.[0]?.delta;
+              if (delta?.content) fullContent += delta.content;
+            } catch {}
+          }
+        }
+      }
+
+      // Save result
+      savedMessages.push({ role: "assistant", content: fullContent });
+      await supabase.from("ai_sessions").update({
+        status: "completed", content: fullContent, messages: savedMessages, error: null,
+        updated_at: new Date().toISOString()
+      }).eq("session_id", session_id);
+
+      if (session.phase === "plan") {
+        return json({ success: true, session_id, phase: "plan", status: "completed", plan: fullContent });
+      } else {
+        const { edits, summary } = parseEdits(fullContent);
+        return json({ success: true, session_id, edits, summary });
+      }
+    }
+
+    // ========================================
+    // TEST
+    // ========================================
+    if (action === "test") {
+      const { current_html } = body;
+      if (!current_html) return errorResponse("current_html required");
+      const key = Deno.env.get("KIMI_API_KEY");
+      if (!key) throw new Error("API key not configured");
+      const response = await fetch(API_URL, {
+        method: "POST",
+        headers: { "Authorization": `Bearer ${key}`, "Accept": "application/json", "Content-Type": "application/json" },
+        body: JSON.stringify({ model: MODEL, messages: [
+          { role: "system", content: "You are a QA tester. Return JSON: {\"issues\":[\"...\"],\"suggestions\":[\"...\"],\"overall\":\"good|needs_work|broken\"}" },
+          { role: "user", content: `Analyze this HTML:\n${current_html.substring(0, 3000)}` }
+        ], max_tokens: 2048, temperature: 0.3, stream: false }),
+      });
+      if (!response.ok) throw new Error(`AI API ${response.status}`);
+      const data = await response.json();
+      const analysis = data.choices?.[0]?.message?.content || "";
+      try {
+        const jsonMatch = analysis.match(/\{[\s\S]*\}/);
+        if (jsonMatch) return json({ success: true, test: JSON.parse(jsonMatch[0]) });
+      } catch {}
+      return json({ success: true, test: { issues: [], suggestions: [], overall: "unknown" } });
+    }
+
+    // ========================================
+    // FIX (uses SEARCH/REPLACE)
+    // ========================================
+    if (action === "fix") {
+      const { current_html, issues, suggestions } = body;
+      if (!current_html) return errorResponse("current_html required");
+      const key = Deno.env.get("KIMI_API_KEY");
+      if (!key) throw new Error("API key not configured");
+      let userContent = `EXISTING HTML:\n\n${current_html}\n\nFix these issues:\n${(issues||[]).join("\n")}\n\nReturn ONLY the changes as SEARCH/REPLACE blocks.`;
+      const response = await fetch(API_URL, {
+        method: "POST",
+        headers: { "Authorization": `Bearer ${key}`, "Accept": "application/json", "Content-Type": "application/json" },
+        body: JSON.stringify({ model: MODEL, messages: [
+          { role: "system", content: SYSTEM_TARGETED },
+          { role: "user", content: userContent }
+        ], max_tokens: 4096, temperature: 0.2, stream: false }),
+      });
+      if (!response.ok) throw new Error(`AI API ${response.status}`);
+      const data = await response.json();
+      const content = data.choices?.[0]?.message?.content || "";
+      const { edits, summary } = parseEdits(content);
+      return json({ success: true, edits, summary });
+    }
+
+    return errorResponse("Unknown action. Use: plan, build, continue, test, fix");
   } catch (e) {
-    return errorResponse("Server error: " + (e as Error).message, 500);
+    // Save error state
+    if (session_id) {
+      const supabase = await createServiceClient();
+      await supabase.from("ai_sessions").update({
+        status: "paused_on_error", error: (e as Error).message,
+        updated_at: new Date().toISOString()
+      }).eq("session_id", session_id);
+    }
+    return json({ success: false, session_id, error: (e as Error).message, can_continue: true }, 500);
   }
 });

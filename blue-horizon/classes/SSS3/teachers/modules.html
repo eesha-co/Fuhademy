@@ -1087,7 +1087,7 @@
 
         // The session_id tells the edge function to load SAVED messages from DB
         // and send the EXACT same messages to the API — true continuation
-        BH.edge('ai-session-continue', { body: { session_id: ctx.sessionId } }).then(function (res) {
+        BH.edge('ai-module', { body: { action: 'continue', session_id: ctx.sessionId } }).then(function (res) {
           setThinking(false);
           state.chat = state.chat.filter(function (m) { return m.role !== 'building'; });
           renderChat();
@@ -1232,9 +1232,10 @@
         addChatMessage('building', '');
         addChatMessage('system', '⚙️ ' + (p.isEdit ? 'Editing' : 'Building') + ' the module based on the plan...', 'fa-cog');
 
-        // Use the session-based continue endpoint
-        // This writes to ai_sessions table and can be resumed on timeout
-        BH.edge('ai-session-continue', { body: {
+        // Use the unified ai-module edge function with action='build'
+        // This uses STREAMING internally to avoid timeout on large modules
+        BH.edge('ai-module', { body: {
+          action: 'build',
           session_id: p.sessionId,
           current_html: state.html || p.html,
           prompt: p.prompt,
