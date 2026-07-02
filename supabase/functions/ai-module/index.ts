@@ -348,7 +348,34 @@ Deno.serve(async (req: Request) => {
       return json({ success: true, edits, summary });
     }
 
-    return errorResponse("Unknown action. Use: plan, build, continue, test, fix");
+    // ========================================
+    // SAVE-BUILD: save messages to DB (for Continue button) — no AI call
+    // ========================================
+    if (action === "save-build") {
+      const { messages } = body;
+      if (!session_id) return errorResponse("session_id required");
+      const supabase = await createServiceClient();
+      await supabase.from("ai_sessions").upsert({
+        session_id, phase: "build", status: "in_progress", messages: messages || [],
+      }, { onConflict: "session_id" });
+      return json({ success: true });
+    }
+
+    // ========================================
+    // SAVE-RESULT: save completed build result to DB
+    // ========================================
+    if (action === "save-result") {
+      const { content, phase } = body;
+      if (!session_id) return errorResponse("session_id required");
+      const supabase = await createServiceClient();
+      await supabase.from("ai_sessions").update({
+        status: "completed", content: content || "", phase: phase || "build",
+        updated_at: new Date().toISOString()
+      }).eq("session_id", session_id);
+      return json({ success: true });
+    }
+
+    return errorResponse("Unknown action. Use: plan, build, continue, test, fix, save-build, save-result");
   } catch (e) {
     // Save error state
     if (session_id) {

@@ -1232,21 +1232,45 @@
         addChatMessage('building', '');
         addChatMessage('system', '⚙️ ' + (p.isEdit ? 'Editing' : 'Building') + ' the module based on the plan...', 'fa-cog');
 
-        // Use fetch() directly to read the STREAMING response
-        // This keeps the connection alive — chunks flow from DeepSeek → edge function → frontend
-        // The AI's code appears incrementally (like VS Code Copilot)
-        var streamUrl = BH.URL + '/functions/v1/ai-module';
-        fetch(streamUrl, {
-          method: 'POST',
-          headers: { 'apikey': BH.ANON_KEY, 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            action: 'build',
-            session_id: p.sessionId,
-            current_html: state.html || p.html,
-            prompt: p.prompt,
-            is_edit: p.isEdit,
-            plan: p.plan
-          })
+        // Step 1: Save messages to DB via edge function (fast, no AI call)
+        // Step 2: Stream the AI response from Render (no 150s timeout)
+        var editMode = p.isEdit;
+        var savedPlan = p.plan || '';
+        var currentHtml = state.html || p.html;
+        var userPrompt = p.prompt;
+
+        // Build messages for the AI
+        var buildMessages;
+        if (editMode) {
+          var userContent = 'EXISTING HTML MODULE:\n\n' + currentHtml + '\n\nPLAN:\n' + savedPlan + '\n\nEDIT INSTRUCTION: ' + userPrompt + '\n\nReturn ONLY the changes as SEARCH/REPLACE blocks.';
+          buildMessages = [
+            { role: 'system', content: 'You are an expert HTML editor. Return ONLY changes as SEARCH/REPLACE blocks.\nFormat:\n<<<< SEARCH\n[text to find]\n==== REPLACE\n[new text]\n>>>>\nAfter blocks, write one sentence about what you changed.' },
+            { role: 'user', content: userContent }
+          ];
+        } else {
+          buildMessages = [
+            { role: 'system', content: 'You are an expert educational content creator. Create a complete HTML document with inline CSS and JS. Use navy #1f507b. Wrap in a code block.' },
+            { role: 'user', content: 'USER REQUEST: ' + userPrompt + '\n\nPLAN:\n' + savedPlan + '\n\nBuild the module.' }
+          ];
+        }
+
+        // Save messages to DB first (for Continue button)
+        BH.edge('ai-module', { body: {
+          action: 'save-build',
+          session_id: p.sessionId,
+          messages: buildMessages
+        }}).then(function(saveRes) {
+          // Messages saved — now stream from Render (no timeout)
+          var renderUrl = 'https://ai-module-tester.onrender.com/build';
+          return fetch(renderUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              messages: buildMessages,
+              max_tokens: editMode ? 4096 : 8192,
+              temperature: editMode ? 0.2 : 0.5
+            })
+          });
         }).then(function (response) {
           if (!response.ok) throw new Error('HTTP ' + response.status);
           var reader = response.body.getReader();
@@ -1258,35 +1282,53 @@
             try {
               var msg = JSON.parse(line);
               if (msg.chunk) {
-                // AI is generating code — show it live in the chat (like Copilot)
                 fullContent += msg.chunk;
-                // Update the code editor live (if in Self mode)
-                if (state.mode === 'self' && state.codeEditor) {
-                  state.codeEditor.value = fullContent;
-                }
               } else if (msg.done) {
-                // Build complete — apply edits
+                // Build complete
                 setThinking(false);
                 state.chat = state.chat.filter(function (m) { return m.role !== 'building'; });
                 renderChat();
                 state.pendingPlan = null;
 
-                if (msg.edits && Array.isArray(msg.edits)) {
+                // Save completed result to DB
+                BH.edge('ai-module', { body: {
+                  action: 'save-result',
+                  session_id: p.sessionId,
+                  content: fullContent,
+                  phase: 'build'
+                }});
+
+                // Parse and apply edits
+                if (editMode) {
+                  var edits = [];
+                  var regex = /<<<<\s*SEARCH\s*\n([\s\S]*?)\n====\s*REPLACE\s*\n([\s\S]*?)\n>>>>/g;
+                  var match;
+                  while ((match = regex.exec(fullContent)) !== null) {
+                    edits.push({ search: match[1], replace: match[2] });
+                  }
+                  var summary = fullContent.replace(/<<<<\s*SEARCH[\s\S]*?>>>>/g, '').trim();
+                  if (!summary) summary = 'Applied ' + edits.length + ' edit(s).';
+
                   var applied = 0;
                   var failed = 0;
-                  msg.edits.forEach(function (edit, i) {
+                  edits.forEach(function (edit, i) {
                     if (state.html && state.html.indexOf(edit.search) !== -1) {
                       state.html = state.html.replace(edit.search, edit.replace);
                       applied++;
                       setHtml(state.html, 'ai');
-                      addChatMessage('system', '✏️ Applied edit ' + (i + 1) + '/' + msg.edits.length + ': ' + edit.search.substring(0, 40) + '...', 'fa-pen');
+                      addChatMessage('system', '✏️ Applied edit ' + (i + 1) + '/' + edits.length + ': ' + edit.search.substring(0, 40) + '...', 'fa-pen');
                     } else {
                       failed++;
                     }
                   });
-                  addChatMessage('ai', '✅ ' + (msg.summary || 'Applied ' + applied + ' edit(s).') + ' (' + applied + ' applied, ' + failed + ' not found)');
-                } else if (msg.html) {
-                  setHtml(msg.html, 'ai');
+                  addChatMessage('ai', '✅ ' + summary + ' (' + applied + ' applied, ' + failed + ' not found)');
+                } else {
+                  var htmlMatch = fullContent.match(/```html\s*\n?([\s\S]*?)```/i);
+                  if (htmlMatch) {
+                    setHtml(htmlMatch[1].trim(), 'ai');
+                  } else {
+                    setHtml(fullContent.trim(), 'ai');
+                  }
                   addChatMessage('ai', '✅ Module generated.');
                 }
                 setAISubTab('preview');
