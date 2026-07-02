@@ -1232,54 +1232,90 @@
         addChatMessage('building', '');
         addChatMessage('system', '⚙️ ' + (p.isEdit ? 'Editing' : 'Building') + ' the module based on the plan...', 'fa-cog');
 
-        // Use the unified ai-module edge function with action='build'
-        // This uses STREAMING internally to avoid timeout on large modules
-        BH.edge('ai-module', { body: {
-          action: 'build',
-          session_id: p.sessionId,
-          current_html: state.html || p.html,
-          prompt: p.prompt,
-          is_edit: p.isEdit,
-          plan: p.plan
-        }}).then(function (res) {
-          setThinking(false);
-          state.chat = state.chat.filter(function (m) { return m.role !== 'building'; });
-          renderChat();
+        // Use fetch() directly to read the STREAMING response
+        // This keeps the connection alive — chunks flow from DeepSeek → edge function → frontend
+        // The AI's code appears incrementally (like VS Code Copilot)
+        var streamUrl = BH.URL + '/functions/v1/ai-module';
+        fetch(streamUrl, {
+          method: 'POST',
+          headers: { 'apikey': BH.ANON_KEY, 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            action: 'build',
+            session_id: p.sessionId,
+            current_html: state.html || p.html,
+            prompt: p.prompt,
+            is_edit: p.isEdit,
+            plan: p.plan
+          })
+        }).then(function (response) {
+          if (!response.ok) throw new Error('HTTP ' + response.status);
+          var reader = response.body.getReader();
+          var decoder = new TextDecoder();
+          var buffer = '';
+          var fullContent = '';
 
-          if (!res || !res.ok || !res.data || res.data.error) {
-            var errMsg = (res && res.data && res.data.error) || 'Could not build. Click Continue to retry.';
-            addChatMessage('error', errMsg);
-            // Store for retry — same session, so it continues from where it stopped
-            state.retryContext = { sessionId: p.sessionId };
-            addChatMessage('timeout', '');
-            return;
-          }
+          function processLine(line) {
+            try {
+              var msg = JSON.parse(line);
+              if (msg.chunk) {
+                // AI is generating code — show it live in the chat (like Copilot)
+                fullContent += msg.chunk;
+                // Update the code editor live (if in Self mode)
+                if (state.mode === 'self' && state.codeEditor) {
+                  state.codeEditor.value = fullContent;
+                }
+              } else if (msg.done) {
+                // Build complete — apply edits
+                setThinking(false);
+                state.chat = state.chat.filter(function (m) { return m.role !== 'building'; });
+                renderChat();
+                state.pendingPlan = null;
 
-          var data = res.data;
-          state.pendingPlan = null; // consume on success
-
-          if (data.edits && Array.isArray(data.edits)) {
-            var applied = 0;
-            var failed = 0;
-            data.edits.forEach(function (edit, i) {
-              if (state.html && state.html.indexOf(edit.search) !== -1) {
-                state.html = state.html.replace(edit.search, edit.replace);
-                applied++;
-                setHtml(state.html, 'ai');
-                addChatMessage('system', '✏️ Applied edit ' + (i + 1) + '/' + data.edits.length + ': ' + edit.search.substring(0, 40) + '...', 'fa-pen');
-              } else {
-                failed++;
-                addChatMessage('system', '⚠️ Edit ' + (i + 1) + ' target not found: ' + edit.search.substring(0, 40) + '...', 'fa-triangle-exclamation');
+                if (msg.edits && Array.isArray(msg.edits)) {
+                  var applied = 0;
+                  var failed = 0;
+                  msg.edits.forEach(function (edit, i) {
+                    if (state.html && state.html.indexOf(edit.search) !== -1) {
+                      state.html = state.html.replace(edit.search, edit.replace);
+                      applied++;
+                      setHtml(state.html, 'ai');
+                      addChatMessage('system', '✏️ Applied edit ' + (i + 1) + '/' + msg.edits.length + ': ' + edit.search.substring(0, 40) + '...', 'fa-pen');
+                    } else {
+                      failed++;
+                    }
+                  });
+                  addChatMessage('ai', '✅ ' + (msg.summary || 'Applied ' + applied + ' edit(s).') + ' (' + applied + ' applied, ' + failed + ' not found)');
+                } else if (msg.html) {
+                  setHtml(msg.html, 'ai');
+                  addChatMessage('ai', '✅ Module generated.');
+                }
+                setAISubTab('preview');
+                addChatMessage('test-now', '');
+              } else if (msg.error) {
+                setThinking(false);
+                state.chat = state.chat.filter(function (m) { return m.role !== 'building'; });
+                renderChat();
+                addChatMessage('error', msg.error);
+                state.retryContext = { sessionId: p.sessionId };
+                addChatMessage('timeout', '');
               }
-            });
-            addChatMessage('ai', '✅ ' + (data.summary || 'Applied ' + applied + ' edit(s).') + ' (' + applied + ' applied, ' + failed + ' not found)');
-          } else if (data.html) {
-            setHtml(data.html, 'ai');
-            addChatMessage('ai', '✅ Module generated.');
+            } catch (e) { /* not JSON, ignore */ }
           }
 
-          setAISubTab('preview');
-          addChatMessage('test-now', '');
+          function pump() {
+            return reader.read().then(function (result) {
+              if (result.done) {
+                if (buffer.trim()) processLine(buffer);
+                return;
+              }
+              buffer += decoder.decode(result.value, { stream: true });
+              var lines = buffer.split('\n');
+              buffer = lines.pop();
+              lines.forEach(processLine);
+              return pump();
+            });
+          }
+          return pump();
         }).catch(function (err) {
           setThinking(false);
           state.chat = state.chat.filter(function (m) { return m.role !== 'building'; });

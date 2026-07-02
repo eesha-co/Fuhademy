@@ -144,55 +144,76 @@ Deno.serve(async (req: Request) => {
         session_id: sessionId, phase: "build", status: "in_progress", messages: buildMessages,
       }, { onConflict: "session_id" });
 
-      // Call API with STREAMING
+      // Call API with STREAMING and return a STREAMING RESPONSE to the client
+      // This keeps the connection alive — data flows from DeepSeek → edge function → client
+      // Supabase won't kill the function as long as data is being sent
       const key = Deno.env.get("KIMI_API_KEY");
       if (!key) throw new Error("API key not configured");
-      const response = await fetch(API_URL, {
+      const aiResponse = await fetch(API_URL, {
         method: "POST",
         headers: { "Authorization": `Bearer ${key}`, "Accept": "text/event-stream", "Content-Type": "application/json" },
         body: JSON.stringify({ model: MODEL, messages: buildMessages, max_tokens: editMode ? 4096 : 8192, temperature: editMode ? 0.2 : 0.5, stream: true }),
       });
 
-      if (!response.ok) throw new Error(`AI API ${response.status}`);
+      if (!aiResponse.ok) throw new Error(`AI API ${aiResponse.status}`);
 
-      // Read the stream and accumulate content
+      // Create a streaming response that pipes DeepSeek's stream to the client
+      // AND accumulates the content to save to DB when done
+      const encoder = new TextEncoder();
       let fullContent = "";
-      const reader = response.body!.getReader();
-      const decoder = new TextDecoder();
-      let buffer = "";
 
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-        buffer += decoder.decode(value, { stream: true });
-        const lines = buffer.split("\n");
-        buffer = lines.pop() || "";
-        for (const line of lines) {
-          if (line.startsWith("data: ")) {
-            const jsonStr = line.slice(6).trim();
-            if (jsonStr === "[DONE]") continue;
-            try {
-              const chunk = JSON.parse(jsonStr);
-              const delta = chunk.choices?.[0]?.delta;
-              if (delta?.content) fullContent += delta.content;
-            } catch {}
+      const stream = new ReadableStream({
+        async start(controller) {
+          const reader = aiResponse.body!.getReader();
+          const decoder = new TextDecoder();
+          let buffer = "";
+
+          try {
+            while (true) {
+              const { done, value } = await reader.read();
+              if (done) break;
+              buffer += decoder.decode(value, { stream: true });
+              const lines = buffer.split("\n");
+              buffer = lines.pop() || "";
+              for (const line of lines) {
+                if (line.startsWith("data: ")) {
+                  const jsonStr = line.slice(6).trim();
+                  if (jsonStr === "[DONE]") continue;
+                  try {
+                    const chunk = JSON.parse(jsonStr);
+                    const delta = chunk.choices?.[0]?.delta;
+                    if (delta?.content) {
+                      fullContent += delta.content;
+                      // Send each chunk to the client as a JSON line
+                      controller.enqueue(encoder.encode(JSON.stringify({ chunk: delta.content }) + "\n"));
+                    }
+                  } catch {}
+                }
+              }
+            }
+            // Stream complete — save to DB
+            buildMessages.push({ role: "assistant", content: fullContent });
+            await supabase.from("ai_sessions").update({
+              phase: "build", status: "completed", content: fullContent, messages: buildMessages,
+              updated_at: new Date().toISOString()
+            }).eq("session_id", sessionId);
+            // Send final result
+            if (editMode) {
+              const { edits, summary } = parseEdits(fullContent);
+              controller.enqueue(encoder.encode(JSON.stringify({ done: true, edits, summary }) + "\n"));
+            } else {
+              controller.enqueue(encoder.encode(JSON.stringify({ done: true, html: extractHtml(fullContent), reply: "Module generated." }) + "\n"));
+            }
+          } catch (e) {
+            controller.enqueue(encoder.encode(JSON.stringify({ error: (e as Error).message }) + "\n"));
           }
+          controller.close();
         }
-      }
+      });
 
-      // Save completed result
-      buildMessages.push({ role: "assistant", content: fullContent });
-      await supabase.from("ai_sessions").update({
-        phase: "build", status: "completed", content: fullContent, messages: buildMessages,
-        updated_at: new Date().toISOString()
-      }).eq("session_id", sessionId);
-
-      if (editMode) {
-        const { edits, summary } = parseEdits(fullContent);
-        return json({ success: true, session_id, edits, summary });
-      } else {
-        return json({ success: true, session_id, html: extractHtml(fullContent), reply: "Module generated." });
-      }
+      return new Response(stream, {
+        headers: { ...CORS_HEADERS, "Content-Type": "application/x-ndjson", "Transfer-Encoding": "chunked" }
+      });
     }
 
     // ========================================
