@@ -19,7 +19,7 @@
   "homepage": "https://github.com/eesha000009-dev/Exam-Prep100#readme",
   "description": "JUANOVA CORTEX - AI-powered learning platform for WAEC/JAMB/NECO exams",
   "dependencies": {
-    "@supabase/supabase-js": "^2.78.0",
+    "@supabase/supabase-js": "^2.111.0",
     "axios": "^1.11.0",
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
